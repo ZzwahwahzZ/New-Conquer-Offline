@@ -317,7 +317,7 @@ jobs:
           p=Path("project.godot")
           s=p.read_text()
           if "[autoload]" not in s:
-              s=s.replace("[display]", '[autoload]\\nGameState="*res://scripts/game_state.gd"\\n\\n[display]')
+              s=s.replace("[display]", '[autoload]\nGameState="*res://scripts/game_state.gd"\n\n[display]')
           p.write_text(s)
           PY
           cat > reports/offline-runtime-tests/README.md <<'EOF'
@@ -340,4 +340,6 @@ jobs:
           git add project.godot scripts reports/original-client-analysis reports/offline-runtime-tests
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Analyze original client and implement offline gameplay foundation"
+          git fetch origin main
+          git rebase origin/main
           git push origin HEAD:main
