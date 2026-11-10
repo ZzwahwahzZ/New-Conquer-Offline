@@ -317,7 +317,8 @@ jobs:
           p=Path("project.godot")
           s=p.read_text()
           if "[autoload]" not in s:
-              s=s.replace("[display]", '[autoload]\nGameState="*res://scripts/game_state.gd"\n\n[display]')
+              block = "[autoload]" + chr(10) + 'GameState="*res://scripts/game_state.gd"' + chr(10) + chr(10)
+              s = s.replace("[display]", block + "[display]")
           p.write_text(s)
           PY
           cat > reports/offline-runtime-tests/README.md <<'EOF'
@@ -328,9 +329,12 @@ jobs:
       - name: Validate Godot project and local persistence
         run: |
           set -euo pipefail
-          godot --headless --path . --editor --quit
+          godot --headless --path . --editor --quit 2>&1 | tee /tmp/godot-import.log
+          if grep -E "ERROR:|SCRIPT ERROR:" /tmp/godot-import.log; then echo "Godot import reported errors"; exit 1; fi
+          godot --headless --path . --quit-after 3 2>&1 | tee /tmp/godot-runtime.log
+          if grep -E "ERROR:|SCRIPT ERROR:" /tmp/godot-runtime.log; then echo "Godot runtime reported errors"; exit 1; fi
           godot --headless --path . --script res://scripts/offline_smoke_test.gd
-          echo "Godot import and local save/progression smoke tests passed."
+          echo "Godot import, runtime, and local save/progression smoke tests passed."
 
       - name: Commit reverse engineering and offline runtime
         run: |
