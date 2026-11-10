@@ -23,7 +23,8 @@ const SKILL_DATA := {
 	"Jump":{"cooldown":0.35,"mana":0,"stamina":7.0},
 	"Fly":{"cooldown":30.0,"mana":20,"stamina":0.0},
 	"Scatter":{"cooldown":8.0,"mana":15,"stamina":5.0},
-	"Rapid_Fire":{"cooldown":5.0,"mana":10,"stamina":4.0}
+	"Rapid_Fire":{"cooldown":5.0,"mana":10,"stamina":4.0},
+	"XP_Mode":{"cooldown":60.0,"mana":0,"stamina":0.0}
 }
 var _move_target: Vector3
 var _has_move_target := false
@@ -41,6 +42,8 @@ var _fly_timer := 0.0
 var _ground_y := 0.0
 var _skill_proficiency := {"Jump":{"level":1,"xp":0},"Fly":{"level":1,"xp":0},"Scatter":{"level":1,"xp":0},"Rapid_Fire":{"level":1,"xp":0}}
 var _attack_timer := 0.0
+var _xp_mode_timer := 0.0
+var _xp_damage_multiplier := 1.0
 var _xp_skill := 0.0
 var _visual: Node3D
 
@@ -106,6 +109,9 @@ func _physics_process(delta: float) -> void:
 	for skill_id in _cooldowns.keys():
 		_cooldowns[skill_id] = maxf(0.0, float(_cooldowns[skill_id]) - delta)
 		if float(_cooldowns[skill_id]) <= 0.0: _cooldowns.erase(skill_id)
+	if _xp_mode_timer > 0.0:
+		_xp_mode_timer -= delta
+		if _xp_mode_timer <= 0.0: _xp_damage_multiplier = 1.0
 	if _flying:
 		_fly_timer -= delta
 		if _fly_timer <= 0.0: _set_flying(false)
@@ -172,6 +178,7 @@ func cast_skill(skill_id: String) -> bool:
 	if float(_cooldowns.get(skill_id, 0.0)) > 0.0: return false
 	if skill_id in ["Fly", "Scatter"] and not _is_archer_family(): return false
 	if skill_id == "Rapid_Fire" and (ClassSystem.current_class != "Oriental_Assassin" or not _has_dual_knives()): return false
+	if skill_id == "XP_Mode" and _xp_skill < 100.0: return false
 	var data: Dictionary = SKILL_DATA[skill_id]
 	if ClassSystem.mp < int(data.mana) or ClassSystem.stamina < float(data.stamina): return false
 	ClassSystem.mp -= int(data.mana)
@@ -189,6 +196,11 @@ func cast_skill(skill_id: String) -> bool:
 			_cast_scatter()
 		"Rapid_Fire":
 			_start_rapid_fire()
+		"XP_Mode":
+			_xp_skill = 0.0
+			_xp_mode_timer = 10.0
+			_xp_damage_multiplier = 1.5
+			xp_skill_changed.emit(_xp_skill, 100.0)
 	_gain_skill_proficiency(skill_id, 1)
 	skill_used.emit(skill_id)
 	return true
@@ -229,7 +241,7 @@ func is_airborne() -> bool:
 
 func _cast_scatter() -> void:
 	var radius := 7.0 + float(_skill_proficiency["Scatter"].level) * 0.25
-	var damage := 18 + int(_skill_proficiency["Scatter"].level) * 3
+	var damage := int((18 + int(ClassSystem.get_physical_attack_bonus() * 0.1) + int(_skill_proficiency["Scatter"].level) * 3) * _xp_damage_multiplier)
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if is_instance_valid(enemy) and enemy.has_method("take_damage") and global_position.distance_to(enemy.global_position) <= radius:
 			enemy.take_damage(damage)
@@ -242,7 +254,7 @@ func _start_rapid_fire() -> void:
 	var level_bonus := int(_skill_proficiency["Rapid_Fire"].level)
 	for hit_index in range(2):
 		if is_instance_valid(target) and target.has_method("take_damage"):
-			var damage := 14 + level_bonus * 3
+			var damage := int((14 + level_bonus * 3) * _xp_damage_multiplier)
 			target.take_damage(damage)
 			combat_hit.emit(target, damage)
 	_gain_xp_skill(10.0)
@@ -253,9 +265,8 @@ func basic_attack() -> bool:
 	_attack_timer = 0.24 if assassin else 0.72
 	var target := _nearest_enemy(4.5 if assassin else 3.0)
 	if target == null: return false
-	var damage := 20
+	var damage := int(round((20 + ClassSystem.get_physical_attack_bonus() * 0.1) * _xp_damage_multiplier))
 	if assassin:
-		damage = 18
 		for i in range(2):
 			if is_instance_valid(target): target.take_damage(damage)
 	else: target.take_damage(damage)
