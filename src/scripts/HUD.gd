@@ -25,6 +25,8 @@ var _inventory_ui: CanvasLayer
 var _inventory_button: Button
 var _upgrade_ui: CanvasLayer
 var _upgrade_button: Button
+var _skill_buttons: Array[Button] = []
+var _skill_ids := ["Jump", "Fly", "Scatter", "Rapid_Fire"]
 
 
 func _ready() -> void:
@@ -205,6 +207,10 @@ func _build_hotbar() -> void:
 		skill.add_theme_stylebox_override("hover", _panel_style(Color(0.22, 0.19, 0.13, 1.0), Color(1.0, 0.79, 0.39, 1.0), 2, 7))
 		skill.add_theme_stylebox_override("pressed", _panel_style(Color(0.07, 0.08, 0.1, 1.0), Color(0.95, 0.67, 0.27, 1.0), 2, 7))
 		skills.add_child(skill)
+		if index < _skill_ids.size():
+			_skill_buttons.append(skill)
+			skill.text = ["JUMP", "FLY", "AOE", "KNIFE"][index]
+			skill.pressed.connect(_on_skill_pressed.bind(_skill_ids[index]))
 
 
 func _build_chat() -> void:
@@ -426,6 +432,18 @@ func _connect_game_state() -> void:
 	_refresh_stats()
 
 
+func _on_skill_pressed(skill_id: String) -> void:
+	if not is_instance_valid(_player): _find_player()
+	if is_instance_valid(_player) and _player.has_method("cast_skill"):
+		_player.cast_skill(skill_id)
+
+func _process(_delta: float) -> void:
+	if not is_instance_valid(_player): _find_player()
+	for i in range(mini(_skill_buttons.size(), _skill_ids.size())):
+		var cooldown := float(_player.call("get_skill_cooldown", _skill_ids[i])) if is_instance_valid(_player) and _player.has_method("get_skill_cooldown") else 0.0
+		_skill_buttons[i].disabled = cooldown > 0.0
+		_skill_buttons[i].tooltip_text = "%s  %.1fs" % [_skill_ids[i], cooldown] if cooldown > 0.0 else _skill_ids[i]
+
 func _refresh_stats() -> void:
 	if not is_instance_valid(_root):
 		return
@@ -436,9 +454,9 @@ func _refresh_stats() -> void:
 	_hp_bar.value = clampi(int(profile.get("hp", max_hp)), 0, max_hp)
 	_mp_bar.max_value = max_mp
 	_mp_bar.value = clampi(int(profile.get("mp", max_mp)), 0, max_mp)
-	var level := maxi(1, int(profile.get("level", 1)))
-	_xp_bar.max_value = level * 100
-	_xp_bar.value = clampi(int(profile.get("experience", 0)), 0, level * 100)
+	var level := maxi(1, ClassSystem.level)
+	_xp_bar.max_value = ClassSystem.get_required_xp()
+	_xp_bar.value = ClassSystem.experience
 
 
 func _minimize_chat() -> void:
