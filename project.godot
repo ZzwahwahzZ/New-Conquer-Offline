@@ -10,8 +10,8 @@ config/features=PackedStringArray("4.3", "GL Compatibility")
 config/description="Offline conversion of the original Conquer Online Mobile client and original game resources."
 
 [autoload]
-GameState="*res://scripts/game_state.gd"
 GlobalEconomy="*res://src/scripts/GlobalEconomy.gd"
+GameState="*res://scripts/game_state.gd"
 
 [display]
 window/size/viewport_width=1280
