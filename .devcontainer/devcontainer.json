@@ -1,0 +1,15 @@
+{
+  "name": "New Conquer Offline - AI Workshop",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "forwardPorts": [4096],
+  "portsAttributes": {
+    "4096": {
+      "label": "OpenCode Web",
+      "onAutoForward": "openBrowser",
+      "visibility": "private"
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postStartCommand": "bash .devcontainer/start-opencode.sh",
+  "shutdownAction": "stopContainer"
+}
