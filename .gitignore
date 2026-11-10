@@ -13,3 +13,8 @@
 # Editor / OS
 .DS_Store
 Thumbs.db
+
+# OpenCode Codespaces workshop (private runtime files)
+.opencode-login.txt
+.opencode-web.log
+.opencode-web.pid
