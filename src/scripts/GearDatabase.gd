@@ -1,5 +1,4 @@
-extends RefCounted
-class_name GearDatabase
+extends Node
 ## Centralized item blueprints and progression rules for New Conquer Offline.
 
 const SLOTS := ["RightHand", "LeftHand", "Armor", "Helmet", "Necklace", "Boots", "Ring"]
@@ -70,14 +69,14 @@ const ARMOR_BLUEPRINTS := {
 	}
 }
 
-static func get_blueprint(item_id: String) -> Dictionary:
+func get_blueprint(item_id: String) -> Dictionary:
 	if WEAPON_BLUEPRINTS.has(item_id):
 		return WEAPON_BLUEPRINTS[item_id].duplicate(true)
 	if ARMOR_BLUEPRINTS.has(item_id):
 		return ARMOR_BLUEPRINTS[item_id].duplicate(true)
 	return {}
 
-static func create_item(item_id: String, instance_id: String = "") -> Dictionary:
+func create_item(item_id: String, instance_id: String = "") -> Dictionary:
 	var item := get_blueprint(item_id)
 	if item.is_empty():
 		return {}
@@ -86,7 +85,7 @@ static func create_item(item_id: String, instance_id: String = "") -> Dictionary
 	item["sockets"] = item.get("sockets", ["Empty", "Empty"]).duplicate(true)
 	return item
 
-static func get_gem(gem_id: String) -> Dictionary:
+func get_gem(gem_id: String) -> Dictionary:
 	if not GEM_DATA.has(gem_id):
 		return {}
 	return GEM_DATA[gem_id].duplicate(true)
