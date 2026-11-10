@@ -55,7 +55,7 @@ func add_item(item_id: String, quantity: int = 1) -> bool:
 			entry["quantity"] = int(entry.get("quantity", 1)) + quantity
 			_save_and_emit()
 			return true
-	var item := GearDatabase.create_item(item_id)
+	var item := create_item(item_id)
 	item["quantity"] = quantity
 	inventory.append(item)
 	_save_and_emit()
