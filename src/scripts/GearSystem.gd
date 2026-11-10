@@ -23,11 +23,26 @@ var upgrade_points: int = 0
 var _rng := RandomNumberGenerator.new()
 var _syncing_profile: bool = false
 
+var _gear_restore_received: bool = false
+var _game_state_connected: bool = false
+
 func _ready() -> void:
+	# GearDatabase is guaranteed to be initialized before this autoload.
 	_rng.randomize()
-	load_gear_data()
-	if not GameState.inventory_changed.is_connected(_on_game_inventory_changed):
-		GameState.inventory_changed.connect(_on_game_inventory_changed)
+	call_deferred("_connect_game_state")
+
+func _connect_game_state() -> void:
+	# Deferred until every autoload has entered the tree and completed _ready().
+	var game_state := get_node_or_null("/root/GameState")
+	if game_state == null:
+		return
+	if game_state.has_signal("inventory_changed") and not game_state.inventory_changed.is_connected(_on_game_inventory_changed):
+		game_state.inventory_changed.connect(_on_game_inventory_changed)
+	_game_state_connected = true
+
+func initialize_from_save(data: Dictionary) -> void:
+	deserialize_gear_data(data)
+	_gear_restore_received = not data.is_empty()
 
 func create_item(item_id: String) -> Dictionary:
 	return GearDatabase.create_item(item_id)
@@ -274,11 +289,13 @@ func save_gear_data() -> bool:
 	return GlobalEconomy.save_gear_data(serialize_gear_data())
 
 func load_gear_data() -> bool:
-	var data := GlobalEconomy.load_gear_data()
-	if data.is_empty():
+	# Compatibility wrapper. GlobalEconomy owns the startup load sequence.
+	var economy := get_node_or_null("/root/GlobalEconomy")
+	if economy == null:
 		return false
-	deserialize_gear_data(data)
-	return true
+	var data: Dictionary = economy.load_gear_data()
+	initialize_from_save(data)
+	return not data.is_empty()
 
 func _find_inventory_index(item_instance_id: String) -> int:
 	for index in range(inventory.size()):
@@ -299,22 +316,35 @@ func _save_and_emit() -> void:
 
 func _save_gear_data() -> void:
 	var snapshot := serialize_gear_data()
-	# Keep the existing InventoryManager/GameState bag and the new gear system on one inventory.
-	_syncing_profile = true
-	GameState.profile["inventory"] = inventory.duplicate(true)
-	GameState.save_local()
-	GlobalEconomy.save_gear_data(snapshot)
-	GameState.inventory_changed.emit()
-	_syncing_profile = false
+	var economy := get_node_or_null("/root/GlobalEconomy")
+	if economy != null:
+		economy.save_gear_data(snapshot)
+	var game_state := get_node_or_null("/root/GameState")
+	if game_state != null:
+		_syncing_profile = true
+		game_state.profile["inventory"] = inventory.duplicate(true)
+		game_state.save_local()
+		game_state.inventory_changed.emit()
+		_syncing_profile = false
 
 func _on_game_inventory_changed() -> void:
 	if _syncing_profile:
 		return
-	var profile_inventory = GameState.profile.get("inventory", [])
-	if profile_inventory is Array:
-		inventory.clear()
-		for entry in profile_inventory:
-			if entry is Dictionary:
-				inventory.append(entry.duplicate(true))
-		GlobalEconomy.save_gear_data(serialize_gear_data())
-		inventory_changed.emit()
+	var game_state := get_node_or_null("/root/GameState")
+	if game_state == null:
+		return
+	# Migrate the old GameState bag only when no GearSystem save existed.
+	if not _gear_restore_received and inventory.is_empty():
+		var profile_inventory = game_state.profile.get("inventory", [])
+		if profile_inventory is Array:
+			for entry in profile_inventory:
+				if entry is Dictionary:
+					inventory.append(entry.duplicate(true))
+			if not inventory.is_empty():
+				_save_gear_data()
+				inventory_changed.emit()
+		return
+	# GearSystem's dedicated save is authoritative; mirror it for the legacy bag UI.
+	_syncing_profile = true
+	game_state.profile["inventory"] = inventory.duplicate(true)
+	_syncing_profile = false
