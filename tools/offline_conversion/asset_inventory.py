@@ -30,7 +30,7 @@ for archive in archives:
                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     entries = []
     listing = proc.stdout.split("----------", 1)[-1]
-    for block in listing.split("\\n\\n"):
+    for block in listing.split(chr(10) + chr(10)):
         fields = {}
         for line in block.splitlines():
             if " = " in line:
