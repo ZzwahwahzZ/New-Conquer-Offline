@@ -1,0 +1,439 @@
+extends CanvasLayer
+## Landscape MMORPG HUD. Named texture nodes are reserved for the final art pass.
+
+const JOYSTICK_SIZE := Vector2(164.0, 164.0)
+const JOYSTICK_RADIUS := 57.0
+const HOTBAR_SIZE := Vector2(500.0, 78.0)
+const ORB_SIZE := Vector2(176.0, 176.0)
+
+var _root: Control
+var _joystick: Control
+var _joystick_knob: Panel
+var _joystick_vector := Vector2.ZERO
+var _joystick_touch_index := -1
+var _joystick_mouse_active := false
+var _player: Node
+var _gold_label: Label
+var _hp_bar: TextureProgressBar
+var _mp_bar: TextureProgressBar
+var _xp_bar: ProgressBar
+var _chat_window: PanelContainer
+var _chat_restore_button: Button
+var _chat_log: RichTextLabel
+var _chat_input: LineEdit
+
+
+func _ready() -> void:
+	_build_hud()
+	_connect_economy()
+	_connect_game_state()
+	_find_player()
+	get_viewport().size_changed.connect(_layout_hud)
+	_layout_hud()
+
+
+func _build_hud() -> void:
+	_root = Control.new()
+	_root.name = "HUDRoot"
+	_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_root)
+	_build_joystick()
+	_build_orb()
+	_build_hotbar()
+	_build_chat()
+	_build_xp_bar()
+
+
+func _build_joystick() -> void:
+	_joystick = Control.new()
+	_joystick.name = "VirtualJoystick"
+	_joystick.custom_minimum_size = JOYSTICK_SIZE
+	_joystick.size = JOYSTICK_SIZE
+	_joystick.mouse_filter = Control.MOUSE_FILTER_STOP
+	_root.add_child(_joystick)
+
+	var base := Panel.new()
+	base.name = "JoystickBase"
+	base.size = JOYSTICK_SIZE
+	base.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	base.add_theme_stylebox_override("panel", _panel_style(Color(0.035, 0.055, 0.075, 0.78), Color(0.72, 0.53, 0.25, 0.95), 5, 82))
+	_joystick.add_child(base)
+
+	var inner_ring := Panel.new()
+	inner_ring.name = "JoystickInnerRing"
+	inner_ring.position = Vector2(17, 17)
+	inner_ring.size = JOYSTICK_SIZE - Vector2(34, 34)
+	inner_ring.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	inner_ring.add_theme_stylebox_override("panel", _panel_style(Color(0.12, 0.16, 0.19, 0.38), Color(0.42, 0.34, 0.23, 0.9), 2, 70))
+	_joystick.add_child(inner_ring)
+
+	_joystick_knob = Panel.new()
+	_joystick_knob.name = "JoystickKnob"
+	_joystick_knob.size = Vector2(68, 68)
+	_joystick_knob.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_joystick_knob.add_theme_stylebox_override("panel", _panel_style(Color(0.31, 0.24, 0.15, 0.96), Color(0.94, 0.72, 0.34, 1.0), 3, 40))
+	_joystick.add_child(_joystick_knob)
+	_reset_joystick_knob()
+	_joystick.gui_input.connect(_on_joystick_gui_input)
+
+
+func _build_orb() -> void:
+	var orb := Control.new()
+	orb.name = "OrbHUD"
+	orb.custom_minimum_size = ORB_SIZE
+	orb.size = ORB_SIZE
+	_root.add_child(orb)
+
+	var backing := Panel.new()
+	backing.name = "OrbBacking"
+	backing.position = Vector2(12, 12)
+	backing.size = Vector2(152, 152)
+	backing.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	backing.add_theme_stylebox_override("panel", _panel_style(Color(0.025, 0.035, 0.055, 0.96), Color(0.86, 0.62, 0.24, 1.0), 5, 76))
+	orb.add_child(backing)
+
+	_hp_bar = _make_orb_bar("HPBar", Color(0.82, 0.12, 0.12, 0.98), 270.0)
+	_hp_bar.position = Vector2(23, 23)
+	_hp_bar.size = Vector2(130, 130)
+	orb.add_child(_hp_bar)
+
+	_mp_bar = _make_orb_bar("MPBar", Color(0.12, 0.39, 0.92, 0.98), 90.0)
+	_mp_bar.position = Vector2(23, 23)
+	_mp_bar.size = Vector2(130, 130)
+	orb.add_child(_mp_bar)
+
+	var center := Panel.new()
+	center.name = "OrbCenter"
+	center.position = Vector2(54, 54)
+	center.size = Vector2(68, 68)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	center.add_theme_stylebox_override("panel", _panel_style(Color(0.045, 0.055, 0.07, 1.0), Color(0.59, 0.43, 0.21, 1.0), 2, 36))
+	orb.add_child(center)
+
+	var border := TextureRect.new()
+	border.name = "OrbBorder"
+	border.position = Vector2.ZERO
+	border.size = ORB_SIZE
+	border.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	border.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	border.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	orb.add_child(border)
+
+	_gold_label = Label.new()
+	_gold_label.name = "GoldLabel"
+	_gold_label.text = "GOLD  0"
+	_gold_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_gold_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_gold_label.position = Vector2(-18, -25)
+	_gold_label.size = Vector2(212, 28)
+	_gold_label.add_theme_color_override("font_color", Color(1.0, 0.83, 0.43))
+	_gold_label.add_theme_color_override("font_shadow_color", Color(0.05, 0.035, 0.02, 1.0))
+	_gold_label.add_theme_constant_override("shadow_offset_x", 1)
+	_gold_label.add_theme_constant_override("shadow_offset_y", 1)
+	_gold_label.add_theme_font_size_override("font_size", 15)
+	_gold_label.add_to_group("gold_counter")
+	orb.add_child(_gold_label)
+	set_gold(GlobalEconomy.current_gold)
+
+
+func _make_orb_bar(node_name: String, tint: Color, start_angle: float) -> TextureProgressBar:
+	var bar := TextureProgressBar.new()
+	bar.name = node_name
+	bar.min_value = 0
+	bar.max_value = 100
+	bar.value = 100
+	bar.fill_mode = TextureProgressBar.FILL_CLOCKWISE
+	bar.radial_initial_angle = start_angle
+	bar.radial_fill_degrees = 180.0
+	bar.radial_center_offset = Vector2.ZERO
+	bar.texture_under = _solid_texture(Color(0.07, 0.075, 0.09, 0.95))
+	bar.texture_progress = _solid_texture(tint)
+	bar.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return bar
+
+
+func _build_hotbar() -> void:
+	var frame := Panel.new()
+	frame.name = "HotbarFrame"
+	frame.custom_minimum_size = HOTBAR_SIZE
+	frame.size = HOTBAR_SIZE
+	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	frame.add_theme_stylebox_override("panel", _panel_style(Color(0.045, 0.052, 0.065, 0.92), Color(0.78, 0.57, 0.29, 1.0), 3, 10))
+	_root.add_child(frame)
+
+	var panel_texture := TextureRect.new()
+	panel_texture.name = "HotbarPanel"
+	panel_texture.position = Vector2(5, 5)
+	panel_texture.size = HOTBAR_SIZE - Vector2(10, 10)
+	panel_texture.texture = _solid_texture(Color(0.11, 0.105, 0.09, 0.76))
+	panel_texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	panel_texture.stretch_mode = TextureRect.STRETCH_SCALE
+	panel_texture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	frame.add_child(panel_texture)
+
+	var skills := HBoxContainer.new()
+	skills.name = "SkillButtons"
+	skills.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	skills.offset_left = 12
+	skills.offset_top = 9
+	skills.offset_right = -12
+	skills.offset_bottom = -9
+	skills.alignment = BoxContainer.ALIGNMENT_CENTER
+	skills.add_theme_constant_override("separation", 8)
+	frame.add_child(skills)
+
+	for index in range(8):
+		var skill := Button.new()
+		skill.name = "Skill%d" % (index + 1)
+		skill.text = str(index + 1)
+		skill.custom_minimum_size = Vector2(48, 54)
+		skill.add_theme_font_size_override("font_size", 18)
+		skill.add_theme_color_override("font_color", Color(1.0, 0.88, 0.64))
+		skill.add_theme_stylebox_override("normal", _panel_style(Color(0.12, 0.13, 0.15, 0.98), Color(0.65, 0.49, 0.27, 1.0), 2, 7))
+		skill.add_theme_stylebox_override("hover", _panel_style(Color(0.22, 0.19, 0.13, 1.0), Color(1.0, 0.79, 0.39, 1.0), 2, 7))
+		skill.add_theme_stylebox_override("pressed", _panel_style(Color(0.07, 0.08, 0.1, 1.0), Color(0.95, 0.67, 0.27, 1.0), 2, 7))
+		skills.add_child(skill)
+
+
+func _build_chat() -> void:
+	_chat_window = PanelContainer.new()
+	_chat_window.name = "ChatWindow"
+	_chat_window.custom_minimum_size = Vector2(500, 132)
+	_chat_window.mouse_filter = Control.MOUSE_FILTER_STOP
+	_chat_window.add_theme_stylebox_override("panel", _panel_style(Color(0.025, 0.035, 0.05, 0.88), Color(0.66, 0.49, 0.25, 0.95), 2, 8))
+	_root.add_child(_chat_window)
+
+	var body := VBoxContainer.new()
+	body.name = "ChatBody"
+	body.add_theme_constant_override("separation", 4)
+	_chat_window.add_child(body)
+
+	var header := HBoxContainer.new()
+	header.name = "ChatTabs"
+	header.add_theme_constant_override("separation", 5)
+	body.add_child(header)
+
+	for tab_name in ["عام", "فريق", "نقابة", "خاص"]:
+		var tab := Button.new()
+		tab.name = "ChatTab_" + tab_name
+		tab.text = tab_name
+		tab.custom_minimum_size = Vector2(58, 25)
+		tab.add_theme_font_size_override("font_size", 13)
+		tab.add_theme_stylebox_override("normal", _panel_style(Color(0.12, 0.105, 0.085, 0.95), Color(0.53, 0.4, 0.23, 0.9), 1, 4))
+		header.add_child(tab)
+
+	var minimize := Button.new()
+	minimize.name = "ChatMinimizeButton"
+	minimize.text = "—"
+	minimize.custom_minimum_size = Vector2(28, 25)
+	minimize.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	minimize.pressed.connect(_minimize_chat)
+	header.add_child(minimize)
+
+	_chat_log = RichTextLabel.new()
+	_chat_log.name = "ChatLog"
+	_chat_log.bbcode_enabled = true
+	_chat_log.fit_content = false
+	_chat_log.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_chat_log.scroll_following = true
+	_chat_log.text = "[color=#d8c49c]مرحباً بك في عالم نيو كونكر.[/color]"
+	body.add_child(_chat_log)
+
+	_chat_input = LineEdit.new()
+	_chat_input.name = "ChatInput"
+	_chat_input.placeholder_text = "اكتب رسالة..."
+	_chat_input.custom_minimum_size.y = 27
+	_chat_input.text_submitted.connect(_on_chat_submitted)
+	body.add_child(_chat_input)
+
+	_chat_restore_button = Button.new()
+	_chat_restore_button.name = "ChatRestoreButton"
+	_chat_restore_button.text = "CHAT  +"
+	_chat_restore_button.custom_minimum_size = Vector2(100, 28)
+	_chat_restore_button.pressed.connect(_restore_chat)
+	_root.add_child(_chat_restore_button)
+	_chat_restore_button.hide()
+
+
+func _build_xp_bar() -> void:
+	_xp_bar = ProgressBar.new()
+	_xp_bar.name = "XPBar"
+	_xp_bar.min_value = 0
+	_xp_bar.max_value = 100
+	_xp_bar.value = 0
+	_xp_bar.show_percentage = false
+	_xp_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_xp_bar.add_theme_stylebox_override("background", _panel_style(Color(0.025, 0.03, 0.04, 0.95), Color(0.3, 0.26, 0.2, 1.0), 1, 0))
+	_xp_bar.add_theme_stylebox_override("fill", _panel_style(Color(0.73, 0.53, 0.15, 1.0), Color(0.92, 0.75, 0.34, 1.0), 0, 0))
+	_root.add_child(_xp_bar)
+
+
+func _layout_hud() -> void:
+	if not is_instance_valid(_root):
+		return
+	var viewport_size := get_viewport().get_visible_rect().size
+	var width := viewport_size.x
+	var height := viewport_size.y
+	_joystick.position = Vector2(22, height - JOYSTICK_SIZE.y - 24)
+
+	var orb := _root.get_node("OrbHUD") as Control
+	orb.position = Vector2(width - ORB_SIZE.x - 20, height - ORB_SIZE.y - 20)
+
+	var frame := _root.get_node("HotbarFrame") as Control
+	var hotbar_width := minf(HOTBAR_SIZE.x, maxf(300.0, width - 420.0))
+	frame.size = Vector2(hotbar_width, HOTBAR_SIZE.y)
+	frame.position = Vector2((width - hotbar_width) * 0.5, height - HOTBAR_SIZE.y - 18)
+
+	var chat_width := minf(500.0, maxf(280.0, width - 40.0))
+	_chat_window.position = Vector2((width - chat_width) * 0.5, height - 220.0)
+	_chat_window.size = Vector2(chat_width, 132)
+	_chat_restore_button.position = Vector2((width - 100.0) * 0.5, height - 250.0)
+
+	_xp_bar.position = Vector2(0, height - 5)
+	_xp_bar.size = Vector2(width, 5)
+
+
+func _on_joystick_gui_input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch:
+		if event.pressed and _joystick_touch_index == -1:
+			_joystick_touch_index = event.index
+			_update_joystick(event.position)
+			_joystick.accept_event()
+		elif not event.pressed and event.index == _joystick_touch_index:
+			_joystick_touch_index = -1
+			_release_joystick()
+			_joystick.accept_event()
+	elif event is InputEventScreenDrag and event.index == _joystick_touch_index:
+		_update_joystick(event.position)
+		_joystick.accept_event()
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		_joystick_mouse_active = event.pressed
+		if event.pressed:
+			_update_joystick(event.position)
+		else:
+			_release_joystick()
+		_joystick.accept_event()
+	elif event is InputEventMouseMotion and _joystick_mouse_active:
+		_update_joystick(event.position)
+		_joystick.accept_event()
+
+
+func _update_joystick(local_position: Vector2) -> void:
+	var center := JOYSTICK_SIZE * 0.5
+	var offset := local_position - center
+	_joystick_vector = (offset / JOYSTICK_RADIUS).limit_length(1.0)
+	_joystick_knob.position = center - _joystick_knob.size * 0.5 + _joystick_vector * JOYSTICK_RADIUS
+	_send_joystick_to_player(true)
+
+
+func _release_joystick() -> void:
+	_joystick_vector = Vector2.ZERO
+	_joystick_mouse_active = false
+	_reset_joystick_knob()
+	_send_joystick_to_player(false)
+
+
+func _reset_joystick_knob() -> void:
+	if is_instance_valid(_joystick_knob):
+		_joystick_knob.position = (JOYSTICK_SIZE - _joystick_knob.size) * 0.5
+
+
+func _send_joystick_to_player(active: bool) -> void:
+	if not is_instance_valid(_player):
+		_find_player()
+	if is_instance_valid(_player) and _player.has_method("set_virtual_joystick_input"):
+		_player.set_virtual_joystick_input(_joystick_vector, active)
+
+
+func _find_player() -> void:
+	_player = get_tree().get_first_node_in_group("player")
+	if not is_instance_valid(_player):
+		_player = get_node_or_null("../LocalPlayer")
+
+
+func _connect_economy() -> void:
+	if not GlobalEconomy.gold_changed.is_connected(set_gold):
+		GlobalEconomy.gold_changed.connect(set_gold)
+	set_gold(GlobalEconomy.current_gold)
+
+
+func set_gold(amount: int) -> void:
+	if is_instance_valid(_gold_label):
+		_gold_label.text = "GOLD  %s" % _format_number(amount)
+
+
+func _format_number(value: int) -> String:
+	var raw := str(maxi(0, value))
+	var formatted := ""
+	for index in range(raw.length()):
+		if index > 0 and (raw.length() - index) % 3 == 0:
+			formatted += ","
+		formatted += raw[index]
+	return formatted
+
+
+func _connect_game_state() -> void:
+	if not GameState.stats_changed.is_connected(_refresh_stats):
+		GameState.stats_changed.connect(_refresh_stats)
+	_refresh_stats()
+
+
+func _refresh_stats() -> void:
+	if not is_instance_valid(_root):
+		return
+	var profile: Dictionary = GameState.profile
+	var max_hp := maxi(1, int(profile.get("max_hp", 100)))
+	var max_mp := maxi(1, int(profile.get("max_mp", 50)))
+	_hp_bar.max_value = max_hp
+	_hp_bar.value = clampi(int(profile.get("hp", max_hp)), 0, max_hp)
+	_mp_bar.max_value = max_mp
+	_mp_bar.value = clampi(int(profile.get("mp", max_mp)), 0, max_mp)
+	var level := maxi(1, int(profile.get("level", 1)))
+	_xp_bar.max_value = level * 100
+	_xp_bar.value = clampi(int(profile.get("experience", 0)), 0, level * 100)
+
+
+func _minimize_chat() -> void:
+	_chat_window.hide()
+	_chat_restore_button.show()
+
+
+func _restore_chat() -> void:
+	_chat_window.show()
+	_chat_restore_button.hide()
+
+
+func _on_chat_submitted(message: String) -> void:
+	var clean_message := message.strip_edges()
+	if clean_message.is_empty():
+		return
+	_chat_log.append_text("\n[color=#e8d7b0][عام] [/color]" + clean_message)
+	_chat_input.clear()
+
+
+func _panel_style(bg: Color, border: Color, border_width: int, radius: int) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = bg
+	style.border_color = border
+	style.set_border_width_all(border_width)
+	style.set_corner_radius_all(radius)
+	style.content_margin_left = 6
+	style.content_margin_right = 6
+	style.content_margin_top = 4
+	style.content_margin_bottom = 4
+	return style
+
+
+func _solid_texture(color: Color) -> GradientTexture2D:
+	var gradient := Gradient.new()
+	gradient.set_color(0, color)
+	gradient.set_color(1, color)
+	var texture := GradientTexture2D.new()
+	texture.gradient = gradient
+	texture.width = 128
+	texture.height = 128
+	texture.fill_from = Vector2.ZERO
+	texture.fill_to = Vector2.RIGHT
+	return texture
