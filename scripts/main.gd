@@ -96,8 +96,10 @@ func _unhandled_input(event: InputEvent) -> void:
   if event.is_action_pressed("attack") and is_instance_valid(enemy):
     if player.global_position.distance_to(enemy.global_position) <= 3.0:
       enemy.call("take_damage", 20)
-  if event.is_action_pressed("inventory") and is_instance_valid(inventory_manager):
-    inventory_manager.visible = not inventory_manager.visible
+  if event.is_action_pressed("inventory"):
+    var inventory_ui := get_tree().get_first_node_in_group("inventory_ui")
+    if is_instance_valid(inventory_ui) and inventory_ui.has_method("toggle"):
+      inventory_ui.toggle()
     get_viewport().set_input_as_handled()
   if event.is_action_pressed("save_game"):
     GameState.profile.world_position = [player.position.x,player.position.y,player.position.z]
