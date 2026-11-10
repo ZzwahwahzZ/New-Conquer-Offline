@@ -113,7 +113,7 @@ func _build_artisan_tab() -> void:
 	page.name = "MagicArtisan"
 	page.add_theme_constant_override("separation", 12)
 	_tabs.add_child(page)
-	_tabs.set_tab_title(_tabs.get_tab_count() - 1, "الحداد السحري")
+	_tabs.set_tab_title(0, "الحداد السحري")
 	var intro := Label.new()
 	intro.text = "ترقية المستوى والجودة — النجاح احتمالي، والفشل يخصم الذهب فقط."
 	intro.add_theme_color_override("font_color", Color("#d6c39e"))
@@ -150,7 +150,7 @@ func _build_compose_tab() -> void:
 	page.name = "Composition"
 	page.add_theme_constant_override("separation", 10)
 	_tabs.add_child(page)
-	_tabs.set_tab_title(_tabs.get_tab_count() - 1, "التوليف والبلس")
+	_tabs.set_tab_title(1, "التوليف والبلس")
 	var intro := Label.new()
 	intro.text = "اختر قطعة رئيسية وحجرَي توليف كحد أقصى. لا يوجد كسر أو فقد للقطعة."
 	intro.add_theme_color_override("font_color", Color("#d6c39e"))
@@ -204,7 +204,7 @@ func _build_socket_tab() -> void:
 	page.name = "ArtisanWind"
 	page.add_theme_constant_override("separation", 10)
 	_tabs.add_child(page)
-	_tabs.set_tab_title(_tabs.get_tab_count() - 1, "صانع المقابس والجواهر")
+	_tabs.set_tab_title(2, "صانع المقابس والجواهر")
 	var intro := Label.new()
 	intro.text = "افتح حتى مقبسين، ثم ركّب جوهرة أو استبدلها. الجوهرة القديمة تتلف عند الاستبدال."
 	intro.add_theme_color_override("font_color", Color("#d6c39e"))
