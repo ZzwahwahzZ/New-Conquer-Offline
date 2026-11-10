@@ -91,7 +91,11 @@ func buy_plus_stone(stone_level: int, quantity: int = 1) -> bool:
 	gear_operation_completed.emit("تم شراء %d حجر بلس +%d." % [quantity, stone_level])
 	return true
 
-func can_character_equip(item: Dictionary, current_class: String, current_level: int, target_slot: String = "") -> bool:
+func can_character_equip(item: Dictionary, current_class: String = "", current_level: int = 0, target_slot: String = "") -> bool:
+	var class_system := get_node_or_null("/root/ClassSystem")
+	if class_system != null:
+		current_class = class_system.current_class
+		current_level = class_system.level
 	if item.is_empty():
 		return false
 	var allowed_classes: Array = item.get("allowed_classes", [])
