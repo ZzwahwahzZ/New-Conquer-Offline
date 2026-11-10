@@ -21,6 +21,7 @@ var _chat_window: PanelContainer
 var _chat_restore_button: Button
 var _chat_log: RichTextLabel
 var _chat_input: LineEdit
+var _inventory_ui: CanvasLayer
 
 
 func _ready() -> void:
@@ -43,6 +44,9 @@ func _build_hud() -> void:
 	_build_hotbar()
 	_build_chat()
 	_build_xp_bar()
+	_build_inventory_toggle()
+	_inventory_ui = load("res://src/scenes/InventoryUI.tscn").instantiate() as CanvasLayer
+	add_child(_inventory_ui)
 
 
 func _build_joystick() -> void:
@@ -256,6 +260,22 @@ func _build_chat() -> void:
 	_root.add_child(_chat_restore_button)
 	_chat_restore_button.hide()
 
+
+
+func _build_inventory_toggle() -> void:
+	var button := Button.new()
+	button.name = "InventoryToggleButton"
+	button.text = "الحقيبة  [I]"
+	button.custom_minimum_size = Vector2(118, 42)
+	button.position = Vector2(18, 18)
+	button.add_theme_color_override("font_color", Color(1.0, 0.86, 0.61))
+	button.add_theme_stylebox_override("normal", _panel_style(Color(0.045, 0.052, 0.065, 0.94), Color(0.78, 0.57, 0.29, 1.0), 2, 8))
+	button.pressed.connect(_toggle_inventory)
+	_root.add_child(button)
+
+func _toggle_inventory() -> void:
+	if is_instance_valid(_inventory_ui) and _inventory_ui.has_method("toggle"):
+		_inventory_ui.toggle()
 
 func _build_xp_bar() -> void:
 	_xp_bar = ProgressBar.new()
