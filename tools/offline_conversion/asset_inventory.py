@@ -29,16 +29,16 @@ for archive in archives:
     proc = subprocess.run(["7z", "l", "-slt", str(archive)], text=True,
                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     entries = []
-    in_entries = False
-    for line in proc.stdout.splitlines():
-        if line.startswith("----------"):
-            in_entries = True
-            continue
-        if not in_entries or " = " not in line:
-            continue
-        key, value = line.split(" = ", 1)
-        if key == "Path" and value not in (str(archive), ""):
-            entries.append(value)
+    listing = proc.stdout.split("----------", 1)[-1]
+    for block in listing.split("\\n\\n"):
+        fields = {}
+        for line in block.splitlines():
+            if " = " in line:
+                key, value = line.split(" = ", 1)
+                fields[key] = value
+        path = fields.get("Path", "")
+        if path and fields.get("Folder", "-") != "+":
+            entries.append(path)
     local = collections.Counter(classify(x) for x in entries if not x.endswith("/"))
     archive_exts.update(local)
     archive_rows.append({
