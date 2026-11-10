@@ -478,7 +478,8 @@ func _process(_delta: float) -> void:
 		_stamina_bar.value = ClassSystem.stamina
 	for i in range(mini(_skill_buttons.size(), _skill_ids.size())):
 		var cooldown := float(_player.call("get_skill_cooldown", _skill_ids[i])) if is_instance_valid(_player) and _player.has_method("get_skill_cooldown") else 0.0
-		_skill_buttons[i].disabled = cooldown > 0.0
+		var can_use := bool(_player.call("can_use_skill", _skill_ids[i])) if is_instance_valid(_player) and _player.has_method("can_use_skill") else false
+		_skill_buttons[i].disabled = not can_use
 		var labels := ["JUMP", "FLY", "AOE", "KNIFE", "XP"]
 		_skill_buttons[i].text = "%s\n%.1f" % [labels[i], cooldown] if cooldown > 0.0 else labels[i]
 		_skill_buttons[i].tooltip_text = "%s  %.1fs" % [_skill_ids[i], cooldown] if cooldown > 0.0 else _skill_ids[i]
