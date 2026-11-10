@@ -4,10 +4,17 @@ signal inventory_changed
 signal quest_changed
 const SAVE_PATH := "user://offline_profile.json"
 var profile := {"character_name":"Player","level":1,"experience":0,"gold":100,"hp":100,"max_hp":100,"mp":50,"max_mp":50,"inventory":[],"quests":{"first_hunt":"not_started"},"world_position":[0.0,0.0,0.0]}
+func _ready() -> void:
+  if not GlobalEconomy.gold_changed.is_connected(_on_global_gold_changed):
+    GlobalEconomy.gold_changed.connect(_on_global_gold_changed)
+  profile.gold = GlobalEconomy.current_gold
+
+func _on_global_gold_changed(new_amount: int) -> void:
+  profile.gold = new_amount
+  stats_changed.emit()
+
 func add_gold(amount: int) -> void:
-  if GlobalEconomy.add_gold(amount):
-    profile.gold = GlobalEconomy.current_gold
-    stats_changed.emit()
+  GlobalEconomy.add_gold(amount)
 func add_experience(amount: int) -> void:
   profile.experience = maxi(0, int(profile.experience) + amount)
   while profile.experience >= int(profile.level) * 100:
