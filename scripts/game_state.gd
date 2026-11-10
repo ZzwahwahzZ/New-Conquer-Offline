@@ -5,8 +5,9 @@ signal quest_changed
 const SAVE_PATH := "user://offline_profile.json"
 var profile := {"character_name":"Player","level":1,"experience":0,"gold":100,"hp":100,"max_hp":100,"mp":50,"max_mp":50,"inventory":[],"quests":{"first_hunt":"not_started"},"world_position":[0.0,0.0,0.0]}
 func add_gold(amount: int) -> void:
-  profile.gold = maxi(0, int(profile.gold) + amount)
-  stats_changed.emit()
+  if GlobalEconomy.add_gold(amount):
+    profile.gold = GlobalEconomy.current_gold
+    stats_changed.emit()
 func add_experience(amount: int) -> void:
   profile.experience = maxi(0, int(profile.experience) + amount)
   while profile.experience >= int(profile.level) * 100:
@@ -44,6 +45,7 @@ func load_local() -> bool:
   var data = JSON.parse_string(f.get_as_text())
   if typeof(data) != TYPE_DICTIONARY: return false
   profile = data
+  profile.gold = GlobalEconomy.current_gold
   stats_changed.emit()
   inventory_changed.emit()
   quest_changed.emit()
