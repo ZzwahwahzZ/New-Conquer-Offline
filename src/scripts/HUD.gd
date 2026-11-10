@@ -23,6 +23,8 @@ var _chat_log: RichTextLabel
 var _chat_input: LineEdit
 var _inventory_ui: CanvasLayer
 var _inventory_button: Button
+var _upgrade_ui: CanvasLayer
+var _upgrade_button: Button
 
 
 func _ready() -> void:
@@ -48,6 +50,9 @@ func _build_hud() -> void:
 	_build_inventory_toggle()
 	_inventory_ui = load("res://src/scenes/InventoryUI.tscn").instantiate() as CanvasLayer
 	add_child(_inventory_ui)
+	_build_upgrade_toggle()
+	_upgrade_ui = load("res://src/scenes/UpgradeMarketUI.tscn").instantiate() as CanvasLayer
+	add_child(_upgrade_ui)
 
 
 func _build_joystick() -> void:
@@ -275,6 +280,21 @@ func _build_inventory_toggle() -> void:
 	button.pressed.connect(_toggle_inventory)
 	_root.add_child(button)
 
+
+func _build_upgrade_toggle() -> void:
+	_upgrade_button = Button.new()
+	_upgrade_button.name = "UpgradeMarketToggleButton"
+	_upgrade_button.text = "التطوير  [U]"
+	_upgrade_button.custom_minimum_size = Vector2(118, 42)
+	_upgrade_button.add_theme_color_override("font_color", Color(1.0, 0.86, 0.61))
+	_upgrade_button.add_theme_stylebox_override("normal", _panel_style(Color(0.045, 0.052, 0.065, 0.94), Color(0.78, 0.57, 0.29, 1.0), 2, 8))
+	_upgrade_button.pressed.connect(_toggle_upgrade_market)
+	_root.add_child(_upgrade_button)
+
+func _toggle_upgrade_market() -> void:
+	if is_instance_valid(_upgrade_ui) and _upgrade_ui.has_method("toggle"):
+		_upgrade_ui.toggle()
+
 func _toggle_inventory() -> void:
 	if is_instance_valid(_inventory_ui) and _inventory_ui.has_method("toggle"):
 		_inventory_ui.toggle()
@@ -301,6 +321,8 @@ func _layout_hud() -> void:
 	_joystick.position = Vector2(22, height - JOYSTICK_SIZE.y - 24)
 	if is_instance_valid(_inventory_button):
 		_inventory_button.position = Vector2(width - 142.0, 18.0)
+	if is_instance_valid(_upgrade_button):
+		_upgrade_button.position = Vector2(width - 270.0, 18.0)
 
 	var orb := _root.get_node("OrbHUD") as Control
 	orb.position = Vector2(width - ORB_SIZE.x - 20, height - ORB_SIZE.y - 20)
