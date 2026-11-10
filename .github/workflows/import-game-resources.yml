@@ -1,0 +1,112 @@
+name: Import Original Game Resources Into Godot
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/import-game-resources.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  import-resources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout project and LFS source APKs
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Install archive and Android inspection tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y p7zip-full unzip zip openjdk-17-jre-headless
+          echo "7z: $(7z | head -n 2 | tail -n 1)"
+
+      - name: Extract original client resource payloads into the Godot project
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="$GITHUB_WORKSPACE"
+          MAIN="$ROOT/source_game/extracted/com.Tq.CQ2ClientAndroid.Arabic.apk"
+          INSTALL="$ROOT/source_game/extracted/install_time_1001.apk"
+          ARM="$ROOT/source_game/extracted/config.arm64_v8a.apk"
+          OUT="$ROOT/assets/legacy_client"
+          TMP="$RUNNER_TEMP/conquer_import"
+          test -s "$MAIN"
+          test -s "$INSTALL"
+          test -s "$ARM"
+          rm -rf "$TMP"
+          mkdir -p "$TMP/main" "$TMP/install" "$TMP/arm" "$OUT"
+          unzip -q "$MAIN" -d "$TMP/main"
+          unzip -q "$INSTALL" -d "$TMP/install"
+          unzip -q "$ARM" -d "$TMP/arm"
+          mkdir -p "$OUT/ConquerRes" "$OUT/native/arm64-v8a" "$OUT/android_client_assets"
+          if [ -d "$TMP/install/assets/ConquerRes" ]; then
+            cp -a "$TMP/install/assets/ConquerRes/." "$OUT/ConquerRes/"
+          else
+            echo "ConquerRes not found in install-time APK" >&2
+            exit 1
+          fi
+          if [ -d "$TMP/main/assets/ConquerRes" ]; then
+            cp -a "$TMP/main/assets/ConquerRes/." "$OUT/ConquerRes/"
+          fi
+          cp -a "$TMP/arm/lib/arm64-v8a/." "$OUT/native/arm64-v8a/"
+          find "$TMP/main/assets" -maxdepth 1 -type f ! -path '*/ConquerRes/*' -exec cp -n {} "$OUT/android_client_assets/" \; 2>/dev/null || true
+
+          # Preserve every original game resource and expand the embedded 7z payloads
+          # beside their source archives under the Godot project.
+          mkdir -p "$OUT/expanded_archives"
+          find "$OUT/ConquerRes" -type f -name '*.7z' -print0 | while IFS= read -r -d '' archive; do
+            rel="${archive#"$OUT/ConquerRes/"}"
+            stem="${rel%.7z}"
+            dest="$OUT/expanded_archives/$stem"
+            mkdir -p "$dest"
+            7z x -y "-o$dest" "$archive" >/dev/null
+          done
+
+          # Copy client-side Android bytecode and manifests for source analysis.
+          mkdir -p "$OUT/client_analysis"
+          cp "$TMP/main"/classes*.dex "$OUT/client_analysis/" 2>/dev/null || true
+          cp "$TMP/main/AndroidManifest.xml" "$OUT/client_analysis/" 2>/dev/null || true
+          cp "$TMP/arm/AndroidManifest.xml" "$OUT/client_analysis/arm64-AndroidManifest.xml" 2>/dev/null || true
+
+          echo "Resource import summary:"
+          echo "ConquerRes files: $(find "$OUT/ConquerRes" -type f | wc -l)"
+          echo "Expanded archive files: $(find "$OUT/expanded_archives" -type f | wc -l)"
+          echo "Native libraries: $(find "$OUT/native" -type f -name '*.so' | wc -l)"
+          echo "Client DEX files: $(find "$OUT/client_analysis" -type f -name '*.dex' | wc -l)"
+          du -sh "$OUT"
+
+      - name: Track imported binary game resources with Git LFS
+        run: |
+          set -euo pipefail
+          git lfs install
+          touch .gitattributes
+          grep -q '^assets/legacy_client/\*\* filter=lfs' .gitattributes || echo 'assets/legacy_client/** filter=lfs diff=lfs merge=lfs -text' >> .gitattributes
+          git add .gitattributes
+          git add -f assets/legacy_client
+          git status --short
+
+      - name: Commit imported game resources into the Godot project
+        run: |
+          set -euo pipefail
+          if git diff --cached --quiet; then
+            echo "No resource changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Import original Conquer game resources into Godot project"
+          git push origin HEAD:main
+
+      - name: Verify resources are part of the project tree
+        run: |
+          set -euo pipefail
+          test -d assets/legacy_client/ConquerRes
+          test "$(find assets/legacy_client/ConquerRes -type f | wc -l)" -gt 1000
+          test "$(find assets/legacy_client/expanded_archives -type f | wc -l)" -gt 0
+          git lfs ls-files assets/legacy_client | head -n 30
+          echo "Godot project now contains the imported original client resources."
