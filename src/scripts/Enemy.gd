@@ -73,7 +73,8 @@ func _physics_process(delta: float) -> void:
 		_stop_horizontal(delta)
 		if _attack_timer <= 0.0:
 			_attack_timer = attack_cooldown
-			if GameState.has_method("damage_player"):
+			var player_is_airborne := target.has_method("is_airborne") and bool(target.call("is_airborne"))
+			if not player_is_airborne and GameState.has_method("damage_player"):
 				GameState.damage_player(attack_damage)
 	move_and_slide()
 
