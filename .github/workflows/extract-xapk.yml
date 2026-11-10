@@ -1,0 +1,169 @@
+name: Extract complete XAPK into Godot project
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/extract-xapk.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: extract-xapk-main
+  cancel-in-progress: false
+
+jobs:
+  extract-and-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          lfs: true
+          fetch-depth: 0
+
+      - name: Install Git LFS
+        run: |
+          git lfs install
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Download and verify the existing Release XAPK
+        env:
+          XAPK_URL: "https://github.com/ZzwahwahzZ/New-Conquer-Offline/releases/download/source-xapk/%2B.%2B._1.1.2.3_APKPure.xapk"
+          EXPECTED_SIZE: "461098460"
+          EXPECTED_SHA256: "7948a626a92f4e5091f65f7cc47a1c4caf1991cd201dcb984eb4606fb261fa83"
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/xapk-work
+          curl --fail --location --retry 5 --retry-all-errors "$XAPK_URL" -o /tmp/xapk-work/source.xapk
+          test "$(stat -c%s /tmp/xapk-work/source.xapk)" = "$EXPECTED_SIZE"
+          echo "$EXPECTED_SHA256  /tmp/xapk-work/source.xapk" | sha256sum --check -
+
+      - name: Extract every archive file into the Godot project
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import zipfile, pathlib, hashlib, json, csv, collections, shutil
+
+          archive = pathlib.Path("/tmp/xapk-work/source.xapk")
+          root = pathlib.Path("source_game")
+          out = root / "extracted"
+          reports = root / "extraction_reports"
+          original = root / "original" / "conquer-source.xapk"
+
+          if not original.is_file():
+              raise SystemExit("Expected original XAPK is missing from source_game/original.")
+          if out.exists() and any(out.iterdir()):
+              raise SystemExit("source_game/extracted is not empty; refusing to overwrite existing project content.")
+          if reports.exists() and any(reports.iterdir()):
+              raise SystemExit("source_game/extraction_reports is not empty; refusing to overwrite reports.")
+
+          out.mkdir(parents=True, exist_ok=True)
+          reports.mkdir(parents=True, exist_ok=True)
+
+          rows = []
+          with zipfile.ZipFile(archive) as z:
+              bad = z.testzip()
+              if bad:
+                  raise SystemExit(f"Corrupt archive member: {bad}")
+              members = [i for i in z.infolist() if not i.is_dir()]
+              seen = set()
+              for info in members:
+                  p = pathlib.PurePosixPath(info.filename)
+                  if p.is_absolute() or not p.parts or ".." in p.parts or "\\" in info.filename:
+                      raise SystemExit(f"Unsafe archive path: {info.filename}")
+                  if info.filename in seen:
+                      raise SystemExit(f"Duplicate archive path: {info.filename}")
+                  seen.add(info.filename)
+
+              for n, info in enumerate(members, 1):
+                  dest = out.joinpath(*pathlib.PurePosixPath(info.filename).parts)
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  digest = hashlib.sha256()
+                  size = 0
+                  with z.open(info) as src, dest.open("xb") as dst:
+                      while True:
+                          chunk = src.read(8 * 1024 * 1024)
+                          if not chunk:
+                              break
+                          dst.write(chunk)
+                          digest.update(chunk)
+                          size += len(chunk)
+                  if size != info.file_size:
+                      raise SystemExit(f"Size mismatch: {info.filename}")
+                  rows.append({
+                      "path": info.filename,
+                      "size_bytes": size,
+                      "sha256": digest.hexdigest(),
+                      "extension": pathlib.PurePosixPath(info.filename).suffix.lower(),
+                      "compressed_bytes": info.compress_size
+                  })
+                  if n % 50 == 0:
+                      print(f"Extracted {n}/{len(members)}")
+
+          if not any(r["extension"] == ".apk" for r in rows):
+              raise SystemExit("No APK files found in XAPK; refusing to report a complete extraction.")
+
+          # Re-read and hash every extracted file to verify the finished tree.
+          for row in rows:
+              p = out.joinpath(*pathlib.PurePosixPath(row["path"]).parts)
+              h = hashlib.sha256()
+              with p.open("rb") as f:
+                  for chunk in iter(lambda: f.read(8 * 1024 * 1024), b""):
+                      h.update(chunk)
+              if p.stat().st_size != row["size_bytes"] or h.hexdigest() != row["sha256"]:
+                  raise SystemExit(f"Post-extraction verification failed: {row['path']}")
+
+          with (reports / "manifest.json").open("w", encoding="utf-8") as f:
+              json.dump({"source": "existing GitHub Release source-xapk",
+                         "archive_file_count": len(rows),
+                         "total_uncompressed_bytes": sum(r["size_bytes"] for r in rows),
+                         "files": rows}, f, ensure_ascii=False, indent=2)
+          with (reports / "manifest.csv").open("w", newline="", encoding="utf-8-sig") as f:
+              w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+              w.writeheader()
+              w.writerows(rows)
+
+          counts = collections.Counter(r["extension"] or "[no extension]" for r in rows)
+          summary = ["# Complete XAPK extraction", "", f"- Files: {len(rows)}",
+                     f"- Total bytes: {sum(r['size_bytes'] for r in rows)}", "", "## File types"]
+          summary += [f"- {ext}: {count}" for ext, count in sorted(counts.items())]
+          (out / "README.txt").write_text("\n".join(summary), encoding="utf-8")
+
+          print(f"Verified {len(rows)} files; APK count: {sum(r['extension']=='.apk' for r in rows)}")
+          print(f"Uncompressed bytes: {sum(r['size_bytes'] for r in rows)}")
+          PY
+
+      - name: Track extracted binary assets with Git LFS
+        run: |
+          set -euo pipefail
+          find source_game/extracted -type f -size +2G -print -quit | grep -q . && {
+            echo "A file exceeds GitHub's 2 GiB Git LFS per-file limit."
+            exit 1
+          } || true
+          git lfs track "source_game/extracted/**"
+          git add .gitattributes source_game/extracted source_game/extraction_reports
+          git status --short
+
+      - name: Commit and push extracted project contents
+        run: |
+          set -euo pipefail
+          if git diff --cached --quiet; then
+            echo "No new extracted files to commit."
+            exit 1
+          fi
+          git commit -m "Add complete extracted XAPK contents to Godot project"
+          git push origin HEAD:main
+
+      - name: Verify committed project tree
+        run: |
+          set -euo pipefail
+          git lfs ls-files source_game/extracted
+          test -f source_game/extracted/README.txt
+          test -f source_game/extraction_reports/manifest.json
+          git log -1 --oneline
+          echo "Extraction content and reports committed to main; original XAPK retained separately."
