@@ -287,12 +287,14 @@ func _build_preview_skeleton() -> void:
 		skeleton.add_bone(names[i])
 		skeleton.set_bone_parent(i, parents[i])
 		skeleton.set_bone_rest(i, rests[i])
-	for pair in [{"node":"RightHandMount","bone":"RightHand"},{"node":"LeftHandMount","bone":"LeftHand"},{"node":"BodyMount","bone":"Spine"},{"node":"HelmetMount","bone":"Head"}]:
+	for pair in [{"node":"RightHandMount","bone":"RightHand"},{"node":"LeftHandMount","bone":"LeftHand"},{"node":"BodyMount","bone":"Spine"},{"node":"HelmetMount","bone":"Head"},{"node":"FeetMount","bone":"Root"}]:
 		var attachment := BoneAttachment3D.new()
 		attachment.name = pair.node
 		attachment.bone_name = pair.bone
 		skeleton.add_child(attachment)
 		_preview_items[pair.node] = attachment
+		if pair.node == "FeetMount":
+			attachment.position = Vector3(0, 0.08, 0)
 
 func _build_preview_mannequin() -> void:
 	var skin := _material(Color("#c58f68"), 0.0)
@@ -486,7 +488,7 @@ func _refresh_stats() -> void:
 	_stat_label.text = "ATK %d     DEF %d     HP %d" % [atk, defense, int(GameState.profile.get("max_hp", 100)) + bonus_hp]
 
 func _refresh_preview() -> void:
-	for mount_key in ["RightHandMount", "LeftHandMount", "BodyMount", "HelmetMount"]:
+	for mount_key in ["RightHandMount", "LeftHandMount", "BodyMount", "HelmetMount", "FeetMount"]:
 		var mount: Node3D = _preview_items.get(mount_key)
 		for child in mount.get_children():
 			child.queue_free()
@@ -501,6 +503,12 @@ func _refresh_preview() -> void:
 			mount_key = "BodyMount"
 		elif slot == "Helmet":
 			mount_key = "HelmetMount"
+		elif slot == "Necklace":
+			mount_key = "BodyMount"
+		elif slot == "Boots":
+			mount_key = "FeetMount"
+		elif slot == "Ring":
+			mount_key = "RightHandMount"
 		var mount: Node3D = _preview_items[mount_key]
 		_add_equipment_preview(mount, slot, item)
 
@@ -524,6 +532,11 @@ func _add_equipment_preview(mount: Node3D, slot: String, item: Dictionary) -> vo
 			var knife := BoxMesh.new()
 			knife.size = Vector3(0.06, 0.48, 0.025)
 			mesh_node.mesh = knife
+	elif slot == "Ring":
+		var ring := TorusMesh.new()
+		ring.inner_radius = 0.045
+		ring.outer_radius = 0.07
+		mesh_node.mesh = ring
 	else:
 		var mesh := BoxMesh.new()
 		mesh.size = Vector3(0.62, 0.68, 0.12) if slot == "Armor" else Vector3(0.35, 0.18, 0.25)
