@@ -7,7 +7,7 @@ config_version=5
 config/name="New Conquer Offline"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
-config/description="Offline 3D RPG inspired by Conquer Online, with an original world and Gold-only economy."
+config/description="Offline conversion of the original Conquer Online Mobile client and original game resources."
 
 [autoload]
 GameState="*res://scripts/game_state.gd"
