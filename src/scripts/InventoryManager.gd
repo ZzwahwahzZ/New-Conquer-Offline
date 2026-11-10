@@ -159,6 +159,8 @@ func _save_items() -> void:
 
 func _on_inventory_changed() -> void:
 	_load_items()
+	_unlocked_pages = maxi(_unlocked_pages, int(GameState.profile.get("inventory_pages", 1)))
+	_unlocked_pages = maxi(_unlocked_pages, ceili(float(items.size()) / float(SLOTS_PER_PAGE)))
 	_refresh_page()
 
 func _gui_input(event: InputEvent) -> void:
