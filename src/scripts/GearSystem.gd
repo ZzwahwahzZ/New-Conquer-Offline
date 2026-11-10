@@ -235,7 +235,8 @@ func get_item_by_instance_id(instance_id: String) -> Dictionary:
 	var record := _find_item_record(instance_id)
 	if record.is_empty():
 		return {}
-	return (record["item"] as Dictionary).duplicate(true)
+	var item: Dictionary = record["item"]
+	return item.duplicate(true)
 
 func get_compose_progress(item_instance_id: String) -> Dictionary:
 	var record := _find_item_record(item_instance_id)
