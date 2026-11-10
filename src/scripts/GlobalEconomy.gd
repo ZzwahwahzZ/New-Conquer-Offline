@@ -3,11 +3,12 @@ extends Node
 signal gold_changed(new_amount: int)
 
 const SAVE_PATH := "user://conquer_offline_save.dat"
-const SAVE_VERSION := 1
+const SAVE_VERSION := 2
 const DEFAULT_GOLD := 100
 const LEGACY_SAVE_PATH := "user://offline_profile.json"
 
 var current_gold: int = DEFAULT_GOLD
+var _gear_data: Dictionary = {}
 
 
 func _ready() -> void:
@@ -17,13 +18,11 @@ func _ready() -> void:
 func add_gold(amount: int) -> bool:
 	if amount <= 0:
 		return false
-
 	var previous_gold := current_gold
 	current_gold += amount
 	if not save_gold():
 		current_gold = previous_gold
 		return false
-
 	_notify_gold_changed()
 	return true
 
@@ -31,13 +30,11 @@ func add_gold(amount: int) -> bool:
 func remove_gold(amount: int) -> bool:
 	if amount <= 0 or amount > current_gold:
 		return false
-
 	var previous_gold := current_gold
 	current_gold -= amount
 	if not save_gold():
 		current_gold = previous_gold
 		return false
-
 	_notify_gold_changed()
 	return true
 
@@ -45,12 +42,12 @@ func remove_gold(amount: int) -> bool:
 func save_gold() -> bool:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file == null:
-		push_error("GlobalEconomy: Could not open local gold save for writing.")
+		push_error("GlobalEconomy: Could not open local save for writing.")
 		return false
-
 	file.store_var({
 		"version": SAVE_VERSION,
-		"current_gold": current_gold
+		"current_gold": current_gold,
+		"gear_data": _gear_data.duplicate(true)
 	})
 	file.close()
 	return true
@@ -59,34 +56,46 @@ func save_gold() -> bool:
 func load_gold() -> bool:
 	if not FileAccess.file_exists(SAVE_PATH):
 		current_gold = _read_legacy_gold()
+		_gear_data = {}
 		var created := save_gold()
 		_notify_gold_changed()
 		return created
-
 	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
 	if file == null:
-		push_error("GlobalEconomy: Could not open local gold save for reading.")
+		push_error("GlobalEconomy: Could not open local save for reading.")
 		return false
-
 	var data = file.get_var()
 	file.close()
-
 	if typeof(data) != TYPE_DICTIONARY:
-		push_error("GlobalEconomy: Save data is invalid; keeping the current balance.")
+		push_error("GlobalEconomy: Save data is invalid; keeping current values.")
 		return false
-
-	if int(data.get("version", -1)) != SAVE_VERSION:
-		push_error("GlobalEconomy: Unsupported save version; keeping the current balance.")
+	var version := int(data.get("version", -1))
+	# Version 1 contained only gold; preserve it and migrate in memory to v2.
+	if version != 1 and version != SAVE_VERSION:
+		push_error("GlobalEconomy: Unsupported save version; keeping current values.")
 		return false
-
 	var loaded_gold := int(data.get("current_gold", -1))
 	if loaded_gold < 0:
 		push_error("GlobalEconomy: Saved gold amount is invalid.")
 		return false
-
 	current_gold = loaded_gold
+	var loaded_gear = data.get("gear_data", {})
+	_gear_data = loaded_gear.duplicate(true) if loaded_gear is Dictionary else {}
+	if version == 1:
+		save_gold()
 	_notify_gold_changed()
 	return true
+
+
+func save_gear_data(data: Dictionary) -> bool:
+	_gear_data = data.duplicate(true)
+	if not save_gold():
+		return false
+	return true
+
+
+func load_gear_data() -> Dictionary:
+	return _gear_data.duplicate(true)
 
 
 func update_gold_display() -> void:
@@ -103,14 +112,11 @@ func _notify_gold_changed() -> void:
 func _read_legacy_gold() -> int:
 	if not FileAccess.file_exists(LEGACY_SAVE_PATH):
 		return DEFAULT_GOLD
-
 	var legacy_file := FileAccess.open(LEGACY_SAVE_PATH, FileAccess.READ)
 	if legacy_file == null:
 		return DEFAULT_GOLD
-
 	var legacy_data = JSON.parse_string(legacy_file.get_as_text())
 	legacy_file.close()
 	if typeof(legacy_data) != TYPE_DICTIONARY:
 		return DEFAULT_GOLD
-
 	return maxi(0, int(legacy_data.get("gold", DEFAULT_GOLD)))
