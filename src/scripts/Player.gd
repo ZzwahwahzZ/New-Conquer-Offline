@@ -41,7 +41,6 @@ var _jump_apex := 1.25
 var _flying := false
 var _fly_timer := 0.0
 var _ground_y := 0.0
-var _skill_proficiency := {"Jump":{"level":1,"xp":0},"Fly":{"level":1,"xp":0},"Scatter":{"level":1,"xp":0},"Rapid_Fire":{"level":1,"xp":0}}
 var _attack_timer := 0.0
 var _xp_mode_timer := 0.0
 var _xp_damage_multiplier := 1.0
