@@ -287,9 +287,9 @@ func _layout_hud() -> void:
 	frame.position = Vector2((width - hotbar_width) * 0.5, height - HOTBAR_SIZE.y - 18)
 
 	var chat_width := minf(500.0, maxf(280.0, width - 40.0))
-	_chat_window.position = Vector2((width - chat_width) * 0.5, height - 220.0)
+	_chat_window.position = Vector2((width - chat_width) * 0.5, height - 228.0)
 	_chat_window.size = Vector2(chat_width, 132)
-	_chat_restore_button.position = Vector2((width - 100.0) * 0.5, height - 250.0)
+	_chat_restore_button.position = Vector2((width - 100.0) * 0.5, height - 258.0)
 
 	_xp_bar.position = Vector2(0, height - 5)
 	_xp_bar.size = Vector2(width, 5)
