@@ -35,6 +35,7 @@ const ITEMS_PER_PAGE := 30
 const GRID_COLUMNS := 6
 
 func _ready() -> void:
+	add_to_group("inventory_ui")
 	_build_ui()
 	_build_preview()
 	_connect_gear()
