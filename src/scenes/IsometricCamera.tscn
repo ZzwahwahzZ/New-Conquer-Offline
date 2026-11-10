@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/scripts/IsometricCamera.gd" id="1_camera_follow"]
+
+[node name="IsometricCamera" type="Node3D"]
+script = ExtResource("1_camera_follow")
+target_path = NodePath("../Player")
+follow_speed = 10.0
+
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(0, 12, 12)
+rotation_degrees = Vector3(-45, 0, 0)
+current = true
+fov = 55.0
+near = 0.1
+far = 1000.0
