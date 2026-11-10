@@ -73,7 +73,7 @@ func get_promotion_stage() -> int:
 		if level >= int(milestone): stage += 1
 	return stage
 func get_physical_attack_bonus() -> int:
-	return int(attributes.get("strength", 0)) + int(attributes.get("agility", 0)) / 2
+	return int(attributes.get("strength", 0)) + int(int(attributes.get("agility", 0)) / 2)
 
 func choose_class(class_id: String) -> bool:
 	if not CLASS_DATA.has(class_id): return false
