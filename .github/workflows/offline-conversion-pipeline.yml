@@ -3,13 +3,18 @@ on:
   workflow_run:
     workflows: ["Import Original Game Resources Into Godot"]
     types: [completed]
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/offline-conversion-pipeline.yml"
 
 permissions:
   contents: write
 
 jobs:
   offline-conversion:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -29,13 +34,20 @@ jobs:
 
       - name: Install reverse engineering and Godot tools
         run: |
-          sudo apt-get update
-          sudo apt-get install -y openjdk-17-jre-headless apktool binutils unzip zip p7zip-full
+          set -euo pipefail
+          echo "Checking runner-provided tools..."
+          for tool in java unzip curl readelf strings; do
+            command -v "$tool" >/dev/null || { echo "Missing required tool: $tool"; exit 1; }
+          done
+          java -version
+          echo "Downloading Godot 4.3 headless-capable binary..."
           V=4.3
-          curl -L --fail --retry 3 "https://github.com/godotengine/godot/releases/download/$V-stable/Godot_v$V-stable_linux.x86_64.zip" -o /tmp/godot.zip
+          mkdir -p /tmp/godot
+          timeout 10m curl --connect-timeout 30 --max-time 600 -fL --retry 3 --retry-delay 5 "https://github.com/godotengine/godot/releases/download/$V-stable/Godot_v$V-stable_linux.x86_64.zip" -o /tmp/godot.zip
           unzip -q /tmp/godot.zip -d /tmp/godot
-          sudo install /tmp/godot/Godot_v$V-stable_linux.x86_64 /usr/local/bin/godot
+          sudo install "/tmp/godot/Godot_v$V-stable_linux.x86_64" /usr/local/bin/godot
           godot --version
+          echo "Tool installation completed."
 
       - name: Analyze original Android client and native libraries
         run: |
