@@ -54,7 +54,7 @@ lines=["# Original Conquer assets staged for Godot","",
        f"- 7z archives found: **{len(ARCHIVES)}**",
        f"- Godot-readable original assets copied: **{len(manifest)}**",
        f"- Copied bytes: **{copied_bytes}**",
-       f"- Archive extraction errors: **{len(errors)}****","",
+       f"- Archive extraction errors: **{len(errors)}**","",
        "## Staged asset types",""]
 for ext,n in sorted(counts.items(),key=lambda x:(-x[1],x[0])):
     lines.append(f"- {ext}: {n}")
