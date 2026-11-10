@@ -10,7 +10,7 @@ const CLASS_DATA := {
 	"Oriental_Assassin": {"name":"Oriental Assassin","base":{"strength":20,"agility":45,"vitality":20,"spirit":0},"weapon_families":["ThrowingKnife"],"evolutions":[]},
 	"Trojan": {"name":"Trojan","base":{"strength":35,"agility":15,"vitality":20,"spirit":0},"weapon_families":["Sword","Blade","Club","Axe"],"evolutions":[]},
 	"Warrior": {"name":"Warrior","base":{"strength":25,"agility":15,"vitality":35,"spirit":0},"weapon_families":["Sword","Blade","Club","Poleaxe"],"evolutions":[]},
-	"Water_Taoist": {"name":"Water Taoist","base":{"strength":5,"agility":10,"vitality":20,"spirit":40},"weapon_families":[" backsword","Backsword"],"evolutions":[]},
+	"Water_Taoist": {"name":"Water Taoist","base":{"strength":5,"agility":10,"vitality":20,"spirit":40},"weapon_families":["Backsword"],"evolutions":[]},
 	"Fire_Taoist": {"name":"Fire Taoist","base":{"strength":5,"agility":10,"vitality":15,"spirit":45},"weapon_families":[" backsword","Backsword"],"evolutions":[]},
 	"Ninja": {"name":"Ninja","base":{"strength":20,"agility":35,"vitality":15,"spirit":0},"weapon_families":["Katana"],"evolutions":[]}
 }
@@ -30,6 +30,7 @@ var stamina := 100.0
 var max_stamina := 100.0
 var xp_skill := 0.0
 var xp_skill_max := 100.0
+var skill_proficiency := {"Jump":{"level":1,"xp":0},"Fly":{"level":1,"xp":0},"Scatter":{"level":1,"xp":0},"Rapid_Fire":{"level":1,"xp":0}}
 var _loaded := false
 
 func _ready() -> void:
@@ -46,6 +47,13 @@ func _load_character() -> void:
 		level = maxi(1, int(data.get("level", 1)))
 		experience = maxi(0, int(data.get("experience", 0)))
 		stat_points = maxi(0, int(data.get("stat_points", 0)))
+		hp = int(data.get("hp", hp))
+		mp = int(data.get("mp", mp))
+		stamina = float(data.get("stamina", stamina))
+		var saved_skills = data.get("skill_proficiency", {})
+		if saved_skills is Dictionary:
+			for skill_id in skill_proficiency:
+				if saved_skills.has(skill_id): skill_proficiency[skill_id] = saved_skills[skill_id].duplicate(true)
 		var saved_attributes = data.get("attributes", {})
 		if saved_attributes is Dictionary:
 			for key in attributes: attributes[key] = maxi(0, int(saved_attributes.get(key, attributes[key])))
@@ -107,6 +115,20 @@ func spend_stat_points(stat: String, amount: int = 1) -> bool:
 	_save()
 	return true
 
+func gain_skill_proficiency(skill_id: String, amount: int = 1) -> void:
+	if not skill_proficiency.has(skill_id) or amount <= 0: return
+	var data: Dictionary = skill_proficiency[skill_id]
+	data["xp"] = int(data.get("xp", 0)) + amount
+	while int(data["xp"]) >= int(data["level"]) * 20:
+		data["xp"] = int(data["xp"]) - int(data["level"]) * 20
+		data["level"] = int(data["level"]) + 1
+	skill_proficiency[skill_id] = data
+	_save()
+
+func get_skill_proficiency(skill_id: String) -> Dictionary:
+	var data: Dictionary = skill_proficiency.get(skill_id, {})
+	return data.duplicate(true)
+
 func set_stamina(value: float) -> void: stamina = clampf(value, 0.0, max_stamina)
 func consume_stamina(value: float) -> bool:
 	if value < 0.0 or stamina < value: return false
@@ -132,4 +154,4 @@ func _recalculate_derived(save: bool = true) -> void:
 func _emit_xp() -> void: xp_changed.emit(experience, get_required_xp())
 func _save() -> void:
 	if _loaded:
-		GlobalEconomy.save_character_data({"class":current_class,"level":level,"experience":experience,"stat_points":stat_points,"attributes":attributes.duplicate(true),"hp":hp,"mp":mp,"stamina":stamina})
+		GlobalEconomy.save_character_data({"class":current_class,"level":level,"experience":experience,"stat_points":stat_points,"attributes":attributes.duplicate(true),"hp":hp,"mp":mp,"stamina":stamina,"skill_proficiency":skill_proficiency.duplicate(true)})
