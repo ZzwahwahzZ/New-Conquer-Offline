@@ -1,0 +1,331 @@
+name: Offline Conversion Pipeline
+on:
+  workflow_run:
+    workflows: ["Import Original Game Resources Into Godot"]
+    types: [completed]
+
+permissions:
+  contents: write
+
+jobs:
+  offline-conversion:
+    if: \${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout imported Godot project
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          lfs: true
+
+      - name: Verify original resources arrived
+        run: |
+          set -euo pipefail
+          test -d assets/legacy_client/ConquerRes
+          test "$(find assets/legacy_client/ConquerRes -type f | wc -l)" -gt 1000
+          test -s source_game/extracted/com.Tq.CQ2ClientAndroid.Arabic.apk
+          test -s source_game/extracted/config.arm64_v8a.apk
+
+      - name: Install reverse engineering and Godot tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-17-jre-headless apktool binutils unzip zip p7zip-full
+          V=4.3
+          curl -L --fail --retry 3 "https://github.com/godotengine/godot/releases/download/$V-stable/Godot_v$V-stable_linux.x86_64.zip" -o /tmp/godot.zip
+          unzip -q /tmp/godot.zip -d /tmp/godot
+          sudo install /tmp/godot/Godot_v$V-stable_linux.x86_64 /usr/local/bin/godot
+          godot --version
+
+      - name: Analyze original Android client and native libraries
+        run: |
+          set -euo pipefail
+          mkdir -p reports/original-client-analysis
+          MAIN=source_game/extracted/com.Tq.CQ2ClientAndroid.Arabic.apk
+          ARM=source_game/extracted/config.arm64_v8a.apk
+          TMP="$RUNNER_TEMP/re"
+          mkdir -p "$TMP/native" "$TMP/jadx"
+          curl -L --fail --retry 3 https://github.com/skylot/jadx/releases/download/v1.5.2/jadx-1.5.2.zip -o "$TMP/jadx.zip"
+          unzip -q "$TMP/jadx.zip" -d "$TMP/jadx-dist"
+          chmod +x "$TMP/jadx-dist/bin/jadx"
+          "$TMP/jadx-dist/bin/jadx" --no-res -d "$TMP/jadx" "$MAIN" > "$TMP/jadx.log" 2>&1 || true
+          unzip -q "$ARM" 'lib/arm64-v8a/*.so' -d "$TMP/native"
+          {
+            echo "# Original Android client analysis"
+            echo "- Main APK bytes: $(stat -c %s "$MAIN")"
+            echo "- ARM64 APK bytes: $(stat -c %s "$ARM")"
+            echo "- DEX files: $(unzip -Z1 "$MAIN" | grep -Ec '^classes[0-9]*\\.dex$' || true)"
+            echo "- Decompiled source files: $(find "$TMP/jadx" -type f -name '*.java' | wc -l)"
+            echo "- Native libraries: $(find "$TMP/native" -type f -name '*.so' | wc -l)"
+            echo
+            echo "## Native ELF inventory"
+            for so in "$TMP"/native/lib/arm64-v8a/*.so; do
+              [ -f "$so" ] || continue
+              echo "### $(basename "$so")"
+              readelf -h "$so" 2>/dev/null | grep -E 'Class:|Machine:|Type:' || true
+              echo "Dynamic function symbols: $(readelf --dyn-syms "$so" 2>/dev/null | grep -c ' FUNC ' || true)"
+            done
+            echo
+            echo "## Referenced service hostnames (no credentials)"
+            (strings "$MAIN"; find "$TMP/native" -type f -name '*.so' -exec strings {} \\;) | grep -Eo '([A-Za-z0-9-]+\\.)+(com|net|org|cn|co|io)' | sort -u | head -n 200 || true
+            echo
+            echo "This inventory does not recover authoritative server logic. Server-dependent gameplay must be recreated locally."
+          } > reports/original-client-analysis/technical-analysis.md
+          cp "$TMP/jadx.log" reports/original-client-analysis/jadx-log.txt
+
+      - name: Implement local single-player runtime and persistence
+        run: |
+          set -euo pipefail
+          mkdir -p scripts reports/offline-runtime-tests
+          cat > scripts/game_state.gd <<'EOF'
+          extends Node
+          signal stats_changed
+          signal inventory_changed
+          signal quest_changed
+          const SAVE_PATH := "user://offline_profile.json"
+          var profile := {"character_name":"Player","level":1,"experience":0,"gold":100,"hp":100,"max_hp":100,"mp":50,"max_mp":50,"inventory":[],"quests":{"first_hunt":"not_started"},"world_position":[0.0,0.0,0.0]}
+          func add_gold(amount: int) -> void:
+            profile.gold = maxi(0, int(profile.gold) + amount)
+            stats_changed.emit()
+          func add_experience(amount: int) -> void:
+            profile.experience = maxi(0, int(profile.experience) + amount)
+            while profile.experience >= int(profile.level) * 100:
+              profile.experience -= int(profile.level) * 100
+              profile.level += 1
+              profile.max_hp += 10
+              profile.max_mp += 5
+              profile.hp = profile.max_hp
+              profile.mp = profile.max_mp
+            stats_changed.emit()
+          func damage_player(amount: int) -> void:
+            profile.hp = maxi(0, int(profile.hp) - maxi(0, amount))
+            stats_changed.emit()
+          func add_item(item_id: String, quantity: int = 1) -> void:
+            if item_id.is_empty() or quantity <= 0: return
+            for item in profile.inventory:
+              if item.id == item_id:
+                item.quantity += quantity
+                inventory_changed.emit()
+                return
+            profile.inventory.append({"id":item_id,"quantity":quantity})
+            inventory_changed.emit()
+          func update_quest(quest_id: String, state: String) -> void:
+            profile.quests[quest_id] = state
+            quest_changed.emit()
+          func save_local() -> bool:
+            var f := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+            if f == null: return false
+            f.store_string(JSON.stringify(profile))
+            return true
+          func load_local() -> bool:
+            if not FileAccess.file_exists(SAVE_PATH): return false
+            var f := FileAccess.open(SAVE_PATH, FileAccess.READ)
+            if f == null: return false
+            var data = JSON.parse_string(f.get_as_text())
+            if typeof(data) != TYPE_DICTIONARY: return false
+            profile = data
+            stats_changed.emit()
+            inventory_changed.emit()
+            quest_changed.emit()
+            return true
+          EOF
+          cat > scripts/player_controller.gd <<'EOF'
+          extends CharacterBody3D
+          @export var move_speed := 5.0
+          @export var gravity := 18.0
+          func _physics_process(delta: float) -> void:
+            var v := Input.get_vector("move_left","move_right","move_forward","move_back")
+            var d := Vector3(v.x,0.0,v.y)
+            if d.length() > 1.0: d = d.normalized()
+            velocity.x = d.x * move_speed
+            velocity.z = d.z * move_speed
+            if not is_on_floor(): velocity.y -= gravity * delta
+            else: velocity.y = -0.1
+            move_and_slide()
+            if d.length_squared() > 0.001: rotation.y = lerp_angle(rotation.y,atan2(-d.x,-d.z),delta*12.0)
+          EOF
+          cat > scripts/local_enemy.gd <<'EOF'
+          extends CharacterBody3D
+          signal defeated(gold: int, xp: int)
+          @export var max_hp := 40
+          @export var attack_damage := 5
+          var hp := 40
+          var target: Node3D
+          var cooldown := 0.0
+          func _ready() -> void: hp = max_hp
+          func take_damage(amount: int) -> void:
+            hp = maxi(0,hp-maxi(0,amount))
+            if hp == 0:
+              defeated.emit(5,20)
+              queue_free()
+          func _physics_process(delta: float) -> void:
+            if not is_instance_valid(target): return
+            var offset := target.global_position-global_position
+            offset.y = 0.0
+            if offset.length() > 1.6:
+              var d := offset.normalized()
+              velocity.x = d.x*2.0
+              velocity.z = d.z*2.0
+              move_and_slide()
+            else:
+              velocity.x = 0.0
+              velocity.z = 0.0
+              cooldown -= delta
+              if cooldown <= 0.0:
+                cooldown = 1.5
+                GameState.damage_player(attack_damage)
+          EOF
+          cat > scripts/main.gd <<'EOF'
+          extends Node3D
+          var player: CharacterBody3D
+          var enemy: CharacterBody3D
+          var status: Label
+          func _ready() -> void:
+            _setup_input()
+            _build_arena()
+            GameState.load_local()
+            GameState.stats_changed.connect(_refresh)
+            _refresh()
+          func _setup_input() -> void:
+            var keys := {"move_left":KEY_A,"move_right":KEY_D,"move_forward":KEY_W,"move_back":KEY_S,"attack":KEY_SPACE,"save_game":KEY_F5}
+            for action in keys:
+              if not InputMap.has_action(action): InputMap.add_action(action)
+              var ev := InputEventKey.new()
+              ev.physical_keycode = keys[action]
+              InputMap.action_add_event(action,ev)
+          func _build_arena() -> void:
+            var ground_body := StaticBody3D.new()
+            var ground_mesh := MeshInstance3D.new()
+            var plane := PlaneMesh.new()
+            plane.size = Vector2(40,40)
+            ground_mesh.mesh = plane
+            var ground_mat := StandardMaterial3D.new()
+            ground_mat.albedo_color = Color(0.12,0.18,0.16)
+            ground_mesh.material_override = ground_mat
+            ground_body.add_child(ground_mesh)
+            var ground_shape := CollisionShape3D.new()
+            var box := BoxShape3D.new()
+            box.size = Vector3(40,0.2,40)
+            ground_shape.shape = box
+            ground_shape.position.y = -0.1
+            ground_body.add_child(ground_shape)
+            add_child(ground_body)
+            var sun := DirectionalLight3D.new()
+            sun.rotation_degrees = Vector3(-55,-25,0)
+            sun.shadow_enabled = true
+            add_child(sun)
+            player = CharacterBody3D.new()
+            player.name = "LocalPlayer"
+            player.set_script(load("res://scripts/player_controller.gd"))
+            player.position = Vector3(0,1,0)
+            _add_capsule(player,Color(0.2,0.55,0.95),0.45,1.8)
+            add_child(player)
+            enemy = CharacterBody3D.new()
+            enemy.name = "LocalMonster"
+            enemy.set_script(load("res://scripts/local_enemy.gd"))
+            enemy.position = Vector3(4,0.8,-4)
+            enemy.target = player
+            _add_capsule(enemy,Color(0.8,0.2,0.18),0.6,1.3)
+            enemy.defeated.connect(_on_defeated)
+            add_child(enemy)
+            var cam := Camera3D.new()
+            cam.position = Vector3(0,10,13)
+            cam.rotation_degrees = Vector3(-32,0,0)
+            cam.current = true
+            add_child(cam)
+            var layer := CanvasLayer.new()
+            add_child(layer)
+            status = Label.new()
+            status.position = Vector2(18,16)
+            status.add_theme_font_size_override("font_size",20)
+            layer.add_child(status)
+            var hint := Label.new()
+            hint.text = "WASD Move | SPACE Attack | F5 Save"
+            hint.position = Vector2(18,48)
+            layer.add_child(hint)
+          func _add_capsule(parent: Node3D, color: Color, radius: float, height: float) -> void:
+            var mesh_node := MeshInstance3D.new()
+            var mesh := CapsuleMesh.new()
+            mesh.radius = radius
+            mesh.height = height
+            mesh_node.mesh = mesh
+            var mat := StandardMaterial3D.new()
+            mat.albedo_color = color
+            mesh_node.material_override = mat
+            parent.add_child(mesh_node)
+            var collider := CollisionShape3D.new()
+            var shape := CapsuleShape3D.new()
+            shape.radius = radius
+            shape.height = height
+            collider.shape = shape
+            parent.add_child(collider)
+          func _unhandled_input(event: InputEvent) -> void:
+            if event.is_action_pressed("attack") and is_instance_valid(enemy):
+              if player.global_position.distance_to(enemy.global_position) <= 3.0:
+                enemy.take_damage(20)
+            if event.is_action_pressed("save_game"):
+              GameState.profile.world_position = [player.position.x,player.position.y,player.position.z]
+              GameState.save_local()
+              _refresh()
+          func _on_defeated(gold: int, xp: int) -> void:
+            GameState.add_gold(gold)
+            GameState.add_experience(xp)
+            GameState.add_item("monster_material",1)
+            GameState.update_quest("first_hunt","completed")
+            _refresh()
+          func _refresh() -> void:
+            if is_instance_valid(status):
+              var p = GameState.profile
+              status.text = "Lv.%s  HP %s/%s  MP %s/%s  Gold %s  XP %s" % [p.level,p.hp,p.max_hp,p.mp,p.max_mp,p.gold,p.experience]
+          EOF
+          cat > scripts/offline_smoke_test.gd <<'EOF'
+          extends SceneTree
+          func _initialize() -> void:
+            call_deferred("_run")
+          func _run() -> void:
+            var state = load("res://scripts/game_state.gd").new()
+            root.add_child(state)
+            state.add_gold(25)
+            state.add_experience(100)
+            state.add_item("test_drop",2)
+            state.update_quest("smoke","completed")
+            assert(state.profile.gold == 125)
+            assert(state.profile.level == 2)
+            assert(state.profile.inventory.size() == 1)
+            assert(state.profile.quests.smoke == "completed")
+            assert(state.save_local())
+            state.profile.gold = 0
+            assert(state.load_local())
+            assert(state.profile.gold == 125)
+            print("OFFLINE_SMOKE_TEST_PASS")
+            quit(0)
+          EOF
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("project.godot")
+          s=p.read_text()
+          if "[autoload]" not in s:
+              s=s.replace("[display]", '[autoload]\\nGameState="*res://scripts/game_state.gd"\\n\\n[display]')
+          p.write_text(s)
+          PY
+          cat > reports/offline-runtime-tests/README.md <<'EOF'
+          # Offline runtime foundation
+          Adds local character state, XP/level progression, Gold, inventory, quest flags, JSON save/load, player movement and a locally simulated enemy/combat loop. This is the first playable systems foundation, not completion of all original Conquer content.
+          EOF
+
+      - name: Validate Godot project and local persistence
+        run: |
+          set -euo pipefail
+          godot --headless --path . --editor --quit
+          godot --headless --path . --script res://scripts/offline_smoke_test.gd
+          echo "Godot import and local save/progression smoke tests passed."
+
+      - name: Commit reverse engineering and offline runtime
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add project.godot scripts reports/original-client-analysis reports/offline-runtime-tests
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Analyze original client and implement offline gameplay foundation"
+          git push origin HEAD:main
