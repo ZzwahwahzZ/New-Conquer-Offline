@@ -10,7 +10,7 @@ func _ready() -> void:
   GameState.stats_changed.connect(_refresh)
   _refresh()
 func _setup_input() -> void:
-  var keys := {"move_left":KEY_A,"move_right":KEY_D,"move_forward":KEY_W,"move_back":KEY_S,"attack":KEY_SPACE,"save_game":KEY_F5,"inventory":KEY_I,"upgrade":KEY_U}
+  var keys := {"move_left":KEY_A,"move_right":KEY_D,"move_forward":KEY_W,"move_back":KEY_S,"attack":KEY_SPACE,"save_game":KEY_F5,"inventory":KEY_I,"upgrade":KEY_U,"skill_jump":KEY_1,"skill_fly":KEY_2,"skill_scatter":KEY_3,"skill_rapid":KEY_4}
   for action in keys:
     if not InputMap.has_action(action): InputMap.add_action(action)
     var ev := InputEventKey.new()
@@ -93,6 +93,10 @@ func _add_capsule(parent: Node3D, color: Color, radius: float, height: float) ->
   collider.shape = shape
   parent.add_child(collider)
 func _unhandled_input(event: InputEvent) -> void:
+  if event.is_action_pressed("skill_jump"): player.call("cast_skill","Jump")
+  if event.is_action_pressed("skill_fly"): player.call("cast_skill","Fly")
+  if event.is_action_pressed("skill_scatter"): player.call("cast_skill","Scatter")
+  if event.is_action_pressed("skill_rapid"): player.call("cast_skill","Rapid_Fire")
   if event.is_action_pressed("attack") and is_instance_valid(player):
     player.call("basic_attack")
   if event.is_action_pressed("inventory"):
