@@ -49,6 +49,18 @@ func add_item(item_id: String, quantity: int = 1) -> bool:
 	_save_and_emit()
 	return true
 
+func add_gem(gem_id: String, quantity: int = 1) -> bool:
+	if quantity <= 0 or GearDatabase.get_gem(gem_id).is_empty():
+		return false
+	for entry in inventory:
+		if str(entry.get("gem_id", "")) == gem_id:
+			entry["quantity"] = int(entry.get("quantity", 0)) + quantity
+			_save_and_emit()
+			return true
+	inventory.append({"id": gem_id, "gem_id": gem_id, "quantity": quantity, "item_type": "gem"})
+	_save_and_emit()
+	return true
+
 func can_character_equip(item: Dictionary, current_class: String, current_level: int, target_slot: String = "") -> bool:
 	if item.is_empty():
 		return false
@@ -84,11 +96,16 @@ func equip_item(item_instance_id: String, target_slot: String, current_class: St
 			var right_item: Dictionary = equipment.get("RightHand", {})
 			if right_item.is_empty() or str(right_item.get("weapon_family", "")) != "Bow":
 				return false
-		if family == "ThrowingKnife" and current_class != "Oriental_Assassin":
-			return false
-	if target_slot == "RightHand" and str(item.get("weapon_family", "")) == "Bow":
+		if family == "ThrowingKnife":
+			var right_knife_check: Dictionary = equipment.get("RightHand", {})
+			if not right_knife_check.is_empty() and str(right_knife_check.get("weapon_family", "")) != "ThrowingKnife":
+				return false
+	if target_slot == "RightHand":
 		var left_item: Dictionary = equipment.get("LeftHand", {})
-		if not left_item.is_empty() and str(left_item.get("weapon_family", "")) != "Arrows":
+		var new_family := str(item.get("weapon_family", ""))
+		if new_family == "Bow" and not left_item.is_empty() and str(left_item.get("weapon_family", "")) != "Arrows":
+			return false
+		if new_family == "ThrowingKnife" and not left_item.is_empty() and str(left_item.get("weapon_family", "")) != "ThrowingKnife":
 			return false
 	var old_item: Dictionary = equipment.get(target_slot, {})
 	if not old_item.is_empty():
@@ -189,8 +206,16 @@ func socket_gem(slot: String, socket_index: int, gem_id: String) -> bool:
 	var sockets: Array = item.get("sockets", ["Empty", "Empty"])
 	if str(sockets[socket_index]) != "Empty":
 		return false
+	var gem_index := _find_gem_index(gem_id)
+	if gem_index < 0:
+		return false
 	if not GlobalEconomy.remove_gold(GEM_SOCKET_COST):
 		return false
+	var gem_quantity := int(inventory[gem_index].get("quantity", 0)) - 1
+	if gem_quantity <= 0:
+		inventory.remove_at(gem_index)
+	else:
+		inventory[gem_index]["quantity"] = gem_quantity
 	sockets[socket_index] = gem_id
 	item["sockets"] = sockets
 	_save_and_emit()
@@ -258,6 +283,12 @@ func load_gear_data() -> bool:
 func _find_inventory_index(item_instance_id: String) -> int:
 	for index in range(inventory.size()):
 		if str(inventory[index].get("instance_id", "")) == item_instance_id:
+			return index
+	return -1
+
+func _find_gem_index(gem_id: String) -> int:
+	for index in range(inventory.size()):
+		if str(inventory[index].get("gem_id", "")) == gem_id and int(inventory[index].get("quantity", 0)) > 0:
 			return index
 	return -1
 
