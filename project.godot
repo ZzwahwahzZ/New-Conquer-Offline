@@ -1,0 +1,21 @@
+; Engine configuration file.
+; New Conquer Offline — Godot 4 project.
+
+config_version=5
+
+[application]
+config/name="New Conquer Offline"
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+config/description="Offline 3D RPG inspired by Conquer Online, with an original world and Gold-only economy."
+
+[display]
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+environment/defaults/default_clear_color=Color(0.035, 0.047, 0.075, 1)
