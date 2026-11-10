@@ -10,6 +10,7 @@ config/features=PackedStringArray("4.3", "GL Compatibility")
 config/description="Offline RPG inspired by classic Conquer Online systems."
 
 [autoload]
+ClassSystem="*res://src/scripts/ClassSystem.gd"
 GearDatabase="*res://src/scripts/GearDatabase.gd"
 GearSystem="*res://src/scripts/GearSystem.gd"
 GlobalEconomy="*res://src/scripts/GlobalEconomy.gd"
