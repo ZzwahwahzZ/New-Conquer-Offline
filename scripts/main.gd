@@ -52,7 +52,7 @@ func _build_arena() -> void:
   enemy.defeated.connect(_on_defeated)
   add_child(enemy)
   var camera_rig := load("res://src/scenes/IsometricCamera.tscn").instantiate()
-  camera_rig.target_path = NodePath("../LocalPlayer")
+  camera_rig.set("target_path", NodePath("../LocalPlayer"))
   add_child(camera_rig)
   var hud := load("res://src/scenes/HUD.tscn").instantiate()
   add_child(hud)
