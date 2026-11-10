@@ -93,9 +93,8 @@ func _add_capsule(parent: Node3D, color: Color, radius: float, height: float) ->
   collider.shape = shape
   parent.add_child(collider)
 func _unhandled_input(event: InputEvent) -> void:
-  if event.is_action_pressed("attack") and is_instance_valid(enemy):
-    if player.global_position.distance_to(enemy.global_position) <= 3.0:
-      enemy.call("take_damage", 20)
+  if event.is_action_pressed("attack") and is_instance_valid(player):
+    player.call("basic_attack")
   if event.is_action_pressed("inventory"):
     var inventory_ui := get_tree().get_first_node_in_group("inventory_ui")
     if is_instance_valid(inventory_ui) and inventory_ui.has_method("toggle"):
@@ -112,7 +111,10 @@ func _unhandled_input(event: InputEvent) -> void:
     _refresh()
 func _on_defeated(gold: int, xp: int) -> void:
   # CPDrop.gd awards the gold on pickup; do not award it twice here.
-  GameState.add_experience(xp)
+  ClassSystem.add_experience(xp)
+  if is_instance_valid(player): player.call("on_monster_killed")
+  GameState.profile.level = ClassSystem.level
+  GameState.profile.experience = ClassSystem.experience
   GameState.add_item("monster_material",1)
   GameState.update_quest("first_hunt","completed")
   _refresh()
