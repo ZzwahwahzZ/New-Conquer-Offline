@@ -85,7 +85,7 @@ func create_item(item_id: String, instance_id: String = "") -> Dictionary:
 	if item.is_empty():
 		return {}
 	item["id"] = item_id
-	item["instance_id"] = instance_id if not instance_id.is_empty() else "%s_%s" % [item_id, str(Time.get_unix_time_from_system())]
+	item["instance_id"] = instance_id if not instance_id.is_empty() else "%s_%d" % [item_id, Time.get_ticks_usec()]
 	item["socket_count"] = clampi(int(item.get("socket_count", 0)), 0, SOCKET_MAX)
 	item["sockets"] = item.get("sockets", []).duplicate(true)
 	return item
