@@ -36,9 +36,14 @@ func _ready() -> void:
 	hide()
 
 func toggle() -> void:
-	visible = not visible
-	if visible:
+	if not visible:
+		var inventory_ui := get_tree().get_first_node_in_group("inventory_ui")
+		if is_instance_valid(inventory_ui) and inventory_ui.has_method("close"):
+			inventory_ui.close()
+		visible = true
 		_refresh_all()
+	else:
+		visible = false
 
 func open() -> void:
 	show()
