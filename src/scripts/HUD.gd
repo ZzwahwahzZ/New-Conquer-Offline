@@ -18,6 +18,7 @@ var _hp_bar: TextureProgressBar
 var _mp_bar: TextureProgressBar
 var _xp_bar: ProgressBar
 var _xp_skill_bar: ProgressBar
+var _stamina_bar: ProgressBar
 var _chat_window: PanelContainer
 var _chat_restore_button: Button
 var _chat_log: RichTextLabel
@@ -51,6 +52,7 @@ func _build_hud() -> void:
 	_build_chat()
 	_build_xp_bar()
 	_build_xp_skill_bar()
+	_build_stamina_bar()
 	_build_inventory_toggle()
 	_inventory_ui = load("res://src/scenes/InventoryUI.tscn").instantiate() as CanvasLayer
 	add_child(_inventory_ui)
@@ -332,6 +334,18 @@ func _build_xp_skill_bar() -> void:
 	_xp_skill_bar.add_theme_stylebox_override("fill", _panel_style(Color(0.1,0.68,0.92,1.0), Color(0.55,0.9,1.0,1.0), 0, 0))
 	_root.add_child(_xp_skill_bar)
 
+func _build_stamina_bar() -> void:
+	_stamina_bar = ProgressBar.new()
+	_stamina_bar.name = "StaminaBar"
+	_stamina_bar.min_value = 0
+	_stamina_bar.max_value = ClassSystem.max_stamina
+	_stamina_bar.value = ClassSystem.stamina
+	_stamina_bar.show_percentage = false
+	_stamina_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_stamina_bar.add_theme_stylebox_override("background", _panel_style(Color(0.025,0.03,0.04,0.95), Color(0.25,0.38,0.2,1.0), 1, 0))
+	_stamina_bar.add_theme_stylebox_override("fill", _panel_style(Color(0.35,0.78,0.22,1.0), Color(0.7,0.95,0.45,1.0), 0, 0))
+	_root.add_child(_stamina_bar)
+
 func _layout_hud() -> void:
 	if not is_instance_valid(_root):
 		return
@@ -357,10 +371,12 @@ func _layout_hud() -> void:
 	_chat_window.size = Vector2(chat_width, 132)
 	_chat_restore_button.position = Vector2((width - 100.0) * 0.5, height - 258.0)
 
-	_xp_bar.position = Vector2(0, height - 5)
-	_xp_bar.size = Vector2(width, 4)
-	_xp_skill_bar.position = Vector2(0, height - 9)
-	_xp_skill_bar.size = Vector2(width, 4)
+	_xp_bar.position = Vector2(0, height - 4)
+	_xp_bar.size = Vector2(width, 3)
+	_xp_skill_bar.position = Vector2(0, height - 8)
+	_xp_skill_bar.size = Vector2(width, 3)
+	_stamina_bar.position = Vector2(0, height - 12)
+	_stamina_bar.size = Vector2(width, 3)
 
 
 func _on_joystick_gui_input(event: InputEvent) -> void:
@@ -457,6 +473,9 @@ func _process(_delta: float) -> void:
 	if not is_instance_valid(_player): _find_player()
 	if is_instance_valid(_xp_skill_bar) and is_instance_valid(_player) and _player.has_method("get_xp_skill"):
 		_xp_skill_bar.value = float(_player.call("get_xp_skill"))
+	if is_instance_valid(_stamina_bar):
+		_stamina_bar.max_value = ClassSystem.max_stamina
+		_stamina_bar.value = ClassSystem.stamina
 	for i in range(mini(_skill_buttons.size(), _skill_ids.size())):
 		var cooldown := float(_player.call("get_skill_cooldown", _skill_ids[i])) if is_instance_valid(_player) and _player.has_method("get_skill_cooldown") else 0.0
 		_skill_buttons[i].disabled = cooldown > 0.0
