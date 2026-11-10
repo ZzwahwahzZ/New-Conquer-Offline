@@ -174,14 +174,17 @@ func _update_jump(delta: float) -> void:
 		_jumping = false
 		velocity = Vector3.ZERO
 
-func cast_skill(skill_id: String) -> bool:
-	if not SKILL_DATA.has(skill_id): return false
-	if float(_cooldowns.get(skill_id, 0.0)) > 0.0: return false
+func can_use_skill(skill_id: String) -> bool:
+	if not SKILL_DATA.has(skill_id) or float(_cooldowns.get(skill_id, 0.0)) > 0.0: return false
 	if skill_id in ["Fly", "Scatter"] and not _is_archer_family(): return false
 	if skill_id in ["Rapid_Fire", "Kinetic_Spark"] and (ClassSystem.current_class != "Oriental_Assassin" or not _has_dual_knives()): return false
 	if skill_id == "XP_Mode" and _xp_skill < 100.0: return false
 	var data: Dictionary = SKILL_DATA[skill_id]
-	if ClassSystem.mp < int(data.mana) or ClassSystem.stamina < float(data.stamina): return false
+	return ClassSystem.mp >= int(data.mana) and ClassSystem.stamina >= float(data.stamina)
+
+func cast_skill(skill_id: String) -> bool:
+	if not can_use_skill(skill_id): return false
+	var data: Dictionary = SKILL_DATA[skill_id]
 	ClassSystem.mp -= int(data.mana)
 	if not ClassSystem.consume_stamina(float(data.stamina)):
 		ClassSystem.mp += int(data.mana)
@@ -298,7 +301,7 @@ func _is_archer_family() -> bool:
 	return ClassSystem.current_class in ["Archer","Oriental_Assassin"]
 
 func _gain_skill_proficiency(skill_id: String, amount: int) -> void:
-	ClassSystem.gain_skill_proficiency(skill_id, amount)
+	ClassSystem.gain_skill_proficiency("Rapid_Fire" if skill_id == "Kinetic_Spark" else skill_id, amount)
 
 func get_skill_proficiency(skill_id: String) -> Dictionary:
 	return ClassSystem.get_skill_proficiency(skill_id)
