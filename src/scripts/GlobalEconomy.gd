@@ -5,6 +5,7 @@ signal gold_changed(new_amount: int)
 const SAVE_PATH := "user://conquer_offline_save.dat"
 const SAVE_VERSION := 1
 const DEFAULT_GOLD := 100
+const LEGACY_SAVE_PATH := "user://offline_profile.json"
 
 var current_gold: int = DEFAULT_GOLD
 
@@ -57,7 +58,7 @@ func save_gold() -> bool:
 
 func load_gold() -> bool:
 	if not FileAccess.file_exists(SAVE_PATH):
-		current_gold = DEFAULT_GOLD
+		current_gold = _read_legacy_gold()
 		var created := save_gold()
 		_notify_gold_changed()
 		return created
@@ -97,3 +98,19 @@ func _notify_gold_changed() -> void:
 	var tree := get_tree()
 	if tree != null:
 		tree.call_group("gold_counter", "set_gold", current_gold)
+
+
+func _read_legacy_gold() -> int:
+	if not FileAccess.file_exists(LEGACY_SAVE_PATH):
+		return DEFAULT_GOLD
+
+	var legacy_file := FileAccess.open(LEGACY_SAVE_PATH, FileAccess.READ)
+	if legacy_file == null:
+		return DEFAULT_GOLD
+
+	var legacy_data = JSON.parse_string(legacy_file.get_as_text())
+	legacy_file.close()
+	if typeof(legacy_data) != TYPE_DICTIONARY:
+		return DEFAULT_GOLD
+
+	return maxi(0, int(legacy_data.get("gold", DEFAULT_GOLD)))
