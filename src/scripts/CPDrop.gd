@@ -9,6 +9,7 @@ extends Area3D
 
 var _player: Node3D
 var _attracted: bool = false
+var _collected: bool = false
 var _audio: AudioStreamPlayer3D
 
 func _ready() -> void:
@@ -67,6 +68,9 @@ func _on_body_entered(body: Node3D) -> void:
 		_attracted = true
 
 func _collect() -> void:
+	if _collected or not is_instance_valid(_player):
+		return
+	_collected = true
 	if not is_instance_valid(_player):
 		return
 	if GlobalEconomy.add_gold(gold_value):
