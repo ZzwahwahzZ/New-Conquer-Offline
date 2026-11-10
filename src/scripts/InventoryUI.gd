@@ -396,11 +396,13 @@ func _refresh_inventory() -> void:
 			var item: Dictionary = items[index]
 			var quality := str(item.get("quality", "Normal"))
 			var sockets: Array = item.get("sockets", [])
+			var socket_count := clampi(int(item.get("socket_count", sockets.size())), 0, 2)
 			var filled := 0
 			for socket in sockets:
 				if str(socket) != "Empty":
 					filled += 1
-			button.text = "%s\n+%d\n%s" % [str(item.get("name", item.get("id", "Item"))), int(item.get("plus", 0)), "●".repeat(filled) + "○".repeat(maxi(0, 2-filled))]
+			var socket_marks := "●".repeat(filled) + "○".repeat(maxi(0, socket_count - filled)) + "·".repeat(2 - socket_count)
+			button.text = "%s\n+%d\n%s" % [str(item.get("name", item.get("id", "Item"))), int(item.get("plus", 0)), socket_marks]
 			button.add_theme_color_override("font_color", _quality_color(quality))
 			button.add_theme_stylebox_override("normal", _style(Color("#242a35"), _quality_color(quality), 2, 5))
 			button.pressed.connect(_select_inventory_item.bind(index))
