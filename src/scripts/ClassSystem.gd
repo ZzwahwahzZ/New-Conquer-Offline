@@ -30,14 +30,12 @@ var stamina := 100.0
 var max_stamina := 100.0
 var xp_skill := 0.0
 var xp_skill_max := 100.0
-var skill_proficiency := {"Jump":{"level":1,"xp":0},"Fly":{"level":1,"xp":0},"Scatter":{"level":1,"xp":0},"Rapid_Fire":{"level":1,"xp":0}}
+var skill_proficiency := {"Jump":{"level":1,"xp":0},"Fly":{"level":1,"xp":0},"Scatter":{"level":1,"xp":0},"Rapid_Fire":{"level":1,"xp":0},"XP_Mode":{"level":1,"xp":0}}
 var _loaded := false
 
 func _ready() -> void:
-	if GlobalEconomy.economy_ready.is_connected(_load_character):
-		_load_character()
-	else:
-		GlobalEconomy.economy_ready.connect(_load_character, CONNECT_ONE_SHOT)
+	# Defer until all Autoloads, including GlobalEconomy, have completed _ready().
+	call_deferred("_load_character")
 
 func _load_character() -> void:
 	var data := GlobalEconomy.load_character_data()
