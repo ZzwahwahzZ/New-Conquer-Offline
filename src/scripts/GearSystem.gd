@@ -21,10 +21,13 @@ var equipment: Dictionary = {
 }
 var upgrade_points: int = 0
 var _rng := RandomNumberGenerator.new()
+var _syncing_profile: bool = false
 
 func _ready() -> void:
 	_rng.randomize()
 	load_gear_data()
+	if not GameState.inventory_changed.is_connected(_on_game_inventory_changed):
+		GameState.inventory_changed.connect(_on_game_inventory_changed)
 
 func create_item(item_id: String) -> Dictionary:
 	return GearDatabase.create_item(item_id)
@@ -264,4 +267,23 @@ func _save_and_emit() -> void:
 	equipment_changed.emit()
 
 func _save_gear_data() -> void:
-	GlobalEconomy.save_gear_data(serialize_gear_data())
+	var snapshot := serialize_gear_data()
+	# Keep the existing InventoryManager/GameState bag and the new gear system on one inventory.
+	_syncing_profile = true
+	GameState.profile["inventory"] = inventory.duplicate(true)
+	GameState.save_local()
+	GlobalEconomy.save_gear_data(snapshot)
+	GameState.inventory_changed.emit()
+	_syncing_profile = false
+
+func _on_game_inventory_changed() -> void:
+	if _syncing_profile:
+		return
+	var profile_inventory = GameState.profile.get("inventory", [])
+	if profile_inventory is Array:
+		inventory.clear()
+		for entry in profile_inventory:
+			if entry is Dictionary:
+				inventory.append(entry.duplicate(true))
+		GlobalEconomy.save_gear_data(serialize_gear_data())
+		inventory_changed.emit()
