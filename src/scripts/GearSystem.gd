@@ -39,6 +39,9 @@ func _connect_game_state() -> void:
 	if game_state.has_signal("inventory_changed") and not game_state.inventory_changed.is_connected(_on_game_inventory_changed):
 		game_state.inventory_changed.connect(_on_game_inventory_changed)
 	_game_state_connected = true
+	# GameState may have loaded its legacy JSON profile in the main scene's _ready().
+	# Reconcile once now, after the deferred connection is safe.
+	_on_game_inventory_changed()
 
 func initialize_from_save(data: Dictionary) -> void:
 	deserialize_gear_data(data)
