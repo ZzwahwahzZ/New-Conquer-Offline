@@ -2,6 +2,7 @@ extends Node3D
 var player: CharacterBody3D
 var enemy: CharacterBody3D
 var status: Label
+var inventory_manager: Control
 func _ready() -> void:
   _setup_input()
   _build_arena()
@@ -9,7 +10,7 @@ func _ready() -> void:
   GameState.stats_changed.connect(_refresh)
   _refresh()
 func _setup_input() -> void:
-  var keys := {"move_left":KEY_A,"move_right":KEY_D,"move_forward":KEY_W,"move_back":KEY_S,"attack":KEY_SPACE,"save_game":KEY_F5}
+  var keys := {"move_left":KEY_A,"move_right":KEY_D,"move_forward":KEY_W,"move_back":KEY_S,"attack":KEY_SPACE,"save_game":KEY_F5,"inventory":KEY_I}
   for action in keys:
     if not InputMap.has_action(action): InputMap.add_action(action)
     var ev := InputEventKey.new()
@@ -45,12 +46,21 @@ func _build_arena() -> void:
   player.add_to_group("player")
   enemy = CharacterBody3D.new()
   enemy.name = "LocalMonster"
-  enemy.set_script(load("res://scripts/local_enemy.gd"))
+  enemy.set_script(load("res://src/scripts/Enemy.gd"))
   enemy.position = Vector3(4,0.8,-4)
-  enemy.target = player
+  enemy.set("target", player)
+  enemy.set("behavior", 0)
   _add_capsule(enemy,Color(0.8,0.2,0.18),0.6,1.3)
   enemy.defeated.connect(_on_defeated)
   add_child(enemy)
+  var inventory_layer := CanvasLayer.new()
+  inventory_layer.name = "InventoryLayer"
+  add_child(inventory_layer)
+  inventory_manager = Control.new()
+  inventory_manager.name = "InventoryManager"
+  inventory_manager.set_script(load("res://src/scripts/InventoryManager.gd"))
+  inventory_manager.visible = false
+  inventory_layer.add_child(inventory_manager)
   var camera_rig := load("res://src/scenes/IsometricCamera.tscn").instantiate()
   camera_rig.set("target_path", NodePath("../LocalPlayer"))
   add_child(camera_rig)
@@ -86,12 +96,15 @@ func _unhandled_input(event: InputEvent) -> void:
   if event.is_action_pressed("attack") and is_instance_valid(enemy):
     if player.global_position.distance_to(enemy.global_position) <= 3.0:
       enemy.take_damage(20)
+  if event.is_action_pressed("inventory") and is_instance_valid(inventory_manager):
+    inventory_manager.visible = not inventory_manager.visible
+    get_viewport().set_input_as_handled()
   if event.is_action_pressed("save_game"):
     GameState.profile.world_position = [player.position.x,player.position.y,player.position.z]
     GameState.save_local()
     _refresh()
 func _on_defeated(gold: int, xp: int) -> void:
-  GameState.add_gold(gold)
+  # CPDrop.gd awards the gold on pickup; do not award it twice here.
   GameState.add_experience(xp)
   GameState.add_item("monster_material",1)
   GameState.update_quest("first_hunt","completed")
