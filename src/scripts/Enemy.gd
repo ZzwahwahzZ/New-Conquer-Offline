@@ -121,7 +121,7 @@ func _create_world_health_bar() -> void:
 func _die() -> void:
 	velocity = Vector3.ZERO
 	defeated.emit(gold_drop, experience_drop)
-	var drop := Node3D.new()
+	var drop := Area3D.new()
 	drop.name = "CPDrop"
 	drop.set_script(load("res://src/scripts/CPDrop.gd"))
 	drop.set("gold_value", gold_drop)
