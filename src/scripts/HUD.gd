@@ -27,7 +27,7 @@ var _inventory_button: Button
 var _upgrade_ui: CanvasLayer
 var _upgrade_button: Button
 var _skill_buttons: Array[Button] = []
-var _skill_ids := ["Jump", "Fly", "Scatter", "Rapid_Fire"]
+var _skill_ids := ["Jump", "Fly", "Scatter", "Rapid_Fire", "XP_Mode"]
 
 
 func _ready() -> void:
@@ -211,7 +211,7 @@ func _build_hotbar() -> void:
 		skills.add_child(skill)
 		if index < _skill_ids.size():
 			_skill_buttons.append(skill)
-			skill.text = ["JUMP", "FLY", "AOE", "KNIFE"][index]
+			skill.text = ["JUMP", "FLY", "AOE", "KNIFE", "XP"][index]
 			skill.pressed.connect(_on_skill_pressed.bind(_skill_ids[index]))
 
 
@@ -460,7 +460,7 @@ func _process(_delta: float) -> void:
 	for i in range(mini(_skill_buttons.size(), _skill_ids.size())):
 		var cooldown := float(_player.call("get_skill_cooldown", _skill_ids[i])) if is_instance_valid(_player) and _player.has_method("get_skill_cooldown") else 0.0
 		_skill_buttons[i].disabled = cooldown > 0.0
-		var labels := ["JUMP", "FLY", "AOE", "KNIFE"]
+		var labels := ["JUMP", "FLY", "AOE", "KNIFE", "XP"]
 		_skill_buttons[i].text = "%s\n%.1f" % [labels[i], cooldown] if cooldown > 0.0 else labels[i]
 		_skill_buttons[i].tooltip_text = "%s  %.1fs" % [_skill_ids[i], cooldown] if cooldown > 0.0 else _skill_ids[i]
 
