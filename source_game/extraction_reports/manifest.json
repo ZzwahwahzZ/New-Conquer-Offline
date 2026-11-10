@@ -1,0 +1,49 @@
+{
+  "source": "existing GitHub Release source-xapk",
+  "archive_file_count": 6,
+  "total_uncompressed_bytes": 461097664,
+  "files": [
+    {
+      "path": "com.Tq.CQ2ClientAndroid.Arabic.apk",
+      "size_bytes": 155612867,
+      "sha256": "470dbfda81571a340c9022704d6f493e76c4dc0511fdc48131ef657764ace378",
+      "extension": ".apk",
+      "compressed_bytes": 155612867
+    },
+    {
+      "path": "icon.png",
+      "size_bytes": 390308,
+      "sha256": "c3472ac97e8f494c9b53cffa409db2a4fdac4b142afc0be9a9e4fde8f8256d3f",
+      "extension": ".png",
+      "compressed_bytes": 390308
+    },
+    {
+      "path": "config.arm64_v8a.apk",
+      "size_bytes": 96368455,
+      "sha256": "0fa7c7e739d9266fe5b8568def9328bdeac0e56ff478d63b34003a528a9dd837",
+      "extension": ".apk",
+      "compressed_bytes": 96368455
+    },
+    {
+      "path": "config.mdpi.apk",
+      "size_bytes": 470197,
+      "sha256": "5a59fb5efd41ebb3027dba50b796f845224ec2ffb8c289cfe1599d83c8df0442",
+      "extension": ".apk",
+      "compressed_bytes": 470197
+    },
+    {
+      "path": "install_time_1001.apk",
+      "size_bytes": 208251259,
+      "sha256": "9d7d455626fffcbf83445d7800ff62c0854620f22da8df414d17c925b1d12e2e",
+      "extension": ".apk",
+      "compressed_bytes": 208251259
+    },
+    {
+      "path": "manifest.json",
+      "size_bytes": 4578,
+      "sha256": "5c530a39aac65de7689951a917b46b753923e4381f17e9287e11d73f7d788078",
+      "extension": ".json",
+      "compressed_bytes": 4578
+    }
+  ]
+}
