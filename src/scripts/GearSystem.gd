@@ -409,7 +409,13 @@ func _normalize_item(source: Dictionary) -> Dictionary:
 	if not item.has("instance_id") or str(item["instance_id"]).is_empty():
 		item["instance_id"] = _new_instance_id(str(item.get("id", "item")))
 	var sockets: Array = item.get("sockets", []).duplicate(true)
-	var count := clampi(int(item.get("socket_count", sockets.size())), 0, GearDatabase.SOCKET_MAX)
+	var inferred_count := 0
+	if not item.has("socket_count"):
+		# Legacy items had two Empty placeholders; only a socket containing a gem proves it was opened.
+		for socket_index in range(sockets.size()):
+			if str(sockets[socket_index]) != "Empty":
+				inferred_count = socket_index + 1
+	var count := clampi(int(item.get("socket_count", inferred_count)), 0, GearDatabase.SOCKET_MAX)
 	while sockets.size() < count:
 		sockets.append("Empty")
 	if sockets.size() > count:
