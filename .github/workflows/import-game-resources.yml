@@ -9,6 +9,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: import-original-game-resources
+  cancel-in-progress: true
+
 jobs:
   import-resources:
     runs-on: ubuntu-latest
@@ -35,6 +39,7 @@ jobs:
           ARM="$ROOT/source_game/extracted/config.arm64_v8a.apk"
           OUT="$ROOT/assets/legacy_client"
           TMP="$RUNNER_TEMP/conquer_import"
+          EXPANDED="$RUNNER_TEMP/conquer_expanded_archives"
           test -s "$MAIN"
           test -s "$INSTALL"
           test -s "$ARM"
@@ -58,11 +63,12 @@ jobs:
 
           # Preserve every original game resource and expand the embedded 7z payloads
           # beside their source archives under the Godot project.
-          mkdir -p "$OUT/expanded_archives"
+          rm -rf "$EXPANDED"
+          mkdir -p "$EXPANDED"
           find "$OUT/ConquerRes" -type f -name '*.7z' -print0 | while IFS= read -r -d '' archive; do
             rel="${archive#"$OUT/ConquerRes/"}"
             stem="${rel%.7z}"
-            dest="$OUT/expanded_archives/$stem"
+            dest="$EXPANDED/$stem"
             mkdir -p "$dest"
             7z x -y "-o$dest" "$archive" >/dev/null
           done
@@ -75,7 +81,7 @@ jobs:
 
           echo "Resource import summary:"
           echo "ConquerRes files: $(find "$OUT/ConquerRes" -type f | wc -l)"
-          echo "Expanded archive files: $(find "$OUT/expanded_archives" -type f | wc -l)"
+          echo "Expanded archive files (temporary only): $(find "$EXPANDED" -type f | wc -l)"
           echo "Native libraries: $(find "$OUT/native" -type f -name '*.so' | wc -l)"
           echo "Client DEX files: $(find "$OUT/client_analysis" -type f -name '*.dex' | wc -l)"
           du -sh "$OUT"
@@ -87,6 +93,11 @@ jobs:
           touch .gitattributes
           grep -q '^assets/legacy_client/\*\* filter=lfs' .gitattributes || echo 'assets/legacy_client/** filter=lfs diff=lfs merge=lfs -text' >> .gitattributes
           git add .gitattributes
+          # Original compressed archives remain in ConquerRes; do not commit a second,
+          # potentially multi-gigabyte expanded copy. Expansion is temporary for analysis.
+          rm -rf assets/legacy_client/expanded_archives
+          git config lfs.concurrenttransfers 4
+          git config lfs.activitytimeout 120
           git add -f assets/legacy_client
           git status --short
 
@@ -107,6 +118,7 @@ jobs:
           set -euo pipefail
           test -d assets/legacy_client/ConquerRes
           test "$(find assets/legacy_client/ConquerRes -type f | wc -l)" -gt 1000
-          test "$(find assets/legacy_client/expanded_archives -type f | wc -l)" -gt 0
+          test "$(find assets/legacy_client/ConquerRes -type f -name '*.7z' | wc -l)" -gt 0
+          test "$(find assets/legacy_client/native -type f -name '*.so' | wc -l)" -gt 0
           git lfs ls-files assets/legacy_client | head -n 30
           echo "Godot project now contains the imported original client resources."
