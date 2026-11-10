@@ -22,6 +22,7 @@ var _chat_restore_button: Button
 var _chat_log: RichTextLabel
 var _chat_input: LineEdit
 var _inventory_ui: CanvasLayer
+var _inventory_button: Button
 
 
 func _ready() -> void:
@@ -263,7 +264,8 @@ func _build_chat() -> void:
 
 
 func _build_inventory_toggle() -> void:
-	var button := Button.new()
+	_inventory_button = Button.new()
+	var button := _inventory_button
 	button.name = "InventoryToggleButton"
 	button.text = "الحقيبة  [I]"
 	button.custom_minimum_size = Vector2(118, 42)
@@ -297,6 +299,8 @@ func _layout_hud() -> void:
 	var width := viewport_size.x
 	var height := viewport_size.y
 	_joystick.position = Vector2(22, height - JOYSTICK_SIZE.y - 24)
+	if is_instance_valid(_inventory_button):
+		_inventory_button.position = Vector2(width - 142.0, 18.0)
 
 	var orb := _root.get_node("OrbHUD") as Control
 	orb.position = Vector2(width - ORB_SIZE.x - 20, height - ORB_SIZE.y - 20)
