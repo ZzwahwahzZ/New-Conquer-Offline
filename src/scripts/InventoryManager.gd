@@ -7,6 +7,7 @@ const SLOTS_PER_PAGE: int = 30
 const COLUMNS: int = 6
 
 var current_page: int = 0
+var _unlocked_pages: int = 1
 var items: Array = []
 var _page_label: Label
 var _grid: GridContainer
@@ -15,7 +16,10 @@ var _next_button: Button
 var _touch_start: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_STOP
 	_load_items()
+	_unlocked_pages = maxi(1, int(GameState.profile.get("inventory_pages", 1)))
+	_unlocked_pages = maxi(_unlocked_pages, ceili(float(items.size()) / float(SLOTS_PER_PAGE)))
 	_build_interface()
 	_refresh_page()
 	if not GameState.inventory_changed.is_connected(_on_inventory_changed):
@@ -58,7 +62,7 @@ func remove_item(item_id: String, quantity: int = 1) -> bool:
 	return false
 
 func get_page_count() -> int:
-	return maxi(1, ceili(float(items.size()) / float(SLOTS_PER_PAGE)))
+	return maxi(_unlocked_pages, maxi(1, ceili(float(items.size()) / float(SLOTS_PER_PAGE))))
 
 func next_page() -> void:
 	current_page = mini(current_page + 1, get_page_count() - 1)
@@ -124,6 +128,9 @@ func _on_next_page() -> void:
 	if current_page == get_page_count() - 1:
 		# Creating the next page grants another empty bank of 30 slots.
 		current_page += 1
+		_unlocked_pages = maxi(_unlocked_pages, current_page + 1)
+		GameState.profile["inventory_pages"] = _unlocked_pages
+		GameState.save_local()
 	_refresh_page()
 
 func _refresh_page() -> void:
@@ -146,6 +153,7 @@ func _refresh_page() -> void:
 
 func _save_items() -> void:
 	GameState.profile["inventory"] = items.duplicate(true)
+	GameState.profile["inventory_pages"] = _unlocked_pages
 	GameState.inventory_changed.emit()
 	GameState.save_local()
 
