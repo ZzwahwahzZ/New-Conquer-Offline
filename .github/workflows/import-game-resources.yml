@@ -120,5 +120,5 @@ jobs:
           test "$(find assets/legacy_client/ConquerRes -type f | wc -l)" -gt 1000
           test "$(find assets/legacy_client/ConquerRes -type f -name '*.7z' | wc -l)" -gt 0
           test "$(find assets/legacy_client/native -type f -name '*.so' | wc -l)" -gt 0
-          git lfs ls-files assets/legacy_client | head -n 30
+          git lfs ls-files | grep 'assets/legacy_client/' | head -n 30
           echo "Godot project now contains the imported original client resources."
