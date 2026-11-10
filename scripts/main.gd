@@ -51,7 +51,7 @@ func _build_arena() -> void:
   enemy.set("target", player)
   enemy.set("behavior", 0)
   _add_capsule(enemy,Color(0.8,0.2,0.18),0.6,1.3)
-  enemy.defeated.connect(_on_defeated)
+  enemy.connect("defeated", _on_defeated)
   add_child(enemy)
   var inventory_layer := CanvasLayer.new()
   inventory_layer.name = "InventoryLayer"
@@ -95,7 +95,7 @@ func _add_capsule(parent: Node3D, color: Color, radius: float, height: float) ->
 func _unhandled_input(event: InputEvent) -> void:
   if event.is_action_pressed("attack") and is_instance_valid(enemy):
     if player.global_position.distance_to(enemy.global_position) <= 3.0:
-      enemy.take_damage(20)
+      enemy.call("take_damage", 20)
   if event.is_action_pressed("inventory") and is_instance_valid(inventory_manager):
     inventory_manager.visible = not inventory_manager.visible
     get_viewport().set_input_as_handled()
