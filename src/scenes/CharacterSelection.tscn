@@ -1,0 +1,196 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/scripts/CharacterSelection.gd" id="1_script"]
+
+[node name="CharacterSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.035, 0.045, 0.075, 1)
+
+[node name="ScreenTitle" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 18.0
+offset_bottom = 62.0
+text = "اختر بطلك"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(0.95, 0.78, 0.42, 1)
+theme_override_font_sizes/font_size = 30
+
+[node name="GalleryCaption" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 65.0
+offset_bottom = 96.0
+text = "اسحب يميناً ويساراً لاستعراض الفئات"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.78, 0.8, 0.86, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="ClassGallery" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchor_left = 0.025
+anchor_top = 0.145
+anchor_right = 0.975
+anchor_bottom = 0.655
+horizontal_scroll_mode = 1
+vertical_scroll_mode = 0
+
+[node name="ClassTrack" type="HBoxContainer" parent="ClassGallery"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 22
+
+[node name="TrojanCard" type="PanelContainer" parent="ClassGallery/ClassTrack"]
+custom_minimum_size = Vector2(250, 300)
+layout_mode = 2
+
+[node name="CardContent" type="VBoxContainer" parent="ClassGallery/ClassTrack/TrojanCard"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Portrait" type="TextureRect" parent="ClassGallery/ClassTrack/TrojanCard/CardContent"]
+custom_minimum_size = Vector2(220, 205)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ClassName" type="Label" parent="ClassGallery/ClassTrack/TrojanCard/CardContent"]
+layout_mode = 2
+text = "التروجان"
+horizontal_alignment = 1
+
+[node name="SelectButton" type="Button" parent="ClassGallery/ClassTrack/TrojanCard"]
+visible = false
+layout_mode = 2
+text = "اختيار"
+
+[node name="TaoistCard" type="PanelContainer" parent="ClassGallery/ClassTrack"]
+custom_minimum_size = Vector2(250, 300)
+layout_mode = 2
+
+[node name="CardContent" type="VBoxContainer" parent="ClassGallery/ClassTrack/TaoistCard"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Portrait" type="TextureRect" parent="ClassGallery/ClassTrack/TaoistCard/CardContent"]
+custom_minimum_size = Vector2(220, 205)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ClassName" type="Label" parent="ClassGallery/ClassTrack/TaoistCard/CardContent"]
+layout_mode = 2
+text = "الحاوي"
+horizontal_alignment = 1
+
+[node name="SelectButton" type="Button" parent="ClassGallery/ClassTrack/TaoistCard"]
+visible = false
+layout_mode = 2
+text = "اختيار"
+
+[node name="WarriorCard" type="PanelContainer" parent="ClassGallery/ClassTrack"]
+custom_minimum_size = Vector2(250, 300)
+layout_mode = 2
+
+[node name="CardContent" type="VBoxContainer" parent="ClassGallery/ClassTrack/WarriorCard"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Portrait" type="TextureRect" parent="ClassGallery/ClassTrack/WarriorCard/CardContent"]
+custom_minimum_size = Vector2(220, 205)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ClassName" type="Label" parent="ClassGallery/ClassTrack/WarriorCard/CardContent"]
+layout_mode = 2
+text = "المحارب"
+horizontal_alignment = 1
+
+[node name="SelectButton" type="Button" parent="ClassGallery/ClassTrack/WarriorCard"]
+visible = false
+layout_mode = 2
+text = "اختيار"
+
+[node name="ArcherCard" type="PanelContainer" parent="ClassGallery/ClassTrack"]
+custom_minimum_size = Vector2(250, 300)
+layout_mode = 2
+
+[node name="CardContent" type="VBoxContainer" parent="ClassGallery/ClassTrack/ArcherCard"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Portrait" type="TextureRect" parent="ClassGallery/ClassTrack/ArcherCard/CardContent"]
+custom_minimum_size = Vector2(220, 205)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ClassName" type="Label" parent="ClassGallery/ClassTrack/ArcherCard/CardContent"]
+layout_mode = 2
+text = "الارتشر - Archer"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.95, 0.78, 0.42, 1)
+
+[node name="SelectButton" type="Button" parent="ClassGallery/ClassTrack/ArcherCard"]
+visible = true
+layout_mode = 2
+text = "اختيار الارتشر"
+toggle_mode = true
+
+[node name="Character_Data_Panel" type="TextureRect" parent="."]
+layout_mode = 1
+anchor_left = 0.08
+anchor_top = 0.69
+anchor_right = 0.92
+anchor_bottom = 0.97
+expand_mode = 1
+stretch_mode = 5
+mouse_filter = 1
+
+[node name="PanelContent" type="VBoxContainer" parent="Character_Data_Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 12.0
+offset_right = -20.0
+offset_bottom = -12.0
+theme_override_constants/separation = 7
+
+[node name="ClassDetails" type="Label" parent="Character_Data_Panel/PanelContent"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "بيانات الفئة المختارة"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="PlayerNameInput" type="LineEdit" parent="Character_Data_Panel/PanelContent"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+placeholder_text = "اسم الشخصية"
+max_length = 20
+alignment = 1
+
+[node name="StartGameButton" type="Button" parent="Character_Data_Panel/PanelContent"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "بدء اللعب"
