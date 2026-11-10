@@ -121,4 +121,4 @@ func _on_defeated(gold: int, xp: int) -> void:
 func _refresh() -> void:
   if is_instance_valid(status):
     var p = GameState.profile
-    status.text = "Lv.%s  HP %s/%s  MP %s/%s  Gold %s  XP %s" % [p.level,p.hp,p.max_hp,p.mp,p.max_mp,p.gold,p.experience]
+    status.text = "%s  Lv.%s  HP %s/%s  MP %s/%s  Gold %s  XP %s/%s" % [ClassSystem.get_class_name(),ClassSystem.level,ClassSystem.hp,ClassSystem.max_hp,ClassSystem.mp,ClassSystem.max_mp,p.gold,ClassSystem.experience,ClassSystem.get_required_xp()]
