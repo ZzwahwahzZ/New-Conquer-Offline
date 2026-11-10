@@ -10,7 +10,7 @@ func _ready() -> void:
   GameState.stats_changed.connect(_refresh)
   _refresh()
 func _setup_input() -> void:
-  var keys := {"move_left":KEY_A,"move_right":KEY_D,"move_forward":KEY_W,"move_back":KEY_S,"attack":KEY_SPACE,"save_game":KEY_F5,"inventory":KEY_I}
+  var keys := {"move_left":KEY_A,"move_right":KEY_D,"move_forward":KEY_W,"move_back":KEY_S,"attack":KEY_SPACE,"save_game":KEY_F5,"inventory":KEY_I,"upgrade":KEY_U}
   for action in keys:
     if not InputMap.has_action(action): InputMap.add_action(action)
     var ev := InputEventKey.new()
@@ -100,6 +100,11 @@ func _unhandled_input(event: InputEvent) -> void:
     var inventory_ui := get_tree().get_first_node_in_group("inventory_ui")
     if is_instance_valid(inventory_ui) and inventory_ui.has_method("toggle"):
       inventory_ui.toggle()
+    get_viewport().set_input_as_handled()
+  if event.is_action_pressed("upgrade"):
+    var upgrade_ui := get_tree().get_first_node_in_group("upgrade_market_ui")
+    if is_instance_valid(upgrade_ui) and upgrade_ui.has_method("toggle"):
+      upgrade_ui.toggle()
     get_viewport().set_input_as_handled()
   if event.is_action_pressed("save_game"):
     GameState.profile.world_position = [player.position.x,player.position.y,player.position.z]
