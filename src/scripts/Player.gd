@@ -49,6 +49,29 @@ func _ready() -> void:
 	add_to_group("player")
 	_ground_y = global_position.y
 	_visual = get_node_or_null("VisualRoot")
+	if _visual == null:
+		_visual = Node3D.new()
+		_visual.name = "VisualRoot"
+		add_child(_visual)
+		for child in get_children():
+			if child is MeshInstance3D:
+				child.reparent(_visual)
+		_visual.position = Vector3.ZERO
+	var fly_ring := MeshInstance3D.new()
+	fly_ring.name = "FlyAuraRing"
+	var ring_mesh := TorusMesh.new()
+	ring_mesh.inner_radius = 0.48
+	ring_mesh.outer_radius = 0.58
+	fly_ring.mesh = ring_mesh
+	var ring_material := StandardMaterial3D.new()
+	ring_material.albedo_color = Color(0.2, 0.85, 1.0, 0.78)
+	ring_material.emission_enabled = true
+	ring_material.emission = Color(0.1, 0.65, 1.0)
+	fly_ring.material_override = ring_material
+	fly_ring.position.y = 0.12
+	fly_ring.visible = false
+	_visual.add_child(fly_ring)
+	_visual.set_meta("fly_ring", fly_ring)
 	if not ClassSystem.stats_changed.is_connected(_sync_class_stats):
 		ClassSystem.stats_changed.connect(_sync_class_stats)
 	_sync_class_stats()
@@ -160,12 +183,12 @@ func cast_skill(skill_id: String) -> bool:
 	match skill_id:
 		"Jump": _start_classic_jump()
 		"Fly":
-						_set_flying(true)
+			_set_flying(true)
 			_fly_timer = fly_duration
 		"Scatter":
-						_cast_scatter()
+			_cast_scatter()
 		"Rapid_Fire":
-						_start_rapid_fire()
+			_start_rapid_fire()
 	_gain_skill_proficiency(skill_id, 1)
 	skill_used.emit(skill_id)
 	return true
@@ -189,9 +212,15 @@ func _set_flying(enabled: bool) -> void:
 	if enabled:
 		_ground_y = global_position.y
 		velocity.y = 0.0
-		if is_instance_valid(_visual): _visual.position.y = fly_height
+		if is_instance_valid(_visual):
+			_visual.position.y = fly_height
+			var ring = _visual.get_meta("fly_ring", null)
+			if is_instance_valid(ring): ring.visible = true
 	else:
-		if is_instance_valid(_visual): _visual.position.y = 0.0
+		if is_instance_valid(_visual):
+			_visual.position.y = 0.0
+			var ring = _visual.get_meta("fly_ring", null)
+			if is_instance_valid(ring): ring.visible = false
 		global_position.y = _ground_y
 	_gain_xp_skill(8.0 if enabled else 0.0)
 
@@ -269,6 +298,9 @@ func on_monster_killed() -> void:
 
 func get_skill_cooldown(skill_id: String) -> float:
 	return float(_cooldowns.get(skill_id, 0.0))
+
+func get_xp_skill() -> float:
+	return _xp_skill
 
 func _sync_class_stats() -> void:
 	stamina_changed.emit(ClassSystem.stamina, ClassSystem.max_stamina)
