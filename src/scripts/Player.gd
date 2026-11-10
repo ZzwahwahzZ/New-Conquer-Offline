@@ -147,23 +147,25 @@ func _update_jump(delta: float) -> void:
 func cast_skill(skill_id: String) -> bool:
 	if not SKILL_DATA.has(skill_id): return false
 	if float(_cooldowns.get(skill_id, 0.0)) > 0.0: return false
+	if skill_id in ["Fly", "Scatter"] and not _is_archer_family(): return false
+	if skill_id == "Rapid_Fire" and (ClassSystem.current_class != "Oriental_Assassin" or not _has_dual_knives()): return false
 	var data: Dictionary = SKILL_DATA[skill_id]
 	if ClassSystem.mp < int(data.mana) or ClassSystem.stamina < float(data.stamina): return false
 	ClassSystem.mp -= int(data.mana)
-	if not ClassSystem.consume_stamina(float(data.stamina)): return false
+	if not ClassSystem.consume_stamina(float(data.stamina)):
+		ClassSystem.mp += int(data.mana)
+		return false
+	ClassSystem.stats_changed.emit()
 	_cooldowns[skill_id] = float(data.cooldown)
 	match skill_id:
 		"Jump": _start_classic_jump()
 		"Fly":
-			if not _is_archer_family(): return false
-			_set_flying(true)
+						_set_flying(true)
 			_fly_timer = fly_duration
 		"Scatter":
-			if not _is_archer_family(): return false
-			_cast_scatter()
+						_cast_scatter()
 		"Rapid_Fire":
-			if ClassSystem.current_class != "Oriental_Assassin" or not _has_dual_knives(): return false
-			_start_rapid_fire()
+						_start_rapid_fire()
 	_gain_skill_proficiency(skill_id, 1)
 	skill_used.emit(skill_id)
 	return true
@@ -253,16 +255,10 @@ func _is_archer_family() -> bool:
 	return ClassSystem.current_class in ["Archer","Oriental_Assassin"]
 
 func _gain_skill_proficiency(skill_id: String, amount: int) -> void:
-	if not _skill_proficiency.has(skill_id): return
-	var data: Dictionary = _skill_proficiency[skill_id]
-	data.xp += amount
-	while int(data.xp) >= int(data.level) * 20:
-		data.xp -= int(data.level) * 20
-		data.level += 1
-	_skill_proficiency[skill_id] = data
+	ClassSystem.gain_skill_proficiency(skill_id, amount)
 
 func get_skill_proficiency(skill_id: String) -> Dictionary:
-	return (_skill_proficiency.get(skill_id, {}) as Dictionary).duplicate(true)
+	return ClassSystem.get_skill_proficiency(skill_id)
 
 func _gain_xp_skill(amount: float) -> void:
 	_xp_skill = minf(100.0, _xp_skill + amount)
