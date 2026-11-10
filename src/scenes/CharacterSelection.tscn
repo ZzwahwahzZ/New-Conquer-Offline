@@ -75,10 +75,11 @@ layout_mode = 2
 text = "التروجان"
 horizontal_alignment = 1
 
-[node name="SelectButton" type="Button" parent="ClassGallery/ClassTrack/TrojanCard"]
-visible = false
+[node name="SelectButton" type="Button" parent="ClassGallery/ClassTrack/TrojanCard/CardContent"]
 layout_mode = 2
-text = "اختيار"
+disabled = true
+text = "قريباً"
+
 
 [node name="TaoistCard" type="PanelContainer" parent="ClassGallery/ClassTrack"]
 custom_minimum_size = Vector2(250, 300)
@@ -99,10 +100,11 @@ layout_mode = 2
 text = "الحاوي"
 horizontal_alignment = 1
 
-[node name="SelectButton" type="Button" parent="ClassGallery/ClassTrack/TaoistCard"]
-visible = false
+[node name="SelectButton" type="Button" parent="ClassGallery/ClassTrack/TaoistCard/CardContent"]
 layout_mode = 2
-text = "اختيار"
+disabled = true
+text = "قريباً"
+
 
 [node name="WarriorCard" type="PanelContainer" parent="ClassGallery/ClassTrack"]
 custom_minimum_size = Vector2(250, 300)
@@ -123,10 +125,11 @@ layout_mode = 2
 text = "المحارب"
 horizontal_alignment = 1
 
-[node name="SelectButton" type="Button" parent="ClassGallery/ClassTrack/WarriorCard"]
-visible = false
+[node name="SelectButton" type="Button" parent="ClassGallery/ClassTrack/WarriorCard/CardContent"]
 layout_mode = 2
-text = "اختيار"
+disabled = true
+text = "قريباً"
+
 
 [node name="ArcherCard" type="PanelContainer" parent="ClassGallery/ClassTrack"]
 custom_minimum_size = Vector2(250, 300)
@@ -148,8 +151,7 @@ text = "الارتشر - Archer"
 horizontal_alignment = 1
 theme_override_colors/font_color = Color(0.95, 0.78, 0.42, 1)
 
-[node name="SelectButton" type="Button" parent="ClassGallery/ClassTrack/ArcherCard"]
-visible = true
+[node name="SelectButton" type="Button" parent="ClassGallery/ClassTrack/ArcherCard/CardContent"]
 layout_mode = 2
 text = "اختيار الارتشر"
 toggle_mode = true
