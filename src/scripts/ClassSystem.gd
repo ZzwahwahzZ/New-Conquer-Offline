@@ -88,7 +88,8 @@ func choose_class(class_id: String) -> bool:
 
 func can_evolve_to(class_id: String) -> bool:
 	if current_class == "Archer" and class_id == "Oriental_Assassin":
-		return ARCHER_EVOLUTION_LEVELS.has(level)
+		for milestone in ARCHER_EVOLUTION_LEVELS:
+			if level >= int(milestone): return true
 	return false
 
 func evolve_to(class_id: String) -> bool:
