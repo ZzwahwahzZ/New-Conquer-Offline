@@ -229,3 +229,278 @@ func compose_item(main_instance_id: String, minor_instance_ids: Array[String]) -
 		gear_operation_completed.emit("تمت إضافة %d نقطة توليف." % points)
 	return true
 
+
+
+func get_item_by_instance_id(instance_id: String) -> Dictionary:
+	var record := _find_item_record(instance_id)
+	if record.is_empty():
+		return {}
+	return (record["item"] as Dictionary).duplicate(true)
+
+func get_compose_progress(item_instance_id: String) -> Dictionary:
+	var record := _find_item_record(item_instance_id)
+	if record.is_empty():
+		return {}
+	var item: Dictionary = record["item"]
+	var plus := clampi(int(item.get("plus", 0)), 0, PLUS_MAX)
+	var required := 0 if plus >= PLUS_MAX else PLUS_POINTS_REQUIRED[plus]
+	return {"current": int(item.get("compose_points", 0)), "required": required, "plus": plus}
+
+func upgrade_item_level(slot: String) -> bool:
+	if not equipment.has(slot) or equipment[slot].is_empty():
+		return false
+	return upgrade_item_level_by_id(str(equipment[slot].get("instance_id", "")))
+
+func upgrade_item_level_by_id(instance_id: String) -> bool:
+	var record := _find_item_record(instance_id)
+	if record.is_empty():
+		return false
+	var item: Dictionary = record["item"]
+	var current_level := int(item.get("required_level", 15))
+	var tier_index := GearDatabase.LEVEL_TIERS.find(current_level)
+	if tier_index < 0 or tier_index >= GearDatabase.LEVEL_TIERS.size() - 1:
+		return false
+	var cost := int(LEVEL_UPGRADE_COSTS.get(current_level, 0))
+	if cost <= 0 or not GlobalEconomy.remove_gold(cost):
+		return false
+	if _rng.randf() <= float(LEVEL_UPGRADE_RATES.get(current_level, 0.5)):
+		item["required_level"] = GearDatabase.LEVEL_TIERS[tier_index + 1]
+		_write_item_record(record, item)
+		_save_and_emit()
+		gear_operation_completed.emit("نجحت ترقية المستوى إلى %d." % int(item["required_level"]))
+		return true
+	_save_gear_data()
+	gear_operation_completed.emit("فشلت ترقية المستوى؛ خُصم الذهب وبقي المستوى كما هو.")
+	return false
+
+func upgrade_quality_to_super(slot: String) -> bool:
+	if not equipment.has(slot) or equipment[slot].is_empty():
+		return false
+	return upgrade_quality_by_id(str(equipment[slot].get("instance_id", "")))
+
+func upgrade_quality_by_id(instance_id: String) -> bool:
+	var record := _find_item_record(instance_id)
+	if record.is_empty():
+		return false
+	var item: Dictionary = record["item"]
+	var next := GearDatabase.get_quality_upgrade(str(item.get("quality", "Normal")))
+	if next.is_empty():
+		return false
+	if not GlobalEconomy.remove_gold(int(next["cost"])):
+		return false
+	if _rng.randf() <= float(next["chance"]):
+		item["quality"] = str(next["quality"])
+		_write_item_record(record, item)
+		_save_and_emit()
+		gear_operation_completed.emit("نجحت ترقية الجودة إلى %s." % str(next["quality"]))
+		return true
+	_save_gear_data()
+	gear_operation_completed.emit("فشلت ترقية الجودة؛ خُصم الذهب فقط ولم تتغير القطعة.")
+	return false
+
+func open_socket_by_id(instance_id: String) -> bool:
+	var record := _find_item_record(instance_id)
+	if record.is_empty():
+		return false
+	var item: Dictionary = record["item"]
+	var count := clampi(int(item.get("socket_count", item.get("sockets", []).size())), 0, GearDatabase.SOCKET_MAX)
+	if count >= GearDatabase.SOCKET_MAX:
+		return false
+	var cost := int(SOCKET_OPEN_COSTS[count])
+	if not GlobalEconomy.remove_gold(cost):
+		return false
+	var sockets: Array = item.get("sockets", []).duplicate(true)
+	while sockets.size() < count:
+		sockets.append("Empty")
+	sockets.append("Empty")
+	item["socket_count"] = count + 1
+	item["sockets"] = sockets
+	_write_item_record(record, item)
+	_save_and_emit()
+	gear_operation_completed.emit("تم فتح المقبس رقم %d." % (count + 1))
+	return true
+
+func socket_gem_by_id(instance_id: String, socket_index: int, gem_id: String) -> bool:
+	var record := _find_item_record(instance_id)
+	if record.is_empty() or GearDatabase.get_gem(gem_id).is_empty():
+		return false
+	var item: Dictionary = record["item"]
+	var count := clampi(int(item.get("socket_count", item.get("sockets", []).size())), 0, GearDatabase.SOCKET_MAX)
+	if socket_index < 0 or socket_index >= count:
+		return false
+	var gem_index := _find_gem_index(gem_id)
+	if gem_index < 0 or not GlobalEconomy.remove_gold(GEM_SOCKET_COST):
+		return false
+	var sockets: Array = item.get("sockets", []).duplicate(true)
+	while sockets.size() < count:
+		sockets.append("Empty")
+	sockets[socket_index] = gem_id
+	_consume_inventory_index(gem_index, 1)
+	item["sockets"] = sockets
+	item["socket_count"] = count
+	_write_item_record(record, item)
+	_save_and_emit()
+	gear_operation_completed.emit("تم تركيب الجوهرة؛ الجوهرة السابقة -إن وجدت- أتلفت.")
+	return true
+
+func socket_gem(slot: String, socket_index: int, gem_id: String) -> bool:
+	if not equipment.has(slot) or equipment[slot].is_empty():
+		return false
+	return socket_gem_by_id(str(equipment[slot].get("instance_id", "")), socket_index, gem_id)
+
+func get_equipment_bonus() -> Dictionary:
+	var result := {"physical_attack_pct": 0.0, "magic_attack_pct": 0.0, "experience_pct": 0.0, "dodge_pct": 0.0, "magic_defense_pct": 0.0, "critical_pct": 0.0, "defense_pct": 0.0}
+	for slot in equipment:
+		var item: Dictionary = equipment[slot]
+		for gem_id in item.get("sockets", []):
+			var gem := GearDatabase.get_gem(str(gem_id))
+			var stat := str(gem.get("stat", ""))
+			if result.has(stat):
+				result[stat] = float(result[stat]) + float(gem.get("percent", 0.0))
+	return result
+
+func get_item_final_stats(item: Dictionary) -> Dictionary:
+	var stats: Dictionary = item.get("base_stats", {}).duplicate(true)
+	var plus := int(item.get("plus", 0))
+	var quality := str(item.get("quality", "Normal"))
+	var multiplier := float(GearDatabase.QUALITY_MULTIPLIERS.get(quality, 1.0))
+	for stat in stats:
+		stats[stat] = int(round(float(stats[stat]) * (1.0 + plus * 0.05) * multiplier))
+	for gem_id in item.get("sockets", []):
+		var gem := GearDatabase.get_gem(str(gem_id))
+		if gem.is_empty():
+			continue
+		var stat := str(gem["stat"])
+		stats[stat] = float(stats.get(stat, 0.0)) + float(gem["percent"])
+	return stats
+
+func serialize_gear_data() -> Dictionary:
+	return {"inventory": inventory.duplicate(true), "equipment": equipment.duplicate(true), "upgrade_points": upgrade_points}
+
+func deserialize_gear_data(data: Dictionary) -> void:
+	var stored_inventory = data.get("inventory", [])
+	if stored_inventory is Array:
+		inventory.clear()
+		for entry in stored_inventory:
+			if entry is Dictionary:
+				inventory.append(_normalize_item(entry))
+	var stored_equipment = data.get("equipment", {})
+	if stored_equipment is Dictionary:
+		for slot in GearDatabase.SLOTS:
+			var item = stored_equipment.get(slot, {})
+			equipment[slot] = _normalize_item(item) if item is Dictionary and not item.is_empty() else {}
+	upgrade_points = maxi(0, int(data.get("upgrade_points", 0)))
+	inventory_changed.emit()
+	equipment_changed.emit()
+
+func save_gear_data() -> bool:
+	return GlobalEconomy.save_gear_data(serialize_gear_data())
+
+func load_gear_data() -> bool:
+	var economy := get_node_or_null("/root/GlobalEconomy")
+	if economy == null:
+		return false
+	var data: Dictionary = economy.load_gear_data()
+	initialize_from_save(data)
+	return not data.is_empty()
+
+func _normalize_item(source: Dictionary) -> Dictionary:
+	var item := source.duplicate(true)
+	if not item.has("instance_id") or str(item["instance_id"]).is_empty():
+		item["instance_id"] = _new_instance_id(str(item.get("id", "item")))
+	var sockets: Array = item.get("sockets", []).duplicate(true)
+	var count := clampi(int(item.get("socket_count", sockets.size())), 0, GearDatabase.SOCKET_MAX)
+	while sockets.size() < count:
+		sockets.append("Empty")
+	if sockets.size() > count:
+		sockets.resize(count)
+	item["socket_count"] = count
+	item["sockets"] = sockets
+	return item
+
+func _find_item_record(instance_id: String) -> Dictionary:
+	if instance_id.is_empty():
+		return {}
+	var index := _find_inventory_index(instance_id)
+	if index >= 0:
+		return {"kind": "inventory", "index": index, "item": inventory[index]}
+	for slot in equipment:
+		if str(equipment[slot].get("instance_id", "")) == instance_id:
+			return {"kind": "equipment", "slot": slot, "item": equipment[slot]}
+	return {}
+
+func _write_item_record(record: Dictionary, item: Dictionary) -> void:
+	if str(record.get("kind", "")) == "inventory":
+		var index := _find_inventory_index(str(item.get("instance_id", "")))
+		if index >= 0:
+			inventory[index] = item
+	elif str(record.get("kind", "")) == "equipment":
+		equipment[str(record["slot"])] = item
+
+func _consume_inventory_item(instance_id: String, amount: int) -> void:
+	var index := _find_inventory_index(instance_id)
+	if index >= 0:
+		_consume_inventory_index(index, amount)
+
+func _consume_inventory_index(index: int, amount: int) -> void:
+	if index < 0 or index >= inventory.size():
+		return
+	var remaining := int(inventory[index].get("quantity", 1)) - amount
+	if remaining <= 0:
+		inventory.remove_at(index)
+	else:
+		inventory[index]["quantity"] = remaining
+
+func _find_inventory_index(instance_id: String) -> int:
+	for index in range(inventory.size()):
+		if str(inventory[index].get("instance_id", "")) == instance_id:
+			return index
+	return -1
+
+func _find_gem_index(gem_id: String) -> int:
+	for index in range(inventory.size()):
+		if str(inventory[index].get("gem_id", "")) == gem_id and int(inventory[index].get("quantity", 0)) > 0:
+			return index
+	return -1
+
+func _new_instance_id(prefix: String) -> String:
+	return "%s_%d_%d" % [prefix, Time.get_ticks_usec(), _rng.randi()]
+
+func _save_and_emit() -> void:
+	_save_gear_data()
+	inventory_changed.emit()
+	equipment_changed.emit()
+
+func _save_gear_data() -> void:
+	var snapshot := serialize_gear_data()
+	var economy := get_node_or_null("/root/GlobalEconomy")
+	if economy != null:
+		economy.save_gear_data(snapshot)
+	var game_state := get_node_or_null("/root/GameState")
+	if game_state != null:
+		_syncing_profile = true
+		game_state.profile["inventory"] = inventory.duplicate(true)
+		game_state.save_local()
+		if game_state.has_signal("inventory_changed"):
+			game_state.inventory_changed.emit()
+		_syncing_profile = false
+
+func _on_game_inventory_changed() -> void:
+	if _syncing_profile:
+		return
+	var game_state := get_node_or_null("/root/GameState")
+	if game_state == null:
+		return
+	if not _gear_restore_received and inventory.is_empty():
+		var legacy = game_state.profile.get("inventory", [])
+		if legacy is Array:
+			for entry in legacy:
+				if entry is Dictionary:
+					inventory.append(_normalize_item(entry))
+			if not inventory.is_empty():
+				_save_gear_data()
+				inventory_changed.emit()
+		return
+	_syncing_profile = true
+	game_state.profile["inventory"] = inventory.duplicate(true)
+	_syncing_profile = false
