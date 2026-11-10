@@ -67,12 +67,20 @@ func get_current_class() -> String: return current_class
 func get_level() -> int: return level
 func get_required_xp() -> int: return XP_BASE * level
 func get_class_name() -> String: return str(CLASS_DATA.get(current_class, {}).get("name", current_class))
+func get_promotion_stage() -> int:
+	var stage := 0
+	for milestone in ARCHER_EVOLUTION_LEVELS:
+		if level >= int(milestone): stage += 1
+	return stage
+func get_physical_attack_bonus() -> int:
+	return int(attributes.get("strength", 0)) + int(attributes.get("agility", 0)) / 2
 
 func choose_class(class_id: String) -> bool:
 	if not CLASS_DATA.has(class_id): return false
 	if level > 1 and class_id != current_class: return false
 	current_class = class_id
-	attributes = (CLASS_DATA[class_id]["base"] as Dictionary).duplicate(true)
+	var base_stats: Dictionary = CLASS_DATA[class_id]["base"]
+	attributes = base_stats.duplicate(true)
 	_recalculate_derived()
 	character_changed.emit()
 	_save()
