@@ -1,4 +1,5 @@
 name: Extract complete XAPK into Godot project
+# Workflow is intentionally path-triggered once installed, and can also be run manually.
 
 on:
   workflow_dispatch:
