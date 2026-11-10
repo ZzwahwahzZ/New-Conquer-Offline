@@ -47,6 +47,10 @@ jobs:
           unzip -q /tmp/godot.zip -d /tmp/godot
           sudo install "/tmp/godot/Godot_v$V-stable_linux.x86_64" /usr/local/bin/godot
           godot --version
+          if ! command -v xvfb-run >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y xvfb
+          fi
           echo "Tool installation completed."
 
       - name: Analyze original Android client and native libraries
@@ -331,7 +335,7 @@ jobs:
           set -euo pipefail
           godot --headless --path . --editor --quit 2>&1 | tee /tmp/godot-import.log
           if grep -E "ERROR:|SCRIPT ERROR:" /tmp/godot-import.log; then echo "Godot import reported errors"; exit 1; fi
-          godot --headless --path . --quit-after 3 2>&1 | tee /tmp/godot-runtime.log
+          xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 godot --path . --rendering-method gl_compatibility --rendering-driver opengl3 --quit-after 3 2>&1 | tee /tmp/godot-runtime.log
           if grep -E "ERROR:|SCRIPT ERROR:" /tmp/godot-runtime.log; then echo "Godot runtime reported errors"; exit 1; fi
           godot --headless --path . --script res://scripts/offline_smoke_test.gd
           echo "Godot import, runtime, and local save/progression smoke tests passed."
