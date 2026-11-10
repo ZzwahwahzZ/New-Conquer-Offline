@@ -261,7 +261,7 @@ func _start_rapid_fire() -> void:
 	for hit_index in range(2):
 		if is_instance_valid(target) and target.has_method("take_damage"):
 			var damage := int((14 + level_bonus * 3) * _xp_damage_multiplier)
-			target.take_damage(damage)
+			target.call("take_damage", damage)
 			combat_hit.emit(target, damage)
 	_gain_xp_skill(10.0)
 
