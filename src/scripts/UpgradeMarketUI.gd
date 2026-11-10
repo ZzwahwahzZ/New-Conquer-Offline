@@ -233,6 +233,7 @@ func _build_socket_tab() -> void:
 	_gem_button.pressed.connect(_on_socket_gem)
 	page.add_child(_gem_button)
 	_socket_item.item_selected.connect(func(_index): _refresh_sockets())
+	_socket_index.item_selected.connect(func(_index): _refresh_sockets())
 
 func _section_panel(title_text: String) -> PanelContainer:
 	var panel := PanelContainer.new()
@@ -419,9 +420,7 @@ func _on_level_upgrade() -> void:
 	var id := _selected_instance(_level_item)
 	if id.is_empty():
 		return
-	var ok := GearSystem.upgrade_item_level_by_id(id)
-	if not ok and GlobalEconomy.current_gold >= 0:
-		_set_status("لم تنجح المحاولة أو لا يمكن ترقية هذه القطعة حالياً.")
+	GearSystem.upgrade_item_level_by_id(id)
 	_refresh_all()
 
 func _on_quality_upgrade() -> void:
