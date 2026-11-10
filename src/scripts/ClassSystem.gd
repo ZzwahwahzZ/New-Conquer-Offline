@@ -137,6 +137,12 @@ func get_skill_proficiency(skill_id: String) -> Dictionary:
 	var data: Dictionary = skill_proficiency.get(skill_id, {})
 	return data.duplicate(true)
 
+func take_damage(amount: int) -> void:
+	if amount <= 0: return
+	hp = maxi(0, hp - amount)
+	stats_changed.emit()
+	_save()
+
 func set_stamina(value: float) -> void: stamina = clampf(value, 0.0, max_stamina)
 func consume_stamina(value: float) -> bool:
 	if value < 0.0 or stamina < value: return false
@@ -145,8 +151,9 @@ func consume_stamina(value: float) -> bool:
 	_save()
 	return true
 func restore_stamina(value: float) -> void:
+	var previous := stamina
 	stamina = minf(max_stamina, stamina + maxf(0.0, value))
-	stats_changed.emit()
+	if absf(stamina - previous) >= 0.25: stats_changed.emit()
 
 func _recalculate_derived(save: bool = true) -> void:
 	var vitality := int(attributes.get("vitality", 0))
