@@ -274,8 +274,8 @@ func basic_attack() -> bool:
 	var damage := int(round((20 + ClassSystem.get_physical_attack_bonus() * 0.1) * _xp_damage_multiplier))
 	if assassin:
 		for i in range(2):
-			if is_instance_valid(target): target.take_damage(damage)
-	else: target.take_damage(damage)
+			if is_instance_valid(target): target.call("take_damage", damage)
+	else: target.call("take_damage", damage)
 	combat_hit.emit(target, damage * (2 if assassin else 1))
 	return true
 
