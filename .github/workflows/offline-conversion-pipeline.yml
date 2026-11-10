@@ -32,19 +32,6 @@ jobs:
           test -s source_game/extracted/com.Tq.CQ2ClientAndroid.Arabic.apk
           test -s source_game/extracted/config.arm64_v8a.apk
 
-      - name: Extract original Conquer resources for Godot
-        run: |
-          set -euo pipefail
-          python3 tools/offline_conversion/extract_original_assets.py
-
-      - name: Preserve converted original assets as workflow artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: original-conquer-godot-assets
-          path: build/original-godot-assets/
-          if-no-files-found: error
-          retention-days: 30
-
       - name: Install reverse engineering and Godot tools
         run: |
           set -euo pipefail
@@ -64,6 +51,20 @@ jobs:
           sudo apt-get install -y xvfb p7zip-full
           command -v 7z >/dev/null
           echo "Tool installation completed."
+
+      - name: Extract original Conquer resources for Godot
+        run: |
+          set -euo pipefail
+          python3 tools/offline_conversion/extract_original_assets.py
+
+      - name: Preserve converted original assets as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-conquer-godot-assets
+          path: build/original-godot-assets/
+          if-no-files-found: error
+          retention-days: 30
+
 
       - name: Analyze original Android client and native libraries
         run: |
