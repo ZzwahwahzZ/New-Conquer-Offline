@@ -24,6 +24,7 @@ const SKILL_DATA := {
 	"Fly":{"cooldown":30.0,"mana":20,"stamina":0.0},
 	"Scatter":{"cooldown":8.0,"mana":15,"stamina":5.0},
 	"Rapid_Fire":{"cooldown":5.0,"mana":10,"stamina":4.0},
+	"Kinetic_Spark":{"cooldown":5.0,"mana":10,"stamina":4.0},
 	"XP_Mode":{"cooldown":60.0,"mana":0,"stamina":0.0}
 }
 var _move_target: Vector3
@@ -177,7 +178,7 @@ func cast_skill(skill_id: String) -> bool:
 	if not SKILL_DATA.has(skill_id): return false
 	if float(_cooldowns.get(skill_id, 0.0)) > 0.0: return false
 	if skill_id in ["Fly", "Scatter"] and not _is_archer_family(): return false
-	if skill_id == "Rapid_Fire" and (ClassSystem.current_class != "Oriental_Assassin" or not _has_dual_knives()): return false
+	if skill_id in ["Rapid_Fire", "Kinetic_Spark"] and (ClassSystem.current_class != "Oriental_Assassin" or not _has_dual_knives()): return false
 	if skill_id == "XP_Mode" and _xp_skill < 100.0: return false
 	var data: Dictionary = SKILL_DATA[skill_id]
 	if ClassSystem.mp < int(data.mana) or ClassSystem.stamina < float(data.stamina): return false
@@ -194,7 +195,7 @@ func cast_skill(skill_id: String) -> bool:
 			_fly_timer = fly_duration
 		"Scatter":
 			_cast_scatter()
-		"Rapid_Fire":
+		"Rapid_Fire", "Kinetic_Spark":
 			_start_rapid_fire()
 		"XP_Mode":
 			_xp_skill = 0.0
@@ -240,8 +241,10 @@ func is_airborne() -> bool:
 	return _flying or _jumping or global_position.y > _ground_y + 0.5
 
 func _cast_scatter() -> void:
-	var radius := 7.0 + float(_skill_proficiency["Scatter"].level) * 0.25
-	var damage := int((18 + int(ClassSystem.get_physical_attack_bonus() * 0.1) + int(_skill_proficiency["Scatter"].level) * 3) * _xp_damage_multiplier)
+	var scatter_proficiency := ClassSystem.get_skill_proficiency("Scatter")
+	var scatter_level := int(scatter_proficiency.get("level", 1))
+	var radius := 7.0 + float(scatter_level) * 0.25
+	var damage := int((18 + int(ClassSystem.get_physical_attack_bonus() * 0.1) + scatter_level * 3) * _xp_damage_multiplier)
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if is_instance_valid(enemy) and enemy.has_method("take_damage") and global_position.distance_to(enemy.global_position) <= radius:
 			enemy.take_damage(damage)
@@ -251,7 +254,8 @@ func _cast_scatter() -> void:
 func _start_rapid_fire() -> void:
 	var target := _nearest_enemy(8.0)
 	if target == null: return
-	var level_bonus := int(_skill_proficiency["Rapid_Fire"].level)
+	var rapid_proficiency := ClassSystem.get_skill_proficiency("Rapid_Fire")
+	var level_bonus := int(rapid_proficiency.get("level", 1))
 	for hit_index in range(2):
 		if is_instance_valid(target) and target.has_method("take_damage"):
 			var damage := int((14 + level_bonus * 3) * _xp_damage_multiplier)
@@ -270,7 +274,6 @@ func basic_attack() -> bool:
 		for i in range(2):
 			if is_instance_valid(target): target.take_damage(damage)
 	else: target.take_damage(damage)
-	_gain_skill_proficiency("Rapid_Fire" if assassin else "Jump", 1)
 	combat_hit.emit(target, damage * (2 if assassin else 1))
 	return true
 
