@@ -7,6 +7,10 @@ static func build(parent: Node3D, city: String, size: float) -> void:
  _gate(root,Vector3(0,0,size*0.43))
  if city=="TwinCity":
   _gate(root,Vector3(-size*0.43,0,0)); _gate(root,Vector3(size*0.43,0,0))
+  # Inner ceremonial paifang gates frame the central plaza within the opening camera view.
+  _gate(root,Vector3(0,0,-38.0))
+  _gate(root,Vector3(-38.0,0,0))
+  _gate(root,Vector3(38.0,0,0))
   _wall(root,size)
   for i in range(8):
    var a=TAU*float(i)/8.0; _pillar(root,Vector3(cos(a)*17.0,0,sin(a)*17.0))
