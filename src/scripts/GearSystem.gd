@@ -53,7 +53,7 @@ func _migrate_legacy_inventory() -> void:
 			remaining.append(entry)
 			continue
 		var item_id := str(entry.get("id", ""))
-		var is_gear := entry.has("slot") or entry.has("weapon_family") or str(entry.get("item_type", "")) in ["gem", "plus_stone"] or not GearDatabase.get_blueprint(item_id).is_empty()
+		var is_gear: bool = entry.has("slot") or entry.has("weapon_family") or str(entry.get("item_type", "")) in ["gem", "plus_stone"] or not GearDatabase.get_blueprint(item_id).is_empty()
 		if is_gear:
 			if not _gear_restore_received:
 				inventory.append(_normalize_item(entry))
@@ -255,7 +255,7 @@ func _upgrade_plus_dictionary(item: Dictionary) -> bool:
 	var current_plus := int(item.get("plus", 0))
 	if current_plus >= PLUS_MAX:
 		return false
-	var required := PLUS_POINTS_REQUIRED[current_plus]
+	var required: int = int(PLUS_POINTS_REQUIRED[current_plus])
 	if upgrade_points < required and not buy_plus_points(required - upgrade_points):
 		return false
 	upgrade_points -= required
@@ -293,7 +293,7 @@ func compose_item(main_instance_id: String, minor_instance_ids: Array[String]) -
 		return false
 	for stone_id in consume_counts:
 		_consume_inventory_item(str(stone_id), int(consume_counts[stone_id]))
-	var required := PLUS_POINTS_REQUIRED[plus]
+	var required: int = int(PLUS_POINTS_REQUIRED[plus])
 	main_item["compose_points"] = int(main_item.get("compose_points", 0)) + points
 	if int(main_item["compose_points"]) >= required:
 		main_item["compose_points"] = int(main_item["compose_points"]) - required
@@ -321,7 +321,7 @@ func get_compose_progress(item_instance_id: String) -> Dictionary:
 		return {}
 	var item: Dictionary = record["item"]
 	var plus := clampi(int(item.get("plus", 0)), 0, PLUS_MAX)
-	var required := 0 if plus >= PLUS_MAX else PLUS_POINTS_REQUIRED[plus]
+	var required: int = 0 if plus >= PLUS_MAX else int(PLUS_POINTS_REQUIRED[plus])
 	return {"current": int(item.get("compose_points", 0)), "required": required, "plus": plus}
 
 func upgrade_item_level(slot: String) -> bool:
