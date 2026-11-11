@@ -32,6 +32,7 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  parent.add_child(body)
  _bounds(parent,size)
  _roads(slot,size,city)
+ _place_karst_models(slot,city,size)
 static func _height_mesh(city: String,size: float) -> ArrayMesh:
  var path: String = HEIGHTS.get(city,"")
  var image: Image = Image.load_from_file(path) if path != "" and FileAccess.file_exists(path) else null
@@ -74,8 +75,11 @@ static func _roads(slot: Node3D,size: float,city: String) -> void:
   var m:=StandardMaterial3D.new(); m.albedo_color=Color("#b8ad96"); m.roughness=1.0; road.material_override=m; slot.add_child(road)
 
 static func _place_karst_models(parent: Node3D,city: String,size: float) -> void:
- if city=="TwinCity": return
- var model_name: String = KARST_MODELS[["DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"].find(city)%KARST_MODELS.size()]
+ if city=="TwinCity":
+  # TwinCity receives a smaller imperial ruin landmark while keeping its central plaza open.
+  pass
+ var city_index := ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"].find(city)
+ var model_name: String = KARST_MODELS[maxi(city_index,0)%KARST_MODELS.size()]
  var path := "res://assets/terrain/models/" + model_name
  if not ResourceLoader.exists(path): return
  var packed := load(path) as PackedScene
@@ -102,7 +106,7 @@ static func _place_karst_models(parent: Node3D,city: String,size: float) -> void
   var target := 26.0
   var factor := target/maxf(bounds.size.x,maxf(bounds.size.y,bounds.size.z))
   instance.scale = Vector3.ONE*factor
- instance.position = Vector3(size*0.28,0.0,size*0.24)
+ instance.position = Vector3(size*0.28,0.0,size*0.24) if city!="TwinCity" else Vector3(92.0,0.0,82.0)
  parent.add_child(instance)
  if city=="Waterlands":
   var island_path := "res://assets/terrain/models/tropical-island.glb"
@@ -114,3 +118,14 @@ static func _place_karst_models(parent: Node3D,city: String,size: float) -> void
      island.name = "TropicalIslandImported"
      island.position = Vector3(-size*0.28,0.0,-size*0.22)
      parent.add_child(island)
+     _add_scene_mesh_collisions(island)
+
+static func _add_scene_mesh_collisions(root: Node) -> void:
+ var stack: Array[Node] = [root]
+ while not stack.is_empty():
+  var node: Node = stack.pop_back()
+  for child in node.get_children(): stack.append(child)
+  if node is MeshInstance3D:
+   var mesh_node := node as MeshInstance3D
+   if mesh_node.mesh != null and mesh_node.mesh.get_surface_count()>0:
+    mesh_node.create_trimesh_collision()
