@@ -37,12 +37,18 @@ func _build_arena() -> void:
   player = CharacterBody3D.new()
   player.name = "LocalPlayer"
   player.set_script(load("res://src/scripts/Player.gd"))
-  player.position = Vector3(0,0.775,22)
+  player.position = Vector3(0,0.02,22)
   _add_capsule(player,Color(0.2,0.55,0.95),0.34,1.55)
-  player.safe_margin = 0.001
-  player.floor_snap_length = 0.1
+  player.safe_margin = 0.03
+  player.floor_snap_length = 0.35
+  player.floor_stop_on_slope = true
+  player.floor_block_on_wall = true
   player.floor_max_angle = deg_to_rad(45.0)
   add_child(player)
+  var ground_query := PhysicsRayQueryParameters3D.create(Vector3(0.0,100.0,22.0),Vector3(0.0,-100.0,22.0))
+  ground_query.collision_mask = 1
+  var ground_hit := get_world_3d().direct_space_state.intersect_ray(ground_query)
+  if not ground_hit.is_empty(): player.position.y = float(ground_hit.position.y) + 0.02
   player.add_to_group("player")
   var world_manager := Node3D.new()
   world_manager.name = "WorldManager"
