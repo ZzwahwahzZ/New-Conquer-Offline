@@ -8,6 +8,8 @@ const HEIGHTS := {
  "Waterlands":"res://assets/terrain/heightmaps/03_tropical_archipelago_heightmap_16bit.png",
  "DarkForest":"res://assets/terrain/heightmaps/05_dark_forest_valleys_heightmap_16bit.png"}
 const COLORS := {"TwinCity":Color("#6c9849"),"DesertLand":Color("#b58a4e"),"VolcanoLand":Color("#393437"),"IceLand":Color("#b9d9e8"),"Waterlands":Color("#3a9e91"),"DarkForest":Color("#294b32")}
+const MATERIALS := {"TwinCity":"Ground044_2K-JPG","DesertLand":"Ground061_2K-JPG","VolcanoLand":"Rock027_2K-JPG","IceLand":"Snow008C_2K-JPG","Waterlands":"Ground044_2K-JPG","DarkForest":"Ground053_2K-JPG"}
+const KARST_MODELS := ["model.glb","model (1).glb","model (3).glb"]
 static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  var size: float = CITY_SIZE.get(city,450.0)
  var mesh := _height_mesh(city,size)
@@ -70,3 +72,32 @@ static func _roads(slot: Node3D,size: float,city: String) -> void:
   var road:=MeshInstance3D.new(); var p:=PlaneMesh.new(); p.size=Vector2(9.0,size*0.46); road.mesh=p
   road.rotation_degrees.y=i*90.0; road.position=Vector3(0,0.025,0)
   var m:=StandardMaterial3D.new(); m.albedo_color=Color("#b8ad96"); m.roughness=1.0; road.material_override=m; slot.add_child(road)
+
+static func _place_karst_models(parent: Node3D,city: String,size: float) -> void:
+ if city=="TwinCity": return
+ var model_name: String = KARST_MODELS[["DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"].find(city)%KARST_MODELS.size()]
+ var path := "res://assets/terrain/models/" + model_name
+ if not ResourceLoader.exists(path): return
+ var packed := load(path) as PackedScene
+ if packed == null: return
+ var instance := packed.instantiate() as Node3D
+ if instance == null: return
+ instance.name = "ImportedKarstLandmark"
+ var bounds := AABB()
+ var found := false
+ var stack: Array[Node] = [instance]
+ while not stack.is_empty():
+  var node: Node = stack.pop_back()
+  for child in node.get_children(): stack.append(child)
+  if node is MeshInstance3D and node.mesh != null:
+   var mesh_node := node as MeshInstance3D
+   bounds = mesh_node.get_aabb() if not found else bounds.merge(mesh_node.get_aabb())
+   found = true
+   for surface in range(mesh_node.mesh.get_surface_count()):
+    mesh_node.set_surface_override_material(surface,StandardMaterial3D.new())
+ if found and bounds.size.length()>0.001:
+  var target := 26.0
+  var factor := target/maxf(bounds.size.x,maxf(bounds.size.y,bounds.size.z))
+  instance.scale = Vector3.ONE*factor
+ instance.position = Vector3(size*0.28,0.0,size*0.24)
+ parent.add_child(instance)
