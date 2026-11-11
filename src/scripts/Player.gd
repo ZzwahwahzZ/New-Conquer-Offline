@@ -52,7 +52,7 @@ func _ready() -> void:
 	_safe_spawn = global_position
 	_move_target = global_position
 	add_to_group("player")
-	_ground_y = 0.775
+	_ground_y = global_position.y
 	floor_snap_length = 0.35
 	floor_max_angle = deg_to_rad(45.0)
 	floor_stop_on_slope = true
