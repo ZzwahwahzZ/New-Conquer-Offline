@@ -320,6 +320,19 @@ func _process(delta: float) -> void:
 		if is_instance_valid(monster):
 			var sleeping := monster.global_position.distance_squared_to(focus_position) > SLEEP_DISTANCE*SLEEP_DISTANCE
 			monster.call("set_sleeping",sleeping)
+	_update_world_distance_culling(focus_position)
+
+func _update_world_distance_culling(focus_position: Vector3) -> void:
+	if not is_instance_valid(current_world):
+		return
+	for node in get_tree().get_nodes_in_group("distance_cull_world"):
+		if not is_instance_valid(node) or not current_world.is_ancestor_of(node):
+			continue
+		var distance_squared := node.global_position.distance_squared_to(focus_position)
+		var should_render := distance_squared <= 230.0 * 230.0
+		if node.visible != should_render:
+			node.visible = should_render
+
 
 func save_world_state() -> void:
 	if is_instance_valid(player):
