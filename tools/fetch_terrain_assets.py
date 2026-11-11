@@ -11,7 +11,7 @@ from urllib.error import URLError, HTTPError
 REPO = "ZzwahwahzZ/clash-of-legends-terrain-assets"
 API = f"https://huggingface.co/api/datasets/{REPO}/tree/main"
 RAW = f"https://huggingface.co/datasets/{REPO}/resolve/main/"
-ROOT = Path("assets/terrain")
+ROOT = Path("assets/environment")
 HEIGHTS = [
  "01_volcanic_caldera_heightmap_16bit.png","02_glacial_mountains_heightmap_16bit.png",
  "03_tropical_archipelago_heightmap_16bit.png","04_desert_dunes_heightmap_16bit.png",
