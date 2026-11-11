@@ -38,9 +38,9 @@ func build_roster() -> void:
 		var member_index: int = index % 25
 		var level := _rng.randi_range(1, 130)
 		var plus := _rng.randi_range(0, 12)
-		var quality := ["Normal","Elite","Super"][_rng.randi_range(0,2)]
+		var quality: String = str(["Normal","Elite","Super"][_rng.randi_range(0,2)])
 		var class_roll := _rng.randf()
-		var class_type := "Archer" if class_roll < 0.38 else ("Oriental_Assassin" if class_roll < 0.68 else CLASS_TYPES[_rng.randi_range(2,6)])
+		var class_type: String = "Archer" if class_roll < 0.38 else ("Oriental_Assassin" if class_roll < 0.68 else str(CLASS_TYPES[_rng.randi_range(2,6)]))
 		var donation := _rng.randi_range(0, 850000)
 		var rank := "Member"
 		if member_index == 0:

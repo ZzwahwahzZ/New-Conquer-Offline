@@ -418,6 +418,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.keycode == KEY_K:
 			_toggle_skills_ui()
 			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_G and is_instance_valid(_guild_ui):
+			_guild_ui.call("toggle")
+			get_viewport().set_input_as_handled()
 
 func _on_level_up(new_level: int) -> void:
 	# The actual per-level increments are recorded by ClassSystem.
@@ -756,11 +759,6 @@ func _build_step12_widgets() -> void:
 	guild_button.position = Vector2(394,112)
 	guild_button.pressed.connect(Callable(_guild_ui,"toggle"))
 	_root.add_child(guild_button)
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_G and is_instance_valid(_guild_ui):
-		_guild_ui.call("toggle")
-		get_viewport().set_input_as_handled()
-
 func _interact_nearest_npc() -> void:
 	if not is_instance_valid(_player): _find_player()
 	if not is_instance_valid(_player): return

@@ -65,7 +65,7 @@ func refresh() -> void:
 	var magic_defense := int(round((float(attrs.spirit)+float(attrs.vitality)*0.5+float(gear_stats.magic_defense))*(1.0+float(gems.get("magic_defense_pct",0.0))/100.0)))
 	var dodge := float(attrs.agility)*0.15+float(gems.get("dodge_pct",0.0))
 	var potency := ClassSystem.level*2+int(attrs.strength)+int(attrs.agility)+int(attrs.vitality)+int(attrs.spirit)+min_attack+defense+magic_defense
-	_set("name","الاسم: %s" % str(profile.get("character_name","Player")))
+	_set_stat_text("name","الاسم: %s" % str(profile.get("character_name","Player")))
 	_set("class","الفئة: %s" % ClassSystem.get_class_name_ar())
 	_set("title","الرتبة: %s" % ClassSystem.get_title())
 	_set("level","المستوى: %d" % ClassSystem.level)

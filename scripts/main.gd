@@ -53,10 +53,10 @@ func _build_arena() -> void:
   inventory_manager.set_script(load("res://src/scripts/InventoryManager.gd"))
   inventory_manager.visible = false
   inventory_layer.add_child(inventory_manager)
-  var camera_rig := load("res://src/scenes/IsometricCamera.tscn").instantiate()
+  var camera_rig: Node3D = load("res://src/scenes/IsometricCamera.tscn").instantiate() as Node3D
   camera_rig.set("target_path", NodePath("../LocalPlayer"))
   add_child(camera_rig)
-  var hud := load("res://src/scenes/HUD.tscn").instantiate()
+  var hud: CanvasLayer = load("res://src/scenes/HUD.tscn").instantiate() as CanvasLayer
   add_child(hud)
   var layer := CanvasLayer.new()
   add_child(layer)

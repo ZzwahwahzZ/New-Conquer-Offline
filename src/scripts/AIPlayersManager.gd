@@ -212,7 +212,7 @@ func _simulate_donation() -> void:
 	var guild_system := get_tree().get_first_node_in_group("guild_system")
 	if not is_instance_valid(guild_system) or not guild_system.call("record_bot_donation",player_id,amount):
 		return
-	var updated := roster.get_player(player_id)
+	var updated: Dictionary = roster.get_player(player_id)
 	for active_bot in _active_bots:
 		if is_instance_valid(active_bot) and int(active_bot.get("bot_data").get("id",-1)) == player_id:
 			active_bot.call("configure",updated,active_bot.global_position,_get_diplomacy_color(str(updated.guild_name)))
