@@ -48,8 +48,11 @@ var _attack_timer := 0.0
 var _xp_mode_timer := 0.0
 var _xp_damage_multiplier := 1.0
 var _visual: Node3D
+var _safe_spawn := Vector3.ZERO
+const WORLD_FALL_LIMIT := -3.0
 
 func _ready() -> void:
+	_safe_spawn = global_position
 	_move_target = global_position
 	add_to_group("player")
 	_ground_y = global_position.y
@@ -82,6 +85,9 @@ func _ready() -> void:
 	if not ClassSystem.level_up.is_connected(_on_class_level_up):
 		ClassSystem.level_up.connect(_on_class_level_up)
 	_sync_class_stats()
+
+func set_safe_spawn(point: Vector3) -> void:
+	_safe_spawn = point
 
 func move_to_world_position(destination: Vector3) -> void:
 	_joystick_active = false
@@ -138,6 +144,15 @@ func _physics_process(delta: float) -> void:
 			ClassSystem.restore_stamina(stamina_regen_per_second * delta * 1.35)
 		elif not _flying:
 			ClassSystem.restore_stamina(stamina_regen_per_second * delta)
+	var world := get_tree().get_first_node_in_group("world_manager")
+	var limit := 300.0
+	if is_instance_valid(world):
+		limit = 300.0 if str(world.get("current_settlement")) == "TwinCity" else 225.0
+	if global_position.y < WORLD_FALL_LIMIT or absf(global_position.x) > limit or absf(global_position.z) > limit:
+		global_position = _safe_spawn + Vector3.UP * 1.5
+		velocity = Vector3.ZERO
+		_jumping = false
+		_flying = false
 	move_and_slide()
 	stamina_changed.emit(ClassSystem.stamina, ClassSystem.max_stamina)
 
