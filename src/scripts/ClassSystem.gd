@@ -6,6 +6,7 @@ signal level_up(new_level: int)
 signal xp_changed(current_xp: int, required_xp: int)
 signal xp_skill_changed(value: float, maximum: float)
 const PROMOTION_LEVELS := [15, 40, 70, 100, 110]
+const ARCHER_ASSASSIN_EVOLUTION_LEVEL := 70
 const XP_BASE := 100
 const CLASS_DATA := {
 	"Archer": {"name":"Archer", "name_ar":"الآرتشر", "base":{"strength":15,"agility":35,"vitality":15,"spirit":0}, "weapon_families":["Bow","Arrows"], "evolutions":["Oriental_Assassin"]},
@@ -99,7 +100,7 @@ func choose_class(class_id: String) -> bool:
 	return true
 
 func can_evolve_to(class_id: String) -> bool:
-	return current_class == "Archer" and class_id == "Oriental_Assassin" and get_promotion_stage() > 0
+	return current_class == "Archer" and class_id == "Oriental_Assassin" and level >= ARCHER_ASSASSIN_EVOLUTION_LEVEL
 
 func evolve_to(class_id: String) -> bool:
 	if not can_evolve_to(class_id): return false

@@ -4,7 +4,7 @@
 - Autoload order: ClassSystem, GearDatabase, GearSystem, GlobalEconomy, GameState.
 - Six selectable classic base classes: Archer, Trojan, Warrior, Water Taoist, Fire Taoist and Ninja; Oriental Assassin is the Archer evolution.
 - Strength, Agility, Vitality and Spirit feed derived HP, MP and Stamina. Each level awards 3 stat points.
-- Promotion milestones are represented for every class at levels 15, 40, 70, 100 and 110. Archer can evolve to Oriental Assassin after reaching a milestone.
+- Promotion milestones are represented for every class at levels 15, 40, 70, 100 and 110. Archer can evolve to Oriental Assassin at level 70; the other listed milestones remain available as class promotion-stage checkpoints.
 - First-run main-scene routing opens character selection; selection calls ClassSystem.choose_class before entering the world.
 - Class, level, XP, attributes, stat points, HP/MP/Stamina, XP Skill meter and skill proficiency persist in the GlobalEconomy save envelope (version 4).
 - Classic Jump uses a fast ground-directed arc and Stamina cost. Stamina regenerates while moving and faster while idle.

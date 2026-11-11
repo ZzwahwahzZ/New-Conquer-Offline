@@ -8,6 +8,8 @@ func _ready() -> void:
   var saved_class := str(GameState.profile.get("class_id", ""))
   var legacy_class_ids := {"archer":"Archer","trojan":"Trojan","warrior":"Warrior","taoist":"Water_Taoist","water_taoist":"Water_Taoist","fire_taoist":"Fire_Taoist","ninja":"Ninja","oriental_assassin":"Oriental_Assassin"}
   saved_class = str(legacy_class_ids.get(saved_class.to_lower(), saved_class))
+  if ClassSystem.level > 1 and ClassSystem.CLASS_DATA.has(ClassSystem.current_class):
+    saved_class = ClassSystem.current_class
   if ClassSystem.CLASS_DATA.has(saved_class):
     GameState.profile["class_id"] = saved_class
   if not ClassSystem.CLASS_DATA.has(saved_class):
