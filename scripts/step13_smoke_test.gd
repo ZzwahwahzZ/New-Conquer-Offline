@@ -18,6 +18,11 @@ func _run() -> void:
 		failures.append("Roster must contain exactly 8 guilds")
 	if roster.get_all_players().size() != 200:
 		failures.append("Public roster API did not return 200 player records")
+	for bot_data in roster.players:
+		for key in ["id","name","class_type","level","gear_plus","gear_quality","has_wings","guild_name","guild_donation","guild_rank"]:
+			if not bot_data.has(key):
+				failures.append("Bot data field missing: " + key)
+				break
 	if not roster.validate_data():
 		failures.append("Guild structure / one-leader / leader equipment validation failed")
 	for guild_name in Roster.GUILD_NAMES:
@@ -39,6 +44,9 @@ func _run() -> void:
 			failures.append("AIPlayer scene could not instantiate")
 		else:
 			bot.free()
+	var actor_source := FileAccess.get_file_as_string("res://src/scripts/AIPlayer.gd")
+	if not actor_source.contains("arc_jump_to") or not actor_source.contains("simulate_gold_pickup") or not actor_source.contains("set_idle_lod"):
+		failures.append("Arc jump, virtual gold pickup, or idle LOD actor API is missing")
 	var manager_source := FileAccess.get_file_as_string(AI_MANAGER_PATH)
 	if not manager_source.contains("CITY_CAP := 40") or not manager_source.contains("HUNT_CAP := 3"):
 		failures.append("Safe-zone 40 / hunting-zone 3 caps are missing")
