@@ -32,6 +32,8 @@ func _ready() -> void:
 	roster.build_roster()
 
 func setup(manager: Node, target_player: Node3D, settlement: String) -> void:
+	if not _active_bots.is_empty():
+		recycle_all()
 	world_manager = manager
 	player = target_player
 	settlement_id = settlement
@@ -133,7 +135,7 @@ func _choose_spawn_position() -> Vector3:
 
 func _assign_city_behavior(bot: Node3D) -> void:
 	var markers: Array[Node3D] = []
-	var world := get_parent()
+	var world: Node = world_manager.get("current_world") if is_instance_valid(world_manager) else null
 	if not is_instance_valid(world):
 		return
 	for child in world.get_children():
@@ -159,7 +161,7 @@ func _assign_hunting_behavior(bot: Node3D) -> void:
 	if is_instance_valid(target):
 		var attack_position := target.global_position + Vector3(_rng.randf_range(-2.0,2.0),0.0,_rng.randf_range(-2.0,2.0))
 		bot.call("move_to",attack_position)
-		bot.call("perform_attack",target)
+		bot.call("set_combat_target",target)
 
 func _update_lod() -> void:
 	if not is_instance_valid(player):
