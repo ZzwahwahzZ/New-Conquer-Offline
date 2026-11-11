@@ -52,6 +52,11 @@ jobs:
           test -s "$TEMPLATE_DEST/android_release.apk"
           godot --version
 
+      - name: Fetch and optimize optional terrain assets
+        run: |
+          python3 -m pip install --disable-pip-version-check Pillow
+          python3 tools/fetch_terrain_assets.py
+
       - name: Import all project resources (Mobile renderer) and reject parser errors
         shell: bash
         run: |
@@ -142,6 +147,11 @@ jobs:
           PY
           grep -F 'renderer/rendering_method="gl_compatibility"' project.godot
           grep -F 'renderer/rendering_method.mobile="gl_compatibility"' project.godot
+
+      - name: Fetch and optimize optional terrain assets
+        run: |
+          python3 -m pip install --disable-pip-version-check Pillow
+          python3 tools/fetch_terrain_assets.py
 
       - name: Import for WebGL2 Compatibility renderer
         run: godot --headless --editor --path . --import
@@ -253,6 +263,11 @@ jobs:
           export/android/debug_keystore_pass = "android"
           EOF
           cat "$HOME/.config/godot/editor_settings-4.3.tres"
+
+      - name: Fetch and optimize optional terrain assets
+        run: |
+          python3 -m pip install --disable-pip-version-check Pillow
+          python3 tools/fetch_terrain_assets.py
 
       - name: Import Android project resources
         run: godot --headless --editor --path . --import
