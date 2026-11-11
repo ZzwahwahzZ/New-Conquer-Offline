@@ -96,7 +96,7 @@ func _ensure_rig_and_animations() -> void:
 	var old_player := get_node_or_null("AnimationPlayer")
 	if is_instance_valid(old_player):
 		old_player.queue_free()
-	var variant := abs(monster_id.hash()) % 8
+	var variant: int = abs(monster_id.hash()) % 8
 	_rig_slot = RiggedCharacterFactory.attach_to(self, "monster", variant, 1.0)
 	if _rig_slot == null:
 		push_error("Monster: rigged CC0 asset unavailable for " + monster_id)
