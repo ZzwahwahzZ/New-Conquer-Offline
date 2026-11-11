@@ -27,8 +27,14 @@ func _ready() -> void:
 	if player_guild.is_empty():
 		player_guild = "Pharaohs"
 	defending_guild = str(system.call("get_war_winner"))
-	if defending_guild.is_empty() or defending_guild == player_guild:
-		defending_guild = "Dragons" if player_guild != "Dragons" else "Pharaohs"
+	var player_guild_data: Dictionary = system.call("get_guild",player_guild)
+	var allied_guilds: Array = player_guild_data.get("allies",[])
+	if defending_guild.is_empty() or defending_guild == player_guild or allied_guilds.has(defending_guild):
+		var enemy_guilds: Array = player_guild_data.get("enemies",[])
+		if not enemy_guilds.is_empty():
+			defending_guild = str(enemy_guilds[0])
+		else:
+			defending_guild = "Dragons" if player_guild != "Dragons" else "Pharaohs"
 	_build_arena()
 	_spawn_war_bots(system)
 	_hud = get_tree().get_first_node_in_group("game_hud")
