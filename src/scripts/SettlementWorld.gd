@@ -42,6 +42,12 @@ func _build_environment() -> void:
 	environment.fog_enabled = true
 	environment.fog_light_color = fog_color
 	environment.fog_density = fog_density
+	environment.glow_enabled = true
+	environment.glow_intensity = 0.72
+	environment.glow_strength = 0.9
+	environment.glow_bloom = 0.12
+	environment.glow_hdr_threshold = 0.82
+	environment.glow_hdr_scale = 1.0
 	world_environment.environment = environment
 	add_child(world_environment)
 	var sun := DirectionalLight3D.new()
