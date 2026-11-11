@@ -60,6 +60,8 @@ func setup(target_player: Node3D) -> void:
 
 func change_settlement(settlement_id: String, restore_position: bool = false) -> void:
 	if _transitioning or not SETTLEMENTS.has(settlement_id): return
+	if current_settlement == "GuildWarArena" and settlement_id != "GuildWarArena" and is_instance_valid(guild_system):
+		guild_system.call("set_war_active",false)
 	_transitioning = true
 	for monster in _active_monsters.duplicate(): recycle_monster(monster)
 	for drop in _active_gold.duplicate(): recycle_gold(drop)
