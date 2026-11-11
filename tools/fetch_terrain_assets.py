@@ -79,8 +79,8 @@ def fetch_arabic_font() -> None:
     if target.exists() and target.stat().st_size > 100_000:
         return
     urls = [
-        "https://github.com/google/fonts/raw/main/ofl/notosansarabic/NotoSansArabic%5Bwght%5D.ttf",
-        "https://raw.githubusercontent.com/google/fonts/main/ofl/notosansarabic/NotoSansArabic%5Bwght%5D.ttf",
+        "https://raw.githubusercontent.com/google/fonts/main/ofl/notosansarabic/NotoSansArabic%5Bwdth%2Cwght%5D.ttf",
+        "https://raw.githubusercontent.com/google/fonts/main/ofl/notosansarabic/NotoSansArabic%5Bwdth%2Cwght%5D.ttf",
     ]
     for url in urls:
         try:
@@ -120,6 +120,7 @@ def main():
                 model_dir.mkdir(exist_ok=True)
                 source_path = model_dir/"source"/filename
                 source_path.parent.mkdir(parents=True, exist_ok=True)
+                (source_path.parent/".gdignore").write_text("# Preserve raw source GLBs without importing them into Godot.\n")
                 source_path.write_bytes(data)
                 clean_path = model_dir/filename
                 if not convert_glb(source_path, clean_path):
