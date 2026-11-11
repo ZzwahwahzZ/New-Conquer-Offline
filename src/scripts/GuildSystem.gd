@@ -140,7 +140,7 @@ func donate_gold(amount: int) -> bool:
 
 func _refresh_player_rank() -> void:
 	if player_guild_rank == "Guild Leader": return
-	if player_guild_donation >= int(RANK_THRESHOLDS.Deputy_Leader):
+	if player_guild_donation >= int(RANK_THRESHOLDS["Deputy Leader"]):
 		player_guild_rank = "Deputy Leader"
 	elif player_guild_donation >= int(RANK_THRESHOLDS["Honorary Deputy Leader"]):
 		player_guild_rank = "Honorary Deputy Leader"
