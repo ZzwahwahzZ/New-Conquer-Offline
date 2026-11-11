@@ -13,6 +13,7 @@ const ChineseImperialBuilder = preload("res://src/scripts/ChineseImperialBuilder
 @export var landmark_color := Color(0.55,0.48,0.32)
 
 func _ready() -> void:
+	_configure_city_atmosphere()
 	_build_environment()
 	_build_asset_slots()
 	_build_terrain_shell()
@@ -28,7 +29,7 @@ func _build_environment() -> void:
 	environment.background_color = sky_color
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	environment.ambient_light_color = sky_color.lightened(0.25)
-	environment.ambient_light_energy = 0.65
+	environment.ambient_light_energy = 1.0 if settlement_id == "TwinCity" else 0.72
 	environment.fog_enabled = true
 	environment.fog_light_color = fog_color
 	environment.fog_density = fog_density
@@ -37,7 +38,7 @@ func _build_environment() -> void:
 	var sun := DirectionalLight3D.new()
 	sun.name = "SettlementSun"
 	sun.rotation_degrees = Vector3(-48,-32,0)
-	sun.light_energy = 1.0
+	sun.light_energy = 1.25 if settlement_id == "TwinCity" else 0.95
 	sun.shadow_enabled = false
 	add_child(sun)
 
@@ -90,3 +91,30 @@ func _build_sanctuary_landmarks() -> void:
 	var boss := slot.get_node_or_null("BossSanctuarySouthWest") as Marker3D
 	if boss != null:
 		boss.position = Vector3(-68.0, 0.0, -60.0)
+
+func _configure_city_atmosphere() -> void:
+	match settlement_id:
+		"TwinCity":
+			sky_color = Color("#f5c982")
+			fog_color = Color("#e9c58c")
+			fog_density = 0.0018
+		"DesertLand":
+			sky_color = Color("#d8ae70")
+			fog_color = Color("#d6a65f")
+			fog_density = 0.009
+		"VolcanoLand":
+			sky_color = Color("#6d3425")
+			fog_color = Color("#d66a32")
+			fog_density = 0.007
+		"IceLand":
+			sky_color = Color("#8fc9e7")
+			fog_color = Color("#a8d9f0")
+			fog_density = 0.006
+		"Waterlands":
+			sky_color = Color("#76c7c6")
+			fog_color = Color("#83d6ce")
+			fog_density = 0.004
+		"DarkForest":
+			sky_color = Color("#183b32")
+			fog_color = Color("#36745a")
+			fog_density = 0.012
