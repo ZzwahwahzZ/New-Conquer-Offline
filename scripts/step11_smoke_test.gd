@@ -31,7 +31,7 @@ func _run() -> void:
 		assert(database.get_settlement_monsters(world_id).size() >= 3)
 		assert(database.get_sanctuary_monsters(world_id).size() >= 2)
 	var classic_names := ["Pheasant","Turtledove","Apparition","Bandit","GiantApe","SandMonster","Birdman"]
-	var all_monsters := database_script.get_source_code()
+	var all_monsters: String = database_script.get_source_code()
 	for monster_name in classic_names:
 		assert(all_monsters.contains(monster_name))
 
