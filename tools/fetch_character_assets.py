@@ -35,7 +35,7 @@ def download(url: str) -> bytes:
             raise RuntimeError(f"HTTP {response.status}: {url}")
         return response.read()
 def git_blob_sha(data: bytes) -> str:
-    return hashlib.sha1(b"blob " + str(len(data)).encode() + b"\\0" + data).hexdigest()
+    return hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
 def validate_glb(data: bytes, label: str) -> dict:
     if len(data) < 20:
         raise ValueError(f"{label}: truncated GLB")

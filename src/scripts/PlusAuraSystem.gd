@@ -4,6 +4,7 @@ var plus_level := 0
 var _ring: MeshInstance3D
 var _halo: MeshInstance3D
 var _sparkles: GPUParticles3D
+var _wings: Array[MeshInstance3D] = []
 var _time := 0.0
 func _ready() -> void:
  _build()
@@ -36,7 +37,32 @@ func _build() -> void:
  _sparkles.amount = 12
  _sparkles.lifetime = 1.2
  _sparkles.emitting = false
+ var particle_material := ParticleProcessMaterial.new()
+ particle_material.direction = Vector3(0,1,0)
+ particle_material.spread = 24.0
+ particle_material.initial_velocity_min = 0.35
+ particle_material.initial_velocity_max = 0.9
+ particle_material.gravity = Vector3(0,0,0)
+ _sparkles.process_material = particle_material
  add_child(_sparkles)
+ for side in [-1.0, 1.0]:
+  var wing := MeshInstance3D.new()
+  wing.name = "AscensionWingLeft" if side < 0.0 else "AscensionWingRight"
+  var wing_mesh := PlaneMesh.new()
+  wing_mesh.size = Vector2(0.72, 1.35)
+  wing.mesh = wing_mesh
+  wing.position = Vector3(side * 0.56, 1.05, 0.34)
+  wing.rotation.z = side * -0.28
+  var wing_material := StandardMaterial3D.new()
+  wing_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+  wing_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+  wing_material.albedo_color = Color(1.0,0.82,0.38,0.42)
+  wing_material.emission_enabled = true
+  wing_material.emission = Color(1.0,0.62,0.12) * 0.8
+  wing.material_override = wing_material
+  wing.visible = false
+  add_child(wing)
+  _wings.append(wing)
  _apply_level()
 func _apply_level() -> void:
  if _ring == null:
@@ -64,6 +90,8 @@ func _apply_level() -> void:
  _halo.scale = Vector3(0.95 + float(plus_level) * 0.035,1.0,0.95 + float(plus_level) * 0.035)
  _sparkles.emitting = plus_level >= 7
  _sparkles.amount = 6 + plus_level * 2
+ for wing in _wings:
+  wing.visible = plus_level == 12
  set_process(plus_level >= 7)
  if plus_level == 12:
   _ring.scale = Vector3.ONE * 1.42
