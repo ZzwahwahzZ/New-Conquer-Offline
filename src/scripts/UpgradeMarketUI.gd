@@ -361,7 +361,7 @@ func _refresh_artisan() -> void:
 		var can_level := tier >= 0 and tier < GearDatabase.LEVEL_TIERS.size() - 1
 		var cost := int(GearSystem.LEVEL_UPGRADE_COSTS.get(level, 0))
 		var rate := float(GearSystem.LEVEL_UPGRADE_RATES.get(level, 0.0)) * 100.0
-		var next_level := GearDatabase.LEVEL_TIERS[tier + 1] if can_level else level
+		var next_level: int = int(GearDatabase.LEVEL_TIERS[tier + 1]) if can_level else level
 		_level_info.text = "[b]%s[/b]\nالمستوى الحالي: %d  ←  التالي: %d\nالتكلفة: %s ذهب  |  النجاح: %.0f%%" % [str(level_item.get("name", "قطعة")), level, next_level, _format_gold(cost), rate]
 		_level_button.disabled = not can_level or cost <= 0 or GlobalEconomy.current_gold < cost
 
