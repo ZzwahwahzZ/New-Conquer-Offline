@@ -84,6 +84,7 @@ func _add_capsule(parent: Node3D, color: Color, radius: float, height: float) ->
   mesh.radius = radius
   mesh.height = height
   mesh_node.mesh = mesh
+  mesh_node.position.y = height * 0.5
   var mat := StandardMaterial3D.new()
   mat.albedo_color = color
   mesh_node.material_override = mat
@@ -93,6 +94,7 @@ func _add_capsule(parent: Node3D, color: Color, radius: float, height: float) ->
   shape.radius = radius
   shape.height = height
   collider.shape = shape
+  collider.position.y = height * 0.5
   parent.add_child(collider)
 func _unhandled_input(event: InputEvent) -> void:
   if event.is_action_pressed("skill_fly"): player.call("cast_skill","Fly")
