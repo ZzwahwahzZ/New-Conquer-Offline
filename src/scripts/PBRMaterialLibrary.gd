@@ -17,8 +17,8 @@ const BASE_COLORS := {
 const EMISSIVE := {"VolcanoLand": Color("#ff4b12")}
 
 static func build_ground_material(environment_id: String, triplanar: bool = true) -> StandardMaterial3D:
- var key := MAPS.get(environment_id, "Ground044_2K-JPG")
- var folder := MATERIAL_ROOT + key + "/"
+ var key: String = str(MAPS.get(environment_id, "Ground044_2K-JPG"))
+ var folder: String = MATERIAL_ROOT + key + "/"
  var material := StandardMaterial3D.new()
  material.resource_name = environment_id + "_PBR_Ground"
  material.albedo_color = Color.WHITE
