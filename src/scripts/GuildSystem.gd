@@ -44,7 +44,7 @@ func _restore_data(data: Dictionary) -> void:
 	var stored_guilds = data.get("guilds",{})
 	guilds = stored_guilds.duplicate(true) if stored_guilds is Dictionary else roster.guilds.duplicate(true)
 	var stored_players = data.get("roster_players",[])
-	if stored_players is Array and stored_players.size() == roster.TARGET_PLAYERS:
+	if stored_players is Array and stored_players.size() == Roster.TARGET_PLAYERS:
 		roster.players.clear()
 		for entry in stored_players:
 			if entry is Dictionary: roster.players.append(entry.duplicate(true))
@@ -99,7 +99,11 @@ func get_members(guild_name: String) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	if player_guild_name == guild_name:
 		result.append({"id":0,"name":str(GameState.profile.get("character_name","Player")),"class_type":ClassSystem.current_class,"level":ClassSystem.level,"guild_rank":player_guild_rank,"guild_donation":player_guild_donation,"online":true})
-	result.append_array(roster.get_guild_members(guild_name))
+	var bot_members: Array[Dictionary] = roster.get_guild_members(guild_name)
+	var ai_manager := get_tree().get_first_node_in_group("ai_players_manager")
+	for bot in bot_members:
+		bot["online"] = bool(ai_manager.call("is_bot_active",int(bot.get("id",-1)))) if is_instance_valid(ai_manager) else false
+		result.append(bot)
 	return result
 
 func join_guild(guild_name: String) -> bool:
