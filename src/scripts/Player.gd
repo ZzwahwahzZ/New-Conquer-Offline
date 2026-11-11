@@ -78,8 +78,10 @@ func _ready() -> void:
 	plus_aura.name = "PlusAura"
 	plus_aura.set_script(load("res://src/scripts/PlusAuraSystem.gd"))
 	_visual.add_child(plus_aura)
-	plus_aura.call("set_level", int(GameState.profile.get("gear_plus", 0)))
-	AnimaSystem.attach_ground_seal(self, int(GameState.profile.get("anima_level", 0)))
+	plus_aura.call("set_level", GearSystem.get_equipped_plus_level())
+	AnimaSystem.attach_ground_seal(self, GearSystem.get_equipped_anima_level())
+	if not GearSystem.equipment_changed.is_connected(_refresh_equipment_visuals):
+		GearSystem.equipment_changed.connect(_refresh_equipment_visuals)
 	var fly_ring := MeshInstance3D.new()
 	fly_ring.name = "FlyAuraRing"
 	var ring_mesh := TorusMesh.new()
@@ -139,6 +141,12 @@ func _set_move_target_from_screen(screen_position: Vector2) -> void:
 	if hit.is_empty(): return
 	_move_target = hit.position
 	_has_move_target = true
+
+func _refresh_equipment_visuals() -> void:
+	var aura_node := _visual.get_node_or_null("PlusAura") if is_instance_valid(_visual) else null
+	if is_instance_valid(aura_node):
+		aura_node.call("set_level", GearSystem.get_equipped_plus_level())
+	AnimaSystem.attach_ground_seal(self, GearSystem.get_equipped_anima_level())
 
 func _physics_process(delta: float) -> void:
 	if InputMap.has_action("jump") and Input.is_action_just_pressed("jump"):

@@ -1,4 +1,5 @@
 extends Node
+const AnimaSystem = preload("res://src/scripts/AnimaSystem.gd")
 ## Gear, upgrade, composition and socket services. Gold is the only currency.
 
 signal equipment_changed
@@ -74,6 +75,44 @@ func initialize_from_save(data: Dictionary) -> void:
 
 func create_item(item_id: String) -> Dictionary:
 	return GearDatabase.create_item(item_id)
+
+func get_equipped_plus_level() -> int:
+	var highest := 0
+	for item in equipment.values():
+		if item is Dictionary:
+			highest = maxi(highest, int(item.get("plus", 0)))
+	return clampi(highest, 0, PLUS_MAX)
+
+func get_equipped_anima_level() -> int:
+	var highest := 0
+	for item in equipment.values():
+		if item is Dictionary:
+			var instance_id := str(item.get("instance_id", item.get("id", "")))
+			if not instance_id.is_empty():
+				highest = maxi(highest, AnimaSystem.level_for(instance_id))
+	return clampi(highest, 0, AnimaSystem.MAX_LEVEL)
+
+func get_item_anima_level(item_instance_id: String) -> int:
+	if item_instance_id.is_empty():
+		return 0
+	return AnimaSystem.level_for(item_instance_id)
+
+func upgrade_item_anima(item_instance_id: String) -> bool:
+	if item_instance_id.is_empty():
+		return false
+	var exists := _find_inventory_index(item_instance_id) >= 0
+	if not exists:
+		for item in equipment.values():
+			if item is Dictionary and str(item.get("instance_id", "")) == item_instance_id:
+				exists = true
+				break
+	if not exists:
+		return false
+	var upgraded := AnimaSystem.upgrade_item(item_instance_id)
+	if upgraded:
+		equipment_changed.emit()
+		_save_gear_data()
+	return upgraded
 
 func add_item(item_id: String, quantity: int = 1) -> bool:
 	if quantity <= 0:
