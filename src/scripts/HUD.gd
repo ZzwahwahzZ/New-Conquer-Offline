@@ -679,7 +679,7 @@ func push_simulated_chat(message: String, channel: String = "عام") -> void:
 	if not is_instance_valid(_chat_log):
 		return
 	var tint := "#e8d7b0" if channel == "عام" else "#83d9a8"
-	_chat_log.append_text("\\n[color=%s]%s [/color]%s" % [tint,channel,message])
+	_chat_log.append_text("\n[color=%s]%s [/color]%s" % [tint,channel,message])
 
 func _get_equipment_plus_max() -> int:
 	var best := 0
