@@ -209,7 +209,8 @@ func get_guild_buffs() -> Dictionary:
 		"Deputy Leader": rank_bonus = 0.06
 		"Guild Leader": rank_bonus = 0.08
 	var treasury_bonus := minf(0.12,float(fund) / 10000000.0 * 0.12)
-	return {"attack_pct":rank_bonus+treasury_bonus,"defense_pct":rank_bonus+treasury_bonus,"xp_pct":minf(0.15,rank_bonus+treasury_bonus*0.75)}
+	var winner_bonus := 0.05 if not player_guild_name.is_empty() and war_winner_guild == player_guild_name else 0.0
+	return {"attack_pct":rank_bonus+treasury_bonus+winner_bonus,"defense_pct":rank_bonus+treasury_bonus+winner_bonus,"xp_pct":minf(0.20,rank_bonus+treasury_bonus*0.75+winner_bonus)}
 
 func get_attack_multiplier() -> float: return 1.0 + float(get_guild_buffs().attack_pct)
 func get_defense_multiplier() -> float: return 1.0 + float(get_guild_buffs().defense_pct)
@@ -230,9 +231,6 @@ func _recruit_available_bot() -> void:
 	_bot_join_cursor += 1
 	var old_guild := str(roster.players[index].guild_name)
 	var old_record: Dictionary = roster.players[index]
-	var old_guild_data: Dictionary = guilds.get(old_guild,{})
-	if not old_guild_data.is_empty():
-		old_guild_data.guild_fund = maxi(0,int(old_guild_data.get("guild_fund",0))-int(old_record.get("guild_donation",0)))
 	roster.players[index].guild_name = player_guild_name
 	roster.players[index].guild_donation = 0
 	roster.players[index].guild_rank = "Member"
