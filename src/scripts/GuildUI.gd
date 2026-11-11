@@ -90,7 +90,7 @@ func _build_overview_tab() -> void:
 	page.add_child(donate_row)
 	_donation_input = LineEdit.new()
 	_donation_input.placeholder_text = "Gold donation amount"
-	_donation_input.input_type = LineEdit.INPUT_TYPE_NUMBER
+	_donation_input.virtual_keyboard_type = LineEdit.KEYBOARD_TYPE_NUMBER
 	donate_row.add_child(_donation_input)
 	var donate_button := Button.new()
 	donate_button.text = "تبرع"
