@@ -13,23 +13,23 @@ const KARST_MODELS := ["model.glb","model (1).glb","model (3).glb"]
 static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  var size: float = CITY_SIZE.get(city,450.0)
  var mesh := _height_mesh(city,size)
+ var body := StaticBody3D.new()
+ body.name = "TerrainCollision"
  var visual := MeshInstance3D.new()
  visual.name = "TerrainSurface"
  visual.mesh = mesh
  visual.material_override = _fallback_ground_material(city)
+ body.add_child(visual)
  if city == "TwinCity":
-  parent.add_child(visual)
+  # Preserve the terrain node for scene contracts, but only the flat plaza owns a collider.
   _build_flat_twin_city_plaza(parent)
  else:
-  var body := StaticBody3D.new()
-  body.name = "TerrainCollision"
-  body.add_child(visual)
   var collision := CollisionShape3D.new()
   var shape := ConcavePolygonShape3D.new()
   shape.set_faces(mesh.get_faces())
   collision.shape = shape
   body.add_child(collision)
-  parent.add_child(body)
+ parent.add_child(body)
  _bounds(parent,size,city)
  _roads(slot,size,city)
  _place_karst_models(slot,city,size)
