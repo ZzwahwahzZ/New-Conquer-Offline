@@ -96,6 +96,9 @@ jobs:
       - name: Run Step 14 smoke test
         run: godot --headless --path . --script scripts/step14_smoke_test.gd
 
+      - name: Run Step 16 smoke test
+        run: godot --headless --path . --script scripts/step16_smoke_test.gd
+
   web:
     name: Export WebGL2 build
     needs: verify
