@@ -53,7 +53,7 @@ func _ready() -> void:
 	_move_target = global_position
 	add_to_group("player")
 	_ground_y = 0.775
-	floor_snap_length = 0.1
+	floor_snap_length = 0.35
 	floor_max_angle = deg_to_rad(45.0)
 	safe_margin = 0.001
 	collision_layer = 1
