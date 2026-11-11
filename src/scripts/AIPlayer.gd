@@ -97,16 +97,22 @@ func set_diplomacy_color(color: Color) -> void:
 
 func set_idle_lod(sleeping: bool) -> void:
 	_lod_sleeping = sleeping
-	set_physics_process(not sleeping)
-	set_process(not sleeping)
+	var should_run := not sleeping and (not _idle or _flying or is_instance_valid(_combat_target))
+	set_physics_process(should_run)
+	set_process(should_run)
 
 func move_to(destination: Vector3) -> void:
 	_destination = destination
 	_has_destination = true
 	_idle = false
+	set_physics_process(true)
+	set_process(true)
 
 func set_combat_target(target: Node3D) -> void:
 	_combat_target = target
+	_idle = false
+	set_physics_process(true)
+	set_process(true)
 
 func perform_attack(target: Node3D) -> void:
 	if not is_instance_valid(target):
@@ -143,6 +149,9 @@ func _physics_process(delta: float) -> void:
 			_idle = true
 			_home_position = global_position
 			velocity = Vector3.ZERO
+			if not _flying and not is_instance_valid(_combat_target):
+				set_physics_process(false)
+				set_process(false)
 		else:
 			var direction := offset.normalized()
 			velocity = direction * WALK_SPEED
@@ -156,3 +165,6 @@ func arc_jump_to(destination: Vector3) -> void:
 	_jump_to = destination
 	_jump_time = 0.42
 	_has_destination = false
+	_idle = false
+	set_physics_process(true)
+	set_process(true)
