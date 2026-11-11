@@ -173,64 +173,89 @@ static func _build_flat_twin_city_plaza(parent: Node3D) -> void:
  parent.add_child(plaza)
 
 static func _build_environment_dressing(parent: Node3D, city: String, size: float) -> void:
-	var asset_path := "res://assets/environment/nature/alpine_and_arctic_biomes.glb" if city == "IceLand" else "res://assets/environment/nature/stylized_trees_and_rocks.glb"
-	if not ResourceLoader.exists(asset_path):
-		push_error("Missing CC0 biome GLB: " + asset_path)
-		return
-	var packed := load(asset_path) as PackedScene
-	if packed == null:
-		push_error("Biome GLB did not import as PackedScene: " + asset_path)
-		return
-	var source_root := packed.instantiate()
-	if source_root == null:
-		return
-	var keywords: Array[String] = []
+	var sources: Array[Dictionary] = []
 	match city:
-		"DesertLand": keywords = ["palm", "date", "rock", "boulder", "desert"]
-		"VolcanoLand": keywords = ["rock", "boulder", "cliff", "basalt"]
-		"IceLand": keywords = ["spruce", "pine", "snow", "glacier", "rock"]
-		"Waterlands": keywords = ["willow", "poplar", "tree", "rock"]
-		"DarkForest": keywords = ["ancient", "oak", "dead", "tree", "rock"]
-		_: keywords = ["pine", "oak", "tree", "rock"]
-	var candidates: Array[Mesh] = []
-	var pending: Array[Node] = [source_root]
-	while not pending.is_empty():
-		var current: Node = pending.pop_back()
-		for child in current.get_children():
-			pending.append(child)
-		if current is MeshInstance3D:
-			var mesh_node := current as MeshInstance3D
-			var node_label := (mesh_node.name + " " + str(mesh_node.mesh.resource_name if mesh_node.mesh != null else "")).to_lower()
-			var matches := false
-			for word in keywords:
-				if node_label.contains(word):
-					matches = true
-					break
-			if matches and mesh_node.mesh != null and not candidates.has(mesh_node.mesh):
-				candidates.append(mesh_node.mesh)
-	source_root.free()
-	if candidates.is_empty():
-		push_warning("No named GLB meshes matched biome filters for " + city + "; no procedural substitutes were generated.")
-		return
-	var species_limit := mini(candidates.size(), 4)
-	for species_index in range(species_limit):
-		var source_mesh: Mesh = candidates[species_index]
-		var multimesh := MultiMesh.new()
-		multimesh.transform_format = MultiMesh.TRANSFORM_3D
-		multimesh.mesh = source_mesh
-		var count := 22 if city == "IceLand" else 28
-		multimesh.instance_count = count
-		for index in range(count):
-			var angle := float(index) * 2.399963 + float(species_index) * 0.73
-			var radius := 112.0 + float((index * 37 + species_index * 19) % 100) / 100.0 * maxf(30.0, size * 0.30)
-			var scale_factor := 0.78 + float((index * 17 + species_index * 11) % 55) / 100.0
-			var basis := Basis(Vector3.UP, angle).scaled(Vector3.ONE * scale_factor)
-			var position := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-			multimesh.set_instance_transform(index, Transform3D(basis, position))
-		var instances := MultiMeshInstance3D.new()
-		instances.name = city + "_CC0_" + str(species_index) + "_MultiMesh"
-		instances.multimesh = multimesh
-		instances.add_to_group("distance_cull_world")
-		instances.visibility_range_end = 240.0
-		instances.visibility_range_end_margin = 24.0
-		parent.add_child(instances)
+		"DesertLand":
+			sources = [
+				{"path":"res://assets/environment/nature/date_palm.glb","keywords":["palm","tree"]},
+				{"path":"res://assets/environment/nature/stylized_trees_and_rocks.glb","keywords":["rock","boulder"]}
+			]
+		"VolcanoLand":
+			sources = [{"path":"res://assets/environment/biomes/volcano_and_lava_fields.glb","keywords":["basalt","rock","boulder","lava"]}]
+		"IceLand":
+			sources = [{"path":"res://assets/environment/nature/alpine_and_arctic_biomes.glb","keywords":["spruce","pine","snow","rock"]}]
+		"Waterlands":
+			sources = [
+				{"path":"res://assets/environment/nature/willow_tree.glb","keywords":["willow","tree"]},
+				{"path":"res://assets/environment/nature/stylized_trees_and_rocks.glb","keywords":["tree","rock"]}
+			]
+		"DarkForest":
+			sources = [{"path":"res://assets/environment/nature/stylized_trees_and_rocks.glb","keywords":["ancient","oak","dead","tree","pine"]}]
+		_:
+			sources = [{"path":"res://assets/environment/nature/stylized_trees_and_rocks.glb","keywords":["pine","oak","tree","rock"]}]
+	for source in sources:
+		var asset_path := str(source.get("path",""))
+		if not ResourceLoader.exists(asset_path):
+			push_error("Missing CC0 biome GLB: " + asset_path)
+			continue
+		var packed := load(asset_path) as PackedScene
+		if packed == null:
+			push_error("Biome GLB did not import as PackedScene: " + asset_path)
+			continue
+		var source_root := packed.instantiate()
+		if source_root == null:
+			continue
+		var keywords: Array = source.get("keywords", [])
+		var candidates: Array[Mesh] = []
+		var pending: Array[Node] = [source_root]
+		while not pending.is_empty():
+			var current: Node = pending.pop_back()
+			for child in current.get_children():
+				pending.append(child)
+			if current is MeshInstance3D:
+				var mesh_node := current as MeshInstance3D
+				if mesh_node.mesh == null:
+					continue
+				var node_label := (mesh_node.name + " " + mesh_node.mesh.resource_name).to_lower()
+				for word in keywords:
+					if node_label.contains(str(word)):
+						if not candidates.has(mesh_node.mesh):
+							candidates.append(mesh_node.mesh)
+						break
+		source_root.free()
+		if candidates.is_empty():
+			push_warning("No named GLB meshes matched biome filters for " + city + ": " + asset_path)
+			continue
+		var species_limit := mini(candidates.size(), 4)
+		for species_index in range(species_limit):
+			var multimesh := MultiMesh.new()
+			multimesh.transform_format = MultiMesh.TRANSFORM_3D
+			multimesh.mesh = candidates[species_index]
+			var count := 18 if city == "IceLand" else 24
+			multimesh.instance_count = count
+			for index in range(count):
+				var angle := float(index) * 2.399963 + float(species_index) * 0.73
+				var radius := 112.0 + float((index * 37 + species_index * 19) % 100) / 100.0 * maxf(30.0, size * 0.30)
+				var scale_factor := 0.78 + float((index * 17 + species_index * 11) % 55) / 100.0
+				var basis := Basis(Vector3.UP, angle).scaled(Vector3.ONE * scale_factor)
+				var position := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
+				multimesh.set_instance_transform(index, Transform3D(basis, position))
+			var instances := MultiMeshInstance3D.new()
+			instances.name = city + "_CC0_" + str(species_index) + "_MultiMesh"
+			instances.multimesh = multimesh
+			instances.add_to_group("distance_cull_world")
+			instances.visibility_range_end = 240.0
+			instances.visibility_range_end_margin = 24.0
+			parent.add_child(instances)
+	# The forest ruins are a single distant landmark, not repeated geometry.
+	if city == "DarkForest":
+		var ruins_path := "res://assets/environment/biomes/jungle_temple_and_stone_city.glb"
+		if ResourceLoader.exists(ruins_path):
+			var ruins_pack := load(ruins_path) as PackedScene
+			if ruins_pack != null:
+				var ruins := ruins_pack.instantiate() as Node3D
+				if ruins != null:
+					ruins.name = "DarkForest_Ruins_CC0"
+					ruins.position = Vector3(-size * 0.18, 0.0, -size * 0.16)
+				ruins.scale = Vector3.ONE * 0.55
+				parent.add_child(ruins)
