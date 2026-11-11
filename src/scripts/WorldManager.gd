@@ -87,6 +87,7 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 	current_world = packed.instantiate() as Node3D
 	current_world.name = settlement_id
 	add_child(current_world)
+	_ensure_world_lighting(current_world)
 	if settlement_id != "GuildWarArena":
 		var npc_system = Node3D.new()
 		npc_system.name = "NPCSystem"
@@ -324,3 +325,35 @@ func save_world_state() -> void:
 	if is_instance_valid(player):
 		GameState.profile["world_position"] = [player.position.x,player.position.y,player.position.z]
 		GameState.profile["settlement_id"] = current_settlement
+
+func _ensure_world_lighting(world_root: Node3D) -> void:
+	var environment_node := world_root.find_child("*", true, false) as WorldEnvironment
+	if environment_node == null:
+		environment_node = WorldEnvironment.new()
+		environment_node.name = "WorldEnvironment"
+		var environment := Environment.new()
+		environment.background_mode = Environment.BG_SKY
+		var sky := Sky.new()
+		var sky_material := ProceduralSkyMaterial.new()
+		sky_material.sky_top_color = Color("#3978b5")
+		sky_material.sky_horizon_color = Color("#f2d5a0")
+		sky_material.ground_bottom_color = Color("#59634b")
+		sky_material.ground_horizon_color = Color("#c8b68e")
+		sky.sky_material = sky_material
+		environment.sky = sky
+		environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
+		environment.ambient_light_energy = 0.85
+		environment_node.environment = environment
+		world_root.add_child(environment_node)
+	else:
+		environment_node.environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
+		environment_node.environment.ambient_light_energy = 0.85
+	var sun := world_root.find_child("SettlementSun", true, false) as DirectionalLight3D
+	if sun == null:
+		sun = DirectionalLight3D.new()
+		sun.name = "DirectionalLight3D"
+		world_root.add_child(sun)
+	sun.rotation_degrees = Vector3(-45.0,-32.0,0.0)
+	sun.light_color = Color("#ffe0a3")
+	sun.light_energy = 1.3
+	sun.shadow_enabled = not OS.has_feature("web")
