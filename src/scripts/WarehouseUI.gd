@@ -16,7 +16,7 @@ func _ready() -> void:
 func toggle() -> void: panel.visible=not panel.visible; refresh()
 func refresh() -> void:
  if not is_instance_valid(grid): return
- page_label.text="صفحة %d / 2 | ذهب الخزنة: %d"%(page+1,GlobalEconomy.warehouse_gold)
+ page_label.text = "صفحة %d / 2 | ذهب الخزنة: %d" % [page + 1, GlobalEconomy.warehouse_gold]
  for i in range(40):
   var idx=page*40+i; var item=GlobalEconomy.warehouse_items[idx] if idx<GlobalEconomy.warehouse_items.size() else {}
   grid.get_child(i).text=("%s x%d"%[item.get("id",""),item.get("quantity",0)]) if not item.is_empty() else "فارغ"
