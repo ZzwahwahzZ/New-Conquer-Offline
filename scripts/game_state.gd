@@ -16,7 +16,9 @@ func _on_global_gold_changed(new_amount: int) -> void:
 func add_gold(amount: int) -> void:
   GlobalEconomy.add_gold(amount)
 func add_experience(amount: int) -> void:
-  profile.experience = maxi(0, int(profile.experience) + amount)
+  var guild = get_tree().get_first_node_in_group("guild_system")
+  var xp_multiplier := float(guild.call("get_xp_multiplier")) if is_instance_valid(guild) else 1.0
+  profile.experience = maxi(0, int(profile.experience) + int(round(float(amount) * xp_multiplier)))
   while profile.experience >= int(profile.level) * 100:
     profile.experience -= int(profile.level) * 100
     profile.level += 1
