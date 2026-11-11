@@ -4,6 +4,7 @@ func _initialize() -> void:
  for environment_id in ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"]:
   var material: StandardMaterial3D = PBR.build_ground_material(environment_id)
   assert(material != null)
+  assert(material.albedo_texture != null)
   assert(material.normal_enabled)
   assert(material.normal_texture != null)
   assert(material.roughness_texture != null)
