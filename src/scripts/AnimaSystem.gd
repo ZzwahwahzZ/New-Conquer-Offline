@@ -1,8 +1,22 @@
 extends RefCounted
 ## Offline gold-funded P1..P18 Anima progression and world-space ground seal.
 const MAX_LEVEL := 18
+static func _game_state() -> Node:
+ var loop := Engine.get_main_loop()
+ if loop is SceneTree:
+  return loop.root.get_node_or_null("GameState")
+ return null
+static func _economy() -> Node:
+ var loop := Engine.get_main_loop()
+ if loop is SceneTree:
+  return loop.root.get_node_or_null("GlobalEconomy")
+ return null
 static func level_for(item_id: String) -> int:
- var levels: Dictionary = GameState.profile.get("anima_levels", {})
+ var state := _game_state()
+ if not is_instance_valid(state):
+  return 0
+ var profile: Dictionary = state.get("profile")
+ var levels: Dictionary = profile.get("anima_levels", {})
  return clampi(int(levels.get(item_id, 0)), 0, MAX_LEVEL)
 static func upgrade_cost(next_level: int) -> int:
  var level := clampi(next_level, 1, MAX_LEVEL)
@@ -10,19 +24,27 @@ static func upgrade_cost(next_level: int) -> int:
 static func upgrade_item(item_id: String) -> bool:
  if item_id.strip_edges().is_empty():
   return false
+ var state := _game_state()
+ var economy := _economy()
+ if not is_instance_valid(state) or not is_instance_valid(economy):
+  return false
  var current := level_for(item_id)
  if current >= MAX_LEVEL:
   return false
  var next_level := current + 1
  var cost := upgrade_cost(next_level)
- if not GlobalEconomy.remove_gold(cost):
+ if not bool(economy.call("remove_gold", cost)):
   return false
- var levels: Dictionary = GameState.profile.get("anima_levels", {})
+ var profile: Dictionary = state.get("profile")
+ var levels: Dictionary = profile.get("anima_levels", {})
  levels[item_id] = next_level
- GameState.profile["anima_levels"] = levels
- if not GameState.save_local():
-  GlobalEconomy.add_gold(cost)
+ profile["anima_levels"] = levels
+ state.set("profile", profile)
+ if not bool(state.call("save_local")):
+  economy.call("add_gold", cost)
   levels[item_id] = current
+  profile["anima_levels"] = levels
+  state.set("profile", profile)
   return false
  return true
 static func attach_ground_seal(actor: Node3D, level: int) -> Node3D:
@@ -31,7 +53,8 @@ static func attach_ground_seal(actor: Node3D, level: int) -> Node3D:
   old.queue_free()
  var seal := Node3D.new()
  seal.name = "GroundAnimaSeal"
- seal.position = Vector3(0,0.035,0)
+ # CharacterBody3D origin is at the body centre; lower the seal to the floor plane.
+ seal.position = Vector3(0,-0.74,0)
  actor.add_child(seal)
  var p := clampi(level, 0, MAX_LEVEL)
  if p == 0:
