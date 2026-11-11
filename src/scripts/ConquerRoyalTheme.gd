@@ -11,3 +11,9 @@ static func apply(control: Control) -> void:
  control.add_theme_stylebox_override("hover",hover)
  control.add_theme_color_override("font_color",Color("#f5e8c8"))
  control.add_theme_color_override("font_hover_color",Color("#D4AF37"))
+
+static func apply_tree(root: Node) -> void:
+ for child in root.get_children():
+  if child is Control:
+   apply(child)
+  apply_tree(child)
