@@ -100,8 +100,8 @@ func _run() -> void:
 	var monster_source := FileAccess.get_file_as_string("res://src/scripts/Monster.gd")
 	var drop_source := FileAccess.get_file_as_string("res://src/scripts/CPDrop.gd")
 
-	if not economy_source.contains("SAVE_VERSION := 5") or not economy_source.contains("_normalize_persistent_state()") or not economy_source.contains("warehouse_items.size() < 80"):
-		failures.append("Save v5 / 80-slot safe initialization is incomplete")
+	if not economy_source.contains("SAVE_VERSION := 6") or not economy_source.contains("_normalize_persistent_state()") or not economy_source.contains("warehouse_items.size() < 80"):
+		failures.append("Save v6 / 80-slot safe initialization is incomplete")
 	if not economy_source.contains("NOTIFICATION_APPLICATION_PAUSED") or not economy_source.contains("NOTIFICATION_WM_CLOSE_REQUEST"):
 		failures.append("Automatic pause/close save hooks are missing")
 	if not game_state_source.contains("f.close()") or not game_state_source.contains("var merged :="):
