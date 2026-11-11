@@ -39,9 +39,10 @@ func _input(event: InputEvent) -> void:
   elif event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
    orbit_distance=minf(50.0,orbit_distance+zoom_step); _apply_orbit()
  elif event is InputEventMouseMotion and _drag_mouse:
-  var delta := event.position-_last_pointer
-  _last_pointer=event.position
-  _orbit_drag(delta)
+  var mouse_motion := event as InputEventMouseMotion
+  var pointer_delta: Vector2 = mouse_motion.position-_last_pointer
+  _last_pointer=mouse_motion.position
+  _orbit_drag(pointer_delta)
  elif event is InputEventScreenTouch:
   if event.pressed and event.position.x>=get_viewport().get_visible_rect().size.x*0.5:
    _drag_touch=event.index; _last_pointer=event.position; _touch_dragging=false
@@ -50,9 +51,10 @@ func _input(event: InputEvent) -> void:
  elif event is InputEventScreenDrag and event.index==_drag_touch:
   if not _touch_dragging and event.position.distance_to(_last_pointer)<5.0: return
   _touch_dragging=true
-  var delta := event.position-_last_pointer
-  _last_pointer=event.position
-  _orbit_drag(delta)
+  var screen_drag := event as InputEventScreenDrag
+  var pointer_delta: Vector2 = screen_drag.position-_last_pointer
+  _last_pointer=screen_drag.position
+  _orbit_drag(pointer_delta)
 func _orbit_drag(pointer_delta: Vector2) -> void:
  _yaw-=pointer_delta.x*drag_sensitivity*0.01
  pitch_degrees=clampf(pitch_degrees+pointer_delta.y*drag_sensitivity,15.0,75.0)
