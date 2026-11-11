@@ -1,0 +1,197 @@
+name: Godot 4.3 CI, Web and Android
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: godot-ci-cd-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSION: 4.3
+  GODOT_RELEASE: 4.3-stable
+
+jobs:
+  verify:
+    name: Headless import and smoke tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Godot 4.3 and export templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}"
+          curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o /tmp/godot.zip
+          unzip -q /tmp/godot.zip -d /tmp/godot-bin
+          sudo install -m 0755 /tmp/godot-bin/Godot_v${GODOT_VERSION}-stable_linux.x86_64 /usr/local/bin/godot
+          curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o /tmp/templates.tpz
+          mkdir -p /tmp/godot-templates
+          unzip -q /tmp/templates.tpz -d /tmp/godot-templates
+          cp -a /tmp/godot-templates/templates/. "$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}/"
+          godot --version
+
+      - name: Import all project resources (Mobile renderer)
+        run: godot --headless --editor --path . --import
+
+      - name: Run Step 11 smoke test
+        run: godot --headless --path . --script scripts/step11_smoke_test.gd
+
+      - name: Run Step 12 smoke test (Save v6)
+        run: godot --headless --path . --script scripts/step12_smoke_test.gd
+
+      - name: Run Step 13 smoke test
+        run: godot --headless --path . --script scripts/step13_smoke_test.gd
+
+      - name: Run Step 14 smoke test
+        run: godot --headless --path . --script scripts/step14_smoke_test.gd
+
+  web:
+    name: Export WebGL2 build
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Godot 4.3 and Web templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}"
+          curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o /tmp/godot.zip
+          unzip -q /tmp/godot.zip -d /tmp/godot-bin
+          sudo install -m 0755 /tmp/godot-bin/Godot_v${GODOT_VERSION}-stable_linux.x86_64 /usr/local/bin/godot
+          curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o /tmp/templates.tpz
+          mkdir -p /tmp/godot-templates
+          unzip -q /tmp/templates.tpz -d /tmp/godot-templates
+          cp -a /tmp/godot-templates/templates/. "$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}/"
+          godot --version
+
+      - name: Switch temporary web build to Compatibility renderer
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("project.godot")
+          s = p.read_text()
+          old = 'renderer/rendering_method="mobile"'
+          if old not in s:
+              raise SystemExit("Expected Mobile renderer setting was not found")
+          p.write_text(s.replace(old, 'renderer/rendering_method="gl_compatibility"', 1))
+          PY
+          grep -F 'renderer/rendering_method="gl_compatibility"' project.godot
+
+      - name: Import for WebGL2 Compatibility renderer
+        run: godot --headless --editor --path . --import
+
+      - name: Export Web build
+        run: |
+          mkdir -p build/web
+          godot --headless --path . --export-release "Web" build/web/index.html
+          test -s build/web/index.html
+          echo "Web export created: build/web/index.html"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    name: Enable Pages and deploy live game
+    needs: web
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+          # GitHub requires a token with Pages/admin write access for first-time enablement.
+          # Add repository secret PAGES_TOKEN (classic PAT with repo scope or fine-grained Pages write + Administration read/write).
+          token: ${{ secrets.PAGES_TOKEN || github.token }}
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Print live game URL
+        run: |
+          echo "LIVE_WEB_URL=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/"
+
+  android:
+    name: Build signed debug Android APK
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: |
+          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> "$GITHUB_ENV"
+
+      - name: Install Godot 4.3 and Android export templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}"
+          curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o /tmp/godot.zip
+          unzip -q /tmp/godot.zip -d /tmp/godot-bin
+          sudo install -m 0755 /tmp/godot-bin/Godot_v${GODOT_VERSION}-stable_linux.x86_64 /usr/local/bin/godot
+          curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o /tmp/templates.tpz
+          mkdir -p /tmp/godot-templates
+          unzip -q /tmp/templates.tpz -d /tmp/godot-templates
+          cp -a /tmp/godot-templates/templates/. "$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}/"
+          godot --version
+
+      - name: Generate temporary Android debug keystore
+        run: |
+          mkdir -p build
+          keytool -genkeypair -v -keystore build/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          test -s build/debug.keystore
+
+      - name: Import Android project resources
+        run: godot --headless --editor --path . --import
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
+
+      - name: Export debug APK
+        run: |
+          mkdir -p build/android
+          godot --headless --path . --export-debug "Android" build/android/NewConquerOffline.apk
+          test -s build/android/NewConquerOffline.apk
+          ls -lh build/android/NewConquerOffline.apk
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
+          GODOT_ANDROID_KEYSTORE_DEBUG_PATH: ${{ github.workspace }}/build/debug.keystore
+          GODOT_ANDROID_KEYSTORE_DEBUG_USER: androiddebugkey
+          GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD: android
+
+      - name: Upload Android APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NewConquerOffline-Android-APK
+          path: build/android/NewConquerOffline.apk
+          if-no-files-found: error
+          retention-days: 30
