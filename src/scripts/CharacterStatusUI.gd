@@ -66,26 +66,26 @@ func refresh() -> void:
 	var dodge := float(attrs.agility)*0.15+float(gems.get("dodge_pct",0.0))
 	var potency := ClassSystem.level*2+int(attrs.strength)+int(attrs.agility)+int(attrs.vitality)+int(attrs.spirit)+min_attack+defense+magic_defense
 	_set_stat_text("name","الاسم: %s" % str(profile.get("character_name","Player")))
-	_set("class","الفئة: %s" % ClassSystem.get_class_name_ar())
-	_set("title","الرتبة: %s" % ClassSystem.get_title())
-	_set("level","المستوى: %d" % ClassSystem.level)
-	_set("hp","HP: %d / %d" % [ClassSystem.hp,ClassSystem.max_hp])
-	_set("mp","MP: %d / %d" % [ClassSystem.mp,ClassSystem.max_mp])
-	_set("pk","PK: %s" % str(profile.get("pk_points",0)))
-	_set("strength","Strength: %d" % int(attrs.strength))
-	_set("agility","Agility: %d" % int(attrs.agility))
-	_set("vitality","Vitality: %d" % int(attrs.vitality))
-	_set("spirit","Spirit: %d" % int(attrs.spirit))
-	_set("attack","الهجوم الفيزيائي: %d - %d" % [min_attack,max_attack])
-	_set("defense","الدفاع الفيزيائي: %d" % defense)
-	_set("magic_attack","الهجوم السحري: %d" % magic_attack)
-	_set("magic_defense","الدفاع السحري: %d" % magic_defense)
-	_set("dodge","التفادي: %.1f%%" % dodge)
-	_set("battle_power","Battle Power / Potency: %d" % potency)
+	_set_stat_text("class","الفئة: %s" % ClassSystem.get_class_name_ar())
+	_set_stat_text("title","الرتبة: %s" % ClassSystem.get_title())
+	_set_stat_text("level","المستوى: %d" % ClassSystem.level)
+	_set_stat_text("hp","HP: %d / %d" % [ClassSystem.hp,ClassSystem.max_hp])
+	_set_stat_text("mp","MP: %d / %d" % [ClassSystem.mp,ClassSystem.max_mp])
+	_set_stat_text("pk","PK: %s" % str(profile.get("pk_points",0)))
+	_set_stat_text("strength","Strength: %d" % int(attrs.strength))
+	_set_stat_text("agility","Agility: %d" % int(attrs.agility))
+	_set_stat_text("vitality","Vitality: %d" % int(attrs.vitality))
+	_set_stat_text("spirit","Spirit: %d" % int(attrs.spirit))
+	_set_stat_text("attack","الهجوم الفيزيائي: %d - %d" % [min_attack,max_attack])
+	_set_stat_text("defense","الدفاع الفيزيائي: %d" % defense)
+	_set_stat_text("magic_attack","الهجوم السحري: %d" % magic_attack)
+	_set_stat_text("magic_defense","الدفاع السحري: %d" % magic_defense)
+	_set_stat_text("dodge","التفادي: %.1f%%" % dodge)
+	_set_stat_text("battle_power","Battle Power / Potency: %d" % potency)
 	_promote.disabled = not ClassSystem.can_promote()
 	_promote.text = "PROMOTE — المستوى %d" % ClassSystem.get_next_promotion_reward_level() if not _promote.disabled else "لا توجد ترقية متاحة"
 
-func _set(key: String, value: String) -> void:
+func _set_stat_text(key: String, value: String) -> void:
 	if _labels.has(key): _labels[key].text = value
 
 func _on_promote() -> void:
