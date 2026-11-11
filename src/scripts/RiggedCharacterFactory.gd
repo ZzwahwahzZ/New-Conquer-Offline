@@ -31,19 +31,16 @@ static func npc_variant_for_role(role: String) -> int:
 static func instantiate_rig(kind: String, variant: int = 0) -> Node3D:
  var path := asset_path(kind, variant)
  if not ResourceLoader.exists(path):
-  # Keep the pinned GitHub CC0 baseline as a deterministic fallback.
-  path = ASSET_ROOT + ("beast_bat.glb" if kind == "monster" else "humanoid_01.glb")
- if not ResourceLoader.exists(path):
-  push_warning("RiggedCharacterFactory: asset not imported yet: " + path)
-  return null
+  push_warning("RiggedCharacterFactory: imported GLB unavailable; using articulated humanoid fallback: " + path)
+  return _build_articulated_fallback(kind, variant)
  var packed := load(path) as PackedScene
  if packed == null:
-  push_error("RiggedCharacterFactory: GLB did not import as PackedScene: " + path)
-  return null
+  push_warning("RiggedCharacterFactory: GLB could not be loaded; using articulated humanoid fallback: " + path)
+  return _build_articulated_fallback(kind, variant)
  var instance := packed.instantiate() as Node3D
  if instance == null:
-  push_error("RiggedCharacterFactory: GLB root is not Node3D: " + path)
-  return null
+  push_warning("RiggedCharacterFactory: GLB root is not Node3D; using articulated humanoid fallback: " + path)
+  return _build_articulated_fallback(kind, variant)
  instance.name = "Rigged_" + kind.capitalize()
  instance.set_meta("rigged_asset_path", path)
  return instance
@@ -126,6 +123,9 @@ static func _ensure_baked_action_clips(player: AnimationPlayer) -> void:
 static func play_state(root: Node, state_name: String) -> bool:
  var player := find_animation_player(root)
  if player == null:
+  if root != null and bool(root.get_meta("articulated_fallback", false)):
+   _animate_articulated_fallback(root, state_name)
+   return true
   return false
  var state := state_name.to_lower()
  var aliases := ["idle"]
@@ -167,6 +167,119 @@ static func play_state(root: Node, state_name: String) -> bool:
  if player.current_animation != target:
   player.play(target)
  return true
+static func _fallback_material(color: Color, metallic: float = 0.0) -> StandardMaterial3D:
+ var material := StandardMaterial3D.new()
+ material.albedo_color = color
+ material.metallic = metallic
+ material.roughness = 0.62
+ return material
+
+static func _fallback_part(parent: Node3D, part_name: String, mesh: Mesh, material: Material, position: Vector3) -> MeshInstance3D:
+ var node := MeshInstance3D.new()
+ node.name = part_name
+ node.mesh = mesh
+ node.material_override = material
+ node.position = position
+ parent.add_child(node)
+ return node
+
+static func _fallback_capsule(radius: float, height: float) -> CapsuleMesh:
+ var mesh := CapsuleMesh.new()
+ mesh.radius = radius
+ mesh.height = height
+ return mesh
+
+static func _build_articulated_fallback(kind: String, variant: int) -> Node3D:
+ var root := Node3D.new()
+ root.name = "Rigged_" + kind.capitalize() + "_ArticulatedFallback"
+ root.set_meta("articulated_fallback", true)
+ var armor := _fallback_material(Color("#315b82") if variant % 2 == 0 else Color("#7d2926"), 0.18)
+ var trim := _fallback_material(Color("#d6ad4b"), 0.68)
+ var cloth := _fallback_material(Color("#e0d0b4"))
+ var skin := _fallback_material(Color("#d5a47d"))
+ var dark := _fallback_material(Color("#252b35"), 0.12)
+ var torso := BoxMesh.new()
+ torso.size = Vector3(0.72, 0.92, 0.42)
+ _fallback_part(root, "ArmoredTorso", torso, armor, Vector3(0.0, 1.38, 0.0))
+ var chest := BoxMesh.new()
+ chest.size = Vector3(0.76, 0.18, 0.46)
+ _fallback_part(root, "ChestplateTrim", chest, trim, Vector3(0.0, 1.58, -0.015))
+ var head := SphereMesh.new()
+ head.radius = 0.235
+ head.height = 0.47
+ _fallback_part(root, "Head", head, skin, Vector3(0.0, 2.06, 0.0))
+ var helmet := SphereMesh.new()
+ helmet.radius = 0.255
+ helmet.height = 0.24
+ _fallback_part(root, "EasternHelmet", helmet, trim, Vector3(0.0, 2.23, 0.0))
+ for side in [-1.0, 1.0]:
+  var shoulder := SphereMesh.new()
+  shoulder.radius = 0.19
+  shoulder.height = 0.25
+  _fallback_part(root, "ShoulderArmor_%s" % str(side), shoulder, trim, Vector3(side * 0.48, 1.73, 0.0))
+  var arm_pivot := Node3D.new()
+  arm_pivot.name = "ArmPivot_%s" % ("L" if side < 0.0 else "R")
+  arm_pivot.position = Vector3(side * 0.49, 1.68, 0.0)
+  root.add_child(arm_pivot)
+  _fallback_part(arm_pivot, "UpperArm", _fallback_capsule(0.115, 0.52), armor, Vector3(0.0, -0.28, 0.0))
+  var forearm_pivot := Node3D.new()
+  forearm_pivot.name = "ForearmPivot"
+  forearm_pivot.position = Vector3(0.0, -0.52, 0.0)
+  arm_pivot.add_child(forearm_pivot)
+  _fallback_part(forearm_pivot, "Forearm", _fallback_capsule(0.095, 0.46), cloth, Vector3(0.0, -0.23, 0.0))
+  var hand := SphereMesh.new()
+  hand.radius = 0.105
+  hand.height = 0.2
+  _fallback_part(forearm_pivot, "Hand", hand, skin, Vector3(0.0, -0.48, -0.015))
+  var leg_pivot := Node3D.new()
+  leg_pivot.name = "LegPivot_%s" % ("L" if side < 0.0 else "R")
+  leg_pivot.position = Vector3(side * 0.205, 0.93, 0.0)
+  root.add_child(leg_pivot)
+  _fallback_part(leg_pivot, "Thigh", _fallback_capsule(0.145, 0.58), cloth, Vector3(0.0, -0.29, 0.0))
+  var shin_pivot := Node3D.new()
+  shin_pivot.name = "ShinPivot"
+  shin_pivot.position = Vector3(0.0, -0.57, 0.0)
+  leg_pivot.add_child(shin_pivot)
+  _fallback_part(shin_pivot, "Shin", _fallback_capsule(0.115, 0.52), armor, Vector3(0.0, -0.25, 0.0))
+  var foot := BoxMesh.new()
+  foot.size = Vector3(0.29, 0.14, 0.42)
+  _fallback_part(shin_pivot, "Boot", foot, dark, Vector3(0.0, -0.52, -0.10))
+ # A paired blade/bow prop and back-mounted wings are attached to the articulated rig.
+ var left_weapon := BoxMesh.new()
+ left_weapon.size = Vector3(0.07, 0.48, 0.08)
+ var right_weapon := BoxMesh.new()
+ right_weapon.size = Vector3(0.07, 0.48, 0.08)
+ var left_hand := root.get_node_or_null("ArmPivot_L/ForearmPivot")
+ var right_hand := root.get_node_or_null("ArmPivot_R/ForearmPivot")
+ if left_hand != null:
+  _fallback_part(left_hand, "LeftEasternKnife", left_weapon, trim, Vector3(0.0, -0.55, -0.10))
+ if right_hand != null:
+  _fallback_part(right_hand, "RightEasternKnife", right_weapon, trim, Vector3(0.0, -0.55, -0.10))
+ if variant % HUMANOIDS.size() == 0:
+  var bow := TorusMesh.new()
+  bow.inner_radius = 0.22
+  bow.outer_radius = 0.27
+  _fallback_part(root, "ArcherBow", bow, trim, Vector3(-0.62, 1.12, -0.18)).rotation_degrees.x = 90.0
+ for side in [-1.0, 1.0]:
+  var wing := PrismMesh.new()
+  wing.size = Vector3(0.46, 0.76, 0.12)
+  var wing_node := _fallback_part(root, "EasternWing_%s" % str(side), wing, armor, Vector3(side * 0.42, 1.45, 0.24))
+  wing_node.rotation.z = side * -0.32
+ return root
+
+static func _animate_articulated_fallback(root: Node, state_name: String) -> void:
+ var moving := state_name.to_lower() in ["run", "walk"]
+ var jumping := state_name.to_lower() in ["jump", "fly"]
+ var phase := float(Time.get_ticks_msec()) * 0.001 * (8.5 if moving else 2.0)
+ var swing := sin(phase) * (0.72 if moving else 0.035)
+ for side in ["L", "R"]:
+  var arm := root.get_node_or_null("ArmPivot_" + side) as Node3D
+  var leg := root.get_node_or_null("LegPivot_" + side) as Node3D
+  if is_instance_valid(arm):
+   arm.rotation.x = (-swing if side == "L" else swing) + (-0.35 if jumping else 0.0)
+  if is_instance_valid(leg):
+   leg.rotation.x = (swing if side == "L" else -swing) + (0.18 if jumping else 0.0)
+
 static func attach_bone_prop(root: Node3D, bone_candidates: Array[String], prop: Node3D) -> BoneAttachment3D:
  var skeleton := find_skeleton(root)
  if skeleton == null or prop == null:

@@ -150,9 +150,9 @@ func _physics_process(delta: float) -> void:
 		if _fly_timer <= 0.0: _set_flying(false)
 	if _flying:
 		velocity.y = 0.0
-	elif is_on_floor() and velocity.y <= 0.0:
-		_jumping = false
-		velocity.y = -0.1
+	elif not _jumping:
+		# Grounded movement is kinematic: do not accumulate gravity while idle.
+		velocity.y = 0.0
 	else:
 		velocity.y -= float(ProjectSettings.get_setting("physics/3d/default_gravity")) * delta
 	_update_horizontal_movement(delta)
@@ -170,6 +170,7 @@ func _physics_process(delta: float) -> void:
 		_jumping = false
 		_flying = false
 	move_and_slide()
+	_stabilize_ground_contact()
 	var rig_instance := _visual.get_node_or_null("Rigged_Hero") if is_instance_valid(_visual) else null
 	if rig_instance != null:
 		var rig_state := "Idle"
@@ -181,6 +182,28 @@ func _physics_process(delta: float) -> void:
 			rig_state = "Run"
 		RiggedCharacterFactory.play_state(rig_instance, rig_state)
 	stamina_changed.emit(ClassSystem.stamina, ClassSystem.max_stamina)
+
+func _stabilize_ground_contact() -> void:
+	if _flying:
+		return
+	if _jumping and is_on_floor() and velocity.y <= 0.0:
+		_jumping = false
+	if _jumping:
+		return
+	# A short vertical probe follows raised bridges and steps without pulling a falling player upward.
+	var from := global_position + Vector3.UP * 0.30
+	var to := global_position - Vector3.UP * 0.55
+	var query := PhysicsRayQueryParameters3D.create(from, to)
+	query.collision_mask = ground_collision_mask
+	query.exclude = [get_rid()]
+	var hit := get_world_3d().direct_space_state.intersect_ray(query)
+	if not hit.is_empty() and absf(float(hit.position.y) - global_position.y) <= 0.55:
+		_ground_y = float(hit.position.y) + 0.02
+		global_position.y = _ground_y
+		velocity.y = 0.0
+	elif is_on_floor():
+		_ground_y = global_position.y
+		velocity.y = 0.0
 
 func _update_horizontal_movement(delta: float) -> void:
 	var keyboard := Input.get_vector("move_left", "move_right", "move_forward", "move_back")

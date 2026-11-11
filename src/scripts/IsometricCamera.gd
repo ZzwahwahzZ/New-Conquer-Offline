@@ -2,8 +2,8 @@ extends Node3D
 ## Player-following orbit camera with mouse, touch, keyboard and zoom controls.
 @export var target_path: NodePath = NodePath("../Player")
 @export_range(0.1,30.0,0.1) var follow_speed := 10.0
-@export_range(15.0,75.0,1.0) var pitch_degrees := 38.0
-@export_range(8.0,50.0,0.5) var orbit_distance := 14.0
+@export_range(15.0,75.0,1.0) var pitch_degrees := 35.0
+@export_range(8.0,50.0,0.5) var orbit_distance := 13.5
 @export_range(0.05,1.0,0.01) var drag_sensitivity := 0.66
 @export var zoom_step := 2.0
 var _target: Node3D
