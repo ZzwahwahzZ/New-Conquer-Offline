@@ -68,7 +68,7 @@ func _run() -> void:
 			failures.append("Founder could not donate to the new guild treasury")
 		if int(system.call("get_guild",test_guild).get("guild_fund",0)) != 250000:
 			failures.append("New guild treasury does not match founder donation")
-		var saved := economy.call("load_guild_data")
+		var saved: Dictionary = economy.call("load_guild_data") as Dictionary
 		if str(saved.get("player_guild_name","")) != test_guild:
 			failures.append("Guild membership was not serialized in the v6 save envelope")
 		if int(saved.get("player_guild_donation",0)) != 250000:
