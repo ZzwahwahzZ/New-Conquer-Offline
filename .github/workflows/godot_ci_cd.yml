@@ -30,14 +30,18 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}"
+          TEMPLATE_DEST="$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}"
+          mkdir -p "$TEMPLATE_DEST"
           curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o /tmp/godot.zip
           unzip -q /tmp/godot.zip -d /tmp/godot-bin
           sudo install -m 0755 /tmp/godot-bin/Godot_v${GODOT_VERSION}-stable_linux.x86_64 /usr/local/bin/godot
           curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o /tmp/templates.tpz
           mkdir -p /tmp/godot-templates
           unzip -q /tmp/templates.tpz -d /tmp/godot-templates
-          cp -a /tmp/godot-templates/templates/. "$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}/"
+          TEMPLATE_SOURCE="$(dirname "$(find /tmp/godot-templates -type f -name 'web_nothreads_release.zip' -print -quit)")"
+          test -n "$TEMPLATE_SOURCE" && test -f "$TEMPLATE_SOURCE/web_nothreads_debug.zip"
+          cp -a "$TEMPLATE_SOURCE"/. "$TEMPLATE_DEST"/
+          test -f "$TEMPLATE_DEST/web_nothreads_release.zip"
           godot --version
 
       - name: Import all project resources (Mobile renderer) and reject parser errors
@@ -91,14 +95,18 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}"
+          TEMPLATE_DEST="$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}"
+          mkdir -p "$TEMPLATE_DEST"
           curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o /tmp/godot.zip
           unzip -q /tmp/godot.zip -d /tmp/godot-bin
           sudo install -m 0755 /tmp/godot-bin/Godot_v${GODOT_VERSION}-stable_linux.x86_64 /usr/local/bin/godot
           curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o /tmp/templates.tpz
           mkdir -p /tmp/godot-templates
           unzip -q /tmp/templates.tpz -d /tmp/godot-templates
-          cp -a /tmp/godot-templates/templates/. "$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}/"
+          TEMPLATE_SOURCE="$(dirname "$(find /tmp/godot-templates -type f -name 'web_nothreads_release.zip' -print -quit)")"
+          test -n "$TEMPLATE_SOURCE" && test -f "$TEMPLATE_SOURCE/web_nothreads_debug.zip"
+          cp -a "$TEMPLATE_SOURCE"/. "$TEMPLATE_DEST"/
+          test -f "$TEMPLATE_DEST/web_nothreads_release.zip"
           godot --version
 
       - name: Switch temporary web build to Compatibility renderer
@@ -170,27 +178,34 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Android SDK packages
+      - name: Configure preinstalled Android SDK
+        shell: bash
         run: |
-          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          set -euo pipefail
+          export ANDROID_HOME="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
+          SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager -print -quit)"
+          test -n "$SDKMANAGER"
           echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
           echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> "$GITHUB_ENV"
+          yes | "$SDKMANAGER" --licenses >/dev/null
+          "$SDKMANAGER" "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
       - name: Install Godot 4.3 and Android export templates
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}"
+          TEMPLATE_DEST="$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}"
+          mkdir -p "$TEMPLATE_DEST"
           curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o /tmp/godot.zip
           unzip -q /tmp/godot.zip -d /tmp/godot-bin
           sudo install -m 0755 /tmp/godot-bin/Godot_v${GODOT_VERSION}-stable_linux.x86_64 /usr/local/bin/godot
           curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o /tmp/templates.tpz
           mkdir -p /tmp/godot-templates
           unzip -q /tmp/templates.tpz -d /tmp/godot-templates
-          cp -a /tmp/godot-templates/templates/. "$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}/"
+          TEMPLATE_SOURCE="$(dirname "$(find /tmp/godot-templates -type f -name 'web_nothreads_release.zip' -print -quit)")"
+          test -n "$TEMPLATE_SOURCE" && test -f "$TEMPLATE_SOURCE/web_nothreads_debug.zip"
+          cp -a "$TEMPLATE_SOURCE"/. "$TEMPLATE_DEST"/
+          test -f "$TEMPLATE_DEST/web_nothreads_release.zip"
           godot --version
 
       - name: Generate temporary Android debug keystore
