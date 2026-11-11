@@ -68,6 +68,11 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 	current_world.name = settlement_id
 	add_child(current_world)
 	var npc_system=Node3D.new(); npc_system.name="NPCSystem"; npc_system.set_script(load("res://src/scripts/NPCSystem.gd")); current_world.add_child(npc_system); npc_system.call("setup",current_world,settlement_id)
+	var ai_manager := Node3D.new()
+	ai_manager.name = "AIPlayersManager"
+	ai_manager.set_script(load("res://src/scripts/AIPlayersManager.gd"))
+	current_world.add_child(ai_manager)
+	ai_manager.call("setup",self,player,current_settlement)
 	if is_instance_valid(player) and not restore_position:
 		player.global_position = Vector3(0,1,0)
 	_spawn_settlement_content()
