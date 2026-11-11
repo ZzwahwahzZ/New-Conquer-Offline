@@ -21,7 +21,7 @@ signal auto_attributes_applied(new_level: int, allocation: Dictionary)
 @export var fly_duration := 12.0
 
 const SKILL_DATA := {
-	"Jump":{"cooldown":0.35,"mana":0,"stamina":7.0},
+	"Jump":{"cooldown":1.0,"mana":0,"stamina":7.0},
 	"Fly":{"cooldown":30.0,"mana":20,"stamina":0.0},
 	"Scatter":{"cooldown":8.0,"mana":15,"stamina":5.0},
 	"Rapid_Fire":{"cooldown":5.0,"mana":10,"stamina":4.0},
@@ -49,7 +49,7 @@ var _xp_mode_timer := 0.0
 var _xp_damage_multiplier := 1.0
 var _visual: Node3D
 var _safe_spawn := Vector3.ZERO
-const WORLD_FALL_LIMIT := -3.0
+const WORLD_FALL_LIMIT := -5.0
 
 func _ready() -> void:
 	_safe_spawn = global_position
@@ -104,6 +104,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if _joystick_active: return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		_set_move_target_from_screen(event.position)
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		cast_skill("Jump")
 	elif event is InputEventScreenTouch and event.pressed:
 		_set_move_target_from_screen(event.position)
 
@@ -153,11 +155,25 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector3.ZERO
 		_jumping = false
 		_flying = false
-	move_and_slide()
+	if not _jumping:
+		move_and_slide()
 	stamina_changed.emit(ClassSystem.stamina, ClassSystem.max_stamina)
 
 func _update_horizontal_movement(delta: float) -> void:
-	if _joystick_active:
+	var keyboard := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	if keyboard.length() > 0.08:
+		_joystick_active = false
+		_has_move_target = false
+		var camera := get_viewport().get_camera_3d()
+		var right := Vector3.RIGHT
+		var forward := Vector3.FORWARD
+		if camera != null:
+			right = camera.global_basis.x
+			forward = -camera.global_basis.z
+		right.y = 0.0
+		forward.y = 0.0
+		_rotate_and_move((right.normalized() * keyboard.x + forward.normalized() * -keyboard.y).normalized(), delta)
+	elif _joystick_active:
 		_has_move_target = false
 		if _joystick_vector.length() > joystick_deadzone:
 			var camera := get_viewport().get_camera_3d()
