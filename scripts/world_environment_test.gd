@@ -10,7 +10,7 @@ func _run() -> void:
 	root.add_child(city)
 	await process_frame
 	await physics_frame
-	var environment_node := city.find_child("*", true, false) as WorldEnvironment
+	var environment_node := city.get_node_or_null("SettlementEnvironment") as WorldEnvironment
 	assert(environment_node != null, "WorldEnvironment is missing from settlement")
 	assert(environment_node.environment != null, "Environment resource is missing")
 	assert(environment_node.environment.sky != null, "Procedural sky is missing")
