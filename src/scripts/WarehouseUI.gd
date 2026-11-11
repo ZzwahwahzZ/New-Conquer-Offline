@@ -21,10 +21,18 @@ func refresh() -> void:
   grid.get_child(i).text=("%s x%d"%[item.get("id",""),item.get("quantity",0)]) if not item.is_empty() else "فارغ"
 func _slot(i:int) -> void:
  var idx=page*40+i; var bank=GlobalEconomy.warehouse_items; var inv:Array=GameState.profile.get("inventory",[])
- if bank[idx].is_empty() and not inv.is_empty():
-  bank[idx]=inv.pop_front(); GameState.profile.inventory=inv
+ if bank[idx].is_empty():
+  if not GearSystem.inventory.is_empty():
+   bank[idx]=GearSystem.inventory.pop_front(); GearSystem.call("_save_and_emit")
+  elif not inv.is_empty():
+   bank[idx]=inv.pop_front(); GameState.profile.inventory=inv
  elif not bank[idx].is_empty():
-  inv.append(bank[idx]); bank[idx]={}; GameState.profile.inventory=inv
+  var item:Dictionary=bank[idx]
+  if item.has("slot") or item.has("weapon_family") or item.get("item_type","")=="gem":
+   GearSystem.inventory.append(item); GearSystem.call("_save_and_emit")
+  else:
+   inv.append(item); GameState.profile.inventory=inv
+  bank[idx]={}
  GlobalEconomy.warehouse_items=bank; GameState.inventory_changed.emit(); GlobalEconomy.save_runtime_state(); GameState.save_local(); refresh()
 func _deposit() -> void:
  if GlobalEconomy.remove_gold(1000): GlobalEconomy.warehouse_gold+=1000; GlobalEconomy.save_runtime_state(); refresh()

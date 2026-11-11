@@ -14,7 +14,9 @@ func refresh() -> void:
   var row=HBoxContainer.new(); list.add_child(row); var l=Label.new(); l.text="%s - %d ذهب"%[entry[0],entry[1]]; l.size_flags_horizontal=Control.SIZE_EXPAND_FILL; row.add_child(l); var b=Button.new(); b.text="شراء"; b.pressed.connect(_buy.bind(entry[0],entry[1])); row.add_child(b)
  var sell=Button.new(); sell.text="بيع كل العتاد العادي"; sell.pressed.connect(_sell_all); list.add_child(sell)
 func _buy(id:String,cost:int) -> void:
- if GlobalEconomy.remove_gold(cost): GameState.add_item(id,1)
+ if not GlobalEconomy.remove_gold(cost): return
+ if not GearDatabase.get_blueprint(id).is_empty(): GearSystem.add_item(id,1)
+ else: GameState.add_item(id,1)
 func _sell_all() -> void:
  var items:Array=GearSystem.inventory
  var earned=0

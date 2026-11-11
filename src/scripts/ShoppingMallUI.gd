@@ -12,4 +12,11 @@ func refresh() -> void:
  for item in GOODS:
   var row=HBoxContainer.new(); list.add_child(row); var l=Label.new(); l.text="%s | %d ذهب"%[item[0],item[1]]; l.size_flags_horizontal=Control.SIZE_EXPAND_FILL; row.add_child(l); var b=Button.new(); b.text="شراء"; b.pressed.connect(_buy.bind(item[0],item[1])); row.add_child(b)
 func _buy(id:String,cost:int) -> void:
- if GlobalEconomy.remove_gold(cost): GameState.add_item(id,1)
+ if not GlobalEconomy.remove_gold(cost): return
+ if id.begins_with("PlusStone_"):
+  var level=int(id.get_slice("_",1))
+  GearSystem.inventory.append({"id":"plus_stone_%d"%level,"item_type":"plus_stone","stone_level":level,"quantity":1,"instance_id":"mall_plus_%d"%Time.get_ticks_usec()})
+  GearSystem.call("_save_and_emit")
+ elif not GearDatabase.get_gem(id).is_empty(): GearSystem.add_gem(id,1)
+ elif not GearDatabase.get_blueprint(id).is_empty(): GearSystem.add_item(id,1)
+ else: GameState.add_item(id,1)
