@@ -11,8 +11,8 @@ This change adds a Godot 4.3-stable GitHub Actions pipeline for the existing pro
 - Publishes the web export through GitHub Pages.
 - Builds a signed debug APK using Java 17, Android SDK 34 and a temporary debug keystore, then uploads `NewConquerOffline.apk` as a workflow artifact.
 
-## Pages first-time enablement requirement
-The workflow calls `actions/configure-pages@v5` with `enablement: true`. GitHub's action documentation explicitly requires a token other than `GITHUB_TOKEN` for first-time Pages enablement. Add a repository Actions secret named `PAGES_TOKEN` containing a classic PAT with `repo` scope (or a fine-grained token with Pages write and Administration read/write access). Without that administrative token, GitHub can reject automatic first-time Pages enablement; this cannot be bypassed safely by workflow YAML or the normal `GITHUB_TOKEN`. Once Pages is enabled, the workflow deploys on subsequent runs.
+## Pages configuration
+The repository Pages source has been confirmed by the project owner as **GitHub Actions**. The workflow runs `actions/configure-pages@v5` with `enablement: true` and then deploys using `actions/deploy-pages@v4`. If GitHub rejects first-time enablement because the workflow token lacks administrative Pages permissions, a repository administrator must provide a `PAGES_TOKEN` secret with Pages write and Administration read/write access. No token value is stored in this repository.
 
 ## Save and platform behavior
 - Save v6 remains the project's existing binary save envelope. Godot's `user://` storage maps to browser-persistent storage (IndexedDB-backed virtual filesystem) for web exports and app-private storage on Android.
@@ -34,4 +34,4 @@ The committed project stays on Godot 4.3 Mobile renderer for Android. WebGL2 req
 - Expected Pages URL: https://zzwahwahzz.github.io/New-Conquer-Offline/
 
 ## Verification status
-The pipeline itself is the execution environment for the actual Godot parser/import, smoke tests and exports. These checks are not claimed as passed until a GitHub Actions run completes successfully. Review the Actions run and its artifacts after pushing this workflow.
+A push to `main` is used to trigger the cloud workflow. Godot parser/import, smoke tests, exports, Pages deployment and APK artifact are only considered successful after the corresponding GitHub Actions jobs complete successfully. The run must be inspected before reporting completion.
