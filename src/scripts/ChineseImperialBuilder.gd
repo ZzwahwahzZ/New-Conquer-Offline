@@ -16,7 +16,7 @@ static func build(parent: Node3D, city: String, _size: float) -> void:
 	if architecture == null:
 		push_error("TwinCity architecture GLB root is not Node3D.")
 		return
-	architecture.name = "TwinCity_ImperialChina_GLBAssset"
+	architecture.name = "TwinCity_ImperialChina_GLBAsset"
 	parent.add_child(architecture)
 	_apply_distance_culling(architecture, 320.0)
 
