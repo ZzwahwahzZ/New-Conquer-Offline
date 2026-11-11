@@ -46,6 +46,8 @@ func _run() -> void:
 		failures.append("Safe-zone NPC behavior / hunting behavior is missing")
 	if not manager_source.contains("GUILD_DONATION_INTERVAL") or not manager_source.contains("push_simulated_chat"):
 		failures.append("Guild donations or chat feed integration is missing")
+	if not manager_source.contains("_spawn_virtual_gold") or not manager_source.contains("_update_virtual_gold"):
+		failures.append("Hunting-zone virtual gold pickup simulation is missing")
 	if not manager_source.contains("recycle_all()") or not manager_source.contains("set_idle_lod"):
 		failures.append("Clean pooling or idle LOD integration is missing")
 	if not manager_source.contains("SPAWN_BATCH := 2") or not manager_source.contains("SPAWN_INTERVAL := 0.1"):
