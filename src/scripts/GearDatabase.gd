@@ -137,7 +137,7 @@ func get_quality_upgrade(quality: String) -> Dictionary:
 	var index := QUALITIES.find(quality)
 	if index < 0 or index >= QUALITIES.size() - 1:
 		return {}
-	var next_quality := QUALITIES[index + 1]
+	var next_quality: String = QUALITIES[index + 1]
 	var rates := [0.90, 0.75, 0.55, 0.35]
 	var costs := [8000, 18000, 45000, 100000]
 	return {"quality": next_quality, "chance": rates[index], "cost": costs[index]}
