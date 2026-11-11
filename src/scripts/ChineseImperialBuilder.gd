@@ -21,6 +21,7 @@ static func build(parent: Node3D, city: String, size: float) -> void:
  _npc_halls(root)
  if city=="TwinCity":
   _arched_bridge(root,Vector3(-42.0,0.0,-92.0),Vector3(42.0,0.0,-92.0),7.0)
+  _arched_bridge(root,Vector3(-42.0,0.0,92.0),Vector3(42.0,0.0,92.0),7.0)
  elif city=="Waterlands":
   _arched_bridge(root,Vector3(-72.0,0.0,-58.0),Vector3(72.0,0.0,-58.0),8.0)
  elif city=="VolcanoLand":
@@ -72,7 +73,20 @@ static func _pavilion(parent: Node3D,pos: Vector3) -> void:
    _box(pod,Vector3(x,3.1,z),Vector3(0.7,5.0,0.7),Color("#9B111E"))
  _roof(pod,Vector3(0,6.0,0),14.0)
 static func _city_features(parent: Node3D,city: String,size: float) -> void:
- if city=="VolcanoLand":
+ if city=="TwinCity":
+  var canal_mat:=_mat(Color("#268eae"))
+  canal_mat.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA
+  canal_mat.albedo_color.a=0.82
+  for z in [-92.0,92.0]:
+   var canal:=MeshInstance3D.new()
+   var canal_mesh:=PlaneMesh.new()
+   canal_mesh.size=Vector2(7.0,150.0)
+   canal.mesh=canal_mesh
+   canal.position=Vector3(0.0,-0.28,z)
+   canal.material_override=canal_mat
+   canal.name="TwinCityWaterChannel"
+   parent.add_child(canal)
+ elif city=="VolcanoLand":
   var lava_mat:=_mat(Color("#f05a16")); lava_mat.emission_enabled=true; lava_mat.emission=Color("#ff4b08"); lava_mat.emission_energy_multiplier=2.2
   for i in range(3):
    var river:=MeshInstance3D.new(); var plane:=PlaneMesh.new(); plane.size=Vector2(4.0,size*0.62); river.mesh=plane
