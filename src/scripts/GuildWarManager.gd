@@ -185,7 +185,9 @@ func _resolve_war() -> void:
 		system.call("set_war_winner",winner)
 		if winner == player_guild:
 			GameState.profile["guild_war_title"] = "Guild War Winner"
-			GameState.save_local()
+		else:
+			GameState.profile["guild_war_title"] = ""
+		GameState.save_local()
 		system.call("set_war_active",false)
 	if is_instance_valid(_hud):
 		_hud.call("push_simulated_chat","🏆 Guild War Winner: %s!" % winner,"عام")
