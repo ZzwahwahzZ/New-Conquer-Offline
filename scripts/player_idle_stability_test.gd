@@ -29,12 +29,12 @@ func _run() -> void:
 	# Allow the full requested three seconds of physics with no input.
 	for frame in range(180):
 		await physics_frame
-	var settled_y := player.global_position.y
+	var settled_position := player.global_position
 	for frame in range(30):
 		await physics_frame
 		print("PLAYER_IDLE_DEBUG frame=%d y=%.6f velocity_y=%.6f on_floor=%s" % [frame, player.global_position.y, player.velocity.y, str(player.is_on_floor())])
 		assert(player.is_on_floor(), "Player left the floor while idle")
 		assert(is_equal_approx(player.velocity.y, -0.1), "Player grounding bias is not active while idle")
-		assert(absf(player.global_position.y - settled_y) <= 0.02, "Player Y position changed while idle")
+		assert(player.global_position.distance_to(settled_position) <= 0.02, "Player X/Y/Z position changed while idle")
 	print("PLAYER_IDLE_STABILITY_PASS y=%.6f velocity_y=%.6f on_floor=%s" % [player.global_position.y, player.velocity.y, str(player.is_on_floor())])
 	quit(0)
