@@ -16,6 +16,8 @@ func _run() -> void:
 		failures.append("Roster must contain exactly 200 virtual players")
 	if roster.guilds.size() != 8:
 		failures.append("Roster must contain exactly 8 guilds")
+	if roster.get_all_players().size() != 200:
+		failures.append("Public roster API did not return 200 player records")
 	if not roster.validate_data():
 		failures.append("Guild structure / one-leader / leader equipment validation failed")
 	for guild_name in Roster.GUILD_NAMES:
@@ -42,7 +44,15 @@ func _run() -> void:
 		failures.append("Safe-zone 40 / hunting-zone 3 caps are missing")
 	if not manager_source.contains("SPAWN_BATCH := 2") or not manager_source.contains("SPAWN_INTERVAL := 0.1"):
 		failures.append("Staggered spawning must be 2 bots per 0.1 seconds")
-	if not manager_source.contains("func recycle_all()") or not manager_source.contains("func get_pool_count()"):
+	if not manager_source.contains("_assign_city_behavior") or not manager_source.contains("_assign_hunting_behavior"):
+		failures.append("Safe-zone NPC behavior / hunting behavior is missing")
+	if not manager_source.contains("GUILD_DONATION_INTERVAL") or not manager_source.contains("push_simulated_chat"):
+		failures.append("Guild donations or chat feed integration is missing")
+	if not manager_source.contains("recycle_all()") or not manager_source.contains("set_idle_lod"):
+		failures.append("Clean pooling or idle LOD integration is missing")
+	if not manager_source.contains("SPAWN_BATCH := 2") or not manager_source.contains("SPAWN_INTERVAL := 0.1"):
+		failures.append("Staggered spawning must be 2 bots per 0.1 seconds")
+	if not manager_source.contains("func recycle_all()") or not manager_source.contains("func get_pool_count()") or not manager_source.contains("func get_queued_count()"):
 		failures.append("Pool cleanup / inspection API is missing")
 	var world_source := FileAccess.get_file_as_string("res://src/scripts/WorldManager.gd")
 	var hud_source := FileAccess.get_file_as_string("res://src/scripts/HUD.gd")
