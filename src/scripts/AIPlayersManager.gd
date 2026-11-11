@@ -209,9 +209,9 @@ func _simulate_donation() -> void:
 	var bot: Dictionary = _active_bots[_rng.randi_range(0,_active_bots.size()-1)].get("bot_data")
 	var amount := _rng.randi_range(50000,500000)
 	var player_id := int(bot.get("id",0))
-	if not roster.donate_to_guild(player_id,amount):
+	var guild_system := get_tree().get_first_node_in_group("guild_system")
+	if not is_instance_valid(guild_system) or not guild_system.call("record_bot_donation",player_id,amount):
 		return
-	_emit_chat("[Guild] %s تبرع بمبلغ %s ذهب لصندوق %s!" % [str(bot.get("name","")),_format_gold(amount),str(bot.get("guild_name",""))],"نقابة")
 	var updated := roster.get_player(player_id)
 	for active_bot in _active_bots:
 		if is_instance_valid(active_bot) and int(active_bot.get("bot_data").get("id",-1)) == player_id:
