@@ -26,6 +26,9 @@ var _chat_timer := 0.0
 var _rng := RandomNumberGenerator.new()
 var _next_roster_index := 0
 
+func _exit_tree() -> void:
+	recycle_all()
+
 func _ready() -> void:
 	add_to_group("ai_players_manager")
 	_rng.randomize()
@@ -196,7 +199,13 @@ func _emit_chat(message: String, channel: String = "عام") -> void:
 	get_tree().call_group("game_hud","push_simulated_chat",message,channel)
 
 func _format_gold(amount: int) -> String:
-	return str(amount).reverse().insert(3,",").reverse() if amount >= 1000 else str(amount)
+	var raw := str(maxi(0,amount))
+	var formatted := ""
+	for index in range(raw.length()):
+		if index > 0 and (raw.length()-index) % 3 == 0:
+			formatted += ","
+		formatted += raw[index]
+	return formatted
 
 func recycle_all() -> void:
 	for bot in _active_bots.duplicate():
