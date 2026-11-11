@@ -123,11 +123,7 @@ func _process(delta: float) -> void:
 	_simulation_timer += delta
 	if _simulation_timer < 1.0: return
 	_simulation_timer = 0.0
-	# The small NPC squads trade simulated pressure; the player's hits remain authoritative.
-	if not gates_destroyed:
-		register_target_damage("left_gate",_war_bots.size() > 0 ? 320 : 180)
-	else:
-		register_target_damage("guild_pole",_war_bots.size() * 220)
+	# War bots remain visual combatants; player hits control objective destruction.
 
 func register_target_damage(target_id: String, amount: int) -> void:
 	if amount <= 0: return
