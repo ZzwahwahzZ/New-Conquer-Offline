@@ -31,6 +31,30 @@ SOURCES = {
         "license": "CC0 1.0 Universal",
         "source": "https://3dassets.dev/packs/alpine-and-arctic-biomes",
     },
+    "biomes/volcano_and_lava_fields.glb": {
+        "url": "https://cdn.3dassets.dev/assets/37488/v1/model.glb",
+        "title": "Volcano and Lava Fields starter scene",
+        "license": "CC0 1.0 Universal",
+        "source": "https://3dassets.dev/packs/volcano-and-lava-fields",
+    },
+    "biomes/jungle_temple_and_stone_city.glb": {
+        "url": "https://cdn.3dassets.dev/assets/36160/v1/model.glb",
+        "title": "Jungle Temple and Stone City starter scene",
+        "license": "CC0 1.0 Universal",
+        "source": "https://3dassets.dev/packs/jungle-temple-and-stone-city",
+    },
+    "nature/date_palm.glb": {
+        "url": "https://cdn.3dassets.dev/assets/38136/v1/model.glb",
+        "title": "Date Palm",
+        "license": "CC0 1.0 Universal",
+        "source": "https://3dassets.dev/assets/desert-mosque-and-madrasa-courtyard-date-palm-c311e205",
+    },
+    "nature/willow_tree.glb": {
+        "url": "https://cdn.3dassets.dev/assets/28780/v1/model.glb",
+        "title": "Willow Tree",
+        "license": "CC0 1.0 Universal",
+        "source": "https://3dassets.dev/assets/medieval-mmo-starter-realm-willow-tree-e1efef2c",
+    },
 }
 
 def download(url: str, target: Path) -> None:
