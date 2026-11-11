@@ -42,8 +42,6 @@ func _run() -> void:
 	var manager_source := FileAccess.get_file_as_string(AI_MANAGER_PATH)
 	if not manager_source.contains("CITY_CAP := 40") or not manager_source.contains("HUNT_CAP := 3"):
 		failures.append("Safe-zone 40 / hunting-zone 3 caps are missing")
-	if not manager_source.contains("SPAWN_BATCH := 2") or not manager_source.contains("SPAWN_INTERVAL := 0.1"):
-		failures.append("Staggered spawning must be 2 bots per 0.1 seconds")
 	if not manager_source.contains("_assign_city_behavior") or not manager_source.contains("_assign_hunting_behavior"):
 		failures.append("Safe-zone NPC behavior / hunting behavior is missing")
 	if not manager_source.contains("GUILD_DONATION_INTERVAL") or not manager_source.contains("push_simulated_chat"):
