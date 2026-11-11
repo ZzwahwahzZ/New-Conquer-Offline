@@ -123,6 +123,7 @@ func _unhandled_input(event: InputEvent) -> void:
   if event.is_action_pressed("save_game"):
     GameState.profile.world_position = [player.position.x,player.position.y,player.position.z]
     GameState.save_local()
+    ClassSystem.save_character()
     _refresh()
 func _on_defeated(gold: int, xp: int) -> void:
   # CPDrop.gd awards the gold on pickup; do not award it twice here.

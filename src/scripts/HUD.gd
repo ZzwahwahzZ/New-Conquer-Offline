@@ -5,6 +5,7 @@ const JOYSTICK_SIZE := Vector2(164.0, 164.0)
 const JOYSTICK_RADIUS := 57.0
 const HOTBAR_SIZE := Vector2(500.0, 78.0)
 const ORB_SIZE := Vector2(176.0, 176.0)
+const SKILL_COST_LABELS := {"Jump":"MP 0 / STA 7","Fly":"MP 20 / STA 0","Scatter":"MP 15 / STA 5","Rapid_Fire":"MP 10 / STA 4","XP_Mode":"MP 0 / STA 0"}
 
 var _root: Control
 var _joystick: Control
@@ -484,10 +485,8 @@ func _process(_delta: float) -> void:
 		_skill_buttons[i].disabled = not can_use
 		var labels := ["JUMP", "FLY", "AOE", "KNIFE", "XP"]
 		_skill_buttons[i].text = "%s\n%.1f" % [labels[i], cooldown] if cooldown > 0.0 else labels[i]
-		var skill_cost: Dictionary = _player.SKILL_DATA.get(_skill_ids[i], {}) if is_instance_valid(_player) else {}
-		var mana_cost := int(skill_cost.get("mana", 0))
-		var stamina_cost := float(skill_cost.get("stamina", 0.0))
-		_skill_buttons[i].tooltip_text = "%s | MP %d | STA %.0f | CD %.1fs" % [_skill_ids[i], mana_cost, stamina_cost, cooldown]
+		var cost_label := str(SKILL_COST_LABELS.get(_skill_ids[i], ""))
+		_skill_buttons[i].tooltip_text = "%s | %s | CD %.1fs" % [_skill_ids[i], cost_label, cooldown]
 
 func _refresh_stats() -> void:
 	if not is_instance_valid(_root):

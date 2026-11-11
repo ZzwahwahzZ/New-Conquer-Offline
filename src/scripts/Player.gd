@@ -200,7 +200,7 @@ func cast_skill(skill_id: String) -> bool:
 		"Scatter":
 			_cast_scatter()
 		"Rapid_Fire", "Kinetic_Spark":
-			_start_rapid_fire()
+			_start_rapid_fire(skill_id)
 		"XP_Mode":
 			if not ClassSystem.consume_xp_skill():
 				ClassSystem.restore_mana(int(data.mana))
@@ -259,10 +259,10 @@ func _cast_scatter() -> void:
 			combat_hit.emit(enemy, damage)
 	_gain_xp_skill(12.0)
 
-func _start_rapid_fire() -> void:
+func _start_rapid_fire(skill_id: String = "Rapid_Fire") -> void:
 	var target := _nearest_enemy(8.0)
 	if target == null: return
-	var rapid_proficiency := ClassSystem.get_skill_proficiency("Rapid_Fire")
+	var rapid_proficiency := ClassSystem.get_skill_proficiency(skill_id)
 	var level_bonus := int(rapid_proficiency.get("level", 1))
 	for hit_index in range(2):
 		if is_instance_valid(target) and target.has_method("take_damage"):
@@ -306,7 +306,7 @@ func _is_archer_family() -> bool:
 	return ClassSystem.current_class in ["Archer","Oriental_Assassin"]
 
 func _gain_skill_proficiency(skill_id: String, amount: int) -> void:
-	ClassSystem.gain_skill_proficiency("Rapid_Fire" if skill_id == "Kinetic_Spark" else skill_id, amount)
+	ClassSystem.gain_skill_proficiency(skill_id, amount)
 
 func get_skill_proficiency(skill_id: String) -> Dictionary:
 	return ClassSystem.get_skill_proficiency(skill_id)

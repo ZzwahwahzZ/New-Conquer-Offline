@@ -86,7 +86,9 @@ func get_physical_attack_bonus() -> int:
 
 func choose_class(class_id: String) -> bool:
 	if not CLASS_DATA.has(class_id) or level > 1: return false
-	if current_class == class_id: return true
+	if current_class == class_id:
+		_save()
+		return true
 	current_class = class_id
 	attributes = CLASS_DATA[class_id]["base"].duplicate(true)
 	_recalculate_derived(false)
@@ -209,6 +211,10 @@ func _recalculate_derived(restore_resources: bool = false) -> void:
 	stamina = clampf(stamina, 0.0, max_stamina)
 
 func _emit_xp() -> void: xp_changed.emit(experience, get_required_xp())
+
+func save_character() -> bool:
+	_save()
+	return _loaded
 
 func _save() -> void:
 	if not _loaded: return
