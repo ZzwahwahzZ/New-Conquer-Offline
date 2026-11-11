@@ -327,7 +327,7 @@ func save_world_state() -> void:
 		GameState.profile["settlement_id"] = current_settlement
 
 func _ensure_world_lighting(world_root: Node3D) -> void:
-	var environment_node := world_root.find_child("*", true, false) as WorldEnvironment
+	var environment_node := world_root.get_node_or_null("SettlementEnvironment") as WorldEnvironment
 	if environment_node == null:
 		environment_node = WorldEnvironment.new()
 		environment_node.name = "WorldEnvironment"
