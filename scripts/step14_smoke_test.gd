@@ -7,19 +7,30 @@ func _initialize() -> void:
 
 func _run() -> void:
 	var failures: Array[String] = []
-	var original_gold := GlobalEconomy.current_gold
-	var original_guild_data: Dictionary = GlobalEconomy.load_guild_data()
-	var original_profile: Dictionary = GameState.profile.duplicate(true)
-	var original_level := ClassSystem.level
+	# Standalone SceneTree tests resolve Autoloads dynamically from the root.
+	var economy: Node = root.get_node_or_null("GlobalEconomy")
+	var game_state: Node = root.get_node_or_null("GameState")
+	var class_system: Node = root.get_node_or_null("ClassSystem")
+	if not is_instance_valid(economy) or not is_instance_valid(game_state) or not is_instance_valid(class_system):
+		push_error("Step 14 requires GlobalEconomy, GameState and ClassSystem Autoloads")
+		quit(1)
+		return
+	var economy_script := load("res://src/scripts/GlobalEconomy.gd") as GDScript
+	var economy_constants: Dictionary = economy_script.get_script_constant_map() if economy_script != null else {}
+	var save_version := int(economy_constants.get("SAVE_VERSION", -1))
+	var original_gold: int = int(economy.get("current_gold"))
+	var original_guild_data: Dictionary = economy.call("load_guild_data")
+	var original_profile: Dictionary = game_state.get("profile").duplicate(true)
+	var original_level: int = int(class_system.get("level"))
 	var original_autoloads := FileAccess.get_file_as_string("res://project.godot")
 	var system := Node.new()
 	system.name = "GuildSystemSmokeTest"
 	system.set_script(load("res://src/scripts/GuildSystem.gd"))
 	root.add_child(system)
 	await process_frame
-	GlobalEconomy.current_gold = maxi(original_gold,5000000)
-	GlobalEconomy.save_gold()
-	ClassSystem.level = maxi(original_level,40)
+	int(economy.get("current_gold")) = maxi(original_gold,5000000)
+	economy.call("save_gold")
+	int(class_system.get("level")) = maxi(original_level,40)
 	system.set("player_guild_name","")
 	system.set("player_guild_rank","")
 	system.set("player_guild_donation",0)
@@ -41,13 +52,13 @@ func _run() -> void:
 	if not bool(system.call("leave_guild")):
 		failures.append("Could not leave the classic guild before founding a new one")
 	var test_guild := "S14_%d" % (Time.get_ticks_msec() % 1000000)
-	var gold_before_create := GlobalEconomy.current_gold
+	var gold_before_create := int(economy.get("current_gold"))
 	if not bool(system.call("create_guild",test_guild)):
 		failures.append("Could not found a guild at level 40 for 1,000,000 Gold")
 	else:
 		if str(system.get("player_guild_rank")) != "Guild Leader":
 			failures.append("Guild founder did not receive Guild Leader rank")
-		if GlobalEconomy.current_gold != gold_before_create - 1000000:
+		if int(economy.get("current_gold")) != gold_before_create - 1000000:
 			failures.append("Guild foundation did not deduct exactly 1,000,000 Gold")
 		if not bool(system.call("set_bulletin","Step 14 smoke guild bulletin")):
 			failures.append("Guild Leader could not update the guild bulletin")
@@ -57,7 +68,7 @@ func _run() -> void:
 			failures.append("Founder could not donate to the new guild treasury")
 		if int(system.call("get_guild",test_guild).get("guild_fund",0)) != 250000:
 			failures.append("New guild treasury does not match founder donation")
-		var saved := GlobalEconomy.load_guild_data()
+		var saved := economy.call("load_guild_data")
 		if str(saved.get("player_guild_name","")) != test_guild:
 			failures.append("Guild membership was not serialized in the v6 save envelope")
 		if int(saved.get("player_guild_donation",0)) != 250000:
@@ -82,14 +93,14 @@ func _run() -> void:
 			arena.get("guild_pole").call("take_damage",60000)
 			if str(system.get("war_winner_guild")) != test_guild:
 				failures.append("Destroying Guild Pole did not award control to the highest-damage guild")
-			if str(GameState.profile.get("guild_war_title","")) != "Guild War Winner":
+			if str(game_state.get("profile").get("guild_war_title","")) != "Guild War Winner":
 				failures.append("Winning player did not receive Guild War Winner title")
 		arena.queue_free()
 		await process_frame
 
-	if GlobalEconomy.SAVE_VERSION != 6 or GlobalEconomy._loaded_save_version != 6:
+	if save_version != 6 or int(economy.get("_loaded_save_version")) != 6:
 		failures.append("GlobalEconomy save version did not migrate to v6")
-	if not GlobalEconomy.load_guild_data().has("war_winner_guild"):
+	if not economy.call("load_guild_data").has("war_winner_guild"):
 		failures.append("Guild War winner was not written to v6 guild data")
 	if not original_autoloads.contains("ClassSystem=") or not original_autoloads.contains("GameState=") or original_autoloads.contains("GuildSystem="):
 		failures.append("Existing Autoloads changed or GuildSystem was incorrectly registered as an Autoload")
@@ -109,12 +120,12 @@ func _run() -> void:
 
 	system.queue_free()
 	await process_frame
-	GlobalEconomy.current_gold = original_gold
-	GlobalEconomy.save_gold()
-	GlobalEconomy.save_guild_data(original_guild_data)
-	GameState.profile = original_profile
-	GameState.save_local()
-	ClassSystem.level = original_level
+	int(economy.get("current_gold")) = original_gold
+	economy.call("save_gold")
+	economy.call("save_guild_data", original_guild_data)
+	game_state.get("profile") = original_profile
+	game_state.call("save_local")
+	int(class_system.get("level")) = original_level
 
 	if failures.is_empty():
 		print("STEP14_GUILD_MEMBERSHIP_DONATIONS_SAVE_V6_POLE_DESTRUCTION_PASS")
