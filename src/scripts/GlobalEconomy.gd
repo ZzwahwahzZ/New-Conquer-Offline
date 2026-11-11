@@ -5,7 +5,7 @@ signal gold_changed(new_amount: int)
 signal economy_ready
 
 const SAVE_PATH := "user://conquer_offline_save.dat"
-const SAVE_VERSION := 5
+const SAVE_VERSION := 6
 const DEFAULT_GOLD := 100
 const LEGACY_SAVE_PATH := "user://offline_profile.json"
 
@@ -17,6 +17,7 @@ var _loaded_save_version := 0
 var quest_data: Dictionary = {}
 var warehouse_items: Array = []
 var warehouse_gold: int = 0
+var _guild_data: Dictionary = {}
 
 func _ready() -> void:
 	_load_save_envelope()
@@ -82,6 +83,10 @@ func save_character_data(data: Dictionary) -> bool:
 	_character_data = data.duplicate(true)
 	return _write_save_envelope()
 func load_character_data() -> Dictionary: return _character_data.duplicate(true)
+func save_guild_data(data: Dictionary) -> bool:
+	_guild_data = data.duplicate(true)
+	return _write_save_envelope()
+func load_guild_data() -> Dictionary: return _guild_data.duplicate(true)
 
 func _load_save_envelope() -> bool:
 	_loaded_save_version = 0
@@ -93,6 +98,7 @@ func _load_save_envelope() -> bool:
 		warehouse_items.clear()
 		for i in range(80): warehouse_items.append({})
 		warehouse_gold = 0
+		_guild_data = {}
 		return false
 	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
 	if file == null:
@@ -122,6 +128,8 @@ func _load_save_envelope() -> bool:
 	while warehouse_items.size() < 80: warehouse_items.append({})
 	if warehouse_items.size() > 80: warehouse_items.resize(80)
 	warehouse_gold = maxi(0,int(data.get("warehouse_gold",0)))
+	var saved_guilds = data.get("guild_data",{})
+	_guild_data = saved_guilds.duplicate(true) if saved_guilds is Dictionary else {}
 	return true
 
 func _normalize_persistent_state() -> void:
@@ -138,7 +146,7 @@ func _write_save_envelope() -> bool:
 	if file == null:
 		push_error("GlobalEconomy: Could not open local save for writing.")
 		return false
-	file.store_var({"version":SAVE_VERSION,"current_gold":current_gold,"gear_data":_gear_data.duplicate(true),"character_data":_character_data.duplicate(true),"quest_data":quest_data.duplicate(true),"warehouse_items":warehouse_items.duplicate(true),"warehouse_gold":warehouse_gold})
+	file.store_var({"version":SAVE_VERSION,"current_gold":current_gold,"gear_data":_gear_data.duplicate(true),"character_data":_character_data.duplicate(true),"quest_data":quest_data.duplicate(true),"warehouse_items":warehouse_items.duplicate(true),"warehouse_gold":warehouse_gold,"guild_data":_guild_data.duplicate(true)})
 	file.close()
 	_loaded_save_version = SAVE_VERSION
 	return true
