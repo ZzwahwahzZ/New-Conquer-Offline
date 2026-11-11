@@ -20,33 +20,33 @@ func _run() -> void:
 	GlobalEconomy.current_gold = maxi(original_gold,5000000)
 	GlobalEconomy.save_gold()
 	ClassSystem.level = maxi(original_level,40)
-	system.player_guild_name = ""
-	system.player_guild_rank = ""
-	system.player_guild_donation = 0
-	var pharaoh_fund_before := int(system.get_guild("Pharaohs").get("guild_fund",0))
-	if not system.join_guild("Pharaohs"):
+	system.set("player_guild_name","")
+	system.set("player_guild_rank","")
+	system.set("player_guild_donation",0)
+	var pharaoh_fund_before := int(system.call("get_guild","Pharaohs").get("guild_fund",0))
+	if not bool(system.call("join_guild","Pharaohs")):
 		failures.append("Could not join an existing classic guild")
-	elif system.player_guild_rank != "Member":
+	elif str(system.get("player_guild_rank")) != "Member":
 		failures.append("Joined player must receive Member rank")
-	if not system.donate_gold(350000) or system.player_guild_rank != "Supervisor":
+	if not bool(system.call("donate_gold",350000)) or str(system.get("player_guild_rank")) != "Supervisor":
 		failures.append("350,000 Gold donation did not promote to Supervisor")
-	if not system.donate_gold(550000) or system.player_guild_rank != "Honorary Deputy Leader":
+	if not bool(system.call("donate_gold",550000)) or str(system.get("player_guild_rank")) != "Honorary Deputy Leader":
 		failures.append("900,000 cumulative donation did not promote to Honorary Deputy Leader")
-	if not system.donate_gold(1600000) or system.player_guild_rank != "Deputy Leader":
+	if not bool(system.call("donate_gold",1600000)) or str(system.get("player_guild_rank")) != "Deputy Leader":
 		failures.append("2,500,000 cumulative donation did not promote to Deputy Leader")
-	if int(system.get_guild("Pharaohs").get("guild_fund",0)) != pharaoh_fund_before + 2500000:
+	if int(system.call("get_guild","Pharaohs").get("guild_fund",0)) != pharaoh_fund_before + 2500000:
 		failures.append("Classic guild treasury does not match player donations")
-	if not system.leave_guild():
+	if not bool(system.call("leave_guild")):
 		failures.append("Could not leave the classic guild before founding a new one")
 	var test_guild := "S14_%d" % (Time.get_ticks_msec() % 1000000)
-	if not system.create_guild(test_guild):
+	if not bool(system.call("create_guild",test_guild)):
 		failures.append("Could not found a guild at level 40 for 1,000,000 Gold")
 	else:
-		if system.player_guild_rank != "Guild Leader":
+		if str(system.get("player_guild_rank")) != "Guild Leader":
 			failures.append("Guild founder did not receive Guild Leader rank")
-		if not system.donate_gold(250000):
+		if not bool(system.call("donate_gold",250000)):
 			failures.append("Founder could not donate to the new guild treasury")
-		if int(system.get_guild(test_guild).get("guild_fund",0)) != 250000:
+		if int(system.call("get_guild",test_guild).get("guild_fund",0)) != 250000:
 			failures.append("New guild treasury does not match founder donation")
 		var saved := GlobalEconomy.load_guild_data()
 		if str(saved.get("player_guild_name","")) != test_guild:
@@ -68,7 +68,7 @@ func _run() -> void:
 		else:
 			arena.set("gates_destroyed",true)
 			arena.get("guild_pole").call("take_damage",60000)
-			if system.get("war_winner_guild") != test_guild:
+			if str(system.get("war_winner_guild")) != test_guild:
 				failures.append("Destroying Guild Pole did not award control to the highest-damage guild")
 			if str(GameState.profile.get("guild_war_title","")) != "Guild War Winner":
 				failures.append("Winning player did not receive Guild War Winner title")
