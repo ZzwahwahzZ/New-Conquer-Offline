@@ -15,7 +15,7 @@ func refresh() -> void:
  for n in list.get_children(): n.queue_free()
  var q=get_tree().get_first_node_in_group("quest_system"); if not is_instance_valid(q): return
  for item in q.call("available"):
-  var row=HBoxContainer.new(); list.add_child(row); var l=Label.new(); l.text="%s %d/%d"%(item.title,item.count,item.goal); l.size_flags_horizontal=Control.SIZE_EXPAND_FILL; row.add_child(l)
+  var row=HBoxContainer.new(); list.add_child(row); var l=Label.new(); l.text = "%s %d/%d" % [item.title, item.count, item.goal]; l.size_flags_horizontal=Control.SIZE_EXPAND_FILL; row.add_child(l)
   var b=Button.new(); b.text="استلام" if item.state=="ready" else ("تتبّع" if item.state=="active" else "قبول وتتبع"); row.add_child(b)
   if item.state=="ready": b.pressed.connect(Callable(q,"claim").bind(item.id))
   elif item.state=="active": b.pressed.connect(Callable(q,"track").bind(item.id))
