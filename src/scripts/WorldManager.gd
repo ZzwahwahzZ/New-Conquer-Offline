@@ -83,10 +83,12 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 	add_child(current_world)
 	var npc_system=Node3D.new(); npc_system.name="NPCSystem"; npc_system.set_script(load("res://src/scripts/NPCSystem.gd")); current_world.add_child(npc_system); npc_system.call("setup",current_world,settlement_id)
 	if is_instance_valid(player) and not restore_position:
-		player.global_position = Vector3(0,1,0)
-	_spawn_settlement_content()
+		player.global_position = Vector3(0,1,0) if settlement_id != "GuildWarArena" else Vector3(0,1,27)
+	if settlement_id != "GuildWarArena":
+		_spawn_settlement_content()
 	if is_instance_valid(_ai_players_manager):
-		_ai_players_manager.call("setup",self,player,current_settlement)
+		if settlement_id == "GuildWarArena": _ai_players_manager.call("recycle_all")
+		else: _ai_players_manager.call("setup",self,player,current_settlement)
 	if settlement_id == "GuildWarArena":
 		guild_war_manager = current_world
 		if is_instance_valid(guild_system): guild_system.call("set_war_active",true)
@@ -193,7 +195,7 @@ func _create_portals() -> void:
 	var destination := str(SETTLEMENTS[current_settlement].next)
 	var portal := Node3D.new()
 	portal.name = "PortalTo_" + destination
-	portal.position = Vector3(0,0,-78)
+	portal.position = Vector3(0,0,32) if current_settlement == "GuildWarArena" else Vector3(0,0,-78)
 	var ring := MeshInstance3D.new()
 	var torus := TorusMesh.new()
 	torus.inner_radius = 1.0
