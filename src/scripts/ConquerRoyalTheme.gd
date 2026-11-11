@@ -1,6 +1,11 @@
 extends RefCounted
 ## Royal Chinese palette for runtime UI controls.
+static var arabic_font: Font = load("res://assets/fonts/NotoSansArabic-Bold.ttf") if ResourceLoader.exists("res://assets/fonts/NotoSansArabic-Bold.ttf") else null
+
 static func apply(control: Control) -> void:
+ if arabic_font != null:
+  control.add_theme_font_override("font",arabic_font)
+  control.add_theme_font_size_override("font_size",16)
  var panel:=StyleBoxFlat.new(); panel.bg_color=Color("#1A0D0B")
  panel.border_color=Color("#D4AF37"); panel.set_border_width_all(2); panel.set_corner_radius_all(5)
  panel.content_margin_left=10; panel.content_margin_right=10; panel.content_margin_top=8; panel.content_margin_bottom=8
