@@ -259,7 +259,8 @@ static func _build_articulated_fallback(kind: String, variant: int) -> Node3D:
   var bow := TorusMesh.new()
   bow.inner_radius = 0.22
   bow.outer_radius = 0.27
-  _fallback_part(root, "ArcherBow", bow, trim, Vector3(-0.62, 1.12, -0.18)).rotation_degrees.x = 90.0
+  var bow_node := _fallback_part(root, "ArcherBow", bow, trim, Vector3(-0.62, 1.12, -0.18))
+  bow_node.rotation_degrees.x = 90.0
  for side in [-1.0, 1.0]:
   var wing := PrismMesh.new()
   wing.size = Vector3(0.46, 0.76, 0.12)
