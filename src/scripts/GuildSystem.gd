@@ -240,6 +240,16 @@ func _recruit_available_bot() -> void:
 	guild_chat.emit("%s انضم إلى العشيرة!" % str(old_record.get("name","Warrior")))
 	guild_changed.emit()
 
+func leave_guild() -> bool:
+	if player_guild_name.is_empty() or player_guild_rank == "Guild Leader": return false
+	player_guild_name = ""
+	player_guild_rank = ""
+	player_guild_donation = 0
+	_save()
+	guild_changed.emit()
+	get_tree().call_group("ai_players_manager","refresh_diplomacy")
+	return true
+
 func get_war_winner() -> String: return war_winner_guild
 func set_war_winner(guild_name: String) -> void:
 	war_winner_guild = guild_name
