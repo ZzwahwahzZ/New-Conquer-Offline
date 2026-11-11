@@ -36,14 +36,23 @@ func _run() -> void:
 		failures.append("2,500,000 cumulative donation did not promote to Deputy Leader")
 	if int(system.call("get_guild","Pharaohs").get("guild_fund",0)) != pharaoh_fund_before + 2500000:
 		failures.append("Classic guild treasury does not match player donations")
+	if float(system.call("get_attack_multiplier")) <= 1.0 or float(system.call("get_defense_multiplier")) <= 1.0 or float(system.call("get_xp_multiplier")) <= 1.0:
+		failures.append("Guild rank and treasury buffs were not applied")
 	if not bool(system.call("leave_guild")):
 		failures.append("Could not leave the classic guild before founding a new one")
 	var test_guild := "S14_%d" % (Time.get_ticks_msec() % 1000000)
+	var gold_before_create := GlobalEconomy.current_gold
 	if not bool(system.call("create_guild",test_guild)):
 		failures.append("Could not found a guild at level 40 for 1,000,000 Gold")
 	else:
 		if str(system.get("player_guild_rank")) != "Guild Leader":
 			failures.append("Guild founder did not receive Guild Leader rank")
+		if GlobalEconomy.current_gold != gold_before_create - 1000000:
+			failures.append("Guild foundation did not deduct exactly 1,000,000 Gold")
+		if not bool(system.call("set_bulletin","Step 14 smoke guild bulletin")):
+			failures.append("Guild Leader could not update the guild bulletin")
+		if not bool(system.call("set_diplomacy","Dragons","Ally")) or not bool(system.call("set_diplomacy","Vipers","Enemy")):
+			failures.append("Guild Leader could not update Ally/Enemy diplomacy")
 		if not bool(system.call("donate_gold",250000)):
 			failures.append("Founder could not donate to the new guild treasury")
 		if int(system.call("get_guild",test_guild).get("guild_fund",0)) != 250000:
@@ -55,6 +64,9 @@ func _run() -> void:
 			failures.append("Player guild donation total was not persisted")
 		if int(saved.get("guilds",{}).get(test_guild,{}).get("guild_fund",0)) != 250000:
 			failures.append("Guild treasury was not persisted")
+		var saved_guild: Dictionary = saved.get("guilds",{}).get(test_guild,{})
+		if str(saved_guild.get("bulletin","")) != "Step 14 smoke guild bulletin" or not Array(saved_guild.get("allies",[])).has("Dragons") or not Array(saved_guild.get("enemies",[])).has("Vipers"):
+			failures.append("Guild bulletin and diplomacy relations were not persisted")
 
 	var arena_scene := load("res://src/scenes/world/GuildWarArena.tscn") as PackedScene
 	if arena_scene == null:
@@ -81,6 +93,10 @@ func _run() -> void:
 		failures.append("Guild War winner was not written to v6 guild data")
 	if not original_autoloads.contains("ClassSystem=") or not original_autoloads.contains("GameState=") or original_autoloads.contains("GuildSystem="):
 		failures.append("Existing Autoloads changed or GuildSystem was incorrectly registered as an Autoload")
+	var class_source := FileAccess.get_file_as_string("res://src/scripts/ClassSystem.gd")
+	var player_source := FileAccess.get_file_as_string("res://src/scripts/Player.gd")
+	if not class_source.contains("get_defense_multiplier") or not class_source.contains("get_xp_multiplier") or not player_source.contains("_guild_attack_multiplier"):
+		failures.append("Guild attack, defense, or XP bonuses are not wired into gameplay")
 	var npc_source := FileAccess.get_file_as_string("res://src/scripts/NPCSystem.gd")
 	var ui_scene := load("res://src/scenes/GuildUI.tscn") as PackedScene
 	var target_script := load("res://src/scripts/GuildWarTarget.gd")
