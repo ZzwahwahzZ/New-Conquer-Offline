@@ -16,10 +16,13 @@ func refresh() -> void:
 func _buy(id:String,cost:int) -> void:
  if GlobalEconomy.remove_gold(cost): GameState.add_item(id,1)
 func _sell_all() -> void:
- var items:Array=GameState.profile.get("inventory",[]); var earned=0
+ var items:Array=GearSystem.inventory
+ var earned=0
  for i in range(items.size()-1,-1,-1):
-  var item=items[i]
-  if str(item.get("quality","Normal"))=="Normal":
+  var item:Dictionary=items[i]
+  var is_gear=item.has("slot") or item.has("weapon_family")
+  if is_gear and str(item.get("quality","Normal"))=="Normal":
    earned+=100*int(item.get("quantity",1)); items.remove_at(i)
- GameState.profile.inventory=items; if earned>0: GlobalEconomy.add_gold(earned)
- GameState.inventory_changed.emit(); GameState.save_local()
+ GearSystem.inventory=items
+ GearSystem.call("_save_and_emit")
+ if earned>0: GlobalEconomy.add_gold(earned)

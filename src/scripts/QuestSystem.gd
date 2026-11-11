@@ -7,14 +7,18 @@ func _ready() -> void:
  add_to_group("quest_system"); progress=GlobalEconomy.quest_data.duplicate(true)
  for id in DATA:
   if not progress.has(id): progress[id]={"state":"locked","count":0}
+func _promotion_gate(id:String) -> bool:
+ var previous={"promotion_40":"promotion_15","promotion_70":"promotion_40","promotion_100":"promotion_70","promotion_110":"promotion_100"}
+ if not previous.has(id): return true
+ return str(progress.get(previous[id],{}).get("state",""))=="completed"
 func available() -> Array:
  var out=[]
  for id in DATA:
   var q=DATA[id]; var p=progress[id]
-  if ClassSystem.level>=int(q.level) and p.state!="completed": out.append({"id":id,"title":q.title,"state":p.state,"count":int(p.count),"goal":int(q.goal),"target":q.target})
+  if ClassSystem.level>=int(q.level) and p.state!="completed" and _promotion_gate(id): out.append({"id":id,"title":q.title,"state":p.state,"count":int(p.count),"goal":int(q.goal),"target":q.target})
  return out
 func accept(id:String) -> bool:
- if not DATA.has(id) or ClassSystem.level<int(DATA[id].level) or progress[id].state=="completed": return false
+ if not DATA.has(id) or ClassSystem.level<int(DATA[id].level) or progress[id].state=="completed" or not _promotion_gate(id): return false
  progress[id].state="active"; active_quest=id; _save(); return true
 func track(id:String) -> void:
  if not DATA.has(id): return
