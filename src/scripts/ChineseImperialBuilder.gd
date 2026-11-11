@@ -2,7 +2,7 @@ extends RefCounted
 ## Lightweight procedural Chinese imperial architecture. Repeated props use MultiMesh.
 static func build(parent: Node3D, city: String, size: float) -> void:
  var root:=Node3D.new(); root.name="ChineseImperialArchitecture"; parent.add_child(root)
- _pagoda(root,Vector3.ZERO,city=="TwinCity")
+ _pagoda(root,Vector3(0.0,0.0,-48.0) if city=="TwinCity" else Vector3.ZERO,city=="TwinCity")
  _gate(root,Vector3(0,0,-size*0.43))
  _gate(root,Vector3(0,0,size*0.43))
  if city=="TwinCity":
@@ -13,7 +13,7 @@ static func build(parent: Node3D, city: String, size: float) -> void:
   _gate(root,Vector3(38.0,0,0))
   _wall(root,size)
   for i in range(8):
-   var a=TAU*float(i)/8.0; _pillar(root,Vector3(cos(a)*17.0,0,sin(a)*17.0))
+   var a=TAU*float(i)/8.0; _pillar(root,Vector3(cos(a)*42.0,0,sin(a)*42.0))
  else:
   _wall(root,size*0.72)
  _multilight(root,city)
@@ -21,7 +21,7 @@ static func build(parent: Node3D, city: String, size: float) -> void:
  if city=="TwinCity":
   for i in range(4):
    var angle:=TAU*float(i)/4.0
-   _pavilion(root,Vector3(cos(angle)*42.0,0.0,sin(angle)*42.0))
+   _pavilion(root,Vector3(cos(angle)*54.0,0.0,sin(angle)*54.0))
  _npc_halls(root)
  if city=="TwinCity":
   _arched_bridge(root,Vector3(-42.0,0.0,-92.0),Vector3(42.0,0.0,-92.0),7.0)
@@ -115,11 +115,11 @@ static func _city_features(parent: Node3D,city: String,size: float) -> void:
 
 static func _npc_halls(parent: Node3D) -> void:
  var specs := [
-  ["BlacksmithTemple",Vector3(-26,0,24),Color("#8f2c1f")],
-  ["TreasuryHall",Vector3(26,0,24),Color("#b18a35")],
-  ["MaterialsShop",Vector3(-26,0,-24),Color("#477d68")],
-  ["ClanManagerPavilion",Vector3(26,0,-24),Color("#365b83")],
-  ["EvolutionTrainerHall",Vector3(0,0,34),Color("#6e4b86")]
+  ["BlacksmithTemple",Vector3(-48,0,48),Color("#8f2c1f")],
+  ["TreasuryHall",Vector3(48,0,48),Color("#b18a35")],
+  ["MaterialsShop",Vector3(-48,0,-48),Color("#477d68")],
+  ["ClanManagerPavilion",Vector3(48,0,-48),Color("#365b83")],
+  ["EvolutionTrainerHall",Vector3(0,0,58),Color("#6e4b86")]
  ]
  for item in specs:
   var hall:=Node3D.new()
