@@ -106,6 +106,9 @@ jobs:
       - name: Run Player idle stability regression (3 seconds)
         run: godot --headless --path . --script scripts/player_idle_stability_test.gd
 
+      - name: Verify world environment, sunlight and Twin City ground
+        run: godot --headless --path . --script scripts/world_environment_test.gd
+
       - name: Run Step 17B rigged assets, PBR, aura and Anima regression
         run: timeout 45s godot --headless --path . --script scripts/step17b_rigged_visuals_test.gd
 
