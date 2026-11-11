@@ -18,6 +18,7 @@ var _jump_from := Vector3.ZERO
 var _jump_to := Vector3.ZERO
 var _combat_target: Node3D
 var _attack_timer := 0.0
+var _actor_generation := 0
 var _rng := RandomNumberGenerator.new()
 
 func _ready() -> void:
@@ -72,6 +73,7 @@ func _build_visuals() -> void:
 		add_child(_guild_label)
 
 func configure(data: Dictionary, spawn_position: Vector3, diplomacy_color: Color = Color(0.92,0.92,0.92)) -> void:
+	_actor_generation += 1
 	bot_data = data.duplicate(true)
 	global_position = spawn_position
 	_home_position = spawn_position
@@ -99,6 +101,7 @@ func configure(data: Dictionary, spawn_position: Vector3, diplomacy_color: Color
 	set_process(true)
 
 func deactivate_for_pool() -> void:
+	_actor_generation += 1
 	visible = false
 	_idle = true
 	_has_destination = false
@@ -137,9 +140,10 @@ func perform_attack(target: Node3D) -> void:
 	if not is_instance_valid(target):
 		return
 	look_at(Vector3(target.global_position.x,global_position.y,target.global_position.z),Vector3.UP)
+	var generation := _actor_generation
 	_visual.scale = Vector3(1.18,0.88,0.88)
 	await get_tree().create_timer(0.16).timeout
-	if is_instance_valid(_visual):
+	if generation == _actor_generation and is_instance_valid(_visual):
 		_visual.scale = Vector3.ONE
 
 func _physics_process(delta: float) -> void:
@@ -159,6 +163,11 @@ func _physics_process(delta: float) -> void:
 		global_position.y += sin(t * PI) * 1.35
 		if _jump_time <= 0.0:
 			global_position = _jump_to
+			_home_position = global_position
+			_idle = true
+			if not _flying and not is_instance_valid(_combat_target):
+				set_physics_process(false)
+				set_process(false)
 		return
 	if _has_destination:
 		var flat_target := Vector3(_destination.x,global_position.y,_destination.z)
