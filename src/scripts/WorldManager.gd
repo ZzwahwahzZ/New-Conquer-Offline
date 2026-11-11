@@ -52,7 +52,7 @@ func _ready() -> void:
 func setup(target_player: Node3D) -> void:
 	player = target_player
 	var saved_id := str(GameState.profile.get("settlement_id","TwinCity"))
-	if not SETTLEMENTS.has(saved_id): saved_id = "TwinCity"
+	if not SETTLEMENTS.has(saved_id) or saved_id == "GuildWarArena": saved_id = "TwinCity"
 	var saved_position = GameState.profile.get("world_position", [])
 	if saved_position is Array and saved_position.size() >= 3:
 		player.position = Vector3(float(saved_position[0]),maxf(0.9,float(saved_position[1])),float(saved_position[2]))
