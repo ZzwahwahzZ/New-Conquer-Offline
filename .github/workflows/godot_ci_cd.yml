@@ -56,10 +56,12 @@ jobs:
         run: |
           python3 -m pip install --disable-pip-version-check Pillow trimesh numpy
           python3 tools/fetch_character_assets.py
-      - name: Fetch and optimize optional terrain assets
+      - name: Restore PBR terrain packages and heightmaps from Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python3 -m pip install --disable-pip-version-check Pillow trimesh
-          python3 tools/fetch_terrain_assets.py
+          python3 -m pip install --disable-pip-version-check huggingface_hub
+          python3 tools/restore_hf_terrain_assets.py
 
       - name: Import all project resources (Mobile renderer) and reject parser errors
         shell: bash
@@ -171,10 +173,12 @@ jobs:
         run: |
           python3 -m pip install --disable-pip-version-check Pillow trimesh numpy
           python3 tools/fetch_character_assets.py
-      - name: Fetch and optimize optional terrain assets
+      - name: Restore PBR terrain packages and heightmaps from Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python3 -m pip install --disable-pip-version-check Pillow trimesh
-          python3 tools/fetch_terrain_assets.py
+          python3 -m pip install --disable-pip-version-check huggingface_hub
+          python3 tools/restore_hf_terrain_assets.py
 
       - name: Import for WebGL2 Compatibility renderer
         run: godot --headless --editor --path . --import
@@ -291,10 +295,12 @@ jobs:
         run: |
           python3 -m pip install --disable-pip-version-check Pillow trimesh numpy
           python3 tools/fetch_character_assets.py
-      - name: Fetch and optimize optional terrain assets
+      - name: Restore PBR terrain packages and heightmaps from Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python3 -m pip install --disable-pip-version-check Pillow trimesh
-          python3 tools/fetch_terrain_assets.py
+          python3 -m pip install --disable-pip-version-check huggingface_hub
+          python3 tools/restore_hf_terrain_assets.py
 
       - name: Import Android project resources
         run: godot --headless --editor --path . --import
