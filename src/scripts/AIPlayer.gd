@@ -15,6 +15,8 @@ var _visual: MeshInstance3D
 var _jump_time := 0.0
 var _jump_from := Vector3.ZERO
 var _jump_to := Vector3.ZERO
+var _combat_target: Node3D
+var _attack_timer := 0.0
 var _rng := RandomNumberGenerator.new()
 
 func _ready() -> void:
@@ -70,6 +72,8 @@ func configure(data: Dictionary, spawn_position: Vector3, diplomacy_color: Color
 	_fly_phase = 0.0
 	_has_destination = false
 	_jump_time = 0.0
+	_combat_target = null
+	_attack_timer = _rng.randf_range(0.2,1.2)
 	collision_layer = 0
 	collision_mask = 0
 	set_physics_process(true)
@@ -81,6 +85,7 @@ func deactivate_for_pool() -> void:
 	_has_destination = false
 	_lod_sleeping = true
 	_flying = false
+	_combat_target = null
 	velocity = Vector3.ZERO
 	set_physics_process(false)
 	set_process(false)
@@ -100,6 +105,9 @@ func move_to(destination: Vector3) -> void:
 	_has_destination = true
 	_idle = false
 
+func set_combat_target(target: Node3D) -> void:
+	_combat_target = target
+
 func perform_attack(target: Node3D) -> void:
 	if not is_instance_valid(target):
 		return
@@ -112,6 +120,10 @@ func perform_attack(target: Node3D) -> void:
 func _physics_process(delta: float) -> void:
 	if _lod_sleeping:
 		return
+	_attack_timer = maxf(0.0,_attack_timer-delta)
+	if is_instance_valid(_combat_target) and global_position.distance_to(_combat_target.global_position) <= 5.0 and _attack_timer <= 0.0:
+		_attack_timer = _rng.randf_range(2.0,3.0)
+		perform_attack(_combat_target)
 	if _flying:
 		_fly_phase += delta
 		position.y = _home_position.y + 2.2 + sin(_fly_phase * 2.0) * 0.25
