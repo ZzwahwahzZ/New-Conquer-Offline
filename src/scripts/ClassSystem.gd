@@ -85,10 +85,11 @@ func get_physical_attack_bonus() -> int:
 	return int(attributes.get("strength", 0)) + int(float(attributes.get("agility", 0)) / 2.0)
 
 func choose_class(class_id: String) -> bool:
-	if not CLASS_DATA.has(class_id) or level > 1: return false
+	if not CLASS_DATA.has(class_id): return false
 	if current_class == class_id:
 		_save()
 		return true
+	if level > 1: return false
 	current_class = class_id
 	attributes = CLASS_DATA[class_id]["base"].duplicate(true)
 	_recalculate_derived(false)
