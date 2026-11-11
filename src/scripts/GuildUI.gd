@@ -25,10 +25,12 @@ func _process(_delta: float) -> void:
 func _connect_system() -> void:
 	_system = get_tree().get_first_node_in_group("guild_system")
 	if not is_instance_valid(_system): return
-	if not _system.guild_changed.is_connected(refresh):
-		_system.guild_changed.connect(refresh)
-	if not _system.guild_chat.is_connected(_on_guild_chat):
-		_system.guild_chat.connect(_on_guild_chat)
+	var refresh_callback := Callable(self,"refresh")
+	var chat_callback := Callable(self,"_on_guild_chat")
+	if not _system.is_connected("guild_changed",refresh_callback):
+		_system.connect("guild_changed",refresh_callback)
+	if not _system.is_connected("guild_chat",chat_callback):
+		_system.connect("guild_chat",chat_callback)
 
 func toggle() -> void:
 	visible = not visible
