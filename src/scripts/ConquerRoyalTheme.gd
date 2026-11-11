@@ -5,10 +5,7 @@ static var arabic_font: Font = _load_arabic_font()
 static func _load_arabic_font() -> Font:
  if not ResourceLoader.exists("res://assets/fonts/NotoSansArabic-Bold.ttf"):
   return null
- var font := load("res://assets/fonts/NotoSansArabic-Bold.ttf") as FontFile
- if font != null:
-  font.variation_coordinates = {"wght": 700.0, "wdth": 100.0}
- return font
+ return load("res://assets/fonts/NotoSansArabic-Bold.ttf") as Font
 
 static func apply(control: Control) -> void:
  if arabic_font != null:
