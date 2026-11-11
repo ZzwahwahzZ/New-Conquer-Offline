@@ -24,6 +24,7 @@ EXTENDED_PACK_SELECTION = {
     "gobkit-human013-pack": ["CourtJester","CrownedPrincess","LadyKnight","PalaceHalberdier","Prince","RoyalHerald"],
     "gobkit-human016-pack": ["AxeThrower","Berserker","BoarHelmSpearman","ClanSmith","WolfQueen"],
     "gobkit-human017-pack": ["FarmHand","FarmOwner","MarketVendor","Shepherd"],
+    "gobkit-human014-pack": ["GongOverlord","IronFanFighter","ShadowKunoichi","TasselSpearMaster"],
     "gobkit-dino-pack": ["Carnotaurus","Pterodactylus","Spinosaurus","Trex"],
     "gobkit-insect002-pack": ["AtlasBeetle","Manticora","SacredScarab"],
     "gobkit-animal007-pack": ["Dingo","Scorpion"],

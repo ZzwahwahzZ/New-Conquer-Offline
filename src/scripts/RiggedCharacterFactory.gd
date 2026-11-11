@@ -1,7 +1,7 @@
 extends RefCounted
 ## Loads pinned offline GLB actors. Imported skeletons/animations are kept intact.
 const ASSET_ROOT := "res://assets/rigged_characters/"
-const HUMANOIDS := ["gobkit_Archer","gobkit_HeavyWarrior","gobkit_KnightCaptain","gobkit_Priestess","gobkit_Scout","gobkit_Footman","gobkit_OrcLegionCommander","gobkit_King"]
+const HUMANOIDS := ["gobkit_Archer","gobkit_ShadowKunoichi","gobkit_HeavyWarrior","gobkit_KnightCaptain","gobkit_Priestess","gobkit_GongOverlord","gobkit_IronFanFighter","gobkit_TasselSpearMaster"]
 const NPCS := ["gobkit_ClanSmith","gobkit_MarketVendor","gobkit_King","gobkit_Priestess","gobkit_CourtJester","gobkit_FarmOwner","gobkit_RoyalHerald","gobkit_Scout"]
 const MONSTERS := ["gobkit_WerewolfCaptain","gobkit_TombMummy","gobkit_StitchedBrute","gobkit_NightWitch","gobkit_OrcLegionary","gobkit_OrcWarShaman","gobkit_BloodironJuggernaut","gobkit_Carnotaurus","gobkit_Spinosaurus","gobkit_Trex","gobkit_Manticora","gobkit_Scorpion","gobkit_Lion","gobkit_Fox"]
 const CLASS_VARIANTS := {
@@ -21,6 +21,13 @@ static func asset_path(kind: String, variant: int = 0) -> String:
  return ASSET_ROOT + HUMANOIDS[index] + ".glb"
 static func class_variant(class_id: String) -> int:
  return int(CLASS_VARIANTS.get(class_id, 0))
+static func npc_variant_for_role(role: String) -> int:
+ var normalized := role.to_lower().replace(" ", "_")
+ var roles := {
+  "blacksmith":0,"merchant":1,"vault":2,"warehouse":2,
+  "guild_director":6,"guild_master":6,"trainer":3,"advancement_trainer":3
+ }
+ return int(roles.get(normalized, 4))
 static func instantiate_rig(kind: String, variant: int = 0) -> Node3D:
  var path := asset_path(kind, variant)
  if not ResourceLoader.exists(path):

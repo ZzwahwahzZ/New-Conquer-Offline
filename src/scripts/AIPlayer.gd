@@ -139,6 +139,9 @@ func set_combat_target(target: Node3D) -> void:
 func perform_attack(target: Node3D) -> void:
 	if not is_instance_valid(target):
 		return
+	var rig_instance := _visual.get_node_or_null("Rigged_Bot") if is_instance_valid(_visual) else null
+	if rig_instance != null:
+		RiggedCharacterFactory.play_state(rig_instance, "Attack")
 	look_at(Vector3(target.global_position.x,global_position.y,target.global_position.z),Vector3.UP)
 	var generation := _actor_generation
 	_visual.scale = Vector3(1.18,0.88,0.88)
@@ -169,6 +172,9 @@ func _physics_process(delta: float) -> void:
 				set_physics_process(false)
 				set_process(false)
 		return
+	var rig_instance := _visual.get_node_or_null("Rigged_Bot") if is_instance_valid(_visual) else null
+	if rig_instance != null and not is_instance_valid(_combat_target):
+		RiggedCharacterFactory.play_state(rig_instance, "Fly" if _flying else "Run" if _has_destination else "Idle")
 	if _has_destination:
 		var flat_target := Vector3(_destination.x,global_position.y,_destination.z)
 		var offset := flat_target-global_position

@@ -8,7 +8,7 @@ var near_player=false
 func _ready() -> void:
  add_to_group("npcs"); body_entered.connect(_on_enter); body_exited.connect(_on_exit)
  var visual_root=Node3D.new(); visual_root.name="NPCVisualRoot"; add_child(visual_root)
- var rig=RiggedCharacterFactory.attach_to(visual_root,"npc",abs(role.hash()) % 8,0.92)
+ var rig=RiggedCharacterFactory.attach_to(visual_root,"npc",RiggedCharacterFactory.npc_variant_for_role(role),0.92)
  if rig != null:
   RiggedCharacterFactory.set_tint(rig,Color(.72,.58,.34))
   RiggedCharacterFactory.play_state(rig,"Idle")

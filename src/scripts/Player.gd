@@ -176,6 +176,16 @@ func _physics_process(delta: float) -> void:
 		_jumping = false
 		_flying = false
 	move_and_slide()
+	var rig_instance := _visual.get_node_or_null("Rigged_Hero") if is_instance_valid(_visual) else null
+	if rig_instance != null:
+		var rig_state := "Idle"
+		if _flying:
+			rig_state = "Fly"
+		elif _jumping:
+			rig_state = "Jump"
+		elif Vector2(velocity.x, velocity.z).length() > 0.25:
+			rig_state = "Run"
+		RiggedCharacterFactory.play_state(rig_instance, rig_state)
 	stamina_changed.emit(ClassSystem.stamina, ClassSystem.max_stamina)
 
 func _update_horizontal_movement(delta: float) -> void:

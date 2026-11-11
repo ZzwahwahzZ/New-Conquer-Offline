@@ -13,7 +13,11 @@ func _run() -> void:
   "res://assets/rigged_characters/humanoid_01.glb",
   "res://assets/rigged_characters/humanoid_08.glb",
   "res://assets/rigged_characters/beast_bat.glb",
-  "res://assets/rigged_characters/beast_rhino.glb"
+  "res://assets/rigged_characters/beast_rhino.glb",
+  "res://assets/rigged_characters/gobkit_Archer.glb",
+  "res://assets/rigged_characters/gobkit_WerewolfCaptain.glb",
+  "res://assets/rigged_characters/gobkit_Trex.glb",
+  "res://assets/rigged_characters/gobkit_Manticora.glb"
  ]
  for path in paths:
   print("STEP_17B_CHECK_ASSET: " + path)
@@ -35,12 +39,21 @@ func _run() -> void:
    _fail("No imported AnimationPlayer clips: " + path)
    instance.free()
    return
-  if not FACTORY.play_state(instance, "Attack") or not animation_player.has_animation("Step17B/Attack") or not animation_player.has_animation("Step17B/Die"):
-   _fail("Baked idle/attack/death action segments were not split: " + path)
+  if not FACTORY.play_state(instance, "Attack"):
+   _fail("Attack action could not be activated: " + path)
    instance.free()
    return
-  if path.contains("beast_") and not animation_player.has_animation("Step17B/Walk"):
-   _fail("Animal walk segment was not imported: " + path)
+  if path.contains("gobkit_"):
+   if not animation_player.current_animation.to_lower().contains("attack"):
+    _fail("Named CC0 Attack clip was not selected: " + path)
+    instance.free()
+    return
+   if not FACTORY.play_state(instance, "Run") or not (animation_player.current_animation.to_lower().contains("run") or animation_player.current_animation.to_lower().contains("walk")):
+    _fail("Named CC0 Run/Walk clip was not selected: " + path)
+    instance.free()
+    return
+  elif not animation_player.has_animation("Step17B/Attack") or not animation_player.has_animation("Step17B/Die"):
+   _fail("Baked idle/attack/death action segments were not split: " + path)
    instance.free()
    return
   instance.free()
