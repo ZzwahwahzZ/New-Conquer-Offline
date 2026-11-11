@@ -163,7 +163,7 @@ func _physics_process(delta: float) -> void:
 		global_position.y += sin(t * PI) * 1.35
 		if _jump_time <= 0.0:
 			global_position = _jump_to
-			_home_position = global_position
+			_home_position = Vector3(global_position.x,_jump_to.y,global_position.z)
 			_idle = true
 			if not _flying and not is_instance_valid(_combat_target):
 				set_physics_process(false)
@@ -175,7 +175,7 @@ func _physics_process(delta: float) -> void:
 		if offset.length() < 0.35:
 			_has_destination = false
 			_idle = true
-			_home_position = global_position
+			_home_position = Vector3(global_position.x,_home_position.y,global_position.z)
 			velocity = Vector3.ZERO
 			if not _flying and not is_instance_valid(_combat_target):
 				set_physics_process(false)
