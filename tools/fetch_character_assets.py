@@ -6,7 +6,7 @@ License: CC0-1.0 (LICENSE copied into assets/rigged_characters).
 The game ships these files inside exports; runtime never contacts the network.
 """
 from __future__ import annotations
-import hashlib, json, pathlib, struct, urllib.request
+import hashlib, io, json, pathlib, struct, urllib.request
 import numpy as np
 import trimesh
 
@@ -59,7 +59,7 @@ def validate_glb(data: bytes, label: str) -> dict:
                 position_accessors.append(idx)
     if not position_accessors:
         raise ValueError(f"{label}: no float32 POSITION accessors")
-    scene = trimesh.load_scene(data, file_type="glb", process=False)
+    scene = trimesh.load_scene(io.BytesIO(data), file_type="glb", process=False)
     vertices = [np.asarray(g.vertices) for g in scene.geometry.values() if hasattr(g, "vertices")]
     if not vertices or not all(v.size and np.isfinite(v).all() for v in vertices):
         raise ValueError(f"{label}: trimesh found missing or non-finite geometry")

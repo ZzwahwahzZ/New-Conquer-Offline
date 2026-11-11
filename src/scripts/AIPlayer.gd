@@ -1,4 +1,5 @@
 extends CharacterBody3D
+const RiggedCharacterFactory = preload("res://src/scripts/RiggedCharacterFactory.gd")
 ## Pooled, lightweight visual actor. Roster data remains outside this node.
 const WALK_SPEED := 2.2
 var bot_data: Dictionary = {}
@@ -11,7 +12,7 @@ var _home_position := Vector3.ZERO
 var _lod_sleeping := false
 var _name_label: Label3D
 var _guild_label: Label3D
-var _visual: MeshInstance3D
+var _visual: Node3D
 var _wings: Array[MeshInstance3D] = []
 var _jump_time := 0.0
 var _jump_from := Vector3.ZERO
@@ -29,17 +30,12 @@ func _ready() -> void:
 
 func _build_visuals() -> void:
 	if _visual == null:
-		_visual = MeshInstance3D.new()
-		_visual.name = "BotBody"
-		var capsule := CapsuleMesh.new()
-		capsule.radius = 0.34
-		capsule.height = 1.55
-		_visual.mesh = capsule
-		var material := StandardMaterial3D.new()
-		material.albedo_color = Color(0.38,0.62,0.86)
-		material.roughness = 0.72
-		_visual.material_override = material
+		_visual = Node3D.new()
+		_visual.name = "BotRigRoot"
 		add_child(_visual)
+		var rig := RiggedCharacterFactory.attach_to(_visual, "bot", 0, 0.92)
+		if rig == null:
+			push_error("AIPlayer: rigged bot asset is unavailable")
 	if _wings.is_empty():
 		for side in [-1.0,1.0]:
 			var wing := MeshInstance3D.new()
@@ -83,9 +79,11 @@ func configure(data: Dictionary, spawn_position: Vector3, diplomacy_color: Color
 	_guild_label.text = "[%s - %s]" % [str(bot_data.get("guild_name","")),str(bot_data.get("guild_rank","Member"))]
 	_name_label.modulate = diplomacy_color
 	_guild_label.modulate = diplomacy_color
-	var material := _visual.material_override as StandardMaterial3D
-	if material != null:
-		material.albedo_color = Color(0.75,0.62,0.36) if str(bot_data.get("class_type","")) == "Oriental_Assassin" else Color(0.32,0.55,0.82)
+	var class_id := str(bot_data.get("class_type", "Warrior"))
+	RiggedCharacterFactory.set_tint(_visual, Color(0.75,0.62,0.36) if class_id == "Oriental_Assassin" else Color(0.32,0.55,0.82))
+	var rig_instance := _visual.get_child(0) if _visual.get_child_count() > 0 else null
+	if rig_instance is Node:
+		RiggedCharacterFactory.play_state(rig_instance, "Idle")
 	visible = true
 	_idle = true
 	_lod_sleeping = false

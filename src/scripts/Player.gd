@@ -1,4 +1,6 @@
 extends CharacterBody3D
+const RiggedCharacterFactory = preload("res://src/scripts/RiggedCharacterFactory.gd")
+const AnimaSystem = preload("res://src/scripts/AnimaSystem.gd")
 ## 3D Conquer-style movement, jump, stamina and Archer / Oriental Assassin combat.
 
 signal stamina_changed(value: float, maximum: float)
@@ -65,6 +67,19 @@ func _ready() -> void:
 			if child is MeshInstance3D:
 				child.reparent(_visual)
 		_visual.position = Vector3.ZERO
+	# Replace the temporary primitive visual with a real imported, skinned GLB actor.
+	for mesh_node in _visual.find_children("*", "MeshInstance3D", true, false):
+		mesh_node.queue_free()
+	var hero_variant := RiggedCharacterFactory.class_variant(ClassSystem.current_class)
+	var rig := RiggedCharacterFactory.attach_to(_visual, "hero", hero_variant, 1.12)
+	if rig != null:
+		RiggedCharacterFactory.play_state(rig, "Idle")
+	var plus_aura := Node3D.new()
+	plus_aura.name = "PlusAura"
+	plus_aura.set_script(load("res://src/scripts/PlusAuraSystem.gd"))
+	_visual.add_child(plus_aura)
+	plus_aura.call("set_level", int(GameState.profile.get("gear_plus", 0)))
+	AnimaSystem.attach_ground_seal(self, int(GameState.profile.get("anima_level", 0)))
 	var fly_ring := MeshInstance3D.new()
 	fly_ring.name = "FlyAuraRing"
 	var ring_mesh := TorusMesh.new()

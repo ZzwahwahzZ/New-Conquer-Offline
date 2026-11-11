@@ -1,8 +1,9 @@
 extends "res://src/scripts/Enemy.gd"
+const RiggedCharacterFactory = preload("res://src/scripts/RiggedCharacterFactory.gd")
 ## Reusable classic monster with a rig slot and five animation states.
 @export var monster_id := "Pheasant"
 @export var is_sanctuary_monster := false
-var _rig_slot: MeshInstance3D
+var _rig_slot: Node3D
 var _animation_player: AnimationPlayer
 var _sleeping := false
 var _active_animation := ""
@@ -41,10 +42,7 @@ func configure_monster(data: Dictionary, target_node: Node3D, sanctuary: bool) -
 		_health_bar.max_value = max_hp
 		_health_bar.value = hp
 	if is_instance_valid(_rig_slot):
-		var material := StandardMaterial3D.new()
-		material.albedo_color = data.get("color",Color(0.7,0.25,0.2))
-		material.roughness = 0.78
-		_rig_slot.material_override = material
+		RiggedCharacterFactory.set_tint(_rig_slot, data.get("color", Color(0.7,0.25,0.2)))
 	play_state("Idle")
 
 func deactivate_for_pool() -> void:
@@ -85,57 +83,23 @@ func _die() -> void:
 		manager.call("recycle_monster",self)
 
 func play_state(state_name: String) -> void:
-	if _active_animation == state_name or not is_instance_valid(_animation_player): return
-	if _animation_player.has_animation(state_name):
-		_active_animation = state_name
-		_animation_player.play(state_name)
+	if _active_animation == state_name or not is_instance_valid(_rig_slot):
+		return
+	_active_animation = state_name
+	RiggedCharacterFactory.play_state(_rig_slot, state_name)
 
 func _ensure_rig_and_animations() -> void:
-	var skeleton := get_node_or_null("Skeleton3D") as Skeleton3D
-	if skeleton == null:
-		skeleton = Skeleton3D.new()
-		skeleton.name = "Skeleton3D"
-		add_child(skeleton)
-	if skeleton.get_bone_count() == 0:
-		skeleton.add_bone("Root")
-		skeleton.set_bone_parent(0,-1)
-		skeleton.set_bone_rest(0,Transform3D.IDENTITY)
-	_rig_slot = skeleton.get_node_or_null("HighDetailRigSlot") as MeshInstance3D
+	# The old empty Skeleton3D + capsule was a visual placeholder, not a skinned character.
+	var old_skeleton := get_node_or_null("Skeleton3D")
+	if is_instance_valid(old_skeleton):
+		old_skeleton.queue_free()
+	var old_player := get_node_or_null("AnimationPlayer")
+	if is_instance_valid(old_player):
+		old_player.queue_free()
+	var variant := abs(monster_id.hash()) % 8
+	_rig_slot = RiggedCharacterFactory.attach_to(self, "monster", variant, 1.0)
 	if _rig_slot == null:
-		_rig_slot = MeshInstance3D.new()
-		_rig_slot.name = "HighDetailRigSlot"
-		var capsule := CapsuleMesh.new()
-		capsule.radius = 0.55
-		capsule.height = 1.7
-		_rig_slot.mesh = capsule
-		skeleton.add_child(_rig_slot)
-	_animation_player = get_node_or_null("AnimationPlayer") as AnimationPlayer
-	if _animation_player == null:
-		_animation_player = AnimationPlayer.new()
-		_animation_player.name = "AnimationPlayer"
-		add_child(_animation_player)
-	var library := AnimationLibrary.new()
-	for animation_name in ["Idle","Run","Attack","Hit","Death"]:
-		var animation := Animation.new()
-		animation.length = 1.0
-		if animation_name in ["Idle","Run","Attack"]: animation.loop_mode = Animation.LOOP_LINEAR
-		var track := animation.add_track(Animation.TYPE_VALUE)
-		animation.track_set_path(track,NodePath("Skeleton3D/HighDetailRigSlot:scale"))
-		var middle := Vector3.ONE
-		var finish := Vector3.ONE
-		match animation_name:
-			"Idle": middle = Vector3(1.0,1.04,1.0)
-			"Run": middle = Vector3(1.0,1.12,1.0)
-			"Attack": middle = Vector3(1.18,0.92,0.88)
-			"Hit": middle = Vector3(0.82,0.88,0.82)
-			"Death": 
-				middle = Vector3(1.12,0.82,1.12)
-				finish = Vector3(1.1,0.08,1.1)
-		animation.track_insert_key(track,0.0,Vector3.ONE)
-		animation.track_insert_key(track,0.35,middle)
-		animation.track_insert_key(track,1.0,finish)
-		library.add_animation(animation_name,animation)
-	if _animation_player.has_animation_library(""):
-		_animation_player.remove_animation_library("")
-	_animation_player.add_animation_library("",library)
+		push_error("Monster: rigged CC0 asset unavailable for " + monster_id)
+		return
+	_animation_player = RiggedCharacterFactory.find_animation_player(_rig_slot)
 	play_state("Idle")
