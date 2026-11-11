@@ -88,6 +88,7 @@ func _ready() -> void:
 
 func set_safe_spawn(point: Vector3) -> void:
 	_safe_spawn = point
+	_ground_y = 0.9
 
 func move_to_world_position(destination: Vector3) -> void:
 	_joystick_active = false
