@@ -66,7 +66,7 @@ func _build_arena() -> void:
   status.add_theme_font_size_override("font_size",20)
   layer.add_child(status)
   var hint := Label.new()
-  hint.text = "WASD Move | SPACE Attack | F5 Save"
+  hint.text = "WASD Move | SPACE Jump | F Attack | F5 Save"
   hint.position = Vector2(18,48)
   layer.add_child(hint)
 func _add_capsule(parent: Node3D, color: Color, radius: float, height: float) -> void:
@@ -86,7 +86,7 @@ func _add_capsule(parent: Node3D, color: Color, radius: float, height: float) ->
   collider.shape = shape
   parent.add_child(collider)
 func _unhandled_input(event: InputEvent) -> void:
-  if event.is_action_pressed("skill_jump"): player.call("cast_skill","Jump")
+  if event.is_action_just_pressed("skill_jump"): player.call("cast_skill","Jump")
   if event.is_action_pressed("skill_fly"): player.call("cast_skill","Fly")
   if event.is_action_pressed("skill_scatter"): player.call("cast_skill","Scatter")
   if event.is_action_pressed("skill_rapid"): player.call("cast_skill","Rapid_Fire")
