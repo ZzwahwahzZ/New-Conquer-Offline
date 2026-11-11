@@ -26,6 +26,7 @@ var _impact_pool: Array[MeshInstance3D] = []
 var _active_impacts: Array[Dictionary] = []
 var _cull_timer := 0.0
 var _transitioning := false
+var quest_system: Node
 
 func _ready() -> void:
 	add_to_group("world_manager")
@@ -34,6 +35,7 @@ func _ready() -> void:
 	teleporter.set_script(load("res://src/scripts/WorldTeleporter.gd"))
 	add_child(teleporter)
 	teleporter.call("configure", self)
+	quest_system=Node.new(); quest_system.name="QuestSystem"; quest_system.set_script(load("res://src/scripts/QuestSystem.gd")); add_child(quest_system)
 
 func setup(target_player: Node3D) -> void:
 	player = target_player
@@ -65,6 +67,7 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 	current_world = packed.instantiate() as Node3D
 	current_world.name = settlement_id
 	add_child(current_world)
+	var npc_system=Node3D.new(); npc_system.name="NPCSystem"; npc_system.set_script(load("res://src/scripts/NPCSystem.gd")); current_world.add_child(npc_system); npc_system.call("setup",current_world,settlement_id)
 	if is_instance_valid(player) and not restore_position:
 		player.global_position = Vector3(0,1,0)
 	_spawn_settlement_content()
@@ -159,6 +162,7 @@ func _on_monster_defeated(gold: int, xp: int, monster: Node3D) -> void:
 			GearSystem.add_item(gear_drop_id,2)
 	GameState.add_item("monster_material",2 if sanctuary_loot else 1)
 	GameState.update_quest("first_hunt","completed")
+	if is_instance_valid(quest_system): quest_system.call("monster_killed",str(monster.get("monster_id")))
 	if is_instance_valid(player):
 		GameState.profile["world_position"] = [player.position.x,player.position.y,player.position.z]
 	GameState.profile["settlement_id"] = current_settlement

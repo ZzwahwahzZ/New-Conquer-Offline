@@ -1,0 +1,15 @@
+extends CanvasLayer
+const GOODS=[["Meteor",25000],["DragonBall",180000],["PlusStone_1",6000],["PlusStone_2",15000],["PlusStone_3",35000],["PlusStone_4",70000],["PlusStone_5",130000],["PlusStone_6",240000],["ToughDrill",45000],["StarDrill",95000],["Dragon_Normal",12000],["Dragon_Refined",50000],["Dragon_Super",200000],["Phoenix_Normal",12000],["Phoenix_Refined",50000],["Phoenix_Super",200000],["Rainbow_Normal",12000],["Rainbow_Refined",50000],["Rainbow_Super",200000],["Violet_Normal",12000],["Violet_Refined",50000],["Violet_Super",200000],["Moon_Normal",12000],["Moon_Refined",50000],["Moon_Super",200000],["Fury_Normal",12000],["Fury_Refined",50000],["Fury_Super",200000],["Kylin_Normal",12000],["Kylin_Refined",50000],["Kylin_Super",200000],["Garment_Vanguard",90000],["WeaponAccessory_Dragon",125000],["Steed_Chestnut",300000],["Steed_Cloud",650000],["ExpBall",50000],["DoubleExp",120000],["Megaphone",2500]]
+var panel:PanelContainer
+var list:VBoxContainer
+func _ready() -> void:
+ panel=PanelContainer.new(); panel.set_anchors_preset(Control.PRESET_CENTER); panel.position=Vector2(-270,-290); panel.size=Vector2(540,580); add_child(panel)
+ var v=VBoxContainer.new(); panel.add_child(v); var h=HBoxContainer.new(); v.add_child(h); var t=Label.new(); t.text="المول الشامل - GOLD"; t.size_flags_horizontal=Control.SIZE_EXPAND_FILL; h.add_child(t); var c=Button.new(); c.text="إغلاق"; c.pressed.connect(panel.hide); h.add_child(c)
+ var scroll=ScrollContainer.new(); scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL; v.add_child(scroll); list=VBoxContainer.new(); scroll.add_child(list)
+func toggle() -> void: panel.visible=not panel.visible; refresh()
+func refresh() -> void:
+ for n in list.get_children(): n.queue_free()
+ for item in GOODS:
+  var row=HBoxContainer.new(); list.add_child(row); var l=Label.new(); l.text="%s | %d ذهب"%[item[0],item[1]]; l.size_flags_horizontal=Control.SIZE_EXPAND_FILL; row.add_child(l); var b=Button.new(); b.text="شراء"; b.pressed.connect(_buy.bind(item[0],item[1])); row.add_child(b)
+func _buy(id:String,cost:int) -> void:
+ if GlobalEconomy.remove_gold(cost): GameState.add_item(id,1)

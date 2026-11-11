@@ -40,6 +40,10 @@ var _minimap: Control
 var _skill_buttons: Array[Button] = []
 var _skill_ids := ["Jump", "Fly", "Scatter", "Path_of_Shadow", "XP_Mode"]
 var _active_skill_mode := ""
+var _quest_ui: CanvasLayer
+var _shop_ui: CanvasLayer
+var _mall_ui: CanvasLayer
+var _warehouse_ui: CanvasLayer
 
 
 func _ready() -> void:
@@ -78,6 +82,7 @@ func _build_hud() -> void:
 	add_child(_skills_ui)
 	_build_character_window_buttons()
 	_build_world_widgets()
+	_build_step12_widgets()
 	if not ClassSystem.level_up.is_connected(_on_level_up): ClassSystem.level_up.connect(_on_level_up)
 
 
@@ -696,3 +701,22 @@ func _solid_texture(color: Color) -> GradientTexture2D:
 	texture.fill_from = Vector2.ZERO
 	texture.fill_to = Vector2.RIGHT
 	return texture
+
+func _build_step12_widgets() -> void:
+	_quest_ui=load("res://src/scenes/QuestUI.tscn").instantiate(); _shop_ui=load("res://src/scenes/ShopUI.tscn").instantiate(); _mall_ui=load("res://src/scenes/ShoppingMallUI.tscn").instantiate(); _warehouse_ui=load("res://src/scenes/WarehouseUI.tscn").instantiate()
+	add_child(_quest_ui); add_child(_shop_ui); add_child(_mall_ui); add_child(_warehouse_ui)
+	var q=Button.new(); q.text="المهام"; q.position=Vector2(18,112); q.pressed.connect(Callable(_quest_ui,"toggle")); _root.add_child(q)
+	var m=Button.new(); m.text="المول"; m.position=Vector2(112,112); m.pressed.connect(Callable(_mall_ui,"toggle")); _root.add_child(m)
+	var b=Button.new(); b.text="الخزنة"; b.position=Vector2(206,112); b.pressed.connect(Callable(_warehouse_ui,"toggle")); _root.add_child(b)
+	var i=Button.new(); i.text="تفاعل"; i.position=Vector2(300,112); i.pressed.connect(_interact_nearest_npc); _root.add_child(i)
+func _interact_nearest_npc() -> void:
+	if not is_instance_valid(_player): _find_player()
+	if not is_instance_valid(_player): return
+	var nearest:Node=null; var best:=4.5
+	for npc in get_tree().get_nodes_in_group("npcs"):
+		var d:=_player.global_position.distance_to(npc.global_position)
+		if d<best: best=d; nearest=npc
+	if is_instance_valid(nearest): nearest.call("interact")
+func on_npc_interacted(role:String) -> void:
+	if role=="warehouseman": _warehouse_ui.call("toggle")
+	elif role in ["blacksmith","armorer","pharmacist","class_trainer"]: _shop_ui.call("open_shop",role)

@@ -83,6 +83,12 @@ func _ready() -> void:
 		ClassSystem.level_up.connect(_on_class_level_up)
 	_sync_class_stats()
 
+func move_to_world_position(destination: Vector3) -> void:
+	_joystick_active = false
+	_joystick_vector = Vector2.ZERO
+	_move_target = destination
+	_has_move_target = true
+
 func set_virtual_joystick_input(direction: Vector2, active: bool) -> void:
 	_joystick_active = active
 	_joystick_vector = direction.limit_length(1.0) if active else Vector2.ZERO

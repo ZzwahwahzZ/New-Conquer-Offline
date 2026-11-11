@@ -17,6 +17,8 @@ var _loaded_save_version := 0
 
 func _ready() -> void:
 	_load_save_envelope()
+	while warehouse_items.size() < 80: warehouse_items.append({})
+	if warehouse_items.size() > 80: warehouse_items.resize(80)
 	var gear_system := get_node_or_null("/root/GearSystem")
 	if gear_system != null: gear_system.initialize_from_save(_gear_data)
 	_is_ready_for_transactions = true
