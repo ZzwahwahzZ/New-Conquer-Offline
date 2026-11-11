@@ -145,7 +145,10 @@ func _assign_city_behavior(bot: Node3D) -> void:
 		return
 	var marker := markers[_rng.randi_range(0,markers.size()-1)]
 	var offset := Vector3(_rng.randf_range(-2.0,2.0),0.0,_rng.randf_range(-1.5,1.5))
-	bot.call("move_to",marker.global_position + offset)
+	if _rng.randf() < 0.25:
+		bot.call("arc_jump_to",marker.global_position + offset)
+	else:
+		bot.call("move_to",marker.global_position + offset)
 
 func _assign_hunting_behavior(bot: Node3D) -> void:
 	var monsters := get_tree().get_nodes_in_group("enemies")
