@@ -115,6 +115,9 @@ func join_guild(guild_name: String) -> bool:
 	var bulletin := str(guilds[guild_name].get("bulletin",""))
 	_save()
 	guild_chat.emit("مرحباً بك في %s! %s" % [guild_name,bulletin])
+	var welcome_members: Array[Dictionary] = roster.get_guild_members(guild_name)
+	for index in range(mini(3,welcome_members.size())):
+		guild_chat.emit("%s: أهلاً بك بين إخوتك في العشيرة!" % str(welcome_members[index].get("name","Warrior")))
 	guild_changed.emit()
 	return true
 
