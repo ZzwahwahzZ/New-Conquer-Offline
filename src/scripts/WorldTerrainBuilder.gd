@@ -71,9 +71,14 @@ static func _bounds(parent: Node3D,size: float,city: String) -> void:
 static func _roads(slot: Node3D,size: float,city: String) -> void:
  if city!="TwinCity": return
  for i in range(4):
-  var road:=MeshInstance3D.new(); var p:=PlaneMesh.new(); p.size=Vector2(9.0,size*0.46); road.mesh=p
-  road.rotation_degrees.y=i*90.0; road.position=Vector3(0,0.025,0)
-  var m:=StandardMaterial3D.new(); m.albedo_color=Color("#b8ad96"); m.roughness=1.0; road.material_override=m; slot.add_child(road)
+  var road:=MeshInstance3D.new()
+  var plane:=PlaneMesh.new()
+  plane.size=Vector2(12.0,size*0.46)
+  road.mesh=plane
+  road.rotation_degrees.y=i*90.0
+  road.position=Vector3(0,0.035,0)
+  road.material_override=_stone_material()
+  slot.add_child(road)
 
 static func _place_karst_models(parent: Node3D,city: String,size: float) -> void:
  if city=="TwinCity":
@@ -131,13 +136,47 @@ static func _add_scene_mesh_collisions(root: Node) -> void:
    if mesh_node.mesh != null and mesh_node.mesh.get_surface_count()>0:
     mesh_node.create_trimesh_collision()
 
+static func _make_procedural_texture(stone: bool) -> Texture2D:
+ var image := Image.create(256,256,false,Image.FORMAT_RGBA8)
+ var noise := FastNoiseLite.new()
+ noise.seed = 1742 if stone else 8241
+ noise.frequency = 0.035 if stone else 0.022
+ noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
+ for y in range(256):
+  for x in range(256):
+   var n := noise.get_noise_2d(float(x),float(y))
+   var color := Color.WHITE
+   if stone:
+    var row := int(y / 32)
+    var shifted_x := posmod(x + (16 if row % 2 == 1 else 0),48)
+    var grout := shifted_x < 2 or posmod(y,32) < 2
+    var shade := clampf(0.66 + n * 0.17 + float((x * 13 + y * 7) % 9) * 0.008,0.42,0.88)
+    color = Color(0.62,0.59,0.52,1.0) * shade if not grout else Color("#514b42")
+   else:
+    var shade := clampf(0.76 + n * 0.34 + float((x * 5 + y * 11) % 13) * 0.006,0.35,1.0)
+    color = Color("#66894a").lerp(Color("#a0a85a"),clampf(n * 0.8 + 0.35,0.0,1.0)) * shade
+   image.set_pixel(x,y,color)
+ return ImageTexture.create_from_image(image)
+
+static func _stone_material() -> StandardMaterial3D:
+ var material := StandardMaterial3D.new()
+ material.albedo_color = Color.WHITE
+ material.albedo_texture = _make_procedural_texture(true)
+ material.uv1_scale = Vector3(22.0,22.0,1.0)
+ material.roughness = 0.96
+ material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR
+ return material
+
 static func _fallback_ground_material(city: String) -> StandardMaterial3D:
  var material := StandardMaterial3D.new()
- material.albedo_color = COLORS.get(city, Color("#6c9849"))
+ material.albedo_color = Color.WHITE if city == "TwinCity" else COLORS.get(city, Color("#6c9849"))
  material.roughness = 1.0
  material.metallic = 0.0
  material.cull_mode = BaseMaterial3D.CULL_DISABLED
  material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR
+ if city == "TwinCity":
+  material.albedo_texture = _make_procedural_texture(false)
+  material.uv1_scale = Vector3(38.0,38.0,1.0)
  if OS.has_feature("web"):
   material.normal_enabled = false
   material.roughness_texture = null
@@ -147,17 +186,17 @@ static func _build_flat_twin_city_plaza(parent: Node3D) -> void:
  var plaza := StaticBody3D.new()
  plaza.name = "TwinCityFlatPlaza"
  var floor := MeshInstance3D.new()
- floor.name = "TwinCityGreenPlazaSurface"
+ floor.name = "TwinCityImperialStonePlaza"
  var plane := PlaneMesh.new()
- plane.size = Vector2(600.0, 600.0)
+ plane.size = Vector2(124.0,124.0)
  floor.mesh = plane
- floor.position.y = 0.005
- floor.material_override = _fallback_ground_material("TwinCity")
+ floor.position.y = 0.018
+ floor.material_override = _stone_material()
  plaza.add_child(floor)
  var collision := CollisionShape3D.new()
  collision.name = "TwinCityFlatPlazaCollision"
  var box := BoxShape3D.new()
- box.size = Vector3(600.0, 2.0, 600.0)
+ box.size = Vector3(600.0,2.0,600.0)
  collision.shape = box
  collision.position.y = -1.0
  plaza.add_child(collision)
