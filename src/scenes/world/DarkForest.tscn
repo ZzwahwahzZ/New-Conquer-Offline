@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/scripts/SettlementWorld.gd" id="1_world"]
+
+[node name="DarkForest" type="Node3D"]
+script = ExtResource("1_world")
+settlement_id = "DarkForest"
+display_name = "Dark Forest"
+level_min = 115
+level_max = 130
+ground_color = Color(0.08, 0.16, 0.12, 1)
+fog_color = Color(0.22, 0.34, 0.28, 1)
+sky_color = Color(0.12, 0.18, 0.22, 1)
+fog_density = 0.016
+landmark_color = Color(0.12, 0.22, 0.15, 1)

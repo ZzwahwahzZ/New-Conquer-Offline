@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/scripts/SettlementWorld.gd" id="1_world"]
+
+[node name="DesertLand" type="Node3D"]
+script = ExtResource("1_world")
+settlement_id = "DesertLand"
+display_name = "Desert Land"
+level_min = 15
+level_max = 40
+ground_color = Color(0.68, 0.48, 0.25, 1)
+fog_color = Color(0.82, 0.68, 0.48, 1)
+sky_color = Color(0.78, 0.60, 0.40, 1)
+fog_density = 0.006
+landmark_color = Color(0.48, 0.34, 0.20, 1)

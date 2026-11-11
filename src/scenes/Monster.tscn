@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/scripts/Monster.gd" id="1_monster"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape_monster"]
+radius = 0.48
+height = 1.65
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_rig"]
+radius = 0.55
+height = 1.7
+
+[node name="Monster" type="CharacterBody3D"]
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("1_monster")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape_monster")
+
+[node name="Skeleton3D" type="Skeleton3D" parent="."]
+
+[node name="HighDetailRigSlot" type="MeshInstance3D" parent="Skeleton3D"]
+mesh = SubResource("CapsuleMesh_rig")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("..")

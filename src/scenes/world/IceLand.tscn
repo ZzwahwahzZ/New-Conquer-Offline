@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/scripts/SettlementWorld.gd" id="1_world"]
+
+[node name="IceLand" type="Node3D"]
+script = ExtResource("1_world")
+settlement_id = "IceLand"
+display_name = "Ice Land"
+level_min = 70
+level_max = 95
+ground_color = Color(0.60, 0.76, 0.84, 1)
+fog_color = Color(0.72, 0.86, 0.94, 1)
+sky_color = Color(0.62, 0.78, 0.92, 1)
+fog_density = 0.008
+landmark_color = Color(0.72, 0.84, 0.92, 1)

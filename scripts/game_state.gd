@@ -3,7 +3,7 @@ signal stats_changed
 signal inventory_changed
 signal quest_changed
 const SAVE_PATH := "user://offline_profile.json"
-var profile := {"character_name":"Player","level":1,"experience":0,"gold":100,"hp":100,"max_hp":100,"mp":50,"max_mp":50,"inventory":[],"quests":{"first_hunt":"not_started"},"world_position":[0.0,0.0,0.0]}
+var profile := {"character_name":"Player","level":1,"experience":0,"gold":100,"hp":100,"max_hp":100,"mp":50,"max_mp":50,"inventory":[],"quests":{"first_hunt":"not_started"},"settlement_id":"TwinCity","world_position":[0.0,0.0,0.0]}
 func _ready() -> void:
   if not GlobalEconomy.gold_changed.is_connected(_on_global_gold_changed):
     GlobalEconomy.gold_changed.connect(_on_global_gold_changed)
@@ -44,6 +44,7 @@ func save_local() -> bool:
   var f := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
   if f == null: return false
   f.store_string(JSON.stringify(profile))
+  f.close()
   return true
 func load_local() -> bool:
   if not FileAccess.file_exists(SAVE_PATH): return false

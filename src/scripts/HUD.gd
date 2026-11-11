@@ -33,6 +33,10 @@ var _status_ui: Control
 var _skills_ui: Control
 var _status_button: Button
 var _skills_button: Button
+var _world_button: Button
+var _world_panel: PanelContainer
+var _world_manager: Node
+var _minimap: Control
 var _skill_buttons: Array[Button] = []
 var _skill_ids := ["Jump", "Fly", "Scatter", "Path_of_Shadow", "XP_Mode"]
 var _active_skill_mode := ""
@@ -73,6 +77,7 @@ func _build_hud() -> void:
 	_skills_ui = load("res://src/scenes/SkillsUI.tscn").instantiate() as Control
 	add_child(_skills_ui)
 	_build_character_window_buttons()
+	_build_world_widgets()
 	if not ClassSystem.level_up.is_connected(_on_level_up): ClassSystem.level_up.connect(_on_level_up)
 
 
@@ -341,6 +346,49 @@ func _build_character_window_buttons() -> void:
 	_skills_button.pressed.connect(_toggle_skills_ui)
 	_root.add_child(_skills_button)
 
+func _build_world_widgets() -> void:
+	_world_manager = get_tree().get_first_node_in_group("world_manager")
+	_world_button = Button.new()
+	_world_button.name = "WorldTravelButton"
+	_world_button.text = "العالم  [M]"
+	_world_button.custom_minimum_size = Vector2(118,42)
+	_world_button.pressed.connect(_toggle_world_panel)
+	_root.add_child(_world_button)
+	_world_panel = PanelContainer.new()
+	_world_panel.name = "WorldTravelPanel"
+	_world_panel.size = Vector2(210,270)
+	_world_panel.add_theme_stylebox_override("panel",_panel_style(Color(0.025,0.04,0.055,0.96),Color(0.78,0.57,0.29,1.0),2,8))
+	_root.add_child(_world_panel)
+	var list := VBoxContainer.new()
+	list.add_theme_constant_override("separation",4)
+	_world_panel.add_child(list)
+	var title := Label.new()
+	title.text = "الانتقال بين المستوطنات"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	list.add_child(title)
+	if is_instance_valid(_world_manager):
+		for settlement_id in _world_manager.call("get_settlement_ids"):
+			var button := Button.new()
+			button.text = "%s  (%s)" % [_world_manager.call("get_settlement_name",settlement_id),_world_manager.call("get_settlement_level_range",settlement_id)]
+			button.pressed.connect(_travel_to_settlement.bind(str(settlement_id)))
+			list.add_child(button)
+	var close := Button.new()
+	close.text = "إغلاق"
+	close.pressed.connect(_toggle_world_panel)
+	list.add_child(close)
+	_world_panel.hide()
+	_minimap = load("res://src/scripts/MiniMapUI.gd").new()
+	_minimap.name = "MiniMapUI"
+	_root.add_child(_minimap)
+	_minimap.call("configure",_world_manager,get_tree().get_first_node_in_group("player"))
+
+func _toggle_world_panel() -> void:
+	if is_instance_valid(_world_panel): _world_panel.visible = not _world_panel.visible
+
+func _travel_to_settlement(settlement_id: String) -> void:
+	if is_instance_valid(_world_manager): _world_manager.call("change_settlement",settlement_id)
+	if is_instance_valid(_world_panel): _world_panel.hide()
+
 func _toggle_status_ui() -> void:
 	if is_instance_valid(_status_ui): _status_ui.call("toggle")
 
@@ -349,7 +397,10 @@ func _toggle_skills_ui() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_C:
+		if event.keycode == KEY_M:
+			_toggle_world_panel()
+			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_C:
 			_toggle_status_ui()
 			get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_K:
@@ -434,6 +485,9 @@ func _layout_hud() -> void:
 		_upgrade_button.position = Vector2(width - 270.0, 18.0)
 	if is_instance_valid(_status_button): _status_button.position = Vector2(18.0,68.0)
 	if is_instance_valid(_skills_button): _skills_button.position = Vector2(146.0,68.0)
+	if is_instance_valid(_world_button): _world_button.position = Vector2(width - 398.0,18.0)
+	if is_instance_valid(_world_panel): _world_panel.position = Vector2(18.0,120.0)
+	if is_instance_valid(_minimap): _minimap.position = Vector2(width - 210.0,118.0)
 	if is_instance_valid(_promotion_button):
 		_promotion_button.position = Vector2(width - 210.0, 68.0)
 

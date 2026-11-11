@@ -37,6 +37,30 @@ const WEAPON_BLUEPRINTS := {
 		"slot": "RightHand", "allowed_slots": ["RightHand", "LeftHand"], "weapon_family": "ThrowingKnife",
 		"quality": "Normal", "plus": 0, "socket_count": 0, "sockets": [],
 		"required_level": 70, "base_stats": {"physical_attack": 42, "magic_attack": 0}
+	},
+	"trojan_blade_15": {
+		"name": "Trojan Blade", "allowed_classes": ["Trojan"],
+		"slot": "RightHand", "allowed_slots": ["RightHand"], "weapon_family": "Blade",
+		"quality": "Normal", "plus": 0, "socket_count": 0, "sockets": [],
+		"required_level": 15, "base_stats": {"physical_attack": 34, "magic_attack": 0}
+	},
+	"warrior_sword_15": {
+		"name": "Warrior Sword", "allowed_classes": ["Warrior"],
+		"slot": "RightHand", "allowed_slots": ["RightHand"], "weapon_family": "Sword",
+		"quality": "Normal", "plus": 0, "socket_count": 0, "sockets": [],
+		"required_level": 15, "base_stats": {"physical_attack": 32, "magic_attack": 0}
+	},
+	"taoist_backsword_15": {
+		"name": "Taoist Backsword", "allowed_classes": ["Water_Taoist", "Fire_Taoist"],
+		"slot": "RightHand", "allowed_slots": ["RightHand"], "weapon_family": "Backsword",
+		"quality": "Normal", "plus": 0, "socket_count": 0, "sockets": [],
+		"required_level": 15, "base_stats": {"physical_attack": 18, "magic_attack": 22}
+	},
+	"ninja_katana_15": {
+		"name": "Ninja Katana", "allowed_classes": ["Ninja"],
+		"slot": "RightHand", "allowed_slots": ["RightHand"], "weapon_family": "Katana",
+		"quality": "Normal", "plus": 0, "socket_count": 0, "sockets": [],
+		"required_level": 15, "base_stats": {"physical_attack": 36, "magic_attack": 0}
 	}
 }
 

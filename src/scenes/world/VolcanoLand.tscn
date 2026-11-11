@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/scripts/SettlementWorld.gd" id="1_world"]
+
+[node name="VolcanoLand" type="Node3D"]
+script = ExtResource("1_world")
+settlement_id = "VolcanoLand"
+display_name = "Volcano Land"
+level_min = 40
+level_max = 70
+ground_color = Color(0.24, 0.12, 0.10, 1)
+fog_color = Color(0.52, 0.24, 0.16, 1)
+sky_color = Color(0.30, 0.24, 0.26, 1)
+fog_density = 0.012
+landmark_color = Color(0.32, 0.18, 0.14, 1)

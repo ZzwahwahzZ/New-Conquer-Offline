@@ -45,7 +45,30 @@ func _ready() -> void:
 
 	body_entered.connect(_on_body_entered)
 
+func reset_for_pool(spawn_position: Vector3, amount: int) -> void:
+	global_position = spawn_position
+	gold_value = maxi(1,amount)
+	_player = null
+	_attracted = false
+	_collected = false
+	visible = true
+	monitorable = true
+	monitoring = true
+	set_physics_process(true)
+	if is_instance_valid(_audio): _audio.stop()
+
+func deactivate_for_pool() -> void:
+	visible = false
+	monitorable = false
+	monitoring = false
+	_player = null
+	_attracted = false
+	_collected = true
+	set_physics_process(false)
+	if is_instance_valid(_audio): _audio.stop()
+
 func _physics_process(delta: float) -> void:
+	if _collected: return
 	if not _attracted:
 		var players := get_tree().get_nodes_in_group("player")
 		if not players.is_empty():
@@ -77,4 +100,8 @@ func _collect() -> void:
 		if _audio.stream != null:
 			_audio.play()
 			await _audio.finished
-		queue_free()
+		var manager := get_tree().get_first_node_in_group("world_manager")
+		if is_instance_valid(manager) and manager.has_method("recycle_gold"):
+			manager.call("recycle_gold",self)
+		else:
+			queue_free()

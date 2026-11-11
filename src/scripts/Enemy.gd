@@ -36,12 +36,17 @@ func _ready() -> void:
 func take_damage(amount: int) -> void:
 	if hp <= 0 or amount <= 0:
 		return
+	var manager := get_tree().get_first_node_in_group("world_manager")
+	if is_instance_valid(manager) and manager.has_method("spawn_impact_effect"):
+		manager.call("spawn_impact_effect",global_position+Vector3(0,0.8,0))
+	if has_method("play_state"): call("play_state","Hit")
 	_provoked = true
 	hp = maxi(0, hp - amount)
 	health_changed.emit(hp, max_hp)
 	if is_instance_valid(_health_bar):
 		_health_bar.value = hp
 	if hp == 0:
+		if has_method("play_state"): call("play_state","Hit")
 		_die()
 
 func _physics_process(delta: float) -> void:
@@ -59,6 +64,8 @@ func _physics_process(delta: float) -> void:
 	offset.y = 0.0
 	var distance := offset.length()
 	var should_chase := _provoked or (behavior == Behavior.AGGRESSIVE and distance <= detection_range)
+	if has_method("play_state"):
+		call("play_state","Run" if should_chase and distance > attack_range else "Attack" if should_chase else "Idle")
 	if not should_chase:
 		_stop_horizontal(delta)
 		move_and_slide()
@@ -87,7 +94,7 @@ func _create_world_health_bar() -> void:
 	_health_viewport.name = "HealthBarViewport"
 	_health_viewport.size = Vector2i(180, 28)
 	_health_viewport.transparent_bg = true
-	_health_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	_health_viewport.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 	add_child(_health_viewport)
 
 	var panel := PanelContainer.new()
@@ -121,11 +128,16 @@ func _create_world_health_bar() -> void:
 
 func _die() -> void:
 	velocity = Vector3.ZERO
+	if has_method("play_state"): call("play_state","Death")
 	defeated.emit(gold_drop, experience_drop)
-	var drop := Area3D.new()
-	drop.name = "CPDrop"
-	drop.set_script(load("res://src/scripts/CPDrop.gd"))
-	drop.set("gold_value", gold_drop)
-	drop.global_position = global_position
-	get_tree().current_scene.add_child(drop)
-	queue_free()
+	var manager := get_tree().get_first_node_in_group("world_manager")
+	if is_instance_valid(manager) and manager.has_method("recycle_monster"):
+		manager.call_deferred("recycle_monster",self)
+	else:
+		var drop := Area3D.new()
+		drop.name = "CPDrop"
+		drop.set_script(load("res://src/scripts/CPDrop.gd"))
+		drop.set("gold_value", gold_drop)
+		drop.global_position = global_position
+		get_tree().current_scene.add_child(drop)
+		queue_free()

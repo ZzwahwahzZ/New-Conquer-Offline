@@ -24,6 +24,25 @@ func _ready() -> void:
 	if not FileAccess.file_exists(SAVE_PATH) or _loaded_save_version < SAVE_VERSION: _write_save_envelope()
 	economy_ready.emit()
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_PAUSED or what == NOTIFICATION_WM_CLOSE_REQUEST:
+		save_runtime_state()
+
+func save_runtime_state() -> bool:
+	var class_system := get_node_or_null("/root/ClassSystem")
+	if is_instance_valid(class_system) and class_system.has_method("save_character"):
+		class_system.call("save_character")
+	var gear_system := get_node_or_null("/root/GearSystem")
+	if is_instance_valid(gear_system) and gear_system.has_method("serialize_gear_data"):
+		_gear_data = gear_system.call("serialize_gear_data")
+	var game_state := get_node_or_null("/root/GameState")
+	if is_instance_valid(game_state):
+		var manager := get_tree().get_first_node_in_group("world_manager")
+		if is_instance_valid(manager) and manager.has_method("save_world_state"):
+			manager.call("save_world_state")
+		game_state.call("save_local")
+	return _write_save_envelope()
+
 func add_gold(amount: int) -> bool:
 	if amount <= 0: return false
 	var previous := current_gold

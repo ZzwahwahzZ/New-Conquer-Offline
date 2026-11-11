@@ -33,26 +33,6 @@ func _setup_input() -> void:
     ev.physical_keycode = keys[action]
     InputMap.action_add_event(action,ev)
 func _build_arena() -> void:
-  var ground_body := StaticBody3D.new()
-  var ground_mesh := MeshInstance3D.new()
-  var plane := PlaneMesh.new()
-  plane.size = Vector2(40,40)
-  ground_mesh.mesh = plane
-  var ground_mat := StandardMaterial3D.new()
-  ground_mat.albedo_color = Color(0.12,0.18,0.16)
-  ground_mesh.material_override = ground_mat
-  ground_body.add_child(ground_mesh)
-  var ground_shape := CollisionShape3D.new()
-  var box := BoxShape3D.new()
-  box.size = Vector3(40,0.2,40)
-  ground_shape.shape = box
-  ground_shape.position.y = -0.1
-  ground_body.add_child(ground_shape)
-  add_child(ground_body)
-  var sun := DirectionalLight3D.new()
-  sun.rotation_degrees = Vector3(-55,-25,0)
-  sun.shadow_enabled = true
-  add_child(sun)
   player = CharacterBody3D.new()
   player.name = "LocalPlayer"
   player.set_script(load("res://src/scripts/Player.gd"))
@@ -60,15 +40,11 @@ func _build_arena() -> void:
   _add_capsule(player,Color(0.2,0.55,0.95),0.45,1.8)
   add_child(player)
   player.add_to_group("player")
-  enemy = CharacterBody3D.new()
-  enemy.name = "LocalMonster"
-  enemy.set_script(load("res://src/scripts/Enemy.gd"))
-  enemy.position = Vector3(4,0.8,-4)
-  enemy.set("target", player)
-  enemy.set("behavior", 0)
-  _add_capsule(enemy,Color(0.8,0.2,0.18),0.6,1.3)
-  enemy.connect("defeated", _on_defeated)
-  add_child(enemy)
+  var world_manager := Node3D.new()
+  world_manager.name = "WorldManager"
+  world_manager.set_script(load("res://src/scripts/WorldManager.gd"))
+  add_child(world_manager)
+  world_manager.call("setup", player)
   var inventory_layer := CanvasLayer.new()
   inventory_layer.name = "InventoryLayer"
   add_child(inventory_layer)
@@ -128,6 +104,8 @@ func _unhandled_input(event: InputEvent) -> void:
     get_viewport().set_input_as_handled()
   if event.is_action_pressed("save_game"):
     GameState.profile.world_position = [player.position.x,player.position.y,player.position.z]
+    var world_manager := get_node_or_null("WorldManager")
+    if is_instance_valid(world_manager): world_manager.call("save_world_state")
     GameState.save_local()
     ClassSystem.save_character()
     _refresh()
