@@ -44,6 +44,8 @@ var _quest_ui: CanvasLayer
 var _shop_ui: CanvasLayer
 var _mall_ui: CanvasLayer
 var _warehouse_ui: CanvasLayer
+var _last_bot_milestone_class := ""
+var _last_bot_milestone_plus := 0
 
 
 func _ready() -> void:
@@ -84,6 +86,10 @@ func _build_hud() -> void:
 	_build_world_widgets()
 	_build_step12_widgets()
 	if not ClassSystem.level_up.is_connected(_on_level_up): ClassSystem.level_up.connect(_on_level_up)
+	if not ClassSystem.character_changed.is_connected(_on_bot_milestone_check): ClassSystem.character_changed.connect(_on_bot_milestone_check)
+	if not GearSystem.equipment_changed.is_connected(_on_bot_milestone_check): GearSystem.equipment_changed.connect(_on_bot_milestone_check)
+	_last_bot_milestone_class = ClassSystem.current_class
+	_last_bot_milestone_plus = _get_equipment_plus_max()
 
 
 func _build_joystick() -> void:
@@ -668,6 +674,39 @@ func _restore_chat() -> void:
 	_chat_window.show()
 	_chat_restore_button.hide()
 
+
+func push_simulated_chat(message: String, channel: String = "عام") -> void:
+	if not is_instance_valid(_chat_log):
+		return
+	var tint := "#e8d7b0" if channel == "عام" else "#83d9a8"
+	_chat_log.append_text("\\n[color=%s]%s [/color]%s" % [tint,channel,message])
+
+func _get_equipment_plus_max() -> int:
+	var best := 0
+	var equipment: Dictionary = GearSystem.get("equipment")
+	for slot in equipment:
+		var item = equipment[slot]
+		if item is Dictionary:
+			best = maxi(best,int(item.get("plus",0)))
+	return best
+
+func _on_bot_milestone_check() -> void:
+	var current_class := str(ClassSystem.current_class)
+	if current_class == "Oriental_Assassin" and _last_bot_milestone_class != "Oriental_Assassin" and ClassSystem.level >= 40:
+		_push_bot_milestone("assassin_promotion")
+	_last_bot_milestone_class = current_class
+	var current_plus := _get_equipment_plus_max()
+	if current_plus >= 12 and _last_bot_milestone_plus < 12:
+		_push_bot_milestone("gear_plus_12")
+	elif current_plus >= 9 and _last_bot_milestone_plus < 9:
+		_push_bot_milestone("gear_plus_9")
+	_last_bot_milestone_plus = current_plus
+
+func _push_bot_milestone(milestone: String) -> void:
+	var roster_script := load("res://src/scripts/VirtualPlayerRoster.gd")
+	var roster = roster_script.new()
+	for message in roster.record_player_milestone(milestone):
+		push_simulated_chat(message,"عام")
 
 func _on_chat_submitted(message: String) -> void:
 	var clean_message := message.strip_edges()
