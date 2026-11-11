@@ -103,7 +103,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          TEMPLATE_DEST="$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}"
+          TEMPLATE_DEST="$HOME/.local/share/godot/export_templates/${GODOT_TEMPLATE_VERSION}"
           mkdir -p "$TEMPLATE_DEST"
           curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o /tmp/godot.zip
           unzip -q /tmp/godot.zip -d /tmp/godot-bin
@@ -211,7 +211,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          TEMPLATE_DEST="$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}"
+          TEMPLATE_DEST="$HOME/.local/share/godot/export_templates/${GODOT_TEMPLATE_VERSION}"
           mkdir -p "$TEMPLATE_DEST"
           curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o /tmp/godot.zip
           unzip -q /tmp/godot.zip -d /tmp/godot-bin
