@@ -22,17 +22,21 @@ static func build_ground_material(environment_id: String, triplanar: bool = true
  var material := StandardMaterial3D.new()
  material.resource_name = environment_id + "_PBR_Ground"
  material.albedo_color = Color.WHITE
- material.albedo_texture = _load_map(folder + "albedo.jpg", _fallback_texture("albedo", environment_id))
+ material.albedo_texture = _load_first_map(folder, ["albedo.jpg", "albedo.png", "albedo.webp"], _fallback_texture("albedo", environment_id))
  material.normal_enabled = true
- material.normal_texture = _load_map(folder + "normal.jpg", _fallback_texture("normal", environment_id))
+ material.normal_texture = _load_first_map(folder, ["normal.jpg", "normal.png", "normal.webp"], _fallback_texture("normal", environment_id))
  material.roughness = 0.92
- material.roughness_texture = _load_map(folder + "roughness.jpg", _fallback_texture("roughness", environment_id))
+ material.roughness_texture = _load_first_map(folder, ["roughness.jpg", "roughness.png", "roughness.webp"], _fallback_texture("roughness", environment_id))
  material.metallic = 0.0
  material.uv1_triplanar = triplanar
  material.uv1_triplanar_sharpness = 4.0
  material.uv1_scale = Vector3(0.12, 0.12, 0.12)
  material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
  material.cull_mode = BaseMaterial3D.CULL_DISABLED
+ var emission_map := _load_first_map(folder, ["emission.jpg", "emission.png", "emission.webp"], null)
+ if emission_map != null:
+  material.emission_enabled = true
+  material.emission_texture = emission_map
  if EMISSIVE.has(environment_id):
   material.emission_enabled = true
   material.emission = EMISSIVE[environment_id]
@@ -48,11 +52,13 @@ static func build_emissive_material(color: Color, energy: float = 1.5, roughness
  material.emission_energy_multiplier = energy
  return material
 
-static func _load_map(path: String, fallback: Texture2D) -> Texture2D:
- if FileAccess.file_exists(path):
-  var loaded := load(path) as Texture2D
-  if loaded != null:
-   return loaded
+static func _load_first_map(folder: String, candidates: Array, fallback: Texture2D) -> Texture2D:
+ for candidate in candidates:
+  var path := folder + str(candidate)
+  if ResourceLoader.exists(path):
+   var loaded := load(path) as Texture2D
+   if loaded != null:
+    return loaded
  return fallback
 
 static func _fallback_texture(kind: String, environment_id: String) -> Texture2D:
