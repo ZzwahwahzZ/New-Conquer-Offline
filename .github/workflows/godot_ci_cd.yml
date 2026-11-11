@@ -109,6 +109,9 @@ jobs:
       - name: Verify world environment, sunlight and Twin City ground
         run: godot --headless --path . --script scripts/world_environment_test.gd
 
+      - name: Run shared PBR material library regression
+        run: godot --headless --path . --script scripts/pbr_material_library_test.gd
+
       - name: Run Step 17B rigged assets, PBR, aura and Anima regression
         run: timeout 45s godot --headless --path . --script scripts/step17b_rigged_visuals_test.gd
 
