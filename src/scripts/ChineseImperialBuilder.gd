@@ -13,6 +13,11 @@ static func build(parent: Node3D, city: String, size: float) -> void:
  else:
   _wall(root,size*0.72)
  _multilight(root,city)
+ _city_features(root,city,size)
+ if city=="TwinCity":
+  for i in range(4):
+   var angle:=TAU*float(i)/4.0
+   _pavilion(root,Vector3(cos(angle)*42.0,0.0,sin(angle)*42.0))
 static func _mat(color: Color,metal: float=0.0) -> StandardMaterial3D:
  var m:=StandardMaterial3D.new(); m.albedo_color=color; m.metallic=metal; m.roughness=0.55; return m
 static func _box(parent: Node3D,pos: Vector3,scale: Vector3,color: Color) -> MeshInstance3D:
@@ -51,3 +56,34 @@ static func _multilight(p: Node3D,city: String) -> void:
  for i in range(32):
   var a=TAU*float(i)/32.0; mm.set_instance_transform(i,Transform3D(Basis(),Vector3(cos(a)*42.0,3.0,sin(a)*42.0)))
  var node:=MultiMeshInstance3D.new(); node.multimesh=mm; node.name="LanternMultiMesh"; p.add_child(node)
+
+static func _pavilion(parent: Node3D,pos: Vector3) -> void:
+ var pod:=Node3D.new(); pod.position=pos; parent.add_child(pod)
+ _box(pod,Vector3(0,0.7,0),Vector3(12,1.4,9),Color("#eee6d4"))
+ for x in [-4.5,4.5]:
+  for z in [-3.0,3.0]:
+   _box(pod,Vector3(x,3.1,z),Vector3(0.7,5.0,0.7),Color("#9B111E"))
+ _roof(pod,Vector3(0,6.0,0),14.0)
+static func _city_features(parent: Node3D,city: String,size: float) -> void:
+ if city=="VolcanoLand":
+  var lava_mat:=_mat(Color("#f05a16")); lava_mat.emission_enabled=true; lava_mat.emission=Color("#ff4b08"); lava_mat.emission_energy_multiplier=2.2
+  for i in range(3):
+   var river:=MeshInstance3D.new(); var plane:=PlaneMesh.new(); plane.size=Vector2(4.0,size*0.62); river.mesh=plane
+   river.position=Vector3(-size*0.22+float(i)*size*0.22,0.08,0); river.material_override=lava_mat; parent.add_child(river)
+ elif city=="Waterlands":
+  var water:=MeshInstance3D.new(); var plane:=PlaneMesh.new(); plane.size=Vector2(size*0.88, size*0.88); water.mesh=plane
+  water.position.y=-0.35; var wm:=_mat(Color("#20aeb5")); wm.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA; wm.albedo_color.a=0.72; water.material_override=wm; water.name="TurquoiseWaterSurface"; parent.add_child(water)
+ elif city=="IceLand":
+  for i in range(12):
+   var crystal:=MeshInstance3D.new(); var prism:=PrismMesh.new(); prism.size=Vector3(1.2,7.0,1.2); crystal.mesh=prism
+   var a=TAU*float(i)/12.0; crystal.position=Vector3(cos(a)*32.0,3.5,sin(a)*32.0)
+   crystal.material_override=_mat(Color("#8bd8ed"),0.35); parent.add_child(crystal)
+ elif city=="DarkForest":
+  var multi:=MultiMesh.new(); multi.transform_format=MultiMesh.TRANSFORM_3D
+  var trunk:=CylinderMesh.new(); trunk.top_radius=0.45; trunk.bottom_radius=0.8; trunk.height=12.0; trunk.material=_mat(Color("#3d3026")); multi.mesh=trunk
+  multi.instance_count=160
+  for i in range(160):
+   var angle:=float(i)*2.39996; var radius:=size*(0.28+0.17*float((i*37)%100)/100.0)
+   var pos:=Vector3(cos(angle)*radius,6.0,sin(angle)*radius)
+   multi.set_instance_transform(i,Transform3D(Basis(),pos))
+  var forest:=MultiMeshInstance3D.new(); forest.multimesh=multi; forest.name="ForestTreeTrunksMultiMesh"; parent.add_child(forest)
