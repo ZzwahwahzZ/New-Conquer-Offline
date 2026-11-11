@@ -13,6 +13,7 @@ const ChineseImperialBuilder = preload("res://src/scripts/ChineseImperialBuilder
 @export var landmark_color := Color(0.55,0.48,0.32)
 
 func _ready() -> void:
+	position = Vector3.ZERO
 	_configure_city_atmosphere()
 	_build_environment()
 	_build_asset_slots()
