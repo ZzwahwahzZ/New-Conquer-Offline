@@ -37,6 +37,9 @@ func setup(manager: Node, target_player: Node3D, settlement: String) -> void:
 		recycle_all()
 	world_manager = manager
 	player = target_player
+	var guild_system := get_tree().get_first_node_in_group("guild_system")
+	if is_instance_valid(guild_system):
+		roster = guild_system.get("roster")
 	settlement_id = settlement
 	_spawn_timer = 0.0
 	_loot_timer = 0.0
@@ -189,15 +192,16 @@ func _update_lod() -> void:
 		bot.call("set_idle_lod",sleeping)
 
 func _get_diplomacy_color(guild_name: String) -> Color:
-	var player_guild := str(GameState.profile.get("guild_name",""))
-	if not player_guild.is_empty() and guild_name == player_guild:
-		return Color(0.25,0.78,1.0)
-	var diplomacy := roster.get_guild_diplomacy(player_guild) if not player_guild.is_empty() else {}
-	if Array(diplomacy.get("allies",[])).has(guild_name):
-		return Color(0.25,0.95,0.42)
-	if Array(diplomacy.get("enemies",[])).has(guild_name):
-		return Color(1.0,0.28,0.25)
+	var guild_system := get_tree().get_first_node_in_group("guild_system")
+	if is_instance_valid(guild_system):
+		return guild_system.call("get_diplomacy_color",guild_name)
 	return Color(0.94,0.94,0.9)
+
+func refresh_diplomacy() -> void:
+	for bot in _active_bots:
+		if not is_instance_valid(bot): continue
+		var data: Dictionary = bot.get("bot_data")
+		bot.call("configure",data,bot.global_position,_get_diplomacy_color(str(data.get("guild_name",""))))
 
 func _simulate_donation() -> void:
 	if _active_bots.is_empty():
