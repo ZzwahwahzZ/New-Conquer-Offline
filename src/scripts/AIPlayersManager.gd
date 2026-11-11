@@ -26,9 +26,6 @@ var _chat_timer := 0.0
 var _rng := RandomNumberGenerator.new()
 var _next_roster_index := 0
 
-func _exit_tree() -> void:
-	recycle_all()
-
 func _ready() -> void:
 	add_to_group("ai_players_manager")
 	_rng.randomize()
@@ -120,7 +117,9 @@ func _spawn_one(data: Dictionary) -> void:
 	var spawn_position := _choose_spawn_position()
 	bot.call("configure",data,spawn_position,_get_diplomacy_color(str(data.guild_name)))
 	_active_bots.append(bot)
-	if not safe_zone:
+	if safe_zone:
+		_assign_city_behavior(bot)
+	else:
 		_assign_hunting_behavior(bot)
 
 func _choose_spawn_position() -> Vector3:
@@ -131,6 +130,20 @@ func _choose_spawn_position() -> Vector3:
 	var angle := _rng.randf_range(0.0,TAU)
 	var radius := _rng.randf_range(9.0,20.0)
 	return player.global_position + Vector3(cos(angle)*radius,0.0,sin(angle)*radius)
+
+func _assign_city_behavior(bot: Node3D) -> void:
+	var markers: Array[Node3D] = []
+	var world := get_parent()
+	if not is_instance_valid(world):
+		return
+	for child in world.get_children():
+		if child is Marker3D and str(child.name).begins_with("BotInteractionSpot_"):
+			markers.append(child)
+	if markers.is_empty():
+		return
+	var marker := markers[_rng.randi_range(0,markers.size()-1)]
+	var offset := Vector3(_rng.randf_range(-2.0,2.0),0.0,_rng.randf_range(-1.5,1.5))
+	bot.call("move_to",marker.global_position + offset)
 
 func _assign_hunting_behavior(bot: Node3D) -> void:
 	var monsters := get_tree().get_nodes_in_group("enemies")
@@ -224,6 +237,9 @@ func _recycle_bot(bot: Node3D) -> void:
 		_pool.append(bot)
 	else:
 		bot.queue_free()
+
+func get_queued_count() -> int:
+	return _spawn_queue.size()
 
 func get_active_count() -> int:
 	return _active_bots.size()
