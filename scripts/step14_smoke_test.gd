@@ -23,32 +23,37 @@ func _run() -> void:
 	system.player_guild_name = ""
 	system.player_guild_rank = ""
 	system.player_guild_donation = 0
+	var pharaoh_fund_before := int(system.get_guild("Pharaohs").get("guild_fund",0))
 	if not system.join_guild("Pharaohs"):
 		failures.append("Could not join an existing classic guild")
 	elif system.player_guild_rank != "Member":
 		failures.append("Joined player must receive Member rank")
+	if not system.donate_gold(350000) or system.player_guild_rank != "Supervisor":
+		failures.append("350,000 Gold donation did not promote to Supervisor")
+	if not system.donate_gold(550000) or system.player_guild_rank != "Honorary Deputy Leader":
+		failures.append("900,000 cumulative donation did not promote to Honorary Deputy Leader")
+	if not system.donate_gold(1600000) or system.player_guild_rank != "Deputy Leader":
+		failures.append("2,500,000 cumulative donation did not promote to Deputy Leader")
+	if int(system.get_guild("Pharaohs").get("guild_fund",0)) != pharaoh_fund_before + 2500000:
+		failures.append("Classic guild treasury does not match player donations")
 	if not system.leave_guild():
-		failures.append("Could not leave joined guild for the founding test")
+		failures.append("Could not leave the classic guild before founding a new one")
 	var test_guild := "S14_%d" % (Time.get_ticks_msec() % 1000000)
 	if not system.create_guild(test_guild):
 		failures.append("Could not found a guild at level 40 for 1,000,000 Gold")
 	else:
 		if system.player_guild_rank != "Guild Leader":
 			failures.append("Guild founder did not receive Guild Leader rank")
-		if not system.donate_gold(350000) or system.player_guild_rank != "Supervisor":
-			failures.append("350,000 Gold donation did not promote to Supervisor")
-		if not system.donate_gold(550000) or system.player_guild_rank != "Honorary Deputy Leader":
-			failures.append("900,000 cumulative donation did not promote to Honorary Deputy Leader")
-		if not system.donate_gold(1600000) or system.player_guild_rank != "Deputy Leader":
-			failures.append("2,500,000 cumulative donation did not promote to Deputy Leader")
-		if int(system.get_guild(test_guild).get("guild_fund",0)) != 2500000:
-			failures.append("Guild treasury does not match player donations")
+		if not system.donate_gold(250000):
+			failures.append("Founder could not donate to the new guild treasury")
+		if int(system.get_guild(test_guild).get("guild_fund",0)) != 250000:
+			failures.append("New guild treasury does not match founder donation")
 		var saved := GlobalEconomy.load_guild_data()
 		if str(saved.get("player_guild_name","")) != test_guild:
 			failures.append("Guild membership was not serialized in the v6 save envelope")
-		if int(saved.get("player_guild_donation",0)) != 2500000:
+		if int(saved.get("player_guild_donation",0)) != 250000:
 			failures.append("Player guild donation total was not persisted")
-		if int(saved.get("guilds",{}).get(test_guild,{}).get("guild_fund",0)) != 2500000:
+		if int(saved.get("guilds",{}).get(test_guild,{}).get("guild_fund",0)) != 250000:
 			failures.append("Guild treasury was not persisted")
 
 	var arena_scene := load("res://src/scenes/world/GuildWarArena.tscn") as PackedScene
