@@ -228,7 +228,9 @@ func _on_portal_entered(body: Node3D, destination: String) -> void:
 	if body == player: teleporter.call("travel_to",destination)
 
 func get_settlement_ids() -> Array:
-	return SETTLEMENTS.keys()
+	var ids: Array = SETTLEMENTS.keys()
+	ids.erase("GuildWarArena")
+	return ids
 
 func get_settlement_name(settlement_id: String) -> String:
 	return str(SETTLEMENTS.get(settlement_id,{}).get("name",settlement_id))
