@@ -326,12 +326,13 @@ func _update_world_distance_culling(focus_position: Vector3) -> void:
 	if not is_instance_valid(current_world):
 		return
 	for node in get_tree().get_nodes_in_group("distance_cull_world"):
-		if not is_instance_valid(node) or not current_world.is_ancestor_of(node):
+		var visual := node as GeometryInstance3D
+		if visual == null or not is_instance_valid(visual) or not current_world.is_ancestor_of(visual):
 			continue
-		var distance_squared := node.global_position.distance_squared_to(focus_position)
+		var distance_squared := visual.global_position.distance_squared_to(focus_position)
 		var should_render := distance_squared <= 230.0 * 230.0
-		if node.visible != should_render:
-			node.visible = should_render
+		if visual.visible != should_render:
+			visual.visible = should_render
 
 
 func save_world_state() -> void:
