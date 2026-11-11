@@ -1,6 +1,6 @@
 extends RefCounted
 ## Shared mobile PBR material factory. Missing maps always fall back to generated textures.
-const MATERIAL_ROOT := "res://assets/terrain/materials/"
+const MATERIAL_ROOT := "res://assets/environment/materials/"
 const MAPS := {
  "TwinCity": "Ground044_2K-JPG",
  "DesertLand": "Ground061_2K-JPG",
