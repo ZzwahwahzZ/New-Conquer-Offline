@@ -267,11 +267,15 @@ func _set_flying(enabled: bool) -> void:
 func is_airborne() -> bool:
 	return _flying or _jumping or global_position.y > _ground_y + 0.5
 
+func _guild_attack_multiplier() -> float:
+	var guild := get_tree().get_first_node_in_group("guild_system")
+	return float(guild.call("get_attack_multiplier")) if is_instance_valid(guild) else 1.0
+
 func _cast_scatter() -> void:
 	var scatter_proficiency := ClassSystem.get_skill_proficiency("Scatter")
 	var scatter_level := int(scatter_proficiency.get("level", 1))
 	var radius := 7.0 + float(scatter_level) * 0.25
-	var damage := int((18 + int(ClassSystem.get_physical_attack_bonus() * 0.1) + scatter_level * 3) * _xp_damage_multiplier)
+	var damage := int((18 + int(ClassSystem.get_physical_attack_bonus() * 0.1) + scatter_level * 3) * _xp_damage_multiplier * _guild_attack_multiplier())
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if is_instance_valid(enemy) and enemy.has_method("take_damage") and Vector2(global_position.x, global_position.z).distance_to(Vector2(enemy.global_position.x, enemy.global_position.z)) <= radius:
 			enemy.take_damage(damage)
@@ -285,7 +289,7 @@ func _start_rapid_fire(skill_id: String = "Rapid_Fire") -> void:
 	var level_bonus := int(rapid_proficiency.get("level", 1))
 	for hit_index in range(2):
 		if is_instance_valid(target) and target.has_method("take_damage"):
-			var damage := int((14 + level_bonus * 3) * _xp_damage_multiplier)
+			var damage := int((14 + level_bonus * 3) * _xp_damage_multiplier * _guild_attack_multiplier())
 			target.call("take_damage", damage)
 			combat_hit.emit(target, damage)
 	_gain_xp_skill(10.0)
@@ -296,7 +300,7 @@ func basic_attack() -> bool:
 	_attack_timer = 0.24 if assassin else 0.72
 	var target := _nearest_enemy(4.5 if assassin else 3.0)
 	if target == null: return false
-	var damage := int(round((20 + ClassSystem.get_physical_attack_bonus() * 0.1) * _xp_damage_multiplier))
+	var damage := int(round((20 + ClassSystem.get_physical_attack_bonus() * 0.1) * _xp_damage_multiplier * _guild_attack_multiplier()))
 	if assassin:
 		for i in range(2):
 			if is_instance_valid(target): target.call("take_damage", damage)
