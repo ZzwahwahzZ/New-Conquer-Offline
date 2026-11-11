@@ -26,7 +26,6 @@ var _chat_timer := 0.0
 var _loot_timer := 0.0
 var _virtual_drops: Array[Dictionary] = []
 var _rng := RandomNumberGenerator.new()
-var _next_roster_index := 0
 
 func _ready() -> void:
 	add_to_group("ai_players_manager")
@@ -39,6 +38,8 @@ func setup(manager: Node, target_player: Node3D, settlement: String) -> void:
 	world_manager = manager
 	player = target_player
 	settlement_id = settlement
+	_spawn_timer = 0.0
+	_loot_timer = 0.0
 	safe_zone = settlement == "TwinCity"
 	active_cap = CITY_CAP if safe_zone else HUNT_CAP
 	roster.build_roster()
