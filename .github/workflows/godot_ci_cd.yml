@@ -107,7 +107,7 @@ jobs:
         run: godot --headless --path . --script scripts/player_idle_stability_test.gd
 
       - name: Run Step 17B rigged assets, PBR, aura and Anima regression
-        run: godot --headless --path . --script scripts/step17b_rigged_visuals_test.gd
+        run: timeout 45s godot --headless --path . --script scripts/step17b_rigged_visuals_test.gd
 
   web:
     name: Export WebGL2 build
