@@ -19,6 +19,8 @@ static func build(parent: Node3D, city: String, size: float) -> void:
  _multilight(root,city)
  _city_features(root,city,size)
  if city=="TwinCity":
+  _twin_city_details(root)
+ if city=="TwinCity":
   for i in range(4):
    var angle:=TAU*float(i)/4.0
    _pavilion(root,Vector3(cos(angle)*54.0,0.0,sin(angle)*54.0))
@@ -112,6 +114,155 @@ static func _city_features(parent: Node3D,city: String,size: float) -> void:
    var pos:=Vector3(cos(angle)*radius,6.0,sin(angle)*radius)
    multi.set_instance_transform(i,Transform3D(Basis(),pos))
   var forest:=MultiMeshInstance3D.new(); forest.multimesh=multi; forest.name="ForestTreeTrunksMultiMesh"; parent.add_child(forest)
+
+static func _golden_roof(parent: Node3D, center: Vector3, width: float, depth: float) -> void:
+ var roof := MeshInstance3D.new()
+ var slab := BoxMesh.new()
+ slab.size = Vector3(width,0.48,depth)
+ roof.mesh = slab
+ roof.position = center
+ roof.material_override = _mat(Color("#b98a2d"),0.72)
+ parent.add_child(roof)
+ for side in [-1.0,1.0]:
+  for front in [-1.0,1.0]:
+   var tip := MeshInstance3D.new()
+   var tip_mesh := SphereMesh.new()
+   tip_mesh.radius = 0.42
+   tip_mesh.height = 0.72
+   tip.mesh = tip_mesh
+   tip.position = center + Vector3(side*width*0.49,0.22,front*depth*0.46)
+   tip.rotation.z = -side*0.45
+   tip.material_override = _mat(Color("#d6ad42"),0.72)
+   parent.add_child(tip)
+
+static func _imperial_palace(parent: Node3D) -> void:
+ var palace := Node3D.new()
+ palace.name = "TwinCityImperialPalace"
+ palace.position = Vector3(0.0,0.0,-116.0)
+ parent.add_child(palace)
+ _box(palace,Vector3(0.0,0.8,0.0),Vector3(32.0,1.6,22.0),Color("#d7c8a7"))
+ _box(palace,Vector3(0.0,1.75,0.0),Vector3(26.0,0.5,18.0),Color("#9b7b48"))
+ for x in [-10.0,-5.0,0.0,5.0,10.0]:
+  for z in [-7.0,7.0]:
+   _box(palace,Vector3(x,5.1,z),Vector3(0.85,7.0,0.85),Color("#9b1e24"))
+ _box(palace,Vector3(0.0,5.1,0.0),Vector3(23.0,7.0,13.0),Color("#a52a2a"))
+ _box(palace,Vector3(0.0,8.7,0.0),Vector3(24.0,0.45,14.0),Color("#e2c27b"))
+ _golden_roof(palace,Vector3(0.0,9.3,0.0),30.0,21.0)
+ _golden_roof(palace,Vector3(0.0,12.0,0.0),22.0,15.0)
+ _box(palace,Vector3(0.0,13.3,0.0),Vector3(1.0,2.4,1.0),Color("#d6ad42"))
+
+static func _lantern(parent: Node3D, position: Vector3) -> void:
+ var post := MeshInstance3D.new()
+ var pole := CylinderMesh.new()
+ pole.top_radius = 0.10
+ pole.bottom_radius = 0.15
+ pole.height = 3.2
+ post.mesh = pole
+ post.position = position + Vector3(0.0,1.6,0.0)
+ post.material_override = _mat(Color("#6b3024"))
+ parent.add_child(post)
+ var lamp := MeshInstance3D.new()
+ var body := SphereMesh.new()
+ body.radius = 0.48
+ body.height = 0.78
+ lamp.mesh = body
+ lamp.position = position + Vector3(0.0,3.45,0.0)
+ var glow := _mat(Color("#d92d25"))
+ glow.emission_enabled = true
+ glow.emission = Color("#ff6b32")
+ glow.emission_energy_multiplier = 1.5
+ lamp.material_override = glow
+ parent.add_child(lamp)
+ var cap := MeshInstance3D.new()
+ var cap_mesh := BoxMesh.new()
+ cap_mesh.size = Vector3(0.72,0.12,0.72)
+ cap.mesh = cap_mesh
+ cap.position = position + Vector3(0.0,3.95,0.0)
+ cap.material_override = _mat(Color("#d5a63c"),0.6)
+ parent.add_child(cap)
+
+static func _tree(parent: Node3D, position: Vector3, sakura: bool) -> void:
+ var trunk := MeshInstance3D.new()
+ var trunk_mesh := CylinderMesh.new()
+ trunk_mesh.top_radius = 0.22
+ trunk_mesh.bottom_radius = 0.38
+ trunk_mesh.height = 4.2
+ trunk.mesh = trunk_mesh
+ trunk.position = position + Vector3(0.0,2.1,0.0)
+ trunk.material_override = _mat(Color("#68432d"))
+ parent.add_child(trunk)
+ var foliage := _mat(Color("#e99ab3") if sakura else Color("#5e8a58"))
+ for offset in [Vector3(0.0,4.5,0.0),Vector3(-1.0,4.0,0.3),Vector3(0.9,4.1,-0.2),Vector3(0.0,5.1,-0.5)]:
+  var crown := MeshInstance3D.new()
+  var sphere := SphereMesh.new()
+  sphere.radius = 1.35 if sakura else 1.55
+  sphere.height = 2.2 if sakura else 2.6
+  crown.mesh = sphere
+  crown.position = position + offset
+  crown.material_override = foliage
+  parent.add_child(crown)
+
+static func _dragon_statue(parent: Node3D, position: Vector3, direction: float) -> void:
+ var dragon := Node3D.new()
+ dragon.name = "BridgeDragonStatue"
+ dragon.position = position
+ dragon.rotation.y = direction
+ parent.add_child(dragon)
+ var jade := _mat(Color("#397b64"),0.28)
+ var gold := _mat(Color("#c79b43"),0.62)
+ var body := MeshInstance3D.new()
+ var body_mesh := SphereMesh.new()
+ body_mesh.radius = 0.78
+ body_mesh.height = 1.25
+ body.mesh = body_mesh
+ body.position = Vector3(0.0,0.8,0.0)
+ body.material_override = jade
+ dragon.add_child(body)
+ for i in range(4):
+  var segment := MeshInstance3D.new()
+  var sphere := SphereMesh.new()
+  sphere.radius = 0.42 - float(i)*0.055
+  sphere.height = 0.75 - float(i)*0.08
+  segment.mesh = sphere
+  segment.position = Vector3(0.0,0.95,-0.8-float(i)*0.55)
+  segment.material_override = jade
+  dragon.add_child(segment)
+ var head := MeshInstance3D.new()
+ var head_mesh := SphereMesh.new()
+ head_mesh.radius = 0.42
+ head_mesh.height = 0.55
+ head.mesh = head_mesh
+ head.position = Vector3(0.0,1.2,0.85)
+ head.material_override = jade
+ dragon.add_child(head)
+ for side in [-1.0,1.0]:
+  var horn := MeshInstance3D.new()
+  var horn_mesh := PrismMesh.new()
+  horn_mesh.size = Vector3(0.16,0.5,0.16)
+  horn.mesh = horn_mesh
+  horn.position = Vector3(side*0.25,1.62,0.9)
+  horn.material_override = gold
+  dragon.add_child(horn)
+
+static func _twin_city_details(parent: Node3D) -> void:
+ _imperial_palace(parent)
+ var lantern_positions := [
+  Vector3(-16.0,0.0,-20.0),Vector3(16.0,0.0,-20.0),
+  Vector3(-16.0,0.0,20.0),Vector3(16.0,0.0,20.0),
+  Vector3(-58.0,0.0,-38.0),Vector3(58.0,0.0,-38.0),
+  Vector3(-58.0,0.0,38.0),Vector3(58.0,0.0,38.0),
+  Vector3(-40.0,0.0,-90.0),Vector3(40.0,0.0,-90.0),
+  Vector3(-40.0,0.0,90.0),Vector3(40.0,0.0,90.0)
+ ]
+ for pos in lantern_positions:
+  _lantern(parent,pos)
+ for pos in [Vector3(-82.0,0.0,-58.0),Vector3(-96.0,0.0,-18.0),Vector3(-82.0,0.0,52.0),Vector3(82.0,0.0,-58.0),Vector3(96.0,0.0,-18.0),Vector3(82.0,0.0,52.0)]:
+  _tree(parent,pos,true)
+ for pos in [Vector3(-112.0,0.0,-76.0),Vector3(-112.0,0.0,64.0),Vector3(112.0,0.0,-76.0),Vector3(112.0,0.0,64.0)]:
+  _tree(parent,pos,false)
+ for z in [-92.0,92.0]:
+  _dragon_statue(parent,Vector3(-39.0,0.0,z),0.0)
+  _dragon_statue(parent,Vector3(39.0,0.0,z),PI)
 
 static func _npc_halls(parent: Node3D) -> void:
  var specs := [
