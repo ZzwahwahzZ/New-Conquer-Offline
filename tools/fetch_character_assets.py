@@ -14,6 +14,21 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 OUT = ROOT / "assets" / "rigged_characters"
 BASE = "https://raw.githubusercontent.com/Ariescar/gobkit-free-assets/4e73c68fa6e8ca9d948fcc0ce7215c830a022c3b/"
 LICENSE_URL = BASE + "LICENSE"
+
+API_URL = "https://gobkit.com/api/free"
+EXTENDED_PACK_SELECTION = {
+    "gobkit-human003-pack": ["Archer","Footman","HeavyWarrior","King","KnightCaptain","PeasantMilitia","Priestess","Scout"],
+    "gobkit-human006-pack": ["OrcIronGuard","OrcLegionArcher","OrcLegionCommander","OrcLegionary","OrcShieldBearer","OrcWarDrummer","OrcWarShaman","OrcWarbandChampion"],
+    "gobkit-human010-pack": ["BloodironGrunt","BloodironJuggernaut","BloodironKnight","BloodironSmith","OrcChainBrute","OrcPyromancer"],
+    "gobkit-human011-pack": ["CleaverButcher","NightWitch","PumpkinScarecrow","SheetGhost","StitchedBrute","TombMummy","VampireCountess","WerewolfCaptain"],
+    "gobkit-human013-pack": ["CourtJester","CrownedPrincess","LadyKnight","PalaceHalberdier","Prince","RoyalHerald"],
+    "gobkit-human016-pack": ["AxeThrower","Berserker","BoarHelmSpearman","ClanSmith","WolfQueen"],
+    "gobkit-human017-pack": ["FarmHand","FarmOwner","MarketVendor","Shepherd"],
+    "gobkit-dino-pack": ["Carnotaurus","Pterodactylus","Spinosaurus","Trex"],
+    "gobkit-insect002-pack": ["AtlasBeetle","Manticora","SacredScarab"],
+    "gobkit-animal007-pack": ["Dingo","Scorpion"],
+    "gobkit-animal006-pack": ["Fox","Lion"],
+}
 ASSETS = {
     "humanoid_01": ("minion/minion-a01.glb", "f7700d62b6252f14601743f156049ef3b8454f96"),
     "humanoid_02": ("minion/minion-a02.glb", "7efd8a207b30a0261c10acafb08f173b975c4d2b"),
@@ -70,6 +85,48 @@ def validate_glb(data: bytes, label: str) -> dict:
     return {"skins": len(doc["skins"]), "animations": len(doc["animations"]),
             "meshes": len(doc["meshes"]), "position_accessors": len(position_accessors),
             "vertices": int(sum(len(v) for v in vertices)), "coordinate_dtype": "float32"}
+
+def fetch_extended_assets() -> dict:
+    manifest_bytes = download(API_URL)
+    manifest = json.loads(manifest_bytes.decode("utf-8"))
+    if manifest.get("schemaVersion") != 2:
+        raise RuntimeError("Unexpected Gobkit free-model manifest schema")
+    packs = {pack.get("id"): pack for pack in manifest.get("packs", [])}
+    allowed_urls = set(manifest.get("glbs", []))
+    result = {}
+    for pack_id, wanted_names in EXTENDED_PACK_SELECTION.items():
+        pack = packs.get(pack_id)
+        if not pack:
+            raise RuntimeError(f"Missing CC0 pack in Gobkit manifest: {pack_id}")
+        if "CC0 1.0" not in str(pack.get("license", "")):
+            raise RuntimeError(f"Pack is not explicitly CC0: {pack_id}")
+        models = {model.get("name"): model for model in pack.get("models", [])}
+        for model_name in wanted_names:
+            model = models.get(model_name)
+            if not model:
+                raise RuntimeError(f"Missing model {model_name} in {pack_id}")
+            url = str(model.get("url", ""))
+            if url not in allowed_urls or not url.startswith("https://gobkit.com/freebies/") or not url.lower().endswith(".glb"):
+                raise RuntimeError(f"Untrusted or unlisted GLB URL for {model_name}: {url}")
+            if not model.get("rigged") or model.get("format") != "glb":
+                raise RuntimeError(f"Model is not a rigged GLB: {model_name}")
+            animation_names = {str(a.get("name", "")).lower() for a in model.get("animations", [])}
+            if not {"idle", "walk", "attack"}.issubset(animation_names) or not ({"death", "dead"} & animation_names):
+                raise RuntimeError(f"Required named animation metadata missing for {model_name}: {sorted(animation_names)}")
+            data = download(url)
+            info = validate_glb(data, "gobkit_" + model_name)
+            filename = "gobkit_" + model_name + ".glb"
+            (OUT / filename).write_bytes(data)
+            result[model_name] = {
+                "pack_id": pack_id, "url": url, "license": "CC0 1.0",
+                "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data),
+                "fps": model.get("fps", pack.get("fps", 24)),
+                "animation_names": sorted(animation_names), **info
+            }
+            print(f"VALIDATED gobkit_{model_name}: named animations={','.join(sorted(animation_names))}")
+    print(f"EXTENDED_CC0_ASSETS_PASS: {len(result)} named-clip rigged GLBs")
+    return result
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     license_data = download(LICENSE_URL)
@@ -89,7 +146,7 @@ def main() -> None:
         report["assets"][asset_id] = {"source_path": relative, "git_blob_sha": actual_sha,
                                       "bytes": len(data), **info}
         print(f"VALIDATED {asset_id}: {info['skins']} skin(s), {info['animations']} animation(s), {info['vertices']} vertices")
-    (OUT / "manifest.json").write_text(json.dumps(report, indent=2) + "\\n", encoding="utf-8")
+    report["extended_assets"] = fetch_extended_assets()\n    report["extended_asset_count"] = len(report["extended_assets"])\n    (OUT / "manifest.json").write_text(json.dumps(report, indent=2) + "\\n", encoding="utf-8")
     print(f"CHARACTER_ASSET_FETCH_PASS: {len(ASSETS)} pinned CC0 rigged GLBs")
 if __name__ == "__main__":
     main()

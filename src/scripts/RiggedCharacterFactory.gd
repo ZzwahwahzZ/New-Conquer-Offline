@@ -1,8 +1,9 @@
 extends RefCounted
 ## Loads pinned offline GLB actors. Imported skeletons/animations are kept intact.
 const ASSET_ROOT := "res://assets/rigged_characters/"
-const HUMANOIDS := ["humanoid_01","humanoid_02","humanoid_03","humanoid_04","humanoid_05","humanoid_06","humanoid_07","humanoid_08"]
-const MONSTERS := ["humanoid_02","humanoid_04","humanoid_06","humanoid_08","beast_bat","beast_corgi","beast_rhino","beast_shark"]
+const HUMANOIDS := ["gobkit_Archer","gobkit_HeavyWarrior","gobkit_KnightCaptain","gobkit_Priestess","gobkit_Scout","gobkit_Footman","gobkit_OrcLegionCommander","gobkit_King"]
+const NPCS := ["gobkit_ClanSmith","gobkit_MarketVendor","gobkit_King","gobkit_Priestess","gobkit_CourtJester","gobkit_FarmOwner","gobkit_RoyalHerald","gobkit_Scout"]
+const MONSTERS := ["gobkit_WerewolfCaptain","gobkit_TombMummy","gobkit_StitchedBrute","gobkit_NightWitch","gobkit_OrcLegionary","gobkit_OrcWarShaman","gobkit_BloodironJuggernaut","gobkit_Carnotaurus","gobkit_Spinosaurus","gobkit_Trex","gobkit_Manticora","gobkit_Scorpion","gobkit_Lion","gobkit_Fox"]
 const CLASS_VARIANTS := {
  "Archer":0,"Oriental_Assassin":1,"Warrior":2,"Trojan":3,
  "Water_Taoist":4,"Fire_Taoist":5,"Ninja":6,"Monk":7
@@ -14,7 +15,7 @@ static func asset_path(kind: String, variant: int = 0) -> String:
   var monster_index := posmod(variant, monsters.size())
   return ASSET_ROOT + monsters[monster_index] + ".glb"
  if kind == "npc":
-  return ASSET_ROOT + HUMANOIDS[posmod(variant + 3, HUMANOIDS.size())] + ".glb"
+  return ASSET_ROOT + NPCS[posmod(variant, NPCS.size())] + ".glb"
  if kind == "bot":
   return ASSET_ROOT + HUMANOIDS[posmod(variant + 1, HUMANOIDS.size())] + ".glb"
  return ASSET_ROOT + HUMANOIDS[index] + ".glb"
@@ -22,6 +23,9 @@ static func class_variant(class_id: String) -> int:
  return int(CLASS_VARIANTS.get(class_id, 0))
 static func instantiate_rig(kind: String, variant: int = 0) -> Node3D:
  var path := asset_path(kind, variant)
+ if not ResourceLoader.exists(path):
+  # Keep the pinned GitHub CC0 baseline as a deterministic fallback.
+  path = ASSET_ROOT + ("beast_bat.glb" if kind == "monster" else "humanoid_01.glb")
  if not ResourceLoader.exists(path):
   push_warning("RiggedCharacterFactory: asset not imported yet: " + path)
   return null
@@ -64,12 +68,16 @@ static func set_tint(root: Node, tint: Color) -> void:
   var mesh_node := node as MeshInstance3D
   if mesh_node == null:
    continue
-  var source: Material = mesh_node.material_override
-  if source == null and mesh_node.mesh != null and mesh_node.mesh.get_surface_count() > 0:
-   source = mesh_node.mesh.surface_get_material(0)
+  var source: Material = mesh_node.get_meta("rigged_original_material", null) as Material
+  if source == null:
+   source = mesh_node.material_override
+   if source == null and mesh_node.mesh != null and mesh_node.mesh.get_surface_count() > 0:
+    source = mesh_node.mesh.surface_get_material(0)
+   if source != null:
+    mesh_node.set_meta("rigged_original_material", source)
   if source is StandardMaterial3D:
    var material := (source as StandardMaterial3D).duplicate() as StandardMaterial3D
-   material.albedo_color = material.albedo_color * tint
+   material.albedo_color = (source as StandardMaterial3D).albedo_color * tint
    mesh_node.material_override = material
 static func _ensure_baked_action_clips(player: AnimationPlayer) -> void:
  if player.has_animation_library("Step17B"):
@@ -112,8 +120,31 @@ static func play_state(root: Node, state_name: String) -> bool:
  var player := find_animation_player(root)
  if player == null:
   return false
- _ensure_baked_action_clips(player)
  var state := state_name.to_lower()
+ var aliases := ["idle"]
+ if state in ["attack"]:
+  aliases = ["attack"]
+ elif state in ["hit"]:
+  aliases = ["hit","attack"]
+ elif state in ["death","die"]:
+  aliases = ["death","dead","die"]
+ elif state in ["walk"]:
+  aliases = ["walk"]
+ elif state in ["run"]:
+  aliases = ["run","walk"]
+ elif state in ["jump"]:
+  aliases = ["jump","walk"]
+ elif state in ["fly"]:
+  aliases = ["fly","walk"]
+ var names := player.get_animation_list()
+ for animation_name in names:
+  var lowered := str(animation_name).to_lower()
+  for alias in aliases:
+   if lowered.ends_with("/" + alias) or lowered == alias or lowered.ends_with("_" + alias):
+    if player.current_animation != str(animation_name):
+     player.play(animation_name)
+    return true
+ _ensure_baked_action_clips(player)
  var clip_name := "Idle"
  if state in ["attack","hit"]:
   clip_name = "Attack"
@@ -123,7 +154,6 @@ static func play_state(root: Node, state_name: String) -> bool:
   clip_name = "Walk" if player.has_animation("Step17B/Walk") else "Idle"
  var target := "Step17B/" + clip_name
  if not player.has_animation(target):
-  var names := player.get_animation_list()
   if names.is_empty():
    return false
   target = str(names[0])
