@@ -36,11 +36,6 @@ var _joystick_active := false
 var _joystick_vector := Vector2.ZERO
 var _cooldowns: Dictionary = {}
 var _jumping := false
-var _jump_time := 0.0
-var _jump_duration := 0.38
-var _jump_start := Vector3.ZERO
-var _jump_end := Vector3.ZERO
-var _jump_apex := 1.25
 var _flying := false
 var _fly_timer := 0.0
 var _ground_y := 0.0
@@ -55,7 +50,9 @@ func _ready() -> void:
 	_safe_spawn = global_position
 	_move_target = global_position
 	add_to_group("player")
-	_ground_y = global_position.y
+	_ground_y = 0.9
+	floor_snap_length = 0.35
+	floor_max_angle = deg_to_rad(50.0)
 	_visual = get_node_or_null("VisualRoot")
 	if _visual == null:
 		_visual = Node3D.new()
@@ -89,6 +86,9 @@ func _ready() -> void:
 func set_safe_spawn(point: Vector3) -> void:
 	_safe_spawn = point
 	_ground_y = 0.9
+	global_position.y = maxf(global_position.y, 0.9)
+	velocity.y = 0.0
+	_jumping = false
 
 func move_to_world_position(destination: Vector3) -> void:
 	_joystick_active = false
@@ -105,8 +105,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if _joystick_active: return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		_set_move_target_from_screen(event.position)
-	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-		cast_skill("Jump")
 	elif event is InputEventScreenTouch and event.pressed:
 		_set_move_target_from_screen(event.position)
 
@@ -135,18 +133,18 @@ func _physics_process(delta: float) -> void:
 		_fly_timer -= delta
 		velocity.y = 0.0
 		if _fly_timer <= 0.0: _set_flying(false)
-	if _jumping:
-		_update_jump(delta)
+	if _flying:
+		velocity.y = 0.0
+	elif is_on_floor():
+		velocity.y = 0.0
+		_jumping = false
 	else:
-		if not is_on_floor() and not _flying:
-			velocity.y -= float(ProjectSettings.get_setting("physics/3d/default_gravity")) * delta
-		elif is_on_floor() and not _flying:
-			velocity.y = 0.0
-		_update_horizontal_movement(delta)
-		if not _flying and is_on_floor() and velocity.length() < 0.25:
-			ClassSystem.restore_stamina(stamina_regen_per_second * delta * 1.35)
-		elif not _flying:
-			ClassSystem.restore_stamina(stamina_regen_per_second * delta)
+		velocity.y -= float(ProjectSettings.get_setting("physics/3d/default_gravity")) * delta
+	_update_horizontal_movement(delta)
+	if not _flying and is_on_floor() and Vector2(velocity.x, velocity.z).length() < 0.25:
+		ClassSystem.restore_stamina(stamina_regen_per_second * delta * 1.35)
+	elif not _flying:
+		ClassSystem.restore_stamina(stamina_regen_per_second * delta)
 	var world := get_tree().get_first_node_in_group("world_manager")
 	var limit := 300.0
 	if is_instance_valid(world):
@@ -156,8 +154,7 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector3.ZERO
 		_jumping = false
 		_flying = false
-	if not _jumping:
-		move_and_slide()
+	move_and_slide()
 	stamina_changed.emit(ClassSystem.stamina, ClassSystem.max_stamina)
 
 func _update_horizontal_movement(delta: float) -> void:
@@ -204,17 +201,6 @@ func _rotate_and_move(direction: Vector3, delta: float) -> void:
 func _stop_horizontal(delta: float) -> void:
 	velocity.x = move_toward(velocity.x, 0.0, move_speed * delta)
 	velocity.z = move_toward(velocity.z, 0.0, move_speed * delta)
-
-func _update_jump(delta: float) -> void:
-	_jump_time += delta
-	var t := clampf(_jump_time / _jump_duration, 0.0, 1.0)
-	var horizontal := _jump_start.lerp(_jump_end, t)
-	var arc := 4.0 * _jump_apex * t * (1.0 - t)
-	global_position = Vector3(horizontal.x, _ground_y + arc, horizontal.z)
-	if t >= 1.0:
-		global_position = Vector3(_jump_end.x, _ground_y, _jump_end.z)
-		_jumping = false
-		velocity = Vector3.ZERO
 
 func can_use_skill(skill_id: String) -> bool:
 	if not SKILL_DATA.has(skill_id) or float(_cooldowns.get(skill_id, 0.0)) > 0.0: return false
@@ -264,16 +250,11 @@ func cast_skill(skill_id: String) -> bool:
 	return true
 
 func _start_classic_jump() -> void:
-	if _jumping or _flying: return
-	var destination := _move_target if _has_move_target else global_position + -global_basis.z * 3.5
-	destination.y = _ground_y
-	var delta := destination - global_position
-	delta.y = 0.0
-	if delta.length() > 6.0: destination = global_position + delta.normalized() * 6.0
-	_jump_start = global_position
-	_jump_end = destination
-	_jump_time = 0.0
+	# Explicit hotbar / mapped Space input only; never reposition the body by hand.
+	if _jumping or _flying or not is_on_floor():
+		return
 	_jumping = true
+	velocity.y = jump_speed
 	_has_move_target = false
 	_gain_xp_skill(5.0)
 
