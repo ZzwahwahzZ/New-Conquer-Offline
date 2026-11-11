@@ -12,8 +12,14 @@ var guilds: Dictionary = {}
 var _rng := RandomNumberGenerator.new()
 
 func build_roster() -> void:
-	if players.size() == TARGET_PLAYERS and guilds.size() == GUILD_NAMES.size():
-		return
+	if players.size() == TARGET_PLAYERS:
+		var base_guilds_exist := true
+		for guild_name in GUILD_NAMES:
+			if not guilds.has(guild_name):
+				base_guilds_exist = false
+				break
+		if base_guilds_exist:
+			return
 	_rng.seed = 130013
 	players.clear()
 	guilds.clear()
@@ -138,8 +144,11 @@ func record_player_milestone(milestone: String) -> Array[String]:
 
 func validate_data() -> bool:
 	build_roster()
-	if players.size() != TARGET_PLAYERS or guilds.size() != GUILD_NAMES.size():
+	if players.size() != TARGET_PLAYERS:
 		return false
+	for guild_name in GUILD_NAMES:
+		if not guilds.has(guild_name):
+			return false
 	for guild_name in GUILD_NAMES:
 		var guild: Dictionary = guilds[guild_name]
 		if not guild.has_all(["guild_name","guild_fund","bulletin","allies","enemies"]):
