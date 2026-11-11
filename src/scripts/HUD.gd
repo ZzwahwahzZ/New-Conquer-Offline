@@ -29,12 +29,17 @@ var _inventory_button: Button
 var _upgrade_ui: CanvasLayer
 var _upgrade_button: Button
 var _promotion_button: Button
+var _status_ui: Control
+var _skills_ui: Control
+var _status_button: Button
+var _skills_button: Button
 var _skill_buttons: Array[Button] = []
 var _skill_ids := ["Jump", "Fly", "Scatter", "Path_of_Shadow", "XP_Mode"]
 var _active_skill_mode := ""
 
 
 func _ready() -> void:
+	add_to_group("game_hud")
 	_build_hud()
 	_connect_economy()
 	_connect_game_state()
@@ -63,6 +68,12 @@ func _build_hud() -> void:
 	_upgrade_ui = load("res://src/scenes/UpgradeMarketUI.tscn").instantiate() as CanvasLayer
 	add_child(_upgrade_ui)
 	_build_promotion_button()
+	_status_ui = load("res://src/scenes/CharacterStatusUI.tscn").instantiate() as Control
+	add_child(_status_ui)
+	_skills_ui = load("res://src/scenes/SkillsUI.tscn").instantiate() as Control
+	add_child(_skills_ui)
+	_build_character_window_buttons()
+	if not ClassSystem.level_up.is_connected(_on_level_up): ClassSystem.level_up.connect(_on_level_up)
 
 
 func _build_joystick() -> void:
@@ -316,6 +327,45 @@ func _on_promote_archer() -> void:
 	elif ClassSystem.can_evolve_to("Oriental_Assassin"):
 		ClassSystem.evolve_to("Oriental_Assassin")
 
+func _build_character_window_buttons() -> void:
+	_status_button = Button.new()
+	_status_button.name = "CharacterStatusButton"
+	_status_button.text = "الشخصية [C]"
+	_status_button.custom_minimum_size = Vector2(118,42)
+	_status_button.pressed.connect(_toggle_status_ui)
+	_root.add_child(_status_button)
+	_skills_button = Button.new()
+	_skills_button.name = "SkillsBookButton"
+	_skills_button.text = "المهارات [K]"
+	_skills_button.custom_minimum_size = Vector2(118,42)
+	_skills_button.pressed.connect(_toggle_skills_ui)
+	_root.add_child(_skills_button)
+
+func _toggle_status_ui() -> void:
+	if is_instance_valid(_status_ui): _status_ui.call("toggle")
+
+func _toggle_skills_ui() -> void:
+	if is_instance_valid(_skills_ui): _skills_ui.call("toggle")
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_C:
+			_toggle_status_ui()
+			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_K:
+			_toggle_skills_ui()
+			get_viewport().set_input_as_handled()
+
+func _on_level_up(new_level: int) -> void:
+	# The actual per-level increments are recorded by ClassSystem.
+	var last: Dictionary = ClassSystem.get_meta("last_auto_allocation", {"strength":0,"agility":0,"vitality":0,"spirit":0})
+	notify_auto_allocation(new_level, last)
+
+func notify_auto_allocation(new_level: int, allocation: Dictionary) -> void:
+	if not is_instance_valid(_chat_log): return
+	var message := "تم رفع المستوى إلى %d — توزيع تلقائي: STR +%d | AGI +%d | VIT +%d | SPI +%d" % [new_level,int(allocation.get("strength",0)),int(allocation.get("agility",0)),int(allocation.get("vitality",0)),int(allocation.get("spirit",0))]
+	_chat_log.append_text("\\n[color=#f4d58a][نظام] [/color]" + message)
+
 func _build_upgrade_toggle() -> void:
 	_upgrade_button = Button.new()
 	_upgrade_button.name = "UpgradeMarketToggleButton"
@@ -382,6 +432,8 @@ func _layout_hud() -> void:
 		_inventory_button.position = Vector2(width - 142.0, 18.0)
 	if is_instance_valid(_upgrade_button):
 		_upgrade_button.position = Vector2(width - 270.0, 18.0)
+	if is_instance_valid(_status_button): _status_button.position = Vector2(18.0,68.0)
+	if is_instance_valid(_skills_button): _skills_button.position = Vector2(146.0,68.0)
 	if is_instance_valid(_promotion_button):
 		_promotion_button.position = Vector2(width - 210.0, 68.0)
 

@@ -6,6 +6,7 @@ signal xp_skill_changed(value: float, maximum: float)
 signal skill_cooldown_changed(skill_id: String, remaining: float)
 signal skill_used(skill_id: String)
 signal combat_hit(target: Node, damage: int)
+signal auto_attributes_applied(new_level: int, allocation: Dictionary)
 
 @export var move_speed := 5.5
 @export var turn_speed := 10.0
@@ -26,6 +27,7 @@ const SKILL_DATA := {
 	"Rapid_Fire":{"cooldown":5.0,"mana":10,"stamina":4.0},
 	"Kinetic_Spark":{"cooldown":5.0,"mana":10,"stamina":4.0},
 	"Path_of_Shadow":{"cooldown":0.0,"mana":0,"stamina":0.0},
+	"Double_Slash":{"cooldown":4.0,"mana":0,"stamina":4.0},
 	"XP_Mode":{"cooldown":60.0,"mana":0,"stamina":0.0}
 }
 var _move_target: Vector3
@@ -77,6 +79,8 @@ func _ready() -> void:
 	_visual.set_meta("fly_ring", fly_ring)
 	if not ClassSystem.stats_changed.is_connected(_sync_class_stats):
 		ClassSystem.stats_changed.connect(_sync_class_stats)
+	if not ClassSystem.level_up.is_connected(_on_class_level_up):
+		ClassSystem.level_up.connect(_on_class_level_up)
 	_sync_class_stats()
 
 func set_virtual_joystick_input(direction: Vector2, active: bool) -> void:
@@ -180,6 +184,7 @@ func can_use_skill(skill_id: String) -> bool:
 	if skill_id == "Jump" and (_jumping or _flying): return false
 	if skill_id == "Fly" and (_flying or _jumping): return false
 	if skill_id in ["Rapid_Fire", "Kinetic_Spark"] and (ClassSystem.current_class != "Oriental_Assassin" or not _has_dual_knives()): return false
+	if skill_id == "Double_Slash" and ClassSystem.current_class not in ["Trojan","Warrior","Ninja","Oriental_Assassin"]: return false
 	if skill_id == "Path_of_Shadow" and not ClassSystem.is_path_shadow_unlocked(): return false
 	if skill_id == "XP_Mode" and ClassSystem.xp_skill < ClassSystem.xp_skill_max: return false
 	var data: Dictionary = SKILL_DATA[skill_id]
@@ -201,7 +206,7 @@ func cast_skill(skill_id: String) -> bool:
 			_fly_timer = fly_duration
 		"Scatter":
 			_cast_scatter()
-		"Rapid_Fire", "Kinetic_Spark":
+		"Rapid_Fire", "Kinetic_Spark", "Double_Slash":
 			_start_rapid_fire(skill_id)
 		"Path_of_Shadow":
 			if not ClassSystem.toggle_path_of_shadow():
@@ -330,6 +335,10 @@ func get_skill_cooldown(skill_id: String) -> float:
 
 func get_xp_skill() -> float:
 	return ClassSystem.xp_skill
+
+func _on_class_level_up(new_level: int) -> void:
+	var allocation: Dictionary = ClassSystem.get_meta("last_auto_allocation", {})
+	auto_attributes_applied.emit(new_level, allocation.duplicate(true))
 
 func _sync_class_stats() -> void:
 	stamina_changed.emit(ClassSystem.stamina, ClassSystem.max_stamina)

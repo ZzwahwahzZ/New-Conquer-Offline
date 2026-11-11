@@ -22,6 +22,10 @@ var oriental_assassin_unlocked := false
 var level := 1
 var experience := 0
 var stat_points := 0
+var promotion_stage := 0
+var auto_allocation_cursor := 0
+var promotion_title := "Novice"
+var promotion_rewards_claimed: Array[int] = []
 var attributes := {"strength":15,"agility":35,"vitality":15,"spirit":0}
 var hp := 120
 var max_hp := 120
@@ -31,7 +35,7 @@ var stamina := 100.0
 var max_stamina := 100.0
 var xp_skill := 0.0
 var xp_skill_max := 100.0
-var skill_proficiency := {"Jump":{"level":1,"xp":0},"Fly":{"level":1,"xp":0},"Scatter":{"level":1,"xp":0},"Rapid_Fire":{"level":1,"xp":0},"Kinetic_Spark":{"level":1,"xp":0},"Path_of_Shadow":{"level":1,"xp":0},"XP_Mode":{"level":1,"xp":0}}
+var skill_proficiency := {"Jump":{"level":1,"xp":0},"Fly":{"level":1,"xp":0},"Scatter":{"level":1,"xp":0},"Rapid_Fire":{"level":1,"xp":0},"Kinetic_Spark":{"level":1,"xp":0},"Path_of_Shadow":{"level":1,"xp":0},"Double_Slash":{"level":1,"xp":0},"XP_Mode":{"level":1,"xp":0}}
 var _loaded := false
 
 func _ready() -> void:
@@ -46,6 +50,14 @@ func _load_character() -> void:
 		level = maxi(1, int(data.get("level", 1)))
 		experience = maxi(0, int(data.get("experience", 0)))
 		stat_points = maxi(0, int(data.get("stat_points", 0)))
+		promotion_stage = clampi(int(data.get("promotion_stage", 0)), 0, PROMOTION_LEVELS.size())
+		auto_allocation_cursor = maxi(0,int(data.get("auto_allocation_cursor",0)))
+		promotion_title = str(data.get("promotion_title", _title_for_stage(promotion_stage)))
+		var saved_rewards = data.get("promotion_rewards_claimed", [])
+		promotion_rewards_claimed.clear()
+		if saved_rewards is Array:
+			for reward_stage in saved_rewards:
+				promotion_rewards_claimed.append(int(reward_stage))
 		hp = maxi(0, int(data.get("hp", hp)))
 		mp = maxi(0, int(data.get("mp", mp)))
 		stamina = maxf(0.0, float(data.get("stamina", stamina)))
@@ -60,8 +72,11 @@ func _load_character() -> void:
 				var saved = saved_skills.get(skill_id, {})
 				if saved is Dictionary:
 					skill_proficiency[skill_id] = {"level":maxi(1,int(saved.get("level",1))),"xp":maxi(0,int(saved.get("xp",0)))}
+	if stat_points > 0: auto_distribute_stat_points()
+	promotion_title = _title_for_stage(promotion_stage)
 	_recalculate_derived(false)
 	_loaded = true
+	_save()
 	character_changed.emit()
 	stats_changed.emit()
 	_emit_xp()
@@ -74,15 +89,10 @@ func get_class_name() -> String: return str(CLASS_DATA.get(current_class, {}).ge
 func get_class_name_ar() -> String: return str(CLASS_DATA.get(current_class, {}).get("name_ar", get_class_name()))
 
 func get_promotion_stage() -> int:
-	var stage := 0
-	for milestone in PROMOTION_LEVELS:
-		if level >= int(milestone): stage += 1
-	return stage
+	return promotion_stage
 
 func get_next_promotion_level() -> int:
-	for milestone in PROMOTION_LEVELS:
-		if level < int(milestone): return int(milestone)
-	return 0
+	return get_next_promotion_reward_level()
 
 func get_physical_attack_bonus() -> int:
 	return int(attributes.get("strength", 0)) + int(float(attributes.get("agility", 0)) / 2.0)
@@ -94,6 +104,7 @@ func choose_class(class_id: String) -> bool:
 		return true
 	if level > 1: return false
 	current_class = class_id
+	promotion_title = _title_for_stage(promotion_stage)
 	attributes = CLASS_DATA[class_id]["base"].duplicate(true)
 	_recalculate_derived(false)
 	character_changed.emit()
@@ -112,6 +123,7 @@ func toggle_path_of_shadow() -> bool:
 		return false
 	var previous_mode := current_class
 	current_class = "Archer" if current_class == "Oriental_Assassin" else "Oriental_Assassin"
+	promotion_title = _title_for_stage(promotion_stage)
 	var gear := get_node_or_null("/root/GearSystem")
 	if gear != null and gear.has_method("switch_weapon_mode"):
 		gear.switch_weapon_mode(previous_mode, current_class)
@@ -128,6 +140,7 @@ func evolve_to(class_id: String) -> bool:
 	for stat in attributes:
 		attributes[stat] = maxi(0, int(attributes[stat]) + int(new_base.get(stat, 0)) - int(old_base.get(stat, 0)))
 	current_class = class_id
+	promotion_title = _title_for_stage(promotion_stage)
 	oriental_assassin_unlocked = true
 	var gear := get_node_or_null("/root/GearSystem")
 	if gear != null and gear.has_method("switch_weapon_mode"):
@@ -145,21 +158,84 @@ func add_experience(amount: int) -> void:
 		experience -= get_required_xp()
 		level += 1
 		stat_points += 3
+		var allocation := auto_distribute_stat_points()
+		set_meta("last_auto_allocation", allocation.duplicate(true))
 		_recalculate_derived(false)
 		level_up.emit(level)
 		character_changed.emit()
+		stats_changed.emit()
 	_emit_xp()
-	stats_changed.emit()
 	_save()
 
-func spend_stat_points(stat: String, amount: int = 1) -> bool:
-	if not attributes.has(stat) or amount <= 0 or stat_points < amount: return false
-	attributes[stat] = int(attributes[stat]) + amount
-	stat_points -= amount
+func auto_distribute_stat_points() -> Dictionary:
+	var allocated := {"strength":0,"agility":0,"vitality":0,"spirit":0}
+	if stat_points <= 0: return allocated
+	var requirements := {"strength":0,"agility":0}
+	var gear := get_node_or_null("/root/GearSystem")
+	if gear != null:
+		var candidates: Array = []
+		for slot in gear.equipment:
+			var equipped: Dictionary = gear.equipment[slot]
+			if not equipped.is_empty(): candidates.append(equipped)
+		for item in gear.inventory:
+			if str(item.get("weapon_family","")) in ["Bow","Arrows","ThrowingKnife","Sword","Blade","Club","Axe","Poleaxe","Backsword","Katana"]: candidates.append(item)
+		for item in candidates:
+			if int(item.get("required_level",1)) <= level:
+				requirements.strength = maxi(int(requirements.strength),int(item.get("required_strength",0)))
+				requirements.agility = maxi(int(requirements.agility),int(item.get("required_agility",0)))
+	while stat_points > 0:
+		var stat := ""
+		if current_class in ["Archer","Oriental_Assassin"] and int(attributes.strength) < int(requirements.strength):
+			stat = "strength"
+		elif current_class in ["Archer","Oriental_Assassin"] and int(attributes.agility) < int(requirements.agility):
+			stat = "agility"
+		else:
+			var cycle: Array = ["agility","vitality","agility","agility","vitality"]
+			match current_class:
+				"Trojan": cycle = ["strength","vitality","strength","strength","vitality"]
+				"Warrior": cycle = ["vitality","strength","vitality","vitality","strength"]
+				"Water_Taoist","Fire_Taoist": cycle = ["spirit","vitality","spirit","spirit","spirit","vitality","spirit","spirit","vitality","spirit"]
+				"Ninja": cycle = ["agility","vitality","agility","agility","vitality"]
+				_: pass
+			var cursor := auto_allocation_cursor % cycle.size()
+			stat = str(cycle[cursor])
+			auto_allocation_cursor = (cursor+1)%cycle.size()
+		attributes[stat] = int(attributes[stat]) + 1
+		allocated[stat] = int(allocated[stat]) + 1
+		stat_points -= 1
+	return allocated
+
+func _title_for_stage(stage: int) -> String:
+	var names := ["Novice","Senior","Elite","Master","Saint","Legend"]
+	return "%s %s" % [names[clampi(stage,0,5)], get_class_name()]
+
+func get_title() -> String:
+	return promotion_title if not promotion_title.is_empty() else _title_for_stage(promotion_stage)
+
+func can_promote() -> bool:
+	return promotion_stage < PROMOTION_LEVELS.size() and level >= int(PROMOTION_LEVELS[promotion_stage])
+
+func get_next_promotion_reward_level() -> int:
+	return int(PROMOTION_LEVELS[promotion_stage]) if promotion_stage < PROMOTION_LEVELS.size() else 0
+
+func promote() -> bool:
+	if not can_promote(): return false
+	promotion_stage += 1
+	promotion_title = _title_for_stage(promotion_stage)
+	promotion_rewards_claimed.append(promotion_stage)
+	stat_points += 3
+	auto_distribute_stat_points()
 	_recalculate_derived(false)
+	hp = mini(max_hp,hp+100)
+	mp = mini(max_mp,mp+50)
+	character_changed.emit()
 	stats_changed.emit()
 	_save()
 	return true
+
+func spend_stat_points(_stat: String, _amount: int = 1) -> bool:
+	# Manual allocation is intentionally disabled; level-up and promotion allocate automatically.
+	return false
 
 func gain_skill_proficiency(skill_id: String, amount: int = 1) -> void:
 	if not skill_proficiency.has(skill_id) or amount <= 0: return
@@ -246,4 +322,4 @@ func save_character() -> bool:
 
 func _save() -> void:
 	if not _loaded: return
-	GlobalEconomy.save_character_data({"class":current_class,"oriental_assassin_unlocked":oriental_assassin_unlocked,"level":level,"experience":experience,"stat_points":stat_points,"attributes":attributes.duplicate(true),"hp":hp,"mp":mp,"stamina":stamina,"xp_skill":xp_skill,"skill_proficiency":skill_proficiency.duplicate(true)})
+	GlobalEconomy.save_character_data({"class":current_class,"oriental_assassin_unlocked":oriental_assassin_unlocked,"level":level,"experience":experience,"stat_points":stat_points,"promotion_stage":promotion_stage,"auto_allocation_cursor":auto_allocation_cursor,"promotion_title":promotion_title,"promotion_rewards_claimed":promotion_rewards_claimed.duplicate(),"attributes":attributes.duplicate(true),"hp":hp,"mp":mp,"stamina":stamina,"xp_skill":xp_skill,"skill_proficiency":skill_proficiency.duplicate(true)})
