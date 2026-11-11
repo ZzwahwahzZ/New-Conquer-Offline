@@ -91,6 +91,8 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 		npc_system.call("setup",current_world,settlement_id)
 	if is_instance_valid(player) and not restore_position:
 		player.global_position = Vector3(0,1,0) if settlement_id != "GuildWarArena" else Vector3(0,1,27)
+	if is_instance_valid(player) and player.has_method("set_safe_spawn"):
+		player.call("set_safe_spawn", player.global_position)
 	if settlement_id != "GuildWarArena":
 		_spawn_settlement_content()
 	if is_instance_valid(_ai_players_manager):
