@@ -27,7 +27,7 @@ func _ready() -> void:
     ClassSystem.stats_changed.connect(_refresh)
   _refresh()
 func _setup_input() -> void:
-  var keys := {"move_left":KEY_A,"move_right":KEY_D,"move_forward":KEY_W,"move_back":KEY_S,"attack":KEY_F,"skill_jump":KEY_SPACE,"save_game":KEY_F5,"inventory":KEY_I,"upgrade":KEY_U,"skill_fly":KEY_2,"skill_scatter":KEY_3,"skill_rapid":KEY_4,"skill_xp":KEY_5}
+  var keys := {"move_left":KEY_A,"move_right":KEY_D,"move_forward":KEY_W,"move_back":KEY_S,"attack":KEY_F,"jump":KEY_SPACE,"save_game":KEY_F5,"inventory":KEY_I,"upgrade":KEY_U,"skill_fly":KEY_2,"skill_scatter":KEY_3,"skill_rapid":KEY_4,"skill_xp":KEY_5}
   for action in keys:
     if not InputMap.has_action(action): InputMap.add_action(action)
     var ev := InputEventKey.new()
@@ -37,8 +37,11 @@ func _build_arena() -> void:
   player = CharacterBody3D.new()
   player.name = "LocalPlayer"
   player.set_script(load("res://src/scripts/Player.gd"))
-  player.position = Vector3(0,2.5,22)
-  _add_capsule(player,Color(0.2,0.55,0.95),0.45,1.8)
+  player.position = Vector3(0,0.775,22)
+  _add_capsule(player,Color(0.2,0.55,0.95),0.34,1.55)
+  player.safe_margin = 0.001
+  player.floor_snap_length = 0.1
+  player.floor_max_angle = deg_to_rad(45.0)
   add_child(player)
   player.add_to_group("player")
   var world_manager := Node3D.new()
@@ -86,7 +89,6 @@ func _add_capsule(parent: Node3D, color: Color, radius: float, height: float) ->
   collider.shape = shape
   parent.add_child(collider)
 func _unhandled_input(event: InputEvent) -> void:
-  if event.is_action_just_pressed("skill_jump"): player.call("cast_skill","Jump")
   if event.is_action_pressed("skill_fly"): player.call("cast_skill","Fly")
   if event.is_action_pressed("skill_scatter"): player.call("cast_skill","Scatter")
   if event.is_action_pressed("skill_rapid"): player.call("cast_skill","Rapid_Fire")
