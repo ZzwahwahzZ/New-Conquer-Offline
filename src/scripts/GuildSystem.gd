@@ -254,7 +254,7 @@ func _recruit_available_bot() -> void:
 	guilds[player_guild_name].guild_fund = int(guilds[player_guild_name].get("guild_fund",0))
 	_save()
 	get_tree().call_group("ai_players_manager","refresh_diplomacy")
-	guild_chat.emit("%s انضم إلى العشيرة!" % str(old_record.get("name","Warrior")))
+	guild_chat.emit("%s طلب الانضمام إلى العشيرة وتم قبوله!" % str(old_record.get("name","Warrior")))
 	guild_changed.emit()
 
 func leave_guild() -> bool:
