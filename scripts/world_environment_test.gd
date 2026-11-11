@@ -21,11 +21,30 @@ func _run() -> void:
 	assert(is_equal_approx(sun.light_energy, 1.3), "Sun energy must be 1.3")
 	var plaza := city.find_child("TwinCityFlatPlaza", true, false) as StaticBody3D
 	assert(plaza != null, "TwinCity solid plaza is missing")
-	var surface := plaza.find_child("TwinCityGreenPlazaSurface", true, false) as MeshInstance3D
-	assert(surface != null and surface.material_override is StandardMaterial3D, "TwinCity ground material is missing")
+	var surface := plaza.find_child("TwinCityImperialStonePlaza", true, false) as MeshInstance3D
+	assert(surface != null and surface.material_override is StandardMaterial3D, "Twin City stone plaza material is missing")
+	assert((surface.material_override as StandardMaterial3D).albedo_texture != null, "Procedural stone tile texture is missing")
+	var grass := city.find_child("TerrainSurface", true, false) as MeshInstance3D
+	assert(grass != null and grass.material_override is StandardMaterial3D, "Natural grass surface is missing")
+	assert((grass.material_override as StandardMaterial3D).albedo_texture != null, "Procedural grass noise texture is missing")
+	assert(city.find_child("TwinCityImperialPalace", true, false) != null, "Imperial palace is missing")
+	assert(city.find_child("BridgeDragonStatue", true, false) != null, "Bridge dragon statues are missing")
 	var collision := plaza.find_child("TwinCityFlatPlazaCollision", true, false) as CollisionShape3D
 	assert(collision != null and collision.shape != null, "TwinCity ground collision is missing")
+	var factory = load("res://src/scripts/RiggedCharacterFactory.gd")
+	var fallback := factory._build_articulated_fallback("hero", 1) as Node3D
+	assert(fallback != null, "Articulated humanoid fallback failed to instantiate")
+	assert(fallback.get_node_or_null("Head") != null, "Fallback head is missing")
+	assert(fallback.get_node_or_null("ArmPivot_L") != null and fallback.get_node_or_null("ArmPivot_R") != null, "Fallback arms are missing")
+	assert(fallback.get_node_or_null("LegPivot_L") != null and fallback.get_node_or_null("LegPivot_R") != null, "Fallback legs are missing")
+	assert(fallback.get_node_or_null("ArmPivot_L/ForearmPivot/LeftEasternKnife") != null, "Fallback left-hand weapon is missing")
+	assert(factory.play_state(fallback, "Run"), "Fallback run animation did not execute")
+	var left_leg := fallback.get_node("LegPivot_L") as Node3D
+	var right_leg := fallback.get_node("LegPivot_R") as Node3D
+	assert(is_equal_approx(left_leg.rotation.x, -right_leg.rotation.x), "Fallback legs must animate in opposition")
 	print("WORLD_ENVIRONMENT_PASS: ProceduralSky + sky ambient 0.85 + active directional sun 1.3")
-	print("TWIN_CITY_GROUND_PASS: visible StandardMaterial3D + solid static collision")
+	print("TWIN_CITY_VISUAL_PASS: procedural grass + stone paving + imperial palace + dragon bridges")
+	print("HUMANOID_FALLBACK_PASS: head, torso, arms, legs, boots, weapons and locomotion")
+	fallback.free()
 	city.queue_free()
 	quit(0)
