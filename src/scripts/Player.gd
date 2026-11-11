@@ -25,6 +25,7 @@ const SKILL_DATA := {
 	"Scatter":{"cooldown":8.0,"mana":15,"stamina":5.0},
 	"Rapid_Fire":{"cooldown":5.0,"mana":10,"stamina":4.0},
 	"Kinetic_Spark":{"cooldown":5.0,"mana":10,"stamina":4.0},
+	"Path_of_Shadow":{"cooldown":0.5,"mana":0,"stamina":0.0},
 	"XP_Mode":{"cooldown":60.0,"mana":0,"stamina":0.0}
 }
 var _move_target: Vector3
@@ -175,10 +176,11 @@ func _update_jump(delta: float) -> void:
 
 func can_use_skill(skill_id: String) -> bool:
 	if not SKILL_DATA.has(skill_id) or float(_cooldowns.get(skill_id, 0.0)) > 0.0: return false
-	if skill_id in ["Fly", "Scatter"] and not _is_archer_family(): return false
+	if skill_id in ["Fly", "Scatter"] and ClassSystem.current_class != "Archer": return false
 	if skill_id == "Jump" and (_jumping or _flying): return false
 	if skill_id == "Fly" and (_flying or _jumping): return false
 	if skill_id in ["Rapid_Fire", "Kinetic_Spark"] and (ClassSystem.current_class != "Oriental_Assassin" or not _has_dual_knives()): return false
+	if skill_id == "Path_of_Shadow" and not ClassSystem.is_path_shadow_unlocked(): return false
 	if skill_id == "XP_Mode" and ClassSystem.xp_skill < ClassSystem.xp_skill_max: return false
 	var data: Dictionary = SKILL_DATA[skill_id]
 	return ClassSystem.mp >= int(data.mana) and ClassSystem.stamina >= float(data.stamina)
@@ -201,6 +203,12 @@ func cast_skill(skill_id: String) -> bool:
 			_cast_scatter()
 		"Rapid_Fire", "Kinetic_Spark":
 			_start_rapid_fire(skill_id)
+		"Path_of_Shadow":
+			if not ClassSystem.toggle_path_of_shadow():
+				ClassSystem.restore_mana(int(data.mana))
+				ClassSystem.restore_stamina(float(data.stamina))
+				_cooldowns.erase(skill_id)
+				return false
 		"XP_Mode":
 			if not ClassSystem.consume_xp_skill():
 				ClassSystem.restore_mana(int(data.mana))
@@ -303,7 +311,7 @@ func _has_dual_knives() -> bool:
 	return str(equipment.get("RightHand", {}).get("weapon_family", "")) == "ThrowingKnife" and str(equipment.get("LeftHand", {}).get("weapon_family", "")) == "ThrowingKnife"
 
 func _is_archer_family() -> bool:
-	return ClassSystem.current_class in ["Archer","Oriental_Assassin"]
+	return ClassSystem.current_class == "Archer"
 
 func _gain_skill_proficiency(skill_id: String, amount: int) -> void:
 	ClassSystem.gain_skill_proficiency(skill_id, amount)

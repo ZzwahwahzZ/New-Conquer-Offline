@@ -5,3 +5,11 @@
 [node name="HUD" type="CanvasLayer"]
 layer = 10
 script = ExtResource("1_hud")
+
+[node name="PathOfShadowButton" type="Button" parent="."]
+visible = false
+offset_left = -230.0
+offset_top = 68.0
+offset_right = -20.0
+offset_bottom = 110.0
+text = "Path of Shadow"

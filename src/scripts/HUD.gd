@@ -5,7 +5,7 @@ const JOYSTICK_SIZE := Vector2(164.0, 164.0)
 const JOYSTICK_RADIUS := 57.0
 const HOTBAR_SIZE := Vector2(500.0, 78.0)
 const ORB_SIZE := Vector2(176.0, 176.0)
-const SKILL_COST_LABELS := {"Jump":"MP 0 / STA 7","Fly":"MP 20 / STA 0","Scatter":"MP 15 / STA 5","Rapid_Fire":"MP 10 / STA 4","XP_Mode":"MP 0 / STA 0"}
+const SKILL_COST_LABELS := {"Jump":"MP 0 / STA 7","Fly":"MP 20 / STA 0","Scatter":"MP 15 / STA 5","Rapid_Fire":"MP 10 / STA 4","Kinetic_Spark":"MP 10 / STA 4","Path_of_Shadow":"MP 0 / STA 0","XP_Mode":"MP 0 / STA 0"}
 
 var _root: Control
 var _joystick: Control
@@ -30,7 +30,8 @@ var _upgrade_ui: CanvasLayer
 var _upgrade_button: Button
 var _promotion_button: Button
 var _skill_buttons: Array[Button] = []
-var _skill_ids := ["Jump", "Fly", "Scatter", "Rapid_Fire", "XP_Mode"]
+var _skill_ids := ["Jump", "Fly", "Scatter", "Path_of_Shadow", "XP_Mode"]
+var _active_skill_mode := ""
 
 
 func _ready() -> void:
@@ -216,8 +217,8 @@ func _build_hotbar() -> void:
 		skills.add_child(skill)
 		if index < _skill_ids.size():
 			_skill_buttons.append(skill)
-			skill.text = ["JUMP", "FLY", "AOE", "KNIFE", "XP"][index]
-			skill.pressed.connect(_on_skill_pressed.bind(_skill_ids[index]))
+			skill.text = ["JUMP", "FLY", "AOE", "SHADOW", "XP"][index]
+			skill.pressed.connect(_on_hotbar_skill_pressed.bind(index))
 
 
 func _build_chat() -> void:
@@ -295,9 +296,13 @@ func _build_inventory_toggle() -> void:
 
 
 func _build_promotion_button() -> void:
-	_promotion_button = Button.new()
-	_promotion_button.name = "ArcherPromotionButton"
-	_promotion_button.text = "التطور إلى السفاح الشرقي"
+	_promotion_button = get_node_or_null("PathOfShadowButton") as Button
+	if _promotion_button == null:
+		_promotion_button = Button.new()
+		_promotion_button.name = "PathOfShadowButton"
+	else:
+		_promotion_button.reparent(_root)
+	_promotion_button.text = "Path of Shadow"
 	_promotion_button.custom_minimum_size = Vector2(190, 42)
 	_promotion_button.add_theme_color_override("font_color", Color(1.0, 0.86, 0.61))
 	_promotion_button.add_theme_stylebox_override("normal", _panel_style(Color(0.08, 0.12, 0.16, 0.96), Color(0.2, 0.78, 0.95, 1.0), 2, 8))
@@ -306,8 +311,10 @@ func _build_promotion_button() -> void:
 	_promotion_button.hide()
 
 func _on_promote_archer() -> void:
-	if ClassSystem.evolve_to("Oriental_Assassin"):
-		_promotion_button.hide()
+	if ClassSystem.is_path_shadow_unlocked():
+		ClassSystem.toggle_path_of_shadow()
+	elif ClassSystem.can_evolve_to("Oriental_Assassin"):
+		ClassSystem.evolve_to("Oriental_Assassin")
 
 func _build_upgrade_toggle() -> void:
 	_upgrade_button = Button.new()
@@ -491,10 +498,27 @@ func _on_skill_pressed(skill_id: String) -> void:
 	if is_instance_valid(_player) and _player.has_method("cast_skill"):
 		_player.cast_skill(skill_id)
 
+func _on_hotbar_skill_pressed(index: int) -> void:
+	if index >= 0 and index < _skill_ids.size():
+		_on_skill_pressed(_skill_ids[index])
+
+func _refresh_active_skillbar() -> void:
+	var mode := ClassSystem.current_class
+	if mode == _active_skill_mode:
+		return
+	_active_skill_mode = mode
+	_skill_ids = ["Jump", "Fly", "Scatter", "Path_of_Shadow", "XP_Mode"] if mode == "Archer" else ["Jump", "Rapid_Fire", "Kinetic_Spark", "Path_of_Shadow", "XP_Mode"]
+	var labels := ["JUMP", "FLY", "SCATTER", "SHADOW", "XP"] if mode == "Archer" else ["JUMP", "RAPID", "SPARK", "SHADOW", "XP"]
+	for index in range(mini(_skill_buttons.size(), _skill_ids.size())):
+		_skill_buttons[index].text = labels[index]
+		_skill_buttons[index].tooltip_text = _skill_ids[index] + " | " + str(SKILL_COST_LABELS.get(_skill_ids[index], ""))
+
 func _process(_delta: float) -> void:
 	if not is_instance_valid(_player): _find_player()
 	if is_instance_valid(_promotion_button):
-		_promotion_button.visible = ClassSystem.can_evolve_to("Oriental_Assassin")
+		_promotion_button.visible = ClassSystem.can_evolve_to("Oriental_Assassin") or ClassSystem.is_path_shadow_unlocked()
+		_promotion_button.text = "تفعيل Path of Shadow" if ClassSystem.current_class == "Archer" else "العودة إلى الآرتشر"
+	_refresh_active_skillbar()
 	if is_instance_valid(_xp_skill_bar):
 		_xp_skill_bar.value = ClassSystem.xp_skill
 	if is_instance_valid(_stamina_bar):
@@ -504,7 +528,7 @@ func _process(_delta: float) -> void:
 		var cooldown := float(_player.call("get_skill_cooldown", _skill_ids[i])) if is_instance_valid(_player) and _player.has_method("get_skill_cooldown") else 0.0
 		var can_use := bool(_player.call("can_use_skill", _skill_ids[i])) if is_instance_valid(_player) and _player.has_method("can_use_skill") else false
 		_skill_buttons[i].disabled = not can_use
-		var labels := ["JUMP", "FLY", "AOE", "KNIFE", "XP"]
+		var labels := ["JUMP", "FLY", "AOE", "SHADOW", "XP"]
 		_skill_buttons[i].text = "%s\n%.1f" % [labels[i], cooldown] if cooldown > 0.0 else labels[i]
 		var cost_label := str(SKILL_COST_LABELS.get(_skill_ids[i], ""))
 		_skill_buttons[i].tooltip_text = "%s | %s | CD %.1fs" % [_skill_ids[i], cost_label, cooldown]

@@ -6,7 +6,7 @@ signal level_up(new_level: int)
 signal xp_changed(current_xp: int, required_xp: int)
 signal xp_skill_changed(value: float, maximum: float)
 const PROMOTION_LEVELS := [15, 40, 70, 100, 110]
-const ARCHER_ASSASSIN_EVOLUTION_LEVEL := 70
+const ARCHER_ASSASSIN_EVOLUTION_LEVEL := 40
 const XP_BASE := 100
 const CLASS_DATA := {
 	"Archer": {"name":"Archer", "name_ar":"الآرتشر", "base":{"strength":15,"agility":35,"vitality":15,"spirit":0}, "weapon_families":["Bow","Arrows"], "evolutions":["Oriental_Assassin"]},
@@ -18,6 +18,7 @@ const CLASS_DATA := {
 	"Oriental_Assassin": {"name":"Oriental Assassin", "name_ar":"السفاح الشرقي", "base":{"strength":20,"agility":45,"vitality":20,"spirit":0}, "weapon_families":["ThrowingKnife"], "evolutions":[]}
 }
 var current_class := "Archer"
+var oriental_assassin_unlocked := false
 var level := 1
 var experience := 0
 var stat_points := 0
@@ -30,7 +31,7 @@ var stamina := 100.0
 var max_stamina := 100.0
 var xp_skill := 0.0
 var xp_skill_max := 100.0
-var skill_proficiency := {"Jump":{"level":1,"xp":0},"Fly":{"level":1,"xp":0},"Scatter":{"level":1,"xp":0},"Rapid_Fire":{"level":1,"xp":0},"Kinetic_Spark":{"level":1,"xp":0},"XP_Mode":{"level":1,"xp":0}}
+var skill_proficiency := {"Jump":{"level":1,"xp":0},"Fly":{"level":1,"xp":0},"Scatter":{"level":1,"xp":0},"Rapid_Fire":{"level":1,"xp":0},"Kinetic_Spark":{"level":1,"xp":0},"Path_of_Shadow":{"level":1,"xp":0},"XP_Mode":{"level":1,"xp":0}}
 var _loaded := false
 
 func _ready() -> void:
@@ -41,6 +42,7 @@ func _load_character() -> void:
 	if not data.is_empty():
 		var saved_class := str(data.get("class", "Archer"))
 		current_class = saved_class if CLASS_DATA.has(saved_class) else "Archer"
+		oriental_assassin_unlocked = bool(data.get("oriental_assassin_unlocked", current_class == "Oriental_Assassin"))
 		level = maxi(1, int(data.get("level", 1)))
 		experience = maxi(0, int(data.get("experience", 0)))
 		stat_points = maxi(0, int(data.get("stat_points", 0)))
@@ -100,7 +102,19 @@ func choose_class(class_id: String) -> bool:
 	return true
 
 func can_evolve_to(class_id: String) -> bool:
-	return current_class == "Archer" and class_id == "Oriental_Assassin" and level >= ARCHER_ASSASSIN_EVOLUTION_LEVEL
+	return current_class == "Archer" and class_id == "Oriental_Assassin" and level >= ARCHER_ASSASSIN_EVOLUTION_LEVEL and not oriental_assassin_unlocked
+
+func is_path_shadow_unlocked() -> bool:
+	return oriental_assassin_unlocked and level >= ARCHER_ASSASSIN_EVOLUTION_LEVEL and current_class in ["Archer", "Oriental_Assassin"]
+
+func toggle_path_of_shadow() -> bool:
+	if not is_path_shadow_unlocked():
+		return false
+	current_class = "Archer" if current_class == "Oriental_Assassin" else "Oriental_Assassin"
+	character_changed.emit()
+	stats_changed.emit()
+	_save()
+	return true
 
 func evolve_to(class_id: String) -> bool:
 	if not can_evolve_to(class_id): return false
@@ -109,6 +123,7 @@ func evolve_to(class_id: String) -> bool:
 	for stat in attributes:
 		attributes[stat] = maxi(0, int(attributes[stat]) + int(new_base.get(stat, 0)) - int(old_base.get(stat, 0)))
 	current_class = class_id
+	oriental_assassin_unlocked = true
 	_recalculate_derived(false)
 	character_changed.emit()
 	stats_changed.emit()
@@ -223,4 +238,4 @@ func save_character() -> bool:
 
 func _save() -> void:
 	if not _loaded: return
-	GlobalEconomy.save_character_data({"class":current_class,"level":level,"experience":experience,"stat_points":stat_points,"attributes":attributes.duplicate(true),"hp":hp,"mp":mp,"stamina":stamina,"xp_skill":xp_skill,"skill_proficiency":skill_proficiency.duplicate(true)})
+	GlobalEconomy.save_character_data({"class":current_class,"oriental_assassin_unlocked":oriental_assassin_unlocked,"level":level,"experience":experience,"stat_points":stat_points,"attributes":attributes.duplicate(true),"hp":hp,"mp":mp,"stamina":stamina,"xp_skill":xp_skill,"skill_proficiency":skill_proficiency.duplicate(true)})
