@@ -150,7 +150,7 @@ func update_target_health(target_id: String, hp: int, max_hp: int) -> void:
 	if target_id == "right_gate" and hp <= 0: right_gate.set_meta("destroyed",true)
 	if target_id == "guild_pole":
 		var bar := get_node_or_null("GuildWarHUD/PanelContainer/VBoxContainer/PoleHP")
-		if is_instance_valid(bar): bar.value = hp
+		if is_instance_valid(bar): bar.set("value",hp)
 
 func target_destroyed(target_id: String) -> void:
 	if target_id in ["left_gate","right_gate"]:
