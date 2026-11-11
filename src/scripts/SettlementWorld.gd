@@ -35,9 +35,9 @@ func _build_environment() -> void:
 	sky.sky_material = sky_material
 	environment.sky = sky
 	environment.background_color = sky_color
-	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	environment.ambient_light_color = sky_color.lightened(0.25)
-	environment.ambient_light_energy = 1.1 if OS.has_feature("web") else 0.8
+	environment.ambient_light_energy = 0.85
 	environment.fog_enabled = true
 	environment.fog_light_color = fog_color
 	environment.fog_density = fog_density
@@ -45,8 +45,8 @@ func _build_environment() -> void:
 	add_child(world_environment)
 	var sun := DirectionalLight3D.new()
 	sun.name = "SettlementSun"
-	sun.rotation_degrees = Vector3(-48,-32,0)
-	sun.light_energy = 1.6
+	sun.rotation_degrees = Vector3(-45,-32,0)
+	sun.light_energy = 1.3
 	sun.shadow_enabled = not OS.has_feature("web")
 	sun.shadow_blur = 1.4 if not OS.has_feature("web") else 0.0
 	add_child(sun)
