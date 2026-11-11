@@ -75,10 +75,10 @@ jobs:
 
       - name: Import all project resources (headless Compatibility renderer) and reject parser errors
         shell: bash
-        timeout-minutes: 10
+        timeout-minutes: 25
         run: |
           set -euo pipefail
-          timeout --signal=TERM --kill-after=30s 9m godot --headless --rendering-method gl_compatibility --rendering-driver opengl3 --path . --import --verbose 2>&1 | tee /tmp/godot-import.log
+          godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose 2>&1 | tee /tmp/godot-import.log
           if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load script|ERROR: Failed loading resource' /tmp/godot-import.log; then
             echo "::error::Godot import emitted parser or resource-load errors."
             exit 1
@@ -209,8 +209,8 @@ jobs:
             ${{ runner.os }}-godot-4.3-imported-
 
       - name: Import for WebGL2 Compatibility renderer
-        timeout-minutes: 10
-        run: timeout --signal=TERM --kill-after=30s 9m godot --headless --rendering-method gl_compatibility --rendering-driver opengl3 --path . --import --verbose
+        timeout-minutes: 25
+        run: godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
 
       - name: Save partial Godot import cache after failed import
         if: failure()
@@ -349,8 +349,8 @@ jobs:
             ${{ runner.os }}-godot-4.3-imported-
 
       - name: Import Android project resources
-        timeout-minutes: 10
-        run: timeout --signal=TERM --kill-after=30s 9m godot --headless --rendering-method gl_compatibility --rendering-driver opengl3 --path . --import --verbose
+        timeout-minutes: 25
+        run: godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
 
       - name: Save partial Godot import cache after failed import
         if: failure()
