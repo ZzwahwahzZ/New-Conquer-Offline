@@ -2,9 +2,9 @@ extends Node3D
 ## Player-following orbit camera with mouse, touch, keyboard and zoom controls.
 @export var target_path: NodePath = NodePath("../Player")
 @export_range(0.1,30.0,0.1) var follow_speed := 10.0
-@export_range(15.0,75.0,1.0) var pitch_degrees := 45.0
-@export_range(8.0,50.0,0.5) var orbit_distance := 24.0
-@export_range(0.05,1.0,0.01) var drag_sensitivity := 0.22
+@export_range(15.0,75.0,1.0) var pitch_degrees := 38.0
+@export_range(8.0,50.0,0.5) var orbit_distance := 14.0
+@export_range(0.05,1.0,0.01) var drag_sensitivity := 0.66
 @export var zoom_step := 2.0
 var _target: Node3D
 var _camera: Camera3D
@@ -55,6 +55,7 @@ func _input(event: InputEvent) -> void:
   var pointer_delta: Vector2 = screen_drag.position-_last_pointer
   _last_pointer=screen_drag.position
   _orbit_drag(pointer_delta)
+  get_viewport().set_input_as_handled()
 func _orbit_drag(pointer_delta: Vector2) -> void:
  _yaw-=pointer_delta.x*drag_sensitivity*0.01
  pitch_degrees=clampf(pitch_degrees+pointer_delta.y*drag_sensitivity,15.0,75.0)
