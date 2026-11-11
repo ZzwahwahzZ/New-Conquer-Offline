@@ -5,7 +5,7 @@ signal gold_changed(new_amount: int)
 signal economy_ready
 
 const SAVE_PATH := "user://conquer_offline_save.dat"
-const SAVE_VERSION := 4
+const SAVE_VERSION := 5
 const DEFAULT_GOLD := 100
 const LEGACY_SAVE_PATH := "user://offline_profile.json"
 
@@ -14,11 +14,12 @@ var _gear_data: Dictionary = {}
 var _character_data: Dictionary = {}
 var _is_ready_for_transactions := false
 var _loaded_save_version := 0
+var quest_data: Dictionary = {}
+var warehouse_items: Array = []
+var warehouse_gold: int = 0
 
 func _ready() -> void:
 	_load_save_envelope()
-	while warehouse_items.size() < 80: warehouse_items.append({})
-	if warehouse_items.size() > 80: warehouse_items.resize(80)
 	var gear_system := get_node_or_null("/root/GearSystem")
 	if gear_system != null: gear_system.initialize_from_save(_gear_data)
 	_is_ready_for_transactions = true
@@ -87,6 +88,10 @@ func _load_save_envelope() -> bool:
 		current_gold = _read_legacy_gold()
 		_gear_data = {}
 		_character_data = {}
+		quest_data = {}
+		warehouse_items.clear()
+		for i in range(80): warehouse_items.append({})
+		warehouse_gold = 0
 		return false
 	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
 	if file == null:
@@ -109,6 +114,13 @@ func _load_save_envelope() -> bool:
 	var loaded_character = data.get("character_data", {})
 	_character_data = loaded_character.duplicate(true) if loaded_character is Dictionary else {}
 	_loaded_save_version = version
+	var saved_quests = data.get("quest_data", {})
+	quest_data = saved_quests.duplicate(true) if saved_quests is Dictionary else {}
+	var saved_warehouse = data.get("warehouse_items", [])
+	warehouse_items = saved_warehouse.duplicate(true) if saved_warehouse is Array else []
+	while warehouse_items.size() < 80: warehouse_items.append({})
+	if warehouse_items.size() > 80: warehouse_items.resize(80)
+	warehouse_gold = maxi(0,int(data.get("warehouse_gold",0)))
 	return true
 
 func _write_save_envelope() -> bool:
@@ -116,7 +128,7 @@ func _write_save_envelope() -> bool:
 	if file == null:
 		push_error("GlobalEconomy: Could not open local save for writing.")
 		return false
-	file.store_var({"version":SAVE_VERSION,"current_gold":current_gold,"gear_data":_gear_data.duplicate(true),"character_data":_character_data.duplicate(true)})
+	file.store_var({"version":SAVE_VERSION,"current_gold":current_gold,"gear_data":_gear_data.duplicate(true),"character_data":_character_data.duplicate(true),"quest_data":quest_data.duplicate(true),"warehouse_items":warehouse_items.duplicate(true),"warehouse_gold":warehouse_gold})
 	file.close()
 	_loaded_save_version = SAVE_VERSION
 	return true
