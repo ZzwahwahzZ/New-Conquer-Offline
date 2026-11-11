@@ -19,6 +19,7 @@ var _jump_to := Vector3.ZERO
 var _combat_target: Node3D
 var _attack_timer := 0.0
 var _actor_generation := 0
+var simulated_gold := 0
 var _rng := RandomNumberGenerator.new()
 
 func _ready() -> void:
@@ -75,6 +76,7 @@ func _build_visuals() -> void:
 func configure(data: Dictionary, spawn_position: Vector3, diplomacy_color: Color = Color(0.92,0.92,0.92)) -> void:
 	_actor_generation += 1
 	bot_data = data.duplicate(true)
+	simulated_gold = int(bot_data.get("simulated_gold",0))
 	global_position = spawn_position
 	_home_position = spawn_position
 	_name_label.text = str(bot_data.get("name","Warrior")) + "  Lv." + str(bot_data.get("level",1))
@@ -187,6 +189,13 @@ func _physics_process(delta: float) -> void:
 			global_position += velocity * delta
 	elif not _idle and not _flying:
 		velocity = Vector3.ZERO
+
+func simulate_gold_pickup(amount: int) -> void:
+	if amount <= 0:
+		return
+	simulated_gold += amount
+	bot_data["simulated_gold"] = simulated_gold
+	bot_data["gold_collected"] = int(bot_data.get("gold_collected",0)) + amount
 
 func arc_jump_to(destination: Vector3) -> void:
 	_jump_from = global_position
