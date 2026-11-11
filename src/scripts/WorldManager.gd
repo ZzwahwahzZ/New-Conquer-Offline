@@ -56,7 +56,7 @@ func setup(target_player: Node3D) -> void:
 	var saved_position = GameState.profile.get("world_position", [])
 	if saved_position is Array and saved_position.size() >= 3:
 		player.position = Vector3(float(saved_position[0]),maxf(0.9,float(saved_position[1])),float(saved_position[2]))
-		if saved_id == "TwinCity" and Vector2(player.position.x,player.position.z).length() < 10.0:
+		if saved_id == "TwinCity" and Vector2(player.position.x,player.position.z).length() < 35.0:
 			player.position = Vector3(0.0,2.5,22.0)
 	else:
 		player.position = Vector3(0.0,2.5,22.0) if saved_id == "TwinCity" else Vector3(0.0,1.0,0.0)
@@ -116,7 +116,7 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 func _spawn_settlement_content() -> void:
 	if current_settlement == "GuildWarArena": return
 	var definitions: Array = MonsterDB.get_settlement_monsters(current_settlement)
-	var spawn_points: Array[Vector3] = [Vector3(14,0,12),Vector3(-16,0,10),Vector3(20,0,-16),Vector3(-22,0,-18),Vector3(3,0,-28),Vector3(29,0,24)]
+	var spawn_points: Array[Vector3] = [Vector3(48,0,42),Vector3(-50,0,40),Vector3(52,0,-46),Vector3(-54,0,-42),Vector3(0,0,-58),Vector3(58,0,0)]
 	for index in range(spawn_points.size()):
 		_spawn_monster(definitions[index % definitions.size()],spawn_points[index],false)
 	var sanctuary_data: Array = MonsterDB.get_sanctuary_monsters(current_settlement)
