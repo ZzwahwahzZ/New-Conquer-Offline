@@ -13,7 +13,7 @@ var _joystick_knob: Panel
 var _joystick_vector := Vector2.ZERO
 var _joystick_touch_index := -1
 var _joystick_mouse_active := false
-var _player: Node
+var _player: Node3D
 var _gold_label: Label
 var _hp_bar: TextureProgressBar
 var _mp_bar: TextureProgressBar
@@ -566,13 +566,13 @@ func _send_joystick_to_player(active: bool) -> void:
 	if not is_instance_valid(_player):
 		_find_player()
 	if is_instance_valid(_player) and _player.has_method("set_virtual_joystick_input"):
-		_player.set_virtual_joystick_input(_joystick_vector, active)
+		_player.call("set_virtual_joystick_input", _joystick_vector, active)
 
 
 func _find_player() -> void:
-	_player = get_tree().get_first_node_in_group("player")
+	_player = get_tree().get_first_node_in_group("player") as Node3D
 	if not is_instance_valid(_player):
-		_player = get_node_or_null("../LocalPlayer")
+		_player = get_node_or_null("../LocalPlayer") as Node3D
 
 
 func _connect_economy() -> void:

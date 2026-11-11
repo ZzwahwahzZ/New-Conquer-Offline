@@ -124,7 +124,7 @@ func toggle_path_of_shadow() -> bool:
 	var previous_mode := current_class
 	current_class = "Archer" if current_class == "Oriental_Assassin" else "Oriental_Assassin"
 	promotion_title = _title_for_stage(promotion_stage)
-	var gear := get_node_or_null("/root/GearSystem")
+	var gear = get_node_or_null("/root/GearSystem")
 	if gear != null and gear.has_method("switch_weapon_mode"):
 		gear.switch_weapon_mode(previous_mode, current_class)
 	character_changed.emit()
@@ -142,7 +142,7 @@ func evolve_to(class_id: String) -> bool:
 	current_class = class_id
 	promotion_title = _title_for_stage(promotion_stage)
 	oriental_assassin_unlocked = true
-	var gear := get_node_or_null("/root/GearSystem")
+	var gear = get_node_or_null("/root/GearSystem")
 	if gear != null and gear.has_method("switch_weapon_mode"):
 		gear.switch_weapon_mode(previous_mode, current_class)
 	_recalculate_derived(false)
@@ -171,7 +171,7 @@ func auto_distribute_stat_points() -> Dictionary:
 	var allocated := {"strength":0,"agility":0,"vitality":0,"spirit":0}
 	if stat_points <= 0: return allocated
 	var requirements := {"strength":0,"agility":0}
-	var gear := get_node_or_null("/root/GearSystem")
+	var gear = get_node_or_null("/root/GearSystem")
 	if gear != null:
 		var candidates: Array = []
 		for slot in gear.equipment:

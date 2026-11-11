@@ -39,7 +39,7 @@ func toggle() -> void:
 	if not visible:
 		var inventory_ui := get_tree().get_first_node_in_group("inventory_ui")
 		if is_instance_valid(inventory_ui) and inventory_ui.has_method("close"):
-			inventory_ui.close()
+			inventory_ui.call("close")
 		visible = true
 		_refresh_all()
 	else:

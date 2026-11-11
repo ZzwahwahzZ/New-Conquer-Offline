@@ -6,12 +6,14 @@ var _rig_slot: MeshInstance3D
 var _animation_player: AnimationPlayer
 var _sleeping := false
 var _active_animation := ""
+var _death_generation := 0
 
 func _ready() -> void:
 	super._ready()
 	_ensure_rig_and_animations()
 
 func configure_monster(data: Dictionary, target_node: Node3D, sanctuary: bool) -> void:
+	_death_generation += 1
 	monster_id = str(data.get("id","Pheasant"))
 	name = monster_id
 	max_hp = int(data.get("hp",40))
@@ -46,6 +48,7 @@ func configure_monster(data: Dictionary, target_node: Node3D, sanctuary: bool) -
 	play_state("Idle")
 
 func deactivate_for_pool() -> void:
+	_death_generation += 1
 	remove_from_group("enemies")
 	visible = false
 	collision_layer = 0
@@ -71,12 +74,14 @@ func _die() -> void:
 	if not is_instance_valid(manager) or not manager.has_method("recycle_monster"):
 		super._die()
 		return
+	_death_generation += 1
+	var death_token := _death_generation
 	velocity = Vector3.ZERO
 	play_state("Death")
 	defeated.emit(gold_drop,experience_drop)
 	set_physics_process(false)
 	await get_tree().create_timer(0.55).timeout
-	if is_instance_valid(self):
+	if is_instance_valid(self) and death_token == _death_generation and hp <= 0:
 		manager.call("recycle_monster",self)
 
 func play_state(state_name: String) -> void:

@@ -12,6 +12,7 @@ func _ready() -> void:
  for i in range(40):
   var b=Button.new(); b.custom_minimum_size=Vector2(62,52); b.pressed.connect(_slot.bind(i)); grid.add_child(b)
  var f=HBoxContainer.new(); v.add_child(f); var p=Button.new(); p.text="1"; p.pressed.connect(func():page=0;refresh()); f.add_child(p); page_label=Label.new(); page_label.size_flags_horizontal=Control.SIZE_EXPAND_FILL; page_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER; f.add_child(page_label); var n=Button.new(); n.text="2"; n.pressed.connect(func():page=1;refresh()); f.add_child(n)
+ panel.hide()
 func toggle() -> void: panel.visible=not panel.visible; refresh()
 func refresh() -> void:
  if not is_instance_valid(grid): return
@@ -28,13 +29,24 @@ func _slot(i:int) -> void:
    bank[idx]=inv.pop_front(); GameState.profile.inventory=inv
  elif not bank[idx].is_empty():
   var item:Dictionary=bank[idx]
-  if item.has("slot") or item.has("weapon_family") or item.get("item_type","")=="gem":
+  if item.has("slot") or item.has("weapon_family") or str(item.get("item_type","")) in ["gem","plus_stone"]:
    GearSystem.inventory.append(item); GearSystem.call("_save_and_emit")
   else:
    inv.append(item); GameState.profile.inventory=inv
   bank[idx]={}
  GlobalEconomy.warehouse_items=bank; GameState.inventory_changed.emit(); GlobalEconomy.save_runtime_state(); GameState.save_local(); refresh()
 func _deposit() -> void:
- if GlobalEconomy.remove_gold(1000): GlobalEconomy.warehouse_gold+=1000; GlobalEconomy.save_runtime_state(); refresh()
+ if not GlobalEconomy.remove_gold(1000): return
+ GlobalEconomy.warehouse_gold+=1000
+ if not GlobalEconomy.save_runtime_state():
+  GlobalEconomy.warehouse_gold-=1000
+  GlobalEconomy.add_gold(1000)
+ refresh()
 func _withdraw() -> void:
- if GlobalEconomy.warehouse_gold>=1000: GlobalEconomy.warehouse_gold-=1000; GlobalEconomy.add_gold(1000); GlobalEconomy.save_runtime_state(); refresh()
+ if GlobalEconomy.warehouse_gold<1000: return
+ GlobalEconomy.warehouse_gold-=1000
+ if not GlobalEconomy.add_gold(1000):
+  GlobalEconomy.warehouse_gold+=1000
+  return
+ GlobalEconomy.save_runtime_state()
+ refresh()

@@ -36,7 +36,7 @@ const WEAPON_BLUEPRINTS := {
 		"name": "Throwing Knife", "allowed_classes": ["Oriental_Assassin"],
 		"slot": "RightHand", "allowed_slots": ["RightHand", "LeftHand"], "weapon_family": "ThrowingKnife",
 		"quality": "Normal", "plus": 0, "socket_count": 0, "sockets": [],
-		"required_level": 70, "base_stats": {"physical_attack": 42, "magic_attack": 0}
+		"required_level": 40, "base_stats": {"physical_attack": 42, "magic_attack": 0}
 	},
 	"trojan_blade_15": {
 		"name": "Trojan Blade", "allowed_classes": ["Trojan"],

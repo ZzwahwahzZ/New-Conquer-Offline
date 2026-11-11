@@ -10,6 +10,7 @@ extends Area3D
 var _player: Node3D
 var _attracted: bool = false
 var _collected: bool = false
+var _pool_generation: int = 0
 var _audio: AudioStreamPlayer3D
 
 func _ready() -> void:
@@ -46,6 +47,7 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 func reset_for_pool(spawn_position: Vector3, amount: int) -> void:
+	_pool_generation += 1
 	global_position = spawn_position
 	gold_value = maxi(1,amount)
 	_player = null
@@ -58,6 +60,7 @@ func reset_for_pool(spawn_position: Vector3, amount: int) -> void:
 	if is_instance_valid(_audio): _audio.stop()
 
 func deactivate_for_pool() -> void:
+	_pool_generation += 1
 	visible = false
 	monitorable = false
 	monitoring = false
@@ -94,14 +97,18 @@ func _collect() -> void:
 	if _collected or not is_instance_valid(_player):
 		return
 	_collected = true
+	var collection_generation := _pool_generation
 	if not is_instance_valid(_player):
 		return
 	if GlobalEconomy.add_gold(gold_value):
 		if _audio.stream != null:
 			_audio.play()
 			await _audio.finished
+		if collection_generation != _pool_generation: return
 		var manager := get_tree().get_first_node_in_group("world_manager")
 		if is_instance_valid(manager) and manager.has_method("recycle_gold"):
 			manager.call("recycle_gold",self)
 		else:
 			queue_free()
+	else:
+		_collected = false

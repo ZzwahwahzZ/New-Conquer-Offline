@@ -46,7 +46,7 @@ func toggle() -> void:
 	if not visible:
 		var market_ui := get_tree().get_first_node_in_group("upgrade_market_ui")
 		if is_instance_valid(market_ui) and market_ui.has_method("close"):
-			market_ui.close()
+			market_ui.call("close")
 		visible = true
 		_refresh_all()
 	else:

@@ -6,6 +6,7 @@ func _ready() -> void:
  var v=VBoxContainer.new(); panel.add_child(v); var h=HBoxContainer.new(); v.add_child(h); var t=Label.new(); t.text="سجل المهام"; t.size_flags_horizontal=Control.SIZE_EXPAND_FILL; h.add_child(t); var c=Button.new(); c.text="إغلاق"; c.pressed.connect(panel.hide); h.add_child(c); list=VBoxContainer.new(); v.add_child(list)
  var q=get_tree().get_first_node_in_group("quest_system"); if is_instance_valid(q): q.changed.connect(refresh)
  refresh()
+ panel.hide()
 func toggle() -> void: panel.visible=not panel.visible; refresh()
 func _accept_and_track(q:Node,id:String) -> void:
  if q.call("accept",id): q.call("track",id)

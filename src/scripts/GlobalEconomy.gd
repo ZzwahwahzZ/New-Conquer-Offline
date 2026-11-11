@@ -20,8 +20,9 @@ var warehouse_gold: int = 0
 
 func _ready() -> void:
 	_load_save_envelope()
-	var gear_system := get_node_or_null("/root/GearSystem")
-	if gear_system != null: gear_system.initialize_from_save(_gear_data)
+	_normalize_persistent_state()
+	var gear_system = get_node_or_null("/root/GearSystem")
+	if gear_system != null: gear_system.call("initialize_from_save",_gear_data)
 	_is_ready_for_transactions = true
 	_notify_gold_changed()
 	if not FileAccess.file_exists(SAVE_PATH) or _loaded_save_version < SAVE_VERSION: _write_save_envelope()
@@ -32,13 +33,13 @@ func _notification(what: int) -> void:
 		save_runtime_state()
 
 func save_runtime_state() -> bool:
-	var class_system := get_node_or_null("/root/ClassSystem")
+	var class_system = get_node_or_null("/root/ClassSystem")
 	if is_instance_valid(class_system) and class_system.has_method("save_character"):
 		class_system.call("save_character")
-	var gear_system := get_node_or_null("/root/GearSystem")
+	var gear_system = get_node_or_null("/root/GearSystem")
 	if is_instance_valid(gear_system) and gear_system.has_method("serialize_gear_data"):
 		_gear_data = gear_system.call("serialize_gear_data")
-	var game_state := get_node_or_null("/root/GameState")
+	var game_state = get_node_or_null("/root/GameState")
 	if is_instance_valid(game_state):
 		var manager := get_tree().get_first_node_in_group("world_manager")
 		if is_instance_valid(manager) and manager.has_method("save_world_state"):
@@ -68,7 +69,7 @@ func remove_gold(amount: int) -> bool:
 
 func save_gold() -> bool:
 	if _is_ready_for_transactions:
-		var gear_system := get_node_or_null("/root/GearSystem")
+		var gear_system = get_node_or_null("/root/GearSystem")
 		if gear_system != null: _gear_data = gear_system.serialize_gear_data()
 	return _write_save_envelope()
 
@@ -122,6 +123,15 @@ func _load_save_envelope() -> bool:
 	if warehouse_items.size() > 80: warehouse_items.resize(80)
 	warehouse_gold = maxi(0,int(data.get("warehouse_gold",0)))
 	return true
+
+func _normalize_persistent_state() -> void:
+	if typeof(quest_data) != TYPE_DICTIONARY: quest_data = {}
+	if typeof(warehouse_items) != TYPE_ARRAY: warehouse_items = []
+	while warehouse_items.size() < 80: warehouse_items.append({})
+	if warehouse_items.size() > 80: warehouse_items.resize(80)
+	for index in range(warehouse_items.size()):
+		if typeof(warehouse_items[index]) != TYPE_DICTIONARY: warehouse_items[index] = {}
+	warehouse_gold = maxi(0,int(warehouse_gold))
 
 func _write_save_envelope() -> bool:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)

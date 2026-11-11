@@ -50,10 +50,25 @@ func load_local() -> bool:
   if not FileAccess.file_exists(SAVE_PATH): return false
   var f := FileAccess.open(SAVE_PATH, FileAccess.READ)
   if f == null: return false
-  var data = JSON.parse_string(f.get_as_text())
+  var raw_text := f.get_as_text()
+  f.close()
+  var data = JSON.parse_string(raw_text)
   if typeof(data) != TYPE_DICTIONARY: return false
-  profile = data
-  profile.gold = GlobalEconomy.current_gold
+  var merged := {"character_name":"Player","level":1,"experience":0,"gold":100,"hp":100,"max_hp":100,"mp":50,"max_mp":50,"inventory":[],"quests":{"first_hunt":"not_started"},"settlement_id":"TwinCity","world_position":[0.0,0.0,0.0]}
+  for key in data:
+    merged[key] = data[key]
+  if typeof(merged.get("inventory",[])) != TYPE_ARRAY: merged["inventory"] = []
+  if typeof(merged.get("quests",{})) != TYPE_DICTIONARY: merged["quests"] = {}
+  var saved_position = merged.get("world_position",[])
+  if typeof(saved_position) != TYPE_ARRAY or saved_position.size() < 3: merged["world_position"] = [0.0,0.0,0.0]
+  merged["level"] = maxi(1,int(merged.get("level",1)))
+  merged["experience"] = maxi(0,int(merged.get("experience",0)))
+  merged["hp"] = maxi(0,int(merged.get("hp",100)))
+  merged["max_hp"] = maxi(1,int(merged.get("max_hp",100)))
+  merged["mp"] = maxi(0,int(merged.get("mp",50)))
+  merged["max_mp"] = maxi(1,int(merged.get("max_mp",50)))
+  profile = merged
+  profile["gold"] = GlobalEconomy.current_gold
   stats_changed.emit()
   inventory_changed.emit()
   quest_changed.emit()

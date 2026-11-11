@@ -31,12 +31,42 @@ func _ready() -> void:
 	call_deferred("_connect_game_state")
 
 func _connect_game_state() -> void:
-	var game_state := get_node_or_null("/root/GameState")
+	var game_state = get_node_or_null("/root/GameState")
 	if game_state == null:
 		return
 	if game_state.has_signal("inventory_changed") and not game_state.inventory_changed.is_connected(_on_game_inventory_changed):
 		game_state.inventory_changed.connect(_on_game_inventory_changed)
-	_on_game_inventory_changed()
+	_migrate_legacy_inventory()
+
+func _migrate_legacy_inventory() -> void:
+	var game_state = get_node_or_null("/root/GameState")
+	if game_state == null:
+		return
+	var legacy = game_state.profile.get("inventory", [])
+	if typeof(legacy) != TYPE_ARRAY:
+		_gear_restore_received = true
+		return
+	var remaining: Array = []
+	var migrated := false
+	for entry in legacy:
+		if typeof(entry) != TYPE_DICTIONARY:
+			remaining.append(entry)
+			continue
+		var item_id := str(entry.get("id", ""))
+		var is_gear := entry.has("slot") or entry.has("weapon_family") or str(entry.get("item_type", "")) in ["gem", "plus_stone"] or not GearDatabase.get_blueprint(item_id).is_empty()
+		if is_gear:
+			if not _gear_restore_received:
+				inventory.append(_normalize_item(entry))
+				migrated = true
+		else:
+			remaining.append(entry)
+	_gear_restore_received = true
+	if remaining.size() != legacy.size():
+		game_state.profile["inventory"] = remaining
+		game_state.call("save_local")
+	if migrated:
+		_save_gear_data()
+		inventory_changed.emit()
 
 func initialize_from_save(data: Dictionary) -> void:
 	deserialize_gear_data(data)
@@ -93,7 +123,7 @@ func buy_plus_stone(stone_level: int, quantity: int = 1) -> bool:
 	return true
 
 func can_character_equip(item: Dictionary, current_class: String = "", current_level: int = 0, target_slot: String = "") -> bool:
-	var class_system := get_node_or_null("/root/ClassSystem")
+	var class_system = get_node_or_null("/root/ClassSystem")
 	if class_system != null:
 		current_class = class_system.current_class
 		current_level = class_system.level
@@ -450,7 +480,7 @@ func save_gear_data() -> bool:
 	return GlobalEconomy.save_gear_data(serialize_gear_data())
 
 func load_gear_data() -> bool:
-	var economy := get_node_or_null("/root/GlobalEconomy")
+	var economy = get_node_or_null("/root/GlobalEconomy")
 	if economy == null:
 		return false
 	var data: Dictionary = economy.load_gear_data()
@@ -532,34 +562,12 @@ func _save_and_emit() -> void:
 
 func _save_gear_data() -> void:
 	var snapshot := serialize_gear_data()
-	var economy := get_node_or_null("/root/GlobalEconomy")
+	var economy = get_node_or_null("/root/GlobalEconomy")
 	if economy != null:
-		economy.save_gear_data(snapshot)
-	var game_state := get_node_or_null("/root/GameState")
-	if game_state != null:
-		_syncing_profile = true
-		game_state.profile["inventory"] = inventory.duplicate(true)
-		game_state.save_local()
-		if game_state.has_signal("inventory_changed"):
-			game_state.inventory_changed.emit()
-		_syncing_profile = false
+		economy.call("save_gear_data",snapshot)
 
 func _on_game_inventory_changed() -> void:
+	# GearSystem inventory and general GameState inventory are separate stores.
+	# Never mirror one over the other: that would erase potions/materials.
 	if _syncing_profile:
 		return
-	var game_state := get_node_or_null("/root/GameState")
-	if game_state == null:
-		return
-	if not _gear_restore_received and inventory.is_empty():
-		var legacy = game_state.profile.get("inventory", [])
-		if legacy is Array:
-			for entry in legacy:
-				if entry is Dictionary:
-					inventory.append(_normalize_item(entry))
-			if not inventory.is_empty():
-				_save_gear_data()
-				inventory_changed.emit()
-		return
-	_syncing_profile = true
-	game_state.profile["inventory"] = inventory.duplicate(true)
-	_syncing_profile = false

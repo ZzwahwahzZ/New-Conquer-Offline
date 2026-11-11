@@ -7,6 +7,7 @@ func _ready() -> void:
  panel=PanelContainer.new(); panel.set_anchors_preset(Control.PRESET_CENTER); panel.position=Vector2(-220,-240); panel.size=Vector2(440,480); add_child(panel)
  var v=VBoxContainer.new(); panel.add_child(v); var h=HBoxContainer.new(); v.add_child(h); var t=Label.new(); t.text="متجر التاجر | الذهب فقط"; t.size_flags_horizontal=Control.SIZE_EXPAND_FILL; h.add_child(t); var c=Button.new(); c.text="إغلاق"; c.pressed.connect(panel.hide); h.add_child(c)
  list=VBoxContainer.new(); v.add_child(list)
+ panel.hide()
 func open_shop(r:String) -> void: role=r; panel.show(); refresh()
 func refresh() -> void:
  for n in list.get_children(): n.queue_free()
