@@ -150,7 +150,8 @@ func _physics_process(delta: float) -> void:
 		if _fly_timer <= 0.0: _set_flying(false)
 	if _flying:
 		velocity.y = 0.0
-	elif is_on_floor() and not _jumping:
+	elif is_on_floor() and velocity.y <= 0.0:
+		_jumping = false
 		velocity.y = -0.1
 	else:
 		velocity.y -= float(ProjectSettings.get_setting("physics/3d/default_gravity")) * delta
