@@ -28,6 +28,7 @@ var _inventory_ui: CanvasLayer
 var _inventory_button: Button
 var _upgrade_ui: CanvasLayer
 var _upgrade_button: Button
+var _promotion_button: Button
 var _skill_buttons: Array[Button] = []
 var _skill_ids := ["Jump", "Fly", "Scatter", "Rapid_Fire", "XP_Mode"]
 
@@ -60,6 +61,7 @@ func _build_hud() -> void:
 	_build_upgrade_toggle()
 	_upgrade_ui = load("res://src/scenes/UpgradeMarketUI.tscn").instantiate() as CanvasLayer
 	add_child(_upgrade_ui)
+	_build_promotion_button()
 
 
 func _build_joystick() -> void:
@@ -292,6 +294,21 @@ func _build_inventory_toggle() -> void:
 	_root.add_child(button)
 
 
+func _build_promotion_button() -> void:
+	_promotion_button = Button.new()
+	_promotion_button.name = "ArcherPromotionButton"
+	_promotion_button.text = "التطور إلى السفاح الشرقي"
+	_promotion_button.custom_minimum_size = Vector2(190, 42)
+	_promotion_button.add_theme_color_override("font_color", Color(1.0, 0.86, 0.61))
+	_promotion_button.add_theme_stylebox_override("normal", _panel_style(Color(0.08, 0.12, 0.16, 0.96), Color(0.2, 0.78, 0.95, 1.0), 2, 8))
+	_promotion_button.pressed.connect(_on_promote_archer)
+	_root.add_child(_promotion_button)
+	_promotion_button.hide()
+
+func _on_promote_archer() -> void:
+	if ClassSystem.evolve_to("Oriental_Assassin"):
+		_promotion_button.hide()
+
 func _build_upgrade_toggle() -> void:
 	_upgrade_button = Button.new()
 	_upgrade_button.name = "UpgradeMarketToggleButton"
@@ -358,6 +375,8 @@ func _layout_hud() -> void:
 		_inventory_button.position = Vector2(width - 142.0, 18.0)
 	if is_instance_valid(_upgrade_button):
 		_upgrade_button.position = Vector2(width - 270.0, 18.0)
+	if is_instance_valid(_promotion_button):
+		_promotion_button.position = Vector2(width - 210.0, 68.0)
 
 	var orb := _root.get_node("OrbHUD") as Control
 	orb.position = Vector2(width - ORB_SIZE.x - 20, height - ORB_SIZE.y - 20)
@@ -474,6 +493,8 @@ func _on_skill_pressed(skill_id: String) -> void:
 
 func _process(_delta: float) -> void:
 	if not is_instance_valid(_player): _find_player()
+	if is_instance_valid(_promotion_button):
+		_promotion_button.visible = ClassSystem.can_evolve_to("Oriental_Assassin")
 	if is_instance_valid(_xp_skill_bar):
 		_xp_skill_bar.value = ClassSystem.xp_skill
 	if is_instance_valid(_stamina_bar):

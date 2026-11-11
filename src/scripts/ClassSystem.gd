@@ -102,8 +102,11 @@ func can_evolve_to(class_id: String) -> bool:
 
 func evolve_to(class_id: String) -> bool:
 	if not can_evolve_to(class_id): return false
+	var old_base: Dictionary = CLASS_DATA[current_class]["base"]
+	var new_base: Dictionary = CLASS_DATA[class_id]["base"]
+	for stat in attributes:
+		attributes[stat] = maxi(0, int(attributes[stat]) + int(new_base.get(stat, 0)) - int(old_base.get(stat, 0)))
 	current_class = class_id
-	attributes = CLASS_DATA[class_id]["base"].duplicate(true)
 	_recalculate_derived(false)
 	character_changed.emit()
 	stats_changed.emit()
