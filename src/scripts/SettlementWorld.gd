@@ -25,11 +25,19 @@ func _build_environment() -> void:
 	var world_environment := WorldEnvironment.new()
 	world_environment.name = "SettlementEnvironment"
 	var environment := Environment.new()
-	environment.background_mode = Environment.BG_COLOR
+	environment.background_mode = Environment.BG_SKY
+	var sky := Sky.new()
+	var sky_material := ProceduralSkyMaterial.new()
+	sky_material.sky_top_color = Color("#4B83B8") if settlement_id == "TwinCity" else sky_color.lightened(0.12)
+	sky_material.sky_horizon_color = sky_color
+	sky_material.ground_bottom_color = fog_color.darkened(0.22)
+	sky_material.ground_horizon_color = fog_color
+	sky.sky_material = sky_material
+	environment.sky = sky
 	environment.background_color = sky_color
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	environment.ambient_light_color = sky_color.lightened(0.25)
-	environment.ambient_light_energy = 1.0 if settlement_id == "TwinCity" else 0.72
+	environment.ambient_light_energy = 0.8
 	environment.fog_enabled = true
 	environment.fog_light_color = fog_color
 	environment.fog_density = fog_density
@@ -38,8 +46,9 @@ func _build_environment() -> void:
 	var sun := DirectionalLight3D.new()
 	sun.name = "SettlementSun"
 	sun.rotation_degrees = Vector3(-48,-32,0)
-	sun.light_energy = 1.25 if settlement_id == "TwinCity" else 0.95
-	sun.shadow_enabled = false
+	sun.light_energy = 1.6
+	sun.shadow_enabled = true
+	sun.shadow_blur = 1.4
 	add_child(sun)
 
 func _build_asset_slots() -> void:
