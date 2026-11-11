@@ -31,6 +31,9 @@ func _run() -> void:
 	assert(city.find_child("BridgeDragonStatue", true, false) != null, "Bridge dragon statues are missing")
 	var collision := plaza.find_child("TwinCityFlatPlazaCollision", true, false) as CollisionShape3D
 	assert(collision != null and collision.shape != null, "TwinCity ground collision is missing")
+	assert(collision.shape is BoxShape3D, "TwinCity ground collision must remain a stable box collider")
+	var ground_box := collision.shape as BoxShape3D
+	assert(is_equal_approx(collision.position.y + ground_box.size.y * 0.5, 0.0), "TwinCity collision top must remain exactly at Y=0")
 	var factory = load("res://src/scripts/RiggedCharacterFactory.gd")
 	var fallback := factory._build_articulated_fallback("hero", 1) as Node3D
 	assert(fallback != null, "Articulated humanoid fallback failed to instantiate")
