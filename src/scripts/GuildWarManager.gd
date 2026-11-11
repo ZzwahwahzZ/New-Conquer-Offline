@@ -10,6 +10,9 @@ var guild_pole: Node3D
 var player_guild := ""
 var defending_guild := ""
 var damage_by_guild: Dictionary = {}
+var last_hit_guild := ""
+var _allied_bots: Array[Node3D] = []
+var _defender_bots: Array[Node3D] = []
 var _war_bots: Array[Node3D] = []
 var _simulation_timer := 0.0
 var _resolved := false
@@ -117,17 +120,29 @@ func _spawn_bot(record: Dictionary, position: Vector3, allied: bool) -> void:
 	bot.call("configure",record,position,Color(0.25,0.78,1.0) if allied else Color(1.0,0.28,0.25))
 	bot.call("move_to",Vector3(0,0,0) if allied else Vector3(0,0,-5))
 	_war_bots.append(bot)
+	if allied: _allied_bots.append(bot)
+	else: _defender_bots.append(bot)
 
 func _process(delta: float) -> void:
 	if _resolved: return
 	_simulation_timer += delta
 	if _simulation_timer < 1.0: return
 	_simulation_timer = 0.0
-	# War bots remain visual combatants; player hits control objective destruction.
+	if not gates_destroyed:
+		if not _allied_bots.is_empty() and is_instance_valid(left_gate):
+			left_gate.call("apply_simulated_damage",_allied_bots.size()*180,player_guild)
+		if not _defender_bots.is_empty() and is_instance_valid(right_gate):
+			right_gate.call("apply_simulated_damage",_defender_bots.size()*180,defending_guild)
+	else:
+		if not _allied_bots.is_empty() and is_instance_valid(guild_pole):
+			guild_pole.call("apply_simulated_damage",_allied_bots.size()*420,player_guild)
+		if not _defender_bots.is_empty() and is_instance_valid(guild_pole):
+			guild_pole.call("apply_simulated_damage",_defender_bots.size()*420,defending_guild)
 
-func register_target_damage(target_id: String, amount: int) -> void:
-	if amount <= 0: return
-	var team := player_guild
+func register_target_damage(target_id: String, amount: int, attacking_guild: String = "") -> void:
+	if amount <= 0 or target_id != "guild_pole": return
+	var team := attacking_guild if not attacking_guild.is_empty() else player_guild
+	last_hit_guild = team
 	damage_by_guild[team] = int(damage_by_guild.get(team,0)) + amount
 
 func update_target_health(target_id: String, hp: int, max_hp: int) -> void:
@@ -153,7 +168,7 @@ func _resolve_war() -> void:
 	var highest := -1
 	for guild_name in damage_by_guild:
 		var damage := int(damage_by_guild[guild_name])
-		if damage > highest:
+		if damage > highest or (damage == highest and str(guild_name) == last_hit_guild):
 			highest = damage
 			winner = str(guild_name)
 	var system := get_tree().get_first_node_in_group("guild_system")
