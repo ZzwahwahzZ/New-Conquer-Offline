@@ -12,6 +12,7 @@ var _lod_sleeping := false
 var _name_label: Label3D
 var _guild_label: Label3D
 var _visual: MeshInstance3D
+var _wings: Array[MeshInstance3D] = []
 var _jump_time := 0.0
 var _jump_from := Vector3.ZERO
 var _jump_to := Vector3.ZERO
@@ -37,6 +38,22 @@ func _build_visuals() -> void:
 		material.roughness = 0.72
 		_visual.material_override = material
 		add_child(_visual)
+	if _wings.is_empty():
+		for side in [-1.0,1.0]:
+			var wing := MeshInstance3D.new()
+			wing.name = "WingLeft" if side < 0.0 else "WingRight"
+			var wing_mesh := BoxMesh.new()
+			wing_mesh.size = Vector3(0.12,0.62,0.9)
+			wing.mesh = wing_mesh
+			wing.position = Vector3(side * 0.43,0.92,0.02)
+			wing.rotation.z = side * -0.22
+			var wing_material := StandardMaterial3D.new()
+			wing_material.albedo_color = Color(0.36,0.82,1.0,0.88)
+			wing_material.metallic = 0.25
+			wing_material.roughness = 0.35
+			wing.material_override = wing_material
+			add_child(wing)
+			_wings.append(wing)
 	if _name_label == null:
 		_name_label = Label3D.new()
 		_name_label.name = "PlayerName"
@@ -69,6 +86,8 @@ func configure(data: Dictionary, spawn_position: Vector3, diplomacy_color: Color
 	_idle = true
 	_lod_sleeping = false
 	_flying = bool(bot_data.get("has_wings",false))
+	for wing in _wings:
+		wing.visible = _flying
 	_fly_phase = 0.0
 	_has_destination = false
 	_jump_time = 0.0
