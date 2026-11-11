@@ -1,4 +1,6 @@
 extends Node3D
+const WorldTerrainBuilder = preload("res://src/scripts/WorldTerrainBuilder.gd")
+const ChineseImperialBuilder = preload("res://src/scripts/ChineseImperialBuilder.gd")
 ## Environment shell with named anchors for later production map assets.
 @export var settlement_id := "TwinCity"
 @export var display_name := "Twin City"
