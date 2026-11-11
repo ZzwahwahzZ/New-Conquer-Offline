@@ -3,7 +3,7 @@ signal stats_changed
 signal inventory_changed
 signal quest_changed
 const SAVE_PATH := "user://offline_profile.json"
-var profile := {"character_name":"Player","level":1,"experience":0,"gold":100,"hp":100,"max_hp":100,"mp":50,"max_mp":50,"inventory":[],"quests":{"first_hunt":"not_started"},"settlement_id":"TwinCity","world_position":[0.0,0.0,0.0]}
+var profile := {"character_name":"Player","level":1,"experience":0,"gold":100,"hp":100,"max_hp":100,"mp":50,"max_mp":50,"inventory":[],"quests":{"first_hunt":"not_started"},"settlement_id":"TwinCity","world_position":[0.0,0.0,0.0],"player_guild_name":"","player_guild_rank":"","player_guild_donation":0,"guild_war_title":""}
 func _ready() -> void:
   if not GlobalEconomy.gold_changed.is_connected(_on_global_gold_changed):
     GlobalEconomy.gold_changed.connect(_on_global_gold_changed)
@@ -26,7 +26,9 @@ func add_experience(amount: int) -> void:
     profile.mp = profile.max_mp
   stats_changed.emit()
 func damage_player(amount: int) -> void:
-  profile.hp = maxi(0, int(profile.hp) - maxi(0, amount))
+  var guild = get_tree().get_first_node_in_group("guild_system")
+  var mitigation := float(guild.call("get_defense_multiplier")) if is_instance_valid(guild) else 1.0
+  profile.hp = maxi(0, int(profile.hp) - int(round(float(maxi(0,amount)) / mitigation)))
   stats_changed.emit()
 func add_item(item_id: String, quantity: int = 1) -> void:
   if item_id.is_empty() or quantity <= 0: return
@@ -54,7 +56,7 @@ func load_local() -> bool:
   f.close()
   var data = JSON.parse_string(raw_text)
   if typeof(data) != TYPE_DICTIONARY: return false
-  var merged := {"character_name":"Player","level":1,"experience":0,"gold":100,"hp":100,"max_hp":100,"mp":50,"max_mp":50,"inventory":[],"quests":{"first_hunt":"not_started"},"settlement_id":"TwinCity","world_position":[0.0,0.0,0.0]}
+  var merged := {"character_name":"Player","level":1,"experience":0,"gold":100,"hp":100,"max_hp":100,"mp":50,"max_mp":50,"inventory":[],"quests":{"first_hunt":"not_started"},"settlement_id":"TwinCity","world_position":[0.0,0.0,0.0],"player_guild_name":"","player_guild_rank":"","player_guild_donation":0,"guild_war_title":""}
   for key in data:
     merged[key] = data[key]
   if typeof(merged.get("inventory",[])) != TYPE_ARRAY: merged["inventory"] = []
