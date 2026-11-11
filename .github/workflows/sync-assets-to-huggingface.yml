@@ -1,0 +1,156 @@
+name: Sync complete asset library to Hugging Face
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "assets/**"
+      - ".github/workflows/sync-assets-to-huggingface.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hf-asset-library-sync
+  cancel-in-progress: false
+
+jobs:
+  sync-assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_DATASET_REPO: ZzwahwahzZ/clash-of-legends-terrain-assets
+    steps:
+      - name: Checkout repository without downloading unrelated LFS files
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          lfs: false
+          fetch-depth: 1
+
+      - name: Download only the asset-library Git LFS objects
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v git-lfs >/dev/null || {
+            sudo apt-get update
+            sudo apt-get install -y git-lfs
+          }
+          git lfs install --local
+          git lfs pull --include="assets/**"
+          test -d assets
+          if grep -RIl --exclude-dir=.git '^version https://git-lfs.github.com/spec/v1$' assets; then
+            echo "ERROR: one or more Git LFS assets are still pointer files."
+            exit 1
+          fi
+          echo "Asset files are present locally; unrelated source APK LFS objects were not downloaded."
+
+      - name: Install Hugging Face upload client
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade "huggingface_hub>=0.30.0"
+
+      - name: Upload the complete project asset library and verify remote files
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${HF_TOKEN:-}" ]; then
+            echo "ERROR: GitHub Actions secret HF_TOKEN is missing."
+            echo "Add the Hugging Face write token as a repository Actions secret named HF_TOKEN."
+            exit 1
+          fi
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          from huggingface_hub import HfApi
+
+          root = Path("assets")
+          if not root.is_dir():
+              raise SystemExit("assets/ directory is missing")
+
+          token = os.environ["HF_TOKEN"]
+          repo_id = os.environ["HF_DATASET_REPO"]
+          api = HfApi(token=token)
+
+          # Confirm the target dataset exists and this token can access it before upload.
+          api.repo_info(repo_id=repo_id, repo_type="dataset")
+
+          files = sorted(p for p in root.rglob("*") if p.is_file())
+          if not files:
+              raise SystemExit("No asset files found; refusing to publish an empty library.")
+
+          entries = []
+          total_bytes = 0
+          for path in files:
+              rel = path.relative_to(root).as_posix()
+              digest = hashlib.sha256()
+              size = 0
+              with path.open("rb") as stream:
+                  for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b""):
+                      digest.update(chunk)
+                      size += len(chunk)
+              entries.append({"path": rel, "size": size, "sha256": digest.hexdigest()})
+              total_bytes += size
+
+          manifest = {
+              "schema_version": 1,
+              "source_repository": "ZzwahwahzZ/New-Conquer-Offline",
+              "source_branch": "main",
+              "destination_dataset": repo_id,
+              "destination_prefix": "project-assets/",
+              "file_count": len(entries),
+              "total_bytes": total_bytes,
+              "files": entries,
+          }
+          manifest_path = root / "UPLOAD_MANIFEST.json"
+          manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+          print(f"Preparing {len(entries)} source files ({total_bytes:,} bytes).")
+          print("Uploading into project-assets/; existing terrain-source and settlement-terrain-source data will be preserved.")
+
+          api.upload_folder(
+              repo_id=repo_id,
+              repo_type="dataset",
+              folder_path=str(root),
+              path_in_repo="project-assets",
+              commit_message="Sync complete New Conquer Offline asset library",
+          )
+
+          # Verify every local file is present remotely with the same byte size.
+          expected = {
+              "project-assets/" + p.relative_to(root).as_posix(): p.stat().st_size
+              for p in root.rglob("*") if p.is_file()
+          }
+          remote = {}
+          for item in api.list_repo_tree(
+              repo_id=repo_id,
+              repo_type="dataset",
+              path_in_repo="project-assets",
+              recursive=True,
+              expand=True,
+          ):
+              if getattr(item, "type", None) == "file" or item.__class__.__name__ == "RepoFile":
+                  remote[item.path] = getattr(item, "size", None)
+
+          missing = sorted(set(expected) - set(remote))
+          wrong_sizes = sorted(
+              (path, size, remote.get(path))
+              for path, size in expected.items()
+              if path in remote and remote[path] is not None and remote[path] != size
+          )
+          if missing or wrong_sizes:
+              print("Missing remote files:", missing[:30])
+              print("Size mismatches:", wrong_sizes[:30])
+              raise SystemExit("Remote Hugging Face verification failed.")
+
+          print("HF_ASSET_SYNC_VERIFIED")
+          print(f"Verified files: {len(expected)}")
+          print(f"Verified bytes: {sum(expected.values()):,}")
+          print(f"Dataset: https://huggingface.co/datasets/{repo_id}/tree/main/project-assets")
+          PY
