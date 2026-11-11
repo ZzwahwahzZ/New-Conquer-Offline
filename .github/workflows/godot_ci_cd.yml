@@ -99,6 +99,9 @@ jobs:
       - name: Run Step 16 smoke test
         run: godot --headless --path . --script scripts/step16_smoke_test.gd
 
+      - name: Run Player idle stability regression (3 seconds)
+        run: godot --headless --path . --script scripts/player_idle_stability_test.gd
+
   web:
     name: Export WebGL2 build
     needs: verify
