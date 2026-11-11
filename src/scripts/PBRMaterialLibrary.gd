@@ -55,7 +55,7 @@ static func build_emissive_material(color: Color, energy: float = 1.5, roughness
 static func _load_first_map(folder: String, candidates: Array, fallback: Texture2D) -> Texture2D:
  for candidate in candidates:
   var path := folder + str(candidate)
-  if ResourceLoader.exists(path):
+  if FileAccess.file_exists(path):
    var loaded := load(path) as Texture2D
    if loaded != null:
     return loaded
