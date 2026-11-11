@@ -62,6 +62,7 @@ jobs:
         run: |
           python3 -m pip install --disable-pip-version-check huggingface_hub
           python3 tools/restore_hf_terrain_assets.py
+          python3 tools/restore_curated_glb_assets.py
 
       - name: Import all project resources (Mobile renderer) and reject parser errors
         shell: bash
@@ -179,6 +180,7 @@ jobs:
         run: |
           python3 -m pip install --disable-pip-version-check huggingface_hub
           python3 tools/restore_hf_terrain_assets.py
+          python3 tools/restore_curated_glb_assets.py
 
       - name: Import for WebGL2 Compatibility renderer
         run: godot --headless --editor --path . --import
@@ -301,6 +303,7 @@ jobs:
         run: |
           python3 -m pip install --disable-pip-version-check huggingface_hub
           python3 tools/restore_hf_terrain_assets.py
+          python3 tools/restore_curated_glb_assets.py
 
       - name: Import Android project resources
         run: godot --headless --editor --path . --import
