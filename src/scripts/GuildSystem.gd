@@ -64,6 +64,7 @@ func serialize_data() -> Dictionary:
 	return {"guilds":guilds.duplicate(true),"roster_players":roster.players.duplicate(true),"roster_guilds":roster.guilds.duplicate(true),"player_guild_name":player_guild_name,"player_guild_rank":player_guild_rank,"player_guild_donation":player_guild_donation,"war_winner_guild":war_winner_guild}
 
 func _save() -> void:
+	roster.guilds = guilds.duplicate(true)
 	_sync_player_profile()
 	GlobalEconomy.save_guild_data(serialize_data())
 
@@ -118,6 +119,7 @@ func create_guild(guild_name: String) -> bool:
 	if ClassSystem.level < 40 or not player_guild_name.is_empty() or clean.length() < 3 or clean.length() > 20 or guilds.has(clean) or not GlobalEconomy.remove_gold(CREATE_GUILD_COST):
 		return false
 	guilds[clean] = {"guild_name":clean,"guild_fund":0,"bulletin":"Welcome to %s. Fight with honor!" % clean,"allies":[],"enemies":[],"player_created":true}
+	roster.guilds[clean] = guilds[clean].duplicate(true)
 	player_guild_name = clean
 	player_guild_rank = "Guild Leader"
 	player_guild_donation = 0
@@ -148,6 +150,17 @@ func _refresh_player_rank() -> void:
 		player_guild_rank = "Supervisor"
 	else:
 		player_guild_rank = "Member"
+
+func record_bot_donation(player_id: int, amount: int) -> bool:
+	if amount <= 0 or not roster.donate_to_guild(player_id,amount): return false
+	var bot := roster.get_player(player_id)
+	var guild_name := str(bot.get("guild_name",""))
+	if not guilds.has(guild_name): return false
+	guilds[guild_name].guild_fund = int(guilds[guild_name].get("guild_fund",0)) + amount
+	_save()
+	guild_chat.emit("[Guild] %s تبرع بمبلغ %s ذهب لصندوق %s!" % [str(bot.get("name","Warrior")),_format_gold(amount),guild_name])
+	guild_changed.emit()
+	return true
 
 func challenge_guild_leader() -> bool:
 	if player_guild_name.is_empty() or player_guild_rank == "Guild Leader": return false
