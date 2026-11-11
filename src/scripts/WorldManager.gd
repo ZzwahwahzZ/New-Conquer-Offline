@@ -83,7 +83,12 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 	current_world = packed.instantiate() as Node3D
 	current_world.name = settlement_id
 	add_child(current_world)
-	var npc_system=Node3D.new(); npc_system.name="NPCSystem"; npc_system.set_script(load("res://src/scripts/NPCSystem.gd")); current_world.add_child(npc_system); npc_system.call("setup",current_world,settlement_id)
+	if settlement_id != "GuildWarArena":
+		var npc_system = Node3D.new()
+		npc_system.name = "NPCSystem"
+		npc_system.set_script(load("res://src/scripts/NPCSystem.gd"))
+		current_world.add_child(npc_system)
+		npc_system.call("setup",current_world,settlement_id)
 	if is_instance_valid(player) and not restore_position:
 		player.global_position = Vector3(0,1,0) if settlement_id != "GuildWarArena" else Vector3(0,1,27)
 	if settlement_id != "GuildWarArena":
