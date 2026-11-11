@@ -93,11 +93,24 @@ static func _place_karst_models(parent: Node3D,city: String,size: float) -> void
    var mesh_node := node as MeshInstance3D
    bounds = mesh_node.get_aabb() if not found else bounds.merge(mesh_node.get_aabb())
    found = true
+   var rock := StandardMaterial3D.new()
+   rock.albedo_color = Color("#b5a995") if city in ["DesertLand","IceLand"] else Color("#5b5754")
+   rock.roughness = 0.94
    for surface in range(mesh_node.mesh.get_surface_count()):
-    mesh_node.set_surface_override_material(surface,StandardMaterial3D.new())
+    mesh_node.set_surface_override_material(surface,rock)
  if found and bounds.size.length()>0.001:
   var target := 26.0
   var factor := target/maxf(bounds.size.x,maxf(bounds.size.y,bounds.size.z))
   instance.scale = Vector3.ONE*factor
  instance.position = Vector3(size*0.28,0.0,size*0.24)
  parent.add_child(instance)
+ if city=="Waterlands":
+  var island_path := "res://assets/terrain/models/tropical-island.glb"
+  if ResourceLoader.exists(island_path):
+   var island_pack := load(island_path) as PackedScene
+   if island_pack != null:
+    var island := island_pack.instantiate() as Node3D
+    if island != null:
+     island.name = "TropicalIslandImported"
+     island.position = Vector3(-size*0.28,0.0,-size*0.22)
+     parent.add_child(island)
