@@ -304,6 +304,12 @@ func _recycle_bot(bot: Node3D) -> void:
 	else:
 		bot.queue_free()
 
+func is_bot_active(player_id: int) -> bool:
+	for bot in _active_bots:
+		if is_instance_valid(bot) and int(bot.get("bot_data").get("id",-1)) == player_id:
+			return true
+	return false
+
 func get_queued_count() -> int:
 	return _spawn_queue.size()
 
