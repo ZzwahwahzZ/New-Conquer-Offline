@@ -32,6 +32,13 @@ func _connect_system() -> void:
 	if not _system.is_connected("guild_chat",chat_callback):
 		_system.connect("guild_chat",chat_callback)
 
+func _layout_window() -> void:
+	if not is_instance_valid(_window): return
+	var viewport_size := get_viewport().get_visible_rect().size
+	var target_size := Vector2(minf(780.0,maxf(320.0,viewport_size.x-16.0)),minf(540.0,maxf(300.0,viewport_size.y-16.0)))
+	_window.size = target_size
+	_window.position = (viewport_size-target_size)*0.5
+
 func toggle() -> void:
 	visible = not visible
 	if visible: refresh()
@@ -43,9 +50,10 @@ func open_ui() -> void:
 func _build_ui() -> void:
 	_window = PanelContainer.new()
 	_window.name = "GuildWindow"
-	_window.set_anchors_preset(Control.PRESET_CENTER)
-	_window.position = Vector2(-390,-270)
+	_window.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	_window.size = Vector2(780,540)
+	get_viewport().size_changed.connect(_layout_window)
+	_layout_window()
 	_window.add_theme_stylebox_override("panel",_style(Color(0.055,0.065,0.085,0.98),Color(0.76,0.55,0.25)))
 	add_child(_window)
 	var layout := VBoxContainer.new()
@@ -77,7 +85,7 @@ func _build_overview_tab() -> void:
 	_tabs.add_child(page)
 	_overview_label = RichTextLabel.new()
 	_overview_label.bbcode_enabled = true
-	_overview_label.custom_minimum_size = Vector2(0,170)
+	_overview_label.custom_minimum_size = Vector2(0,110)
 	page.add_child(_overview_label)
 	var create_row := HBoxContainer.new()
 	page.add_child(create_row)
