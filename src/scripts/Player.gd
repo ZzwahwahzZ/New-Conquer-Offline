@@ -55,7 +55,9 @@ func _ready() -> void:
 	_ground_y = 0.775
 	floor_snap_length = 0.35
 	floor_max_angle = deg_to_rad(45.0)
-	safe_margin = 0.001
+	floor_stop_on_slope = true
+	floor_block_on_wall = true
+	safe_margin = 0.03
 	collision_layer = 1
 	collision_mask = 1
 	_visual = get_node_or_null("VisualRoot")
@@ -105,10 +107,14 @@ func _ready() -> void:
 
 func set_safe_spawn(point: Vector3) -> void:
 	_safe_spawn = point
-	_ground_y = 0.775
+	var query := PhysicsRayQueryParameters3D.create(Vector3(point.x, point.y + 100.0, point.z), Vector3(point.x, point.y - 200.0, point.z))
+	query.collision_mask = ground_collision_mask
+	query.exclude = [get_rid()]
+	var hit := get_world_3d().direct_space_state.intersect_ray(query)
+	_ground_y = float(hit.position.y) + 0.02 if not hit.is_empty() else point.y
 	global_position = Vector3(point.x, _ground_y, point.z)
 	_safe_spawn = global_position
-	velocity.y = 0.0
+	velocity = Vector3.ZERO
 	_jumping = false
 
 func move_to_world_position(destination: Vector3) -> void:
@@ -121,26 +127,6 @@ func set_virtual_joystick_input(direction: Vector2, active: bool) -> void:
 	_joystick_active = active
 	_joystick_vector = direction.limit_length(1.0) if active else Vector2.ZERO
 	if active: _has_move_target = false
-
-func _unhandled_input(event: InputEvent) -> void:
-	if _joystick_active: return
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		_set_move_target_from_screen(event.position)
-	elif event is InputEventScreenTouch and event.pressed:
-		_set_move_target_from_screen(event.position)
-
-func _set_move_target_from_screen(screen_position: Vector2) -> void:
-	var camera := get_viewport().get_camera_3d()
-	if camera == null: return
-	var origin := camera.project_ray_origin(screen_position)
-	var end := origin + camera.project_ray_normal(screen_position) * ray_length
-	var query := PhysicsRayQueryParameters3D.create(origin, end)
-	query.collision_mask = ground_collision_mask
-	query.exclude = [get_rid()]
-	var hit := get_world_3d().direct_space_state.intersect_ray(query)
-	if hit.is_empty(): return
-	_move_target = hit.position
-	_has_move_target = true
 
 func _refresh_equipment_visuals() -> void:
 	var aura_node := _visual.get_node_or_null("PlusAura") if is_instance_valid(_visual) else null
@@ -164,9 +150,8 @@ func _physics_process(delta: float) -> void:
 		if _fly_timer <= 0.0: _set_flying(false)
 	if _flying:
 		velocity.y = 0.0
-	elif is_on_floor() and velocity.y <= 0.0:
-		velocity.y = 0.0
-		_jumping = false
+	elif is_on_floor() and not _jumping:
+		velocity.y = -0.1
 	else:
 		velocity.y -= float(ProjectSettings.get_setting("physics/3d/default_gravity")) * delta
 	_update_horizontal_movement(delta)
@@ -222,24 +207,24 @@ func _update_horizontal_movement(delta: float) -> void:
 			right.y = 0.0
 			forward.y = 0.0
 			_rotate_and_move((right.normalized() * _joystick_vector.x + forward.normalized() * -_joystick_vector.y).normalized(), delta)
-		else: _stop_horizontal(delta)
+		else: _stop_horizontal_immediately()
 	elif _has_move_target:
 		var direction := _move_target - global_position
 		direction.y = 0.0
 		if direction.length() <= stop_distance:
 			_has_move_target = false
-			_stop_horizontal(delta)
+			_stop_horizontal_immediately()
 		else: _rotate_and_move(direction.normalized(), delta)
-	else: _stop_horizontal(delta)
+	else: _stop_horizontal_immediately()
 
 func _rotate_and_move(direction: Vector3, delta: float) -> void:
 	rotation.y = lerp_angle(rotation.y, atan2(-direction.x, -direction.z), turn_speed * delta)
 	velocity.x = direction.x * move_speed
 	velocity.z = direction.z * move_speed
 
-func _stop_horizontal(delta: float) -> void:
-	velocity.x = move_toward(velocity.x, 0.0, move_speed * delta)
-	velocity.z = move_toward(velocity.z, 0.0, move_speed * delta)
+func _stop_horizontal_immediately() -> void:
+	velocity.x = 0.0
+	velocity.z = 0.0
 
 func can_use_skill(skill_id: String) -> bool:
 	if not SKILL_DATA.has(skill_id) or float(_cooldowns.get(skill_id, 0.0)) > 0.0: return false
