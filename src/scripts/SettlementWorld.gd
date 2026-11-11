@@ -67,3 +67,26 @@ func _build_asset_slots() -> void:
 func _build_terrain_shell() -> void:
 	WorldTerrainBuilder.build(self, settlement_id, get_node("TerrainAssetSlot"))
 
+
+func _build_landmarks() -> void:
+	var slot := get_node_or_null("ArchitectureAssetSlot") as Node3D
+	if slot == null:
+		return
+	# Keep a clear, walkable landmark anchor in the central district.
+	var marker := Marker3D.new()
+	marker.name = "CentralLandmarkAnchor"
+	marker.position = Vector3(0.0, 0.0, 0.0)
+	slot.add_child(marker)
+
+func _build_sanctuary_landmarks() -> void:
+	var slot := get_node_or_null("SanctuaryAnchors") as Node3D
+	if slot == null:
+		return
+	# The sanctuary markers are created with the asset slots; ensure stable names
+	# and positions for quest/spawn systems.
+	var rare := slot.get_node_or_null("RareSanctuaryNorthEast") as Marker3D
+	if rare != null:
+		rare.position = Vector3(66.0, 0.0, 62.0)
+	var boss := slot.get_node_or_null("BossSanctuarySouthWest") as Marker3D
+	if boss != null:
+		boss.position = Vector3(-68.0, 0.0, -60.0)
