@@ -48,15 +48,18 @@ func _run() -> void:
  if not is_equal_approx(silk.metallic,0.0) or not is_equal_approx(silk.roughness,0.85):
   _fail("Silk PBR values differ from specification")
   return
+ print("STEP_17B_PBR_PASS")
  var actor := Node3D.new()
  root.add_child(actor)
  var aura := AURA.new()
  actor.add_child(aura)
+ print("STEP_17B_AURA_CREATE")
  aura.set_level(12)
  if aura.plus_level != 12:
   _fail("+12 aura level was not applied")
   quit(1)
   return
+ print("STEP_17B_ANIMA_CREATE")
  var seal := ANIMA.attach_ground_seal(actor,18)
  if seal.get_child_count() < 11 or not seal.visible:
   _fail("P18 ground seal is incomplete or hidden")

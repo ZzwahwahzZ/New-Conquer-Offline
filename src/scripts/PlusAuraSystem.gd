@@ -32,19 +32,21 @@ func _build() -> void:
  halo_mesh.height = 1.55
  _halo.mesh = halo_mesh
  add_child(_halo)
- _sparkles = GPUParticles3D.new()
- _sparkles.name = "PlusAuraSparks"
- _sparkles.amount = 12
- _sparkles.lifetime = 1.2
- _sparkles.emitting = false
- var particle_material := ParticleProcessMaterial.new()
- particle_material.direction = Vector3(0,1,0)
- particle_material.spread = 24.0
- particle_material.initial_velocity_min = 0.35
- particle_material.initial_velocity_max = 0.9
- particle_material.gravity = Vector3(0,0,0)
- _sparkles.process_material = particle_material
- add_child(_sparkles)
+ # GPU particles are skipped in headless CI; the same controller enables them on devices.
+ if DisplayServer.get_name() != "headless":
+  _sparkles = GPUParticles3D.new()
+  _sparkles.name = "PlusAuraSparks"
+  _sparkles.amount = 12
+  _sparkles.lifetime = 1.2
+  _sparkles.emitting = false
+  var particle_material := ParticleProcessMaterial.new()
+  particle_material.direction = Vector3(0,1,0)
+  particle_material.spread = 24.0
+  particle_material.initial_velocity_min = 0.35
+  particle_material.initial_velocity_max = 0.9
+  particle_material.gravity = Vector3(0,0,0)
+  _sparkles.process_material = particle_material
+  add_child(_sparkles)
  for side in [-1.0, 1.0]:
   var wing := MeshInstance3D.new()
   wing.name = "AscensionWingLeft" if side < 0.0 else "AscensionWingRight"
@@ -88,8 +90,9 @@ func _apply_level() -> void:
  _halo.material_override = halo_mat
  _halo.visible = plus_level >= 4
  _halo.scale = Vector3(0.95 + float(plus_level) * 0.035,1.0,0.95 + float(plus_level) * 0.035)
- _sparkles.emitting = plus_level >= 7
- _sparkles.amount = 6 + plus_level * 2
+ if is_instance_valid(_sparkles):
+  _sparkles.emitting = plus_level >= 7
+  _sparkles.amount = 6 + plus_level * 2
  for wing in _wings:
   wing.visible = plus_level == 12
  set_process(plus_level >= 7)
