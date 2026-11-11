@@ -21,6 +21,7 @@ var equipment: Dictionary = {
 	"Necklace": {}, "Boots": {}, "Ring": {}
 }
 var upgrade_points: int = 0
+var weapon_loadouts: Dictionary = {"Archer": {}, "Oriental_Assassin": {}}
 var _rng := RandomNumberGenerator.new()
 var _syncing_profile := false
 var _gear_restore_received := false
@@ -109,9 +110,51 @@ func can_character_equip(item: Dictionary, current_class: String = "", current_l
 	var allowed_slots: Array = item.get("allowed_slots", [item.get("slot", "")])
 	if not GearDatabase.SLOTS.has(slot) or not allowed_slots.has(slot):
 		return false
-	if str(item.get("weapon_family", "")) == "ThrowingKnife" and current_class != "Oriental_Assassin":
+	var weapon_family := str(item.get("weapon_family", ""))
+	if weapon_family == "ThrowingKnife" and current_class != "Oriental_Assassin":
+		return false
+	if weapon_family in ["Bow", "Arrows"] and current_class == "Oriental_Assassin":
 		return false
 	return true
+
+## Keep a separate two-hand weapon set for each Archer/Assassin combat stance.
+func switch_weapon_mode(previous_mode: String, new_mode: String) -> void:
+	if previous_mode not in ["Archer", "Oriental_Assassin"] or new_mode not in ["Archer", "Oriental_Assassin"] or previous_mode == new_mode:
+		return
+	weapon_loadouts[previous_mode] = {
+		"RightHand": equipment.get("RightHand", {}).duplicate(true),
+		"LeftHand": equipment.get("LeftHand", {}).duplicate(true)
+	}
+	equipment["RightHand"] = {}
+	equipment["LeftHand"] = {}
+	var target: Dictionary = weapon_loadouts.get(new_mode, {})
+	if not target.is_empty():
+		equipment["RightHand"] = target.get("RightHand", {}).duplicate(true)
+		equipment["LeftHand"] = target.get("LeftHand", {}).duplicate(true)
+		weapon_loadouts[new_mode] = {}
+	else:
+		var right_family := "Bow" if new_mode == "Archer" else "ThrowingKnife"
+		var left_family := "Arrows" if new_mode == "Archer" else "ThrowingKnife"
+		var right_index := _find_inventory_weapon_index(right_family)
+		var left_index := _find_inventory_weapon_index(left_family, right_index)
+		if right_index >= 0 and left_index >= 0:
+			var right_item: Dictionary = inventory[right_index].duplicate(true)
+			var left_item: Dictionary = inventory[left_index].duplicate(true)
+			_consume_inventory_index(maxi(right_index, left_index), 1)
+			_consume_inventory_index(mini(right_index, left_index), 1)
+			right_item.erase("quantity")
+			left_item.erase("quantity")
+			equipment["RightHand"] = right_item
+			equipment["LeftHand"] = left_item
+	_save_and_emit()
+
+func _find_inventory_weapon_index(family: String, excluded_index: int = -1) -> int:
+	for index in range(inventory.size()):
+		if index == excluded_index:
+			continue
+		if str(inventory[index].get("weapon_family", "")) == family and int(inventory[index].get("quantity", 1)) > 0:
+			return index
+	return -1
 
 func equip_item(item_instance_id: String, target_slot: String, current_class: String, current_level: int) -> bool:
 	if not GearDatabase.SLOTS.has(target_slot):
@@ -380,7 +423,7 @@ func get_item_final_stats(item: Dictionary) -> Dictionary:
 	return stats
 
 func serialize_gear_data() -> Dictionary:
-	return {"inventory": inventory.duplicate(true), "equipment": equipment.duplicate(true), "upgrade_points": upgrade_points}
+	return {"inventory": inventory.duplicate(true), "equipment": equipment.duplicate(true), "upgrade_points": upgrade_points, "weapon_loadouts": weapon_loadouts.duplicate(true)}
 
 func deserialize_gear_data(data: Dictionary) -> void:
 	var stored_inventory = data.get("inventory", [])
@@ -395,6 +438,11 @@ func deserialize_gear_data(data: Dictionary) -> void:
 			var item = stored_equipment.get(slot, {})
 			equipment[slot] = _normalize_item(item) if item is Dictionary and not item.is_empty() else {}
 	upgrade_points = maxi(0, int(data.get("upgrade_points", 0)))
+	var stored_loadouts = data.get("weapon_loadouts", {})
+	if stored_loadouts is Dictionary:
+		weapon_loadouts = stored_loadouts.duplicate(true)
+	for mode in ["Archer", "Oriental_Assassin"]:
+		if not weapon_loadouts.has(mode): weapon_loadouts[mode] = {}
 	inventory_changed.emit()
 	equipment_changed.emit()
 

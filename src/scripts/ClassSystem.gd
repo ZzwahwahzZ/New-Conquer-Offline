@@ -110,7 +110,11 @@ func is_path_shadow_unlocked() -> bool:
 func toggle_path_of_shadow() -> bool:
 	if not is_path_shadow_unlocked():
 		return false
+	var previous_mode := current_class
 	current_class = "Archer" if current_class == "Oriental_Assassin" else "Oriental_Assassin"
+	var gear := get_node_or_null("/root/GearSystem")
+	if gear != null and gear.has_method("switch_weapon_mode"):
+		gear.switch_weapon_mode(previous_mode, current_class)
 	character_changed.emit()
 	stats_changed.emit()
 	_save()
@@ -118,12 +122,16 @@ func toggle_path_of_shadow() -> bool:
 
 func evolve_to(class_id: String) -> bool:
 	if not can_evolve_to(class_id): return false
+	var previous_mode := current_class
 	var old_base: Dictionary = CLASS_DATA[current_class]["base"]
 	var new_base: Dictionary = CLASS_DATA[class_id]["base"]
 	for stat in attributes:
 		attributes[stat] = maxi(0, int(attributes[stat]) + int(new_base.get(stat, 0)) - int(old_base.get(stat, 0)))
 	current_class = class_id
 	oriental_assassin_unlocked = true
+	var gear := get_node_or_null("/root/GearSystem")
+	if gear != null and gear.has_method("switch_weapon_mode"):
+		gear.switch_weapon_mode(previous_mode, current_class)
 	_recalculate_derived(false)
 	character_changed.emit()
 	stats_changed.emit()

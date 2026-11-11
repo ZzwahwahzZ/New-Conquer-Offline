@@ -300,6 +300,7 @@ func _build_promotion_button() -> void:
 	if _promotion_button == null:
 		_promotion_button = Button.new()
 		_promotion_button.name = "PathOfShadowButton"
+		_root.add_child(_promotion_button)
 	else:
 		_promotion_button.reparent(_root)
 	_promotion_button.text = "Path of Shadow"
@@ -307,7 +308,6 @@ func _build_promotion_button() -> void:
 	_promotion_button.add_theme_color_override("font_color", Color(1.0, 0.86, 0.61))
 	_promotion_button.add_theme_stylebox_override("normal", _panel_style(Color(0.08, 0.12, 0.16, 0.96), Color(0.2, 0.78, 0.95, 1.0), 2, 8))
 	_promotion_button.pressed.connect(_on_promote_archer)
-	_root.add_child(_promotion_button)
 	_promotion_button.hide()
 
 func _on_promote_archer() -> void:
