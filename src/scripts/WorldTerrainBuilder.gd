@@ -83,50 +83,23 @@ static func _roads(slot: Node3D,size: float,city: String) -> void:
   slot.add_child(road)
 
 static func _place_karst_models(parent: Node3D,city: String,size: float) -> void:
- if city=="TwinCity":
-  # TwinCity receives a smaller imperial ruin landmark while keeping its central plaza open.
-  pass
- var city_index := ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"].find(city)
- var model_name: String = KARST_MODELS[maxi(city_index,0)%KARST_MODELS.size()]
- var path := "res://assets/environment/models/" + model_name
- if not ResourceLoader.exists(path): return
- var packed := load(path) as PackedScene
- if packed == null: return
- var instance := packed.instantiate() as Node3D
- if instance == null: return
- instance.name = "ImportedKarstLandmark"
- var bounds := AABB()
- var found := false
- var stack: Array[Node] = [instance]
- while not stack.is_empty():
-  var node: Node = stack.pop_back()
-  for child in node.get_children(): stack.append(child)
-  if node is MeshInstance3D and node.mesh != null:
-   var mesh_node := node as MeshInstance3D
-   bounds = mesh_node.get_aabb() if not found else bounds.merge(mesh_node.get_aabb())
-   found = true
-   var rock := StandardMaterial3D.new()
-   rock.albedo_color = Color("#b5a995") if city in ["DesertLand","IceLand"] else Color("#5b5754")
-   rock.roughness = 0.94
-   for surface in range(mesh_node.mesh.get_surface_count()):
-    mesh_node.set_surface_override_material(surface,rock)
- if found and bounds.size.length()>0.001:
-  var target := 26.0
-  var factor := target/maxf(bounds.size.x,maxf(bounds.size.y,bounds.size.z))
-  instance.scale = Vector3.ONE*factor
- instance.position = Vector3(size*0.28,0.0,size*0.24) if city!="TwinCity" else Vector3(92.0,0.0,82.0)
- parent.add_child(instance)
- if city=="Waterlands":
-  var island_path := "res://assets/environment/models/tropical-island.glb"
-  if ResourceLoader.exists(island_path):
-   var island_pack := load(island_path) as PackedScene
-   if island_pack != null:
-    var island := island_pack.instantiate() as Node3D
-    if island != null:
-     island.name = "TropicalIslandImported"
-     island.position = Vector3(-size*0.28,0.0,-size*0.22)
-     parent.add_child(island)
-     _add_scene_mesh_collisions(island)
+	# Only the explicitly named tropical island is semantically safe to place before the
+	# remaining three unclassified GLBs have been inspected and catalogued.
+	if city != "Waterlands":
+		return
+	var island_path := "res://assets/environment/models/tropical-island.glb"
+	if not ResourceLoader.exists(island_path):
+		return
+	var packed := load(island_path) as PackedScene
+	if packed == null:
+		return
+	var island := packed.instantiate() as Node3D
+	if island == null:
+		return
+	island.name = "TropicalIslandImported"
+	island.position = Vector3(-size * 0.28, 0.0, -size * 0.22)
+	parent.add_child(island)
+	_add_scene_mesh_collisions(island)
 
 static func _add_scene_mesh_collisions(root: Node) -> void:
  var stack: Array[Node] = [root]
@@ -200,83 +173,64 @@ static func _build_flat_twin_city_plaza(parent: Node3D) -> void:
  parent.add_child(plaza)
 
 static func _build_environment_dressing(parent: Node3D, city: String, size: float) -> void:
- var trunk_material := StandardMaterial3D.new()
- var foliage_material := StandardMaterial3D.new()
- var accent_material := StandardMaterial3D.new()
- match city:
-  "DesertLand":
-   trunk_material.albedo_color = Color("#74502e")
-   foliage_material.albedo_color = Color("#a9a05b")
-   accent_material.albedo_color = Color("#b98a4d")
-  "VolcanoLand":
-   trunk_material.albedo_color = Color("#383033")
-   foliage_material.albedo_color = Color("#5c3830")
-   accent_material = PBRMaterialLibrary.build_emissive_material(Color("#ff4b12"), 1.2)
-  "IceLand":
-   trunk_material.albedo_color = Color("#7894a3")
-   foliage_material.albedo_color = Color("#b9e4f2")
-   accent_material.albedo_color = Color("#d8f5ff")
-  "Waterlands":
-   trunk_material.albedo_color = Color("#5d4930")
-   foliage_material.albedo_color = Color("#3d9b78")
-   accent_material.albedo_color = Color("#75d6d0")
-  "DarkForest":
-   trunk_material.albedo_color = Color("#382d27")
-   foliage_material.albedo_color = Color("#294b32")
-   accent_material.albedo_color = Color("#5b7c55")
-  _:
-   trunk_material.albedo_color = Color("#68432d")
-   foliage_material.albedo_color = Color("#e99ab3")
-   accent_material.albedo_color = Color("#c5a96c")
- trunk_material.roughness = 0.96
- foliage_material.roughness = 0.88
- accent_material.roughness = 0.82
- var count := 96 if city != "TwinCity" else 48
- var trunk := CylinderMesh.new()
- trunk.top_radius = 0.22 if city == "DesertLand" else 0.38
- trunk.bottom_radius = 0.48 if city == "DesertLand" else 0.72
- trunk.height = 3.8 if city == "DesertLand" else 8.0
- trunk.material = trunk_material
- var foliage := SphereMesh.new()
- foliage.radius = 1.25 if city == "DesertLand" else 2.4
- foliage.height = 2.5 if city == "DesertLand" else 4.8
- foliage.material = foliage_material
- var trunk_mm := MultiMesh.new()
- trunk_mm.transform_format = MultiMesh.TRANSFORM_3D
- trunk_mm.mesh = trunk
- trunk_mm.instance_count = count
- var foliage_mm := MultiMesh.new()
- foliage_mm.transform_format = MultiMesh.TRANSFORM_3D
- foliage_mm.mesh = foliage
- foliage_mm.instance_count = count
- for i in range(count):
-  var angle := float(i) * 2.399963
-  var radius := 105.0 + float((i * 47) % 100) / 100.0 * maxf(35.0, size * 0.30)
-  var pos := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-  var scale_factor := 0.72 + float((i * 19) % 60) / 100.0
-  var basis := Basis().scaled(Vector3.ONE * scale_factor)
-  trunk_mm.set_instance_transform(i, Transform3D(basis, pos + Vector3(0.0, trunk.height * 0.5, 0.0)))
-  foliage_mm.set_instance_transform(i, Transform3D(basis, pos + Vector3(0.0, trunk.height + foliage.radius * 0.48, 0.0)))
- var trunks := MultiMeshInstance3D.new()
- trunks.name = city + "BiomeTrunks"
- trunks.multimesh = trunk_mm
- trunks.add_to_group("distance_cull_world")
- trunks.visibility_range_end = 230.0
- parent.add_child(trunks)
- var crowns := MultiMeshInstance3D.new()
- crowns.name = city + "BiomeCanopy"
- crowns.multimesh = foliage_mm
- crowns.add_to_group("distance_cull_world")
- crowns.visibility_range_end = 230.0
- parent.add_child(crowns)
- if city == "VolcanoLand":
-  var lava := MeshInstance3D.new()
-  lava.name = "VolcanicLavaGlow"
-  var lava_plane := PlaneMesh.new()
-  lava_plane.size = Vector2(22.0, 68.0)
-  lava.mesh = lava_plane
-  lava.position = Vector3(-72.0, 0.12, -38.0)
-  lava.material_override = accent_material
-  lava.add_to_group("distance_cull_world")
-  lava.visibility_range_end = 190.0
-  parent.add_child(lava)
+	var asset_path := "res://assets/environment/nature/alpine_and_arctic_biomes.glb" if city == "IceLand" else "res://assets/environment/nature/stylized_trees_and_rocks.glb"
+	if not ResourceLoader.exists(asset_path):
+		push_error("Missing CC0 biome GLB: " + asset_path)
+		return
+	var packed := load(asset_path) as PackedScene
+	if packed == null:
+		push_error("Biome GLB did not import as PackedScene: " + asset_path)
+		return
+	var source_root := packed.instantiate()
+	if source_root == null:
+		return
+	var keywords: Array[String] = []
+	match city:
+		"DesertLand": keywords = ["palm", "date", "rock", "boulder", "desert"]
+		"VolcanoLand": keywords = ["rock", "boulder", "cliff", "basalt"]
+		"IceLand": keywords = ["spruce", "pine", "snow", "glacier", "rock"]
+		"Waterlands": keywords = ["willow", "poplar", "tree", "rock"]
+		"DarkForest": keywords = ["ancient", "oak", "dead", "tree", "rock"]
+		_: keywords = ["pine", "oak", "tree", "rock"]
+	var candidates: Array[Mesh] = []
+	var pending: Array[Node] = [source_root]
+	while not pending.is_empty():
+		var current: Node = pending.pop_back()
+		for child in current.get_children():
+			pending.append(child)
+		if current is MeshInstance3D:
+			var mesh_node := current as MeshInstance3D
+			var node_label := (mesh_node.name + " " + str(mesh_node.mesh.resource_name if mesh_node.mesh != null else "")).to_lower()
+			var matches := false
+			for word in keywords:
+				if node_label.contains(word):
+					matches = true
+					break
+			if matches and mesh_node.mesh != null and not candidates.has(mesh_node.mesh):
+				candidates.append(mesh_node.mesh)
+	source_root.free()
+	if candidates.is_empty():
+		push_warning("No named GLB meshes matched biome filters for " + city + "; no procedural substitutes were generated.")
+		return
+	var species_limit := mini(candidates.size(), 4)
+	for species_index in range(species_limit):
+		var source_mesh: Mesh = candidates[species_index]
+		var multimesh := MultiMesh.new()
+		multimesh.transform_format = MultiMesh.TRANSFORM_3D
+		multimesh.mesh = source_mesh
+		var count := 22 if city == "IceLand" else 28
+		multimesh.instance_count = count
+		for index in range(count):
+			var angle := float(index) * 2.399963 + float(species_index) * 0.73
+			var radius := 112.0 + float((index * 37 + species_index * 19) % 100) / 100.0 * maxf(30.0, size * 0.30)
+			var scale_factor := 0.78 + float((index * 17 + species_index * 11) % 55) / 100.0
+			var basis := Basis(Vector3.UP, angle).scaled(Vector3.ONE * scale_factor)
+			var position := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
+			multimesh.set_instance_transform(index, Transform3D(basis, position))
+		var instances := MultiMeshInstance3D.new()
+		instances.name = city + "_CC0_" + str(species_index) + "_MultiMesh"
+		instances.multimesh = multimesh
+		instances.add_to_group("distance_cull_world")
+		instances.visibility_range_end = 240.0
+		instances.visibility_range_end_margin = 24.0
+		parent.add_child(instances)
