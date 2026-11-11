@@ -23,6 +23,8 @@ var _spawn_timer := 0.0
 var _cull_timer := 0.0
 var _donation_timer := 0.0
 var _chat_timer := 0.0
+var _loot_timer := 0.0
+var _virtual_drops: Array[Dictionary] = []
 var _rng := RandomNumberGenerator.new()
 var _next_roster_index := 0
 
@@ -102,6 +104,12 @@ func _process(delta: float) -> void:
 	if _chat_timer >= CHAT_INTERVAL:
 		_chat_timer = 0.0
 		_emit_random_chat()
+	if not safe_zone:
+		_loot_timer += delta
+		if _loot_timer >= 8.0:
+			_loot_timer = 0.0
+			_spawn_virtual_gold()
+		_update_virtual_gold(delta)
 
 func _spawn_one(data: Dictionary) -> void:
 	if _active_bots.size() >= active_cap or not is_instance_valid(player):
@@ -205,6 +213,50 @@ func _simulate_donation() -> void:
 			active_bot.call("configure",updated,active_bot.global_position,_get_diplomacy_color(str(updated.guild_name)))
 			break
 
+func _spawn_virtual_gold() -> void:
+	if _active_bots.is_empty() or _virtual_drops.size() >= HUNT_CAP:
+		return
+	var monsters := get_tree().get_nodes_in_group("enemies")
+	if monsters.is_empty():
+		return
+	var target := monsters[_rng.randi_range(0,monsters.size()-1)] as Node3D
+	if not is_instance_valid(target):
+		return
+	var coin := MeshInstance3D.new()
+	coin.name = "SimulatedBotGoldDrop"
+	var mesh := CylinderMesh.new()
+	mesh.top_radius = 0.18
+	mesh.bottom_radius = 0.18
+	mesh.height = 0.07
+	coin.mesh = mesh
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(1.0,0.76,0.22)
+	material.metallic = 0.78
+	material.roughness = 0.25
+	coin.material_override = material
+	add_child(coin)
+	coin.global_position = target.global_position + Vector3(0.0,0.45,0.0)
+	var bot := _active_bots[_rng.randi_range(0,_active_bots.size()-1)]
+	_virtual_drops.append({"node":coin,"bot":bot,"amount":_rng.randi_range(80,650)})
+
+func _update_virtual_gold(delta: float) -> void:
+	for index in range(_virtual_drops.size()-1,-1,-1):
+		var drop: Dictionary = _virtual_drops[index]
+		var coin := drop.node as MeshInstance3D
+		var bot := drop.bot as Node3D
+		if not is_instance_valid(coin) or not is_instance_valid(bot):
+			if is_instance_valid(coin):
+				coin.queue_free()
+			_virtual_drops.remove_at(index)
+			continue
+		var destination := bot.global_position + Vector3(0.0,0.85,0.0)
+		coin.global_position = coin.global_position.move_toward(destination,6.0*delta)
+		coin.rotate_y(delta*5.0)
+		if coin.global_position.distance_to(destination) <= 0.7:
+			bot.call("simulate_gold_pickup",int(drop.amount))
+			coin.queue_free()
+			_virtual_drops.remove_at(index)
+
 func _emit_random_chat() -> void:
 	if _active_bots.is_empty():
 		return
@@ -226,6 +278,10 @@ func _format_gold(amount: int) -> String:
 	return formatted
 
 func recycle_all() -> void:
+	for drop in _virtual_drops:
+		if is_instance_valid(drop.node):
+			drop.node.queue_free()
+	_virtual_drops.clear()
 	for bot in _active_bots.duplicate():
 		_recycle_bot(bot)
 	_spawn_queue.clear()
