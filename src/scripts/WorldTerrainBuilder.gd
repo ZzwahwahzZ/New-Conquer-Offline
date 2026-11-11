@@ -1,5 +1,6 @@
 extends Node3D
 ## Builds scalable heightfield terrain and hard safety bounds. All collision stays static.
+const PBRMaterialLibrary = preload("res://src/scripts/PBRMaterialLibrary.gd")
 const CITY_SIZE := {"TwinCity":600.0,"DesertLand":450.0,"VolcanoLand":450.0,"IceLand":450.0,"Waterlands":450.0,"DarkForest":450.0}
 const HEIGHTS := {
  "TwinCity":"", "DesertLand":"res://assets/terrain/heightmaps/04_desert_dunes_heightmap_16bit.png",
@@ -18,7 +19,7 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  var visual := MeshInstance3D.new()
  visual.name = "TerrainSurface"
  visual.mesh = mesh
- visual.material_override = _fallback_ground_material(city)
+ visual.material_override = PBRMaterialLibrary.build_ground_material(city, city != "TwinCity")
  body.add_child(visual)
  if city == "TwinCity":
   # Preserve the terrain node for scene contracts, but only the flat plaza owns a collider.
@@ -159,12 +160,10 @@ static func _make_procedural_texture(stone: bool) -> Texture2D:
  return ImageTexture.create_from_image(image)
 
 static func _stone_material() -> StandardMaterial3D:
- var material := StandardMaterial3D.new()
- material.albedo_color = Color.WHITE
+ var material := PBRMaterialLibrary.build_ground_material("TwinCity", false)
  material.albedo_texture = _make_procedural_texture(true)
- material.uv1_scale = Vector3(22.0,22.0,1.0)
- material.roughness = 0.96
- material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR
+ material.uv1_scale = Vector3(0.09, 0.09, 1.0)
+ material.uv1_triplanar = false
  return material
 
 static func _fallback_ground_material(city: String) -> StandardMaterial3D:
@@ -177,9 +176,6 @@ static func _fallback_ground_material(city: String) -> StandardMaterial3D:
  if city == "TwinCity":
   material.albedo_texture = _make_procedural_texture(false)
   material.uv1_scale = Vector3(38.0,38.0,1.0)
- if OS.has_feature("web"):
-  material.normal_enabled = false
-  material.roughness_texture = null
  return material
 
 static func _build_flat_twin_city_plaza(parent: Node3D) -> void:
