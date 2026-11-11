@@ -17,6 +17,7 @@ concurrency:
 env:
   GODOT_VERSION: 4.3
   GODOT_RELEASE: 4.3-stable
+  GODOT_TEMPLATE_VERSION: 4.3.stable
 
 jobs:
   verify:
@@ -30,7 +31,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          TEMPLATE_DEST="$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}"
+          TEMPLATE_DEST="$HOME/.local/share/godot/export_templates/${GODOT_TEMPLATE_VERSION}"
           mkdir -p "$TEMPLATE_DEST"
           curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o /tmp/godot.zip
           unzip -q /tmp/godot.zip -d /tmp/godot-bin
@@ -38,10 +39,17 @@ jobs:
           curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o /tmp/templates.tpz
           mkdir -p /tmp/godot-templates
           unzip -q /tmp/templates.tpz -d /tmp/godot-templates
-          TEMPLATE_SOURCE="$(dirname "$(find /tmp/godot-templates -type f -name 'web_nothreads_release.zip' -print -quit)")"
-          test -n "$TEMPLATE_SOURCE" && test -f "$TEMPLATE_SOURCE/web_nothreads_debug.zip"
-          cp -a "$TEMPLATE_SOURCE"/. "$TEMPLATE_DEST"/
-          test -f "$TEMPLATE_DEST/web_nothreads_release.zip"
+          echo "Godot export template archive contents:"
+          find /tmp/godot-templates -type f -name '*.zip' -printf '%P\n' | sort
+          TEMPLATE_SOURCE="$(find /tmp/godot-templates -type d -name templates -print -quit)"
+          test -n "$TEMPLATE_SOURCE"
+          cp -av "$TEMPLATE_SOURCE"/* "$TEMPLATE_DEST"/
+          echo "Installed Godot export templates:"
+          ls -la "$TEMPLATE_DEST"
+          test -s "$TEMPLATE_DEST/web_nothreads_debug.zip"
+          test -s "$TEMPLATE_DEST/web_nothreads_release.zip"
+          test -s "$TEMPLATE_DEST/android_debug.apk"
+          test -s "$TEMPLATE_DEST/android_release.apk"
           godot --version
 
       - name: Import all project resources (Mobile renderer) and reject parser errors
@@ -103,10 +111,17 @@ jobs:
           curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o /tmp/templates.tpz
           mkdir -p /tmp/godot-templates
           unzip -q /tmp/templates.tpz -d /tmp/godot-templates
-          TEMPLATE_SOURCE="$(dirname "$(find /tmp/godot-templates -type f -name 'web_nothreads_release.zip' -print -quit)")"
-          test -n "$TEMPLATE_SOURCE" && test -f "$TEMPLATE_SOURCE/web_nothreads_debug.zip"
-          cp -a "$TEMPLATE_SOURCE"/. "$TEMPLATE_DEST"/
-          test -f "$TEMPLATE_DEST/web_nothreads_release.zip"
+          echo "Godot export template archive contents:"
+          find /tmp/godot-templates -type f -name '*.zip' -printf '%P\n' | sort
+          TEMPLATE_SOURCE="$(find /tmp/godot-templates -type d -name templates -print -quit)"
+          test -n "$TEMPLATE_SOURCE"
+          cp -av "$TEMPLATE_SOURCE"/* "$TEMPLATE_DEST"/
+          echo "Installed Godot export templates:"
+          ls -la "$TEMPLATE_DEST"
+          test -s "$TEMPLATE_DEST/web_nothreads_debug.zip"
+          test -s "$TEMPLATE_DEST/web_nothreads_release.zip"
+          test -s "$TEMPLATE_DEST/android_debug.apk"
+          test -s "$TEMPLATE_DEST/android_release.apk"
           godot --version
 
       - name: Switch temporary web build to Compatibility renderer
@@ -187,7 +202,9 @@ jobs:
           test -n "$SDKMANAGER"
           echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
           echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> "$GITHUB_ENV"
+          set +o pipefail
           yes | "$SDKMANAGER" --licenses >/dev/null
+          set -o pipefail
           "$SDKMANAGER" "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
       - name: Install Godot 4.3 and Android export templates
@@ -202,10 +219,17 @@ jobs:
           curl -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o /tmp/templates.tpz
           mkdir -p /tmp/godot-templates
           unzip -q /tmp/templates.tpz -d /tmp/godot-templates
-          TEMPLATE_SOURCE="$(dirname "$(find /tmp/godot-templates -type f -name 'web_nothreads_release.zip' -print -quit)")"
-          test -n "$TEMPLATE_SOURCE" && test -f "$TEMPLATE_SOURCE/web_nothreads_debug.zip"
-          cp -a "$TEMPLATE_SOURCE"/. "$TEMPLATE_DEST"/
-          test -f "$TEMPLATE_DEST/web_nothreads_release.zip"
+          echo "Godot export template archive contents:"
+          find /tmp/godot-templates -type f -name '*.zip' -printf '%P\n' | sort
+          TEMPLATE_SOURCE="$(find /tmp/godot-templates -type d -name templates -print -quit)"
+          test -n "$TEMPLATE_SOURCE"
+          cp -av "$TEMPLATE_SOURCE"/* "$TEMPLATE_DEST"/
+          echo "Installed Godot export templates:"
+          ls -la "$TEMPLATE_DEST"
+          test -s "$TEMPLATE_DEST/web_nothreads_debug.zip"
+          test -s "$TEMPLATE_DEST/web_nothreads_release.zip"
+          test -s "$TEMPLATE_DEST/android_debug.apk"
+          test -s "$TEMPLATE_DEST/android_release.apk"
           godot --version
 
       - name: Generate temporary Android debug keystore
