@@ -101,6 +101,7 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 	_transitioning = false
 
 func _spawn_settlement_content() -> void:
+	if current_settlement == "GuildWarArena": return
 	var definitions: Array = MonsterDB.get_settlement_monsters(current_settlement)
 	var spawn_points: Array[Vector3] = [Vector3(14,0,12),Vector3(-16,0,10),Vector3(20,0,-16),Vector3(-22,0,-18),Vector3(3,0,-28),Vector3(29,0,24)]
 	for index in range(spawn_points.size()):
