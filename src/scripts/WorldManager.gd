@@ -27,6 +27,7 @@ var _active_impacts: Array[Dictionary] = []
 var _cull_timer := 0.0
 var _transitioning := false
 var quest_system: Node
+var _ai_players_manager: Node3D
 
 func _ready() -> void:
 	add_to_group("world_manager")
@@ -36,6 +37,10 @@ func _ready() -> void:
 	add_child(teleporter)
 	teleporter.call("configure", self)
 	quest_system=Node.new(); quest_system.name="QuestSystem"; quest_system.set_script(load("res://src/scripts/QuestSystem.gd")); add_child(quest_system)
+	_ai_players_manager = Node3D.new()
+	_ai_players_manager.name = "AIPlayersManager"
+	_ai_players_manager.set_script(load("res://src/scripts/AIPlayersManager.gd"))
+	add_child(_ai_players_manager)
 
 func setup(target_player: Node3D) -> void:
 	player = target_player
@@ -53,9 +58,8 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 	for drop in _active_gold.duplicate(): recycle_gold(drop)
 	for impact in _active_impacts.duplicate(): recycle_impact(impact.node)
 	if is_instance_valid(current_world):
-		var old_ai_manager := current_world.get_node_or_null("AIPlayersManager")
-		if is_instance_valid(old_ai_manager):
-			old_ai_manager.call("recycle_all")
+		if is_instance_valid(_ai_players_manager):
+			_ai_players_manager.call("recycle_all")
 		current_world.queue_free()
 		current_world = null
 		await get_tree().process_frame
@@ -71,11 +75,8 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 	current_world.name = settlement_id
 	add_child(current_world)
 	var npc_system=Node3D.new(); npc_system.name="NPCSystem"; npc_system.set_script(load("res://src/scripts/NPCSystem.gd")); current_world.add_child(npc_system); npc_system.call("setup",current_world,settlement_id)
-	var ai_manager := Node3D.new()
-	ai_manager.name = "AIPlayersManager"
-	ai_manager.set_script(load("res://src/scripts/AIPlayersManager.gd"))
-	current_world.add_child(ai_manager)
-	ai_manager.call("setup",self,player,current_settlement)
+	if is_instance_valid(_ai_players_manager):
+		_ai_players_manager.call("setup",self,player,current_settlement)
 	if is_instance_valid(player) and not restore_position:
 		player.global_position = Vector3(0,1,0)
 	_spawn_settlement_content()
