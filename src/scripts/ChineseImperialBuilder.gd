@@ -18,6 +18,13 @@ static func build(parent: Node3D, city: String, size: float) -> void:
   for i in range(4):
    var angle:=TAU*float(i)/4.0
    _pavilion(root,Vector3(cos(angle)*42.0,0.0,sin(angle)*42.0))
+ _npc_halls(root)
+ if city=="TwinCity":
+  _arched_bridge(root,Vector3(-42.0,0.0,-92.0),Vector3(42.0,0.0,-92.0),7.0)
+ elif city=="Waterlands":
+  _arched_bridge(root,Vector3(-72.0,0.0,-58.0),Vector3(72.0,0.0,-58.0),8.0)
+ elif city=="VolcanoLand":
+  _arched_bridge(root,Vector3(-55.0,0.0,0.0),Vector3(55.0,0.0,0.0),7.0)
 static func _mat(color: Color,metal: float=0.0) -> StandardMaterial3D:
  var m:=StandardMaterial3D.new(); m.albedo_color=color; m.metallic=metal; m.roughness=0.55; return m
 static func _box(parent: Node3D,pos: Vector3,scale: Vector3,color: Color) -> MeshInstance3D:
@@ -87,3 +94,67 @@ static func _city_features(parent: Node3D,city: String,size: float) -> void:
    var pos:=Vector3(cos(angle)*radius,6.0,sin(angle)*radius)
    multi.set_instance_transform(i,Transform3D(Basis(),pos))
   var forest:=MultiMeshInstance3D.new(); forest.multimesh=multi; forest.name="ForestTreeTrunksMultiMesh"; parent.add_child(forest)
+
+static func _npc_halls(parent: Node3D) -> void:
+ var specs := [
+  ["BlacksmithTemple",Vector3(-26,0,24),Color("#8f2c1f")],
+  ["TreasuryHall",Vector3(26,0,24),Color("#b18a35")],
+  ["MaterialsShop",Vector3(-26,0,-24),Color("#477d68")],
+  ["ClanManagerPavilion",Vector3(26,0,-24),Color("#365b83")],
+  ["EvolutionTrainerHall",Vector3(0,0,34),Color("#6e4b86")]
+ ]
+ for item in specs:
+  var hall:=Node3D.new()
+  hall.name=item[0]
+  hall.position=item[1]
+  parent.add_child(hall)
+  _box(hall,Vector3(0,0.7,0),Vector3(10,1.4,8),Color("#ded2b7"))
+  for x in [-3.8,3.8]:
+   for z in [-2.8,2.8]:
+    _box(hall,Vector3(x,2.7,z),Vector3(0.55,4.0,0.55),Color("#8f241c"))
+  _roof(hall,Vector3(0,5.0,0),12.0)
+  if item[0]=="BlacksmithTemple":
+   var furnace:=MeshInstance3D.new()
+   var fire:=BoxMesh.new()
+   fire.size=Vector3(2.0,2.2,1.8)
+   furnace.mesh=fire
+   furnace.position=Vector3(0,1.8,-1.2)
+   var fm:=_mat(Color("#f05a16"))
+   fm.emission_enabled=true
+   fm.emission=Color("#ff4b08")
+   fm.emission_energy_multiplier=1.6
+   furnace.material_override=fm
+   hall.add_child(furnace)
+   _box(hall,Vector3(2.0,1.1,0.8),Vector3(2.4,0.7,1.4),Color("#62666a"))
+
+static func _arched_bridge(parent: Node3D, start: Vector3, finish: Vector3, width: float) -> void:
+ var segments:=16
+ var verts:=PackedVector3Array()
+ var indices:=PackedInt32Array()
+ for i in range(segments+1):
+  var t:=float(i)/segments
+  var center:=start.lerp(finish,t)
+  center.y+=sin(PI*t)*3.2
+  verts.append(center+Vector3(0,0,-width*0.5))
+  verts.append(center+Vector3(0,0,width*0.5))
+ for i in range(segments):
+  var a=i*2
+  indices.append_array(PackedInt32Array([a,a+2,a+1,a+1,a+2,a+3]))
+ var arrays=[]; arrays.resize(Mesh.ARRAY_MAX)
+ arrays[Mesh.ARRAY_VERTEX]=verts
+ arrays[Mesh.ARRAY_INDEX]=indices
+ var mesh:=ArrayMesh.new()
+ mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+ var body:=StaticBody3D.new()
+ body.name="ArchedBridgeCollision"
+ var visual:=MeshInstance3D.new()
+ visual.name="ArchedBridgeDeck"
+ visual.mesh=mesh
+ visual.material_override=_mat(Color("#b9a98b"))
+ body.add_child(visual)
+ var collision:=CollisionShape3D.new()
+ var shape:=ConcavePolygonShape3D.new()
+ shape.set_faces(mesh.get_faces())
+ collision.shape=shape
+ body.add_child(collision)
+ parent.add_child(body)
