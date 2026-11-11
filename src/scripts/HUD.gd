@@ -44,6 +44,7 @@ var _quest_ui: CanvasLayer
 var _shop_ui: CanvasLayer
 var _mall_ui: CanvasLayer
 var _warehouse_ui: CanvasLayer
+var _guild_ui: CanvasLayer
 var _last_bot_milestone_class := ""
 var _last_bot_milestone_plus := 0
 
@@ -748,6 +749,18 @@ func _build_step12_widgets() -> void:
 	var m=Button.new(); m.text="المول"; m.position=Vector2(112,112); m.pressed.connect(Callable(_mall_ui,"toggle")); _root.add_child(m)
 	var b=Button.new(); b.text="الخزنة"; b.position=Vector2(206,112); b.pressed.connect(Callable(_warehouse_ui,"toggle")); _root.add_child(b)
 	var i=Button.new(); i.text="تفاعل"; i.position=Vector2(300,112); i.pressed.connect(_interact_nearest_npc); _root.add_child(i)
+	_guild_ui = load("res://src/scenes/GuildUI.tscn").instantiate() as CanvasLayer
+	add_child(_guild_ui)
+	var guild_button := Button.new()
+	guild_button.text = "العشيرة [G]"
+	guild_button.position = Vector2(394,112)
+	guild_button.pressed.connect(Callable(_guild_ui,"toggle"))
+	_root.add_child(guild_button)
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_G and is_instance_valid(_guild_ui):
+		_guild_ui.call("toggle")
+		get_viewport().set_input_as_handled()
+
 func _interact_nearest_npc() -> void:
 	if not is_instance_valid(_player): _find_player()
 	if not is_instance_valid(_player): return
@@ -757,5 +770,7 @@ func _interact_nearest_npc() -> void:
 		if d<best: best=d; nearest=npc
 	if is_instance_valid(nearest): nearest.call("interact")
 func on_npc_interacted(role:String) -> void:
-	if role=="warehouseman": _warehouse_ui.call("toggle")
+	if role == "guild_director" and is_instance_valid(_guild_ui):
+		_guild_ui.call("open_ui")
+	elif role=="warehouseman": _warehouse_ui.call("toggle")
 	elif role in ["blacksmith","armorer","pharmacist","class_trainer"]: _shop_ui.call("open_shop",role)
