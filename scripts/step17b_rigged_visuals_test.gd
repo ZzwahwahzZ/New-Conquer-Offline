@@ -35,6 +35,14 @@ func _run() -> void:
    _fail("No imported AnimationPlayer clips: " + path)
    instance.free()
    return
+  if not FACTORY.play_state(instance, "Attack") or not animation_player.has_animation("Step17B/Attack") or not animation_player.has_animation("Step17B/Die"):
+   _fail("Baked idle/attack/death action segments were not split: " + path)
+   instance.free()
+   return
+  if path.contains("beast_") and not animation_player.has_animation("Step17B/Walk"):
+   _fail("Animal walk segment was not imported: " + path)
+   instance.free()
+   return
   instance.free()
  var metal := MATERIALS.metal()
  var leather := MATERIALS.leather()

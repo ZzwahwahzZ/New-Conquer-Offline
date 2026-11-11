@@ -1,4 +1,5 @@
 extends Node3D
+const RiggedCharacterFactory = preload("res://src/scripts/RiggedCharacterFactory.gd")
 ## Lightweight +1..+12 upgrade aura; one controller per visible actor.
 var plus_level := 0
 var _ring: MeshInstance3D
@@ -63,7 +64,10 @@ func _build() -> void:
   wing_material.emission = Color(1.0,0.62,0.12) * 0.8
   wing.material_override = wing_material
   wing.visible = false
-  add_child(wing)
+  var rig_root := get_parent() as Node3D
+  var attachment := RiggedCharacterFactory.attach_bone_prop(rig_root, ["spine", "chest", "back", "root"], wing) if rig_root != null else null
+  if attachment == null:
+   add_child(wing)
   _wings.append(wing)
  _apply_level()
 func _apply_level() -> void:
