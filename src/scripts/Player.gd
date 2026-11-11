@@ -126,7 +126,7 @@ func _set_move_target_from_screen(screen_position: Vector2) -> void:
 	_has_move_target = true
 
 func _physics_process(delta: float) -> void:
-	if Input.is_action_just_pressed("jump"):
+	if InputMap.has_action("jump") and Input.is_action_just_pressed("jump"):
 		cast_skill("Jump")
 	_attack_timer = maxf(0.0, _attack_timer - delta)
 	for skill_id in _cooldowns.keys():
