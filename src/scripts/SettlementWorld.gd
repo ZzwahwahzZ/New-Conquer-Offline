@@ -14,6 +14,7 @@ func _ready() -> void:
 	_build_environment()
 	_build_asset_slots()
 	_build_terrain_shell()
+	ChineseImperialBuilder.build(get_node("ArchitectureAssetSlot"), settlement_id, 600.0 if settlement_id == "TwinCity" else 450.0)
 	_build_landmarks()
 	_build_sanctuary_landmarks()
 
@@ -62,69 +63,5 @@ func _build_asset_slots() -> void:
 		spawn_slot.add_child(marker)
 
 func _build_terrain_shell() -> void:
-	var ground := StaticBody3D.new()
-	ground.name = "TerrainCollision"
-	var mesh_node := MeshInstance3D.new()
-	mesh_node.name = "TerrainAssetReadyPlaceholder"
-	var plane := PlaneMesh.new()
-	plane.size = Vector2(180,180)
-	mesh_node.mesh = plane
-	var material := StandardMaterial3D.new()
-	material.albedo_color = ground_color
-	material.roughness = 1.0
-	mesh_node.material_override = material
-	ground.add_child(mesh_node)
-	var collider := CollisionShape3D.new()
-	var shape := BoxShape3D.new()
-	shape.size = Vector3(180,0.5,180)
-	collider.shape = shape
-	collider.position.y = -0.25
-	ground.add_child(collider)
-	add_child(ground)
+	WorldTerrainBuilder.build(self, settlement_id, get_node("TerrainAssetSlot"))
 
-func _build_sanctuary_landmarks() -> void:
-	for sanctuary_data in [{"label":"Rare Monster Grounds","position":Vector3(66,0.03,62)},{"label":"Open Boss Lair","position":Vector3(-68,0.03,-60)}]:
-		var marker := Node3D.new()
-		marker.name = str(sanctuary_data.label).replace(" ","")
-		marker.position = sanctuary_data.position
-		var ring_node := MeshInstance3D.new()
-		var ring_mesh := TorusMesh.new()
-		ring_mesh.inner_radius = 5.5
-		ring_mesh.outer_radius = 6.0
-		ring_node.mesh = ring_mesh
-		var glow := StandardMaterial3D.new()
-		glow.albedo_color = landmark_color
-		glow.emission_enabled = true
-		glow.emission = landmark_color
-		glow.emission_energy_multiplier = 0.45
-		ring_node.material_override = glow
-		marker.add_child(ring_node)
-		for pillar_index in range(4):
-			var pillar := MeshInstance3D.new()
-			var pillar_mesh := CylinderMesh.new()
-			pillar_mesh.top_radius = 0.28
-			pillar_mesh.bottom_radius = 0.42
-			pillar_mesh.height = 2.4
-			pillar.mesh = pillar_mesh
-			pillar.material_override = glow
-			var angle := TAU*float(pillar_index)/4.0
-			pillar.position = Vector3(cos(angle)*5.8,1.2,sin(angle)*5.8)
-			marker.add_child(pillar)
-		add_child(marker)
-
-func _build_landmarks() -> void:
-	var ring_material := StandardMaterial3D.new()
-	ring_material.albedo_color = landmark_color
-	ring_material.roughness = 0.82
-	for index in range(12):
-		var angle := TAU*float(index)/12.0
-		var landmark := MeshInstance3D.new()
-		landmark.name = "AssetReadyLandmark_%02d" % index
-		var mesh := CylinderMesh.new()
-		mesh.top_radius = 0.45
-		mesh.bottom_radius = 0.8
-		mesh.height = 2.0 + float(index%3)*0.6
-		landmark.mesh = mesh
-		landmark.material_override = ring_material
-		landmark.position = Vector3(cos(angle)*82.0,mesh.height*0.5,sin(angle)*82.0)
-		add_child(landmark)
