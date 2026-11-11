@@ -50,9 +50,12 @@ func _ready() -> void:
 	_safe_spawn = global_position
 	_move_target = global_position
 	add_to_group("player")
-	_ground_y = 0.9
-	floor_snap_length = 0.35
-	floor_max_angle = deg_to_rad(50.0)
+	_ground_y = 0.775
+	floor_snap_length = 0.1
+	floor_max_angle = deg_to_rad(45.0)
+	safe_margin = 0.001
+	collision_layer = 1
+	collision_mask = 1
 	_visual = get_node_or_null("VisualRoot")
 	if _visual == null:
 		_visual = Node3D.new()
@@ -85,8 +88,9 @@ func _ready() -> void:
 
 func set_safe_spawn(point: Vector3) -> void:
 	_safe_spawn = point
-	_ground_y = 0.9
-	global_position.y = maxf(global_position.y, 0.9)
+	_ground_y = maxf(point.y, 0.0) + 0.775
+	global_position = Vector3(point.x, _ground_y, point.z)
+	_safe_spawn = global_position
 	velocity.y = 0.0
 	_jumping = false
 
@@ -122,6 +126,8 @@ func _set_move_target_from_screen(screen_position: Vector2) -> void:
 	_has_move_target = true
 
 func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed("jump"):
+		cast_skill("Jump")
 	_attack_timer = maxf(0.0, _attack_timer - delta)
 	for skill_id in _cooldowns.keys():
 		_cooldowns[skill_id] = maxf(0.0, float(_cooldowns[skill_id]) - delta)
