@@ -28,9 +28,9 @@ func _run() -> void:
 	system.set_script(load("res://src/scripts/GuildSystem.gd"))
 	root.add_child(system)
 	await process_frame
-	int(economy.get("current_gold")) = maxi(original_gold,5000000)
+	economy.set("current_gold", maxi(original_gold,5000000))
 	economy.call("save_gold")
-	int(class_system.get("level")) = maxi(original_level,40)
+	class_system.set("level", maxi(original_level,40))
 	system.set("player_guild_name","")
 	system.set("player_guild_rank","")
 	system.set("player_guild_donation",0)
@@ -120,12 +120,12 @@ func _run() -> void:
 
 	system.queue_free()
 	await process_frame
-	int(economy.get("current_gold")) = original_gold
+	economy.set("current_gold", original_gold)
 	economy.call("save_gold")
 	economy.call("save_guild_data", original_guild_data)
-	game_state.get("profile") = original_profile
+	game_state.set("profile", original_profile)
 	game_state.call("save_local")
-	int(class_system.get("level")) = original_level
+	class_system.set("level", original_level)
 
 	if failures.is_empty():
 		print("STEP14_GUILD_MEMBERSHIP_DONATIONS_SAVE_V6_POLE_DESTRUCTION_PASS")
