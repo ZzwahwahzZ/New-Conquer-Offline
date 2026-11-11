@@ -1,6 +1,14 @@
 extends RefCounted
 ## Royal Chinese palette for runtime UI controls.
-static var arabic_font: Font = load("res://assets/fonts/NotoSansArabic-Bold.ttf") if ResourceLoader.exists("res://assets/fonts/NotoSansArabic-Bold.ttf") else null
+static var arabic_font: Font = _load_arabic_font()
+
+static func _load_arabic_font() -> Font:
+ if not ResourceLoader.exists("res://assets/fonts/NotoSansArabic-Bold.ttf"):
+  return null
+ var font := load("res://assets/fonts/NotoSansArabic-Bold.ttf") as FontFile
+ if font != null:
+  font.variation_coordinates = {"wght": 700.0, "wdth": 100.0}
+ return font
 
 static func apply(control: Control) -> void:
  if arabic_font != null:
