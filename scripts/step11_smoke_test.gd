@@ -1,4 +1,5 @@
 extends SceneTree
+const RIG_FACTORY = preload("res://src/scripts/RiggedCharacterFactory.gd")
 ## Step 11 static/resource smoke checks. Run with Godot 4.3 headless.
 func _initialize() -> void:
 	call_deferred("_run")
@@ -45,12 +46,11 @@ func _run() -> void:
 	var monster_scene := (load("res://src/scenes/Monster.tscn") as PackedScene).instantiate()
 	root.add_child(monster_scene)
 	await process_frame
-	assert(monster_scene.get_node_or_null("Skeleton3D") != null)
-	assert(monster_scene.get_node_or_null("Skeleton3D/HighDetailRigSlot") != null)
-	var animation_player := monster_scene.get_node_or_null("AnimationPlayer") as AnimationPlayer
-	assert(animation_player != null)
-	for animation_name in ["Idle","Run","Attack","Hit","Death"]:
-		assert(animation_player.has_animation(animation_name))
+	var monster_skeleton := RIG_FACTORY.find_skeleton(monster_scene)
+	assert(monster_skeleton != null and monster_skeleton.get_bone_count() > 0, "Monster must load a skinned GLB skeleton")
+	var animation_player := RIG_FACTORY.find_animation_player(monster_scene)
+	assert(animation_player != null and not animation_player.get_animation_list().is_empty(), "Monster must retain imported GLB animations")
+	assert(monster_scene.get_node_or_null("Rigged_Monster") != null, "Monster must use the imported rigged visual, not the old capsule")
 	monster_scene.queue_free()
 	await process_frame
 
