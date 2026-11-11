@@ -56,6 +56,10 @@ func setup(target_player: Node3D) -> void:
 	var saved_position = GameState.profile.get("world_position", [])
 	if saved_position is Array and saved_position.size() >= 3:
 		player.position = Vector3(float(saved_position[0]),maxf(0.9,float(saved_position[1])),float(saved_position[2]))
+		if saved_id == "TwinCity" and Vector2(player.position.x,player.position.z).length() < 10.0:
+			player.position = Vector3(0.0,1.0,22.0)
+	else:
+		player.position = Vector3(0.0,1.0,22.0) if saved_id == "TwinCity" else Vector3(0.0,1.0,0.0)
 	call_deferred("change_settlement", saved_id, true)
 
 func change_settlement(settlement_id: String, restore_position: bool = false) -> void:
@@ -90,7 +94,7 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 		current_world.add_child(npc_system)
 		npc_system.call("setup",current_world,settlement_id)
 	if is_instance_valid(player) and not restore_position:
-		player.global_position = Vector3(0,1,0) if settlement_id != "GuildWarArena" else Vector3(0,1,27)
+		player.global_position = Vector3(0,1,22) if settlement_id == "TwinCity" else (Vector3(0,1,0) if settlement_id != "GuildWarArena" else Vector3(0,1,27))
 	if is_instance_valid(player) and player.has_method("set_safe_spawn"):
 		player.call("set_safe_spawn", player.global_position)
 	if settlement_id != "GuildWarArena":
