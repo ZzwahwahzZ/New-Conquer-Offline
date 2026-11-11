@@ -135,7 +135,7 @@ func _physics_process(delta: float) -> void:
 		if _fly_timer <= 0.0: _set_flying(false)
 	if _flying:
 		velocity.y = 0.0
-	elif is_on_floor():
+	elif is_on_floor() and velocity.y <= 0.0:
 		velocity.y = 0.0
 		_jumping = false
 	else:
