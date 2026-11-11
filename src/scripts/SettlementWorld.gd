@@ -48,6 +48,8 @@ func _build_environment() -> void:
 	sun.rotation_degrees = Vector3(-45,-32,0)
 	sun.light_energy = 1.3
 	sun.shadow_enabled = not OS.has_feature("web")
+	sun.shadow_bias = 0.035
+	sun.shadow_normal_bias = 1.25
 	sun.shadow_blur = 1.4 if not OS.has_feature("web") else 0.0
 	add_child(sun)
 
