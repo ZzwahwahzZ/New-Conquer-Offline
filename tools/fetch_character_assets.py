@@ -146,7 +146,9 @@ def main() -> None:
         report["assets"][asset_id] = {"source_path": relative, "git_blob_sha": actual_sha,
                                       "bytes": len(data), **info}
         print(f"VALIDATED {asset_id}: {info['skins']} skin(s), {info['animations']} animation(s), {info['vertices']} vertices")
-    report["extended_assets"] = fetch_extended_assets()\n    report["extended_asset_count"] = len(report["extended_assets"])\n    (OUT / "manifest.json").write_text(json.dumps(report, indent=2) + "\\n", encoding="utf-8")
+    report["extended_assets"] = fetch_extended_assets()
+    report["extended_asset_count"] = len(report["extended_assets"])
+    (OUT / "manifest.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(f"CHARACTER_ASSET_FETCH_PASS: {len(ASSETS)} pinned CC0 rigged GLBs")
 if __name__ == "__main__":
     main()
