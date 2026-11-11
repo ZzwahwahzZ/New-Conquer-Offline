@@ -461,6 +461,8 @@ func _format_number(value: int) -> String:
 func _connect_game_state() -> void:
 	if not GameState.stats_changed.is_connected(_refresh_stats):
 		GameState.stats_changed.connect(_refresh_stats)
+	if not ClassSystem.stats_changed.is_connected(_refresh_stats):
+		ClassSystem.stats_changed.connect(_refresh_stats)
 	_refresh_stats()
 
 
@@ -471,8 +473,8 @@ func _on_skill_pressed(skill_id: String) -> void:
 
 func _process(_delta: float) -> void:
 	if not is_instance_valid(_player): _find_player()
-	if is_instance_valid(_xp_skill_bar) and is_instance_valid(_player) and _player.has_method("get_xp_skill"):
-		_xp_skill_bar.value = float(_player.call("get_xp_skill"))
+	if is_instance_valid(_xp_skill_bar):
+		_xp_skill_bar.value = ClassSystem.xp_skill
 	if is_instance_valid(_stamina_bar):
 		_stamina_bar.max_value = ClassSystem.max_stamina
 		_stamina_bar.value = ClassSystem.stamina
@@ -482,7 +484,10 @@ func _process(_delta: float) -> void:
 		_skill_buttons[i].disabled = not can_use
 		var labels := ["JUMP", "FLY", "AOE", "KNIFE", "XP"]
 		_skill_buttons[i].text = "%s\n%.1f" % [labels[i], cooldown] if cooldown > 0.0 else labels[i]
-		_skill_buttons[i].tooltip_text = "%s  %.1fs" % [_skill_ids[i], cooldown] if cooldown > 0.0 else _skill_ids[i]
+		var skill_cost: Dictionary = _player.SKILL_DATA.get(_skill_ids[i], {}) if is_instance_valid(_player) else {}
+		var mana_cost := int(skill_cost.get("mana", 0))
+		var stamina_cost := float(skill_cost.get("stamina", 0.0))
+		_skill_buttons[i].tooltip_text = "%s | MP %d | STA %.0f | CD %.1fs" % [_skill_ids[i], mana_cost, stamina_cost, cooldown]
 
 func _refresh_stats() -> void:
 	if not is_instance_valid(_root):

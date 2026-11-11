@@ -44,7 +44,6 @@ var _ground_y := 0.0
 var _attack_timer := 0.0
 var _xp_mode_timer := 0.0
 var _xp_damage_multiplier := 1.0
-var _xp_skill := 0.0
 var _visual: Node3D
 
 func _ready() -> void:
@@ -114,6 +113,7 @@ func _physics_process(delta: float) -> void:
 		if _xp_mode_timer <= 0.0: _xp_damage_multiplier = 1.0
 	if _flying:
 		_fly_timer -= delta
+		velocity.y = 0.0
 		if _fly_timer <= 0.0: _set_flying(false)
 	if _jumping:
 		_update_jump(delta)
@@ -176,19 +176,21 @@ func _update_jump(delta: float) -> void:
 func can_use_skill(skill_id: String) -> bool:
 	if not SKILL_DATA.has(skill_id) or float(_cooldowns.get(skill_id, 0.0)) > 0.0: return false
 	if skill_id in ["Fly", "Scatter"] and not _is_archer_family(): return false
+	if skill_id == "Jump" and (_jumping or _flying): return false
+	if skill_id == "Fly" and (_flying or _jumping): return false
 	if skill_id in ["Rapid_Fire", "Kinetic_Spark"] and (ClassSystem.current_class != "Oriental_Assassin" or not _has_dual_knives()): return false
-	if skill_id == "XP_Mode" and _xp_skill < 100.0: return false
+	if skill_id == "XP_Mode" and ClassSystem.xp_skill < ClassSystem.xp_skill_max: return false
 	var data: Dictionary = SKILL_DATA[skill_id]
 	return ClassSystem.mp >= int(data.mana) and ClassSystem.stamina >= float(data.stamina)
 
 func cast_skill(skill_id: String) -> bool:
 	if not can_use_skill(skill_id): return false
 	var data: Dictionary = SKILL_DATA[skill_id]
-	ClassSystem.mp -= int(data.mana)
-	if not ClassSystem.consume_stamina(float(data.stamina)):
-		ClassSystem.mp += int(data.mana)
+	if not ClassSystem.consume_mana(int(data.mana)):
 		return false
-	ClassSystem.stats_changed.emit()
+	if not ClassSystem.consume_stamina(float(data.stamina)):
+		ClassSystem.restore_mana(int(data.mana))
+		return false
 	_cooldowns[skill_id] = float(data.cooldown)
 	match skill_id:
 		"Jump": _start_classic_jump()
@@ -200,10 +202,12 @@ func cast_skill(skill_id: String) -> bool:
 		"Rapid_Fire", "Kinetic_Spark":
 			_start_rapid_fire()
 		"XP_Mode":
-			_xp_skill = 0.0
+			if not ClassSystem.consume_xp_skill():
+				ClassSystem.restore_mana(int(data.mana))
+				ClassSystem.restore_stamina(float(data.stamina))
+				return false
 			_xp_mode_timer = 10.0
 			_xp_damage_multiplier = 1.5
-			xp_skill_changed.emit(_xp_skill, 100.0)
 	_gain_skill_proficiency(skill_id, 1)
 	skill_used.emit(skill_id)
 	return true
@@ -227,8 +231,9 @@ func _set_flying(enabled: bool) -> void:
 	if enabled:
 		_ground_y = global_position.y
 		velocity.y = 0.0
+		global_position.y = _ground_y + fly_height
 		if is_instance_valid(_visual):
-			_visual.position.y = fly_height
+			_visual.position.y = 0.0
 			var ring = _visual.get_meta("fly_ring", null)
 			if is_instance_valid(ring): ring.visible = true
 	else:
@@ -237,6 +242,7 @@ func _set_flying(enabled: bool) -> void:
 			var ring = _visual.get_meta("fly_ring", null)
 			if is_instance_valid(ring): ring.visible = false
 		global_position.y = _ground_y
+		velocity.y = 0.0
 	_gain_xp_skill(8.0 if enabled else 0.0)
 
 func is_airborne() -> bool:
@@ -248,7 +254,7 @@ func _cast_scatter() -> void:
 	var radius := 7.0 + float(scatter_level) * 0.25
 	var damage := int((18 + int(ClassSystem.get_physical_attack_bonus() * 0.1) + scatter_level * 3) * _xp_damage_multiplier)
 	for enemy in get_tree().get_nodes_in_group("enemies"):
-		if is_instance_valid(enemy) and enemy.has_method("take_damage") and global_position.distance_to(enemy.global_position) <= radius:
+		if is_instance_valid(enemy) and enemy.has_method("take_damage") and Vector2(global_position.x, global_position.z).distance_to(Vector2(enemy.global_position.x, enemy.global_position.z)) <= radius:
 			enemy.take_damage(damage)
 			combat_hit.emit(enemy, damage)
 	_gain_xp_skill(12.0)
@@ -306,8 +312,7 @@ func get_skill_proficiency(skill_id: String) -> Dictionary:
 	return ClassSystem.get_skill_proficiency(skill_id)
 
 func _gain_xp_skill(amount: float) -> void:
-	_xp_skill = minf(100.0, _xp_skill + amount)
-	xp_skill_changed.emit(_xp_skill, 100.0)
+	ClassSystem.add_xp_skill(amount)
 
 func on_monster_killed() -> void:
 	_gain_xp_skill(20.0)
@@ -316,7 +321,7 @@ func get_skill_cooldown(skill_id: String) -> float:
 	return float(_cooldowns.get(skill_id, 0.0))
 
 func get_xp_skill() -> float:
-	return _xp_skill
+	return ClassSystem.xp_skill
 
 func _sync_class_stats() -> void:
 	stamina_changed.emit(ClassSystem.stamina, ClassSystem.max_stamina)

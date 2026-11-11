@@ -5,7 +5,7 @@ signal gold_changed(new_amount: int)
 signal economy_ready
 
 const SAVE_PATH := "user://conquer_offline_save.dat"
-const SAVE_VERSION := 3
+const SAVE_VERSION := 4
 const DEFAULT_GOLD := 100
 const LEGACY_SAVE_PATH := "user://offline_profile.json"
 

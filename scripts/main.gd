@@ -4,10 +4,20 @@ var enemy: CharacterBody3D
 var status: Label
 var inventory_manager: Control
 func _ready() -> void:
+  GameState.load_local()
+  var saved_class := str(GameState.profile.get("class_id", ""))
+  if not ClassSystem.CLASS_DATA.has(saved_class):
+    var selection_error := get_tree().change_scene_to_file("res://src/scenes/CharacterSelection.tscn")
+    if selection_error != OK:
+      push_error("Main: could not open character selection. Error: %s" % selection_error)
+    return
+  if ClassSystem.level <= 1 and ClassSystem.current_class != saved_class:
+    ClassSystem.choose_class(saved_class)
   _setup_input()
   _build_arena()
-  GameState.load_local()
   GameState.stats_changed.connect(_refresh)
+  if not ClassSystem.stats_changed.is_connected(_refresh):
+    ClassSystem.stats_changed.connect(_refresh)
   _refresh()
 func _setup_input() -> void:
   var keys := {"move_left":KEY_A,"move_right":KEY_D,"move_forward":KEY_W,"move_back":KEY_S,"attack":KEY_SPACE,"save_game":KEY_F5,"inventory":KEY_I,"upgrade":KEY_U,"skill_jump":KEY_1,"skill_fly":KEY_2,"skill_scatter":KEY_3,"skill_rapid":KEY_4,"skill_xp":KEY_5}
