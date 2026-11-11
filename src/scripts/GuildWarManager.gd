@@ -28,15 +28,34 @@ func _ready() -> void:
 		defending_guild = "Dragons" if player_guild != "Dragons" else "Pharaohs"
 	_build_arena()
 	_spawn_war_bots(system)
-	var player := get_tree().get_first_node_in_group("player")
-	if is_instance_valid(player) and player.has_signal("combat_hit"):
-		var callback := Callable(self,"_on_player_combat_hit")
-		if not player.is_connected("combat_hit",callback): player.connect("combat_hit",callback)
 	_hud = get_tree().get_first_node_in_group("game_hud")
 	if is_instance_valid(_hud):
 		_hud.call("push_simulated_chat","بدأت حرب العشائر بين %s و%s!" % [player_guild,defending_guild],"عام")
 
 func _build_arena() -> void:
+	var hp_layer := CanvasLayer.new()
+	hp_layer.name = "GuildWarHUD"
+	add_child(hp_layer)
+	var hp_panel := PanelContainer.new()
+	hp_panel.name = "PanelContainer"
+	hp_panel.position = Vector2(300,18)
+	hp_panel.size = Vector2(680,70)
+	hp_panel.add_theme_stylebox_override("panel",_hud_style())
+	hp_layer.add_child(hp_panel)
+	var hp_box := VBoxContainer.new()
+	hp_box.name = "VBoxContainer"
+	hp_panel.add_child(hp_box)
+	var hp_title := Label.new()
+	hp_title.name = "PoleTitle"
+	hp_title.text = "GUILD POLE — %s" % defending_guild
+	hp_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	hp_box.add_child(hp_title)
+	var hp_bar := ProgressBar.new()
+	hp_bar.name = "PoleHP"
+	hp_bar.max_value = 60000
+	hp_bar.value = 60000
+	hp_bar.show_percentage = true
+	hp_box.add_child(hp_bar)
 	var floor_mesh := MeshInstance3D.new()
 	var floor := PlaneMesh.new()
 	floor.size = Vector2(72,72)
@@ -58,6 +77,14 @@ func _build_arena() -> void:
 	pole_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	pole_label.font_size = 42
 	add_child(pole_label)
+
+func _hud_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.05,0.06,0.08,0.94)
+	style.border_color = Color(0.8,0.58,0.25)
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(7)
+	return style
 
 func _make_target(id: String, label: String, health: int, position: Vector3) -> Node3D:
 	var node := StaticBody3D.new()
@@ -102,23 +129,17 @@ func _process(delta: float) -> void:
 	else:
 		register_target_damage("guild_pole",_war_bots.size() * 220)
 
-func _on_player_combat_hit(target: Node, damage: int) -> void:
-	if is_instance_valid(target) and target.is_in_group("enemies"):
-		var target_id := str(target.get("target_id"))
-		if target_id in ["left_gate","right_gate","guild_pole"]:
-			register_target_damage(target_id,damage)
-
 func register_target_damage(target_id: String, amount: int) -> void:
 	if amount <= 0: return
 	var team := player_guild
-	if target_id == "right_gate" and not gates_destroyed: team = defending_guild
 	damage_by_guild[team] = int(damage_by_guild.get(team,0)) + amount
 
 func update_target_health(target_id: String, hp: int, max_hp: int) -> void:
 	if target_id == "left_gate" and hp <= 0: left_gate.set_meta("destroyed",true)
 	if target_id == "right_gate" and hp <= 0: right_gate.set_meta("destroyed",true)
-	if target_id == "guild_pole" and is_instance_valid(_hud):
-		_hud.call("push_simulated_chat","Guild Pole HP: %d / %d" % [hp,max_hp],"حرب العشائر")
+	if target_id == "guild_pole":
+		var bar := get_node_or_null("GuildWarHUD/PanelContainer/VBoxContainer/PoleHP")
+		if is_instance_valid(bar): bar.value = hp
 
 func target_destroyed(target_id: String) -> void:
 	if target_id in ["left_gate","right_gate"]:
@@ -143,9 +164,9 @@ func _resolve_war() -> void:
 	if is_instance_valid(system):
 		system.call("set_war_winner",winner)
 		if winner == player_guild:
-			system.call("set_war_active",false)
 			GameState.profile["guild_war_title"] = "Guild War Winner"
 			GameState.save_local()
+		system.call("set_war_active",false)
 	if is_instance_valid(_hud):
 		_hud.call("push_simulated_chat","🏆 Guild War Winner: %s!" % winner,"عام")
 		_hud.call("push_simulated_chat","تم منح لقب Guild War Winner وبف النصر لعشيرة اللاعب عند الفوز.","عام")
