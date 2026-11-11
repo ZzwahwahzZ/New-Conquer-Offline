@@ -53,6 +53,9 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 	for drop in _active_gold.duplicate(): recycle_gold(drop)
 	for impact in _active_impacts.duplicate(): recycle_impact(impact.node)
 	if is_instance_valid(current_world):
+		var old_ai_manager := current_world.get_node_or_null("AIPlayersManager")
+		if is_instance_valid(old_ai_manager):
+			old_ai_manager.call("recycle_all")
 		current_world.queue_free()
 		current_world = null
 		await get_tree().process_frame
