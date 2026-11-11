@@ -1,4 +1,5 @@
 extends Node3D
+const ConquerRoyalTheme = preload("res://src/scripts/ConquerRoyalTheme.gd")
 var player: CharacterBody3D
 var enemy: CharacterBody3D
 var status: Label
