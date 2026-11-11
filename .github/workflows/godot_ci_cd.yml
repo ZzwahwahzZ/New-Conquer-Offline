@@ -40,8 +40,32 @@ jobs:
           cp -a /tmp/godot-templates/templates/. "$HOME/.local/share/godot/export_templates/${GODOT_RELEASE}/"
           godot --version
 
-      - name: Import all project resources (Mobile renderer)
-        run: godot --headless --editor --path . --import
+      - name: Import all project resources (Mobile renderer) and reject parser errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot --headless --editor --path . --import 2>&1 | tee /tmp/godot-import.log
+          if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load script|ERROR: Failed loading resource' /tmp/godot-import.log; then
+            echo "::error::Godot import emitted parser or resource-load errors."
+            exit 1
+          fi
+
+      - name: Verify canonical Mobile renderer and Autoload order
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          source = Path("project.godot").read_text()
+          expected = ["ClassSystem=", "GearDatabase=", "GearSystem=", "GlobalEconomy=", "GameState="]
+          positions = [source.find(name) for name in expected]
+          if any(pos < 0 for pos in positions) or positions != sorted(positions):
+              raise SystemExit("Autoload order is missing or changed: " + " -> ".join(expected))
+          if 'renderer/rendering_method="mobile"' not in source:
+              raise SystemExit("Main project renderer must remain Mobile.")
+          if 'renderer/rendering_method.mobile="mobile"' not in source:
+              raise SystemExit("Mobile renderer fallback setting changed.")
+          print("CANONICAL_PROJECT_SETTINGS_PASS: Mobile renderer + required Autoload order")
+          PY
 
       - name: Run Step 11 smoke test
         run: godot --headless --path . --script scripts/step11_smoke_test.gd
