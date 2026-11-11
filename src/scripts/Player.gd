@@ -25,7 +25,7 @@ const SKILL_DATA := {
 	"Scatter":{"cooldown":8.0,"mana":15,"stamina":5.0},
 	"Rapid_Fire":{"cooldown":5.0,"mana":10,"stamina":4.0},
 	"Kinetic_Spark":{"cooldown":5.0,"mana":10,"stamina":4.0},
-	"Path_of_Shadow":{"cooldown":0.5,"mana":0,"stamina":0.0},
+	"Path_of_Shadow":{"cooldown":0.0,"mana":0,"stamina":0.0},
 	"XP_Mode":{"cooldown":60.0,"mana":0,"stamina":0.0}
 }
 var _move_target: Vector3
