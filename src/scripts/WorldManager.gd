@@ -7,7 +7,8 @@ const SETTLEMENTS := {
 	"VolcanoLand":{"name":"Volcano Land","scene":"res://src/scenes/world/VolcanoLand.tscn","min":40,"max":70,"next":"IceLand"},
 	"IceLand":{"name":"Ice Land","scene":"res://src/scenes/world/IceLand.tscn","min":70,"max":95,"next":"Waterlands"},
 	"Waterlands":{"name":"Waterlands","scene":"res://src/scenes/world/Waterlands.tscn","min":95,"max":115,"next":"DarkForest"},
-	"DarkForest":{"name":"Dark Forest","scene":"res://src/scenes/world/DarkForest.tscn","min":115,"max":130,"next":"TwinCity"}
+	"DarkForest":{"name":"Dark Forest","scene":"res://src/scenes/world/DarkForest.tscn","min":115,"max":130,"next":"TwinCity"},
+	"GuildWarArena":{"name":"Guild War Arena","scene":"res://src/scenes/world/GuildWarArena.tscn","min":1,"max":130,"next":"TwinCity"}
 }
 const MAX_MONSTER_POOL := 24
 const MAX_GOLD_POOL := 32
@@ -28,6 +29,8 @@ var _cull_timer := 0.0
 var _transitioning := false
 var quest_system: Node
 var _ai_players_manager: Node3D
+var guild_system: Node
+var guild_war_manager: Node
 
 func _ready() -> void:
 	add_to_group("world_manager")
@@ -41,6 +44,10 @@ func _ready() -> void:
 	_ai_players_manager.name = "AIPlayersManager"
 	_ai_players_manager.set_script(load("res://src/scripts/AIPlayersManager.gd"))
 	add_child(_ai_players_manager)
+	guild_system = Node.new()
+	guild_system.name = "GuildSystem"
+	guild_system.set_script(load("res://src/scripts/GuildSystem.gd"))
+	add_child(guild_system)
 
 func setup(target_player: Node3D) -> void:
 	player = target_player
@@ -80,6 +87,11 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 	_spawn_settlement_content()
 	if is_instance_valid(_ai_players_manager):
 		_ai_players_manager.call("setup",self,player,current_settlement)
+	if settlement_id == "GuildWarArena":
+		guild_war_manager = current_world
+		if is_instance_valid(guild_system): guild_system.call("set_war_active",true)
+	else:
+		guild_war_manager = null
 	_create_portals()
 	GameState.profile["settlement_id"] = settlement_id
 	GameState.profile["world_position"] = [player.position.x,player.position.y,player.position.z]
