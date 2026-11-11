@@ -1,5 +1,5 @@
 extends Node3D
-const ROLES=[["ClassTrainer","مدرب الفئات","class_trainer",Vector3(-5,0,3)],["Blacksmith","الحداد","blacksmith",Vector3(-2,0,3)],["Armorer","تاجر الدروع","armorer",Vector3(1,0,3)],["Pharmacist","الصيدلي","pharmacist",Vector3(4,0,3)],["Warehouseman","أمين الخزنة","warehouseman",Vector3(7,0,3)]]
+const ROLES=[["ClassTrainer","مدرب الفئات","class_trainer",Vector3(-5,0,3)],["Blacksmith","الحداد","blacksmith",Vector3(-2,0,3)],["Armorer","تاجر الدروع","armorer",Vector3(1,0,3)],["Pharmacist","الصيدلي","pharmacist",Vector3(4,0,3)],["Warehouseman","أمين الخزنة","warehouseman",Vector3(7,0,3)],["GuildDirector","مدير العشائر","guild_director",Vector3(10,0,3)]]
 func setup(world:Node3D,settlement:String) -> void:
  for d in ROLES:
   var n=load("res://src/scenes/NPC.tscn").instantiate(); n.name=d[0]; n.npc_id=settlement+"_"+d[0]; n.display_name=d[1]; n.role=d[2]; n.position=d[3]; n.interacted.connect(_on_interacted); world.add_child(n)
