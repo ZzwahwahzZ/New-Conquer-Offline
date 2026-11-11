@@ -52,6 +52,10 @@ jobs:
           test -s "$TEMPLATE_DEST/android_release.apk"
           godot --version
 
+      - name: Fetch and validate pinned CC0 rigged character assets
+        run: |
+          python3 -m pip install --disable-pip-version-check Pillow trimesh numpy
+          python3 tools/fetch_character_assets.py
       - name: Fetch and optimize optional terrain assets
         run: |
           python3 -m pip install --disable-pip-version-check Pillow trimesh
@@ -154,6 +158,10 @@ jobs:
           grep -F 'renderer/rendering_method="gl_compatibility"' project.godot
           grep -F 'renderer/rendering_method.mobile="gl_compatibility"' project.godot
 
+      - name: Fetch and validate pinned CC0 rigged character assets
+        run: |
+          python3 -m pip install --disable-pip-version-check Pillow trimesh numpy
+          python3 tools/fetch_character_assets.py
       - name: Fetch and optimize optional terrain assets
         run: |
           python3 -m pip install --disable-pip-version-check Pillow trimesh
@@ -270,6 +278,10 @@ jobs:
           EOF
           cat "$HOME/.config/godot/editor_settings-4.3.tres"
 
+      - name: Fetch and validate pinned CC0 rigged character assets
+        run: |
+          python3 -m pip install --disable-pip-version-check Pillow trimesh numpy
+          python3 tools/fetch_character_assets.py
       - name: Fetch and optimize optional terrain assets
         run: |
           python3 -m pip install --disable-pip-version-check Pillow trimesh
