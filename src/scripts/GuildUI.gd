@@ -14,12 +14,21 @@ var _war_label: RichTextLabel
 
 func _ready() -> void:
 	visible = false
-	_system = get_tree().get_first_node_in_group("guild_system")
 	_build_ui()
-	if is_instance_valid(_system):
-		_system.guild_changed.connect(refresh)
-		_system.guild_chat.connect(_on_guild_chat)
+	_connect_system()
 	refresh()
+
+func _process(_delta: float) -> void:
+	if not is_instance_valid(_system):
+		_connect_system()
+
+func _connect_system() -> void:
+	_system = get_tree().get_first_node_in_group("guild_system")
+	if not is_instance_valid(_system): return
+	if not _system.guild_changed.is_connected(refresh):
+		_system.guild_changed.connect(refresh)
+	if not _system.guild_chat.is_connected(_on_guild_chat):
+		_system.guild_chat.connect(_on_guild_chat)
 
 func toggle() -> void:
 	visible = not visible
