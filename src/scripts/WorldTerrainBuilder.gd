@@ -3,11 +3,11 @@ extends Node3D
 const PBRMaterialLibrary = preload("res://src/scripts/PBRMaterialLibrary.gd")
 const CITY_SIZE := {"TwinCity":600.0,"DesertLand":450.0,"VolcanoLand":450.0,"IceLand":450.0,"Waterlands":450.0,"DarkForest":450.0}
 const HEIGHTS := {
- "TwinCity":"", "DesertLand":"res://assets/terrain/heightmaps/04_desert_dunes_heightmap_16bit.png",
- "VolcanoLand":"res://assets/terrain/heightmaps/01_volcanic_caldera_heightmap_16bit.png",
- "IceLand":"res://assets/terrain/heightmaps/02_glacial_mountains_heightmap_16bit.png",
- "Waterlands":"res://assets/terrain/heightmaps/03_tropical_archipelago_heightmap_16bit.png",
- "DarkForest":"res://assets/terrain/heightmaps/05_dark_forest_valleys_heightmap_16bit.png"}
+ "TwinCity":"", "DesertLand":"res://assets/environment/heightmaps/04_desert_dunes_heightmap_16bit.png",
+ "VolcanoLand":"res://assets/environment/heightmaps/01_volcanic_caldera_heightmap_16bit.png",
+ "IceLand":"res://assets/environment/heightmaps/02_glacial_mountains_heightmap_16bit.png",
+ "Waterlands":"res://assets/environment/heightmaps/03_tropical_archipelago_heightmap_16bit.png",
+ "DarkForest":"res://assets/environment/heightmaps/05_dark_forest_valleys_heightmap_16bit.png"}
 const COLORS := {"TwinCity":Color("#6c9849"),"DesertLand":Color("#b58a4e"),"VolcanoLand":Color("#393437"),"IceLand":Color("#b9d9e8"),"Waterlands":Color("#3a9e91"),"DarkForest":Color("#294b32")}
 const MATERIALS := {"TwinCity":"Ground044_2K-JPG","DesertLand":"Ground061_2K-JPG","VolcanoLand":"Rock027_2K-JPG","IceLand":"Snow008C_2K-JPG","Waterlands":"Ground044_2K-JPG","DarkForest":"Ground053_2K-JPG"}
 const KARST_MODELS := ["model.glb","model (1).glb","model (3).glb"]
@@ -87,7 +87,7 @@ static func _place_karst_models(parent: Node3D,city: String,size: float) -> void
   pass
  var city_index := ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"].find(city)
  var model_name: String = KARST_MODELS[maxi(city_index,0)%KARST_MODELS.size()]
- var path := "res://assets/terrain/models/" + model_name
+ var path := "res://assets/environment/models/" + model_name
  if not ResourceLoader.exists(path): return
  var packed := load(path) as PackedScene
  if packed == null: return
@@ -116,7 +116,7 @@ static func _place_karst_models(parent: Node3D,city: String,size: float) -> void
  instance.position = Vector3(size*0.28,0.0,size*0.24) if city!="TwinCity" else Vector3(92.0,0.0,82.0)
  parent.add_child(instance)
  if city=="Waterlands":
-  var island_path := "res://assets/terrain/models/tropical-island.glb"
+  var island_path := "res://assets/environment/models/tropical-island.glb"
   if ResourceLoader.exists(island_path):
    var island_pack := load(island_path) as PackedScene
    if island_pack != null:
