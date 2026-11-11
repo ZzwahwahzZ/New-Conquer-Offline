@@ -277,6 +277,23 @@ static func _npc_halls(parent: Node3D) -> void:
   hall.name=item[0]
   hall.position=item[1]
   parent.add_child(hall)
+  var platform := MeshInstance3D.new()
+  platform.name = "NPCPlatform_" + str(item[0])
+  var platform_mesh := BoxMesh.new()
+  platform_mesh.size = Vector3(13.0, 0.32, 11.0)
+  platform.mesh = platform_mesh
+  platform.position = Vector3(0.0, 0.16, 0.0)
+  platform.material_override = _mat(Color("#b9ad98"))
+  hall.add_child(platform)
+  var platform_collision := StaticBody3D.new()
+  platform_collision.name = "NPCPlatformCollision"
+  var platform_shape := CollisionShape3D.new()
+  var platform_box := BoxShape3D.new()
+  platform_box.size = Vector3(13.0, 0.32, 11.0)
+  platform_shape.shape = platform_box
+  platform_shape.position.y = 0.16
+  platform_collision.add_child(platform_shape)
+  hall.add_child(platform_collision)
   _box(hall,Vector3(0,0.7,0),Vector3(10,1.4,8),Color("#ded2b7"))
   for x in [-3.8,3.8]:
    for z in [-2.8,2.8]:
