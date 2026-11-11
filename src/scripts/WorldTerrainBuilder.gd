@@ -34,6 +34,7 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  _bounds(parent,size,city)
  _roads(slot,size,city)
  _place_karst_models(slot,city,size)
+ _build_environment_dressing(slot,city,size)
 static func _height_mesh(city: String,size: float) -> ArrayMesh:
  var path: String = HEIGHTS.get(city,"")
  var image: Image = Image.load_from_file(path) if path != "" and FileAccess.file_exists(path) else null
@@ -197,3 +198,85 @@ static func _build_flat_twin_city_plaza(parent: Node3D) -> void:
  collision.position.y = -1.0
  plaza.add_child(collision)
  parent.add_child(plaza)
+
+static func _build_environment_dressing(parent: Node3D, city: String, size: float) -> void:
+ var trunk_material := StandardMaterial3D.new()
+ var foliage_material := StandardMaterial3D.new()
+ var accent_material := StandardMaterial3D.new()
+ match city:
+  "DesertLand":
+   trunk_material.albedo_color = Color("#74502e")
+   foliage_material.albedo_color = Color("#a9a05b")
+   accent_material.albedo_color = Color("#b98a4d")
+  "VolcanoLand":
+   trunk_material.albedo_color = Color("#383033")
+   foliage_material.albedo_color = Color("#5c3830")
+   accent_material = PBRMaterialLibrary.build_emissive_material(Color("#ff4b12"), 1.2)
+  "IceLand":
+   trunk_material.albedo_color = Color("#7894a3")
+   foliage_material.albedo_color = Color("#b9e4f2")
+   accent_material.albedo_color = Color("#d8f5ff")
+  "Waterlands":
+   trunk_material.albedo_color = Color("#5d4930")
+   foliage_material.albedo_color = Color("#3d9b78")
+   accent_material.albedo_color = Color("#75d6d0")
+  "DarkForest":
+   trunk_material.albedo_color = Color("#382d27")
+   foliage_material.albedo_color = Color("#294b32")
+   accent_material.albedo_color = Color("#5b7c55")
+  _:
+   trunk_material.albedo_color = Color("#68432d")
+   foliage_material.albedo_color = Color("#e99ab3")
+   accent_material.albedo_color = Color("#c5a96c")
+ trunk_material.roughness = 0.96
+ foliage_material.roughness = 0.88
+ accent_material.roughness = 0.82
+ var count := 96 if city != "TwinCity" else 48
+ var trunk := CylinderMesh.new()
+ trunk.top_radius = 0.22 if city == "DesertLand" else 0.38
+ trunk.bottom_radius = 0.48 if city == "DesertLand" else 0.72
+ trunk.height = 3.8 if city == "DesertLand" else 8.0
+ trunk.material = trunk_material
+ var foliage := SphereMesh.new()
+ foliage.radius = 1.25 if city == "DesertLand" else 2.4
+ foliage.height = 2.5 if city == "DesertLand" else 4.8
+ foliage.material = foliage_material
+ var trunk_mm := MultiMesh.new()
+ trunk_mm.transform_format = MultiMesh.TRANSFORM_3D
+ trunk_mm.mesh = trunk
+ trunk_mm.instance_count = count
+ var foliage_mm := MultiMesh.new()
+ foliage_mm.transform_format = MultiMesh.TRANSFORM_3D
+ foliage_mm.mesh = foliage
+ foliage_mm.instance_count = count
+ for i in range(count):
+  var angle := float(i) * 2.399963
+  var radius := 105.0 + float((i * 47) % 100) / 100.0 * maxf(35.0, size * 0.30)
+  var pos := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
+  var scale_factor := 0.72 + float((i * 19) % 60) / 100.0
+  var basis := Basis().scaled(Vector3.ONE * scale_factor)
+  trunk_mm.set_instance_transform(i, Transform3D(basis, pos + Vector3(0.0, trunk.height * 0.5, 0.0)))
+  foliage_mm.set_instance_transform(i, Transform3D(basis, pos + Vector3(0.0, trunk.height + foliage.radius * 0.48, 0.0)))
+ var trunks := MultiMeshInstance3D.new()
+ trunks.name = city + "BiomeTrunks"
+ trunks.multimesh = trunk_mm
+ trunks.add_to_group("distance_cull_world")
+ trunks.visibility_range_end = 230.0
+ parent.add_child(trunks)
+ var crowns := MultiMeshInstance3D.new()
+ crowns.name = city + "BiomeCanopy"
+ crowns.multimesh = foliage_mm
+ crowns.add_to_group("distance_cull_world")
+ crowns.visibility_range_end = 230.0
+ parent.add_child(crowns)
+ if city == "VolcanoLand":
+  var lava := MeshInstance3D.new()
+  lava.name = "VolcanicLavaGlow"
+  var lava_plane := PlaneMesh.new()
+  lava_plane.size = Vector2(22.0, 68.0)
+  lava.mesh = lava_plane
+  lava.position = Vector3(-72.0, 0.12, -38.0)
+  lava.material_override = accent_material
+  lava.add_to_group("distance_cull_world")
+  lava.visibility_range_end = 190.0
+  parent.add_child(lava)
