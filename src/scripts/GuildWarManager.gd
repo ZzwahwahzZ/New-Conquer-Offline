@@ -67,6 +67,15 @@ func _build_arena() -> void:
 	floor_mat.albedo_color = Color(0.22,0.2,0.17)
 	floor_mesh.material_override = floor_mat
 	add_child(floor_mesh)
+	var ground_body := StaticBody3D.new()
+	ground_body.name = "ArenaGroundCollision"
+	ground_body.position.y = -0.5
+	var ground_collision := CollisionShape3D.new()
+	var ground_shape := BoxShape3D.new()
+	ground_shape.size = Vector3(72,1,72)
+	ground_collision.shape = ground_shape
+	ground_body.add_child(ground_collision)
+	add_child(ground_body)
 	left_gate = _make_target("left_gate","Left Gate",18000,Vector3(-12,0,-12))
 	right_gate = _make_target("right_gate","Right Gate",18000,Vector3(12,0,-12))
 	guild_pole = _make_target("guild_pole","Guild Pole — %s" % defending_guild,60000,Vector3(0,0,0))
