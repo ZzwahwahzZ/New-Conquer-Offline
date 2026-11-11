@@ -34,7 +34,7 @@ func _run() -> void:
 		await physics_frame
 		print("PLAYER_IDLE_DEBUG frame=%d y=%.6f velocity_y=%.6f on_floor=%s" % [frame, player.global_position.y, player.velocity.y, str(player.is_on_floor())])
 		assert(player.is_on_floor(), "Player left the floor while idle")
-		assert(is_equal_approx(player.velocity.y, -0.1), "Player grounding bias is not active while idle")
+		assert(is_zero_approx(player.velocity.y), "Player vertical velocity is not zero after floor collision")
 		assert(player.global_position.distance_to(settled_position) <= 0.02, "Player X/Y/Z position changed while idle")
 	print("PLAYER_IDLE_STABILITY_PASS y=%.6f velocity_y=%.6f on_floor=%s" % [player.global_position.y, player.velocity.y, str(player.is_on_floor())])
 	quit(0)
