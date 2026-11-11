@@ -150,7 +150,7 @@ func switch_weapon_mode(previous_mode: String, new_mode: String) -> void:
 
 func _find_inventory_weapon_index(family: String, excluded_index: int = -1) -> int:
 	for index in range(inventory.size()):
-		if index == excluded_index:
+		if index == excluded_index and int(inventory[index].get("quantity", 1)) < 2:
 			continue
 		if str(inventory[index].get("weapon_family", "")) == family and int(inventory[index].get("quantity", 1)) > 0:
 			return index

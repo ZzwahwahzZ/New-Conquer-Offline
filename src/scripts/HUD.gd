@@ -528,7 +528,7 @@ func _process(_delta: float) -> void:
 		var cooldown := float(_player.call("get_skill_cooldown", _skill_ids[i])) if is_instance_valid(_player) and _player.has_method("get_skill_cooldown") else 0.0
 		var can_use := bool(_player.call("can_use_skill", _skill_ids[i])) if is_instance_valid(_player) and _player.has_method("can_use_skill") else false
 		_skill_buttons[i].disabled = not can_use
-		var labels := ["JUMP", "FLY", "AOE", "SHADOW", "XP"]
+		var labels := ["JUMP", "FLY", "SCATTER", "SHADOW", "XP"] if ClassSystem.current_class == "Archer" else ["JUMP", "RAPID", "SPARK", "SHADOW", "XP"]
 		_skill_buttons[i].text = "%s\n%.1f" % [labels[i], cooldown] if cooldown > 0.0 else labels[i]
 		var cost_label := str(SKILL_COST_LABELS.get(_skill_ids[i], ""))
 		_skill_buttons[i].tooltip_text = "%s | %s | CD %.1fs" % [_skill_ids[i], cost_label, cooldown]
