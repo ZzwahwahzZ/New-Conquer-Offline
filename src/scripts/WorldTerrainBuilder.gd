@@ -18,10 +18,7 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  var visual := MeshInstance3D.new()
  visual.name = "TerrainSurface"
  visual.mesh = mesh
- var mat := StandardMaterial3D.new()
- mat.albedo_color = COLORS.get(city,Color.GREEN)
- mat.roughness = 0.96
- mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+ var mat := _fallback_ground_material(city)
  visual.material_override = mat
  body.add_child(visual)
  var collision := CollisionShape3D.new()
@@ -30,6 +27,8 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  collision.shape = shape
  body.add_child(collision)
  parent.add_child(body)
+ if city == "TwinCity":
+  _build_flat_twin_city_plaza(parent)
  _bounds(parent,size)
  _roads(slot,size,city)
  _place_karst_models(slot,city,size)
@@ -129,3 +128,37 @@ static func _add_scene_mesh_collisions(root: Node) -> void:
    var mesh_node := node as MeshInstance3D
    if mesh_node.mesh != null and mesh_node.mesh.get_surface_count()>0:
     mesh_node.create_trimesh_collision()
+
+static func _fallback_ground_material(city: String) -> StandardMaterial3D:
+ var base: Color = COLORS.get(city, Color("#4A7C36"))
+ var image := Image.create(4, 4, false, Image.FORMAT_RGB8)
+ image.fill(base)
+ var texture := ImageTexture.create_from_image(image)
+ var material := StandardMaterial3D.new()
+ material.albedo_texture = texture
+ material.albedo_color = Color.WHITE
+ material.roughness = 1.0
+ material.metallic = 0.0
+ material.cull_mode = BaseMaterial3D.CULL_DISABLED
+ material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR
+ return material
+
+static func _build_flat_twin_city_plaza(parent: Node3D) -> void:
+ var plaza := StaticBody3D.new()
+ plaza.name = "TwinCityFlatPlaza"
+ var floor := MeshInstance3D.new()
+ floor.name = "TwinCityGreenPlazaSurface"
+ var plane := PlaneMesh.new()
+ plane.size = Vector2(150.0, 150.0)
+ floor.mesh = plane
+ floor.position.y = 0.005
+ floor.material_override = _fallback_ground_material("TwinCity")
+ plaza.add_child(floor)
+ var collision := CollisionShape3D.new()
+ collision.name = "TwinCityFlatPlazaCollision"
+ var box := BoxShape3D.new()
+ box.size = Vector3(150.0, 1.0, 150.0)
+ collision.shape = box
+ collision.position.y = -0.5
+ plaza.add_child(collision)
+ parent.add_child(plaza)
