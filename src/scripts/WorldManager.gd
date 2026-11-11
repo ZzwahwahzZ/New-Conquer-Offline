@@ -357,3 +357,5 @@ func _ensure_world_lighting(world_root: Node3D) -> void:
 	sun.light_color = Color("#ffe0a3")
 	sun.light_energy = 1.3
 	sun.shadow_enabled = not OS.has_feature("web")
+	sun.shadow_bias = 0.035
+	sun.shadow_normal_bias = 1.25
