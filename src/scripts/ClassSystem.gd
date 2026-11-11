@@ -153,7 +153,9 @@ func evolve_to(class_id: String) -> bool:
 
 func add_experience(amount: int) -> void:
 	if amount <= 0: return
-	experience += amount
+	var guild := get_tree().get_first_node_in_group("guild_system")
+	var xp_multiplier := float(guild.call("get_xp_multiplier")) if is_instance_valid(guild) else 1.0
+	experience += int(round(float(amount) * xp_multiplier))
 	while experience >= get_required_xp():
 		experience -= get_required_xp()
 		level += 1
