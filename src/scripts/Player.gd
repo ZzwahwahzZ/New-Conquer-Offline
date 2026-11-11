@@ -88,7 +88,7 @@ func _ready() -> void:
 
 func set_safe_spawn(point: Vector3) -> void:
 	_safe_spawn = point
-	_ground_y = maxf(point.y, 0.0) + 0.775
+	_ground_y = maxf(point.y, 0.775)
 	global_position = Vector3(point.x, _ground_y, point.z)
 	_safe_spawn = global_position
 	velocity.y = 0.0
