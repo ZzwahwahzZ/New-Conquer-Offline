@@ -255,7 +255,9 @@ func get_skill_proficiency(skill_id: String) -> Dictionary:
 
 func take_damage(amount: int) -> void:
 	if amount <= 0: return
-	hp = maxi(0, hp - amount)
+	var guild := get_tree().get_first_node_in_group("guild_system")
+	var defense_multiplier := float(guild.call("get_defense_multiplier")) if is_instance_valid(guild) else 1.0
+	hp = maxi(0, hp - int(round(float(amount) / defense_multiplier)))
 	stats_changed.emit()
 	_save()
 
