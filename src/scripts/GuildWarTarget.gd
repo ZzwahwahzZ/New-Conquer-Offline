@@ -40,11 +40,17 @@ func _build_visual() -> void:
 	add_child(label)
 
 func take_damage(amount: int) -> void:
+	_apply_damage(amount,"")
+
+func apply_simulated_damage(amount: int, attacking_guild: String) -> void:
+	_apply_damage(amount,attacking_guild)
+
+func _apply_damage(amount: int, attacking_guild: String) -> void:
 	if amount <= 0 or hp <= 0: return
 	if target_id == "guild_pole" and is_instance_valid(manager) and not bool(manager.get("gates_destroyed")): return
 	hp = maxi(0,hp-amount)
 	if is_instance_valid(manager):
-		manager.call("register_target_damage",target_id,amount)
+		manager.call("register_target_damage",target_id,amount,attacking_guild)
 		manager.call("update_target_health",target_id,hp,max_hp)
 	if hp <= 0:
 		remove_from_group("enemies")
