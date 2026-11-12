@@ -9,17 +9,23 @@ static func apply_to_tree(root: Node) -> void:
 	var arabic_font := load("res://assets/ui/fonts/NotoSansArabic[wght].ttf") as Font
 	if arabic_font == null:
 		arabic_font = load("res://assets/ui/fonts/NotoSansArabic-Regular.ttf") as Font
-	if root is Control:
-		(root as Control).layout_direction = Control.LAYOUT_DIRECTION_RTL
+	var ui_theme: Theme = null
 	if arabic_font != null:
-		var ui_theme := Theme.new()
+		ui_theme = Theme.new()
 		ui_theme.default_font = arabic_font
-		(root as Control).theme = ui_theme
-	for node in root.find_children("*", "Control", true, false):
-		(node as Control).layout_direction = Control.LAYOUT_DIRECTION_RTL
-	for node in root.find_children("*", "Button", true, false):
+	var scene_root := root.get_tree().current_scene
+	var scope: Node = scene_root if scene_root != null else root
+	if scope is Control:
+		(scope as Control).layout_direction = Control.LAYOUT_DIRECTION_RTL
+		if ui_theme != null:
+			(scope as Control).theme = ui_theme
+	for node in scope.find_children("*", "Control", true, false):
+		var control := node as Control
+		control.layout_direction = Control.LAYOUT_DIRECTION_RTL
+		if ui_theme != null and control.theme == null:
+			control.theme = ui_theme
+	for node in scope.find_children("*", "Button", true, false):
 		style_button(node as Button, str((node as Button).get_meta("rpg_icon", "")))
-
 static func find_texture(category: String, hint: String = "") -> Texture2D:
 	return _find_texture_recursive(UI_ROOT + category, hint.to_lower())
 
