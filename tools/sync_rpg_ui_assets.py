@@ -138,7 +138,7 @@ def fetch_mirror_file(path: str) -> tuple[str, bytes]:
     request = urllib.request.Request(url, headers={"User-Agent": "New-Conquer-Offline-KenneyCC0Sync/2.0"})
     with urllib.request.urlopen(request, timeout=60) as response:
         data = response.read()
-    if not data.startswith(b"\\x89PNG\\r\\n\\x1a\\n"):
+    if not data.startswith(b"\x89PNG\r\n\x1a\n"):
         raise RuntimeError(f"Mirror item is not a PNG: {path}")
     return path, data
 
