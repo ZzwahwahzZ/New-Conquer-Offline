@@ -56,7 +56,7 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python3 -m pip install --disable-pip-version-check huggingface_hub
+          python3 -m pip install --disable-pip-version-check huggingface_hub trimesh numpy
           python3 tools/restore_hf_terrain_assets.py
           python3 tools/restore_curated_glb_assets.py
           python3 tools/audit_classify_terrain_glb.py
@@ -201,7 +201,7 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python3 -m pip install --disable-pip-version-check huggingface_hub
+          python3 -m pip install --disable-pip-version-check huggingface_hub trimesh numpy
           python3 tools/restore_hf_terrain_assets.py
           python3 tools/restore_curated_glb_assets.py
           python3 tools/audit_classify_terrain_glb.py
@@ -352,7 +352,7 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python3 -m pip install --disable-pip-version-check huggingface_hub
+          python3 -m pip install --disable-pip-version-check huggingface_hub trimesh numpy
           python3 tools/restore_hf_terrain_assets.py
           python3 tools/restore_curated_glb_assets.py
           python3 tools/audit_classify_terrain_glb.py
