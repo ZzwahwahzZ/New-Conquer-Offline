@@ -37,6 +37,27 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  CityStreetDressing.build(slot, city, size)
  _build_environment_dressing(slot, city, size)
  _build_kenney_nature_scatter(slot, city, size)
+static func height_at(city: String, x: float, z: float) -> float:
+ var path: String = HEIGHTS.get(city, "")
+ if path.is_empty():
+  return 0.0
+ var texture := ResourceLoader.load(path) as Texture2D
+ if texture == null:
+  return 0.0
+ return _sample_height(texture.get_image(), city, x, z, float(CITY_SIZE.get(city, 800.0)))
+
+static func _sample_height(image: Image, city: String, x: float, z: float, size: float) -> float:
+ if image == null:
+  return 0.0
+ var u := clampf(x / size + 0.5, 0.0, 1.0)
+ var v := clampf(z / size + 0.5, 0.0, 1.0)
+ var ix := int(round(u * float(image.get_width() - 1)))
+ var iz := int(round(v * float(image.get_height() - 1)))
+ var height := (image.get_pixel(ix, iz).r - 0.5) * float(HEIGHT_AMPLITUDE.get(city, 28.0))
+ if absf(x) < 75.0 and absf(z) < 75.0:
+  height = lerpf(height, 0.0, 0.94)
+ return height
+
 static func _height_mesh(city: String,size: float) -> ArrayMesh:
  var path: String = HEIGHTS.get(city,"")
  var image: Image = null
@@ -148,6 +169,12 @@ static func _add_scene_mesh_collisions(root: Node) -> void:
     mesh_node.create_trimesh_collision()
 
 static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: float) -> void:
+ var height_image: Image = null
+ var height_path: String = HEIGHTS.get(city, "")
+ if not height_path.is_empty():
+  var height_texture := ResourceLoader.load(height_path) as Texture2D
+  if height_texture != null:
+   height_image = height_texture.get_image()
  var root_paths := [
   "res://assets/environment/kenney/nature-kit/Models/GLTF format",
   "res://assets/environment/kenney/nature-kit/Models/GLB format"
@@ -199,6 +226,7 @@ static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: flo
    var scale_factor := base_scale * (0.82 + float((index * 13 + added * 7) % 35) / 100.0)
    var basis := Basis(Vector3.UP, angle).scaled(Vector3.ONE * scale_factor)
    var position := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
+   position.y = _sample_height(height_image, city, position.x, position.z, size)
    multi.set_instance_transform(index, Transform3D(basis, position))
   var node := MultiMeshInstance3D.new()
   node.name = city + "_KenneyNature_" + str(added) + "_MultiMesh"
@@ -318,6 +346,12 @@ static func _build_environment_dressing(parent: Node3D, city: String, size: floa
       sources = [{"path":"res://assets/environment/nature/stylized_trees_and_rocks.glb","keywords":["ancient","oak","dead","tree","pine"]}]
     _:
       sources = [{"path":"res://assets/environment/nature/stylized_trees_and_rocks.glb","keywords":["pine","oak","tree","rock"]}]
+  var height_image: Image = null
+  var height_path: String = HEIGHTS.get(city, "")
+  if not height_path.is_empty():
+    var height_texture := ResourceLoader.load(height_path) as Texture2D
+    if height_texture != null:
+      height_image = height_texture.get_image()
   for source in sources:
     var asset_path := str(source.get("path",""))
     if not ResourceLoader.exists(asset_path):
@@ -364,6 +398,7 @@ static func _build_environment_dressing(parent: Node3D, city: String, size: floa
         var scale_factor := 0.78 + float((index * 17 + species_index * 11) % 55) / 100.0
         var basis := Basis(Vector3.UP, angle).scaled(Vector3.ONE * scale_factor)
         var position := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
+        position.y = _sample_height(height_image, city, position.x, position.z, size)
         multimesh.set_instance_transform(index, Transform3D(basis, position))
       var instances := MultiMeshInstance3D.new()
       instances.name = city + "_CC0_" + str(species_index) + "_MultiMesh"
