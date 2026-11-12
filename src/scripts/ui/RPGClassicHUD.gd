@@ -124,8 +124,9 @@ func _build_bottom_bar() -> void:
 		var button := Button.new()
 		button.name = "HotkeyF%d" % (index + 1)
 		button.text = "F%d\n%s" % [index + 1, HOTKEY_LABELS[index]]
-		button.custom_minimum_size = Vector2(30, 34)
+		button.custom_minimum_size = Vector2(34, 38)
 		button.add_theme_font_size_override("font_size", 8)
+		button.modulate = [Color("#FF9B68"), Color("#75C9FF"), Color("#D8A0FF"), Color("#F5D06A"), Color("#FFE08A"), Color("#FF6868"), Color("#68AFFF"), Color("#65D9B0"), Color("#D9C0FF"), Color("#E8B95A")][index]
 		button.tooltip_text = HOTKEY_LABELS[index]
 		button.set_meta("rpg_icon", ["rune", "rune", "rune", "rune", "rune", "flask", "flask", "gem", "shield", "weapon"][index])
 		button.pressed.connect(_on_hotkey_pressed.bind(index))
@@ -147,18 +148,18 @@ func _build_bottom_bar() -> void:
 func _make_split_orb() -> Control:
 	var orb := Control.new()
 	orb.name = "SplitCrystalOrb"
-	orb.custom_minimum_size = Vector2(72, 72)
+	orb.custom_minimum_size = Vector2(84, 84)
 	orb.size = orb.custom_minimum_size
 	var gold_rim := Panel.new()
 	gold_rim.name = "GoldEngravedOrbRim"
 	gold_rim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var rim_style := StyleBoxFlat.new()
 	rim_style.bg_color = Color("#17120d")
-	rim_style.border_color = Color("#e4b85d")
-	rim_style.set_border_width_all(3)
+	rim_style.border_color = Color("#D4AF37")
+	rim_style.set_border_width_all(4)
 	rim_style.set_corner_radius_all(36)
 	rim_style.shadow_color = Color(0, 0, 0, 0.75)
-	rim_style.shadow_size = 5
+	rim_style.shadow_size = 8
 	rim_style.shadow_offset = Vector2(0, 2)
 	gold_rim.add_theme_stylebox_override("panel", rim_style)
 	gold_rim.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -233,7 +234,7 @@ func _build_quest_tracker() -> void:
 	else:
 		var fallback := Panel.new()
 		fallback.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		fallback.add_theme_stylebox_override("panel", _flat(Color(0.025,0.035,0.05,0.82), Color("#c99b4d"), 1, 7))
+		fallback.add_theme_stylebox_override("panel", _flat(Color(0.08,0.06,0.05,0.94), Color("#D4AF37"), 2, 7))
 		fallback.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_quest_panel.add_child(fallback)
 	var body := VBoxContainer.new()
@@ -269,7 +270,7 @@ func _layout() -> void:
 	var bar_height := viewport.y * BAR_RATIO
 	_bar.position = Vector2(4, viewport.y - bar_height)
 	_bar.size = Vector2(viewport.x - 8, bar_height)
-	var orb_size := maxf(52.0, bar_height - 8.0)
+	var orb_size := minf(84.0, maxf(52.0, bar_height - 2.0))
 	var orb := _bar.get_node_or_null("MainRow/SplitCrystalOrb")
 	if is_instance_valid(orb):
 		orb.custom_minimum_size = Vector2(orb_size, orb_size)
