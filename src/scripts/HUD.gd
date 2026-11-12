@@ -493,7 +493,9 @@ func _layout_hud() -> void:
 	var viewport_size := get_viewport().get_visible_rect().size
 	var width := viewport_size.x
 	var height := viewport_size.y
-	_joystick.position = Vector2(22, height - JOYSTICK_SIZE.y - 24)
+	# Keep the mobile joystick above the 12% classic bottom bar and clear of its HP/MP orb.
+	var classic_bar_height := height * 0.12
+	_joystick.position = Vector2(18, height - classic_bar_height - JOYSTICK_SIZE.y - 10)
 	if is_instance_valid(_inventory_button):
 		_inventory_button.position = Vector2(width - 142.0, 18.0)
 	if is_instance_valid(_upgrade_button):
