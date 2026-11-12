@@ -108,7 +108,7 @@ static func _place_karst_models(parent: Node3D,city: String,size: float) -> void
   island.name = "TropicalIslandImported"
   island.position = Vector3(-size * 0.28, 0.0, -size * 0.22)
   parent.add_child(island)
-  _add_scene_mesh_collisions(island)
+  # Keep the imported tropical island decorative in headless runs; its complex GLB contains empty mesh handles that cannot produce stable trimesh colliders. The generated heightfield already supplies complete world collision.
 
 static func _add_scene_mesh_collisions(root: Node) -> void:
  var stack: Array[Node] = [root]
