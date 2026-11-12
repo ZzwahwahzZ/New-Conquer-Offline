@@ -86,6 +86,33 @@ static func orb_well_style() -> StyleBoxFlat:
 	style.shadow_offset = Vector2(0, 2)
 	return style
 
+static func item_texture(item_id: String) -> Texture2D:
+	var key := item_id.to_lower()
+	var category := "misc"
+	var hint := key
+	if "gem" in key or "crystal" in key or "jewel" in key or key in ["meteor", "dragonball", "rainbow"]:
+		category = "gems"
+		hint = "gem"
+	elif "potion" in key or "mana" in key or "health" in key or "flask" in key or key in ["hp", "mp"]:
+		category = "potions"
+		hint = "flask_full"
+	elif "shield" in key or "armor" in key or "armour" in key or "helmet" in key or "boots" in key:
+		category = "armor"
+		hint = "shield"
+	elif "weapon" in key or "sword" in key or "blade" in key or "dagger" in key or "knife" in key or "bow" in key or "katana" in key:
+		category = "weapons"
+		hint = "weapon"
+	elif "rune" in key or "skill" in key or key in ["quest", "skills"]:
+		category = "skills"
+		hint = "rune"
+	else:
+		match key:
+			"bag": category = "gems"; hint = "gem"
+			"equip": category = "armor"; hint = "shield"
+			"warehouse", "mall": category = "gems"; hint = "crystal"
+			"jianghu", "interact": category = "weapons"; hint = "weapon"
+	return find_texture("icons/" + category, hint)
+
 static func style_button(button: Button, icon_key: String = "") -> void:
 	if not is_instance_valid(button):
 		return
@@ -103,7 +130,7 @@ static func style_button(button: Button, icon_key: String = "") -> void:
 	button.add_theme_stylebox_override("pressed", _texture_box(pressed_texture) if pressed_texture != null else _box(Color(0.02, 0.025, 0.035, 1.0), Color("#ffe5a6"), 2, 7))
 	button.add_theme_stylebox_override("disabled", _box(Color(0.025, 0.03, 0.04, 0.82), Color(0.3, 0.27, 0.21, 0.7), 1, 7))
 	if not icon_key.is_empty():
-		var icon := find_texture("icons", icon_key)
+		var icon := item_texture(icon_key)
 		if icon != null:
 			button.icon = icon
 			button.expand_icon = true
