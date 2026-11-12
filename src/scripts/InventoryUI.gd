@@ -25,6 +25,7 @@ var _equip_button: Button
 var _selected_index: int = -1
 var _selected_item: Dictionary = {}
 var _slot_buttons: Dictionary = {}
+var _slot_labels: Dictionary = {}
 var _touch_id: int = -1
 var _last_x: float = 0.0
 var _mouse_drag := false
@@ -159,23 +160,29 @@ func _build_ui() -> void:
 	slots_panel.add_child(_equipment_list)
 	for slot in SLOT_ORDER:
 		var row := HBoxContainer.new()
+		row.layout_direction = Control.LAYOUT_DIRECTION_LTR
+		row.add_theme_constant_override("separation", 6)
 		_equipment_list.add_child(row)
 		var label := Label.new()
-		label.text = SLOT_AR[slot]
-		label.custom_minimum_size.x = 94
+		label.name = "EquipmentLabel_" + slot
+		label.text = "فارغ"
+		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		label.add_theme_color_override("font_color", Color("#d9c49b"))
 		row.add_child(label)
 		var button := Button.new()
 		button.name = "Equipment_" + slot
-		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		button.custom_minimum_size.y = 34
+		button.custom_minimum_size = Vector2(38, 34)
 		button.icon = ThemeManager.item_texture(SLOT_ICONS[slot])
 		button.expand_icon = true
-		button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		button.alignment = HORIZONTAL_ALIGNMENT_CENTER
-		button.text = "فارغ"
+		button.text = ""
+		button.tooltip_text = SLOT_AR[slot]
 		button.pressed.connect(_on_equipment_slot_pressed.bind(slot))
 		row.add_child(button)
+		_slot_labels[slot] = label
 		_slot_buttons[slot] = button
 
 	var right := VBoxContainer.new()
@@ -279,7 +286,7 @@ func _build_preview() -> void:
 
 	_preview_pivot = Node3D.new()
 	_preview_pivot.name = "CharacterPivot"
-	_preview_pivot.rotation.y = 0.0 # Rotate 180 degrees from the former rear-facing pose toward the preview camera.
+	_preview_pivot.rotation.y = PI # Face the character toward the preview camera.
 	_preview_viewport.add_child(_preview_pivot)
 	_build_preview_skeleton()
 	_build_preview_mannequin()
@@ -387,15 +394,16 @@ func _refresh_equipment() -> void:
 	for slot in SLOT_ORDER:
 		var item: Dictionary = GearSystem.equipment.get(slot, {})
 		var button: Button = _slot_buttons[slot]
+		var label: Label = _slot_labels[slot]
 		if item.is_empty():
-			button.text = "فارغ"
-			button.add_theme_color_override("font_color", Color("#aab0ba"))
+			label.text = "%s  •  فارغ" % SLOT_AR[slot]
+			label.add_theme_color_override("font_color", Color("#aab0ba"))
+			button.icon = ThemeManager.item_texture(SLOT_ICONS[slot])
 		else:
-			button.text = "%s  +%d" % [str(item.get("name", item.get("id", "قطعة"))), int(item.get("plus", 0))]
+			label.text = "%s  +%d" % [str(item.get("name", item.get("id", "قطعة"))), int(item.get("plus", 0))]
+			label.add_theme_color_override("font_color", _quality_color(str(item.get("quality", "Normal"))))
 			button.icon = ThemeManager.item_texture(str(item.get("id", "")))
-			button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-			button.alignment = HORIZONTAL_ALIGNMENT_CENTER
-			button.add_theme_color_override("font_color", _quality_color(str(item.get("quality", "Normal"))))
+		button.tooltip_text = "%s — %s" % [SLOT_AR[slot], label.text]
 
 func _refresh_inventory() -> void:
 	for child in _grid.get_children():
