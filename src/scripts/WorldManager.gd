@@ -230,8 +230,8 @@ func _create_portals() -> void:
 	glow.emission = Color(0.08,0.55,1.0)
 	glow.emission_energy_multiplier = 2.0
 	glow.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	ring.material_override = glow
 	portal.add_child(ring)
+	ring.material_override = glow
 	var area := Area3D.new()
 	var collision := CollisionShape3D.new()
 	var shape := CylinderShape3D.new()
@@ -282,8 +282,8 @@ func spawn_impact_effect(world_position: Vector3) -> void:
 		material.emission_enabled = true
 		material.emission = Color(1.0,0.24,0.04)
 		material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-		effect.material_override = material
 	current_world.add_child(effect)
+		effect.material_override = material
 	effect.global_position = world_position
 	effect.scale = Vector3.ONE
 	effect.visible = true
