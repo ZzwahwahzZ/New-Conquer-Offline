@@ -26,6 +26,16 @@ static func apply_to_tree(root: Node) -> void:
 			control.theme = ui_theme
 	for node in scope.find_children("*", "Button", true, false):
 		style_button(node as Button, str((node as Button).get_meta("rpg_icon", "")))
+	# Preserve the bottom HUD's classic left-to-right composition inside the Arabic RTL scene.
+	var main_row := scope.find_child("MainRow", true, false)
+	if is_instance_valid(main_row) and main_row is Control:
+		(main_row as Control).layout_direction = Control.LAYOUT_DIRECTION_LTR
+	# Apply the shared engraved frame to static and dynamically-created panel surfaces.
+	var ornate := frame_style()
+	for node in scope.find_children("*", "PanelContainer", true, false):
+		(node as PanelContainer).add_theme_stylebox_override("panel", ornate)
+	for node in scope.find_children("*", "Panel", true, false):
+		(node as Panel).add_theme_stylebox_override("panel", ornate)
 static func find_texture(category: String, hint: String = "") -> Texture2D:
 	return _find_texture_recursive(UI_ROOT + category, hint.to_lower())
 
@@ -65,22 +75,29 @@ static func make_nine_patch(texture: Texture2D, margins: int = 14) -> NinePatchR
 	patch.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return patch
 
+static func ornate_frame_texture() -> Texture2D:
+	var texture := load("res://assets/ui/frames/ornate_gold_9slice.svg") as Texture2D
+	if texture == null:
+		texture = find_texture("frames", "brown")
+	return texture
+
+static func orb_frame_texture() -> Texture2D:
+	return load("res://assets/ui/frames/ornate_orb_ring.svg") as Texture2D
+
 static func frame_style() -> StyleBox:
-	var texture := find_texture("frames", "brown")
-	if texture == null:
-		texture = find_texture("frames", "gold")
-	if texture == null:
-		texture = find_texture("frames", "panel")
-	if texture == null:
-		texture = find_texture("frames", "frame")
+	var texture := ornate_frame_texture()
 	if texture != null:
 		var box := StyleBoxTexture.new()
 		box.texture = texture
-		box.texture_margin_left = 14
-		box.texture_margin_top = 14
-		box.texture_margin_right = 14
-		box.texture_margin_bottom = 14
-		box.modulate_color = Color(1.0, 0.94, 0.82, 1.0)
+		box.texture_margin_left = 20
+		box.texture_margin_top = 20
+		box.texture_margin_right = 20
+		box.texture_margin_bottom = 20
+		box.content_margin_left = 16
+		box.content_margin_top = 14
+		box.content_margin_right = 16
+		box.content_margin_bottom = 14
+		box.modulate_color = Color(1.0, 0.98, 0.9, 1.0)
 		return box
 	return _box(PANEL, GOLD, 1, 8)
 
