@@ -28,6 +28,7 @@ PACKS = {
     },
 }
 IMAGE_EXTS = {".png", ".svg", ".webp"}
+ALLOWED_EXTRACT_EXTS = IMAGE_EXTS | {".txt", ".md", ".json", ".license", ".zip"}
 
 def download(url: str, target: Path) -> None:
     request = urllib.request.Request(url, headers={"User-Agent": "New-Conquer-Offline-AssetSync/1.0"})
@@ -38,23 +39,31 @@ def download(url: str, target: Path) -> None:
     if target.stat().st_size < 1000 or not zipfile.is_zipfile(target):
         raise RuntimeError(f"Downloaded asset is not a valid ZIP archive: {url}")
 
-def safe_extract(archive_path: Path, destination: Path) -> list[Path]:
+def safe_extract(archive_path: Path, destination: Path, depth: int = 0) -> list[Path]:
+    if depth > 3:
+        raise RuntimeError(f"Nested UI archive depth exceeds safety limit: {archive_path}")
     extracted: list[Path] = []
     destination.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(archive_path) as archive:
+        members = [item.filename for item in archive.infolist() if not item.is_dir()]
+        print(f"UI_ARCHIVE_MEMBERS depth={depth} {archive_path.name}: " + " | ".join(members[:40]))
         for item in archive.infolist():
             if item.is_dir():
                 continue
             rel = PurePosixPath(item.filename)
             if rel.is_absolute() or ".." in rel.parts:
                 raise RuntimeError(f"Unsafe UI pack archive path: {item.filename}")
-            if Path(rel.name).suffix.lower() not in IMAGE_EXTS | {".txt", ".md", ".json", ".license"}:
+            if Path(rel.name).suffix.lower() not in ALLOWED_EXTRACT_EXTS:
                 continue
             target = destination.joinpath(*rel.parts)
             target.parent.mkdir(parents=True, exist_ok=True)
             with archive.open(item) as src, target.open("wb") as dst:
                 shutil.copyfileobj(src, dst)
             extracted.append(target)
+    nested_archives = [p for p in extracted if p.suffix.lower() == ".zip"]
+    for nested in nested_archives:
+        nested_destination = nested.parent / nested.stem
+        extracted.extend(safe_extract(nested, nested_destination, depth + 1))
     return extracted
 
 def classify_assets(stage: Path, provenance: dict) -> dict:
