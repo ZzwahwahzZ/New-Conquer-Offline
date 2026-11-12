@@ -37,7 +37,7 @@ func _build_arena() -> void:
   player = CharacterBody3D.new()
   player.name = "LocalPlayer"
   player.set_script(load("res://src/scripts/Player.gd"))
-  player.position = Vector3(0,0.02,22)
+  player.position = Vector3(0,0.02,0)
   _add_capsule(player,Color(0.2,0.55,0.95),0.34,1.55)
   player.safe_margin = 0.03
   player.floor_snap_length = 0.35
