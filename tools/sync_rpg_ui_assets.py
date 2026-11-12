@@ -473,12 +473,35 @@ def restore_from_hf(api: HfApi, token: str) -> bool:
     print(f"HF_KENNEY_RPG_UI_RESTORE_PASS: png={count} signature=valid categories=verified")
     return True
 
+def download_noto_arabic_font() -> None:
+    font_dir = DEST / "fonts"
+    font_dir.mkdir(parents=True, exist_ok=True)
+    candidates = [
+        ("NotoSansArabic[wght].ttf", "https://raw.githubusercontent.com/google/fonts/main/ofl/notosansarabic/NotoSansArabic%5Bwght%5D.ttf"),
+        ("NotoSansArabic-Regular.ttf", "https://raw.githubusercontent.com/google/fonts/main/ofl/notosansarabic/NotoSansArabic%5Bwght%5D.ttf"),
+    ]
+    for filename, url in candidates:
+        target = font_dir / filename
+        if target.is_file() and target.stat().st_size > 100_000:
+            print(f"NOTO_SANS_ARABIC_FONT_PASS: {target} bytes={target.stat().st_size}")
+            return
+        try:
+            download(url, target)
+            if target.stat().st_size < 100_000:
+                raise RuntimeError("Downloaded font is unexpectedly small")
+            print(f"NOTO_SANS_ARABIC_FONT_PASS: {target} bytes={target.stat().st_size}")
+            return
+        except Exception:
+            target.unlink(missing_ok=True)
+    raise RuntimeError("Unable to download the official Google Fonts Noto Sans Arabic variable font")
+
 def main() -> None:
     token = os.environ.get("HF_TOKEN", "").strip()
     if not token:
         raise SystemExit("HF_TOKEN is required to seed or restore the Kenney UI asset library.")
     api = HfApi(token=token)
     if restore_from_hf(api, token):
+        download_noto_arabic_font()
         return
 
     if STAGE.exists():
@@ -556,6 +579,7 @@ def main() -> None:
         shutil.rmtree(DEST)
     DEST.parent.mkdir(parents=True, exist_ok=True)
     shutil.copytree(PUBLISH, DEST)
+    download_noto_arabic_font()
     print(
         f"HF_KENNEY_RPG_UI_SEED_PASS: images={manifest['image_count']} "
         f"categories={json.dumps(manifest['category_counts'], sort_keys=True)}"
