@@ -29,7 +29,7 @@ var _last_navigation_target := Vector3(1e20, 1e20, 1e20)
 func _ready() -> void:
 	hp = max_hp
 	add_to_group("enemies")
-	floor_snap_length = 0.35
+	floor_snap_length = 0.4
 	floor_max_angle = deg_to_rad(42.0)
 	floor_stop_on_slope = true
 	floor_block_on_wall = true
@@ -68,6 +68,10 @@ func take_damage(amount: int) -> void:
 func _physics_process(delta: float) -> void:
 	if hp <= 0:
 		return
+	if is_on_floor():
+		velocity.y = 0.0
+	else:
+		velocity.y -= float(ProjectSettings.get_setting("physics/3d/default_gravity")) * delta
 	_attack_timer = maxf(0.0, _attack_timer - delta)
 	if not is_instance_valid(target):
 		var players := get_tree().get_nodes_in_group("player")
