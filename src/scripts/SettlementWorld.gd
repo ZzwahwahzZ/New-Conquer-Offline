@@ -19,7 +19,7 @@ func _ready() -> void:
 	_build_environment()
 	_build_asset_slots()
 	_build_terrain_shell()
-	ChineseImperialBuilder.build(get_node("ArchitectureAssetSlot"), settlement_id, 600.0 if settlement_id == "TwinCity" else 450.0)
+	# TwinCity now uses an intentionally open 80x80 central plaza; the former imported enclosed palace block is not instanced.
 	CityArchitectureBuilder.build(get_node("ArchitectureAssetSlot"), settlement_id, 600.0 if settlement_id == "TwinCity" else 450.0)
 	_build_landmarks()
 	_build_sanctuary_landmarks()
@@ -44,14 +44,14 @@ func _build_environment() -> void:
 	environment.ssao_intensity = 1.35
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	environment.ambient_light_color = sky_color.lightened(0.25)
-	environment.ambient_light_energy = 0.85
-	environment.fog_enabled = true
+	environment.ambient_light_energy = 0.45
+	environment.fog_enabled = false
 	environment.fog_light_color = fog_color
 	environment.fog_density = fog_density
-	environment.glow_enabled = true
-	environment.glow_intensity = 0.72
-	environment.glow_strength = 0.9
-	environment.glow_bloom = 0.12
+	environment.glow_enabled = false
+	environment.glow_intensity = 0.0
+	environment.glow_strength = 0.0
+	environment.glow_bloom = 0.0
 	environment.glow_hdr_threshold = 0.82
 	environment.glow_hdr_scale = 1.0
 	world_environment.environment = environment
@@ -59,7 +59,7 @@ func _build_environment() -> void:
 	var sun := DirectionalLight3D.new()
 	sun.name = "SettlementSun"
 	sun.rotation_degrees = Vector3(-45,-32,0)
-	sun.light_energy = 1.3
+	sun.light_energy = 0.85
 	sun.shadow_enabled = true
 	sun.shadow_bias = 0.035
 	sun.shadow_normal_bias = 1.25
