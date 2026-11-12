@@ -19,7 +19,7 @@ func _ready() -> void:
 	var heading := Label.new()
 	heading.text = "CHARACTER STATUS  |  حالة الشخصية"
 	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	heading.add_theme_color_override("font_color",Color(1.0,0.82,0.46))
+	heading.add_theme_color_override("font_color",Color("#FFE2A0"))
 	body.add_child(heading)
 	for key in ["name","class","title","level","hp","mp","pk","strength","agility","vitality","spirit","attack","defense","magic_attack","magic_defense","dodge","battle_power"]:
 		var label := Label.new()
@@ -93,10 +93,13 @@ func _on_promote() -> void:
 
 func _panel_style() -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.035,0.045,0.06,0.97)
-	style.border_color = Color(0.78,0.57,0.29)
-	style.set_border_width_all(3)
-	style.set_corner_radius_all(8)
+	style.bg_color = Color(0.08,0.06,0.05,0.97)
+	style.border_color = Color("#D4AF37")
+	style.set_border_width_all(4)
+	style.set_corner_radius_all(6)
+	style.shadow_color = Color(0, 0, 0, 0.82)
+	style.shadow_size = 7
+	style.shadow_offset = Vector2(0, 3)
 	style.content_margin_left = 12
 	style.content_margin_right = 12
 	style.content_margin_top = 10
