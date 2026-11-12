@@ -44,6 +44,7 @@ static func make_nine_patch(texture: Texture2D, margins: int = 14) -> NinePatchR
 	patch.patch_margin_right = margins
 	patch.patch_margin_bottom = margins
 	patch.draw_center = true
+	patch.modulate = Color("#d7b16a")
 	patch.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return patch
 
@@ -65,6 +66,9 @@ static func frame_style() -> StyleBox:
 		box.modulate_color = Color(1.0, 0.94, 0.82, 1.0)
 		return box
 	return _box(PANEL, GOLD, 1, 8)
+
+static func frame_underlay_style() -> StyleBoxFlat:
+	return _box(Color("#24180f"), Color("#9f773d"), 2, 8)
 
 static func make_orb_material(shader: Shader, tint: Color) -> ShaderMaterial:
 	if shader == null:
