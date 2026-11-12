@@ -27,9 +27,10 @@ static func build_ground_material(environment_id: String, triplanar: bool = true
  material.normal_texture = _load_first_map(folder, ["normal.jpg", "normal.png", "normal.webp"], _fallback_texture("normal", environment_id))
  if environment_id == "TwinCity":
   material.normal_scale = 1.48
-  material.albedo_texture = _enhance_albedo_contrast(material.albedo_texture, 1.24, 1.025)
-  if triplanar:
-   material.uv1_scale = Vector3(0.62, 0.62, 0.62)
+  material.detail_enabled = true
+  material.detail_albedo = material.albedo_texture
+  material.detail_blend_mode = BaseMaterial3D.DETAIL_BLEND_MODE_MUL
+  material.albedo_color = Color(1.12, 1.12, 1.12, 1.0)
  material.roughness = 0.88
  material.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_GRAYSCALE
  material.roughness_texture = _load_first_map(folder, ["roughness.jpg", "roughness.png", "roughness.webp"], _fallback_texture("roughness", environment_id))
@@ -37,6 +38,8 @@ static func build_ground_material(environment_id: String, triplanar: bool = true
  material.uv1_triplanar = triplanar
  material.uv1_triplanar_sharpness = 4.0
  material.uv1_scale = Vector3(0.48, 0.48, 0.48) if triplanar else Vector3(24.0, 24.0, 1.0)
+ if environment_id == "TwinCity" and triplanar:
+  material.uv1_scale = Vector3(0.62, 0.62, 0.62)
  material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
  material.cull_mode = BaseMaterial3D.CULL_DISABLED
  var emission_map := _load_first_map(folder, ["emission.jpg", "emission.png", "emission.webp"], null)
@@ -48,22 +51,6 @@ static func build_ground_material(environment_id: String, triplanar: bool = true
   material.emission = EMISSIVE[environment_id]
   material.emission_energy_multiplier = 0.7
  return material
-
-static func _enhance_albedo_contrast(texture: Texture2D, contrast: float, brightness: float) -> Texture2D:
- if texture == null:
-  return null
- var image := texture.get_image()
- if image == null or image.is_empty():
-  return texture
- image.convert(Image.FORMAT_RGBA8)
- for y in range(image.get_height()):
-  for x in range(image.get_width()):
-   var pixel := image.get_pixel(x, y)
-   pixel.r = clampf(((pixel.r - 0.5) * contrast + 0.5) * brightness, 0.0, 1.0)
-   pixel.g = clampf(((pixel.g - 0.5) * contrast + 0.5) * brightness, 0.0, 1.0)
-   pixel.b = clampf(((pixel.b - 0.5) * contrast + 0.5) * brightness, 0.0, 1.0)
-   image.set_pixel(x, y, pixel)
- return ImageTexture.create_from_image(image)
 
 static func build_emissive_material(color: Color, energy: float = 1.5, roughness_value: float = 0.35) -> StandardMaterial3D:
  var material := StandardMaterial3D.new()
