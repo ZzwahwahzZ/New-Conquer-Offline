@@ -119,9 +119,9 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  parent.add_child(outer)
  var ground_color := Color("#6c9849")
  match city:
-  "DesertLand": ground_color = Color("#c99b62")
+  "DesertLand": ground_color = Color("#D4A359")
   "VolcanoLand": ground_color = Color("#393437")
-  "IceLand": ground_color = Color("#b9d9e8")
+  "IceLand": ground_color = Color("#A8D0E6")
   "Waterlands": ground_color = Color("#3a9e91")
   "DarkForest": ground_color = Color("#294b32")
  var ground := MeshInstance3D.new()
