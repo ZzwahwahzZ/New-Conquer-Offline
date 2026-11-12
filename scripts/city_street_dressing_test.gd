@@ -69,6 +69,22 @@ func _run() -> void:
 		var navigation_region := city.find_child("TerrainNavigationRegion", true, false) as NavigationRegion3D
 		if not _check(navigation_region != null and navigation_region.navigation_mesh != null and navigation_region.navigation_mesh.get_polygon_count() >= 8000, city_name + " heightfield-aligned navigation mesh is missing or incomplete"):
 			return
+		await physics_frame
+		await physics_frame
+		var navigation_map := navigation_region.get_navigation_map()
+		var nav_start := NavigationServer3D.map_get_closest_point(navigation_map, Vector3.ZERO)
+		var nav_end := NavigationServer3D.map_get_closest_point(navigation_map, Vector3(180.0, 0.0, 180.0))
+		var nav_path := NavigationServer3D.map_get_path(navigation_map, nav_start, nav_end, true)
+		if not _check(nav_path.size() >= 2, city_name + " navigation mesh cannot route across the terrain"):
+			return
+		var monster_probe := CharacterBody3D.new()
+		monster_probe.set_script(load("res://src/scripts/Enemy.gd"))
+		city.add_child(monster_probe)
+		await process_frame
+		var monster_agent := monster_probe.get_node_or_null("TerrainNavigationAgent") as NavigationAgent3D
+		if not _check(monster_agent != null and monster_agent.navigation_layers == 1 and monster_probe.floor_snap_length >= 0.3 and monster_probe.floor_max_angle >= deg_to_rad(41.0), city_name + " monster terrain navigation/floor adhesion is not configured"):
+			return
+		monster_probe.queue_free()
 		var kenney_scatter := city.find_child(city_name + "_KenneyNature_0_MultiMesh", true, false) as MultiMeshInstance3D
 		if not _check(kenney_scatter != null and kenney_scatter.multimesh != null and kenney_scatter.multimesh.instance_count >= 32, city_name + " Kenney nature MultiMesh scatter is missing"):
 			return
