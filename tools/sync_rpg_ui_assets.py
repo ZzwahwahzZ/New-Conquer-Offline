@@ -21,7 +21,7 @@ DEST = ROOT / "assets" / "ui"
 CACHE = Path("/tmp/hf-rpg-ui-cache")
 STAGE = Path("/tmp/rpg-ui-stage")
 PUBLISH = Path("/tmp/rpg-ui-publish")
-SOURCE_VERSION = "kenney-cc0-rpg-ui-2026-11-v3"
+SOURCE_VERSION = "kenney-cc0-rpg-ui-2026-11-v4"
 MIRROR_REPO = "shorepine/kenney"
 MIRROR_COMMIT = "3694c6879e487c108f55677be7dd2ca75b07cc3b"
 _MIRROR_TREE = None
@@ -38,12 +38,13 @@ PACKS = {
         "license": "CC0-1.0",
     },
     "ui-pack-rpg-expansion": {
-        "official_url": "https://kenney.nl/assets/ui-pack-rpg-expansion/download",
+        "official_url": "https://kenney.nl/media/pages/assets/ui-pack-rpg-expansion/7ec4a46657-1677661824/kenney_ui-pack-rpg-expansion.zip",
         "page": "https://kenney.nl/assets/ui-pack-rpg-expansion",
         "license": "CC0-1.0",
     },
     "game-icons": {
-        "official_url": "https://kenney.nl/assets/game-icons/download",
+        "official_url": "https://kenney.nl/media/pages/assets/game-icons/1ebf9c14af-1677661579/kenney_game-icons.zip",
+        "mirror_prefix": "icons/Game Icons/Black/2x/",
         "page": "https://kenney.nl/assets/game-icons",
         "license": "CC0-1.0",
     },
@@ -207,6 +208,8 @@ def download_pack(pack_name: str, metadata: dict, target: Path) -> dict:
     try:
         if metadata.get("mirror_prefix"):
             return download_mirror_subset(pack_name, metadata, target)
+        if not metadata.get("mirror_url"):
+            raise RuntimeError("No fallback mirror configured for this pack")
         download(metadata["mirror_url"], target)
         actual = sha256_file(target)
         if actual != metadata["mirror_sha256"]:
@@ -438,7 +441,7 @@ def restore_from_hf(api: HfApi, token: str) -> bool:
         )
     if count < MINIMUM_PNG_FILES:
         raise RuntimeError(f"HF Kenney restore has only {count} PNG files")
-    expected_signature = b"\\x89PNG\\r\\n\\x1a\\n"
+    expected_signature = b"\x89PNG\r\n\x1a\n"
     invalid_pngs = [
         str(path.relative_to(DEST))
         for path in png_files
