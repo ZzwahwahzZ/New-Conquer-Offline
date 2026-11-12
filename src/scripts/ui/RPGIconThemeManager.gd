@@ -30,6 +30,9 @@ static func apply_to_tree(root: Node) -> void:
 	var main_row := scope.find_child("MainRow", true, false)
 	if is_instance_valid(main_row) and main_row is Control:
 		(main_row as Control).layout_direction = Control.LAYOUT_DIRECTION_LTR
+	for node in scope.find_children("*", "HBoxContainer", true, false):
+		if str(node.name).begins_with("EquipmentRow_"):
+			(node as Control).layout_direction = Control.LAYOUT_DIRECTION_LTR
 	# Apply the shared engraved frame to static and dynamically-created panel surfaces.
 	var ornate := frame_style()
 	for node in scope.find_children("*", "PanelContainer", true, false):
