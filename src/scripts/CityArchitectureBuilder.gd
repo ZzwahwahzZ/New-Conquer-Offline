@@ -95,8 +95,10 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
    var start := -half if segment < 0.0 else gap
    var finish := -gap if segment < 0.0 else half
    var length := finish-start
-   _box(fortification,"HighStonePerimeterWall",Vector3((start+finish)*0.5,5.0,side*half),Vector3(length,10.0,5.0),wall_material,1.0)
-   _box(fortification,"HighStonePerimeterWall",Vector3(side*half,5.0,(start+finish)*0.5),Vector3(5.0,10.0,length),wall_material,1.0)
+   var horizontal_wall := _box(fortification,"HighStonePerimeterWall_%s_%s" % [str(int(side)),str(int(segment))],Vector3((start+finish)*0.5,5.0,side*half),Vector3(length,10.0,5.0),wall_material,1.0)
+   horizontal_wall.add_to_group("city_perimeter_wall")
+   var vertical_wall := _box(fortification,"HighStonePerimeterWall_%s_%s" % [str(int(side)),str(int(segment))],Vector3(side*half,5.0,(start+finish)*0.5),Vector3(5.0,10.0,length),wall_material,1.0)
+   vertical_wall.add_to_group("city_perimeter_wall")
  for direction in range(4):
   var gate := Node3D.new()
   gate.name = ["North","East","South","West"][direction] + "_GrandCityGate"
