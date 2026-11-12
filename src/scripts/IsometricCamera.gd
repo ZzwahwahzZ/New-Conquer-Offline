@@ -2,7 +2,7 @@ extends Node3D
 ## Smooth player-following isometric orbit camera with mouse, touch drag and pinch zoom.
 @export var target_path: NodePath = NodePath("../Player")
 @export_range(0.1,30.0,0.1) var follow_speed := 10.0
-@export_range(15.0,75.0,0.1) var pitch_degrees := 38.5
+@export_range(15.0,75.0,0.1) var pitch_degrees := 38.0
 @export_range(8.0,50.0,0.5) var orbit_distance := 21.0
 @export_range(0.05,1.0,0.01) var drag_sensitivity := 0.66
 @export var zoom_step := 2.0
