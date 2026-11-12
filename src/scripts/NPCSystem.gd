@@ -1,5 +1,5 @@
 extends Node3D
-const ROLES=[["ClassTrainer","مدرب الفئات","class_trainer",Vector3(-5,0,3)],["Blacksmith","الحداد","blacksmith",Vector3(-2,0,3)],["Armorer","تاجر الدروع","armorer",Vector3(1,0,3)],["Pharmacist","الصيدلي","pharmacist",Vector3(4,0,3)],["Warehouseman","أمين الخزنة","warehouseman",Vector3(7,0,3)],["GuildDirector","مدير العشائر","guild_director",Vector3(10,0,3)]]
+const ROLES=[["ClassTrainer","مدرب الفئات","class_trainer",Vector3(-18,0,14)],["Blacksmith","الحداد","blacksmith",Vector3(-4,0,22)],["Armorer","تاجر الدروع","armorer",Vector3(11,0,19)],["Pharmacist","الصيدلي","pharmacist",Vector3(21,0,5)],["Warehouseman","أمين الخزنة","warehouseman",Vector3(17,0,-14)],["GuildDirector","مدير العشائر","guild_director",Vector3(-7,0,-22)]]
 func setup(world:Node3D,settlement:String) -> void:
  for d in ROLES:
   if d[0] == "GuildDirector" and settlement != "TwinCity": continue
