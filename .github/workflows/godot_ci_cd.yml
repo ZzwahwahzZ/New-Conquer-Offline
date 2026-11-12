@@ -225,15 +225,19 @@ jobs:
             test -s "reports/visual-proof/city_${city_index}_${city}_05_orbit_90.png"
             city_index=$((city_index+1))
           done
+          for city_index in "${!cities[@]}"; do
+            city="${cities[$city_index]}"
+            test -s "reports/visual-proof/phase3a_panorama_$((city_index + 1))_${city}.png"
+          done
           file reports/visual-proof/*.png
-          test "$(find reports/visual-proof -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 30
-          echo "THIRTY_CITY_ARCHITECTURE_VISUAL_PROOFS_PASS"
+          test "$(find reports/visual-proof -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 36
+          echo "THIRTY_CITY_ARCHITECTURE_FRAMES_AND_SIX_PHASE3A_PANORAMAS_PASS"
 
       - name: Upload Visual Screenshot Proof
         if: always() && steps.capture_visual_proof.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: NewConquerOffline-Visual-Screenshot-Proof-30
+          name: NewConquerOffline-Phase3A-World-Panoramas-6
           path: reports/visual-proof/
           if-no-files-found: error
           retention-days: 30
