@@ -38,6 +38,13 @@ PACKS = {
         "sha256": "921f3f73927bb23106cae34bc21d5ab4b033a9fc120475e96f714a406e3169df",
         "minimum_models": 55,
     },
+    "retro-fantasy-kit": {
+        "title": "Kenney Retro Fantasy Kit",
+        "url": "https://kenney.nl/media/pages/assets/retro-fantasy-kit/cf3f41b752-1774770658/kenney_retro-fantasy-kit.zip",
+        "source": "https://kenney.nl/assets/retro-fantasy-kit",
+        "sha256": "d3462b453018d0d150406d85af3c4ae1322ceef8f1754c4eb4e6355adfeaab0f",
+        "minimum_models": 80,
+    },
 }
 LICENSE_URL = "https://creativecommons.org/publicdomain/zero/1.0/"
 
@@ -90,7 +97,7 @@ def restore_pack(pack_id: str, metadata: dict) -> dict:
             relative = safe_member(item.filename)
             normalized = relative.as_posix()
             lower = normalized.lower()
-            is_gltf_asset = "/models/gltf format/" in ("/" + lower) and lower.endswith((".glb", ".gltf", ".bin", ".png", ".jpg", ".jpeg"))
+            is_gltf_asset = ("/models/gltf format/" in ("/" + lower) or "/models/glb format/" in ("/" + lower)) and lower.endswith((".glb", ".gltf", ".bin", ".png", ".jpg", ".jpeg"))
             is_license = relative.name.lower() in {"license.txt", "license"}
             if not (is_gltf_asset or is_license):
                 continue
