@@ -49,7 +49,7 @@ def quarantine_asset(root: Path, quarantine: Path, relative: str, attempt: int) 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--timeout", type=int, default=180)
+    parser.add_argument("--timeout", type=int, default=900)
     parser.add_argument("--max-retries", type=int, default=12)
     parser.add_argument("--quarantine", type=Path, default=Path("/tmp/godot-asset-quarantine"))
     parser.add_argument("--log", type=Path, default=Path("reports/godot_import_guard.log"))
