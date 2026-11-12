@@ -1,6 +1,7 @@
 extends Node3D
 const WorldTerrainBuilder = preload("res://src/scripts/WorldTerrainBuilder.gd")
 const ChineseImperialBuilder = preload("res://src/scripts/ChineseImperialBuilder.gd")
+const CityArchitectureBuilder = preload("res://src/scripts/CityArchitectureBuilder.gd")
 ## Environment shell with named anchors for later production map assets.
 @export var settlement_id := "TwinCity"
 @export var display_name := "Twin City"
@@ -19,6 +20,7 @@ func _ready() -> void:
 	_build_asset_slots()
 	_build_terrain_shell()
 	ChineseImperialBuilder.build(get_node("ArchitectureAssetSlot"), settlement_id, 600.0 if settlement_id == "TwinCity" else 450.0)
+	CityArchitectureBuilder.build(get_node("ArchitectureAssetSlot"), settlement_id, 600.0 if settlement_id == "TwinCity" else 450.0)
 	_build_landmarks()
 	_build_sanctuary_landmarks()
 
