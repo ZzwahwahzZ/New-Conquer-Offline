@@ -10,8 +10,8 @@ const MAPS := {
  "DarkForest": "Ground053_2K-JPG"
 }
 const BASE_COLORS := {
- "TwinCity": Color("#b9ad98"), "DesertLand": Color("#c6a064"),
- "VolcanoLand": Color("#51464a"), "IceLand": Color("#d7edf5"),
+ "TwinCity": Color("#b9ad98"), "DesertLand": Color("#D4A359"),
+ "VolcanoLand": Color("#51464a"), "IceLand": Color("#A8D0E6"),
  "Waterlands": Color("#648c70"), "DarkForest": Color("#344a38")
 }
 const EMISSIVE := {"VolcanoLand": Color("#ff4b12")}
@@ -22,6 +22,8 @@ static func build_ground_material(environment_id: String, triplanar: bool = true
  var material := StandardMaterial3D.new()
  material.resource_name = environment_id + "_PBR_Ground"
  material.albedo_color = Color.WHITE
+ if environment_id in ["DesertLand", "IceLand"]:
+  material.albedo_color = BASE_COLORS[environment_id]
  material.albedo_texture = _load_first_map(folder, ["albedo.jpg", "albedo.png", "albedo.webp"], _fallback_texture("albedo", environment_id))
  material.normal_enabled = true
  material.normal_texture = _load_first_map(folder, ["normal.jpg", "normal.png", "normal.webp"], _fallback_texture("normal", environment_id))
