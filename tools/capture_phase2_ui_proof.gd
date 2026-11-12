@@ -68,8 +68,47 @@ func _run() -> void:
 	classic.visible = true
 	if not await _save("01_twincity_gameplay_hud.png"):
 		quit(1); return
-	hud.call("_toggle_status_ui")
+	# Runtime-only QA loadout: no save files are modified by the screenshot test.
+	var bow: Dictionary = GearDatabase.create_item("archer_bow")
+	bow["quality"] = "Elite"
+	bow["plus"] = 12
+	bow["socket_count"] = 2
+	bow["sockets"] = ["Dragon_Super", "Phoenix_Super"]
+	GearSystem.equipment["RightHand"] = bow
+	var armor: Dictionary = GearDatabase.create_item("archer_armor_15")
+	armor["quality"] = "Elite"
+	armor["plus"] = 12
+	armor["socket_count"] = 2
+	armor["sockets"] = ["Fury_Super", "Kylin_Super"]
+	GearSystem.equipment["Armor"] = armor
+	GearSystem.inventory.clear()
+	for item_id in ["assassin_throwing_knife", "ninja_katana_15", "warrior_sword_15", "archer_helmet_15", "basic_necklace", "basic_boots", "basic_ring"]:
+		var item: Dictionary = GearDatabase.create_item(item_id)
+		if not item.is_empty():
+			item["quality"] = "Elite"
+			item["plus"] = 1
+			GearSystem.inventory.append(item)
+	for gem_id in GearDatabase.get_all_gem_ids():
+		var gem_name := "%s %s Gem" % [str(gem_id).get_slice("_", 1), str(gem_id).get_slice("_", 0)]
+		GearSystem.inventory.append({"id": gem_id, "gem_id": gem_id, "name": gem_name, "quantity": 1, "item_type": "gem", "instance_id": "phase2_" + gem_id})
+	GearSystem.equipment_changed.emit()
+	GearSystem.inventory_changed.emit()
+	hud.call("_toggle_inventory")
+	var inventory_ui := get_tree().get_first_node_in_group("inventory_ui")
+	if not is_instance_valid(inventory_ui):
+		_fail("Character gear and inventory UI is missing")
+		return
+	if GearSystem.inventory.size() != 28:
+		_fail("Expected seven equipment pieces and all 21 gem variants in runtime inventory")
+		return
+	for gem_id in GearDatabase.get_all_gem_ids():
+		if ThemeManager.item_texture(gem_id) == null:
+			_fail("No PNG icon resolved for gem " + gem_id)
+			return
 	if not await _save("02_character_gear.png"):
+		quit(1); return
+	inventory_ui.call("_select_inventory_item", 7)
+	if not await _save("03_inventory_hotkeys.png"):
 		quit(1); return
 	hud.call("_toggle_inventory")
 	if not await _save("03_inventory_hotkeys.png"):
@@ -96,10 +135,14 @@ func _run() -> void:
 		_fail("Could not activate the canonical TwinCity hunt quest")
 		return
 	var target_enemy: Node3D
-	for candidate in get_tree().get_nodes_in_group("enemies"):
-		if str(candidate.get("monster_id")) == str(hunt.get("target", "")):
-			target_enemy = candidate
+	for frame in range(120):
+		for candidate in get_tree().get_nodes_in_group("enemies"):
+			if str(candidate.get("monster_id")) == str(hunt.get("target", "")):
+				target_enemy = candidate
+				break
+		if is_instance_valid(target_enemy):
 			break
+		await process_frame
 	if not is_instance_valid(target_enemy):
 		_fail("No live 3D monster instance matches quest target %s" % str(hunt.get("target", "")))
 		return
