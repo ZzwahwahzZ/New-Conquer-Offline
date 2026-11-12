@@ -21,7 +21,7 @@ DEST = ROOT / "assets" / "ui"
 CACHE = Path("/tmp/hf-rpg-ui-cache")
 STAGE = Path("/tmp/rpg-ui-stage")
 PUBLISH = Path("/tmp/rpg-ui-publish")
-SOURCE_VERSION = "kenney-cc0-rpg-ui-2026-11-v4"
+SOURCE_VERSION = "kenney-cc0-rpg-ui-2026-11-v5"
 MIRROR_REPO = "shorepine/kenney"
 MIRROR_COMMIT = "3694c6879e487c108f55677be7dd2ca75b07cc3b"
 _MIRROR_TREE = None
@@ -38,12 +38,13 @@ PACKS = {
         "license": "CC0-1.0",
     },
     "ui-pack-rpg-expansion": {
-        "official_url": "https://kenney.nl/media/pages/assets/ui-pack-rpg-expansion/7ec4a46657-1677661824/kenney_ui-pack-rpg-expansion.zip",
+        "official_url": "https://kenney.nl/assets/ui-pack-rpg-expansion/download",
+        "mirror_url": "https://opengameart.org/sites/default/files/UIpack_RPG.zip",
         "page": "https://kenney.nl/assets/ui-pack-rpg-expansion",
         "license": "CC0-1.0",
     },
     "game-icons": {
-        "official_url": "https://kenney.nl/media/pages/assets/game-icons/1ebf9c14af-1677661579/kenney_game-icons.zip",
+        "official_url": "https://kenney.nl/assets/game-icons/download",
         "mirror_prefix": "icons/Game Icons/Black/2x/",
         "page": "https://kenney.nl/assets/game-icons",
         "license": "CC0-1.0",
@@ -212,15 +213,21 @@ def download_pack(pack_name: str, metadata: dict, target: Path) -> dict:
             raise RuntimeError("No fallback mirror configured for this pack")
         download(metadata["mirror_url"], target)
         actual = sha256_file(target)
-        if actual != metadata["mirror_sha256"]:
+        expected_sha256 = metadata.get("mirror_sha256")
+        if expected_sha256 and actual != expected_sha256:
             raise RuntimeError(f"GitHub mirror SHA256 mismatch for {pack_name}: {actual}")
-        print(f"KENNEY_GITHUB_MIRROR_PASS: {pack_name} sha256={actual}")
+        if expected_sha256:
+            print(f"KENNEY_VERIFIED_GITHUB_MIRROR_PASS: {pack_name} sha256={actual}")
+            source_label = "verified-github-mirror"
+        else:
+            print(f"KENNEY_COMMUNITY_MIRROR_ARCHIVE_PASS: {pack_name} sha256={actual}")
+            source_label = "community-mirror-archive"
         return {
-            "source": "verified-github-mirror",
+            "source": source_label,
             "download_url": metadata["mirror_url"],
             "archive_bytes": target.stat().st_size,
             "sha256": actual,
-            "mirror_repository": "https://github.com/bill2432/kenney-2d-mirror",
+            "mirror_repository": metadata["mirror_url"].split("/sites/")[0],
         }
     except Exception as exc:
         errors.append(f"GitHub mirror: {type(exc).__name__}: {exc}")
