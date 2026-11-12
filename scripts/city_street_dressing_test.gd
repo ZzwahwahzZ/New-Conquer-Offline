@@ -43,6 +43,16 @@ func _run() -> void:
 		for node_name in ["Street_NorthSouth", "Street_EastWest", "CentralDarkSquare"]:
 			if not _check(city.find_child(node_name, true, false) is MeshInstance3D, city_name + " missing " + node_name):
 				return
+		var terrain_body := city.find_child("TerrainCollision", true, false) as StaticBody3D
+		var terrain_collider := city.find_child("TerrainSurfaceCollision", true, false) as CollisionShape3D
+		if not _check(terrain_body != null and terrain_collider != null and terrain_collider.shape is ConcavePolygonShape3D, city_name + " full heightfield terrain collision is missing"):
+			return
+		var navigation_region := city.find_child("TerrainNavigationRegion", true, false) as NavigationRegion3D
+		if not _check(navigation_region != null and navigation_region.navigation_mesh != null and navigation_region.navigation_mesh.get_polygon_count() >= 8000, city_name + " heightfield-aligned navigation mesh is missing or incomplete"):
+			return
+		var kenney_scatter := city.find_child(city_name + "_KenneyNature_0_MultiMesh", true, false) as MultiMeshInstance3D
+		if not _check(kenney_scatter != null and kenney_scatter.multimesh != null and kenney_scatter.multimesh.instance_count >= 32, city_name + " Kenney nature MultiMesh scatter is missing"):
+			return
 		var architecture_slot := city.get_node_or_null("ArchitectureAssetSlot")
 		if not _check(architecture_slot != null, city_name + " architecture slot missing"):
 			return
@@ -57,13 +67,17 @@ func _run() -> void:
 				pending_arch.append(child)
 			if arch_node.name.begins_with(city_name + "_DetailedBuilding_"):
 				detailed_buildings += 1
-			elif arch_node.name.begins_with(city_name + "_QuaterniusBuilding_"):
+			elif arch_node.name.begins_with(city_name + "_QuaterniusBuilding_") or arch_node.name.begins_with(city_name + "_KenneyBuilding_"):
 				imported_buildings.append(arch_node)
 			if arch_node.name == "ReliefBrickWalls" and arch_node is MeshInstance3D:
 				var brick_material := (arch_node as MeshInstance3D).material_override as StandardMaterial3D
 				brick_normal_found = brick_material != null and brick_material.normal_enabled and brick_material.normal_texture != null
 			if arch_node.name in ["PagodaRoofTier_0", "SandstoneDome", "BasaltBattlement", "SnowRoofTier"]:
 				roof_detail_found = true
+		var kenney_buildings := 0
+		for imported_root in imported_buildings:
+			if imported_root.name.begins_with(city_name + "_KenneyBuilding_"):
+				kenney_buildings += 1
 		var total_buildings := detailed_buildings + imported_buildings.size()
 		if not _check(total_buildings == 24, city_name + " must contain 24 buildings (detailed=%d imported=%d)" % [detailed_buildings, imported_buildings.size()]):
 			return
@@ -75,7 +89,9 @@ func _run() -> void:
 				renderable_imports += 1
 		if not _check(renderable_imports == imported_buildings.size(), city_name + " has imported buildings without renderable mesh geometry"):
 			return
-		print("CITY_BUILDING_SOURCE_AUDIT: " + city_name + " detailed=" + str(detailed_buildings) + " quaternius=" + str(imported_buildings.size()) + " renderable_imports=" + str(renderable_imports))
+		if not _check(kenney_buildings == 24, city_name + " must use 24 Kenney GLB buildings (found %d)" % kenney_buildings):
+			return
+		print("CITY_BUILDING_SOURCE_AUDIT: " + city_name + " detailed=" + str(detailed_buildings) + " kenney=" + str(kenney_buildings) + " imported=" + str(imported_buildings.size()) + " renderable_imports=" + str(renderable_imports))
 		var gate_count := 0
 		var wall_count := 0
 		var open_plaza_found := city.find_child("OpenCentralPlaza_80x80", true, false) != null
