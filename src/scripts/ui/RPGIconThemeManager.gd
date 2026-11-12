@@ -115,6 +115,10 @@ static func item_texture(item_id: String) -> Texture2D:
 				semantic_texture = find_texture("icons/skills", hint)
 			if semantic_texture != null:
 				return semantic_texture
+		var fallback_texture := find_texture("icons/misc")
+		if fallback_texture == null:
+			fallback_texture = find_texture("icons/skills")
+		return fallback_texture
 	var category := "misc"
 	var hint := key
 	if "gem" in key or "crystal" in key or "jewel" in key or key in ["meteor", "dragonball", "rainbow"]:
