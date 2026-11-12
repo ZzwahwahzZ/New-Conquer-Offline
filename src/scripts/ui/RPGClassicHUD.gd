@@ -108,7 +108,7 @@ func _build_bottom_bar() -> void:
 	_xp.custom_minimum_size = Vector2(90, 9)
 	_xp.add_theme_stylebox_override("background", _flat(Color(0.02,0.025,0.035,1), Color("#72572e"), 1))
 	_xp.add_theme_stylebox_override("fill", _flat(Color("#e4b83f"), Color("#fff0a6"), 1))
-	row.add_child(_xp)
+	add_child(_xp)
 	# Ten fine dark dividers make the gold EXP fill read as segmented cells.
 	for segment_index in range(1, 10):
 		var divider := ColorRect.new()
@@ -282,6 +282,10 @@ func _layout() -> void:
 	_bar.position = Vector2(4, viewport.y - bar_height)
 	_bar.size = Vector2(viewport.x - 8, bar_height)
 	var orb_size := minf(84.0, maxf(52.0, bar_height - 2.0))
+	var xp_width := minf(viewport.x * 0.54, 640.0)
+	_xp.position = Vector2((viewport.x - xp_width) * 0.5, viewport.y - bar_height - 10.0)
+	_xp.size = Vector2(xp_width, 7.0)
+	_xp.custom_minimum_size = Vector2(180, 7)
 	var orb := _bar.get_node_or_null("MainRow/SplitCrystalOrb")
 	if is_instance_valid(orb):
 		orb.custom_minimum_size = Vector2(orb_size, orb_size)
