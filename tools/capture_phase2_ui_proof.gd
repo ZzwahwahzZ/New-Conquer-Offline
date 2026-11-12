@@ -100,7 +100,7 @@ func _run() -> void:
 	GearSystem.equipment_changed.emit()
 	GearSystem.inventory_changed.emit()
 	hud.call("_toggle_inventory")
-	var inventory_ui := get_tree().get_first_node_in_group("inventory_ui")
+	var inventory_ui: Node = get_first_node_in_group("inventory_ui")
 	if not is_instance_valid(inventory_ui):
 		_fail("Character gear and inventory UI is missing")
 		return
