@@ -1,4 +1,7 @@
 extends SceneTree
+
+func get_tree() -> SceneTree:
+	return self
 const PBR = preload("res://src/scripts/PBRMaterialLibrary.gd")
 func _initialize() -> void:
  for environment_id in ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"]:
@@ -12,4 +15,4 @@ func _initialize() -> void:
  var lava: StandardMaterial3D = PBR.build_emissive_material(Color("#ff4b12"))
  assert(lava.emission_enabled)
  print("PBR_MATERIAL_LIBRARY_PASS: six environments, normal/roughness maps, triplanar and emission fallback")
- quit(0)
+ get_tree().quit(0)
