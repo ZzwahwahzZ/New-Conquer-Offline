@@ -72,7 +72,7 @@ def export_psd_assets(source_root: Path) -> int:
     if not psd_files:
         return 0
     try:
-        from psd_tools import PSDImage, ParseLimits
+        from psd_tools import PSDImage
     except ImportError:
         import subprocess
         import sys
@@ -80,7 +80,11 @@ def export_psd_assets(source_root: Path) -> int:
         from psd_tools import PSDImage
     exported = 0
     for psd_path in psd_files:
-        document = PSDImage.open(psd_path, max_alloc_bytes=512 * 1024 * 1024, parse_limits=ParseLimits(max_objects=5_000_000, max_nesting_depth=64))
+        # Reject unexpectedly large source files before parsing; PSDImage.open's
+        # public API is intentionally used without version-specific ParseLimits.
+        if psd_path.stat().st_size > 256 * 1024 * 1024:
+            raise RuntimeError(f"PSD exceeds 256 MiB safety limit: {psd_path}")
+        document = PSDImage.open(psd_path)
         output_dir = psd_path.parent / (psd_path.stem + "_layers")
         output_dir.mkdir(parents=True, exist_ok=True)
         composite = document.composite()
@@ -127,8 +131,8 @@ def classify_assets(stage: Path, provenance: dict) -> dict:
     }
     alias_hits = {}
     for path in images:
-        name = relative.as_posix().lower().replace(" ", "_").replace("-", "_")
         relative = path.relative_to(source_root)
+        name = relative.as_posix().lower().replace(" ", "_").replace("-", "_")
         if any(token in name for token in ("button", "btn")):
             shutil.copy2(path, buttons_root / path.name)
         elif any(token in name for token in ("bar", "health", "mana", "stamina")):
