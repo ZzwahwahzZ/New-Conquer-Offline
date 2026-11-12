@@ -1,4 +1,8 @@
 extends SceneTree
+
+# SceneTree scripts expose get_tree().quit() directly; this accessor keeps explicit tree-style shutdown calls.
+func get_tree() -> SceneTree:
+	return self
 ## Step 16 terrain, collision, city architecture and Autoload regression test.
 func _initialize() -> void:
  call_deferred("_run")
@@ -29,4 +33,4 @@ func _run() -> void:
  assert(load("res://src/scripts/WorldTerrainBuilder.gd") != null)
  assert(load("res://src/scripts/ConquerRoyalTheme.gd") != null)
  print("STEP16_SIX_CITIES_TERRAIN_COLLISION_CHINESE_ARCHITECTURE_AUTOLOAD_PASS")
- quit(0)
+ get_tree().quit(0)
