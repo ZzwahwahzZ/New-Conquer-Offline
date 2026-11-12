@@ -4,10 +4,12 @@ var panel:PanelContainer
 var list:VBoxContainer
 func _ready() -> void:
  panel=PanelContainer.new(); panel.set_anchors_preset(Control.PRESET_CENTER); panel.position=Vector2(-310,-300); panel.size=Vector2(620,600); add_child(panel)
- var v=VBoxContainer.new(); panel.add_child(v); panel.add_theme_stylebox_override("panel", _lux_panel_style()); var h=HBoxContainer.new(); v.add_child(h); var t=Label.new(); t.text="المول الشامل - GOLD"; t.add_theme_color_override("font_color", Color("#FFE2A0")); t.size_flags_horizontal=Control.SIZE_EXPAND_FILL; h.add_child(t); var c=Button.new(); c.text="إغلاق"; c.pressed.connect(panel.hide); h.add_child(c)
+ var v=VBoxContainer.new(); panel.add_child(v); panel.add_theme_stylebox_override("panel", _lux_panel_style()); var h=HBoxContainer.new(); v.add_child(h); var t=Label.new(); t.text="المول الشامل - GOLD"; t.add_theme_color_override("font_color", Color("#FFE2A0")); t.size_flags_horizontal=Control.SIZE_EXPAND_FILL; h.add_child(t); var c=Button.new(); c.text="✕"; c.custom_minimum_size=Vector2(38,38); c.add_theme_color_override("font_color",Color("#FFE2A0")); c.add_theme_stylebox_override("normal",_lux_close_style()); c.pressed.connect(panel.hide); h.add_child(c)
  var scroll=ScrollContainer.new(); scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL; v.add_child(scroll); list=VBoxContainer.new(); scroll.add_child(list)
  panel.hide()
 func toggle() -> void: panel.visible=not panel.visible; refresh()
+func _lux_close_style() -> StyleBoxFlat:
+ var s=StyleBoxFlat.new(); s.bg_color=Color("#641D16"); s.border_color=Color("#D4AF37"); s.set_border_width_all(2); s.set_corner_radius_all(19); return s
 func _lux_panel_style() -> StyleBoxFlat:
  var s=StyleBoxFlat.new(); s.bg_color=Color(0.08,0.06,0.05,0.97); s.border_color=Color("#D4AF37"); s.set_border_width_all(4); s.set_corner_radius_all(7); s.shadow_color=Color(0,0,0,0.85); s.shadow_size=9; s.shadow_offset=Vector2(0,4); return s
 func refresh() -> void:
