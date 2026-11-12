@@ -42,36 +42,36 @@ func add_item(item_id: String, quantity: int = 1) -> void:
   profile.inventory.append({"id":item_id,"quantity":quantity})
   inventory_changed.emit()
 func use_consumable(item_id: String) -> bool:
-	if item_id != "HP_Potion" and item_id != "Mana_Potion":
-		return false
-	var inventory: Array = profile.get("inventory", [])
-	var found_index := -1
-	for index in range(inventory.size()):
-		var entry: Dictionary = inventory[index]
-		if str(entry.get("id", "")) == item_id and int(entry.get("quantity", 1)) > 0:
-			found_index = index
-			break
-	if found_index < 0:
-		return false
-	if item_id == "HP_Potion":
-		if ClassSystem.hp >= ClassSystem.max_hp:
-			return false
-		ClassSystem.restore_hp(maxi(1, int(round(float(ClassSystem.max_hp) * 0.30))))
-	else:
-		if ClassSystem.mp >= ClassSystem.max_mp:
-			return false
-		ClassSystem.restore_mana(maxi(1, int(round(float(ClassSystem.max_mp) * 0.30))))
-	var remaining := int(inventory[found_index].get("quantity", 1)) - 1
-	if remaining <= 0:
-		inventory.remove_at(found_index)
-	else:
-		inventory[found_index]["quantity"] = remaining
-	profile["inventory"] = inventory
-	profile["hp"] = ClassSystem.hp
-	profile["mp"] = ClassSystem.mp
-	save_local()
-	inventory_changed.emit()
-	return true
+  if item_id != "HP_Potion" and item_id != "Mana_Potion":
+    return false
+  var inventory: Array = profile.get("inventory", [])
+  var found_index := -1
+  for index in range(inventory.size()):
+    var entry: Dictionary = inventory[index]
+    if str(entry.get("id", "")) == item_id and int(entry.get("quantity", 1)) > 0:
+      found_index = index
+      break
+  if found_index < 0:
+    return false
+  if item_id == "HP_Potion":
+    if ClassSystem.hp >= ClassSystem.max_hp:
+      return false
+    ClassSystem.restore_hp(maxi(1, int(round(float(ClassSystem.max_hp) * 0.30))))
+  else:
+    if ClassSystem.mp >= ClassSystem.max_mp:
+      return false
+    ClassSystem.restore_mana(maxi(1, int(round(float(ClassSystem.max_mp) * 0.30))))
+  var remaining := int(inventory[found_index].get("quantity", 1)) - 1
+  if remaining <= 0:
+    inventory.remove_at(found_index)
+  else:
+    inventory[found_index]["quantity"] = remaining
+  profile["inventory"] = inventory
+  profile["hp"] = ClassSystem.hp
+  profile["mp"] = ClassSystem.mp
+  save_local()
+  inventory_changed.emit()
+  return true
 
 func update_quest(quest_id: String, state: String) -> void:
   profile.quests[quest_id] = state
