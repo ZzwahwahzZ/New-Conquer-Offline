@@ -501,7 +501,7 @@ func _layout_hud() -> void:
 	if is_instance_valid(_status_button): _status_button.position = Vector2(18.0,68.0)
 	if is_instance_valid(_skills_button): _skills_button.position = Vector2(146.0,68.0)
 	if is_instance_valid(_world_button): _world_button.position = Vector2(width - 398.0,18.0)
-	if is_instance_valid(_world_panel): _world_panel.position = Vector2(18.0,120.0)
+	if is_instance_valid(_world_panel): _world_panel.position = Vector2(18.0,206.0)
 	if is_instance_valid(_minimap): _minimap.position = Vector2(width - 210.0,118.0)
 	if is_instance_valid(_promotion_button):
 		_promotion_button.position = Vector2(width - 210.0, 68.0)
@@ -748,17 +748,9 @@ func _solid_texture(color: Color) -> GradientTexture2D:
 func _build_step12_widgets() -> void:
 	_quest_ui=load("res://src/scenes/QuestUI.tscn").instantiate(); _shop_ui=load("res://src/scenes/ShopUI.tscn").instantiate(); _mall_ui=load("res://src/scenes/ShoppingMallUI.tscn").instantiate(); _warehouse_ui=load("res://src/scenes/WarehouseUI.tscn").instantiate()
 	add_child(_quest_ui); add_child(_shop_ui); add_child(_mall_ui); add_child(_warehouse_ui)
-	var q=Button.new(); q.text="المهام"; q.position=Vector2(18,112); q.pressed.connect(Callable(_quest_ui,"toggle")); _root.add_child(q)
-	var m=Button.new(); m.text="المول"; m.position=Vector2(112,112); m.pressed.connect(Callable(_mall_ui,"toggle")); _root.add_child(m)
-	var b=Button.new(); b.text="الخزنة"; b.position=Vector2(206,112); b.pressed.connect(Callable(_warehouse_ui,"toggle")); _root.add_child(b)
-	var i=Button.new(); i.text="تفاعل"; i.position=Vector2(300,112); i.pressed.connect(_interact_nearest_npc); _root.add_child(i)
 	_guild_ui = load("res://src/scenes/GuildUI.tscn").instantiate() as CanvasLayer
 	add_child(_guild_ui)
-	var guild_button := Button.new()
-	guild_button.text = "العشيرة [G]"
-	guild_button.position = Vector2(394,112)
-	guild_button.pressed.connect(Callable(_guild_ui,"toggle"))
-	_root.add_child(guild_button)
+	# Quest, warehouse, mall and NPC interaction are exposed in the classic bottom bar.
 func _interact_nearest_npc() -> void:
 	if not is_instance_valid(_player): _find_player()
 	if not is_instance_valid(_player): return
