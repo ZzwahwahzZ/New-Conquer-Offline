@@ -60,7 +60,11 @@ func _build_bottom_bar() -> void:
 	_bar.name = "ClassicConquerBottomBar"
 	_bar.mouse_filter = Control.MOUSE_FILTER_PASS
 	add_child(_bar)
-	var frame_texture := ThemeManager.find_texture("frames", "panel")
+	var frame_texture := ThemeManager.find_texture("frames", "brown")
+	if frame_texture == null:
+		frame_texture = ThemeManager.find_texture("frames", "gold")
+	if frame_texture == null:
+		frame_texture = ThemeManager.find_texture("frames", "panel")
 	if frame_texture == null:
 		frame_texture = ThemeManager.find_texture("frames", "frame")
 	var patch := ThemeManager.make_nine_patch(frame_texture, 14)
@@ -196,7 +200,9 @@ func _build_quest_tracker() -> void:
 	_quest_panel.position = Vector2(16, 115)
 	_quest_panel.custom_minimum_size = Vector2(250, 68)
 	_quest_panel.size = Vector2(250, 68)
-	var frame_texture := ThemeManager.find_texture("frames", "quest")
+	var frame_texture := ThemeManager.find_texture("frames", "brown")
+	if frame_texture == null:
+		frame_texture = ThemeManager.find_texture("frames", "quest")
 	if frame_texture == null:
 		frame_texture = ThemeManager.find_texture("frames", "panel")
 	var patch := ThemeManager.make_nine_patch(frame_texture, 12)
