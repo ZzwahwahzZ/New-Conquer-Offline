@@ -309,7 +309,7 @@ def classify_assets(stage: Path, provenance: dict) -> dict:
             if "/double/" in normalized and filename.startswith("gem_"):
                 target_dir = stage / "icons" / "gems"
         elif pack_name == "board-game-icons":
-            if "double (128px)" in normalized and filename.startswith("flask_"):
+            if "double_(128px)" in normalized and filename.startswith("flask_"):
                 target_dir = stage / "icons" / "potions"
         elif pack_name == "roguelike-rpg-pack":
             # Keep the source tilesheet for later world work; do not mislabel it as item icons.
@@ -393,8 +393,13 @@ def restore_from_hf(api: HfApi, token: str) -> bool:
         return False
     if DEST.exists():
         shutil.rmtree(DEST)
-    DEST.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(source, DEST)
+    DEST.mkdir(parents=True, exist_ok=True)
+    for folder_name in ("frames", "buttons", "bars", "icons"):
+        source_folder = source / folder_name
+        if source_folder.is_dir():
+            shutil.copytree(source_folder, DEST / folder_name)
+    if manifest_path.is_file():
+        shutil.copy2(manifest_path, DEST / "manifest.json")
     count = sum(1 for path in DEST.rglob("*.png") if path.is_file())
     if count < MINIMUM_PNG_FILES:
         raise RuntimeError(f"HF Kenney restore has only {count} PNG files")
