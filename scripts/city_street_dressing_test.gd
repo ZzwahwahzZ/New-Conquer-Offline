@@ -62,6 +62,7 @@ func _run() -> void:
 				gate_count += 1
 			if fort_node.name == "HighStonePerimeterWall":
 				wall_count += 1
+		print("CITY_FORTIFICATION_DEBUG: " + city_name + " gates=" + str(gate_count) + " walls=" + str(wall_count) + " plaza=" + str(open_plaza_found) + " outer=" + str(outer_world_found))
 		if not _check(gate_count == 4 and wall_count >= 8 and open_plaza_found and outer_world_found, city_name + " open plaza/perimeter wall/four gates/450m outer world incomplete"):
 			return
 		var planters := 0
