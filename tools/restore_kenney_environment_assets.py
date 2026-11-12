@@ -86,7 +86,7 @@ def restore_pack(pack_id: str, metadata: dict) -> dict:
         raise RuntimeError(f"{pack_id} archive hash mismatch: expected {metadata['sha256']}, got {digest}")
 
     if not zipfile.is_zipfile(archive):
-        raise RuntimeError(f"\{pack_id} downloaded file is not a ZIP: url=\{metadata['url']} bytes=\{archive_size} magic=\{archive_magic!r} sha256=\{digest}")
+        raise RuntimeError(f"{pack_id} downloaded file is not a ZIP: url={metadata['url']} bytes={archive_size} magic={archive_magic!r} sha256={digest}")
 
     target = DEST / pack_id
     if target.exists():
