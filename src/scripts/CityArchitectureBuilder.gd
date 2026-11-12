@@ -106,6 +106,7 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
    _box(gate,"GatehouseTower",Vector3(side*17.0,9.0,-148.0),Vector3(11.0,18.0,13.0),tower_material,1.0)
    _box(gate,"GateTowerCrenellation",Vector3(side*17.0,18.5,-148.0),Vector3(13.0,1.0,15.0),gate_material,1.0)
    _box(gate,"GateGuardianStand",Vector3(side*9.0,1.2,-132.0),Vector3(2.4,2.4,2.4),wall_material,1.0)
+   _build_gate_guard(gate,side,p)
   _box(gate,"GateArchLintel",Vector3(0,17.2,-148.0),Vector3(24.0,3.0,9.0),gate_material,1.0)
   for x in [-8.0,8.0]:
    _box(gate,"ArchColumn",Vector3(x,7.0,-148.0),Vector3(2.0,14.0,7.0),gate_material,1.0)
@@ -177,9 +178,59 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
   _box(outer,"GrandStoneBridgeAtNorthGate",Vector3(0,0.8,-160.0),Vector3(25.0,1.6,22.0),_material(p.stone,0.86),1.0)
  print("OPEN_WORLD_BIOME_PASS: %s extent=450x450 multimesh_trees=%d" % [city,count])
 
+static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary) -> void:
+ var guard := Node3D.new()
+ guard.name = "GateGuardian_" + ("Left" if side < 0.0 else "Right")
+ guard.position = Vector3(side*9.0,0.0,-132.0)
+ parent.add_child(guard)
+ var armor := _material(p.wood,0.62)
+ var trim := _material(p.gold,0.5)
+ var torso := MeshInstance3D.new()
+ var body_mesh := CapsuleMesh.new()
+ body_mesh.radius = 0.42
+ body_mesh.height = 1.45
+ torso.mesh = body_mesh
+ torso.position.y = 1.15
+ torso.material_override = armor
+ guard.add_child(torso)
+ var head := MeshInstance3D.new()
+ var head_mesh := SphereMesh.new()
+ head_mesh.radius = 0.28
+ head_mesh.height = 0.56
+ head.mesh = head_mesh
+ head.position.y = 2.08
+ head.material_override = _material(Color("#bd8c68"),0.82)
+ guard.add_child(head)
+ var helmet := MeshInstance3D.new()
+ var helmet_mesh := SphereMesh.new()
+ helmet_mesh.radius = 0.32
+ helmet_mesh.height = 0.28
+ helmet.mesh = helmet_mesh
+ helmet.position.y = 2.31
+ helmet.material_override = trim
+ guard.add_child(helmet)
+ var spear := MeshInstance3D.new()
+ var spear_mesh := CylinderMesh.new()
+ spear_mesh.top_radius = 0.035
+ spear_mesh.bottom_radius = 0.055
+ spear_mesh.height = 2.7
+ spear.mesh = spear_mesh
+ spear.position = Vector3(side*-0.58,1.35,0.0)
+ spear.material_override = trim
+ guard.add_child(spear)
+
 static func _make_building(city: String, p: Dictionary, index: int, s: float) -> Node3D:
  var root := Node3D.new()
  root.name = city + "_DetailedBuilding_%02d" % index
+ var collision_body := StaticBody3D.new()
+ collision_body.name = "BuildingCollision"
+ var collision_shape := CollisionShape3D.new()
+ var collision_box := BoxShape3D.new()
+ collision_box.size = Vector3(18.0,10.0,14.0)
+ collision_shape.shape = collision_box
+ collision_shape.position.y = 5.0
+ collision_body.add_child(collision_shape)
+ root.add_child(collision_body)
  var wall := _material(p.wall, 0.88)
  wall.normal_enabled = true
  wall.normal_texture = _brick_normal()
