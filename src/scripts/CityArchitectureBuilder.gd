@@ -265,107 +265,18 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  var outer := Node3D.new()
  outer.name = city + "_OpenWorld_800x800"
  parent.add_child(outer)
- var ground_color := Color("#6c9849")
- match city:
-  "DesertLand": ground_color = Color("#D4A359")
-  "VolcanoLand": ground_color = Color("#393437")
-  "IceLand": ground_color = Color("#A8D0E6")
-  "Waterlands": ground_color = Color("#3a9e91")
-  "DarkForest": ground_color = Color("#294b32")
+ # The 800x800 heightfield is the only visible ground; keep this safety plane below its lowest elevation.
  var ground := MeshInstance3D.new()
- ground.name = "SeamlessOuterBiomeGround"
+ ground.name = "SeamlessOuterBiomeSafetyPlane"
  var plane := PlaneMesh.new()
- plane.size = Vector2(800.0,800.0)
+ plane.size = Vector2(800.0, 800.0)
  ground.mesh = plane
- ground.position = Vector3(0,-18.0,0)
+ ground.position = Vector3(0.0, -30.0, 0.0)
  outer.add_child(ground)
- ground.material_override = _material(ground_color,1.0)
- _build_horizon_ridge(outer, city, p)
+ ground.material_override = _material(Color("#343a36"), 1.0)
  _build_walkable_outer_routes(outer, city, p)
- var trunk := CylinderMesh.new()
- trunk.top_radius = 0.28
- trunk.bottom_radius = 0.58
- trunk.height = 7.0
- var canopy: PrimitiveMesh
- if city in ["DesertLand","VolcanoLand","IceLand","DarkForest"]:
-  var evergreen := CylinderMesh.new()
-  evergreen.top_radius = 0.0
-  evergreen.bottom_radius = 3.8
-  evergreen.height = 8.5
-  canopy = evergreen
- else:
-  var broadleaf := SphereMesh.new()
-  broadleaf.radius = 3.6
-  broadleaf.height = 6.8
-  canopy = broadleaf
- var trunk_mm := MultiMesh.new()
- trunk_mm.transform_format = MultiMesh.TRANSFORM_3D
- trunk_mm.mesh = trunk
- var canopy_mm := MultiMesh.new()
- canopy_mm.transform_format = MultiMesh.TRANSFORM_3D
- canopy_mm.mesh = canopy
- var count := 0 if city == "VolcanoLand" else 96
- trunk_mm.instance_count = count
- canopy_mm.instance_count = count
- for i in range(count):
-  var angle := float(i)*2.399963
-  var radius := 166.0 + float((i*37)%64)
-  var pos := Vector3(cos(angle)*radius,3.5,sin(angle)*radius)
-  var basis := Basis(Vector3.UP,angle).scaled(Vector3.ONE*(0.72+float(i%5)*0.12))
-  trunk_mm.set_instance_transform(i,Transform3D(basis,pos))
-  canopy_mm.set_instance_transform(i,Transform3D(basis,pos+Vector3(0,5.5,0)))
- var trunks := MultiMeshInstance3D.new()
- trunks.name = city+"_OuterTreeTrunks_MultiMesh"
- trunks.multimesh = trunk_mm
- trunks.visibility_range_end = 250.0
- trunks.visibility_range_end_margin = 30.0
- outer.add_child(trunks)
- trunks.material_override = _material(p.wood,0.95)
- var crowns := MultiMeshInstance3D.new()
- crowns.name = city+"_OuterCanopy_MultiMesh"
- crowns.multimesh = canopy_mm
- crowns.visibility_range_end = 250.0
- crowns.visibility_range_end_margin = 30.0
- outer.add_child(crowns)
- crowns.material_override = _material(p.accent,0.95)
  _place_quaternius_nature(outer, city)
- var water_color := Color("#4c9eb0")
- if city == "VolcanoLand": water_color = Color("#d75b2d")
- elif city == "DesertLand": water_color = Color("#4a9a75")
- elif city == "IceLand": water_color = Color("#a7dbe9")
- elif city == "Waterlands": water_color = Color("#397f86")
- if city in ["TwinCity","VolcanoLand","Waterlands"]:
-  var water := MeshInstance3D.new()
-  water.name = "OuterRiverOrLavaChannel"
-  var channel := PlaneMesh.new()
-  channel.size = Vector2(34.0,180.0)
-  if city == "Waterlands":
-   channel.size = Vector2(100.0,230.0)
-  water.mesh = channel
-  water.position = Vector3(0,0.08,-205.0)
-  outer.add_child(water)
-  water.material_override = _material(water_color,0.3)
-  if city == "Waterlands":
-   var island_material := _material(Color("#739451"),0.94)
-   for island_data in [{"x":-34.0,"z":-198.0},{"x":0.0,"z":-226.0},{"x":34.0,"z":-198.0}]:
-    var island := MeshInstance3D.new()
-    island.name = "Waterlands_OuterGreenIsland"
-    var island_mesh := CylinderMesh.new()
-    island_mesh.top_radius = 12.0
-    island_mesh.bottom_radius = 14.0
-    island_mesh.height = 1.6
-    island_mesh.radial_segments = 32
-    island.mesh = island_mesh
-    island.position = Vector3(float(island_data.x),0.55,float(island_data.z))
-    outer.add_child(island)
-    island.material_override = island_material
-   _box(outer,"Waterlands_WoodenNorthGateBridge",Vector3(0,1.0,-169.0),Vector3(9.0,0.65,42.0),_material(p.wood,0.88),1.0)
-   for side in [-1.0,1.0]:
-    _box(outer,"Waterlands_WoodenBridgeRail",Vector3(side*4.7,2.0,-169.0),Vector3(0.65,2.0,42.0),_material(p.wood,0.88),1.0)
-   _box(outer,"Waterlands_WoodenIslandCrossing",Vector3(0,1.0,-211.0),Vector3(74.0,0.65,7.0),_material(p.wood,0.88),1.0)
-  else:
-   _box(outer,"GrandStoneBridgeAtNorthGate",Vector3(0,0.8,-160.0),Vector3(25.0,1.6,22.0),_material(p.stone,0.86),1.0)
- print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 multimesh_instances=%d horizon_ridge=44 ramps=4 canyon_pass=1" % [city,count])
+ print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 heightmap_ground=1 height_aligned_routes=4 imported_nature=1" % city)
 
 static func _place_quaternius_nature(parent: Node3D, city: String) -> void:
  var keywords: Array[String] = []
@@ -402,6 +313,7 @@ static func _place_quaternius_nature(parent: Node3D, city: String) -> void:
   var radius := 238.0 + float((i * 31) % 82)
   prop.name = city + "_QuaterniusBiomeProp_%02d" % i
   prop.position = Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
+  prop.position.y = WorldTerrainBuilder.height_at(city, prop.position.x, prop.position.z)
   prop.rotation.y = angle
   var scale_factor := 0.9 + float(i % 5) * 0.18
   prop.scale = Vector3.ONE * scale_factor
@@ -441,45 +353,57 @@ static func _build_horizon_ridge(parent: Node3D, city: String, p: Dictionary) ->
 
 static func _build_walkable_outer_routes(parent: Node3D, city: String, p: Dictionary) -> void:
  var route_root := Node3D.new()
- route_root.name = city + "_WalkableRampsAndCanyonPasses"
+ route_root.name = city + "_HeightAlignedRampsAndPasses"
  parent.add_child(route_root)
- var ramp_material := _material(p.stone.lightened(0.08), 0.96)
- for i in range(4):
-  var angle := float(i) * PI * 0.5
-  var ramp_body := StaticBody3D.new()
-  ramp_body.name = city + "_WalkableRamp_%d" % i
-  ramp_body.position = Vector3(cos(angle) * 205.0, 3.0, sin(angle) * 205.0)
-  ramp_body.rotation.y = -angle
-  ramp_body.rotation.x = deg_to_rad(-10.0)
-  var ramp_mesh := MeshInstance3D.new()
-  var ramp := BoxMesh.new()
-  ramp.size = Vector3(22.0, 2.0, 76.0)
-  ramp_mesh.mesh = ramp
-  ramp_body.add_child(ramp_mesh)
-  ramp_mesh.material_override = ramp_material
-  var ramp_collision := CollisionShape3D.new()
-  var ramp_shape := BoxShape3D.new()
-  ramp_shape.size = ramp.size
-  ramp_collision.shape = ramp_shape
-  ramp_body.add_child(ramp_collision)
-  route_root.add_child(ramp_body)
- var canyon_material := _material(p.stone.darkened(0.12), 1.0)
- for side in [-1.0, 1.0]:
-  var canyon_wall := StaticBody3D.new()
-  canyon_wall.name = city + "_CanyonPassWall"
-  canyon_wall.position = Vector3(side * 22.0, 12.0, -286.0)
-  var wall_mesh := MeshInstance3D.new()
-  var wall := BoxMesh.new()
-  wall.size = Vector3(10.0, 30.0, 112.0)
-  wall_mesh.mesh = wall
-  canyon_wall.add_child(wall_mesh)
-  wall_mesh.material_override = canyon_material
-  var wall_collision := CollisionShape3D.new()
-  var wall_shape := BoxShape3D.new()
-  wall_shape.size = wall.size
-  wall_collision.shape = wall_shape
-  canyon_wall.add_child(wall_collision)
-  route_root.add_child(canyon_wall)
+ var route_material := _material(p.stone.lightened(0.08), 0.94)
+ for route_index in range(4):
+  var angle := float(route_index) * PI * 0.5
+  var direction := Vector2(cos(angle), sin(angle))
+  var lateral := Vector2(-direction.y, direction.x)
+  var vertices := PackedVector3Array()
+  var uv := PackedVector2Array()
+  var indices := PackedInt32Array()
+  var steps := 49
+  for step in range(steps):
+   var distance := 145.0 + float(step) * 4.0
+   var center := direction * distance
+   var left := center + lateral * 4.5
+   var right := center - lateral * 4.5
+   var left_height := WorldTerrainBuilder.height_at(city, left.x, left.y) + 0.10
+   var right_height := WorldTerrainBuilder.height_at(city, right.x, right.y) + 0.10
+   vertices.append(Vector3(left.x, left_height, left.y))
+   vertices.append(Vector3(right.x, right_height, right.y))
+   uv.append(Vector2(0.0, float(step) / float(steps - 1)))
+   uv.append(Vector2(1.0, float(step) / float(steps - 1)))
+  for step in range(steps - 1):
+   var a := step * 2
+   var b := a + 1
+   var c := a + 2
+   var d := a + 3
+   indices.append_array(PackedInt32Array([a, c, b, b, c, d]))
+  var arrays := []
+  arrays.resize(Mesh.ARRAY_MAX)
+  arrays[Mesh.ARRAY_VERTEX] = vertices
+  arrays[Mesh.ARRAY_TEX_UV] = uv
+  arrays[Mesh.ARRAY_INDEX] = indices
+  var route_mesh := ArrayMesh.new()
+  route_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+  var body := StaticBody3D.new()
+  body.name = city + "_HeightAlignedTrail_%d" % route_index
+  var visual := MeshInstance3D.new()
+  visual.name = "HeightAlignedStoneTrail"
+  visual.mesh = route_mesh
+  visual.material_override = route_material
+  body.add_child(visual)
+  var collision := CollisionShape3D.new()
+  collision.name = "HeightAlignedTrailCollision"
+  var shape := ConcavePolygonShape3D.new()
+  shape.set_faces(route_mesh.get_faces())
+  collision.shape = shape
+  body.add_child(collision)
+  body.add_to_group("distance_cull_world")
+  _set_visibility_range(body, 520.0, 40.0)
+  route_root.add_child(body)
 
 static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary) -> void:
  var guard := Node3D.new()
