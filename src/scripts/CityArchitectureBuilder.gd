@@ -285,8 +285,9 @@ static func _add_kenney_asset(parent: Node3D, city: String, height_image: Image,
  if instance == null:
   return null
  instance.name = node_name
+ var world_at := parent.to_global(at)
  instance.position = at
- instance.position.y += WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
+ instance.position.y += WorldTerrainBuilder.sample_height_image(height_image, city, world_at.x, world_at.z, 800.0) - parent.global_position.y
  instance.rotation.y = rotation
  instance.scale = Vector3.ONE * scale_factor
  parent.add_child(instance)
