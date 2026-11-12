@@ -160,6 +160,7 @@ func _build_ui() -> void:
 	slots_panel.add_child(_equipment_list)
 	for slot in SLOT_ORDER:
 		var row := HBoxContainer.new()
+		row.name = "EquipmentRow_" + slot
 		row.layout_direction = Control.LAYOUT_DIRECTION_LTR
 		row.add_theme_constant_override("separation", 6)
 		_equipment_list.add_child(row)
