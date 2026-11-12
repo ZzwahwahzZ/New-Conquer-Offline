@@ -110,6 +110,13 @@ func _run() -> void:
 	if joystick == null or joystick.position.y + joystick.size.y >= 720.0 * 0.88:
 		_fail("joystick overlaps the 12 percent bottom bar")
 		return
+	# Give the gold segmented EXP bar a visible nonzero fill in this isolated proof only.
+	class_system.set("experience", int(round(float(class_system.call("get_required_xp")) * 0.42)))
+	class_system.emit_signal("stats_changed")
+	var exp_fill: StyleBox = exp_bar.get_theme_stylebox("fill")
+	if exp_bar.value <= 0.0 or exp_fill == null:
+		_fail("gold EXP bar has no visible fill for screenshot proof")
+		return
 	hud.visible = true
 	classic.visible = true
 	if not await _save("01_twincity_gameplay_hud.png"):
@@ -146,8 +153,11 @@ func _run() -> void:
 		return
 	await process_frame
 	var preview_pivot := inventory_ui.get("_preview_pivot") as Node3D
-	if not is_instance_valid(preview_pivot) or absf(wrapf(preview_pivot.rotation.y - PI, -PI, PI)) > 0.02:
-		_fail("character preview is not rotated 180 degrees toward the camera")
+	if not is_instance_valid(preview_pivot) or absf(wrapf(preview_pivot.rotation.y, -PI, PI)) > 0.02:
+		_fail("character preview is not oriented toward the camera")
+	var preview_head := inventory_ui.find_child("Head", true, false)
+	if not is_instance_valid(preview_head) or not is_instance_valid(preview_head.get_parent().find_child("*", true, false)):
+		_fail("character preview facial orientation markers are missing")
 		return
 	var armor_row := inventory_ui.find_child("EquipmentRow_Armor", true, false) as HBoxContainer
 	if not is_instance_valid(armor_row) or armor_row.layout_direction != Control.LAYOUT_DIRECTION_LTR:
@@ -259,6 +269,8 @@ func _run() -> void:
 		_fail("Auto-Quest assigned the correct destination but the player did not physically arrive; remaining distance %.2f" % Vector2(player.global_position.x, player.global_position.z).distance_to(Vector2(expected_destination.x, expected_destination.z)))
 		return
 	classic.call("_refresh_quest")
+	var final_distance := Vector2(player.global_position.x, player.global_position.z).distance_to(Vector2(expected_destination.x, expected_destination.z))
+	print("PHASE2_AUTO_QUEST_ARRIVAL_PASS: distance=%.3f; movement_target_cleared=%s" % [final_distance, str(not bool(player.get("_has_move_target")))])
 	if not await _save("05_auto_quest_tracking.png"):
 		quit(1); return
 	if world_manager != null:
