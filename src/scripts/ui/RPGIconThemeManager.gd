@@ -1,8 +1,8 @@
 extends RefCounted
 ## Central RPG UI theme and asset lookup for the Kenney CC0 sprite library.
-const GOLD := Color("#c99b4d")
-const GOLD_HI := Color("#f3d58a")
-const PANEL := Color(0.035, 0.045, 0.06, 0.94)
+const GOLD := Color("#D4AF37")
+const GOLD_HI := Color("#FFE6A0")
+const PANEL := Color(0.08, 0.06, 0.05, 0.94)
 const UI_ROOT := "res://assets/ui/"
 
 static func apply_to_tree(root: Node) -> void:
@@ -85,7 +85,11 @@ static func frame_style() -> StyleBox:
 	return _box(PANEL, GOLD, 1, 8)
 
 static func frame_underlay_style() -> StyleBoxFlat:
-	return _box(Color("#24180f"), Color("#9f773d"), 2, 8)
+	var style := _box(Color(0.08, 0.06, 0.05, 0.94), Color("#D4AF37"), 2, 8)
+	style.shadow_color = Color(0, 0, 0, 0.82)
+	style.shadow_size = 7
+	style.shadow_offset = Vector2(0, 3)
+	return style
 
 static func make_orb_material(shader: Shader, tint: Color) -> ShaderMaterial:
 	if shader == null:
@@ -161,7 +165,9 @@ static func style_button(button: Button, icon_key: String = "") -> void:
 	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	button.vertical_icon_alignment = VERTICAL_ALIGNMENT_CENTER
 	button.expand_icon = true
-	button.add_theme_constant_override("icon_max_width", 26)
+	button.add_theme_constant_override("icon_max_width", 30)
+	button.add_theme_color_override("font_outline_color", Color("#241509"))
+	button.add_theme_constant_override("outline_size", 2)
 	button.add_theme_color_override("font_color", GOLD_HI)
 	button.add_theme_color_override("font_hover_color", Color.WHITE)
 	button.add_theme_color_override("font_pressed_color", GOLD_HI)
@@ -171,9 +177,9 @@ static func style_button(button: Button, icon_key: String = "") -> void:
 		normal_texture = find_texture("buttons", "button_round_depth_border")
 	var hover_texture := find_texture("buttons", "button_rectangle_depth_flat")
 	var pressed_texture := find_texture("buttons", "button_square_depth_border")
-	button.add_theme_stylebox_override("normal", _texture_box(normal_texture) if normal_texture != null else _box(PANEL, GOLD, 1, 7))
-	button.add_theme_stylebox_override("hover", _texture_box(hover_texture) if hover_texture != null else _box(Color(0.12, 0.095, 0.055, 0.98), GOLD_HI, 2, 7))
-	button.add_theme_stylebox_override("pressed", _texture_box(pressed_texture) if pressed_texture != null else _box(Color(0.02, 0.025, 0.035, 1.0), Color("#ffe5a6"), 2, 7))
+	button.add_theme_stylebox_override("normal", _box(Color(0.08, 0.06, 0.05, 0.96), Color("#8C642A"), 2, 5))
+	button.add_theme_stylebox_override("hover", _box(Color("#392612"), GOLD_HI, 2, 5))
+	button.add_theme_stylebox_override("pressed", _box(Color("#160F09"), Color("#FFE5A6"), 2, 5))
 	button.add_theme_stylebox_override("disabled", _box(Color(0.025, 0.03, 0.04, 0.82), Color(0.3, 0.27, 0.21, 0.7), 1, 7))
 	if not icon_key.is_empty():
 		var icon := item_texture(icon_key)
