@@ -10,7 +10,6 @@ var _orb_material: ShaderMaterial
 var _hp_text: Label
 var _mp_text: Label
 var _xp: ProgressBar
-var _xp_button: Button
 var _xp_separators: Array[ColorRect] = []
 var _quest_panel: Control
 var _quest_title: Label
@@ -32,8 +31,6 @@ func _ready() -> void:
 	call_deferred("_apply_global_ui_theme")
 	if not ClassSystem.stats_changed.is_connected(_refresh_stats):
 		ClassSystem.stats_changed.connect(_refresh_stats)
-	if not ClassSystem.xp_skill_changed.is_connected(_refresh_xp_skill):
-		ClassSystem.xp_skill_changed.connect(_refresh_xp_skill)
 	if not GameState.inventory_changed.is_connected(_refresh_hotkeys):
 		GameState.inventory_changed.connect(_refresh_hotkeys)
 	_quest_system = get_tree().get_first_node_in_group("quest_system")
@@ -44,7 +41,6 @@ func _ready() -> void:
 	_display_hp = float(ClassSystem.hp)
 	_display_mp = float(ClassSystem.mp)
 	_refresh_stats()
-	_refresh_xp_skill(ClassSystem.xp_skill, ClassSystem.xp_skill_max)
 	_refresh_hotkeys()
 	_refresh_quest()
 	_layout()
@@ -81,7 +77,7 @@ func _build_bottom_bar() -> void:
 	underlay.add_theme_stylebox_override("panel", ThemeManager.frame_underlay_style())
 	underlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_bar.add_child(underlay)
-	var patch := ThemeManager.make_nine_patch(frame_texture, 14)
+	var patch := ThemeManager.make_nine_patch(ThemeManager.ornate_frame_texture(), 20)
 	if patch != null:
 		patch.name = "NinePatchFrame"
 		patch.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -127,12 +123,6 @@ func _build_bottom_bar() -> void:
 		divider.offset_right = 1.0
 		_xp.add_child(divider)
 		_xp_separators.append(divider)
-	_xp_button = Button.new()
-	_xp_button.name = "XPModeButton"
-	_xp_button.text = "XP"
-	_xp_button.custom_minimum_size = Vector2(36, 34)
-	_xp_button.pressed.connect(_use_xp_skill)
-	row.add_child(_xp_button)
 	for index in range(10):
 		var button := Button.new()
 		button.name = "HotkeyF%d" % (index + 1)
@@ -190,6 +180,14 @@ func _make_split_orb() -> Control:
 	_orb_material.set_shader_parameter("mp_fill", 1.0)
 	orb.add_child(art)
 	art.material = _orb_material
+	var engraved_ring := TextureRect.new()
+	engraved_ring.name = "EngravedCircularGoldRing"
+	engraved_ring.texture = ThemeManager.orb_frame_texture()
+	engraved_ring.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	engraved_ring.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	engraved_ring.stretch_mode = TextureRect.STRETCH_SCALE
+	engraved_ring.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	orb.add_child(engraved_ring)
 	_hp_text = Label.new()
 	_hp_text.name = "HPValue"
 	_hp_text.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -325,19 +323,6 @@ func _refresh_stats() -> void:
 	if is_instance_valid(_xp):
 		_xp.max_value = maxi(1, ClassSystem.get_required_xp())
 		_xp.value = ClassSystem.experience
-
-func _refresh_xp_skill(value: float, maximum: float) -> void:
-	if not is_instance_valid(_xp_button):
-		return
-	var ready := value >= maximum
-	_xp_button.disabled = not ready
-	_xp_button.text = "XP!" if ready else "XP"
-	_xp_button.modulate = Color("#fff0a6") if ready else Color("#b7a27b")
-
-func _use_xp_skill() -> void:
-	var player := get_tree().get_first_node_in_group("player")
-	if is_instance_valid(player) and player.has_method("cast_skill"):
-		player.call("cast_skill", "XP_Mode")
 
 func _on_hotkey_pressed(index: int) -> void:
 	if index == 5:
