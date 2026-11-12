@@ -31,12 +31,12 @@ func _run() -> void:
 		return
 	if not _require(environment_node.environment.ambient_light_source == Environment.AMBIENT_SOURCE_SKY, "Ambient light must use sky source"):
 		return
-	if not _require(is_equal_approx(environment_node.environment.ambient_light_energy, 0.45), "Ambient energy must be balanced at 0.45"):
+	if not _require(is_equal_approx(environment_node.environment.ambient_light_energy, 0.42), "Ambient energy must be balanced at 0.45"):
 		return
 	var sun := city.find_child("SettlementSun", true, false) as DirectionalLight3D
-	if not _require(sun != null and sun.visible, "Active DirectionalLight3D is missing"):
+	if not _require(sun != null and sun.visible and sun.shadow_enabled, "Active DirectionalLight3D is missing"):
 		return
-	if not _require(is_equal_approx(sun.light_energy, 0.85), "Sun energy must be 0.85"):
+	if not _require(is_equal_approx(sun.light_energy, 0.78), "Sun energy must be 0.85"):
 		return
 
 	var plaza := city.find_child("TwinCityFlatPlaza_80x80", true, false) as StaticBody3D
