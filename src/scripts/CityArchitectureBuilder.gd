@@ -16,7 +16,7 @@ static func build(parent: Node3D, city: String, size: float) -> void:
  _build_open_plaza(parent, palette)
  _build_city_roads(parent, palette)
  _build_city_buildings(parent, city, palette, height_image)
- _build_city_walls_and_gates(parent, city, palette)
+ _build_city_walls_and_gates(parent, city, palette, height_image)
  _build_kenney_city_modules(parent, city, palette, height_image)
  _build_outer_biome(parent, city, palette, size, height_image)
  print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=24 walls=4 gates=4 open_plaza=80x80 outer_world=800x800" % city)
@@ -229,7 +229,7 @@ static func _add_static_mesh_collisions(root: Node3D) -> void:
    if mesh_node.mesh != null and mesh_node.mesh.get_surface_count() > 0:
     mesh_node.create_trimesh_collision()
 
-static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Dictionary) -> void:
+static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var fortification := Node3D.new()
  fortification.name = city + "_PerimeterFortifications"
  parent.add_child(fortification)
@@ -238,7 +238,7 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
  var gate_material := _material(p.gold,0.72)
  var half := 148.0
  var gap := 15.0
- var kenney_walls := _build_kenney_perimeter_walls(fortification, city, half, gap)
+ var kenney_walls := _build_kenney_perimeter_walls(fortification, city, half, gap, height_image)
  for side in [-1.0,1.0]:
   for segment in [-1.0,1.0]:
    var start := -half if segment < 0.0 else gap
@@ -255,9 +255,9 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
   gate.name = ["North","East","South","West"][direction] + "_GrandCityGate"
   gate.rotation_degrees.y = direction*90.0
   fortification.add_child(gate)
-  var kenney_gate := _add_kenney_asset(gate, city, "castle-kit", "gate.glb", "KenneyGateModel", Vector3(0.0, 0.0, -148.0), 0.0, 2.2)
+  var kenney_gate := _add_kenney_asset(gate, city, height_image, "castle-kit", "gate.glb", "KenneyGateModel", Vector3(0.0, 0.0, -148.0), 0.0, 2.2)
   for side in [-1.0,1.0]:
-   var kenney_tower := _add_kenney_asset(gate, city, "castle-kit", "tower-square.glb", "KenneyTowerModel", Vector3(side*17.0, 0.0, -148.0), 0.0, 1.8)
+   var kenney_tower := _add_kenney_asset(gate, city, height_image, "castle-kit", "tower-square.glb", "KenneyTowerModel", Vector3(side*17.0, 0.0, -148.0), 0.0, 1.8)
    var tower_block := _box(gate,"GatehouseTower",Vector3(side*17.0,9.0,-148.0),Vector3(11.0,18.0,13.0),tower_material,1.0)
    tower_block.visible = kenney_tower == null
    var tower_cap := _box(gate,"GateTowerCrenellation",Vector3(side*17.0,18.5,-148.0),Vector3(13.0,1.0,15.0),gate_material,1.0)
@@ -277,7 +277,7 @@ static func _load_kenney_scene(kit: String, file_name: String) -> PackedScene:
    return ResourceLoader.load(path) as PackedScene
  return null
 
-static func _add_kenney_asset(parent: Node3D, city: String, kit: String, file_name: String, node_name: String, at: Vector3, rotation: float, scale_factor: float) -> Node3D:
+static func _add_kenney_asset(parent: Node3D, city: String, height_image: Image, kit: String, file_name: String, node_name: String, at: Vector3, rotation: float, scale_factor: float) -> Node3D:
  var packed := _load_kenney_scene(kit, file_name)
  if packed == null:
   return null
@@ -286,7 +286,7 @@ static func _add_kenney_asset(parent: Node3D, city: String, kit: String, file_na
   return null
  instance.name = node_name
  instance.position = at
- instance.position.y += WorldTerrainBuilder.height_at(city, at.x, at.z)
+ instance.position.y += WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
  instance.rotation.y = rotation
  instance.scale = Vector3.ONE * scale_factor
  parent.add_child(instance)
@@ -295,7 +295,7 @@ static func _add_kenney_asset(parent: Node3D, city: String, kit: String, file_na
  _add_static_mesh_collisions(instance)
  return instance
 
-static func _build_kenney_perimeter_walls(parent: Node3D, city: String, half: float, gap: float) -> bool:
+static func _build_kenney_perimeter_walls(parent: Node3D, city: String, half: float, gap: float, height_image: Image) -> bool:
  var packed := _load_kenney_scene("castle-kit", "wall.glb")
  if packed == null:
   return false
@@ -344,7 +344,7 @@ static func _build_kenney_perimeter_walls(parent: Node3D, city: String, half: fl
    var along := start + (float(piece) + 0.5) * spacing
    var x := along if horizontal else side * half
    var z := side * half if horizontal else along
-   var ground_y := WorldTerrainBuilder.height_at(city, x, z)
+   var ground_y := WorldTerrainBuilder.sample_height_image(height_image, city, x, z, 800.0)
    var center := Vector3(x, ground_y + 5.0, z)
    multi.set_instance_transform(index, Transform3D(basis, center - basis * local_center))
    index += 1
@@ -367,12 +367,12 @@ static func _build_kenney_city_modules(parent: Node3D, city: String, p: Dictiona
  ]
  for index in range(stalls.size()):
   var data: Dictionary = stalls[index]
-  _add_kenney_asset(parent, city, "fantasy-town-kit", str(data["file"]), "KenneyMarketStall_%02d" % index, data["at"], float(data["rotation"]), 1.5)
- _add_kenney_asset(parent, city, "fantasy-town-kit", "fountain-square.glb", "KenneyMarketFountain", Vector3(-50.0,0.0,0.0), PI * 0.5, 1.8)
+  _add_kenney_asset(parent, city, height_image, "fantasy-town-kit", str(data["file"]), "KenneyMarketStall_%02d" % index, data["at"], float(data["rotation"]), 1.5)
+ _add_kenney_asset(parent, city, height_image, "fantasy-town-kit", "fountain-square.glb", "KenneyMarketFountain", Vector3(-50.0,0.0,0.0), PI * 0.5, 1.8)
  if city == "DesertLand":
-  _add_kenney_asset(parent, city, "fantasy-town-kit", "windmill.glb", "KenneyDesertWindmill", Vector3(260.0,0.0,-245.0), 0.0, 2.4)
+  _add_kenney_asset(parent, city, height_image, "fantasy-town-kit", "windmill.glb", "KenneyDesertWindmill", Vector3(260.0,0.0,-245.0), 0.0, 2.4)
  elif city == "Waterlands":
-  _add_kenney_asset(parent, city, "fantasy-town-kit", "watermill.glb", "KenneyWaterlandsWatermill", Vector3(260.0,0.0,-245.0), 0.0, 2.2)
+  _add_kenney_asset(parent, city, height_image, "fantasy-town-kit", "watermill.glb", "KenneyWaterlandsWatermill", Vector3(260.0,0.0,-245.0), 0.0, 2.2)
 
 static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size: float, height_image: Image) -> void:
  var outer := Node3D.new()
