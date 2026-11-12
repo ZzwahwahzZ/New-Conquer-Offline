@@ -72,19 +72,30 @@ def export_psd_assets(source_root: Path) -> int:
     if not psd_files:
         return 0
     try:
-        from psd_tools import PSDImage
+        from psd_tools import PSDImage, ParseLimits
     except ImportError:
         import subprocess
         import sys
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "--disable-pip-version-check", "psd-tools"])
-        from psd_tools import PSDImage
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "--disable-pip-version-check", "psd-tools==1.26.1"])
+        from psd_tools import PSDImage, ParseLimits
     exported = 0
     for psd_path in psd_files:
-        # Reject unexpectedly large source files before parsing; PSDImage.open's
-        # public API is intentionally used without version-specific ParseLimits.
-        if psd_path.stat().st_size > 256 * 1024 * 1024:
+        # Keep parsing bounded while allowing the publisher's layered PSD
+        # (which contains just over one million structural objects).
+        max_file_bytes = 256 * 1024 * 1024
+        if psd_path.stat().st_size > max_file_bytes:
             raise RuntimeError(f"PSD exceeds 256 MiB safety limit: {psd_path}")
-        document = PSDImage.open(psd_path)
+        limits = ParseLimits(
+            max_read_bytes=max_file_bytes,
+            max_total_bytes=512 * 1024 * 1024,
+            max_objects=1_500_000,
+            max_nesting_depth=64,
+        )
+        document = PSDImage.open(
+            psd_path,
+            parse_limits=limits,
+            max_alloc_bytes=256 * 1024 * 1024,
+        )
         output_dir = psd_path.parent / (psd_path.stem + "_layers")
         output_dir.mkdir(parents=True, exist_ok=True)
         composite = document.composite()
