@@ -330,8 +330,7 @@ static func _place_quaternius_nature(parent: Node3D, city: String) -> void:
   prop.scale = Vector3.ONE * scale_factor
   parent.add_child(prop)
   prop.add_to_group("distance_cull_world")
-  prop.visibility_range_end = 320.0
-  prop.visibility_range_end_margin = 32.0
+  _set_visibility_range(prop, 320.0, 32.0)
   placed += 1
  print("QUATERNIUS_BIOME_PROPS_PASS: %s placed=%d" % [city, placed])
 
