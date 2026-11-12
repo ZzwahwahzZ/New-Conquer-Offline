@@ -35,6 +35,8 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  _build_navigation_region(parent, mesh)
  _bounds(parent,size,city)
  CityStreetDressing.build(slot, city, size)
+ if city == "Waterlands":
+  _build_water_surface(slot, size)
  _build_environment_dressing(slot, city, size)
  _build_kenney_nature_scatter(slot, city, size)
 static func height_at(city: String, x: float, z: float) -> float:
@@ -92,6 +94,24 @@ static func _height_mesh(city: String,size: float) -> ArrayMesh:
  var arrays=[]; arrays.resize(Mesh.ARRAY_MAX)
  arrays[Mesh.ARRAY_VERTEX]=verts; arrays[Mesh.ARRAY_TEX_UV]=uv; arrays[Mesh.ARRAY_INDEX]=indices
  var mesh:=ArrayMesh.new(); mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays); return mesh
+static func _build_water_surface(parent: Node3D, size: float) -> void:
+ var ocean := MeshInstance3D.new()
+ ocean.name = "Waterlands_ArchipelagoWaterSurface"
+ var plane := PlaneMesh.new()
+ plane.size = Vector2(size, size)
+ ocean.mesh = plane
+ ocean.position.y = -3.2
+ var material := StandardMaterial3D.new()
+ material.albedo_color = Color("#176b82")
+ material.roughness = 0.22
+ material.metallic = 0.12
+ material.cull_mode = BaseMaterial3D.CULL_DISABLED
+ ocean.material_override = material
+ ocean.add_to_group("distance_cull_world")
+ ocean.visibility_range_end = 620.0
+ ocean.visibility_range_end_margin = 50.0
+ parent.add_child(ocean)
+
 static func _build_navigation_region(parent: Node3D, terrain_mesh: ArrayMesh) -> void:
  var arrays := terrain_mesh.surface_get_arrays(0)
  if arrays.is_empty():
