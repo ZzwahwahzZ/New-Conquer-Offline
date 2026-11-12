@@ -1,4 +1,8 @@
 extends SceneTree
+
+# SceneTree scripts expose get_tree().quit() directly; this accessor keeps explicit tree-style shutdown calls.
+func get_tree() -> SceneTree:
+	return self
 ## Static resource-load and architecture regression audit for Godot 4.3.
 ## Run: godot --headless --path . --script scripts/step12_smoke_test.gd
 
@@ -141,9 +145,9 @@ func _run() -> void:
 
 	if failures.is_empty():
 		print("STEP12_STATIC_RESOURCE_AND_ARCHITECTURE_AUDIT_PASS")
-		quit(0)
+		get_tree().quit(0)
 	else:
 		for failure in failures:
 			push_error(failure)
 		print("STEP12_STATIC_RESOURCE_AND_ARCHITECTURE_AUDIT_FAIL: %d issue(s)" % failures.size())
-		quit(1)
+		get_tree().quit(1)
