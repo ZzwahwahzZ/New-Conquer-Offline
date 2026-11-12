@@ -58,17 +58,17 @@ static func _build_city_roads(parent: Node3D, p: Dictionary) -> void:
  var road_material := _material(p.stone.lightened(0.12),0.94)
  var curb_material := _material(p.gold,0.76)
  for direction in range(4):
-  var road := _box(roads,"FlagstoneRoad_%d" % direction,Vector3(0,0.10,0),Vector3(14,0.20,145),road_material,1.0)
+  var road := _box(roads,"FlagstoneRoad_%d" % direction,Vector3(0,0.10,0),Vector3(14,0.20,300),road_material,1.0)
   road.rotation_degrees.y = direction*90.0
   for side in [-1.0,1.0]:
-   var curb := _box(roads,"RaisedStoneCurb",Vector3(side*8.0,0.34,0),Vector3(0.65,0.48,145),curb_material,1.0)
+   var curb := _box(roads,"RaisedStoneCurb",Vector3(side*8.0,0.34,0),Vector3(0.65,0.48,300),curb_material,1.0)
    curb.rotation_degrees.y = direction*90.0
 
 static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary) -> void:
  var slot := Node3D.new()
  slot.name = city + "_24BuildingUrbanFabric"
  parent.add_child(slot)
- var coordinates := [-112.0,-76.0,-40.0,40.0,76.0,112.0]
+ var coordinates := [-92.0,-56.0,-20.0,20.0,56.0,92.0]
  var index := 0
  for value in coordinates:
   for side in [-1.0,1.0]:
@@ -126,7 +126,7 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  var plane := PlaneMesh.new()
  plane.size = Vector2(450.0,450.0)
  ground.mesh = plane
- ground.position = Vector3(0,-0.18,0)
+ ground.position = Vector3(0,-18.0,0)
  ground.material_override = _material(ground_color,1.0)
  outer.add_child(ground)
  var trunk := BoxMesh.new()
@@ -153,6 +153,7 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  var trunks := MultiMeshInstance3D.new()
  trunks.name = city+"_OuterTreeTrunks_MultiMesh"
  trunks.multimesh = trunk_mm
+ trunks.material_override = _material(p.wood,0.95)
  outer.add_child(trunks)
  var crowns := MultiMeshInstance3D.new()
  crowns.name = city+"_OuterCanopy_MultiMesh"
