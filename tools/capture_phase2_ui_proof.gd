@@ -2,6 +2,7 @@ extends SceneTree
 ## Phase 2 real-render UI proof: six distinct 1280x720 runtime captures.
 const MAIN_SCENE := "res://scenes/main.tscn"
 const OUT := "res://reports/phase2-ui"
+const ThemeManager = preload("res://src/scripts/ui/RPGIconThemeManager.gd")
 func _initialize() -> void:
 	call_deferred("_run")
 func _fail(message: String) -> void:
@@ -51,6 +52,11 @@ func _run() -> void:
 		var button := row.get_node_or_null("Menu" + key) as Button
 		if button == null or not button.text.is_empty() or button.icon == null:
 			_fail("icon-only PNG menu button missing: " + key)
+			return
+	for index in range(10):
+		var hotkey := row.get_node_or_null("HotkeyF%d" % (index + 1)) as Button
+		if hotkey == null or hotkey.icon == null:
+			_fail("F%d hotkey is missing its PNG icon" % (index + 1))
 			return
 	if not ResourceLoader.exists("res://assets/ui/fonts/NotoSansArabic[wght].ttf"):
 		_fail("Noto Sans Arabic font missing")
