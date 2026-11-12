@@ -16,7 +16,7 @@ static func build(parent: Node3D, city: String, size: float) -> void:
  _build_city_buildings(parent, city, palette)
  _build_city_walls_and_gates(parent, city, palette)
  _build_outer_biome(parent, city, palette, size)
- print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=24 walls=4 gates=4 open_plaza=80x80 outer_world=450x450" % city)
+ print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=24 walls=4 gates=4 open_plaza=80x80 outer_world=800x800" % city)
 
 static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
  var plaza := Node3D.new()
@@ -115,7 +115,7 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
 
 static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size: float) -> void:
  var outer := Node3D.new()
- outer.name = city + "_OpenWorld_450x450"
+ outer.name = city + "_OpenWorld_800x800"
  parent.add_child(outer)
  var ground_color := Color("#6c9849")
  match city:
@@ -127,7 +127,7 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  var ground := MeshInstance3D.new()
  ground.name = "SeamlessOuterBiomeGround"
  var plane := PlaneMesh.new()
- plane.size = Vector2(450.0,450.0)
+ plane.size = Vector2(800.0,800.0)
  ground.mesh = plane
  ground.position = Vector3(0,-18.0,0)
  outer.add_child(ground)
@@ -210,7 +210,7 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
    _box(outer,"Waterlands_WoodenIslandCrossing",Vector3(0,1.0,-211.0),Vector3(74.0,0.65,7.0),_material(p.wood,0.88),1.0)
   else:
    _box(outer,"GrandStoneBridgeAtNorthGate",Vector3(0,0.8,-160.0),Vector3(25.0,1.6,22.0),_material(p.stone,0.86),1.0)
- print("OPEN_WORLD_BIOME_PASS: %s extent=450x450 multimesh_trees=%d" % [city,count])
+ print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 multimesh_trees=%d" % [city,count])
 
 static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary) -> void:
  var guard := Node3D.new()
