@@ -486,7 +486,11 @@ def download_noto_arabic_font() -> None:
             print(f"NOTO_SANS_ARABIC_FONT_PASS: {target} bytes={target.stat().st_size}")
             return
         try:
-            download(url, target)
+            request = urllib.request.Request(url, headers={"User-Agent": "New-Conquer-Offline-NotoArabicSync/1.0"})
+            with urllib.request.urlopen(request, timeout=120) as response, target.open("wb") as output:
+                if response.status != 200:
+                    raise RuntimeError(f"HTTP {response.status} while downloading Noto Sans Arabic")
+                shutil.copyfileobj(response, output)
             if target.stat().st_size < 100_000:
                 raise RuntimeError("Downloaded font is unexpectedly small")
             print(f"NOTO_SANS_ARABIC_FONT_PASS: {target} bytes={target.stat().st_size}")
