@@ -94,10 +94,10 @@ func _ready() -> void:
 	ring_material.albedo_color = Color(0.2, 0.85, 1.0, 0.78)
 	ring_material.emission_enabled = true
 	ring_material.emission = Color(0.1, 0.65, 1.0)
-	fly_ring.material_override = ring_material
 	fly_ring.position.y = 0.12
 	fly_ring.visible = false
 	_visual.add_child(fly_ring)
+	fly_ring.material_override = ring_material
 	_visual.set_meta("fly_ring", fly_ring)
 	if not ClassSystem.stats_changed.is_connected(_sync_class_stats):
 		ClassSystem.stats_changed.connect(_sync_class_stats)
