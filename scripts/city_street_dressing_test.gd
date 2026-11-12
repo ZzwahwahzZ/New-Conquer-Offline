@@ -29,6 +29,26 @@ func _run() -> void:
 		for node_name in ["Street_NorthSouth", "Street_EastWest", "CentralDarkSquare"]:
 			if not _check(city.find_child(node_name, true, false) is MeshInstance3D, city_name + " missing " + node_name):
 				return
+		var architecture_slot := city.get_node_or_null("ArchitectureAssetSlot")
+		if not _check(architecture_slot != null, city_name + " architecture slot missing"):
+			return
+		var buildings := 0
+		var brick_normal_found := false
+		var roof_detail_found := false
+		var pending_arch: Array[Node] = [architecture_slot]
+		while not pending_arch.is_empty():
+			var arch_node: Node = pending_arch.pop_back()
+			for child in arch_node.get_children():
+				pending_arch.append(child)
+			if arch_node.name.begins_with(city_name + "_DetailedBuilding_"):
+				buildings += 1
+			if arch_node.name == "ReliefBrickWalls" and arch_node is MeshInstance3D:
+				var brick_material := (arch_node as MeshInstance3D).material_override as StandardMaterial3D
+				brick_normal_found = brick_material != null and brick_material.normal_enabled and brick_material.normal_texture != null
+			if arch_node.name in ["PagodaRoofTier_0", "SandstoneDome", "BasaltBattlement", "SnowRoofTier"]:
+				roof_detail_found = true
+		if not _check(buildings >= 4 and brick_normal_found and roof_detail_found, city_name + " detailed facades/brick normal/roof kit incomplete"):
+			return
 		var planters := 0
 		var railings := 0
 		var flower_batches := 0
@@ -64,7 +84,7 @@ func _run() -> void:
 			return
 		if city_name == "DarkForest" and not _check(city.find_child("ForestSpiritLantern_00", true, false) != null, "DarkForest lanterns missing"):
 			return
-		print("CITY_STREET_TEST_PASS: " + city_name + " planters=" + str(planters) + " flower_multimeshes=" + str(flower_batches) + " railings=" + str(railings))
+		print("CITY_ARCHITECTURE_AND_STREETS_PASS: " + city_name + " buildings=" + str(buildings) + " planters=" + str(planters) + " flower_multimeshes=" + str(flower_batches) + " railings=" + str(railings))
 		city.queue_free()
 		await process_frame
 	print("ALL_SIX_CITY_STREET_ENVIRONMENTS_PASS")
