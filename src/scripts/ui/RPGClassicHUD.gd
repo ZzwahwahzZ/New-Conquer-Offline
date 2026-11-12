@@ -4,10 +4,9 @@ const ThemeManager = preload("res://src/scripts/ui/RPGIconThemeManager.gd")
 const BAR_RATIO := 0.12
 const HOTKEY_SKILLS := ["Jump", "Fly", "Scatter", "Path_of_Shadow", "XP_Mode"]
 const HOTKEY_LABELS := ["JUMP", "FLY", "AOE", "SHADOW", "XP", "HP POT", "MP POT", "SLOT 8", "SLOT 9", "SLOT 10"]
-const MENU_KEYS := ["Bag", "Equip", "Skills", "Mall", "JiangHu"]
+const MENU_KEYS := ["Bag", "Equip", "Skills", "Quest", "Warehouse", "Mall", "JiangHu", "Interact"]
 var _bar: Control
-var _hp_fill: TextureProgressBar
-var _mp_fill: TextureProgressBar
+var _orb_material: ShaderMaterial
 var _hp_text: Label
 var _mp_text: Label
 var _xp: ProgressBar
@@ -61,7 +60,7 @@ func _build_bottom_bar() -> void:
 	_bar.name = "ClassicConquerBottomBar"
 	_bar.mouse_filter = Control.MOUSE_FILTER_PASS
 	add_child(_bar)
-	var frame_texture := ThemeManager.find_texture("frames", "brown")
+	var frame_texture := ThemeManager.find_texture("frames", "panel-border-000")
 	if frame_texture == null:
 		frame_texture = ThemeManager.find_texture("frames", "gold")
 	if frame_texture == null:
@@ -92,8 +91,8 @@ func _build_bottom_bar() -> void:
 	row.offset_right = -4
 	row.add_theme_constant_override("separation", 4)
 	_bar.add_child(row)
-	var hp_orb := _make_orb("HPOrb", Color("#e33a42"), "HP")
-	row.add_child(hp_orb)
+	var split_orb := _make_split_orb()
+	row.add_child(split_orb)
 	var exp_caption := Label.new()
 	exp_caption.text = "EXP"
 	exp_caption.add_theme_color_override("font_color", Color("#f3d58a"))
@@ -121,6 +120,7 @@ func _build_bottom_bar() -> void:
 		button.custom_minimum_size = Vector2(30, 34)
 		button.add_theme_font_size_override("font_size", 8)
 		button.tooltip_text = HOTKEY_LABELS[index]
+		button.set_meta("rpg_icon", ["rune", "rune", "rune", "rune", "rune", "flask", "flask", "gem", "shield", "weapon"][index])
 		button.pressed.connect(_on_hotkey_pressed.bind(index))
 		row.add_child(button)
 		_hotkeys.append(button)
@@ -129,84 +129,69 @@ func _build_bottom_bar() -> void:
 	for menu_key in MENU_KEYS:
 		var menu := Button.new()
 		menu.name = "Menu" + menu_key
-		menu.text = {"Bag":"BAG","Equip":"EQ","Skills":"SK","Mall":"MALL","JiangHu":"JH"}[menu_key]
-		menu.custom_minimum_size = Vector2(31, 34)
+		menu.text = {"Bag":"BAG","Equip":"EQ","Skills":"SK","Quest":"QST","Warehouse":"BANK","Mall":"MALL","JiangHu":"JH","Interact":"TALK"}[menu_key]
+		menu.custom_minimum_size = Vector2(34, 36)
 		menu.add_theme_font_size_override("font_size", 8)
-		menu.set_meta("rpg_icon", menu_key.to_lower())
+		menu.set_meta("rpg_icon", {"Bag":"gem","Equip":"shield","Skills":"rune","Quest":"rune","Warehouse":"crystal","Mall":"crystal","JiangHu":"weapon","Interact":"weapon"}[menu_key])
 		menu.pressed.connect(_open_menu.bind(menu_key))
 		row.add_child(menu)
-	row.add_child(_make_orb("MPOrb", Color("#3389ef"), "MP"))
 
-func _make_orb(node_name: String, tint: Color, caption: String) -> Control:
+
+func _make_split_orb() -> Control:
 	var orb := Control.new()
-	orb.name = node_name
-	orb.custom_minimum_size = Vector2(44, 44)
+	orb.name = "SplitCrystalOrb"
+	orb.custom_minimum_size = Vector2(72, 72)
 	orb.size = orb.custom_minimum_size
-	var ring := Panel.new()
-	ring.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var ring_style := _flat(Color(0.025,0.03,0.045,1), Color("#e1bd70"), 2, 22)
-	ring_style.shadow_color = Color(0.0, 0.0, 0.0, 0.68)
-	ring_style.shadow_size = 6
-	ring_style.shadow_offset = Vector2(0, 2)
-	ring.add_theme_stylebox_override("panel", ring_style)
-	ring.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	orb.add_child(ring)
-	var well := Panel.new()
-	well.name = caption + "OrbWell"
-	well.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	well.offset_left = 4
-	well.offset_top = 4
-	well.offset_right = -4
-	well.offset_bottom = -4
-	well.add_theme_stylebox_override("panel", ThemeManager.orb_well_style())
-	well.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	orb.add_child(well)
-	var fill := TextureProgressBar.new()
-	fill.name = caption + "Fill"
-	fill.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	fill.offset_left = 4
-	fill.offset_top = 4
-	fill.offset_right = -4
-	fill.offset_bottom = -4
-	fill.min_value = 0
-	fill.max_value = 100
-	fill.value = 100
-	fill.fill_mode = TextureProgressBar.FILL_CLOCKWISE
-	fill.radial_initial_angle = 270
-	fill.radial_fill_degrees = 360
-	fill.texture_under = null
-	fill.texture_progress = _solid(tint)
-	var orb_shader := get_meta("orb_shader", null) as Shader
-	var orb_material := ThemeManager.make_orb_material(orb_shader, tint)
-	if orb_material != null:
-		fill.material = orb_material
-	fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	orb.add_child(fill)
-	var label := Label.new()
-	label.name = caption + "Value"
-	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.add_theme_font_size_override("font_size", 9)
-	label.add_theme_color_override("font_color", Color.WHITE)
-	label.add_theme_color_override("font_shadow_color", Color.BLACK)
-	label.add_theme_constant_override("shadow_offset_x", 1)
-	label.add_theme_constant_override("shadow_offset_y", 1)
-	orb.add_child(label)
-	if caption == "HP":
-		_hp_fill = fill
-		_hp_text = label
-	else:
-		_mp_fill = fill
-		_mp_text = label
+	var art := TextureRect.new()
+	art.name = "CrystalSplitArt"
+	art.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	art.stretch_mode = TextureRect.STRETCH_SCALE
+	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_orb_material = ShaderMaterial.new()
+	_orb_material.shader = preload("res://src/shaders/split_hp_mp_orb.gdshader")
+	_orb_material.set_shader_parameter("hp_fill", 1.0)
+	_orb_material.set_shader_parameter("mp_fill", 1.0)
+	art.material = _orb_material
+	orb.add_child(art)
+	_hp_text = Label.new()
+	_hp_text.name = "HPValue"
+	_hp_text.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_hp_text.anchor_right = 0.5
+	_hp_text.offset_left = 2
+	_hp_text.offset_right = -1
+	_hp_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_hp_text.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_hp_text.add_theme_font_size_override("font_size", 10)
+	_hp_text.add_theme_color_override("font_color", Color.WHITE)
+	_hp_text.add_theme_color_override("font_shadow_color", Color("#310b10"))
+	_hp_text.add_theme_constant_override("shadow_offset_x", 1)
+	_hp_text.add_theme_constant_override("shadow_offset_y", 1)
+	_hp_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	orb.add_child(_hp_text)
+	_mp_text = Label.new()
+	_mp_text.name = "MPValue"
+	_mp_text.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_mp_text.anchor_left = 0.5
+	_mp_text.offset_left = 1
+	_mp_text.offset_right = -2
+	_mp_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_mp_text.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_mp_text.add_theme_font_size_override("font_size", 10)
+	_mp_text.add_theme_color_override("font_color", Color.WHITE)
+	_mp_text.add_theme_color_override("font_shadow_color", Color("#07152e"))
+	_mp_text.add_theme_constant_override("shadow_offset_x", 1)
+	_mp_text.add_theme_constant_override("shadow_offset_y", 1)
+	_mp_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	orb.add_child(_mp_text)
 	return orb
 
 func _build_quest_tracker() -> void:
 	_quest_panel = Control.new()
 	_quest_panel.name = "LiveQuestTracker"
 	_quest_panel.position = Vector2(16, 115)
-	_quest_panel.custom_minimum_size = Vector2(250, 68)
-	_quest_panel.size = Vector2(250, 68)
+	_quest_panel.custom_minimum_size = Vector2(276, 82)
+	_quest_panel.size = Vector2(276, 82)
 	var frame_texture := ThemeManager.find_texture("frames", "brown")
 	if frame_texture == null:
 		frame_texture = ThemeManager.find_texture("frames", "quest")
@@ -239,10 +224,14 @@ func _build_quest_tracker() -> void:
 	_quest_title = Label.new()
 	_quest_title.text = "المهمة الحالية"
 	_quest_title.add_theme_color_override("font_color", Color("#f3d58a"))
+	_quest_title.add_theme_font_size_override("font_size", 13)
+	_quest_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	body.add_child(_quest_title)
 	_quest_progress = Label.new()
 	_quest_progress.text = "اضغط لتفعيل التتبع التلقائي"
 	_quest_progress.add_theme_color_override("font_color", Color("#e7dfcf"))
+	_quest_progress.add_theme_font_size_override("font_size", 11)
+	_quest_progress.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	body.add_child(_quest_progress)
 	_quest_panel.gui_input.connect(_on_quest_panel_input)
 	add_child(_quest_panel)
@@ -254,13 +243,12 @@ func _layout() -> void:
 	var bar_height := viewport.y * BAR_RATIO
 	_bar.position = Vector2(4, viewport.y - bar_height)
 	_bar.size = Vector2(viewport.x - 8, bar_height)
-	var orb_size := maxf(34.0, bar_height - 8.0)
-	for orb_name in ["HPOrb", "MPOrb"]:
-		var orb := _bar.get_node_or_null("MainRow/" + orb_name)
-		if is_instance_valid(orb):
-			orb.custom_minimum_size = Vector2(orb_size, orb_size)
-			orb.size = Vector2(orb_size, orb_size)
-	_quest_panel.position = Vector2(16, maxf(104.0, viewport.y * 0.16))
+	var orb_size := maxf(52.0, bar_height - 8.0)
+	var orb := _bar.get_node_or_null("MainRow/SplitCrystalOrb")
+	if is_instance_valid(orb):
+		orb.custom_minimum_size = Vector2(orb_size, orb_size)
+		orb.size = Vector2(orb_size, orb_size)
+	_quest_panel.position = Vector2(18, maxf(116.0, viewport.y * 0.16))
 	var hud_root := get_parent().get_node_or_null("HUDRoot")
 	if is_instance_valid(hud_root):
 		var joystick := hud_root.get_node_or_null("VirtualJoystick")
@@ -270,13 +258,12 @@ func _layout() -> void:
 func _process(delta: float) -> void:
 	_display_hp = lerpf(_display_hp, float(ClassSystem.hp), clampf(delta * 10.0, 0.0, 1.0))
 	_display_mp = lerpf(_display_mp, float(ClassSystem.mp), clampf(delta * 10.0, 0.0, 1.0))
-	if is_instance_valid(_hp_fill):
-		_hp_fill.max_value = maxi(1, ClassSystem.max_hp)
-		_hp_fill.value = _display_hp
+	if is_instance_valid(_orb_material):
+		_orb_material.set_shader_parameter("hp_fill", clampf(_display_hp / float(maxi(1, ClassSystem.max_hp)), 0.0, 1.0))
+		_orb_material.set_shader_parameter("mp_fill", clampf(_display_mp / float(maxi(1, ClassSystem.max_mp)), 0.0, 1.0))
+	if is_instance_valid(_hp_text):
 		_hp_text.text = "%d\nHP" % int(round(_display_hp))
-	if is_instance_valid(_mp_fill):
-		_mp_fill.max_value = maxi(1, ClassSystem.max_mp)
-		_mp_fill.value = _display_mp
+	if is_instance_valid(_mp_text):
 		_mp_text.text = "%d\nMP" % int(round(_display_mp))
 	if is_instance_valid(_xp):
 		_xp.max_value = maxi(1, ClassSystem.get_required_xp())
@@ -332,6 +319,13 @@ func _open_menu(menu_key: String) -> void:
 		"Bag": hud.call("_toggle_inventory")
 		"Equip": hud.call("_toggle_status_ui")
 		"Skills": hud.call("_toggle_skills_ui")
+		"Quest":
+			var quest = hud.get("_quest_ui")
+			if is_instance_valid(quest): quest.call("toggle")
+		"Warehouse":
+			var warehouse = hud.get("_warehouse_ui")
+			if is_instance_valid(warehouse): warehouse.call("toggle")
+		"Interact": hud.call("_interact_nearest_npc")
 		"Mall":
 			var mall = hud.get("_mall_ui")
 			if is_instance_valid(mall): mall.call("toggle")
