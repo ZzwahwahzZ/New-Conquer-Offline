@@ -1,4 +1,8 @@
 extends SceneTree
+
+# SceneTree scripts expose get_tree().quit() directly; this accessor keeps explicit tree-style shutdown calls.
+func get_tree() -> SceneTree:
+	return self
 const RIG_FACTORY = preload("res://src/scripts/RiggedCharacterFactory.gd")
 ## Step 11 static/resource smoke checks. Run with Godot 4.3 headless.
 func _initialize() -> void:
@@ -99,4 +103,4 @@ func _run() -> void:
 	assert(class_index >= 0 and database_index > class_index and gear_index > database_index and economy_index > gear_index)
 	assert(not project_source.contains("WorldManager="))
 	print("STEP11_OPEN_WORLD_SIX_SETTLEMENTS_MONSTER_POOL_MINIMAP_AUTOSAVE_PASS")
-	quit(0)
+	get_tree().quit(0)
