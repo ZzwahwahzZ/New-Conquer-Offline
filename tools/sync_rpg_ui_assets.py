@@ -72,7 +72,7 @@ def export_psd_assets(source_root: Path) -> int:
     if not psd_files:
         return 0
     try:
-        from psd_tools import PSDImage
+        from psd_tools import PSDImage, ParseLimits
     except ImportError:
         import subprocess
         import sys
@@ -80,7 +80,7 @@ def export_psd_assets(source_root: Path) -> int:
         from psd_tools import PSDImage
     exported = 0
     for psd_path in psd_files:
-        document = PSDImage.open(psd_path)
+        document = PSDImage.open(psd_path, max_alloc_bytes=512 * 1024 * 1024, parse_limits=ParseLimits(max_objects=5_000_000, max_nesting_depth=64))
         output_dir = psd_path.parent / (psd_path.stem + "_layers")
         output_dir.mkdir(parents=True, exist_ok=True)
         composite = document.composite()
@@ -90,7 +90,7 @@ def export_psd_assets(source_root: Path) -> int:
             exported += 1
         for index, layer in enumerate(document.descendants()):
             try:
-                if layer.is_group() or not layer.is_visible():
+                if not layer.is_visible():
                     continue
                 image = layer.composite()
                 if image is None or image.getbbox() is None:
