@@ -47,6 +47,25 @@ func _run() -> void:
 		var terrain_collider := city.find_child("TerrainSurfaceCollision", true, false) as CollisionShape3D
 		if not _check(terrain_body != null and terrain_collider != null and terrain_collider.shape is ConcavePolygonShape3D, city_name + " full heightfield terrain collision is missing"):
 			return
+		await physics_frame
+		var terrain_visual := city.find_child("TerrainSurface", true, false) as MeshInstance3D
+		if not _check(terrain_visual != null and terrain_visual.mesh is ArrayMesh, city_name + " heightfield render mesh is missing"):
+			return
+		var terrain_arrays := (terrain_visual.mesh as ArrayMesh).surface_get_arrays(0)
+		var terrain_vertices: PackedVector3Array = terrain_arrays[Mesh.ARRAY_VERTEX]
+		var highest := Vector3(0.0, -INF, 0.0)
+		var lowest_y := INF
+		for vertex in terrain_vertices:
+			if vertex.y > highest.y:
+				highest = vertex
+			lowest_y = minf(lowest_y, vertex.y)
+		if city_name != "TwinCity" and not _check(highest.y - lowest_y >= 6.0, city_name + " heightmap does not produce meaningful hills/slopes"):
+			return
+		var ray := PhysicsRayQueryParameters3D.create(Vector3(highest.x, highest.y + 80.0, highest.z), Vector3(highest.x, highest.y - 80.0, highest.z))
+		ray.collision_mask = 1
+		var ground_hit := city.get_world_3d().direct_space_state.intersect_ray(ray)
+		if not _check(not ground_hit.is_empty() and ground_hit.collider == terrain_body, city_name + " terrain collision did not match the heightfield surface"):
+			return
 		var navigation_region := city.find_child("TerrainNavigationRegion", true, false) as NavigationRegion3D
 		if not _check(navigation_region != null and navigation_region.navigation_mesh != null and navigation_region.navigation_mesh.get_polygon_count() >= 8000, city_name + " heightfield-aligned navigation mesh is missing or incomplete"):
 			return
