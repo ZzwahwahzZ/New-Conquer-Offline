@@ -50,6 +50,8 @@ func _run() -> void:
 				bridge_count += 1
 				if not _check(bridge_node.find_child("BridgeWalkableCollision", true, false) is CollisionShape3D, city_name + " bridge deck has no walkable collision"):
 					return
+				if city_name in ["TwinCity", "Waterlands"] and not _check(bridge_node.find_child("KenneyBridgeModel", true, false) is Node3D, city_name + " bridge is missing its imported Kenney 3D model"):
+					return
 		if city_name in ["TwinCity", "Waterlands"] and not _check(bridge_count == 6, city_name + " must have six walkable canal bridges (found %d)" % bridge_count):
 			return
 		for node_name in ["Street_NorthSouth", "Street_EastWest", "CentralDarkSquare"]:
