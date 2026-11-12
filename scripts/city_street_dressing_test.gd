@@ -107,7 +107,7 @@ func _run() -> void:
 		if not _check(env_node != null and env_node.environment.tonemap_mode == Environment.TONE_MAPPER_ACES and env_node.environment.ssao_enabled and not env_node.environment.glow_enabled and not env_node.environment.fog_enabled, city_name + " ACES/SSAO environment missing"):
 			return
 		var sun := city.get_node_or_null("SettlementSun") as DirectionalLight3D
-		if not _check(sun != null and sun.shadow_enabled and is_equal_approx(sun.light_energy, 0.85), city_name + " directional shadows disabled"):
+		if not _check(sun != null and sun.visible and sun.shadow_enabled and is_equal_approx(sun.light_energy, 0.78), city_name + " directional shadows or balanced 0.78 sun energy missing"):
 			return
 		if city_name == "Waterlands" and not _check(city.find_child("ApeCityCanal_East", true, false) != null, "Waterlands canal missing"):
 			return
