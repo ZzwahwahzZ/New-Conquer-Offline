@@ -172,7 +172,7 @@ func _capture() -> void:
 		var city_sun := loaded_world.find_child("SettlementSun", true, false) as DirectionalLight3D
 		if city_sun != null:
 			city_sun.light_energy = 0.85
-		var slug := city_id.to_lower()
+		var slug: String = city_id.to_lower()
 		for sample in range(4):
 			if sample > 0:
 				await create_timer(4.0).timeout
