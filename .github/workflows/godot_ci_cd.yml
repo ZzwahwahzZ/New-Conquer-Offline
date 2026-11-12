@@ -237,6 +237,40 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+
+      - name: Phase 2 - Verify classic RPG HUD, Arabic RTL and Auto-Quest; capture six real UI screens
+        id: phase2_ui_proof
+        timeout-minutes: 8
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p reports/phase2-ui
+          test -s "assets/ui/fonts/NotoSansArabic[wght].ttf"
+          timeout 420s xvfb-run -a godot --path . --script res://tools/capture_phase2_ui_proof.gd 2>&1 | tee reports/phase2-ui/capture.log
+          expected=(
+            01_twincity_gameplay_hud.png
+            02_character_gear.png
+            03_inventory_hotkeys.png
+            04_shopping_mall.png
+            05_auto_quest_tracking.png
+            06_desertland_consistent_hud.png
+          )
+          for image in "${expected[@]}"; do
+            test -s "reports/phase2-ui/$image"
+          done
+          test "$(find reports/phase2-ui -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 6
+          file reports/phase2-ui/*.png
+          echo "PHASE2_SIX_REAL_UI_SCREENSHOTS_PASS"
+
+      - name: Upload Phase 2 UI screenshot proof
+        if: always() && steps.phase2_ui_proof.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: NewConquerOffline-Phase2-UI-Proof-6
+          path: reports/phase2-ui/
+          if-no-files-found: error
+          retention-days: 30
+
       - name: Upload Smoke Test Logs
         if: always()
         uses: actions/upload-artifact@v4
