@@ -1,4 +1,8 @@
 extends SceneTree
+
+# SceneTree scripts expose get_tree().quit() directly; this accessor keeps explicit tree-style shutdown calls.
+func get_tree() -> SceneTree:
+	return self
 ## Step 14 guild membership, treasury, v6 persistence and pole destruction smoke test.
 ## Run: godot --headless --path . --script scripts/step14_smoke_test.gd
 
@@ -13,7 +17,7 @@ func _run() -> void:
 	var class_system: Node = root.get_node_or_null("ClassSystem")
 	if not is_instance_valid(economy) or not is_instance_valid(game_state) or not is_instance_valid(class_system):
 		push_error("Step 14 requires GlobalEconomy, GameState and ClassSystem Autoloads")
-		quit(1)
+		get_tree().quit(1)
 		return
 	var economy_script := load("res://src/scripts/GlobalEconomy.gd") as GDScript
 	var economy_constants: Dictionary = economy_script.get_script_constant_map() if economy_script != null else {}
@@ -130,9 +134,9 @@ func _run() -> void:
 	if failures.is_empty():
 		print("STEP14_GUILD_MEMBERSHIP_DONATIONS_SAVE_V6_POLE_DESTRUCTION_PASS")
 		print("Guild join/create: PASS | donation ranks: PASS | v6 persistence: PASS | arena pole: PASS")
-		quit(0)
+		get_tree().quit(0)
 	else:
 		for failure in failures:
 			push_error(failure)
 		print("STEP14_SMOKE_TEST_FAIL: %d issue(s)" % failures.size())
-		quit(1)
+		get_tree().quit(1)
