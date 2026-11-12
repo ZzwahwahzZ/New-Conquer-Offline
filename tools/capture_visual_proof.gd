@@ -2,7 +2,13 @@ extends SceneTree
 ## Captures real rendered frames from the main New Conquer Offline scene under Xvfb.
 const MAIN_SCENE := "res://scenes/main.tscn"
 const OUTPUT_DIR := "res://reports/visual-proof"
-const RUN_SECONDS := 3.0
+const CITY_PROOF := [
+	{"id":"DesertLand","file":"city_2_desertland.png"},
+	{"id":"VolcanoLand","file":"city_3_volcanoland.png"},
+	{"id":"IceLand","file":"city_4_iceland.png"},
+	{"id":"Waterlands","file":"city_5_waterlands.png"},
+	{"id":"DarkForest","file":"city_6_darkforest.png"}
+]
 
 func _initialize() -> void:
 	call_deferred("_capture")
@@ -121,15 +127,46 @@ func _capture() -> void:
 	if camera.global_position.y < player.global_position.y + 3.0:
 		_fail("isometric camera is not elevated above the player; the spawn frame would be ground-obscured")
 		return
-	await create_timer(RUN_SECONDS * 0.5).timeout
-	if not await _save_frame("screenshot_1_spawn.png"):
+	# Twin City: four real frames at t=0, 3, 6 and 9 seconds.
+	if not await _save_frame("twincity_1_t0.png"):
+		quit(1)
+		return
+	await create_timer(3.0).timeout
+	if not await _save_frame("twincity_2_t3.png"):
 		quit(1)
 		return
 	camera_rig.set("_yaw", PI * 0.5)
 	camera_rig.call("_apply_orbit")
-	await create_timer(RUN_SECONDS * 0.5).timeout
-	if not await _save_frame("screenshot_2_orbit.png"):
+	await create_timer(3.0).timeout
+	if not await _save_frame("twincity_3_t6_orbit.png"):
 		quit(1)
 		return
-	print("VISUAL_PROOF_PASS: Twin City streets, flowerbeds and iron railings captured; orbit delta=90 degrees; runtime=%.1fs" % RUN_SECONDS)
+	camera_rig.set("_yaw", PI)
+	camera_rig.call("_apply_orbit")
+	await create_timer(3.0).timeout
+	if not await _save_frame("twincity_4_t9_orbit2.png"):
+		quit(1)
+		return
+	# Load every remaining settlement through the actual WorldManager transition.
+	for city_data in CITY_PROOF:
+		var city_id := str(city_data["id"])
+		await world_manager.call("change_settlement", city_id, true)
+		var city_deadline := Time.get_ticks_msec() + 20000
+		while (world_manager.get("current_settlement") != city_id or world_manager.get("current_world") == null) and Time.get_ticks_msec() < city_deadline:
+			await process_frame
+		if world_manager.get("current_settlement") != city_id or world_manager.get("current_world") == null:
+			_fail("settlement failed to load for visual proof: " + city_id)
+			return
+		player.global_position = Vector3(0.0, 0.775, 0.0)
+		camera_rig.set("_yaw", 0.0)
+		camera_rig.call("_apply_orbit")
+		await create_timer(3.0).timeout
+		var loaded_world := world_manager.get("current_world") as Node3D
+		if loaded_world.find_child(city_id + "_DetailedBuilding_00", true, false) == null:
+			_fail("detailed architecture missing from rendered city: " + city_id)
+			return
+		if not await _save_frame(str(city_data["file"])):
+			quit(1)
+			return
+	print("VISUAL_PROOF_PASS: 9 genuine runtime frames; TwinCity t=0/3/6/9 with two 90-degree orbits; five other settlements after 3-second stabilization.")
 	quit(0)
