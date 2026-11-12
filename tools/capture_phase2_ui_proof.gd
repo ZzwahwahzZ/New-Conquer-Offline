@@ -121,10 +121,16 @@ func _run() -> void:
 		quit(1); return
 	hud.call("_toggle_inventory")
 	var mall = hud.get("_mall_ui")
-	if is_instance_valid(mall) and mall.has_method("toggle"):
-		mall.call("toggle")
+	if not is_instance_valid(mall) or not mall.has_method("toggle"):
+		_fail("Shopping Mall UI is missing")
+		return
+	mall.call("toggle")
+	if not bool(mall.visible):
+		_fail("Shopping Mall did not open")
+		return
 	if not await _save("04_shopping_mall.png"):
 		quit(1); return
+	mall.call("toggle")
 	if not is_instance_valid(quest):
 		_fail("WorldManager/QuestSystem missing; Auto-Quest cannot be proven")
 		return
