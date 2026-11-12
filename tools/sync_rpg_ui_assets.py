@@ -442,7 +442,7 @@ def restore_from_hf(api: HfApi, token: str) -> bool:
     invalid_pngs = [
         str(path.relative_to(DEST))
         for path in png_files
-        if path.open("rb").read(8) != expected_signature
+        if path.read_bytes()[:8] != expected_signature
     ]
     if invalid_pngs:
         raise RuntimeError(
