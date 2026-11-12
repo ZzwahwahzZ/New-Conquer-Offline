@@ -98,6 +98,9 @@ func _capture() -> void:
 	if not camera.current:
 		_fail("isometric Camera3D is not current")
 		return
+	if camera.global_position.y < player.global_position.y + 3.0:
+		_fail("isometric camera is not elevated above the player; the spawn frame would be ground-obscured")
+		return
 	await create_timer(RUN_SECONDS * 0.5).timeout
 	if not await _save_frame("screenshot_1_spawn.png"):
 		quit(1)
