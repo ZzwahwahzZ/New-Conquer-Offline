@@ -34,7 +34,6 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  parent.add_child(body)
  _bounds(parent,size,city)
  CityStreetDressing.build(slot, city, size)
- _build_environment_dressing(slot,city,size)
 static func _height_mesh(city: String,size: float) -> ArrayMesh:
  var path: String = HEIGHTS.get(city,"")
  var image: Image = null
