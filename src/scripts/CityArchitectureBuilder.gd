@@ -85,8 +85,13 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary) -
 
 static func _instantiate_quaternius_building(parent: Node3D, city: String, index: int, at: Vector3) -> Node3D:
  var candidates: Array[String] = []
- _collect_quaternius_models("res://assets/environment/quaternius/ultimate_fantasy_rts", candidates)
- _collect_quaternius_models("res://assets/environment/quaternius/modular_medieval_buildings", candidates)
+ var all_models: Array[String] = []
+ _collect_quaternius_models("res://assets/environment/quaternius/ultimate_fantasy_rts", all_models)
+ _collect_quaternius_models("res://assets/environment/quaternius/modular_medieval_buildings", all_models)
+ for path in all_models:
+  var file_name := path.get_file().to_lower()
+  if ["building","house","tower","wall","castle","shop","keep","gate","barrack","forge","blacksmith","hall"].any(func(word: String) -> bool: return file_name.contains(word)):
+   candidates.append(path)
  if candidates.is_empty():
   return null
  candidates.sort()
