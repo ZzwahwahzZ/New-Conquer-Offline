@@ -57,9 +57,9 @@ func setup(target_player: Node3D) -> void:
 	if saved_position is Array and saved_position.size() >= 3:
 		player.position = Vector3(float(saved_position[0]),0.775,float(saved_position[2]))
 		if saved_id == "TwinCity" and Vector2(player.position.x,player.position.z).length() < 35.0:
-			player.position = Vector3(0.0,0.775,22.0)
+			player.position = Vector3(0.0,0.775,0.0)
 	else:
-		player.position = Vector3(0.0,2.5,22.0) if saved_id == "TwinCity" else Vector3(0.0,1.0,0.0)
+		player.position = Vector3(0.0,0.775,0.0) if saved_id == "TwinCity" else Vector3(0.0,1.0,0.0)
 	call_deferred("change_settlement", saved_id, true)
 
 func change_settlement(settlement_id: String, restore_position: bool = false) -> void:
@@ -95,7 +95,7 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 		current_world.add_child(npc_system)
 		npc_system.call("setup",current_world,settlement_id)
 	if is_instance_valid(player) and not restore_position:
-		player.global_position = Vector3(0,0.775,22) if settlement_id == "TwinCity" else (Vector3(0,0.775,0) if settlement_id != "GuildWarArena" else Vector3(0,0.775,27))
+		player.global_position = _get_settlement_spawn_position(settlement_id)
 	if is_instance_valid(player) and player.has_method("set_safe_spawn"):
 		player.call("set_safe_spawn", player.global_position)
 	if settlement_id != "GuildWarArena":
@@ -113,6 +113,13 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 	get_node("/root/GameState").get("profile")["world_position"] = [player.position.x,player.position.y,player.position.z]
 	get_node("/root/GameState").call("save_local")
 	_transitioning = false
+
+func _get_settlement_spawn_position(settlement_id: String) -> Vector3:
+	if settlement_id == "TwinCity" and is_instance_valid(current_world):
+		var spawn := current_world.get_node_or_null("ArchitectureAssetSlot/PlayerSpawn") as Marker3D
+		if spawn != null:
+			return spawn.global_position + Vector3.UP * 0.775
+	return Vector3(0.0,0.775,0.0) if settlement_id != "GuildWarArena" else Vector3(0.0,0.775,27.0)
 
 func _spawn_settlement_content() -> void:
 	if current_settlement == "GuildWarArena": return
