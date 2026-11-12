@@ -132,6 +132,8 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  ground.position = Vector3(0,-18.0,0)
  outer.add_child(ground)
  ground.material_override = _material(ground_color,1.0)
+ _build_horizon_ridge(outer, city, p)
+ _build_walkable_outer_routes(outer, city, p)
  var trunk := CylinderMesh.new()
  trunk.top_radius = 0.28
  trunk.bottom_radius = 0.58
@@ -154,7 +156,7 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  var canopy_mm := MultiMesh.new()
  canopy_mm.transform_format = MultiMesh.TRANSFORM_3D
  canopy_mm.mesh = canopy
- var count := 96
+ var count := 0 if city == "VolcanoLand" else 96
  trunk_mm.instance_count = count
  canopy_mm.instance_count = count
  for i in range(count):
@@ -167,11 +169,15 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  var trunks := MultiMeshInstance3D.new()
  trunks.name = city+"_OuterTreeTrunks_MultiMesh"
  trunks.multimesh = trunk_mm
+ trunks.visibility_range_end = 250.0
+ trunks.visibility_range_end_margin = 30.0
  outer.add_child(trunks)
  trunks.material_override = _material(p.wood,0.95)
  var crowns := MultiMeshInstance3D.new()
  crowns.name = city+"_OuterCanopy_MultiMesh"
  crowns.multimesh = canopy_mm
+ crowns.visibility_range_end = 250.0
+ crowns.visibility_range_end_margin = 30.0
  outer.add_child(crowns)
  crowns.material_override = _material(p.accent,0.95)
  var water_color := Color("#4c9eb0")
@@ -210,7 +216,76 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
    _box(outer,"Waterlands_WoodenIslandCrossing",Vector3(0,1.0,-211.0),Vector3(74.0,0.65,7.0),_material(p.wood,0.88),1.0)
   else:
    _box(outer,"GrandStoneBridgeAtNorthGate",Vector3(0,0.8,-160.0),Vector3(25.0,1.6,22.0),_material(p.stone,0.86),1.0)
- print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 multimesh_trees=%d" % [city,count])
+ print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 multimesh_instances=%d horizon_ridge=44 ramps=4 canyon_pass=1" % [city,count])
+
+static func _build_horizon_ridge(parent: Node3D, city: String, p: Dictionary) -> void:
+ var ridge_mesh := ConeMesh.new()
+ ridge_mesh.radial_segments = 7
+ ridge_mesh.rings = 3
+ ridge_mesh.bottom_radius = 46.0
+ ridge_mesh.height = 112.0
+ var ridge_mm := MultiMesh.new()
+ ridge_mm.transform_format = MultiMesh.TRANSFORM_3D
+ ridge_mm.mesh = ridge_mesh
+ ridge_mm.instance_count = 44
+ for i in range(44):
+  var angle := TAU * float(i) / 44.0
+  var radius := 354.0 + float((i * 17) % 38)
+  var height_scale := 0.72 + float((i * 13) % 65) / 100.0
+  var scale := Vector3(0.78 + float(i % 4) * 0.12, height_scale, 0.78 + float(i % 5) * 0.10)
+  var basis := Basis(Vector3.UP, angle * 0.12).scaled(scale)
+  var position := Vector3(cos(angle) * radius, 38.0, sin(angle) * radius)
+  ridge_mm.set_instance_transform(i, Transform3D(basis, position))
+ var ridge := MultiMeshInstance3D.new()
+ ridge.name = city + "_DistantHorizonMountainRidge"
+ ridge.multimesh = ridge_mm
+ ridge.material_override = _material(p.stone.darkened(0.20), 1.0)
+ ridge.visibility_range_end = 900.0
+ ridge.visibility_range_end_margin = 60.0
+ ridge.add_to_group("distance_cull_world")
+ parent.add_child(ridge)
+
+static func _build_walkable_outer_routes(parent: Node3D, city: String, p: Dictionary) -> void:
+ var route_root := Node3D.new()
+ route_root.name = city + "_WalkableRampsAndCanyonPasses"
+ parent.add_child(route_root)
+ var ramp_material := _material(p.stone.lightened(0.08), 0.96)
+ for i in range(4):
+  var angle := float(i) * PI * 0.5
+  var ramp_body := StaticBody3D.new()
+  ramp_body.name = city + "_WalkableRamp_%d" % i
+  ramp_body.position = Vector3(cos(angle) * 205.0, 3.0, sin(angle) * 205.0)
+  ramp_body.rotation.y = -angle
+  ramp_body.rotation.x = deg_to_rad(-10.0)
+  var ramp_mesh := MeshInstance3D.new()
+  var ramp := BoxMesh.new()
+  ramp.size = Vector3(22.0, 2.0, 76.0)
+  ramp_mesh.mesh = ramp
+  ramp_body.add_child(ramp_mesh)
+  ramp_mesh.material_override = ramp_material
+  var ramp_collision := CollisionShape3D.new()
+  var ramp_shape := BoxShape3D.new()
+  ramp_shape.size = ramp.size
+  ramp_collision.shape = ramp_shape
+  ramp_body.add_child(ramp_collision)
+  route_root.add_child(ramp_body)
+ var canyon_material := _material(p.stone.darkened(0.12), 1.0)
+ for side in [-1.0, 1.0]:
+  var canyon_wall := StaticBody3D.new()
+  canyon_wall.name = city + "_CanyonPassWall"
+  canyon_wall.position = Vector3(side * 22.0, 12.0, -286.0)
+  var wall_mesh := MeshInstance3D.new()
+  var wall := BoxMesh.new()
+  wall.size = Vector3(10.0, 30.0, 112.0)
+  wall_mesh.mesh = wall
+  canyon_wall.add_child(wall_mesh)
+  wall_mesh.material_override = canyon_material
+  var wall_collision := CollisionShape3D.new()
+  var wall_shape := BoxShape3D.new()
+  wall_shape.size = wall.size
+  wall_collision.shape = wall_shape
+  canyon_wall.add_child(wall_collision)
+  route_root.add_child(canyon_wall)
 
 static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary) -> void:
  var guard := Node3D.new()
