@@ -87,8 +87,15 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary) -
 
 static func _instantiate_kenney_building(parent: Node3D, city: String, index: int, at: Vector3) -> Node3D:
  var candidates: Array[String] = []
- _collect_kenney_models("res://assets/environment/kenney/fantasy-town-kit/Models/GLTF format", candidates)
- _collect_kenney_models("res://assets/environment/kenney/castle-kit/Models/GLTF format", candidates)
+ for model_dir in [
+  "res://assets/environment/kenney/fantasy-town-kit/Models/GLTF format",
+  "res://assets/environment/kenney/fantasy-town-kit/Models/GLB format",
+  "res://assets/environment/kenney/castle-kit/Models/GLTF format",
+  "res://assets/environment/kenney/castle-kit/Models/GLB format",
+  "res://assets/environment/kenney/retro-fantasy-kit/Models/GLTF format",
+  "res://assets/environment/kenney/retro-fantasy-kit/Models/GLB format"
+ ]:
+  _collect_kenney_models(model_dir, candidates)
  var filtered: Array[String] = []
  var structure_words := ["building", "house", "shop", "market", "tower", "castle", "gate", "church", "temple", "keep", "hall", "inn", "mill", "stable", "forge", "blacksmith"]
  for path in candidates:
