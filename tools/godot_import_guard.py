@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 import time
+import tempfile
 
 ASSET_RE = re.compile(r"""res://([^\s"'<>]+\.(?:glb|gltf|png|jpe?g))""", re.IGNORECASE)
 ERROR_RE = re.compile(r"(?:ERROR:|Failed to load|Failed loading resource)", re.IGNORECASE)
@@ -47,14 +48,80 @@ def quarantine_asset(root: Path, quarantine: Path, relative: str, attempt: int) 
     return True
 
 
+
+def initialize_editor_classes(project: Path, godot: str, log_path: Path) -> int:
+    """Build global_script_class_cache in a scripts-only staging project."""
+    project = project.resolve()
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="godot-editor-classes-") as temp:
+        stage = Path(temp)
+        script_count = 0
+        excluded = {".git", ".godot", "build", "reports", "addons"}
+        for source in project.rglob("*.gd"):
+            relative = source.relative_to(project)
+            if any(part in excluded for part in relative.parts):
+                continue
+            target = stage / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
+            script_count += 1
+        if script_count == 0:
+            print("ERROR: no GDScript files found for editor-class initialization", flush=True)
+            return 2
+        (stage / "project.godot").write_text(
+            'config_version=5\\n\\n[application]\\nconfig/name="EditorClassCacheStage"\\n',
+            encoding="utf-8",
+        )
+        command = [godot, "--headless", "--audio-driver", "Dummy", "--editor",
+                   "--path", str(stage), "--quit", "--verbose"]
+        print("EDITOR_CLASSES_COMMAND=" + " ".join(command), flush=True)
+        print(f"EDITOR_CLASSES_SCRIPT_COUNT={script_count}", flush=True)
+        with log_path.open("w", encoding="utf-8", errors="replace") as log:
+            log.write("Scripts-only editor class initialization\\n")
+            process = subprocess.Popen(command, cwd=stage, stdout=subprocess.PIPE,
+                                       stderr=subprocess.STDOUT, text=True,
+                                       encoding="utf-8", errors="replace")
+            try:
+                for line in process.stdout:
+                    log.write(line)
+                    log.flush()
+                    sys.stdout.write(line)
+                    sys.stdout.flush()
+                code = process.wait(timeout=840)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait()
+                print("ERROR: editor-class initialization timed out", flush=True)
+                return 124
+        cache = stage / ".godot" / "global_script_class_cache.cfg"
+        if code != 0:
+            print(f"ERROR: Godot editor class initialization exited {code}", flush=True)
+            return code
+        if not cache.is_file() or cache.stat().st_size == 0:
+            print("ERROR: global_script_class_cache.cfg was not generated", flush=True)
+            return 3
+        destination = project / ".godot" / "global_script_class_cache.cfg"
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(cache, destination)
+        print(f"EDITOR_CLASSES_CACHE_READY: {destination} ({cache.stat().st_size} bytes)", flush=True)
+        print("EDITOR_CLASSES_INITIALIZATION_PASS", flush=True)
+        return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument('--editor-classes', action='store_true')
+    parser.add_argument('--godot', default='godot')
+    parser.add_argument('--project', type=Path, default=Path.cwd())
     parser.add_argument("--timeout", type=int, default=900)
     parser.add_argument("--max-retries", type=int, default=12)
     parser.add_argument("--quarantine", type=Path, default=Path("/tmp/godot-asset-quarantine"))
     parser.add_argument("--log", type=Path, default=Path("reports/godot_import_guard.log"))
     parser.add_argument("command", nargs=argparse.REMAINDER)
     args = parser.parse_args()
+    if args.editor_classes:
+        log_path = args.log if args.log.is_absolute() else args.project / args.log
+        return initialize_editor_classes(args.project, args.godot, log_path)
     command = args.command[1:] if args.command and args.command[0] == "--" else args.command
     if not command:
         parser.error("Provide the Godot command after --")
