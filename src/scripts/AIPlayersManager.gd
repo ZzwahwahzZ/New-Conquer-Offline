@@ -139,7 +139,7 @@ func _spawn_one(data: Dictionary) -> void:
 func _choose_spawn_position() -> Vector3:
 	if safe_zone:
 		var angle := _rng.randf_range(0.0,TAU)
-		var radius := _rng.randf_range(7.0,27.0)
+		var radius := _rng.randf_range(12.0,27.0)
 		return player.global_position + Vector3(cos(angle)*radius,0.0,sin(angle)*radius)
 	var angle := _rng.randf_range(0.0,TAU)
 	var radius := _rng.randf_range(9.0,20.0)
