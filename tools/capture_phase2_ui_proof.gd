@@ -50,7 +50,7 @@ func _run() -> void:
 		hp_label = orb_for_hp.get_node_or_null("HPValue") as Label
 	for frame in range(120):
 		await process_frame
-		if is_instance_valid(hp_label) and hp_label.text.find(str(class_system.get("hp"))) >= 0:
+		if is_instance_valid(hp_label) and hp_label.text.find(str(int(round(float(class_system.get("hp")))))) >= 0:
 			break
 	# Resolve autoloads at runtime; never reference their names as parser-time identifiers.
 	var gear_database: Node = root.get_node_or_null("GearDatabase")
@@ -92,7 +92,7 @@ func _run() -> void:
 	if row.get_node_or_null("ClassicEXP") == null or row.get_node_or_null("ClassicEXP/EXPCellDivider1") == null:
 		_fail("segmented gold EXP ProgressBar missing")
 		return
-	if orb.get_node_or_null("HPValue") == null or orb.get_node("HPValue").text.find(str(class_system.get("hp"))) < 0:
+	if orb.get_node_or_null("HPValue") == null or orb.get_node("HPValue").text.find(str(int(round(float(class_system.get("hp")))))) < 0:
 		_fail("HP orb does not display the actual current HP value")
 		return
 	var hud_root := hud.get_node_or_null("HUDRoot")
