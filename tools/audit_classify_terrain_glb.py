@@ -9,25 +9,28 @@ import trimesh
 from huggingface_hub import HfApi
 
 ROOT = Path(__file__).resolve().parents[1]
-MODEL_DIR = ROOT / "assets" / "environment" / "models"
-REPORT = ROOT / "assets" / "environment" / "glb_classification_report.json"
-DEST = MODEL_DIR / "classified"
+ENV_DIR = ROOT / "assets" / "environment"
+MODEL_DIR = ENV_DIR / "models"
+REPORT = ENV_DIR / "glb_classification_report.json"
 
 def classify(filename: str, labels: list[str]) -> str:
     text = (filename + " " + " ".join(labels)).lower()
+    if any(word in text for word in ("temple", "pagoda", "gate", "bridge", "building", "house", "palace", "arch", "city")):
+        return "architecture"
+    if any(word in text for word in ("volcano", "lava", "alpine", "arctic", "mountain", "snow", "ice", "biome", "dune", "desert")):
+        return "terrain"
     if "island" in text or "archipelago" in text:
         return "islands"
     if any(word in text for word in ("rock", "boulder", "basalt", "cliff", "karst", "stone")):
         return "rocks"
     if any(word in text for word in ("tree", "pine", "palm", "sakura", "willow", "forest", "foliage")):
         return "vegetation"
-    if any(word in text for word in ("temple", "pagoda", "gate", "bridge", "building", "house", "palace", "arch")):
-        return "architecture"
     return "unclassified"
 
 def main() -> None:
     records = []
-    for path in sorted(MODEL_DIR.glob("*.glb")):
+    paths = sorted(path for path in ENV_DIR.rglob("*.glb") if MODEL_DIR / "classified" not in path.parents)
+    for path in paths:
         scene = trimesh.load(path, force="scene", process=False)
         if not isinstance(scene, trimesh.Scene):
             scene = trimesh.Scene(scene)
@@ -49,9 +52,6 @@ def main() -> None:
             })
         bounds = scene.bounds
         category = classify(path.name, labels)
-        target = DEST / category / path.name
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(path, target)
         records.append({
             "file": path.name,
             "bytes": path.stat().st_size,
@@ -61,7 +61,6 @@ def main() -> None:
             "scene_aabb_max": [float(x) for x in bounds[1]] if bounds is not None else None,
             "node_count": len(nodes),
             "nodes": nodes,
-            "classified_copy": str(target.relative_to(ROOT / "assets" / "environment")),
         })
         print(f"GLB_AUDIT: {path.name} category={category} nodes={len(nodes)} aabb={bounds.tolist() if bounds is not None else None}")
     report = {

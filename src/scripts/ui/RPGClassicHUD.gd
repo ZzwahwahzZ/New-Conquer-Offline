@@ -369,7 +369,7 @@ func _refresh_quest() -> void:
 	_quest_progress.text = "%d/%d  •  اضغط للتتبع التلقائي" % [int(selected.get("count", 0)), int(selected.get("goal", 1))]
 
 func _on_quest_panel_input(event: InputEvent) -> void:
-	var clicked := (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT) or (event is InputEventScreenTouch and event.pressed)
+	var clicked: bool = (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT) or (event is InputEventScreenTouch and event.pressed)
 	if not clicked:
 		return
 	if not is_instance_valid(_quest_system):
