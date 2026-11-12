@@ -155,28 +155,53 @@ jobs:
           PY
 
       - name: Run Step 11 smoke test
-        run: godot --headless --path . --script scripts/step11_smoke_test.gd
+        timeout-minutes: 2
+        shell: bash
+        run: bash tools/run_godot_smoke_test.sh scripts/step11_smoke_test.gd
 
       - name: Run Step 12 smoke test (Save v6)
-        run: godot --headless --path . --script scripts/step12_smoke_test.gd
+        timeout-minutes: 2
+        shell: bash
+        run: bash tools/run_godot_smoke_test.sh scripts/step12_smoke_test.gd
 
       - name: Run Step 13 smoke test
-        run: godot --headless --path . --script scripts/step13_smoke_test.gd
+        timeout-minutes: 2
+        shell: bash
+        run: bash tools/run_godot_smoke_test.sh scripts/step13_smoke_test.gd
 
       - name: Run Step 14 smoke test
-        run: godot --headless --path . --script scripts/step14_smoke_test.gd
+        timeout-minutes: 2
+        shell: bash
+        run: bash tools/run_godot_smoke_test.sh scripts/step14_smoke_test.gd
 
       - name: Run Step 16 smoke test
-        run: godot --headless --path . --script scripts/step16_smoke_test.gd
+        timeout-minutes: 2
+        shell: bash
+        run: bash tools/run_godot_smoke_test.sh scripts/step16_smoke_test.gd
 
       - name: Run Player idle stability regression (3 seconds)
-        run: godot --headless --path . --script scripts/player_idle_stability_test.gd
+        timeout-minutes: 2
+        shell: bash
+        run: bash tools/run_godot_smoke_test.sh scripts/player_idle_stability_test.gd
 
       - name: Verify world environment, sunlight and Twin City ground
-        run: godot --headless --path . --script scripts/world_environment_test.gd
+        timeout-minutes: 2
+        shell: bash
+        run: bash tools/run_godot_smoke_test.sh scripts/world_environment_test.gd
 
       - name: Run shared PBR material library regression
-        run: godot --headless --path . --script scripts/pbr_material_library_test.gd
+        timeout-minutes: 2
+        shell: bash
+        run: bash tools/run_godot_smoke_test.sh scripts/pbr_material_library_test.gd
+
+      - name: Upload Smoke Test Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Godot-Smoke-Test-Logs
+          path: reports/smoke-tests/*.log
+          if-no-files-found: warn
+          retention-days: 14
 
       # Phase 1 excludes character/monster assets; Step 17B is deferred to phase 3.
 
