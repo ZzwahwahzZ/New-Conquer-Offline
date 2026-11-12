@@ -203,11 +203,14 @@ jobs:
           set -Eeuo pipefail
           mkdir -p reports/visual-proof
           timeout 600s xvfb-run -a godot --path . --script res://tools/capture_visual_proof.gd 2>&1 | tee reports/visual-proof/capture.log
-          for city in twincity desertland volcanoland iceland waterlands darkforest; do
+          cities=(twincity desertland volcanoland iceland waterlands darkforest)
+          city_index=1
+          for city in "${cities[@]}"; do
             for sample in 01_t00 02_t04 03_t08 04_t12; do
-              test -s "reports/visual-proof/city_${city_index:-1}_${city}_${sample}.png" || true
+              test -s "reports/visual-proof/city_${city_index}_${city}_${sample}.png"
             done
-            test "$(find reports/visual-proof -maxdepth 1 -type f -name "*_${city}_*.png" | wc -l)" -eq 5
+            test -s "reports/visual-proof/city_${city_index}_${city}_05_gate_orbit.png"
+            city_index=$((city_index+1))
           done
           file reports/visual-proof/*.png
           test "$(find reports/visual-proof -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 30
