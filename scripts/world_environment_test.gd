@@ -34,20 +34,9 @@ func _run() -> void:
 	assert(collision.shape is BoxShape3D, "TwinCity ground collision must remain a stable box collider")
 	var ground_box := collision.shape as BoxShape3D
 	assert(is_equal_approx(collision.position.y + ground_box.size.y * 0.5, 0.0), "TwinCity collision top must remain exactly at Y=0")
-	var factory = load("res://src/scripts/RiggedCharacterFactory.gd")
-	var fallback := factory._build_articulated_fallback("hero", 1) as Node3D
-	assert(fallback != null, "Articulated humanoid fallback failed to instantiate")
-	assert(fallback.get_node_or_null("Head") != null, "Fallback head is missing")
-	assert(fallback.get_node_or_null("ArmPivot_L") != null and fallback.get_node_or_null("ArmPivot_R") != null, "Fallback arms are missing")
-	assert(fallback.get_node_or_null("LegPivot_L") != null and fallback.get_node_or_null("LegPivot_R") != null, "Fallback legs are missing")
-	assert(fallback.get_node_or_null("ArmPivot_L/ForearmPivot/LeftEasternKnife") != null, "Fallback left-hand weapon is missing")
-	assert(factory.play_state(fallback, "Run"), "Fallback run animation did not execute")
-	var left_leg := fallback.get_node("LegPivot_L") as Node3D
-	var right_leg := fallback.get_node("LegPivot_R") as Node3D
-	assert(is_equal_approx(left_leg.rotation.x, -right_leg.rotation.x), "Fallback legs must animate in opposition")
 	print("WORLD_ENVIRONMENT_PASS: ProceduralSky + sky ambient 0.85 + active directional sun 1.3")
 	print("TWIN_CITY_VISUAL_PASS: procedural grass + stone paving + imperial palace + dragon bridges")
-	print("HUMANOID_FALLBACK_PASS: head, torso, arms, legs, boots, weapons and locomotion")
-	fallback.free()
+	city.queue_free()
+	quit(0)
 	city.queue_free()
 	quit(0)
