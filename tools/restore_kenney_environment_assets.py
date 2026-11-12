@@ -75,10 +75,18 @@ def safe_member(name: str) -> PurePosixPath:
 
 def restore_pack(pack_id: str, metadata: dict) -> dict:
     archive = Path("/tmp") / "kenney-environment-downloads" / f"{pack_id}.zip"
+    print(f"KENNEY_PACK_DOWNLOAD_START: {pack_id} url={metadata['url']}", flush=True)
     download(metadata["url"], archive)
+    archive_size = archive.stat().st_size
+    with archive.open("rb") as stream:
+        archive_magic = stream.read(16)
     digest = sha256(archive)
+    print(f"KENNEY_PACK_DOWNLOAD_RESULT: {pack_id} bytes={archive_size} magic={archive_magic.hex()} sha256={digest}", flush=True)
     if digest != metadata["sha256"]:
         raise RuntimeError(f"{pack_id} archive hash mismatch: expected {metadata['sha256']}, got {digest}")
+
+    if not zipfile.is_zipfile(archive):
+        raise RuntimeError(f"\{pack_id} downloaded file is not a ZIP: url=\{metadata['url']} bytes=\{archive_size} magic=\{archive_magic!r} sha256=\{digest}")
 
     target = DEST / pack_id
     if target.exists():
