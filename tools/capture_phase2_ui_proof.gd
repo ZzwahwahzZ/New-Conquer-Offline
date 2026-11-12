@@ -45,7 +45,7 @@ func _run() -> void:
 	# The orb intentionally animates resource changes; allow its displayed value to settle
 	# before asserting the live number rather than sampling the first interpolation frame.
 	var hp_label: Label = null
-	var orb_for_hp := root.get_node_or_null("HUD/ClassicHUD/ClassicConquerBottomBar/MainRow/SplitCrystalOrb")
+	var orb_for_hp := main.get_node_or_null("HUD/ClassicHUD/ClassicConquerBottomBar/MainRow/SplitCrystalOrb")
 	if orb_for_hp != null:
 		hp_label = orb_for_hp.get_node_or_null("HPValue") as Label
 	for frame in range(120):
