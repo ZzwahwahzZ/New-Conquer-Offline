@@ -12,11 +12,12 @@ const CITY_PALETTES := {
 }
 static func build(parent: Node3D, city: String, size: float) -> void:
  var palette: Dictionary = CITY_PALETTES.get(city, CITY_PALETTES["TwinCity"])
+ var height_image: Image = WorldTerrainBuilder.load_height_image(city)
  _build_open_plaza(parent, palette)
  _build_city_roads(parent, palette)
- _build_city_buildings(parent, city, palette)
+ _build_city_buildings(parent, city, palette, height_image)
  _build_city_walls_and_gates(parent, city, palette)
- _build_outer_biome(parent, city, palette, size)
+ _build_outer_biome(parent, city, palette, size, height_image)
  print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=24 walls=4 gates=4 open_plaza=80x80 outer_world=800x800" % city)
 
 static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
@@ -65,7 +66,7 @@ static func _build_city_roads(parent: Node3D, p: Dictionary) -> void:
    var curb := _box(roads,"RaisedStoneCurb",Vector3(side*8.0,0.34,0),Vector3(0.65,0.48,300),curb_material,1.0)
    curb.rotation_degrees.y = direction*90.0
 
-static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary) -> void:
+static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var slot := Node3D.new()
  slot.name = city + "_24BuildingUrbanFabric"
  parent.add_child(slot)
@@ -75,19 +76,19 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary) -
   for side in [-1.0,1.0]:
    for axis in [0,1]:
     var position := Vector3(value,0.0,side*112.0) if axis == 0 else Vector3(side*112.0,0.0,value)
-    var imported := _instantiate_kenney_building(slot, city, index, position)
+    var imported := _instantiate_kenney_building(slot, city, index, position, height_image)
     if imported == null:
-     imported = _instantiate_quaternius_building(slot, city, index, position)
+     imported = _instantiate_quaternius_building(slot, city, index, position, height_image)
     if imported == null:
      var building := _make_building(city,p,index,1.0)
      building.name = city + "_DetailedBuilding_%02d" % index
      building.position = position
-     building.position.y = WorldTerrainBuilder.height_at(city, position.x, position.z)
+     building.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, position.x, position.z, 800.0)
      building.rotation.y = atan2(-position.x,-position.z)
      slot.add_child(building)
     index += 1
 
-static func _instantiate_kenney_building(parent: Node3D, city: String, index: int, at: Vector3) -> Node3D:
+static func _instantiate_kenney_building(parent: Node3D, city: String, index: int, at: Vector3, height_image: Image) -> Node3D:
  var candidates: Array[String] = []
  for model_dir in [
   "res://assets/environment/kenney/fantasy-town-kit/Models/GLTF format",
@@ -117,7 +118,7 @@ static func _instantiate_kenney_building(parent: Node3D, city: String, index: in
   return null
  instance.name = city + "_KenneyBuilding_%02d" % index
  instance.position = at
- instance.position.y = WorldTerrainBuilder.height_at(city, at.x, at.z)
+ instance.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
  instance.rotation.y = atan2(-at.x,-at.z)
  var first_mesh := _first_mesh_node(instance)
  if first_mesh != null and first_mesh.mesh != null:
@@ -159,7 +160,7 @@ static func _first_mesh_node(root: Node) -> MeshInstance3D:
    return current as MeshInstance3D
  return null
 
-static func _instantiate_quaternius_building(parent: Node3D, city: String, index: int, at: Vector3) -> Node3D:
+static func _instantiate_quaternius_building(parent: Node3D, city: String, index: int, at: Vector3, height_image: Image) -> Node3D:
  var candidates: Array[String] = []
  var all_models: Array[String] = []
  _collect_quaternius_models("res://assets/environment/quaternius/ultimate_fantasy_rts", all_models)
@@ -180,7 +181,7 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
   return null
  instance.name = city + "_QuaterniusBuilding_%02d" % index
  instance.position = at
- instance.position.y = WorldTerrainBuilder.height_at(city, at.x, at.z)
+ instance.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
  instance.rotation.y = atan2(-at.x,-at.z)
  instance.scale = Vector3.ONE
  parent.add_child(instance)
@@ -261,7 +262,7 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
   for x in [-8.0,8.0]:
    _box(gate,"ArchColumn",Vector3(x,7.0,-148.0),Vector3(2.0,14.0,7.0),gate_material,1.0)
 
-static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size: float) -> void:
+static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size: float, height_image: Image) -> void:
  var outer := Node3D.new()
  outer.name = city + "_OpenWorld_800x800"
  parent.add_child(outer)
@@ -274,11 +275,11 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  ground.position = Vector3(0.0, -30.0, 0.0)
  outer.add_child(ground)
  ground.material_override = _material(Color("#343a36"), 1.0)
- _build_walkable_outer_routes(outer, city, p)
- _place_quaternius_nature(outer, city)
+ _build_walkable_outer_routes(outer, city, p, height_image)
+ _place_quaternius_nature(outer, city, height_image)
  print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 heightmap_ground=1 height_aligned_routes=4 imported_nature=1" % city)
 
-static func _place_quaternius_nature(parent: Node3D, city: String) -> void:
+static func _place_quaternius_nature(parent: Node3D, city: String, height_image: Image) -> void:
  var keywords: Array[String] = []
  match city:
   "TwinCity": keywords = ["tree","oak","bush","rock"]
@@ -313,7 +314,7 @@ static func _place_quaternius_nature(parent: Node3D, city: String) -> void:
   var radius := 238.0 + float((i * 31) % 82)
   prop.name = city + "_QuaterniusBiomeProp_%02d" % i
   prop.position = Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-  prop.position.y = WorldTerrainBuilder.height_at(city, prop.position.x, prop.position.z)
+  prop.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, prop.position.x, prop.position.z, 800.0)
   prop.rotation.y = angle
   var scale_factor := 0.9 + float(i % 5) * 0.18
   prop.scale = Vector3.ONE * scale_factor
@@ -351,7 +352,7 @@ static func _build_horizon_ridge(parent: Node3D, city: String, p: Dictionary) ->
  ridge.add_to_group("distance_cull_world")
  parent.add_child(ridge)
 
-static func _build_walkable_outer_routes(parent: Node3D, city: String, p: Dictionary) -> void:
+static func _build_walkable_outer_routes(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var route_root := Node3D.new()
  route_root.name = city + "_HeightAlignedRampsAndPasses"
  parent.add_child(route_root)
@@ -369,8 +370,8 @@ static func _build_walkable_outer_routes(parent: Node3D, city: String, p: Dictio
    var center := direction * distance
    var left := center + lateral * 4.5
    var right := center - lateral * 4.5
-   var left_height := WorldTerrainBuilder.height_at(city, left.x, left.y) + 0.10
-   var right_height := WorldTerrainBuilder.height_at(city, right.x, right.y) + 0.10
+   var left_height := WorldTerrainBuilder.sample_height_image(height_image, city, left.x, left.y, 800.0) + 0.10
+   var right_height := WorldTerrainBuilder.sample_height_image(height_image, city, right.x, right.y, 800.0) + 0.10
    vertices.append(Vector3(left.x, left_height, left.y))
    vertices.append(Vector3(right.x, right_height, right.y))
    uv.append(Vector2(0.0, float(step) / float(steps - 1)))
