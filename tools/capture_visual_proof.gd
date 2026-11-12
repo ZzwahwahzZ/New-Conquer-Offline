@@ -3,7 +3,7 @@ extends SceneTree
 const MAIN_SCENE := "res://scenes/main.tscn"
 const OUTPUT_DIR := "res://reports/visual-proof"
 const CLASSIC_DISTANCE := 20.0
-const CLASSIC_PITCH := 48.59 # Camera3D rotation is -48.59 degrees; vertical offset is exactly 15m at 20m orbit distance.
+const CLASSIC_PITCH := 38.0 # Camera3D local rotation is -38 degrees.
 const CLASSIC_FOV := 45.0
 const CLASSIC_FAR := 600.0
 const CITY_IDS := ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"]
