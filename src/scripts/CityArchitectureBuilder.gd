@@ -1,4 +1,5 @@
 extends RefCounted
+const WorldTerrainBuilder = preload("res://src/scripts/WorldTerrainBuilder.gd")
 ## Detailed, lightweight facade and roof kit for all six classic settlements.
 ## Every building is assembled from real 3D meshes; brick relief uses a generated normal map.
 const CITY_PALETTES := {
@@ -81,6 +82,7 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary) -
      var building := _make_building(city,p,index,1.0)
      building.name = city + "_DetailedBuilding_%02d" % index
      building.position = position
+     building.position.y = WorldTerrainBuilder.height_at(city, position.x, position.z)
      building.rotation.y = atan2(-position.x,-position.z)
      slot.add_child(building)
     index += 1
@@ -115,6 +117,7 @@ static func _instantiate_kenney_building(parent: Node3D, city: String, index: in
   return null
  instance.name = city + "_KenneyBuilding_%02d" % index
  instance.position = at
+ instance.position.y = WorldTerrainBuilder.height_at(city, at.x, at.z)
  instance.rotation.y = atan2(-at.x,-at.z)
  var first_mesh := _first_mesh_node(instance)
  if first_mesh != null and first_mesh.mesh != null:
@@ -177,6 +180,7 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
   return null
  instance.name = city + "_QuaterniusBuilding_%02d" % index
  instance.position = at
+ instance.position.y = WorldTerrainBuilder.height_at(city, at.x, at.z)
  instance.rotation.y = atan2(-at.x,-at.z)
  instance.scale = Vector3.ONE
  parent.add_child(instance)
