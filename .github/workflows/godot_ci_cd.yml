@@ -75,7 +75,7 @@ jobs:
           path: |
             .godot/imported
             .godot/global_script_class_cache.cfg
-          key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
+          key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('project.godot', 'assets/**', '**/*.import') }}
           restore-keys: |
             ${{ runner.os }}-godot-4.3-imported-
 
@@ -136,7 +136,7 @@ jobs:
           path: |
             .godot/imported
             .godot/global_script_class_cache.cfg
-          key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
+          key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('project.godot', 'assets/**', '**/*.import') }}
 
       - name: Verify canonical Mobile renderer and Autoload order
         shell: bash
@@ -258,7 +258,7 @@ jobs:
           path: |
             .godot/imported
             .godot/global_script_class_cache.cfg
-          key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
+          key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('project.godot', 'assets/**', '**/*.import') }}
           restore-keys: |
             ${{ runner.os }}-godot-4.3-imported-
 
@@ -303,7 +303,7 @@ jobs:
           path: |
             .godot/imported
             .godot/global_script_class_cache.cfg
-          key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
+          key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('project.godot', 'assets/**', '**/*.import') }}
 
       - name: Switch temporary web build to Compatibility renderer
         run: |
@@ -455,7 +455,7 @@ jobs:
           path: |
             .godot/imported
             .godot/global_script_class_cache.cfg
-          key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
+          key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('project.godot', 'assets/**', '**/*.import') }}
           restore-keys: |
             ${{ runner.os }}-godot-4.3-imported-
 
@@ -500,7 +500,7 @@ jobs:
           path: |
             .godot/imported
             .godot/global_script_class_cache.cfg
-          key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
+          key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('project.godot', 'assets/**', '**/*.import') }}
 
       - name: Export debug APK
         run: |
