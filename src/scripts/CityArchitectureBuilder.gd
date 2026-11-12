@@ -130,11 +130,21 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  ground.position = Vector3(0,-18.0,0)
  outer.add_child(ground)
  ground.material_override = _material(ground_color,1.0)
- var trunk := BoxMesh.new()
- trunk.size = Vector3(0.8,7.0,0.8)
- var canopy := SphereMesh.new()
- canopy.radius = 3.6
- canopy.height = 6.8
+ var trunk := CylinderMesh.new()
+ trunk.top_radius = 0.28
+ trunk.bottom_radius = 0.58
+ trunk.height = 7.0
+ var canopy: PrimitiveMesh
+ if city in ["DesertLand","VolcanoLand","IceLand","DarkForest"]:
+  var evergreen := ConeMesh.new()
+  evergreen.bottom_radius = 3.8
+  evergreen.height = 8.5
+  canopy = evergreen
+ else:
+  var broadleaf := SphereMesh.new()
+  broadleaf.radius = 3.6
+  broadleaf.height = 6.8
+  canopy = broadleaf
  var trunk_mm := MultiMesh.new()
  trunk_mm.transform_format = MultiMesh.TRANSFORM_3D
  trunk_mm.mesh = trunk
