@@ -1,5 +1,5 @@
 extends RefCounted
-## Central RPG UI theme. Uses downloaded transparent art when present and a gold fallback otherwise.
+## Central RPG UI theme and asset lookup for the Kenney CC0 sprite library.
 const GOLD := Color("#c99b4d")
 const GOLD_HI := Color("#f3d58a")
 const PANEL := Color(0.035, 0.045, 0.06, 0.94)
@@ -10,7 +10,10 @@ static func apply_to_tree(root: Node) -> void:
 		style_button(node as Button, str((node as Button).get_meta("rpg_icon", "")))
 
 static func find_texture(category: String, hint: String = "") -> Texture2D:
-	var directory := DirAccess.open(UI_ROOT + category)
+	return _find_texture_recursive(UI_ROOT + category, hint.to_lower())
+
+static func _find_texture_recursive(directory_path: String, hint: String) -> Texture2D:
+	var directory := DirAccess.open(directory_path)
 	if directory == null:
 		return null
 	var files := directory.get_files()
@@ -19,10 +22,16 @@ static func find_texture(category: String, hint: String = "") -> Texture2D:
 		var lower := file_name.to_lower()
 		if not (lower.ends_with(".png") or lower.ends_with(".svg") or lower.ends_with(".webp")):
 			continue
-		if hint.is_empty() or lower.contains(hint.to_lower()):
-			var texture := load(UI_ROOT + category + "/" + file_name) as Texture2D
+		if hint.is_empty() or lower.contains(hint):
+			var texture := load(directory_path + "/" + file_name) as Texture2D
 			if texture != null:
 				return texture
+	var subdirectories := directory.get_directories()
+	subdirectories.sort()
+	for subdirectory in subdirectories:
+		var texture := _find_texture_recursive(directory_path + "/" + subdirectory, hint)
+		if texture != null:
+			return texture
 	return null
 
 static func make_nine_patch(texture: Texture2D, margins: int = 14) -> NinePatchRect:
@@ -52,6 +61,22 @@ static func frame_style() -> StyleBox:
 		box.modulate_color = Color(1.0, 0.94, 0.82, 1.0)
 		return box
 	return _box(PANEL, GOLD, 1, 8)
+
+static func make_orb_material(shader: Shader, tint: Color) -> ShaderMaterial:
+	if shader == null:
+		return null
+	var material := ShaderMaterial.new()
+	material.shader = shader
+	material.set_shader_parameter("orb_color", tint)
+	material.set_shader_parameter("glow_strength", 0.48)
+	return material
+
+static func orb_well_style() -> StyleBoxFlat:
+	var style := _box(Color(0.018, 0.023, 0.035, 0.98), Color("#8b6a36"), 1, 22)
+	style.shadow_color = Color(0.0, 0.0, 0.0, 0.62)
+	style.shadow_size = 5
+	style.shadow_offset = Vector2(0, 2)
+	return style
 
 static func style_button(button: Button, icon_key: String = "") -> void:
 	if not is_instance_valid(button):
