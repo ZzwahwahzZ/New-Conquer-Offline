@@ -48,6 +48,7 @@ func _run() -> void:
 	var stone_material := stone.material_override as StandardMaterial3D
 	if not _require(stone_material.albedo_texture != null and stone_material.normal_enabled and stone_material.normal_texture != null and stone_material.roughness_texture != null, "Stone PBR maps (albedo/normal/roughness) are incomplete"):
 		return
+	print("TWIN_CITY_STONE_SOURCE_PATHS: albedo=%s normal=%s roughness=%s" % [stone_material.albedo_texture.resource_path, stone_material.normal_texture.resource_path, stone_material.roughness_texture.resource_path])
 	if not _require(stone_material.albedo_texture.resource_path.contains("Ground044_2K-JPG") and stone_material.normal_texture.resource_path.contains("Ground044_2K-JPG") and stone_material.roughness_texture.resource_path.contains("Ground044_2K-JPG"), "Stone surface is not using the restored Ground044 source maps"):
 		return
 	if not _require(stone_material.uv1_triplanar and stone_material.uv1_scale.x >= 0.60 and stone_material.normal_scale >= 1.40 and stone_material.detail_enabled and stone_material.detail_albedo == stone_material.albedo_texture, "Stone PBR detail, contrast and triplanar scale are not configured"):
