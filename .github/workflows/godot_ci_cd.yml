@@ -84,11 +84,20 @@ jobs:
         timeout-minutes: 25
         run: |
           set -euo pipefail
-          python3 tools/godot_import_guard.py --timeout 180 --max-retries 12 -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose 2>&1 | tee /tmp/godot-import.log
-          if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load script|ERROR: Failed loading resource' /tmp/godot-import.log; then
+          python3 tools/godot_import_guard.py --timeout 180 --max-retries 12 --log reports/godot_import_guard.log -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
+          if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load script|ERROR: Failed loading resource' reports/godot_import_guard.log; then
             echo "::error::Godot import emitted parser or resource-load errors."
             exit 1
           fi
+
+      - name: Upload Import Logs Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Godot-Import-Logs-Verify
+          path: reports/godot_import_guard.log
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Save partial Godot import cache after failed import
         if: failure()
@@ -222,7 +231,16 @@ jobs:
           python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 15 --max-image-dimension 1024
       - name: Import for WebGL2 Compatibility renderer
         timeout-minutes: 25
-        run: python3 tools/godot_import_guard.py --timeout 180 --max-retries 12 -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
+        run: python3 tools/godot_import_guard.py --timeout 180 --max-retries 12 --log reports/godot_import_guard.log -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
+
+      - name: Upload Import Logs Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Godot-Import-Logs-Web
+          path: reports/godot_import_guard.log
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Save partial Godot import cache after failed import
         if: failure()
@@ -368,9 +386,16 @@ jobs:
           python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 15 --max-image-dimension 1024
       - name: Import Android project resources
         timeout-minutes: 25
-        run: python3 tools/godot_import_guard.py --timeout 180 --max-retries 12 -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
+        run: python3 tools/godot_import_guard.py --timeout 180 --max-retries 12 --log reports/godot_import_guard.log -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
 
-      - name: Save partial Godot import cache after failed import
+      - name: Upload Import Logs Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Godot-Import-Logs-Android
+          path: reports/godot_import_guard.log
+          if-no-files-found: warn
+          retention-days: 14
         if: failure()
         uses: actions/cache/save@v4
         with:
