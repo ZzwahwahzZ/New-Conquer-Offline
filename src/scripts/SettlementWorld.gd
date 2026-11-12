@@ -36,6 +36,10 @@ func _build_environment() -> void:
 	sky.sky_material = sky_material
 	environment.sky = sky
 	environment.background_color = sky_color
+	environment.tonemap_mode = Environment.TONE_MAPPER_ACES
+	environment.ssao_enabled = true
+	environment.ssao_radius = 2.4
+	environment.ssao_intensity = 1.35
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	environment.ambient_light_color = sky_color.lightened(0.25)
 	environment.ambient_light_energy = 0.85
@@ -54,7 +58,7 @@ func _build_environment() -> void:
 	sun.name = "SettlementSun"
 	sun.rotation_degrees = Vector3(-45,-32,0)
 	sun.light_energy = 1.3
-	sun.shadow_enabled = not OS.has_feature("web")
+	sun.shadow_enabled = true
 	sun.shadow_bias = 0.035
 	sun.shadow_normal_bias = 1.25
 	sun.shadow_blur = 1.4 if not OS.has_feature("web") else 0.0
