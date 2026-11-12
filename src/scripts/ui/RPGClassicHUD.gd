@@ -23,7 +23,8 @@ var _display_mp := 0.0
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_hide_legacy_hud()
+	# Child _ready runs before HUD.gd builds HUDRoot; defer until the parent finishes.
+	call_deferred("_hide_legacy_hud")
 	_build_bottom_bar()
 	_build_quest_tracker()
 	ThemeManager.apply_to_tree(self)
