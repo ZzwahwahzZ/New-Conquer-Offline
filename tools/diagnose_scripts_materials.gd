@@ -18,6 +18,7 @@ func _run() -> void:
     if script_fail > 0 or material_fail > 0:
         print("DIRECT_SCRIPT_MATERIAL_DIAGNOSTIC_FAIL")
         quit(1)
+        return
     print("DIRECT_SCRIPT_MATERIAL_DIAGNOSTIC_PASS")
     quit(0)
 
