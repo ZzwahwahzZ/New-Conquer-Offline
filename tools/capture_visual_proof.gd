@@ -157,6 +157,7 @@ func _capture() -> void:
 			_fail("open central plaza missing from rendered city: " + city_id)
 			return
 		player.global_position = Vector3(0.0, 0.775, 0.0)
+		camera_rig.global_position = player.global_position
 		camera_rig.set("_target_distance", CAPTURE_CAMERA_DISTANCE)
 		camera_rig.set("_current_distance", CAPTURE_CAMERA_DISTANCE)
 		camera_rig.set("pitch_degrees", CAPTURE_CAMERA_PITCH)
@@ -181,6 +182,7 @@ func _capture() -> void:
 				return
 		# Gate approach: move to the inside of the northern gate so the arch, outer bridge and biome beyond it fill the view.
 		player.global_position = Vector3(0.0,0.775,-118.0)
+		camera_rig.global_position = player.global_position
 		camera_rig.set("_target_distance", 58.0)
 		camera_rig.set("_current_distance", 58.0)
 		camera_rig.set("_yaw", 0.0)
