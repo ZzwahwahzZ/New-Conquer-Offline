@@ -54,6 +54,12 @@ func _run() -> void:
 					return
 		if city_name in ["TwinCity", "Waterlands"] and not _check(bridge_count == 6, city_name + " must have six walkable canal bridges (found %d)" % bridge_count):
 			return
+		if city_name == "TwinCity":
+			if not _check(city.find_child("TwinCityImperialCanal_East", true, false) is MeshInstance3D and city.find_child("TwinCityImperialCanal_West", true, false) is MeshInstance3D, "TwinCity imperial canals are missing"):
+				return
+		if city_name == "Waterlands":
+			if not _check(city.find_child("Waterlands_ArchipelagoWaterSurface", true, false) is MeshInstance3D and city.find_child("ApeCityCanal_East", true, false) is MeshInstance3D and city.find_child("ApeCityCanal_West", true, false) is MeshInstance3D, "Waterlands archipelago water/island channels are missing"):
+				return
 		for node_name in ["Street_NorthSouth", "Street_EastWest", "CentralDarkSquare"]:
 			if not _check(city.find_child(node_name, true, false) is MeshInstance3D, city_name + " missing " + node_name):
 				return
