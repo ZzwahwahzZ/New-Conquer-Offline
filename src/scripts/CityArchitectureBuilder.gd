@@ -362,6 +362,7 @@ static func _build_walkable_outer_routes(parent: Node3D, city: String, p: Dictio
   var direction := Vector2(cos(angle), sin(angle))
   var lateral := Vector2(-direction.y, direction.x)
   var vertices := PackedVector3Array()
+  var normals := PackedVector3Array()
   var uv := PackedVector2Array()
   var indices := PackedInt32Array()
   var steps := 49
@@ -374,6 +375,10 @@ static func _build_walkable_outer_routes(parent: Node3D, city: String, p: Dictio
    var right_height := WorldTerrainBuilder.sample_height_image(height_image, city, right.x, right.y, 800.0) + 0.10
    vertices.append(Vector3(left.x, left_height, left.y))
    vertices.append(Vector3(right.x, right_height, right.y))
+   for point in [left, right]:
+    var slope_x := WorldTerrainBuilder.sample_height_image(height_image, city, point.x - 1.0, point.y, 800.0) - WorldTerrainBuilder.sample_height_image(height_image, city, point.x + 1.0, point.y, 800.0)
+    var slope_z := WorldTerrainBuilder.sample_height_image(height_image, city, point.x, point.y - 1.0, 800.0) - WorldTerrainBuilder.sample_height_image(height_image, city, point.x, point.y + 1.0, 800.0)
+    normals.append(Vector3(slope_x, 2.0, slope_z).normalized())
    uv.append(Vector2(0.0, float(step) / float(steps - 1)))
    uv.append(Vector2(1.0, float(step) / float(steps - 1)))
   for step in range(steps - 1):
@@ -385,6 +390,7 @@ static func _build_walkable_outer_routes(parent: Node3D, city: String, p: Dictio
   var arrays := []
   arrays.resize(Mesh.ARRAY_MAX)
   arrays[Mesh.ARRAY_VERTEX] = vertices
+  arrays[Mesh.ARRAY_NORMAL] = normals
   arrays[Mesh.ARRAY_TEX_UV] = uv
   arrays[Mesh.ARRAY_INDEX] = indices
   var route_mesh := ArrayMesh.new()
