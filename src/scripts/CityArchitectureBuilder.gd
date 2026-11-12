@@ -74,7 +74,9 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary) -
   for side in [-1.0,1.0]:
    for axis in [0,1]:
     var position := Vector3(value,0.0,side*112.0) if axis == 0 else Vector3(side*112.0,0.0,value)
-    var imported := _instantiate_quaternius_building(slot, city, index, position)
+    var imported := _instantiate_kenney_building(slot, city, index, position)
+    if imported == null:
+     imported = _instantiate_quaternius_building(slot, city, index, position)
     if imported == null:
      var building := _make_building(city,p,index,1.0)
      building.name = city + "_DetailedBuilding_%02d" % index
@@ -82,6 +84,69 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary) -
      building.rotation.y = atan2(-position.x,-position.z)
      slot.add_child(building)
     index += 1
+
+static func _instantiate_kenney_building(parent: Node3D, city: String, index: int, at: Vector3) -> Node3D:
+ var candidates: Array[String] = []
+ _collect_kenney_models("res://assets/environment/kenney/fantasy-town-kit/Models/GLTF format", candidates)
+ _collect_kenney_models("res://assets/environment/kenney/castle-kit/Models/GLTF format", candidates)
+ var filtered: Array[String] = []
+ var structure_words := ["building", "house", "shop", "market", "tower", "castle", "gate", "church", "temple", "keep", "hall", "inn", "mill", "stable", "forge", "blacksmith"]
+ for path in candidates:
+  var file_name := path.get_file().to_lower()
+  if structure_words.any(func(word: String) -> bool: return file_name.contains(word)):
+   filtered.append(path)
+ if filtered.is_empty():
+  return null
+ filtered.sort()
+ var selected := filtered[index % filtered.size()]
+ var packed := load(selected) as PackedScene
+ if packed == null:
+  push_warning("Kenney architecture model could not be imported: " + selected)
+  return null
+ var instance := packed.instantiate() as Node3D
+ if instance == null:
+  return null
+ instance.name = city + "_KenneyBuilding_%02d" % index
+ instance.position = at
+ instance.rotation.y = atan2(-at.x,-at.z)
+ var first_mesh := _first_mesh_node(instance)
+ if first_mesh != null and first_mesh.mesh != null:
+  var extent := first_mesh.mesh.get_aabb().size.max_axis_size()
+  if extent > 0.01:
+   instance.scale = Vector3.ONE * clampf(12.0 / extent, 0.85, 3.5)
+ parent.add_child(instance)
+ _add_static_mesh_collisions(instance)
+ instance.add_to_group("distance_cull_world")
+ _set_visibility_range(instance, 360.0, 35.0)
+ return instance
+
+static func _collect_kenney_models(path: String, output: Array[String]) -> void:
+ var directory := DirAccess.open(path)
+ if directory == null:
+  return
+ directory.list_dir_begin()
+ var entry := directory.get_next()
+ while entry != "":
+  if entry.begins_with("."):
+   entry = directory.get_next()
+   continue
+  var child := path.path_join(entry)
+  if directory.current_is_dir():
+   _collect_kenney_models(child, output)
+  elif entry.get_extension().to_lower() in ["glb", "gltf"]:
+   output.append(child)
+  entry = directory.get_next()
+ directory.list_dir_end()
+
+static func _first_mesh_node(root: Node) -> MeshInstance3D:
+ var pending: Array[Node] = [root]
+ while not pending.is_empty():
+  var current: Node = pending.pop_back()
+  for child in current.get_children():
+   pending.append(child)
+  if current is MeshInstance3D and (current as MeshInstance3D).mesh != null:
+   return current as MeshInstance3D
+ return null
 
 static func _instantiate_quaternius_building(parent: Node3D, city: String, index: int, at: Vector3) -> Node3D:
  var candidates: Array[String] = []
