@@ -136,7 +136,8 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  trunk.height = 7.0
  var canopy: PrimitiveMesh
  if city in ["DesertLand","VolcanoLand","IceLand","DarkForest"]:
-  var evergreen := ConeMesh.new()
+  var evergreen := CylinderMesh.new()
+  evergreen.top_radius = 0.0
   evergreen.bottom_radius = 3.8
   evergreen.height = 8.5
   canopy = evergreen
