@@ -27,8 +27,10 @@ PACKS = {
         "license": "CC0-1.0",
     },
 }
-IMAGE_EXTS = {".png", ".svg", ".webp"}
-ALLOWED_EXTRACT_EXTS = IMAGE_EXTS | {".jpg", ".jpeg", ".txt", ".md", ".json", ".license", ".zip", ".psd"}
+# Use image files shipped in the archives directly. PSD files are deliberately
+# excluded: they are untrusted source documents and must never be parsed here.
+IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".svg", ".webp"}
+ALLOWED_EXTRACT_EXTS = IMAGE_EXTS | {".txt", ".md", ".json", ".license", ".zip"}
 
 def download(url: str, target: Path) -> None:
     request = urllib.request.Request(url, headers={"User-Agent": "New-Conquer-Offline-AssetSync/1.0"})
@@ -66,139 +68,6 @@ def safe_extract(archive_path: Path, destination: Path, depth: int = 0) -> list[
         extracted.extend(safe_extract(nested, nested_destination, depth + 1))
     return extracted
 
-
-def open_psd_composite_without_layers(psd_path: Path, limits, max_alloc_bytes: int):
-    """Read the PSD header/resources and merged preview while skipping its
-    potentially pathological layer-and-mask section as one bounded block.
-    This preserves a usable flattened UI image without parsing unbounded layers.
-    """
-    import struct
-    from psd_tools import PSDImage
-    from psd_tools.psd.document import PSD
-    from psd_tools.psd.header import FileHeader
-    from psd_tools.psd.color_mode_data import ColorModeData
-    from psd_tools.psd.image_resources import ImageResources
-    from psd_tools.psd.layer_and_mask import LayerAndMaskInformation
-    from psd_tools.psd.image_data import ImageData
-    from psd_tools.psd.parse_limits import parse_context
-
-    file_size = psd_path.stat().st_size
-    with psd_path.open("rb") as stream, parse_context(limits):
-        header = FileHeader.read(stream)
-        color_mode_data = ColorModeData.read(stream)
-        image_resources = ImageResources.read(stream)
-        length_size = 4 if header.version == 1 else 8
-        length_bytes = stream.read(length_size)
-        if len(length_bytes) != length_size:
-            raise RuntimeError(f"Truncated PSD layer section length: {psd_path.name}")
-        layer_section_length = struct.unpack(">I" if length_size == 4 else ">Q", length_bytes)[0]
-        remaining = file_size - stream.tell()
-        # Keep the declared section inside the file and leave at least the
-        # two-byte merged-image compression marker.
-        if layer_section_length > remaining - 2:
-            raise RuntimeError(
-                f"Invalid PSD layer section length in {psd_path.name}: "
-                f"{layer_section_length} bytes remain={remaining}"
-            )
-        stream.seek(layer_section_length, 1)
-        image_data = ImageData.read(stream)
-
-    if not image_data.data:
-        raise RuntimeError(f"PSD has no merged composite image data: {psd_path.name}")
-    record = PSD(
-        header=header,
-        color_mode_data=color_mode_data,
-        image_resources=image_resources,
-        layer_and_mask_information=LayerAndMaskInformation(),
-        image_data=image_data,
-    )
-    document = PSDImage(record)
-    document._max_alloc_bytes = max_alloc_bytes
-    return document
-
-
-def export_psd_assets(source_root: Path) -> int:
-    psd_files = list(source_root.rglob("*.psd")) + list(source_root.rglob("*.PSD"))
-    if not psd_files:
-        return 0
-    try:
-        from psd_tools import PSDImage, ParseLimits, ParseLimitError
-    except ImportError:
-        import subprocess
-        import sys
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "--disable-pip-version-check", "psd-tools==1.26.1"])
-        from psd_tools import PSDImage, ParseLimits, ParseLimitError
-    exported = 0
-    for psd_path in psd_files:
-        max_file_bytes = 256 * 1024 * 1024
-        if psd_path.stat().st_size > max_file_bytes:
-            raise RuntimeError(f"PSD exceeds 256 MiB safety limit: {psd_path}")
-        # The structural budget stays fixed. If the layer tree exceeds it,
-        # do not increase the budget or fail the whole asset-sync job: skip
-        # that bounded layer section and recover the PSD's merged preview.
-        limits = ParseLimits(
-            max_read_bytes=max_file_bytes,
-            max_total_bytes=512 * 1024 * 1024,
-            max_objects=1_500_000,
-            max_nesting_depth=64,
-        )
-        print(f"PSD_OPEN: {psd_path.name} max_objects={limits.max_objects}")
-        output_dir = psd_path.parent / (psd_path.stem + "_layers")
-        output_dir.mkdir(parents=True, exist_ok=True)
-        try:
-            document = PSDImage.open(
-                psd_path,
-                parse_limits=limits,
-                max_alloc_bytes=256 * 1024 * 1024,
-            )
-        except ParseLimitError as error:
-            print(
-                f"PSD_LAYER_LIMIT_FALLBACK: {psd_path.name} "
-                f"limit={error}; skipping layer tree and recovering merged preview"
-            )
-            document = open_psd_composite_without_layers(
-                psd_path, limits, 256 * 1024 * 1024
-            )
-            composite = document.topil()
-            if composite is None:
-                raise RuntimeError(
-                    f"PSD layer limit was reached and no merged preview was recoverable: {psd_path.name}"
-                )
-            composite_path = output_dir / (psd_path.stem + "_composite.png")
-            composite.save(composite_path)
-            exported += 1
-            print(
-                f"PSD_COMPOSITE_FALLBACK_PASS: {psd_path.name} "
-                f"file={composite_path.name} size={composite.width}x{composite.height}; "
-                "individual layers skipped safely"
-            )
-            continue
-
-        psd_exported = 0
-        composite = document.composite()
-        if composite is not None:
-            composite_path = output_dir / (psd_path.stem + "_composite.png")
-            composite.save(composite_path)
-            exported += 1
-            psd_exported += 1
-        for index, layer in enumerate(document.descendants()):
-            try:
-                if not layer.is_visible():
-                    continue
-                image = layer.composite()
-                if image is None or image.getbbox() is None:
-                    continue
-                safe_name = "".join(ch if ch.isalnum() or ch in "-_" else "_" for ch in str(layer.name)).strip("_")
-                if not safe_name:
-                    safe_name = f"layer_{index:03d}"
-                target = output_dir / f"{index:03d}_{safe_name[:64]}.png"
-                image.save(target)
-                exported += 1
-                psd_exported += 1
-            except Exception as error:
-                print(f"PSD_LAYER_SKIP: {psd_path.name} layer={index} name={getattr(layer, 'name', '')!r} error={error}")
-        print(f"PSD_TO_PNG: {psd_path.name} layers_exported={psd_exported} canvas={document.width}x{document.height}")
-    return exported
 
 def classify_assets(stage: Path, provenance: dict) -> dict:
     source_root = stage / "source"
@@ -294,8 +163,14 @@ def main() -> None:
             "extracted_files": len(extracted),
         }
         print(f"RPG_UI_PACK_EXTRACTED: {pack_name} files={len(extracted)} bytes={archive.stat().st_size}")
-    psd_exports = export_psd_assets(STAGE / "source")
-    print(f"PSD_LAYER_EXPORT_TOTAL: {psd_exports}")
+    ignored_psd_count = sum(
+        1 for path in (STAGE / "source").rglob("*")
+        if path.is_file() and path.suffix.lower() == ".psd"
+    )
+    print(
+        f"PSD_IGNORED: {ignored_psd_count} files; "
+        "PSD parsing and conversion are disabled"
+    )
     manifest = classify_assets(STAGE, provenance)
     if manifest["image_count"] < 20:
         raise SystemExit(f"UI pack extraction yielded too few images: {manifest['image_count']}")
