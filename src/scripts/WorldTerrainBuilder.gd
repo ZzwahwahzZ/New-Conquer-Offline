@@ -11,6 +11,7 @@ const HEIGHTS := {
  "DarkForest":"res://assets/environment/heightmaps/05_dark_forest_valleys_heightmap_16bit.png"}
 const COLORS := {"TwinCity":Color("#6c9849"),"DesertLand":Color("#b58a4e"),"VolcanoLand":Color("#393437"),"IceLand":Color("#b9d9e8"),"Waterlands":Color("#3a9e91"),"DarkForest":Color("#294b32")}
 const MATERIALS := {"TwinCity":"Ground044_2K-JPG","DesertLand":"Ground061_2K-JPG","VolcanoLand":"Rock027_2K-JPG","IceLand":"Snow008C_2K-JPG","Waterlands":"Ground044_2K-JPG","DarkForest":"Ground053_2K-JPG"}
+const HEIGHT_AMPLITUDE := {"TwinCity":0.0,"DesertLand":30.0,"VolcanoLand":40.0,"IceLand":44.0,"Waterlands":22.0,"DarkForest":32.0}
 const KARST_MODELS := ["model.glb","model (1).glb","model (3).glb"]
 static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  var size: float = CITY_SIZE.get(city,450.0)
@@ -47,7 +48,7 @@ static func _height_mesh(city: String,size: float) -> ArrayMesh:
    push_error("Heightmap texture could not be loaded as an imported resource: " + path)
  elif path != "":
   push_error("Required terrain heightmap resource is missing: " + path)
- var resolution := 65
+ var resolution := 129
  var verts := PackedVector3Array()
  var uv := PackedVector2Array()
  var indices := PackedInt32Array()
@@ -57,7 +58,7 @@ static func _height_mesh(city: String,size: float) -> ArrayMesh:
    if image != null:
     var ix := int(float(x)*(image.get_width()-1)/(resolution-1))
     var iz := int(float(z)*(image.get_height()-1)/(resolution-1))
-    h = (image.get_pixel(ix,iz).r-0.5)*28.0
+    h = (image.get_pixel(ix,iz).r-0.5)*float(HEIGHT_AMPLITUDE.get(city,28.0))
    # Flatten the central 150m combat/market district.
    var px := (float(x)/(resolution-1)-0.5)*size
    var pz := (float(z)/(resolution-1)-0.5)*size
