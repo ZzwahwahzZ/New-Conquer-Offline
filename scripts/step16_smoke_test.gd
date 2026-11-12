@@ -55,7 +55,9 @@ func _run() -> void:
 	if not _require(not settlement_source.contains("ChineseImperialBuilder.build("), "Obsolete enclosed TwinCity imperial block is still being instanced"):
 		return
 	var capture_source := FileAccess.get_file_as_string("res://tools/capture_visual_proof.gd")
-	if not _require(capture_source.contains("CITY_IDS") and capture_source.contains("gate_orbit") and capture_source.contains("PI * 0.5"), "Six-city 30-frame proof capture or 90-degree gate orbit is missing"):
+	if not _require(capture_source.contains("CITY_IDS") and capture_source.contains("SHOTS") and capture_source.contains("05_orbit_90") and capture_source.contains("PI * 0.5"), "Six-city five-view proof capture or 90-degree gate orbit is missing"):
+		return
+	if not _require(capture_source.contains("var CITY_IDS := [\"TwinCity\",\"DesertLand\",\"VolcanoLand\",\"IceLand\",\"Waterlands\",\"DarkForest\"]") and capture_source.contains("\"suffix\":\"05_orbit_90\""), "Six-city proof set or named 90-degree orbit frame is incomplete"):
 		return
 	print("STEP16_PHASE1_OPEN_PLAZA_24_BUILDINGS_FOUR_GATES_450M_WORLD_AND_30_FRAME_PROOF_PASS")
 	get_tree().quit(0)
