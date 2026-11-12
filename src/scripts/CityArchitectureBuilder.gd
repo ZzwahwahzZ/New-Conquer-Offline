@@ -36,8 +36,8 @@ static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
  disk.radial_segments = 64
  medallion.mesh = disk
  medallion.position.y = 0.20
- medallion.material_override = _material(p.gold,0.72)
  plaza.add_child(medallion)
+ medallion.material_override = _material(p.gold,0.72)
  for radius in [7.8,6.2,4.6]:
   var ring := MeshInstance3D.new()
   ring.name = "MedallionEngravedRing"
@@ -48,8 +48,8 @@ static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
   torus.ring_segments = 8
   ring.mesh = torus
   ring.position.y = 0.39
-  ring.material_override = _material(p.accent,0.66)
   plaza.add_child(ring)
+  ring.material_override = _material(p.accent,0.66)
 
 static func _build_city_roads(parent: Node3D, p: Dictionary) -> void:
  var roads := Node3D.new()
@@ -128,8 +128,8 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  plane.size = Vector2(450.0,450.0)
  ground.mesh = plane
  ground.position = Vector3(0,-18.0,0)
- ground.material_override = _material(ground_color,1.0)
  outer.add_child(ground)
+ ground.material_override = _material(ground_color,1.0)
  var trunk := BoxMesh.new()
  trunk.size = Vector3(0.8,7.0,0.8)
  var canopy := SphereMesh.new()
@@ -154,13 +154,13 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  var trunks := MultiMeshInstance3D.new()
  trunks.name = city+"_OuterTreeTrunks_MultiMesh"
  trunks.multimesh = trunk_mm
- trunks.material_override = _material(p.wood,0.95)
  outer.add_child(trunks)
+ trunks.material_override = _material(p.wood,0.95)
  var crowns := MultiMeshInstance3D.new()
  crowns.name = city+"_OuterCanopy_MultiMesh"
  crowns.multimesh = canopy_mm
- crowns.material_override = _material(p.accent,0.95)
  outer.add_child(crowns)
+ crowns.material_override = _material(p.accent,0.95)
  var water_color := Color("#4c9eb0")
  if city == "VolcanoLand": water_color = Color("#d75b2d")
  elif city == "DesertLand": water_color = Color("#4a9a75")
@@ -173,8 +173,8 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
   channel.size = Vector2(34.0,180.0)
   water.mesh = channel
   water.position = Vector3(0,0.08,-205.0)
-  water.material_override = _material(water_color,0.3)
   outer.add_child(water)
+  water.material_override = _material(water_color,0.3)
   _box(outer,"GrandStoneBridgeAtNorthGate",Vector3(0,0.8,-160.0),Vector3(25.0,1.6,22.0),_material(p.stone,0.86),1.0)
  print("OPEN_WORLD_BIOME_PASS: %s extent=450x450 multimesh_trees=%d" % [city,count])
 
@@ -191,24 +191,24 @@ static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary) -> voi
  body_mesh.height = 1.45
  torso.mesh = body_mesh
  torso.position.y = 1.15
- torso.material_override = armor
  guard.add_child(torso)
+ torso.material_override = armor
  var head := MeshInstance3D.new()
  var head_mesh := SphereMesh.new()
  head_mesh.radius = 0.28
  head_mesh.height = 0.56
  head.mesh = head_mesh
  head.position.y = 2.08
- head.material_override = _material(Color("#bd8c68"),0.82)
  guard.add_child(head)
+ head.material_override = _material(Color("#bd8c68"),0.82)
  var helmet := MeshInstance3D.new()
  var helmet_mesh := SphereMesh.new()
  helmet_mesh.radius = 0.32
  helmet_mesh.height = 0.28
  helmet.mesh = helmet_mesh
  helmet.position.y = 2.31
- helmet.material_override = trim
  guard.add_child(helmet)
+ helmet.material_override = trim
  var spear := MeshInstance3D.new()
  var spear_mesh := CylinderMesh.new()
  spear_mesh.top_radius = 0.035
@@ -216,8 +216,8 @@ static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary) -> voi
  spear_mesh.height = 2.7
  spear.mesh = spear_mesh
  spear.position = Vector3(side*-0.58,1.35,0.0)
- spear.material_override = trim
  guard.add_child(spear)
+ spear.material_override = trim
 
 static func _make_building(city: String, p: Dictionary, index: int, s: float) -> Node3D:
  var root := Node3D.new()
@@ -325,8 +325,8 @@ static func _desert_roof(root: Node3D, roof: Material, gold: Material, s: float)
  cap.mesh = dome
  cap.position = Vector3(0,11.8,0)
  cap.scale = Vector3(1.0,0.72,0.82)*s
- cap.material_override = roof
  root.add_child(cap)
+ cap.material_override = roof
  for x in [-7.5,7.5]:
   _cylinder(root, "DesertArchColumn", Vector3(x,5.2,7.3), 0.52,8.4,gold,s)
  _box(root, "DomeCrescentFinial", Vector3(0,15.1,0), Vector3(0.55,1.1,0.55), gold, s)
@@ -355,8 +355,8 @@ static func _box(parent: Node3D, label: String, at: Vector3, dimensions: Vector3
  mesh.size = dimensions*s
  node.mesh = mesh
  node.position = at*s
- node.material_override = material
  parent.add_child(node)
+ node.material_override = material
  return node
 
 static func _cylinder(parent: Node3D, label: String, at: Vector3, radius: float, height: float, material: Material, s: float) -> MeshInstance3D:
@@ -369,8 +369,8 @@ static func _cylinder(parent: Node3D, label: String, at: Vector3, radius: float,
  mesh.radial_segments = 12
  node.mesh = mesh
  node.position = at*s
- node.material_override = material
  parent.add_child(node)
+ node.material_override = material
  return node
 
 static func _material(color: Color, roughness: float) -> StandardMaterial3D:
