@@ -10,8 +10,7 @@ mkdir -p "$log_dir"
 echo "SMOKE_TEST_START: ${test_script}"
 set +e
 timeout --signal=TERM --kill-after=10s 90s \
-  godot --headless --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver dummy \
-  --path . --script "$test_script" 2>&1 | tee "$log_file"
+  godot --headless --path . --script "$test_script" 2>&1 | tee "$log_file"
 status=${PIPESTATUS[0]}
 set -e
 
