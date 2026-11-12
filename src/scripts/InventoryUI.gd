@@ -251,6 +251,7 @@ func _build_ui() -> void:
 func _build_preview() -> void:
 	_preview_viewport = SubViewport.new()
 	_preview_viewport.name = "PreviewViewport"
+	_preview_viewport.own_world_3d = true # Isolate the paper-doll preview from the live game world and player camera.
 	_preview_viewport.size = Vector2i(512, 512)
 	_preview_viewport.transparent_bg = false
 	_preview_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
