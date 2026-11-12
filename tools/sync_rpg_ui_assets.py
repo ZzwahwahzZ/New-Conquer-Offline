@@ -429,10 +429,38 @@ def restore_from_hf(api: HfApi, token: str) -> bool:
             shutil.copytree(source_folder, DEST / folder_name)
     if manifest_path.is_file():
         shutil.copy2(manifest_path, DEST / "manifest.json")
-    count = sum(1 for path in DEST.rglob("*.png") if path.is_file())
+    png_files = sorted(path for path in DEST.rglob("*.png") if path.is_file())
+    count = len(png_files)
+    expected_count = int(manifest.get("image_count", 0))
+    if count != expected_count:
+        raise RuntimeError(
+            f"HF Kenney restore count mismatch: expected {expected_count}, found {count}"
+        )
     if count < MINIMUM_PNG_FILES:
         raise RuntimeError(f"HF Kenney restore has only {count} PNG files")
-    print(f"HF_KENNEY_RPG_UI_RESTORE_PASS: png={count}")
+    expected_signature = b"\\x89PNG\\r\\n\\x1a\\n"
+    invalid_pngs = [
+        str(path.relative_to(DEST))
+        for path in png_files
+        if path.open("rb").read(8) != expected_signature
+    ]
+    if invalid_pngs:
+        raise RuntimeError(
+            "HF Kenney restore contains invalid PNG files: "
+            + json.dumps(invalid_pngs[:20])
+        )
+    for category, expected_category_count in category_counts.items():
+        category_root = DEST / category
+        actual_category_count = (
+            sum(1 for path in category_root.rglob("*.png") if path.is_file())
+            if category_root.is_dir() else 0
+        )
+        if actual_category_count != int(expected_category_count):
+            raise RuntimeError(
+                f"HF Kenney category mismatch for {category}: "
+                f"expected {expected_category_count}, found {actual_category_count}"
+            )
+    print(f"HF_KENNEY_RPG_UI_RESTORE_PASS: png={count} signature=valid categories=verified")
     return True
 
 def main() -> None:
