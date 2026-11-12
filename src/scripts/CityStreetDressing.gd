@@ -181,6 +181,7 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 	deck.position.y = 0.12
 	bridge.add_child(deck)
 	deck.material_override = material
+	var imported_bridge_found := false
 	var bridge_model_path := "res://assets/environment/kenney/nature-kit/Models/GLTF format/bridge_wood.glb" if city == "Waterlands" else "res://assets/environment/kenney/nature-kit/Models/GLTF format/bridge_stone.glb"
 	if ResourceLoader.exists(bridge_model_path):
 		var bridge_pack := load(bridge_model_path) as PackedScene
@@ -200,6 +201,7 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 					imported_bridge.position.y = 0.12
 						bridge.add_child(imported_bridge)
 						deck.visible = false
+						imported_bridge_found = true
 	var body := StaticBody3D.new()
 	body.name = "BridgeCollisionBody"
 	var collider := CollisionShape3D.new()
@@ -210,8 +212,9 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 	collider.position.y = -0.04
 	body.add_child(collider)
 	bridge.add_child(body)
-	_add_railing(bridge, "BridgeRail_N", Vector3(0, 0, -dimensions.y * 0.5), dimensions.x, city)
-	_add_railing(bridge, "BridgeRail_S", Vector3(0, 0, dimensions.y * 0.5), dimensions.x, city)
+	if not imported_bridge_found:
+		_add_railing(bridge, "BridgeRail_N", Vector3(0, 0, -dimensions.y * 0.5), dimensions.x, city)
+		_add_railing(bridge, "BridgeRail_S", Vector3(0, 0, dimensions.y * 0.5), dimensions.x, city)
 
 static func _lava_channels(parent: Node3D, half: float) -> void:
 	var lava := _mat(Color("#ed4b18"), 0.3)
