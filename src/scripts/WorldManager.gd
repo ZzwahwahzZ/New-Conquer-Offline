@@ -51,9 +51,9 @@ func _ready() -> void:
 
 func setup(target_player: Node3D) -> void:
 	player = target_player
-	var saved_id := str(GameState.profile.get("settlement_id","TwinCity"))
+	var saved_id := str(get_node("/root/GameState").get("profile").get("settlement_id","TwinCity"))
 	if not SETTLEMENTS.has(saved_id) or saved_id == "GuildWarArena": saved_id = "TwinCity"
-	var saved_position = GameState.profile.get("world_position", [])
+	var saved_position = get_node("/root/GameState").get("profile").get("world_position", [])
 	if saved_position is Array and saved_position.size() >= 3:
 		player.position = Vector3(float(saved_position[0]),0.775,float(saved_position[2]))
 		if saved_id == "TwinCity" and Vector2(player.position.x,player.position.z).length() < 35.0:
@@ -109,9 +109,9 @@ func change_settlement(settlement_id: String, restore_position: bool = false) ->
 	else:
 		guild_war_manager = null
 	_create_portals()
-	GameState.profile["settlement_id"] = settlement_id
-	GameState.profile["world_position"] = [player.position.x,player.position.y,player.position.z]
-	GameState.save_local()
+	get_node("/root/GameState").get("profile")["settlement_id"] = settlement_id
+	get_node("/root/GameState").get("profile")["world_position"] = [player.position.x,player.position.y,player.position.z]
+	get_node("/root/GameState").call("save_local")
 	_transitioning = false
 
 func _spawn_settlement_content() -> void:
@@ -188,23 +188,23 @@ func _on_monster_defeated(gold: int, xp: int, monster: Node3D) -> void:
 	if not is_instance_valid(monster): return
 	var position := monster.global_position
 	acquire_gold(position,gold)
-	ClassSystem.add_experience(xp)
+	get_node("/root/ClassSystem").call("add_experience", xp)
 	if is_instance_valid(player) and player.has_method("on_monster_killed"): player.call("on_monster_killed")
-	GameState.profile["level"] = ClassSystem.level
-	GameState.profile["experience"] = ClassSystem.experience
+	get_node("/root/GameState").get("profile")["level"] = get_node("/root/ClassSystem").get("level")
+	get_node("/root/GameState").get("profile")["experience"] = get_node("/root/ClassSystem").get("experience")
 	var sanctuary_loot := bool(monster.get("is_sanctuary_monster"))
 	if sanctuary_loot:
 		var gear_drop_by_class := {"Archer":"archer_bow","Oriental_Assassin":"assassin_throwing_knife","Trojan":"trojan_blade_15","Warrior":"warrior_sword_15","Water_Taoist":"taoist_backsword_15","Fire_Taoist":"taoist_backsword_15","Ninja":"ninja_katana_15"}
-		var gear_drop_id := str(gear_drop_by_class.get(ClassSystem.current_class,""))
+		var gear_drop_id := str(gear_drop_by_class.get(get_node("/root/ClassSystem").get("current_class"),""))
 		if not gear_drop_id.is_empty():
-			GearSystem.add_item(gear_drop_id,2)
-	GameState.add_item("monster_material",2 if sanctuary_loot else 1)
-	GameState.update_quest("first_hunt","completed")
+			get_node("/root/GearSystem").call("add_item", gear_drop_id,2)
+	get_node("/root/GameState").call("add_item", "monster_material",2 if sanctuary_loot else 1)
+	get_node("/root/GameState").call("update_quest", "first_hunt","completed")
 	if is_instance_valid(quest_system): quest_system.call("monster_killed",str(monster.get("monster_id")))
 	if is_instance_valid(player):
-		GameState.profile["world_position"] = [player.position.x,player.position.y,player.position.z]
-	GameState.profile["settlement_id"] = current_settlement
-	GameState.save_local()
+		get_node("/root/GameState").get("profile")["world_position"] = [player.position.x,player.position.y,player.position.z]
+	get_node("/root/GameState").get("profile")["settlement_id"] = current_settlement
+	get_node("/root/GameState").call("save_local")
 
 func _create_portals() -> void:
 	var destination := str(SETTLEMENTS[current_settlement].next)
@@ -337,8 +337,8 @@ func _update_world_distance_culling(focus_position: Vector3) -> void:
 
 func save_world_state() -> void:
 	if is_instance_valid(player):
-		GameState.profile["world_position"] = [player.position.x,player.position.y,player.position.z]
-		GameState.profile["settlement_id"] = current_settlement
+		get_node("/root/GameState").get("profile")["world_position"] = [player.position.x,player.position.y,player.position.z]
+		get_node("/root/GameState").get("profile")["settlement_id"] = current_settlement
 
 func _ensure_world_lighting(world_root: Node3D) -> void:
 	var environment_node := world_root.get_node_or_null("SettlementEnvironment") as WorldEnvironment
