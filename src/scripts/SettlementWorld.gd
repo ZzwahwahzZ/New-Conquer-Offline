@@ -105,8 +105,6 @@ func _build_landmarks() -> void:
 	spawn.name = "PlayerSpawn"
 	spawn.position = Vector3.ZERO
 	slot.add_child(spawn)
-	if settlement_id == "TwinCity":
-		_build_twincity_reference_landmarks(slot)
 
 func _build_twincity_reference_landmarks(parent: Node3D) -> void:
 	var root := Node3D.new()
