@@ -377,6 +377,8 @@ def restore_from_hf(api: HfApi, token: str) -> bool:
     existing = api.list_repo_files(repo_id=REPO_ID, repo_type=REPO_TYPE)
     if not any(path.startswith("ui_and_icons/") for path in existing):
         return False
+    if CACHE.exists():
+        shutil.rmtree(CACHE)
     snapshot = Path(snapshot_download(
         repo_id=REPO_ID, repo_type=REPO_TYPE, token=token,
         allow_patterns=["ui_and_icons/**"], local_dir=str(CACHE),
@@ -390,6 +392,10 @@ def restore_from_hf(api: HfApi, token: str) -> bool:
     except Exception:
         return False
     if manifest.get("source_version") != SOURCE_VERSION:
+        return False
+    category_counts = manifest.get("category_counts", {})
+    required_categories = manifest.get("category_quality_gate", {})
+    if any(int(category_counts.get(name, 0)) < int(minimum) for name, minimum in required_categories.items()):
         return False
     if DEST.exists():
         shutil.rmtree(DEST)
