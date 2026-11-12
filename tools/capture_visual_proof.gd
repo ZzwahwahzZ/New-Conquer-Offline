@@ -2,8 +2,8 @@ extends SceneTree
 ## Captures real rendered frames from the main New Conquer Offline scene under Xvfb.
 const MAIN_SCENE := "res://scenes/main.tscn"
 const OUTPUT_DIR := "res://reports/visual-proof"
-const CAPTURE_CAMERA_DISTANCE := 112.0
-const CAPTURE_CAMERA_PITCH := 52.0
+const CAPTURE_CAMERA_DISTANCE := 78.0
+const CAPTURE_CAMERA_PITCH := 48.0
 const CITY_PROOF := [
 	{"id":"DesertLand","file":"city_2_desertland.png"},
 	{"id":"VolcanoLand","file":"city_3_volcanoland.png"},
@@ -178,10 +178,12 @@ func _capture() -> void:
 		var city_environment := world_manager.get("current_world").find_child("SettlementEnvironment", true, false) as WorldEnvironment
 		if city_environment != null and city_environment.environment != null:
 			city_environment.environment.glow_enabled = false
-			city_environment.environment.ambient_light_energy = 0.62
+			city_environment.environment.fog_enabled = false
+			city_environment.environment.ambient_light_energy = 0.45
+			city_environment.environment.tonemap_exposure = 0.72
 		var city_sun := world_manager.get("current_world").find_child("SettlementSun", true, false) as DirectionalLight3D
 		if city_sun != null:
-			city_sun.light_energy = 0.88
+			city_sun.light_energy = 0.72
 		var city_deadline := Time.get_ticks_msec() + 20000
 		while (world_manager.get("current_settlement") != city_id or world_manager.get("current_world") == null) and Time.get_ticks_msec() < city_deadline:
 			await process_frame
