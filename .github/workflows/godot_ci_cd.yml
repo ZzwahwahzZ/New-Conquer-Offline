@@ -60,7 +60,6 @@ jobs:
           python3 tools/restore_hf_terrain_assets.py
           python3 tools/sync_rpg_ui_assets.py
           python3 tools/restore_curated_glb_assets.py
-          python3 -m pip install --disable-pip-version-check gdown
           npm install --global @gltf-transform/cli@4.5.1
           while IFS= read -r -d '' asset; do
             temp="${asset%.glb}.dequantized.glb"
