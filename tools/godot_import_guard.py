@@ -10,7 +10,7 @@ import subprocess
 import sys
 import time
 
-ASSET_RE = re.compile(r"""res://([^\\s"'<>]+\\.(?:glb|gltf|png|jpe?g))""", re.IGNORECASE)
+ASSET_RE = re.compile(r"""res://([^\s"'<>]+\.(?:glb|gltf|png|jpe?g))""", re.IGNORECASE)
 
 def main() -> int:
     parser = argparse.ArgumentParser()
@@ -63,7 +63,12 @@ def main() -> int:
             if code == 0:
                 print("GODOT_IMPORT_GUARD_PASS", flush=True)
             return code
-        if time.monotonic() < deadline and stream_closed:
+        if stream_closed and process.poll() is None:
+            try:
+                process.wait(timeout=max(0.1, deadline - time.monotonic()))
+            except subprocess.TimeoutExpired:
+                pass
+        if process.poll() is not None:
             code = process.wait()
             if code == 0:
                 print("GODOT_IMPORT_GUARD_PASS", flush=True)
