@@ -105,7 +105,7 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
   for side in [-1.0,1.0]:
    _box(gate,"GatehouseTower",Vector3(side*17.0,9.0,-148.0),Vector3(11.0,18.0,13.0),tower_material,1.0)
    _box(gate,"GateTowerCrenellation",Vector3(side*17.0,18.5,-148.0),Vector3(13.0,1.0,15.0),gate_material,1.0)
-   _box(gate,"GateGuardianStand",Vector3(side*9.0,1.2,-132.0),Vector3(2.4,2.4,2.4),wall_material,1.0)
+   _box(gate,"GateGuardianStand",Vector3(side*9.0,0.15,-132.0),Vector3(1.6,0.3,1.6),wall_material,1.0)
    _build_gate_guard(gate,side,p)
   _box(gate,"GateArchLintel",Vector3(0,17.2,-148.0),Vector3(24.0,3.0,9.0),gate_material,1.0)
   for x in [-8.0,8.0]:
