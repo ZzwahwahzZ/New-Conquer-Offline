@@ -20,8 +20,8 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  var visual := MeshInstance3D.new()
  visual.name = "TerrainSurface"
  visual.mesh = mesh
- visual.material_override = PBRMaterialLibrary.build_ground_material(city, true, "Ground053_2K-JPG" if city == "TwinCity" else "")
  body.add_child(visual)
+ visual.material_override = PBRMaterialLibrary.build_ground_material(city, true, "Ground053_2K-JPG" if city == "TwinCity" else "")
  if city == "TwinCity":
   # Preserve the terrain node for scene contracts, but only the flat plaza owns a collider.
   _build_flat_twin_city_plaza(parent)
@@ -167,8 +167,8 @@ static func _build_flat_twin_city_plaza(parent: Node3D) -> void:
  plane.size = Vector2(80.0,80.0)
  floor.mesh = plane
  floor.position.y = 0.018
- floor.material_override = _stone_material()
  plaza.add_child(floor)
+ floor.material_override = _stone_material()
  var collision := CollisionShape3D.new()
  collision.name = "TwinCityFlatPlazaCollision"
  var box := BoxShape3D.new()
