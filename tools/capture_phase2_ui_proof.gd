@@ -42,6 +42,16 @@ func _run() -> void:
 	class_system.set("hp", int(class_system.get("max_hp")))
 	class_system.set("mp", int(class_system.get("max_mp")))
 	class_system.emit_signal("stats_changed")
+	# The orb intentionally animates resource changes; allow its displayed value to settle
+	# before asserting the live number rather than sampling the first interpolation frame.
+	var hp_label: Label = null
+	var orb_for_hp := root.get_node_or_null("HUD/ClassicHUD/ClassicConquerBottomBar/MainRow/SplitCrystalOrb")
+	if orb_for_hp != null:
+		hp_label = orb_for_hp.get_node_or_null("HPValue") as Label
+	for frame in range(120):
+		await process_frame
+		if is_instance_valid(hp_label) and hp_label.text.find(str(class_system.get("hp"))) >= 0:
+			break
 	# Resolve autoloads at runtime; never reference their names as parser-time identifiers.
 	var gear_database: Node = root.get_node_or_null("GearDatabase")
 	var gear_system: Node = root.get_node_or_null("GearSystem")
