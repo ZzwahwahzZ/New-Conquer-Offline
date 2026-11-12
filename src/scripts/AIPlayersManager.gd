@@ -238,8 +238,8 @@ func _spawn_virtual_gold() -> void:
 	material.albedo_color = Color(1.0,0.76,0.22)
 	material.metallic = 0.78
 	material.roughness = 0.25
-	coin.material_override = material
 	add_child(coin)
+	coin.material_override = material
 	coin.global_position = target.global_position + Vector3(0.0,0.45,0.0)
 	var bot := _active_bots[_rng.randi_range(0,_active_bots.size()-1)]
 	_virtual_drops.append({"node":coin,"bot":bot,"amount":_rng.randi_range(80,650)})
