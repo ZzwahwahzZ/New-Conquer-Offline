@@ -160,10 +160,9 @@ func _physics_process(delta: float) -> void:
 		ClassSystem.restore_stamina(stamina_regen_per_second * delta * 1.35)
 	elif not _flying:
 		ClassSystem.restore_stamina(stamina_regen_per_second * delta)
-	var world := get_tree().get_first_node_in_group("world_manager")
-	var limit := 300.0
-	if is_instance_valid(world):
-		limit = 300.0 if str(world.get("current_settlement")) == "TwinCity" else 225.0
+	# Every settlement is an 800x800 world; keep the player inside the hard boundary
+	# while allowing exploration across the full 760x760 playable area.
+	var limit := 380.0
 	if global_position.y < WORLD_FALL_LIMIT or absf(global_position.x) > limit or absf(global_position.z) > limit:
 		global_position = _safe_spawn + Vector3.UP * 1.5
 		velocity = Vector3.ZERO
