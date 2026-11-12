@@ -47,7 +47,22 @@ func _run() -> void:
 				brick_normal_found = brick_material != null and brick_material.normal_enabled and brick_material.normal_texture != null
 			if arch_node.name in ["PagodaRoofTier_0", "SandstoneDome", "BasaltBattlement", "SnowRoofTier"]:
 				roof_detail_found = true
-		if not _check(buildings >= 4 and brick_normal_found and roof_detail_found, city_name + " detailed facades/brick normal/roof kit incomplete"):
+		if not _check(buildings == 24 and brick_normal_found and roof_detail_found, city_name + " must contain 24 detailed facades with brick normal and city-specific roof kit"):
+			return
+		var gate_count := 0
+		var wall_count := 0
+		var open_plaza_found := city.find_child("OpenCentralPlaza_80x80", true, false) != null
+		var outer_world_found := city.find_child(city_name + "_OpenWorld_450x450", true, false) != null
+		var pending_fortifications: Array[Node] = [architecture_slot]
+		while not pending_fortifications.is_empty():
+			var fort_node: Node = pending_fortifications.pop_back()
+			for child in fort_node.get_children():
+				pending_fortifications.append(child)
+			if str(fort_node.name).ends_with("_GrandCityGate"):
+				gate_count += 1
+			if fort_node.name == "HighStonePerimeterWall":
+				wall_count += 1
+		if not _check(gate_count == 4 and wall_count >= 8 and open_plaza_found and outer_world_found, city_name + " open plaza/perimeter wall/four gates/450m outer world incomplete"):
 			return
 		var planters := 0
 		var railings := 0
@@ -71,10 +86,10 @@ func _run() -> void:
 		if not _check(railings >= 4, city_name + " ornamental railings incomplete"):
 			return
 		var env_node := city.get_node_or_null("SettlementEnvironment") as WorldEnvironment
-		if not _check(env_node != null and env_node.environment.tonemap_mode == Environment.TONE_MAPPER_ACES and env_node.environment.ssao_enabled, city_name + " ACES/SSAO environment missing"):
+		if not _check(env_node != null and env_node.environment.tonemap_mode == Environment.TONE_MAPPER_ACES and env_node.environment.ssao_enabled and not env_node.environment.glow_enabled and not env_node.environment.fog_enabled, city_name + " ACES/SSAO environment missing"):
 			return
 		var sun := city.get_node_or_null("SettlementSun") as DirectionalLight3D
-		if not _check(sun != null and sun.shadow_enabled, city_name + " directional shadows disabled"):
+		if not _check(sun != null and sun.shadow_enabled and is_equal_approx(sun.light_energy, 0.85), city_name + " directional shadows disabled"):
 			return
 		if city_name == "Waterlands" and not _check(city.find_child("ApeCityCanal_East", true, false) != null, "Waterlands canal missing"):
 			return
