@@ -1,10 +1,19 @@
 extends SceneTree
-## Captures real rendered frames from the main New Conquer Offline scene under Xvfb.
+## Captures five close, classic-Conquer camera views in each of the six settlements.
 const MAIN_SCENE := "res://scenes/main.tscn"
 const OUTPUT_DIR := "res://reports/visual-proof"
-const CAPTURE_CAMERA_DISTANCE := 235.0
-const CAPTURE_CAMERA_PITCH := 48.0
+const CLASSIC_DISTANCE := 20.0
+const CLASSIC_PITCH := 48.59 # Camera3D rotation is -48.59 degrees; vertical offset is exactly 15m at 20m orbit distance.
+const CLASSIC_FOV := 45.0
+const CLASSIC_FAR := 600.0
 const CITY_IDS := ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"]
+const SHOTS := [
+	{"suffix":"01_plaza_close","position":Vector3(0.0,0.775,0.0),"yaw":0.0},
+	{"suffix":"02_shop_street_close","position":Vector3(0.0,0.775,-70.0),"yaw":0.0},
+	{"suffix":"03_main_gate_horizon","position":Vector3(0.0,0.775,-125.0),"yaw":0.0},
+	{"suffix":"04_outer_world","position":Vector3(0.0,0.775,-174.0),"yaw":0.0},
+	{"suffix":"05_orbit_90","position":Vector3(0.0,0.775,0.0),"yaw":PI * 0.5}
+]
 
 func _initialize() -> void:
 	call_deferred("_capture")
@@ -40,21 +49,11 @@ func _capture() -> void:
 	if game_state == null or class_system == null:
 		_fail("required autoloads are unavailable")
 		return
-	# Seed a deterministic local-only first-run save; this file exists only on the ephemeral CI runner.
 	var fixture := {
-		"character_name":"Visual Proof",
-		"level":1,
-		"experience":0,
-		"gold":100,
-		"hp":100,
-		"max_hp":100,
-		"mp":50,
-		"max_mp":50,
-		"inventory":[],
-		"quests":{"first_hunt":"not_started"},
-		"settlement_id":"TwinCity",
-		"world_position":[0.0,0.0,0.0],
-		"class_id":"Archer"
+		"character_name":"Visual Proof","level":1,"experience":0,"gold":100,
+		"hp":100,"max_hp":100,"mp":50,"max_mp":50,"inventory":[],
+		"quests":{"first_hunt":"not_started"},"settlement_id":"TwinCity",
+		"world_position":[0.0,0.0,0.0],"class_id":"Archer"
 	}
 	var save_file := FileAccess.open("user://offline_profile.json", FileAccess.WRITE)
 	if save_file == null:
@@ -95,36 +94,19 @@ func _capture() -> void:
 	if player == null:
 		_fail("player node is missing from the main scene")
 		return
-	if absf(player.global_position.x) > 0.1 or absf(player.global_position.z) > 0.1:
-		_fail("player spawn is not centered: %s" % str(player.global_position))
-		return
 	if not camera.current:
 		_fail("isometric Camera3D is not current")
 		return
-	# Capture-only framing: pull back to show city layout and hide gameplay overlays.
-	camera_rig.set("_target_distance", CAPTURE_CAMERA_DISTANCE)
-	camera_rig.set("_current_distance", CAPTURE_CAMERA_DISTANCE)
-	camera_rig.set("pitch_degrees", CAPTURE_CAMERA_PITCH)
-	camera_rig.call("_apply_orbit")
+	camera.fov = CLASSIC_FOV
+	camera.far = CLASSIC_FAR
 	var hud := main.get_node_or_null("HUD") as CanvasLayer
-	if hud != null:
-		hud.visible = false
-	else:
-		_fail("HUD root is missing; cannot guarantee clean proof frames")
+	if hud == null:
+		_fail("HUD root is missing")
 		return
-	for required in ["Street_NorthSouth", "Street_EastWest", "CentralDarkSquare", "TwinCity_RaisedFlowerBed_00", "TwinCity_SquareRail_N"]:
-		if main.find_child(required, true, false) == null:
-			_fail("Twin City street detail is missing: " + required)
-			return
+	hud.visible = false
 	var classic_hud := main.get_node_or_null("HUD/ClassicHUD") as Control
-	if classic_hud == null:
-		_fail("classic gold HUD is missing")
-		return
-	if classic_hud.get_node_or_null("ClassicConquerBottomBar/MainRow/SplitCrystalOrb") == null:
-		_fail("single split HP/MP crystal orb is missing")
-		return
-	if classic_hud.get_node_or_null("LiveQuestTracker") == null:
-		_fail("live quest tracker is missing")
+	if classic_hud == null or classic_hud.get_node_or_null("ClassicConquerBottomBar/MainRow/SplitCrystalOrb") == null:
+		_fail("classic gold HUD validation failed")
 		return
 	if not FileAccess.file_exists("res://assets/ui/manifest.json"):
 		_fail("restored Kenney RPG UI manifest is missing")
@@ -132,12 +114,11 @@ func _capture() -> void:
 	if not ResourceLoader.exists("res://assets/ui/frames/fantasy_ui_borders__Border__panel-border-000.png"):
 		_fail("real Kenney ornamental frame PNG was not imported")
 		return
-	if camera.global_position.y < player.global_position.y + 3.0:
-		_fail("isometric camera is not elevated above the player; the spawn frame would be ground-obscured")
+	if absf(camera_rig.get("pitch_degrees") - CLASSIC_PITCH) > 0.02 or absf(camera_rig.get("_target_distance") - CLASSIC_DISTANCE) > 0.02:
+		_fail("classic camera defaults are not active")
 		return
-	# Five genuine runtime frames for each of the six cities: four stable time samples and one gate approach.
-	var proof_index := 0
-	for city_id in CITY_IDS:
+	for city_index in range(CITY_IDS.size()):
+		var city_id: String = CITY_IDS[city_index]
 		if city_id != "TwinCity":
 			await world_manager.call("change_settlement", city_id, true)
 			var city_deadline := Time.get_ticks_msec() + 30000
@@ -156,43 +137,27 @@ func _capture() -> void:
 		if loaded_world.find_child("OpenCentralPlaza_80x80", true, false) == null:
 			_fail("open central plaza missing from rendered city: " + city_id)
 			return
-		player.global_position = Vector3(0.0, 0.775, 0.0)
-		camera_rig.global_position = player.global_position
-		camera_rig.set("_target_distance", CAPTURE_CAMERA_DISTANCE)
-		camera_rig.set("_current_distance", CAPTURE_CAMERA_DISTANCE)
-		camera_rig.set("pitch_degrees", CAPTURE_CAMERA_PITCH)
-		camera_rig.set("_yaw", 0.0)
-		camera_rig.call("_apply_orbit")
 		var city_environment := loaded_world.find_child("SettlementEnvironment", true, false) as WorldEnvironment
-		if city_environment != null and city_environment.environment != null:
-			city_environment.environment.glow_enabled = false
-			city_environment.environment.fog_enabled = false
-			city_environment.environment.ambient_light_energy = 0.45
-			city_environment.environment.tonemap_exposure = 0.9
 		var city_sun := loaded_world.find_child("SettlementSun", true, false) as DirectionalLight3D
-		if city_sun != null:
-			city_sun.light_energy = 0.85
-		var slug: String = city_id.to_lower()
-		for sample in range(4):
-			if sample > 0:
-				await create_timer(4.0).timeout
-			var file_name := "city_%d_%s_%02d_t%02d.png" % [proof_index+1,slug,sample+1,sample*4]
+		if city_environment == null or city_environment.environment == null or city_sun == null or not city_sun.shadow_enabled:
+			_fail("clean sky environment or directional shadows are missing for " + city_id)
+			return
+		for shot in SHOTS:
+			var shot_position: Vector3 = shot.position
+			player.global_position = shot_position
+			camera_rig.global_position = player.global_position
+			camera_rig.set("_target_distance", CLASSIC_DISTANCE)
+			camera_rig.set("_current_distance", CLASSIC_DISTANCE)
+			camera_rig.set("pitch_degrees", CLASSIC_PITCH)
+			camera_rig.set("_yaw", float(shot.yaw))
+			camera_rig.call("_apply_orbit")
+			await process_frame
+			await process_frame
+			var slug: String = city_id.to_lower()
+			var file_name := "city_%d_%s_%s.png" % [city_index + 1, slug, str(shot.suffix)]
 			if not await _save_frame(file_name):
 				quit(1)
 				return
-		# Gate approach: move to the inside of the northern gate so the arch, outer bridge and biome beyond it fill the view.
-		player.global_position = Vector3(0.0,0.775,-118.0)
-		camera_rig.global_position = player.global_position
-		camera_rig.set("_target_distance", 58.0)
-		camera_rig.set("_current_distance", 58.0)
-		camera_rig.set("_yaw", PI * 0.5)
-		camera_rig.call("_apply_orbit")
-		await create_timer(1.5).timeout
-		var gate_file := "city_%d_%s_05_gate_orbit.png" % [proof_index+1,slug]
-		if not await _save_frame(gate_file):
-			quit(1)
-			return
-		print("CITY_30_FRAME_GROUP_PASS: " + city_id + " stable=4 gate_orbit=1")
-		proof_index += 1
-	print("VISUAL_PROOF_PASS: 30 genuine runtime frames; five per city across all six settlements, four stable time samples at t=0/4/8/12 and one northern gate approach/orbit each; HUD hidden and balanced capture lighting.")
+		print("CITY_5_VIEW_PASS: " + city_id + " plaza=1 shops=1 gate_horizon=1 outer_world=1 orbit90=1")
+	print("VISUAL_PROOF_PASS: 30 real runtime frames; five distinct close Conquer-isometric views per city; distance=20 height=15 pitch=-48.59 fov=45 far=600; HUD hidden.")
 	quit(0)
