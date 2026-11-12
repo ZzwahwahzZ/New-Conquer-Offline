@@ -28,7 +28,6 @@ PACKS = {
 
 def main() -> None:
     import urllib.request
-    import re
     CACHE.mkdir(parents=True, exist_ok=True)
     DEST.mkdir(parents=True, exist_ok=True)
     manifest = {"source": "Quaternius official pack pages", "redistribution": "not mirrored to Hugging Face", "packs": []}
@@ -42,7 +41,7 @@ def main() -> None:
             if folder.exists():
                 shutil.rmtree(folder)
             folder.mkdir(parents=True)
-            subprocess.run(["gdown", "--folder", f"https://drive.google.com/drive/folders/{item['folder']}", "-O", str(folder), "--remaining-ok"], check=True)
+            subprocess.run(["gdown", "--folder", f"https://drive.google.com/drive/folders/{item['folder']}", "-O", str(folder)], check=True)
             supported = [p for p in folder.rglob("*") if p.is_file() and p.suffix.lower() in {".gltf",".glb",".fbx",".obj",".blend",".bin",".png",".jpg",".jpeg",".webp"}]
             if not supported:
                 raise SystemExit(f"No supported model/texture files downloaded for {name}")
@@ -56,7 +55,7 @@ def main() -> None:
             if p.is_file() and p.suffix.lower() in {".gltf",".glb",".bin",".png",".jpg",".jpeg",".webp"}:
                 files.append({"path":str(p.relative_to(ROOT)).replace("\\","/"),"bytes":p.stat().st_size,"sha256":hashlib.sha256(p.read_bytes()).hexdigest()})
         if not files:
-            raise SystemExit(f"Copied pack has no importable content: {name}")
+            raise SystemExit(f"No importable glTF/texture content copied for {name}")
         manifest["packs"].append({"name":name,"official_page":item["page"],"license":"CC0 (verified from official page at download time)","files":files})
         print(f"QUATERNIUS_PACK_READY: {name} files={len(files)}")
     (DEST/"manifest.json").write_text(json.dumps(manifest,indent=2),encoding="utf-8")
