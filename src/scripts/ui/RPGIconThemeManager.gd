@@ -6,6 +6,17 @@ const PANEL := Color(0.035, 0.045, 0.06, 0.94)
 const UI_ROOT := "res://assets/ui/"
 
 static func apply_to_tree(root: Node) -> void:
+	var arabic_font := load("res://assets/ui/fonts/NotoSansArabic[wght].ttf") as Font
+	if arabic_font == null:
+		arabic_font = load("res://assets/ui/fonts/NotoSansArabic-Regular.ttf") as Font
+	if root is Control:
+		(root as Control).layout_direction = Control.LAYOUT_DIRECTION_RTL
+	if arabic_font != null:
+		var ui_theme := Theme.new()
+		ui_theme.default_font = arabic_font
+		root.theme = ui_theme
+	for node in root.find_children("*", "Control", true, false):
+		(node as Control).layout_direction = Control.LAYOUT_DIRECTION_RTL
 	for node in root.find_children("*", "Button", true, false):
 		style_button(node as Button, str((node as Button).get_meta("rpg_icon", "")))
 
@@ -88,6 +99,22 @@ static func orb_well_style() -> StyleBoxFlat:
 
 static func item_texture(item_id: String) -> Texture2D:
 	var key := item_id.to_lower()
+	var semantic_hints := {
+		"bag": ["bag", "chest", "inventory"],
+		"equip": ["armor", "helmet", "shield"],
+		"skills": ["rune", "magic", "spell"],
+		"mall": ["crystal", "gem", "shop"],
+		"map": ["map", "compass", "world"],
+		"settings": ["settings", "gear", "cog"],
+		"xp": ["star", "spark", "magic"]
+	}
+	if semantic_hints.has(key):
+		for hint in semantic_hints[key]:
+			var semantic_texture := find_texture("icons/misc", hint)
+			if semantic_texture == null:
+				semantic_texture = find_texture("icons/skills", hint)
+			if semantic_texture != null:
+				return semantic_texture
 	var category := "misc"
 	var hint := key
 	if "gem" in key or "crystal" in key or "jewel" in key or key in ["meteor", "dragonball", "rainbow"]:
@@ -116,6 +143,11 @@ static func item_texture(item_id: String) -> Texture2D:
 static func style_button(button: Button, icon_key: String = "") -> void:
 	if not is_instance_valid(button):
 		return
+	button.layout_direction = Control.LAYOUT_DIRECTION_RTL
+	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	button.vertical_icon_alignment = VERTICAL_ALIGNMENT_CENTER
+	button.expand_icon = true
+	button.add_theme_constant_override("icon_max_width", 26)
 	button.add_theme_color_override("font_color", GOLD_HI)
 	button.add_theme_color_override("font_hover_color", Color.WHITE)
 	button.add_theme_color_override("font_pressed_color", GOLD_HI)
