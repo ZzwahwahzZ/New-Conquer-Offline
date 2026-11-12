@@ -133,8 +133,23 @@ func _make_orb(node_name: String, tint: Color, caption: String) -> Control:
 	orb.size = orb.custom_minimum_size
 	var ring := Panel.new()
 	ring.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	ring.add_theme_stylebox_override("panel", _flat(Color(0.025,0.03,0.045,1), Color("#d4a95b"), 2, 22))
+	var ring_style := _flat(Color(0.025,0.03,0.045,1), Color("#e1bd70"), 2, 22)
+	ring_style.shadow_color = Color(0.0, 0.0, 0.0, 0.68)
+	ring_style.shadow_size = 6
+	ring_style.shadow_offset = Vector2(0, 2)
+	ring.add_theme_stylebox_override("panel", ring_style)
+	ring.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	orb.add_child(ring)
+	var well := Panel.new()
+	well.name = caption + "OrbWell"
+	well.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	well.offset_left = 4
+	well.offset_top = 4
+	well.offset_right = -4
+	well.offset_bottom = -4
+	well.add_theme_stylebox_override("panel", ThemeManager.orb_well_style())
+	well.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	orb.add_child(well)
 	var fill := TextureProgressBar.new()
 	fill.name = caption + "Fill"
 	fill.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -148,8 +163,12 @@ func _make_orb(node_name: String, tint: Color, caption: String) -> Control:
 	fill.fill_mode = TextureProgressBar.FILL_CLOCKWISE
 	fill.radial_initial_angle = 270
 	fill.radial_fill_degrees = 360
-	fill.texture_under = _solid(Color(0.07,0.075,0.09,1))
+	fill.texture_under = null
 	fill.texture_progress = _solid(tint)
+	var orb_shader := get_meta("orb_shader", null) as Shader
+	var orb_material := ThemeManager.make_orb_material(orb_shader, tint)
+	if orb_material != null:
+		fill.material = orb_material
 	fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	orb.add_child(fill)
 	var label := Label.new()
