@@ -39,16 +39,17 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
   _build_water_surface(slot, size)
  _build_environment_dressing(slot, city, size)
  _build_kenney_nature_scatter(slot, city, size)
-static func height_at(city: String, x: float, z: float) -> float:
+static func load_height_image(city: String) -> Image:
  var path: String = HEIGHTS.get(city, "")
  if path.is_empty():
-  return 0.0
+  return null
  var texture := ResourceLoader.load(path) as Texture2D
- if texture == null:
-  return 0.0
- return _sample_height(texture.get_image(), city, x, z, float(CITY_SIZE.get(city, 800.0)))
+ return texture.get_image() if texture != null else null
 
-static func _sample_height(image: Image, city: String, x: float, z: float, size: float) -> float:
+static func height_at(city: String, x: float, z: float) -> float:
+ return sample_height_image(load_height_image(city), city, x, z, float(CITY_SIZE.get(city, 800.0)))
+
+static func sample_height_image(image: Image, city: String, x: float, z: float, size: float) -> float:
  if image == null:
   return 0.0
  var u := clampf(x / size + 0.5, 0.0, 1.0)
@@ -246,7 +247,7 @@ static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: flo
    var scale_factor := base_scale * (0.82 + float((index * 13 + added * 7) % 35) / 100.0)
    var basis := Basis(Vector3.UP, angle).scaled(Vector3.ONE * scale_factor)
    var position := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-   position.y = _sample_height(height_image, city, position.x, position.z, size)
+   position.y = sample_height_image(height_image, city, position.x, position.z, size)
    multi.set_instance_transform(index, Transform3D(basis, position))
   var node := MultiMeshInstance3D.new()
   node.name = city + "_KenneyNature_" + str(added) + "_MultiMesh"
@@ -418,7 +419,7 @@ static func _build_environment_dressing(parent: Node3D, city: String, size: floa
         var scale_factor := 0.78 + float((index * 17 + species_index * 11) % 55) / 100.0
         var basis := Basis(Vector3.UP, angle).scaled(Vector3.ONE * scale_factor)
         var position := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-        position.y = _sample_height(height_image, city, position.x, position.z, size)
+        position.y = sample_height_image(height_image, city, position.x, position.z, size)
         multimesh.set_instance_transform(index, Transform3D(basis, position))
       var instances := MultiMeshInstance3D.new()
       instances.name = city + "_CC0_" + str(species_index) + "_MultiMesh"
