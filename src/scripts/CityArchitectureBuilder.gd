@@ -326,11 +326,12 @@ static func _place_quaternius_nature(parent: Node3D, city: String) -> void:
  print("QUATERNIUS_BIOME_PROPS_PASS: %s placed=%d" % [city, placed])
 
 static func _build_horizon_ridge(parent: Node3D, city: String, p: Dictionary) -> void:
- var ridge_mesh := ConeMesh.new()
- ridge_mesh.radial_segments = 7
- ridge_mesh.rings = 3
+ var ridge_mesh := CylinderMesh.new()
+ ridge_mesh.top_radius = 0.0
  ridge_mesh.bottom_radius = 46.0
  ridge_mesh.height = 112.0
+ ridge_mesh.radial_segments = 7
+ ridge_mesh.rings = 3
  var ridge_mm := MultiMesh.new()
  ridge_mm.transform_format = MultiMesh.TRANSFORM_3D
  ridge_mm.mesh = ridge_mesh
