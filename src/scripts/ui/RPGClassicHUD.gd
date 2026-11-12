@@ -92,6 +92,8 @@ func _build_bottom_bar() -> void:
 	var row := HBoxContainer.new()
 	row.name = "MainRow"
 	row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	# Preserve classic left-to-right composition: orb at left, menu cluster at right.
+	row.layout_direction = Control.LAYOUT_DIRECTION_LTR
 	row.offset_left = 4
 	row.offset_right = -4
 	row.add_theme_constant_override("separation", 4)
