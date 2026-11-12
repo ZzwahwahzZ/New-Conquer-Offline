@@ -54,8 +54,8 @@ static func _add_plane(parent: Node3D, label: String, dimensions: Vector2, mater
 	mesh.size = dimensions
 	node.mesh = mesh
 	node.position = at
-	node.material_override = material
 	parent.add_child(node)
+	node.material_override = material
 
 static func _add_planter(parent: Node3D, city: String, at: Vector3, seed: int) -> void:
 	var root := Node3D.new()
@@ -68,15 +68,15 @@ static func _add_planter(parent: Node3D, city: String, at: Vector3, seed: int) -
 	basin.size = Vector3(7.2, 0.62, 3.2)
 	stone.mesh = basin
 	stone.position.y = 0.34
-	stone.material_override = _mat(_border_color(city), 0.82)
 	root.add_child(stone)
+	stone.material_override = _mat(_border_color(city), 0.82)
 	var soil := MeshInstance3D.new()
 	var soil_mesh := BoxMesh.new()
 	soil_mesh.size = Vector3(6.55, 0.12, 2.55)
 	soil.mesh = soil_mesh
 	soil.position.y = 0.70
-	soil.material_override = _mat(Color("#403b31"), 1.0)
 	root.add_child(soil)
+	soil.material_override = _mat(Color("#403b31"), 1.0)
 	var flower_mesh := SphereMesh.new()
 	flower_mesh.radius = 0.22
 	flower_mesh.height = 0.42
@@ -95,8 +95,8 @@ static func _add_planter(parent: Node3D, city: String, at: Vector3, seed: int) -
 	var flower_material := _mat(FLOWERS[posmod(seed, FLOWERS.size())], 0.48)
 	flower_material.emission_enabled = city in ["DarkForest", "IceLand"]
 	flower_material.emission = FLOWERS[posmod(seed, FLOWERS.size())] * 0.28
-	flowers.material_override = flower_material
 	root.add_child(flowers)
+	flowers.material_override = flower_material
 	# Dense clipped shrub row as a second batched mesh.
 	var shrub_mesh := SphereMesh.new()
 	shrub_mesh.radius = 0.34
@@ -110,8 +110,8 @@ static func _add_planter(parent: Node3D, city: String, at: Vector3, seed: int) -
 	var shrub_node := MultiMeshInstance3D.new()
 	shrub_node.name = "EvergreenShrubs_MultiMesh"
 	shrub_node.multimesh = shrubs
-	shrub_node.material_override = _mat(_foliage_color(city), 0.9)
 	root.add_child(shrub_node)
+	shrub_node.material_override = _mat(_foliage_color(city), 0.9)
 
 static func _add_railing(parent: Node3D, label: String, at: Vector3, length: float, city: String, rotate := false) -> void:
 	var root := Node3D.new()
@@ -133,8 +133,8 @@ static func _add_railing(parent: Node3D, label: String, at: Vector3, length: flo
 	var post_node := MultiMeshInstance3D.new()
 	post_node.name = "IronBalusters_MultiMesh"
 	post_node.multimesh = posts
-	post_node.material_override = rail_mat
 	root.add_child(post_node)
+	post_node.material_override = rail_mat
 	for y in [0.35, 0.86]:
 		var bar := MeshInstance3D.new()
 		bar.name = "ContinuousHandrail"
@@ -142,8 +142,8 @@ static func _add_railing(parent: Node3D, label: String, at: Vector3, length: flo
 		mesh.size = Vector3(length, 0.16, 0.2)
 		bar.mesh = mesh
 		bar.position = Vector3(0, y, 0)
-		bar.material_override = rail_mat
 		root.add_child(bar)
+		bar.material_override = rail_mat
 
 static func _waterways(parent: Node3D, half: float) -> void:
 	var water := _mat(Color("#267f91"), 0.22)
@@ -178,8 +178,8 @@ static func _ice_crystal_beds(parent: Node3D) -> void:
 		material.emission_enabled = true
 		material.emission = Color("#65dfff")
 		material.emission_energy_multiplier = 0.7
-		crystal.material_override = material
 		parent.add_child(crystal)
+		crystal.material_override = material
 
 static func _ancient_lantern_beds(parent: Node3D) -> void:
 	for i in range(10):
@@ -194,8 +194,8 @@ static func _ancient_lantern_beds(parent: Node3D) -> void:
 		material.emission_enabled = true
 		material.emission = Color("#37f08b")
 		material.emission_energy_multiplier = 1.0
-		lantern.material_override = material
 		parent.add_child(lantern)
+		lantern.material_override = material
 
 static func _mat(color: Color, roughness: float) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
