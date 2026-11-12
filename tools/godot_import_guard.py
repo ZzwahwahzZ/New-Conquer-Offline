@@ -25,7 +25,8 @@ def error_candidates(lines):
     found = []
     for index, line in enumerate(lines):
         if ERROR_RE.search(line):
-            context = lines[max(0, index - 30): min(len(lines), index + 3)]
+            # Prefer a path on the error line, then the closest preceding path.
+            context = list(reversed(lines[max(0, index - 30): index + 1]))
             for candidate_line in context:
                 for path in ASSET_RE.findall(candidate_line):
                     if path not in found:
