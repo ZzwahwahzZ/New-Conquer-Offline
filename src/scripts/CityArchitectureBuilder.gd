@@ -11,15 +11,170 @@ const CITY_PALETTES := {
 }
 static func build(parent: Node3D, city: String, size: float) -> void:
  var palette: Dictionary = CITY_PALETTES.get(city, CITY_PALETTES["TwinCity"])
- var scale_factor := 1.0
- var radius := 54.0
- var positions := [Vector3(-radius,0,-radius), Vector3(radius,0,-radius), Vector3(-radius,0,radius), Vector3(radius,0,radius)]
- for index in range(positions.size()):
-  var building := _make_building(city, palette, index, scale_factor)
-  building.position = positions[index]
-  building.rotation.y = atan2(-positions[index].x, -positions[index].z)
-  parent.add_child(building)
- print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=%d" % [city, positions.size()])
+ _build_open_plaza(parent, palette)
+ _build_city_roads(parent, palette)
+ _build_city_buildings(parent, city, palette)
+ _build_city_walls_and_gates(parent, city, palette)
+ _build_outer_biome(parent, city, palette, size)
+ print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=24 walls=4 gates=4 open_plaza=80x80 outer_world=450x450" % city)
+
+static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
+ var plaza := Node3D.new()
+ plaza.name = "OpenCentralPlaza_80x80"
+ parent.add_child(plaza)
+ var stone := _material(p.stone, 0.92)
+ for z in range(-5,5):
+  for x in range(-5,5):
+   var tile := _box(plaza, "DiamondStonePaver_%02d_%02d" % [x+5,z+5], Vector3(float(x)*8.0+4.0,0.055,float(z)*8.0+4.0), Vector3(7.75,0.11,7.75), stone, 1.0)
+   tile.rotation_degrees.y = 45.0
+ var medallion := MeshInstance3D.new()
+ medallion.name = "CentralEngravedStoneMedallion"
+ var disk := CylinderMesh.new()
+ disk.top_radius = 9.0
+ disk.bottom_radius = 9.0
+ disk.height = 0.32
+ disk.radial_segments = 64
+ medallion.mesh = disk
+ medallion.position.y = 0.20
+ medallion.material_override = _material(p.gold,0.72)
+ plaza.add_child(medallion)
+ for radius in [7.8,6.2,4.6]:
+  var ring := MeshInstance3D.new()
+  ring.name = "MedallionEngravedRing"
+  var torus := TorusMesh.new()
+  torus.inner_radius = radius
+  torus.outer_radius = radius + 0.16
+  torus.rings = 48
+  torus.ring_segments = 8
+  ring.mesh = torus
+  ring.position.y = 0.39
+  ring.material_override = _material(p.accent,0.66)
+  plaza.add_child(ring)
+
+static func _build_city_roads(parent: Node3D, p: Dictionary) -> void:
+ var roads := Node3D.new()
+ roads.name = "StoneRoadNetwork"
+ parent.add_child(roads)
+ var road_material := _material(p.stone.lightened(0.12),0.94)
+ var curb_material := _material(p.gold,0.76)
+ for direction in range(4):
+  var road := _box(roads,"FlagstoneRoad_%d" % direction,Vector3(0,0.10,0),Vector3(14,0.20,145),road_material,1.0)
+  road.rotation_degrees.y = direction*90.0
+  for side in [-1.0,1.0]:
+   var curb := _box(roads,"RaisedStoneCurb",Vector3(side*8.0,0.34,0),Vector3(0.65,0.48,145),curb_material,1.0)
+   curb.rotation_degrees.y = direction*90.0
+
+static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary) -> void:
+ var slot := Node3D.new()
+ slot.name = city + "_24BuildingUrbanFabric"
+ parent.add_child(slot)
+ var coordinates := [-112.0,-76.0,-40.0,40.0,76.0,112.0]
+ var index := 0
+ for value in coordinates:
+  for side in [-1.0,1.0]:
+   for axis in [0,1]:
+    var position := Vector3(value,0.0,side*112.0) if axis == 0 else Vector3(side*112.0,0.0,value)
+    var building := _make_building(city,p,index,1.0)
+    building.name = city + "_UrbanBuilding_%02d" % index
+    building.position = position
+    building.rotation.y = atan2(-position.x,-position.z)
+    slot.add_child(building)
+    index += 1
+
+static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Dictionary) -> void:
+ var fortification := Node3D.new()
+ fortification.name = city + "_PerimeterFortifications"
+ parent.add_child(fortification)
+ var wall_material := _material(p.stone.darkened(0.12),0.9)
+ var tower_material := _material(p.wall,0.86)
+ var gate_material := _material(p.gold,0.72)
+ var half := 148.0
+ var gap := 15.0
+ for side in [-1.0,1.0]:
+  for segment in [-1.0,1.0]:
+   var start := -half if segment < 0.0 else gap
+   var finish := -gap if segment < 0.0 else half
+   var length := finish-start
+   _box(fortification,"HighStonePerimeterWall",Vector3((start+finish)*0.5,5.0,side*half),Vector3(length,10.0,5.0),wall_material,1.0)
+   _box(fortification,"HighStonePerimeterWall",Vector3(side*half,5.0,(start+finish)*0.5),Vector3(5.0,10.0,length),wall_material,1.0)
+ for direction in range(4):
+  var gate := Node3D.new()
+  gate.name = ["North","East","South","West"][direction] + "_GrandCityGate"
+  gate.rotation_degrees.y = direction*90.0
+  fortification.add_child(gate)
+  for side in [-1.0,1.0]:
+   _box(gate,"GatehouseTower",Vector3(side*17.0,9.0,-148.0),Vector3(11.0,18.0,13.0),tower_material,1.0)
+   _box(gate,"GateTowerCrenellation",Vector3(side*17.0,18.5,-148.0),Vector3(13.0,1.0,15.0),gate_material,1.0)
+   _box(gate,"GateGuardianStand",Vector3(side*9.0,1.2,-132.0),Vector3(2.4,2.4,2.4),wall_material,1.0)
+  _box(gate,"GateArchLintel",Vector3(0,17.2,-148.0),Vector3(24.0,3.0,9.0),gate_material,1.0)
+  for x in [-8.0,8.0]:
+   _box(gate,"ArchColumn",Vector3(x,7.0,-148.0),Vector3(2.0,14.0,7.0),gate_material,1.0)
+
+static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size: float) -> void:
+ var outer := Node3D.new()
+ outer.name = city + "_OpenWorld_450x450"
+ parent.add_child(outer)
+ var ground_color := Color("#6c9849")
+ match city:
+  "DesertLand": ground_color = Color("#c99b62")
+  "VolcanoLand": ground_color = Color("#393437")
+  "IceLand": ground_color = Color("#b9d9e8")
+  "Waterlands": ground_color = Color("#3a9e91")
+  "DarkForest": ground_color = Color("#294b32")
+ var ground := MeshInstance3D.new()
+ ground.name = "SeamlessOuterBiomeGround"
+ var plane := PlaneMesh.new()
+ plane.size = Vector2(450.0,450.0)
+ ground.mesh = plane
+ ground.position = Vector3(0,-0.18,0)
+ ground.material_override = _material(ground_color,1.0)
+ outer.add_child(ground)
+ var trunk := BoxMesh.new()
+ trunk.size = Vector3(0.8,7.0,0.8)
+ var canopy := SphereMesh.new()
+ canopy.radius = 3.6
+ canopy.height = 6.8
+ var trunk_mm := MultiMesh.new()
+ trunk_mm.transform_format = MultiMesh.TRANSFORM_3D
+ trunk_mm.mesh = trunk
+ var canopy_mm := MultiMesh.new()
+ canopy_mm.transform_format = MultiMesh.TRANSFORM_3D
+ canopy_mm.mesh = canopy
+ var count := 96
+ trunk_mm.instance_count = count
+ canopy_mm.instance_count = count
+ for i in range(count):
+  var angle := float(i)*2.399963
+  var radius := 166.0 + float((i*37)%64)
+  var pos := Vector3(cos(angle)*radius,3.5,sin(angle)*radius)
+  var basis := Basis(Vector3.UP,angle).scaled(Vector3.ONE*(0.72+float(i%5)*0.12))
+  trunk_mm.set_instance_transform(i,Transform3D(basis,pos))
+  canopy_mm.set_instance_transform(i,Transform3D(basis,pos+Vector3(0,5.5,0)))
+ var trunks := MultiMeshInstance3D.new()
+ trunks.name = city+"_OuterTreeTrunks_MultiMesh"
+ trunks.multimesh = trunk_mm
+ outer.add_child(trunks)
+ var crowns := MultiMeshInstance3D.new()
+ crowns.name = city+"_OuterCanopy_MultiMesh"
+ crowns.multimesh = canopy_mm
+ crowns.material_override = _material(p.accent,0.95)
+ outer.add_child(crowns)
+ var water_color := Color("#4c9eb0")
+ if city == "VolcanoLand": water_color = Color("#d75b2d")
+ elif city == "DesertLand": water_color = Color("#4a9a75")
+ elif city == "IceLand": water_color = Color("#a7dbe9")
+ elif city == "Waterlands": water_color = Color("#397f86")
+ if city in ["TwinCity","VolcanoLand","Waterlands"]:
+  var water := MeshInstance3D.new()
+  water.name = "OuterRiverOrLavaChannel"
+  var channel := PlaneMesh.new()
+  channel.size = Vector2(34.0,180.0)
+  water.mesh = channel
+  water.position = Vector3(0,0.08,-205.0)
+  water.material_override = _material(water_color,0.3)
+  outer.add_child(water)
+  _box(outer,"GrandStoneBridgeAtNorthGate",Vector3(0,0.8,-160.0),Vector3(25.0,1.6,22.0),_material(p.stone,0.86),1.0)
+ print("OPEN_WORLD_BIOME_PASS: %s extent=450x450 multimesh_trees=%d" % [city,count])
 
 static func _make_building(city: String, p: Dictionary, index: int, s: float) -> Node3D:
  var root := Node3D.new()
