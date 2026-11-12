@@ -171,6 +171,8 @@ func _build_ui() -> void:
 		button.custom_minimum_size.y = 34
 		button.icon = ThemeManager.item_texture(SLOT_ICONS[slot])
 		button.expand_icon = true
+		button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 		button.text = "فارغ"
 		button.pressed.connect(_on_equipment_slot_pressed.bind(slot))
 		row.add_child(button)
@@ -277,7 +279,7 @@ func _build_preview() -> void:
 
 	_preview_pivot = Node3D.new()
 	_preview_pivot.name = "CharacterPivot"
-	_preview_pivot.rotation.y = PI # Face the preview camera directly on first open.
+	_preview_pivot.rotation.y = 0.0 # Rotate 180 degrees from the former rear-facing pose toward the preview camera.
 	_preview_viewport.add_child(_preview_pivot)
 	_build_preview_skeleton()
 	_build_preview_mannequin()
@@ -391,6 +393,8 @@ func _refresh_equipment() -> void:
 		else:
 			button.text = "%s  +%d" % [str(item.get("name", item.get("id", "قطعة"))), int(item.get("plus", 0))]
 			button.icon = ThemeManager.item_texture(str(item.get("id", "")))
+			button.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+			button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 			button.add_theme_color_override("font_color", _quality_color(str(item.get("quality", "Normal"))))
 
 func _refresh_inventory() -> void:
