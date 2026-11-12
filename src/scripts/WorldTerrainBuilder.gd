@@ -19,7 +19,7 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  var visual := MeshInstance3D.new()
  visual.name = "TerrainSurface"
  visual.mesh = mesh
- visual.material_override = PBRMaterialLibrary.build_ground_material(city, city != "TwinCity")
+ visual.material_override = PBRMaterialLibrary.build_ground_material(city, true, "Ground053_2K-JPG" if city == "TwinCity" else "")
  body.add_child(visual)
  if city == "TwinCity":
   # Preserve the terrain node for scene contracts, but only the flat plaza owns a collider.
@@ -142,11 +142,8 @@ static func _make_procedural_texture(stone: bool) -> Texture2D:
  return ImageTexture.create_from_image(image)
 
 static func _stone_material() -> StandardMaterial3D:
- var material := PBRMaterialLibrary.build_ground_material("TwinCity", false)
- material.albedo_texture = _make_procedural_texture(true)
- material.uv1_scale = Vector3(0.09, 0.09, 1.0)
- material.uv1_triplanar = false
- return material
+ # Use the restored stone PBR pack directly; never replace its albedo/normal/roughness maps.
+ return PBRMaterialLibrary.build_ground_material("TwinCity", true, "Ground044_2K-JPG")
 
 static func _fallback_ground_material(city: String) -> StandardMaterial3D:
  var material := StandardMaterial3D.new()
