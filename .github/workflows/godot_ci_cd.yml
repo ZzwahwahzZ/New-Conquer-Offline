@@ -190,6 +190,26 @@ jobs:
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/world_environment_test.gd
 
+      - name: Capture real Twin City visual proof (spawn + 90-degree orbit)
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p reports/visual-proof
+          timeout 90s xvfb-run -a godot --path . --script res://tools/capture_visual_proof.gd 2>&1 | tee reports/visual-proof/capture.log
+          test -s reports/visual-proof/screenshot_1_spawn.png
+          test -s reports/visual-proof/screenshot_2_orbit.png
+          file reports/visual-proof/screenshot_1_spawn.png reports/visual-proof/screenshot_2_orbit.png
+          echo "VISUAL_SCREENSHOT_PROOF_PASS"
+
+      - name: Upload Visual Screenshot Proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: NewConquerOffline-Visual-Screenshot-Proof
+          path: reports/visual-proof/
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Upload Smoke Test Logs
         if: always()
