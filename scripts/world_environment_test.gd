@@ -31,15 +31,15 @@ func _run() -> void:
 		return
 	if not _require(environment_node.environment.ambient_light_source == Environment.AMBIENT_SOURCE_SKY, "Ambient light must use sky source"):
 		return
-	if not _require(is_equal_approx(environment_node.environment.ambient_light_energy, 0.85), "Ambient energy must be 0.85"):
+	if not _require(is_equal_approx(environment_node.environment.ambient_light_energy, 0.45), "Ambient energy must be balanced at 0.45"):
 		return
 	var sun := city.find_child("SettlementSun", true, false) as DirectionalLight3D
 	if not _require(sun != null and sun.visible, "Active DirectionalLight3D is missing"):
 		return
-	if not _require(is_equal_approx(sun.light_energy, 1.3), "Sun energy must be 1.3"):
+	if not _require(is_equal_approx(sun.light_energy, 0.85), "Sun energy must be 0.85"):
 		return
 
-	var plaza := city.find_child("TwinCityFlatPlaza", true, false) as StaticBody3D
+	var plaza := city.find_child("TwinCityFlatPlaza_80x80", true, false) as StaticBody3D
 	if not _require(plaza != null, "TwinCity solid plaza is missing"):
 		return
 	var stone := plaza.find_child("TwinCityImperialStonePlaza", true, false) as MeshInstance3D
@@ -65,16 +65,17 @@ func _run() -> void:
 	if not _require(grass_material.uv1_triplanar and grass_material.uv1_scale.x >= 0.45, "Grass PBR tiling/triplanar scale is not configured for visible detail"):
 		return
 
-	var architecture := city.get_node_or_null("ArchitectureAssetSlot/TwinCity_ImperialChina_GLBAsset") as Node3D
-	if not _require(architecture != null and architecture.get_child_count() > 0, "Imported TwinCity imperial architecture GLB is missing or empty"):
+	var old_enclosed_block := city.find_child("TwinCity_ImperialChina_GLBAsset", true, false)
+	if not _require(old_enclosed_block == null, "Obsolete enclosed imperial architecture must not cover the open spawn plaza"):
+		return
+	var open_plaza := city.find_child("OpenCentralPlaza_80x80", true, false) as Node3D
+	if not _require(open_plaza != null and open_plaza.find_child("CentralEngravedStoneMedallion", true, false) != null, "Open 80x80 diamond-paved plaza and central medallion are missing"):
 		return
 	var spawn := city.get_node_or_null("ArchitectureAssetSlot/PlayerSpawn") as Marker3D
 	if not _require(spawn != null and spawn.position.is_zero_approx(), "TwinCity player spawn anchor must be centered at X=0, Y=0, Z=0"):
 		return
-	var landmarks := city.find_child("TwinCityReferenceLandmarks", true, false) as Node3D
-	if not _require(landmarks != null and landmarks.get_child_count() >= 5, "TwinCity reference columns and gate are missing"):
-		return
-	if not _require(landmarks.get_node_or_null("TwinCitySouthGate") != null, "TwinCity orientation gate landmark is missing"):
+	var fortifications := city.find_child("TwinCity_PerimeterFortifications", true, false) as Node3D
+	if not _require(fortifications != null and fortifications.get_child_count() >= 4, "TwinCity four cardinal gate and wall fortifications are missing"):
 		return
 
 	var collision := plaza.find_child("TwinCityFlatPlazaCollision", true, false) as CollisionShape3D
