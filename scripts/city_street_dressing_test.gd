@@ -62,6 +62,23 @@ func _run() -> void:
 				gate_count += 1
 			if fort_node.is_in_group("city_perimeter_wall"):
 				wall_count += 1
+		var total_mesh_nodes := 0
+		var empty_mesh_nodes := 0
+		var mesh_scan: Array[Node] = [city]
+		while not mesh_scan.is_empty():
+			var mesh_node: Node = mesh_scan.pop_back()
+			for mesh_child in mesh_node.get_children():
+				mesh_scan.append(mesh_child)
+			if mesh_node is MeshInstance3D:
+				total_mesh_nodes += 1
+				if (mesh_node as MeshInstance3D).mesh == null:
+					empty_mesh_nodes += 1
+			if mesh_node is MultiMeshInstance3D:
+				total_mesh_nodes += 1
+				var mm := (mesh_node as MultiMeshInstance3D).multimesh
+				if mm == null or mm.mesh == null:
+					empty_mesh_nodes += 1
+		print("CITY_MESH_HANDLE_AUDIT: " + city_name + " total=" + str(total_mesh_nodes) + " empty=" + str(empty_mesh_nodes))
 		print("CITY_FORTIFICATION_DEBUG: " + city_name + " gates=" + str(gate_count) + " walls=" + str(wall_count) + " plaza=" + str(open_plaza_found) + " outer=" + str(outer_world_found))
 		if not _check(gate_count == 4 and wall_count >= 8 and open_plaza_found and outer_world_found, city_name + " open plaza/perimeter wall/four gates/450m outer world incomplete"):
 			return
