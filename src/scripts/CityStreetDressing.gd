@@ -181,6 +181,25 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 	deck.position.y = 0.12
 	bridge.add_child(deck)
 	deck.material_override = material
+	var bridge_model_path := "res://assets/environment/kenney/nature-kit/Models/GLTF format/bridge_wood.glb" if city == "Waterlands" else "res://assets/environment/kenney/nature-kit/Models/GLTF format/bridge_stone.glb"
+	if ResourceLoader.exists(bridge_model_path):
+		var bridge_pack := load(bridge_model_path) as PackedScene
+		if bridge_pack != null:
+			var imported_bridge := bridge_pack.instantiate() as Node3D
+			if imported_bridge != null:
+				imported_bridge.name = "KenneyBridgeModel"
+				var bridge_mesh := _first_mesh_node(imported_bridge)
+				if bridge_mesh != null and bridge_mesh.mesh != null:
+					var bounds := bridge_mesh.mesh.get_aabb().size
+					var horizontal_extent := maxf(bounds.x, bounds.z)
+					if horizontal_extent > 0.01:
+						var fit_scale := clampf(dimensions.x / horizontal_extent, 0.8, 3.5)
+						imported_bridge.scale = Vector3.ONE * fit_scale
+						if bounds.z > bounds.x:
+							imported_bridge.rotation.y = PI * 0.5
+					imported_bridge.position.y = 0.12
+						bridge.add_child(imported_bridge)
+						deck.visible = false
 	var body := StaticBody3D.new()
 	body.name = "BridgeCollisionBody"
 	var collider := CollisionShape3D.new()
@@ -228,6 +247,16 @@ static func _ancient_lantern_beds(parent: Node3D) -> void:
 		material.emission_enabled = false
 		parent.add_child(lantern)
 		lantern.material_override = material
+
+static func _first_mesh_node(root: Node) -> MeshInstance3D:
+	var pending: Array[Node] = [root]
+	while not pending.is_empty():
+		var current: Node = pending.pop_back()
+		for child in current.get_children():
+			pending.append(child)
+		if current is MeshInstance3D and (current as MeshInstance3D).mesh != null:
+			return current as MeshInstance3D
+	return null
 
 static func _mat(color: Color, roughness: float) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
