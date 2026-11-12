@@ -213,7 +213,6 @@ func _run() -> void:
 	classic.call("_refresh_quest")
 	if not await _save("05_auto_quest_tracking.png"):
 		quit(1); return
-	var world_manager := main.get_node_or_null("WorldManager")
 	if world_manager != null:
 		await world_manager.call("change_settlement", "DesertLand", true)
 		await process_frame
