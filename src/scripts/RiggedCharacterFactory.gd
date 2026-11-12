@@ -180,9 +180,9 @@ static func _fallback_part(parent: Node3D, part_name: String, mesh: Mesh, materi
  var node := MeshInstance3D.new()
  node.name = part_name
  node.mesh = mesh
- node.material_override = material
  node.position = position
  parent.add_child(node)
+ node.material_override = material
  return node
 
 static func _fallback_capsule(radius: float, height: float) -> CapsuleMesh:
