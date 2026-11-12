@@ -74,7 +74,7 @@ def safe_member(name: str) -> PurePosixPath:
 
 
 def restore_pack(pack_id: str, metadata: dict) -> dict:
-    archive = DEST / "_downloads" / f"{pack_id}.zip"
+    archive = Path("/tmp") / "kenney-environment-downloads" / f"{pack_id}.zip"
     download(metadata["url"], archive)
     digest = sha256(archive)
     if digest != metadata["sha256"]:
