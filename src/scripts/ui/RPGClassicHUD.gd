@@ -142,11 +142,10 @@ func _make_split_orb() -> Control:
 	orb.name = "SplitCrystalOrb"
 	orb.custom_minimum_size = Vector2(72, 72)
 	orb.size = orb.custom_minimum_size
-	var art := TextureRect.new()
+	var art := ColorRect.new()
 	art.name = "CrystalSplitArt"
 	art.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	art.stretch_mode = TextureRect.STRETCH_SCALE
+	art.color = Color.WHITE
 	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_orb_material = ShaderMaterial.new()
 	_orb_material.shader = preload("res://src/shaders/split_hp_mp_orb.gdshader")
@@ -192,7 +191,8 @@ func _build_quest_tracker() -> void:
 	_quest_panel.position = Vector2(16, 115)
 	_quest_panel.custom_minimum_size = Vector2(276, 82)
 	_quest_panel.size = Vector2(276, 82)
-	var frame_texture := ThemeManager.find_texture("frames", "brown")
+	_quest_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	var frame_texture := ThemeManager.find_texture("frames", "panel-border-000")
 	if frame_texture == null:
 		frame_texture = ThemeManager.find_texture("frames", "quest")
 	if frame_texture == null:
@@ -214,6 +214,7 @@ func _build_quest_tracker() -> void:
 		fallback.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_quest_panel.add_child(fallback)
 	var body := VBoxContainer.new()
+	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	body.offset_left = 8
 	body.offset_right = -8
@@ -226,12 +227,14 @@ func _build_quest_tracker() -> void:
 	_quest_title.add_theme_color_override("font_color", Color("#f3d58a"))
 	_quest_title.add_theme_font_size_override("font_size", 13)
 	_quest_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_quest_title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(_quest_title)
 	_quest_progress = Label.new()
 	_quest_progress.text = "اضغط لتفعيل التتبع التلقائي"
 	_quest_progress.add_theme_color_override("font_color", Color("#e7dfcf"))
 	_quest_progress.add_theme_font_size_override("font_size", 11)
 	_quest_progress.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_quest_progress.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(_quest_progress)
 	_quest_panel.gui_input.connect(_on_quest_panel_input)
 	add_child(_quest_panel)
