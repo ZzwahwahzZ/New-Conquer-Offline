@@ -104,8 +104,11 @@ func _apply_orbit() -> void:
 	if not is_instance_valid(_camera):
 		return
 	rotation.y = _yaw
-	_camera.position = Vector3(0.0, 0.0, _current_distance)
-	_camera.rotation = Vector3(deg_to_rad(-pitch_degrees), 0.0, 0.0)
+	# Elevate the camera as well as offsetting it: pitching a camera at player height
+	# points its optical axis below the ground and hides the player from the frame.
+	var pitch_radians := deg_to_rad(pitch_degrees)
+	_camera.position = Vector3(0.0, sin(pitch_radians) * _current_distance, cos(pitch_radians) * _current_distance)
+	_camera.rotation = Vector3(-pitch_radians, 0.0, 0.0)
 
 func zoom_in() -> void:
 	_target_distance = maxf(8.0, _target_distance - zoom_step)
