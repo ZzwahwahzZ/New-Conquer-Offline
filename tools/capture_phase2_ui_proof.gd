@@ -123,9 +123,6 @@ func _run() -> void:
 	if not await _save("03_inventory_hotkeys.png"):
 		quit(1); return
 	hud.call("_toggle_inventory")
-	if not await _save("03_inventory_hotkeys.png"):
-		quit(1); return
-	hud.call("_toggle_inventory")
 	var mall = hud.get("_mall_ui")
 	if not is_instance_valid(mall) or not mall.has_method("toggle"):
 		_fail("Shopping Mall UI is missing")
@@ -137,6 +134,33 @@ func _run() -> void:
 	if not await _save("04_shopping_mall.png"):
 		quit(1); return
 	mall.call("toggle")
+	var world_manager := main.get_node_or_null("WorldManager")
+	if not is_instance_valid(world_manager):
+		_fail("WorldManager missing; TwinCity Auto-Quest cannot be proven")
+		return
+	# The user's saved profile may reopen a different settlement. The TwinCity
+	# hunt is location-specific, so wait for initial restore then load TwinCity
+	# explicitly before looking for its Pheasant target.
+	var world_ready := false
+	for frame in range(600):
+		if not bool(world_manager.get("_transitioning")) and is_instance_valid(world_manager.get("current_world")):
+			world_ready = true
+			break
+		await process_frame
+	if not world_ready:
+		_fail("WorldManager did not finish restoring the saved settlement")
+		return
+	if str(world_manager.get("current_settlement")) != "TwinCity":
+		world_manager.call("change_settlement", "TwinCity", false)
+		world_ready = false
+		for frame in range(600):
+			if str(world_manager.get("current_settlement")) == "TwinCity" and not bool(world_manager.get("_transitioning")) and is_instance_valid(world_manager.get("current_world")):
+				world_ready = true
+				break
+			await process_frame
+	if not world_ready or str(world_manager.get("current_settlement")) != "TwinCity":
+		_fail("Could not load TwinCity for its canonical hunt_twin quest")
+		return
 	if not is_instance_valid(quest):
 		_fail("WorldManager/QuestSystem missing; Auto-Quest cannot be proven")
 		return
@@ -164,14 +188,27 @@ func _run() -> void:
 	if not is_instance_valid(target_enemy):
 		_fail("No live 3D monster instance matches quest target %s" % str(hunt.get("target", "")))
 		return
+	var original_target_position: Vector3 = target_enemy.global_position
 	quest.call("track", "hunt_twin")
 	var player := get_first_node_in_group("player")
 	if not is_instance_valid(player) or not bool(player.get("_has_move_target")):
 		_fail("Auto-Quest did not set the player movement target")
 		return
-	var expected_destination: Vector3 = target_enemy.global_position + Vector3(0, 0, 2)
+	var expected_destination: Vector3 = original_target_position + Vector3(0, 0, 2)
 	if player.get("_move_target").distance_to(expected_destination) > 0.05:
 		_fail("Auto-Quest movement target does not match the live 3D monster coordinates")
+		return
+	# Prove actual in-world movement and arrival, not merely that a target
+	# vector was assigned. The route is short enough for this bounded timeout.
+	var arrived := false
+	for frame in range(1200):
+		await process_frame
+		var player_distance := Vector2(player.global_position.x, player.global_position.z).distance_to(Vector2(expected_destination.x, expected_destination.z))
+		if player_distance <= 0.75 and not bool(player.get("_has_move_target")):
+			arrived = true
+			break
+	if not arrived:
+		_fail("Auto-Quest assigned the correct destination but the player did not physically arrive; remaining distance %.2f" % Vector2(player.global_position.x, player.global_position.z).distance_to(Vector2(expected_destination.x, expected_destination.z)))
 		return
 	classic.call("_refresh_quest")
 	if not await _save("05_auto_quest_tracking.png"):
