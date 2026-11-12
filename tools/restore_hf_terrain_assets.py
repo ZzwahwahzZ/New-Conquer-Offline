@@ -68,7 +68,7 @@ def remove_broken_godot_material_resources(folder: Path) -> int:
             source = resource_path.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
-        references = re.findall(r'path\\s*=\\s*"res://([^"]+)"', source)
+        references = re.findall(r'path\s*=\s*"res://([^"]+)"', source)
         missing = [relative for relative in references if not (ROOT / relative).is_file()]
         if missing:
             resource_path.unlink()
