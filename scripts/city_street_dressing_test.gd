@@ -144,7 +144,7 @@ func _run() -> void:
 			return
 		if city_name == "DarkForest" and not _check(city.find_child("ForestSpiritLantern_00", true, false) != null, "DarkForest lanterns missing"):
 			return
-		print("CITY_ARCHITECTURE_AND_STREETS_PASS: " + city_name + " buildings=" + str(buildings) + " planters=" + str(planters) + " flower_multimeshes=" + str(flower_batches) + " railings=" + str(railings))
+		print("CITY_ARCHITECTURE_AND_STREETS_PASS: " + city_name + " buildings=" + str(total_buildings) + " planters=" + str(planters) + " flower_multimeshes=" + str(flower_batches) + " railings=" + str(railings))
 		city.queue_free()
 		await process_frame
 	print("ALL_SIX_CITY_STREET_ENVIRONMENTS_PASS")
