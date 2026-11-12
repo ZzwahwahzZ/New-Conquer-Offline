@@ -111,7 +111,8 @@ static func _instantiate_kenney_building(parent: Node3D, city: String, index: in
  instance.rotation.y = atan2(-at.x,-at.z)
  var first_mesh := _first_mesh_node(instance)
  if first_mesh != null and first_mesh.mesh != null:
-  var extent := first_mesh.mesh.get_aabb().size.max_axis_size()
+  var dimensions := first_mesh.mesh.get_aabb().size
+  var extent := maxf(dimensions.x, maxf(dimensions.y, dimensions.z))
   if extent > 0.01:
    instance.scale = Vector3.ONE * clampf(12.0 / extent, 0.85, 3.5)
  parent.add_child(instance)
