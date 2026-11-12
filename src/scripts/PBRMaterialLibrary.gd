@@ -29,7 +29,6 @@ static func build_ground_material(environment_id: String, triplanar: bool = true
   material.normal_scale = 1.48
   material.detail_enabled = true
   material.detail_albedo = material.albedo_texture
-  material.detail_blend_mode = BaseMaterial3D.DETAIL_BLEND_MODE_MUL
   material.albedo_color = Color(1.12, 1.12, 1.12, 1.0)
  material.roughness = 0.88
  material.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_GRAYSCALE
