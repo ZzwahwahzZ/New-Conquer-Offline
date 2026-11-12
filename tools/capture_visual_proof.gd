@@ -149,7 +149,9 @@ func _capture() -> void:
 				_fail("settlement failed to load for visual proof: " + city_id)
 				return
 		var loaded_world := world_manager.get("current_world") as Node3D
-		var first_building := loaded_world.find_child(city_id + "_DetailedBuilding_00", true, false)
+		var first_building := loaded_world.find_child(city_id + "_KenneyBuilding_00", true, false)
+		if first_building == null:
+			first_building = loaded_world.find_child(city_id + "_DetailedBuilding_00", true, false)
 		if first_building == null:
 			first_building = loaded_world.find_child(city_id + "_QuaterniusBuilding_00", true, false)
 		if first_building == null or not _has_renderable_mesh(first_building):
