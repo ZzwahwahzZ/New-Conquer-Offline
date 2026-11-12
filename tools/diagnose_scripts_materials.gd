@@ -39,7 +39,9 @@ func _scan(path: String, recurse: bool) -> void:
         else:
             if name.ends_with(".gd"):
                 _check_script(full)
-            elif name.ends_with(".tres") or name.ends_with(".res") or name.ends_with(".gdshader"):
+            elif name.ends_with(".tres"):
+                _check_text_resource_dependencies(full)
+            elif name.ends_with(".res") or name.ends_with(".gdshader"):
                 _check_material_resource(full)
         name = dir.get_next()
     dir.list_dir_end()
@@ -60,6 +62,31 @@ func _check_script(path: String) -> void:
     else:
         script_fail += 1
         failures.append(path + " (GDScript.reload error=%d)" % error)
+
+func _check_text_resource_dependencies(path: String) -> void:
+    var file := FileAccess.open(path, FileAccess.READ)
+    if file == null:
+        material_fail += 1
+        failures.append(path + " (cannot read text resource)")
+        return
+    var source := file.get_as_text()
+    file.close()
+    var regex := RegEx.new()
+    var compile_error := regex.compile('path\\s*=\\s*"res://([^"]+)"')
+    if compile_error != OK:
+        material_fail += 1
+        failures.append(path + " (dependency pattern failed to compile)")
+        return
+    var missing: Array[String] = []
+    for match_result in regex.search_all(source):
+        var dependency := "res://" + match_result.get_string(1)
+        if not FileAccess.file_exists(dependency):
+            missing.append(dependency)
+    if not missing.is_empty():
+        material_fail += 1
+        failures.append(path + " (missing dependencies: " + ", ".join(missing) + ")")
+    else:
+        material_ok += 1
 
 func _check_material_resource(path: String) -> void:
     var resource := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
