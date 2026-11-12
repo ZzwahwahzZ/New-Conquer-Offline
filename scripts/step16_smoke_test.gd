@@ -49,7 +49,7 @@ func _run() -> void:
 		return
 	if not _require(architecture_source.contains("detailed_buildings=24") and architecture_source.contains("_GrandCityGate") and architecture_source.contains("GateGuardian_"), "24-building urban fabric, cardinal gates or guardians are missing"):
 		return
-	if not _require(architecture_source.contains("_OpenWorld_450x450") and architecture_source.contains("MultiMeshInstance3D"), "450x450 open-world biome or MultiMesh foliage builder is missing"):
+	if not _require(architecture_source.contains("_OpenWorld_800x800") and architecture_source.contains("MultiMeshInstance3D"), "450x450 open-world biome or MultiMesh foliage builder is missing"):
 		return
 	var settlement_source := FileAccess.get_file_as_string("res://src/scripts/SettlementWorld.gd")
 	if not _require(not settlement_source.contains("ChineseImperialBuilder.build("), "Obsolete enclosed TwinCity imperial block is still being instanced"):
@@ -59,5 +59,5 @@ func _run() -> void:
 		return
 	if not _require(capture_source.contains("const CITY_IDS := [\"TwinCity\",\"DesertLand\",\"VolcanoLand\",\"IceLand\",\"Waterlands\",\"DarkForest\"]") and capture_source.contains("\"suffix\":\"05_orbit_90\""), "Six-city proof set or named 90-degree orbit frame is incomplete"):
 		return
-	print("STEP16_PHASE1_OPEN_PLAZA_24_BUILDINGS_FOUR_GATES_450M_WORLD_AND_30_FRAME_PROOF_PASS")
+	print("STEP16_PHASE1_OPEN_PLAZA_24_BUILDINGS_FOUR_GATES_800M_WORLD_AND_30_FRAME_PROOF_PASS")
 	get_tree().quit(0)
