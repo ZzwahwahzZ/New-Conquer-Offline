@@ -185,7 +185,7 @@ func _capture() -> void:
 		camera_rig.global_position = player.global_position
 		camera_rig.set("_target_distance", 58.0)
 		camera_rig.set("_current_distance", 58.0)
-		camera_rig.set("_yaw", 0.0)
+		camera_rig.set("_yaw", PI * 0.5)
 		camera_rig.call("_apply_orbit")
 		await create_timer(1.5).timeout
 		var gate_file := "city_%d_%s_05_gate_orbit.png" % [proof_index+1,slug]
