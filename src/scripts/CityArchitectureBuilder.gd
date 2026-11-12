@@ -74,12 +74,68 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary) -
   for side in [-1.0,1.0]:
    for axis in [0,1]:
     var position := Vector3(value,0.0,side*112.0) if axis == 0 else Vector3(side*112.0,0.0,value)
-    var building := _make_building(city,p,index,1.0)
-    building.name = city + "_DetailedBuilding_%02d" % index
-    building.position = position
-    building.rotation.y = atan2(-position.x,-position.z)
-    slot.add_child(building)
+    var imported := _instantiate_quaternius_building(slot, city, index, position)
+    if imported == null:
+     var building := _make_building(city,p,index,1.0)
+     building.name = city + "_DetailedBuilding_%02d" % index
+     building.position = position
+     building.rotation.y = atan2(-position.x,-position.z)
+     slot.add_child(building)
     index += 1
+
+static func _instantiate_quaternius_building(parent: Node3D, city: String, index: int, at: Vector3) -> Node3D:
+ var candidates: Array[String] = []
+ _collect_quaternius_models("res://assets/environment/quaternius/ultimate_fantasy_rts", candidates)
+ _collect_quaternius_models("res://assets/environment/quaternius/modular_medieval_buildings", candidates)
+ if candidates.is_empty():
+  return null
+ candidates.sort()
+ var selected := candidates[index % candidates.size()]
+ var packed := load(selected) as PackedScene
+ if packed == null:
+  return null
+ var instance := packed.instantiate() as Node3D
+ if instance == null:
+  return null
+ instance.name = city + "_QuaterniusBuilding_%02d" % index
+ instance.position = at
+ instance.rotation.y = atan2(-at.x,-at.z)
+ instance.scale = Vector3.ONE
+ parent.add_child(instance)
+ _add_static_mesh_collisions(instance)
+ instance.add_to_group("distance_cull_world")
+ instance.visibility_range_end = 360.0
+ instance.visibility_range_end_margin = 35.0
+ return instance
+
+static func _collect_quaternius_models(path: String, output: Array[String]) -> void:
+ var directory := DirAccess.open(path)
+ if directory == null:
+  return
+ directory.list_dir_begin()
+ var entry := directory.get_next()
+ while entry != "":
+  if entry.begins_with("."):
+   entry = directory.get_next()
+   continue
+  var child := path.path_join(entry)
+  if directory.current_is_dir():
+   _collect_quaternius_models(child, output)
+  elif entry.get_extension().to_lower() in ["glb","gltf"]:
+   output.append(child)
+  entry = directory.get_next()
+ directory.list_dir_end()
+
+static func _add_static_mesh_collisions(root: Node3D) -> void:
+ var pending: Array[Node] = [root]
+ while not pending.is_empty():
+  var current: Node = pending.pop_back()
+  for child in current.get_children():
+   pending.append(child)
+  if current is MeshInstance3D:
+   var mesh_node := current as MeshInstance3D
+   if mesh_node.mesh != null and mesh_node.mesh.get_surface_count() > 0:
+    mesh_node.create_trimesh_collision()
 
 static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Dictionary) -> void:
  var fortification := Node3D.new()
