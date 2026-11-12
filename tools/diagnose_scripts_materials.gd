@@ -44,11 +44,13 @@ func _scan(path: String, recurse: bool) -> void:
     dir.list_dir_end()
 
 func _check_script(path: String) -> void:
-    var source := FileAccess.get_file_as_string(path)
-    if source.is_empty() and FileAccess.get_error() != OK:
+    var file := FileAccess.open(path, FileAccess.READ)
+    if file == null:
         script_fail += 1
-        failures.append(path + " (cannot read)")
+        failures.append(path + " (cannot read; open_error=%d)" % FileAccess.get_open_error())
         return
+    var source := file.get_as_text()
+    file.close()
     var parsed := GDScript.new()
     parsed.source_code = source
     var error := parsed.reload()
