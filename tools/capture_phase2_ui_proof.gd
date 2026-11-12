@@ -35,7 +35,7 @@ func _run() -> void:
 	await process_frame
 	var hud := main.get_node_or_null("HUD") as CanvasLayer
 	var classic := main.get_node_or_null("HUD/ClassicHUD") as Control
-	var quest := get_root().get_node_or_null("QuestSystem")
+	var quest := main.get_node_or_null("WorldManager/QuestSystem")
 	if hud == null or classic == null:
 		_fail("HUD or ClassicHUD missing")
 		return
@@ -80,16 +80,38 @@ func _run() -> void:
 		mall.call("toggle")
 	if not await _save("04_shopping_mall.png"):
 		quit(1); return
-	if is_instance_valid(quest):
-		var active := str(quest.get("active_quest"))
-		if active.is_empty():
-			for entry in quest.call("available"):
-				if str(entry.get("state", "")) == "active" or str(entry.get("state", "")) == "ready":
-					active = str(entry.get("id", ""))
-					if quest.call("accept", active):
-						break
-		if not active.is_empty():
-			quest.call("track", active)
+	if not is_instance_valid(quest):
+		_fail("WorldManager/QuestSystem missing; Auto-Quest cannot be proven")
+		return
+	var available: Array = quest.call("available")
+	var hunt: Dictionary = {}
+	for entry in available:
+		if str(entry.get("id", "")) == "hunt_twin":
+			hunt = entry
+			break
+	if hunt.is_empty():
+		_fail("TwinCity hunt_twin is not available at the current character level")
+		return
+	if str(hunt.get("state", "")) != "active" and not quest.call("accept", "hunt_twin"):
+		_fail("Could not activate the canonical TwinCity hunt quest")
+		return
+	var target_enemy: Node3D
+	for candidate in get_tree().get_nodes_in_group("enemies"):
+		if str(candidate.get("monster_id")) == str(hunt.get("target", "")):
+			target_enemy = candidate
+			break
+	if not is_instance_valid(target_enemy):
+		_fail("No live 3D monster instance matches quest target %s" % str(hunt.get("target", "")))
+		return
+	quest.call("track", "hunt_twin")
+	var player := get_tree().get_first_node_in_group("player")
+	if not is_instance_valid(player) or not bool(player.get("_has_move_target")):
+		_fail("Auto-Quest did not set the player movement target")
+		return
+	var expected_destination: Vector3 = target_enemy.global_position + Vector3(0, 0, 2)
+	if player.get("_move_target").distance_to(expected_destination) > 0.05:
+		_fail("Auto-Quest movement target does not match the live 3D monster coordinates")
+		return
 	classic.call("_refresh_quest")
 	if not await _save("05_auto_quest_tracking.png"):
 		quit(1); return
