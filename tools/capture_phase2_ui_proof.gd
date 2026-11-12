@@ -34,6 +34,12 @@ func _run() -> void:
 	root.add_child(main)
 	await process_frame
 	await process_frame
+	# Resolve autoloads at runtime; never reference their names as parser-time identifiers.
+	var gear_database: Node = root.get_node_or_null("GearDatabase")
+	var gear_system: Node = root.get_node_or_null("GearSystem")
+	if gear_database == null or gear_system == null:
+		_fail("GearDatabase or GearSystem autoload is missing at runtime")
+		return
 	var hud := main.get_node_or_null("HUD") as CanvasLayer
 	var classic := main.get_node_or_null("HUD/ClassicHUD") as Control
 	var quest := main.get_node_or_null("WorldManager/QuestSystem")
@@ -75,12 +81,12 @@ func _run() -> void:
 	if not await _save("01_twincity_gameplay_hud.png"):
 		quit(1); return
 	# Runtime-only QA loadout: no save files are modified by the screenshot test.
-	var bow: Dictionary = GearDatabase.create_item("archer_bow")
+	var bow: Dictionary = gear_database.create_item("archer_bow")
 	bow["quality"] = "Elite"
 	bow["plus"] = 12
 	bow["socket_count"] = 2
 	bow["sockets"] = ["Dragon_Super", "Phoenix_Super"]
-	GearSystem.equipment["RightHand"] = bow
+	gear_system.equipment["RightHand"] = bow
 	var armor: Dictionary = GearDatabase.create_item("archer_armor_15")
 	armor["quality"] = "Elite"
 	armor["plus"] = 12
