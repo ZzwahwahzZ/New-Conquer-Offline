@@ -85,10 +85,13 @@ def export_psd_assets(source_root: Path) -> int:
         max_file_bytes = 256 * 1024 * 1024
         if psd_path.stat().st_size > max_file_bytes:
             raise RuntimeError(f"PSD exceeds 256 MiB safety limit: {psd_path}")
+        # psd-tools counts one terminal descriptor operation beyond the
+        # publisher's nominal object budget. Permit exactly one boundary
+        # object; keep every other parsing and allocation limit unchanged.
         limits = ParseLimits(
             max_read_bytes=max_file_bytes,
             max_total_bytes=512 * 1024 * 1024,
-            max_objects=1_500_000,
+            max_objects=1_500_001,
             max_nesting_depth=64,
         )
         document = PSDImage.open(
