@@ -236,6 +236,7 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  crowns.visibility_range_end_margin = 30.0
  outer.add_child(crowns)
  crowns.material_override = _material(p.accent,0.95)
+ _place_quaternius_nature(outer, city)
  var water_color := Color("#4c9eb0")
  if city == "VolcanoLand": water_color = Color("#d75b2d")
  elif city == "DesertLand": water_color = Color("#4a9a75")
@@ -273,6 +274,51 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
   else:
    _box(outer,"GrandStoneBridgeAtNorthGate",Vector3(0,0.8,-160.0),Vector3(25.0,1.6,22.0),_material(p.stone,0.86),1.0)
  print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 multimesh_instances=%d horizon_ridge=44 ramps=4 canyon_pass=1" % [city,count])
+
+static func _place_quaternius_nature(parent: Node3D, city: String) -> void:
+ var keywords: Array[String] = []
+ match city:
+  "TwinCity": keywords = ["tree","oak","bush","rock"]
+  "DesertLand": keywords = ["palm","cactus","desert","rock"]
+  "VolcanoLand": keywords = ["rock","basalt","volcano","lava"]
+  "IceLand": keywords = ["pine","spruce","snow","ice","rock"]
+  "Waterlands": keywords = ["willow","palm","tree","rock"]
+  "DarkForest": keywords = ["ancient","tree","log","stump","rock","oak"]
+ var candidates: Array[String] = []
+ _collect_quaternius_models("res://assets/environment/quaternius/ultimate_stylized_nature", candidates)
+ candidates.sort()
+ var selected: Array[String] = []
+ for path in candidates:
+  var file_name := path.get_file().to_lower()
+  for keyword in keywords:
+   if file_name.contains(keyword):
+    selected.append(path)
+    break
+ if selected.is_empty():
+  push_warning("Quaternius biome models not found by semantic filename for " + city)
+  return
+ var placed := 0
+ for i in range(mini(18, selected.size() * 3)):
+  var path := selected[i % selected.size()]
+  var packed := load(path) as PackedScene
+  if packed == null:
+   continue
+  var prop := packed.instantiate() as Node3D
+  if prop == null:
+   continue
+  var angle := float(i) * 2.399963
+  var radius := 238.0 + float((i * 31) % 82)
+  prop.name = city + "_QuaterniusBiomeProp_%02d" % i
+  prop.position = Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
+  prop.rotation.y = angle
+  var scale_factor := 0.9 + float(i % 5) * 0.18
+  prop.scale = Vector3.ONE * scale_factor
+  parent.add_child(prop)
+  prop.add_to_group("distance_cull_world")
+  prop.visibility_range_end = 320.0
+  prop.visibility_range_end_margin = 32.0
+  placed += 1
+ print("QUATERNIUS_BIOME_PROPS_PASS: %s placed=%d" % [city, placed])
 
 static func _build_horizon_ridge(parent: Node3D, city: String, p: Dictionary) -> void:
  var ridge_mesh := ConeMesh.new()
