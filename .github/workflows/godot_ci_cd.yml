@@ -75,16 +75,12 @@ jobs:
           set -euo pipefail
           python3 -m pip install --disable-pip-version-check Pillow
           python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 50 --max-glb-nodes 2000 --max-image-dimension 1024
-      - name: Install virtual X server for stable Godot 3D import
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb xorg xz-utils
       - name: Import all project resources (headless Compatibility renderer) and reject parser errors
         shell: bash
         timeout-minutes: 45
         run: |
           set -euo pipefail
-          python3 tools/godot_import_guard.py --timeout 900 --max-retries 1 --log reports/godot_import_guard.log -- xvfb-run -a godot --rendering-method gl_compatibility --path . --import --verbose
+          python3 tools/godot_import_guard.py --timeout 900 --max-retries 1 --log reports/godot_import_guard.log -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
           if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load script|ERROR: Failed loading resource' reports/godot_import_guard.log; then
             echo "::error::Godot import emitted parser or resource-load errors."
             exit 1
@@ -224,13 +220,9 @@ jobs:
           set -euo pipefail
           python3 -m pip install --disable-pip-version-check Pillow
           python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 50 --max-glb-nodes 2000 --max-image-dimension 1024
-      - name: Install virtual X server for stable Godot 3D import
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb xorg xz-utils
       - name: Import for WebGL2 Compatibility renderer
         timeout-minutes: 45
-        run: python3 tools/godot_import_guard.py --timeout 900 --max-retries 1 --log reports/godot_import_guard.log -- xvfb-run -a godot --rendering-method gl_compatibility --path . --import --verbose
+        run: python3 tools/godot_import_guard.py --timeout 900 --max-retries 1 --log reports/godot_import_guard.log -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
 
       - name: Upload Import Logs Artifact
         if: always()
@@ -379,13 +371,9 @@ jobs:
           set -euo pipefail
           python3 -m pip install --disable-pip-version-check Pillow
           python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 50 --max-glb-nodes 2000 --max-image-dimension 1024
-      - name: Install virtual X server for stable Godot 3D import
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb xorg xz-utils
       - name: Import Android project resources
         timeout-minutes: 45
-        run: python3 tools/godot_import_guard.py --timeout 900 --max-retries 1 --log reports/godot_import_guard.log -- xvfb-run -a godot --rendering-method gl_compatibility --path . --import --verbose
+        run: python3 tools/godot_import_guard.py --timeout 900 --max-retries 1 --log reports/godot_import_guard.log -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
 
       - name: Upload Import Logs Artifact
         if: always()
