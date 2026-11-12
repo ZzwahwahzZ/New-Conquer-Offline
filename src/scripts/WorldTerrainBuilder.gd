@@ -2,7 +2,7 @@ extends Node3D
 ## Builds scalable heightfield terrain and hard safety bounds. All collision stays static.
 const PBRMaterialLibrary = preload("res://src/scripts/PBRMaterialLibrary.gd")
 const CityStreetDressing = preload("res://src/scripts/CityStreetDressing.gd")
-const CITY_SIZE := {"TwinCity":600.0,"DesertLand":450.0,"VolcanoLand":450.0,"IceLand":450.0,"Waterlands":450.0,"DarkForest":450.0}
+const CITY_SIZE := {"TwinCity":800.0,"DesertLand":800.0,"VolcanoLand":800.0,"IceLand":800.0,"Waterlands":800.0,"DarkForest":800.0}
 const HEIGHTS := {
  "TwinCity":"", "DesertLand":"res://assets/environment/heightmaps/04_desert_dunes_heightmap_16bit.png",
  "VolcanoLand":"res://assets/environment/heightmaps/01_volcanic_caldera_heightmap_16bit.png",
@@ -69,7 +69,7 @@ static func _height_mesh(city: String,size: float) -> ArrayMesh:
  arrays[Mesh.ARRAY_VERTEX]=verts; arrays[Mesh.ARRAY_TEX_UV]=uv; arrays[Mesh.ARRAY_INDEX]=indices
  var mesh:=ArrayMesh.new(); mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays); return mesh
 static func _bounds(parent: Node3D,size: float,city: String) -> void:
- var edge := 280.0 if city == "TwinCity" else 210.0
+ var edge := size * 0.497
  for i in range(4):
   var wall:=StaticBody3D.new(); wall.name="WorldBoundary_%d"%i
   var cs:=CollisionShape3D.new(); var box:=BoxShape3D.new()
@@ -170,7 +170,7 @@ static func _build_flat_twin_city_plaza(parent: Node3D) -> void:
  var collision := CollisionShape3D.new()
  collision.name = "TwinCityFlatPlazaCollision"
  var box := BoxShape3D.new()
- box.size = Vector3(600.0,2.0,600.0)
+ box.size = Vector3(800.0,2.0,800.0)
  collision.shape = box
  collision.position.y = -1.0
  plaza.add_child(collision)
