@@ -67,6 +67,12 @@ func _build_bottom_bar() -> void:
 		frame_texture = ThemeManager.find_texture("frames", "panel")
 	if frame_texture == null:
 		frame_texture = ThemeManager.find_texture("frames", "frame")
+	var underlay := Panel.new()
+	underlay.name = "DarkBrownUnderlay"
+	underlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	underlay.add_theme_stylebox_override("panel", ThemeManager.frame_underlay_style())
+	underlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_bar.add_child(underlay)
 	var patch := ThemeManager.make_nine_patch(frame_texture, 14)
 	if patch != null:
 		patch.name = "NinePatchFrame"
@@ -205,6 +211,12 @@ func _build_quest_tracker() -> void:
 		frame_texture = ThemeManager.find_texture("frames", "quest")
 	if frame_texture == null:
 		frame_texture = ThemeManager.find_texture("frames", "panel")
+	var underlay := Panel.new()
+	underlay.name = "DarkBrownUnderlay"
+	underlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	underlay.add_theme_stylebox_override("panel", ThemeManager.frame_underlay_style())
+	underlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_quest_panel.add_child(underlay)
 	var patch := ThemeManager.make_nine_patch(frame_texture, 12)
 	if patch != null:
 		patch.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
