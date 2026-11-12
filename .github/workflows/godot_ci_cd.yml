@@ -396,14 +396,13 @@ jobs:
           path: reports/godot_import_guard.log
           if-no-files-found: warn
           retention-days: 14
+
+      - name: Save partial Godot import cache after failed import
         if: failure()
         uses: actions/cache/save@v4
         with:
           path: .godot/imported
           key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
-        env:
-          ANDROID_HOME: ${{ env.ANDROID_HOME }}
-          ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
 
       - name: Export debug APK
         run: |
