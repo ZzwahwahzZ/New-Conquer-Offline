@@ -49,8 +49,8 @@ func _build_visuals() -> void:
 			wing_material.albedo_color = Color(0.36,0.82,1.0,0.88)
 			wing_material.metallic = 0.25
 			wing_material.roughness = 0.35
-			wing.material_override = wing_material
 			add_child(wing)
+			wing.material_override = wing_material
 			_wings.append(wing)
 	if _name_label == null:
 		_name_label = Label3D.new()
