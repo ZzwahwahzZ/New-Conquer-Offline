@@ -4,7 +4,7 @@ const ThemeManager = preload("res://src/scripts/ui/RPGIconThemeManager.gd")
 const BAR_RATIO := 0.12
 const HOTKEY_SKILLS := ["Jump", "Fly", "Scatter", "Path_of_Shadow", "XP_Mode"]
 const HOTKEY_LABELS := ["JUMP", "FLY", "AOE", "SHADOW", "XP", "HP POT", "MP POT", "SLOT 8", "SLOT 9", "SLOT 10"]
-const MENU_KEYS := ["Bag", "Equip", "Skills", "Quest", "Warehouse", "Mall", "JiangHu", "Interact"]
+const MENU_KEYS := ["Bag", "Equip", "Skills", "Mall", "Map", "Settings"]
 var _bar: Control
 var _orb_material: ShaderMaterial
 var _hp_text: Label
@@ -18,6 +18,7 @@ var _quest_system: Node
 var _hotkeys: Array[Button] = []
 var _display_hp := 0.0
 var _display_mp := 0.0
+var _settings_panel: PanelContainer
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_PASS
@@ -129,10 +130,10 @@ func _build_bottom_bar() -> void:
 	for menu_key in MENU_KEYS:
 		var menu := Button.new()
 		menu.name = "Menu" + menu_key
-		menu.text = {"Bag":"BAG","Equip":"EQ","Skills":"SK","Quest":"QST","Warehouse":"BANK","Mall":"MALL","JiangHu":"JH","Interact":"TALK"}[menu_key]
-		menu.custom_minimum_size = Vector2(34, 36)
-		menu.add_theme_font_size_override("font_size", 8)
-		menu.set_meta("rpg_icon", {"Bag":"gem","Equip":"shield","Skills":"rune","Quest":"rune","Warehouse":"crystal","Mall":"crystal","JiangHu":"weapon","Interact":"weapon"}[menu_key])
+		menu.text = ""
+		menu.custom_minimum_size = Vector2(38, 38)
+		menu.tooltip_text = {"Bag":"الحقيبة","Equip":"الشخصية والعتاد","Skills":"المهارات","Mall":"المتجر الشامل","Map":"الخريطة والمدن","Settings":"الإعدادات"}[menu_key]
+		menu.set_meta("rpg_icon", {"Bag":"bag","Equip":"equip","Skills":"skills","Mall":"mall","Map":"map","Settings":"settings"}[menu_key])
 		menu.pressed.connect(_open_menu.bind(menu_key))
 		row.add_child(menu)
 
@@ -142,8 +143,24 @@ func _make_split_orb() -> Control:
 	orb.name = "SplitCrystalOrb"
 	orb.custom_minimum_size = Vector2(72, 72)
 	orb.size = orb.custom_minimum_size
+	var gold_rim := Panel.new()
+	gold_rim.name = "GoldEngravedOrbRim"
+	gold_rim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var rim_style := StyleBoxFlat.new()
+	rim_style.bg_color = Color("#17120d")
+	rim_style.border_color = Color("#e4b85d")
+	rim_style.set_border_width_all(3)
+	rim_style.set_corner_radius_all(36)
+	rim_style.shadow_color = Color(0, 0, 0, 0.75)
+	rim_style.shadow_size = 5
+	rim_style.shadow_offset = Vector2(0, 2)
+	gold_rim.add_theme_stylebox_override("panel", rim_style)
+	gold_rim.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	orb.add_child(gold_rim)
 	var art := ColorRect.new()
 	art.name = "CrystalSplitArt"
+	art.position = Vector2(4, 4)
+	art.size = orb.size - Vector2(8, 8)
 	art.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	art.color = Color.WHITE
 	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -332,9 +349,33 @@ func _open_menu(menu_key: String) -> void:
 		"Mall":
 			var mall = hud.get("_mall_ui")
 			if is_instance_valid(mall): mall.call("toggle")
-		"JiangHu":
-			var guild = hud.get("_guild_ui")
-			if is_instance_valid(guild): guild.call("toggle")
+		"Map":
+			hud.call("_toggle_world_panel")
+		"Settings":
+			_toggle_settings_panel()
+
+func _toggle_settings_panel() -> void:
+	if not is_instance_valid(_settings_panel):
+		_settings_panel = PanelContainer.new()
+		_settings_panel.name = "ClassicSettingsPanel"
+		_settings_panel.custom_minimum_size = Vector2(230, 110)
+		_settings_panel.add_theme_stylebox_override("panel", ThemeManager.frame_style())
+		var content := VBoxContainer.new()
+		var title := Label.new()
+		title.text = "الإعدادات"
+		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		content.add_child(title)
+		var rtl_status := Label.new()
+		rtl_status.text = "اللغة: العربية  •  اتجاه RTL"
+		content.add_child(rtl_status)
+		var close := Button.new()
+		close.text = "إغلاق"
+		close.pressed.connect(func(): _settings_panel.hide())
+		content.add_child(close)
+		_settings_panel.add_child(content)
+		add_child(_settings_panel)
+		_settings_panel.position = Vector2(18, 220)
+	_settings_panel.visible = not _settings_panel.visible
 
 func _refresh_quest() -> void:
 	if not is_instance_valid(_quest_title):
