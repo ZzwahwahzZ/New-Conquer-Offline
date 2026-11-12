@@ -37,6 +37,8 @@ static func build(parent: Node3D, city: String, size: float) -> void:
 	_add_railing(parent, "SquareRail_W", Vector3(-19, 0, 0), 30.0, city, true)
 	if city == "Waterlands":
 		_waterways(parent, half)
+	if city == "TwinCity":
+		_twin_city_canals(parent, half)
 	if city == "VolcanoLand":
 		_lava_channels(parent, half)
 	if city == "IceLand":
@@ -148,15 +150,49 @@ static func _add_railing(parent: Node3D, label: String, at: Vector3, length: flo
 static func _waterways(parent: Node3D, half: float) -> void:
 	var water := _mat(Color("#267f91"), 0.22)
 	water.metallic = 0.12
-	_add_plane(parent, "ApeCityCanal_East", Vector2(7, half * 1.55), water, Vector3(half * 0.31, 0.025, 0))
-	_add_plane(parent, "ApeCityCanal_West", Vector2(7, half * 1.55), water, Vector3(-half * 0.31, 0.025, 0))
-	for z in [-42.0, 0.0, 42.0]:
-		_add_plane(parent, "ApeCityTimberBridge", Vector2(10, 8), _mat(Color("#795338"), 0.72), Vector3(0, 0.10, z))
-	_add_railing(parent, "BridgeRail_E", Vector3(5.2, 0, 0), half, city_water())
-	_add_railing(parent, "BridgeRail_W", Vector3(-5.2, 0, 0), half, city_water())
+	var wood := _mat(Color("#795338"), 0.72)
+	for side in [-1.0, 1.0]:
+		var canal_x := side * half * 0.31
+		_add_plane(parent, "ApeCityCanal_" + ("East" if side > 0.0 else "West"), Vector2(7, half * 1.55), water, Vector3(canal_x, 0.025, 0))
+		for z in [-42.0, 0.0, 42.0]:
+			_add_bridge(parent, "ApeCityTimberBridge", Vector3(canal_x, 0.0, z), Vector2(12.0, 9.0), wood, "Waterlands")
 
-static func city_water() -> String:
-	return "Waterlands"
+static func _twin_city_canals(parent: Node3D, half: float) -> void:
+	var water := _mat(Color("#247f9a"), 0.2)
+	water.metallic = 0.14
+	var stone := _mat(Color("#a18b68"), 0.78)
+	for side in [-1.0, 1.0]:
+		var canal_x := side * 130.0
+		_add_plane(parent, "TwinCityImperialCanal_" + ("East" if side > 0.0 else "West"), Vector2(9.0, half * 2.1), water, Vector3(canal_x, 0.02, 0))
+		for z in [-70.0, 0.0, 70.0]:
+			_add_bridge(parent, "TwinCityStoneBridge", Vector3(canal_x, 0.0, z), Vector2(15.0, 10.0), stone, "TwinCity")
+
+static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions: Vector2, material: Material, city: String) -> void:
+	var bridge := Node3D.new()
+	bridge.name = city + "_" + prefix + "_" + str(int(at.x)) + "_" + str(int(at.z))
+	bridge.position = at
+	bridge.add_to_group("world_bridge")
+	parent.add_child(bridge)
+	var deck := MeshInstance3D.new()
+	deck.name = "BridgeDeck"
+	var deck_mesh := PlaneMesh.new()
+	deck_mesh.size = dimensions
+	deck.mesh = deck_mesh
+	deck.position.y = 0.12
+	bridge.add_child(deck)
+	deck.material_override = material
+	var body := StaticBody3D.new()
+	body.name = "BridgeCollisionBody"
+	var collider := CollisionShape3D.new()
+	collider.name = "BridgeWalkableCollision"
+	var box := BoxShape3D.new()
+	box.size = Vector3(dimensions.x, 0.32, dimensions.y)
+	collider.shape = box
+	collider.position.y = -0.04
+	body.add_child(collider)
+	bridge.add_child(body)
+	_add_railing(bridge, "BridgeRail_N", Vector3(0, 0, -dimensions.y * 0.5), dimensions.x, city)
+	_add_railing(bridge, "BridgeRail_S", Vector3(0, 0, dimensions.y * 0.5), dimensions.x, city)
 
 static func _lava_channels(parent: Node3D, half: float) -> void:
 	var lava := _mat(Color("#ed4b18"), 0.3)
