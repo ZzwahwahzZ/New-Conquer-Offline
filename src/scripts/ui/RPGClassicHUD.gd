@@ -28,6 +28,7 @@ func _ready() -> void:
 	_build_bottom_bar()
 	_build_quest_tracker()
 	ThemeManager.apply_to_tree(self)
+	call_deferred("_apply_global_ui_theme")
 	if not ClassSystem.stats_changed.is_connected(_refresh_stats):
 		ClassSystem.stats_changed.connect(_refresh_stats)
 	if not ClassSystem.xp_skill_changed.is_connected(_refresh_xp_skill):
@@ -44,6 +45,9 @@ func _ready() -> void:
 	_refresh_hotkeys()
 	_refresh_quest()
 	_layout()
+
+func _apply_global_ui_theme() -> void:
+	ThemeManager.apply_to_tree(self)
 
 func _hide_legacy_hud() -> void:
 	var hud_root := get_parent().get_node_or_null("HUDRoot")
