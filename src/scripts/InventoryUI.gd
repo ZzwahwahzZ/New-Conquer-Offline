@@ -106,6 +106,9 @@ func _build_ui() -> void:
 	header.add_child(title)
 	var close_button := Button.new()
 	close_button.text = "✕"
+	close_button.add_theme_color_override("font_color", Color("#FFE2A0"))
+	close_button.add_theme_stylebox_override("normal", _style(Color("#641D16"), Color("#D4AF37"), 2, 20))
+	close_button.add_theme_stylebox_override("hover", _style(Color("#9B2A1C"), Color("#FFE2A0"), 2, 20))
 	close_button.custom_minimum_size = Vector2(48, 38)
 	close_button.pressed.connect(close)
 	header.add_child(close_button)
@@ -416,6 +419,19 @@ func _refresh_inventory() -> void:
 			button.tooltip_text = "%s | %s" % [str(item.get("name", item.get("id", "Item"))), quality]
 			button.icon = ThemeManager.item_texture(str(item.get("id", "")))
 			button.expand_icon = true
+			var item_key := str(item.get("id", "")).to_lower()
+			if item_key.begins_with("dragon"):
+				button.modulate = Color("#FF7770")
+			elif item_key.begins_with("phoenix"):
+				button.modulate = Color("#83E58D")
+			elif item_key.begins_with("rainbow"):
+				button.modulate = Color("#75C9FF")
+			elif item_key.begins_with("violet"):
+				button.modulate = Color("#C99BFF")
+			elif item_key.begins_with("fury") or item_key.begins_with("moon"):
+				button.modulate = Color("#FFE080")
+			else:
+				button.modulate = Color.WHITE
 			button.add_theme_color_override("font_color", _quality_color(quality))
 			button.add_theme_stylebox_override("normal", _style(Color("#242a35"), _quality_color(quality), 2, 5))
 			button.pressed.connect(_select_inventory_item.bind(index))
