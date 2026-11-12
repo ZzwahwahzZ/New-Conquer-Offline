@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://src/scripts/HUD.gd" id="1_hud"]
+[ext_resource type="Script" path="res://src/scripts/ui/RPGClassicHUD.gd" id="2_classic"]
 
 [node name="HUD" type="CanvasLayer"]
 layer = 10
@@ -13,3 +14,13 @@ offset_top = 68.0
 offset_right = -20.0
 offset_bottom = 110.0
 text = "Path of Shadow"
+
+[node name="ClassicHUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("2_classic")
