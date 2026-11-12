@@ -1,4 +1,4 @@
-name: Godot 4.3 CI, Web and Android
+name: Godot 4.3 CI and Web
 
 on:
   push:
@@ -191,6 +191,11 @@ jobs:
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/world_environment_test.gd
 
+      - name: Verify all six classic city street environments
+        timeout-minutes: 8
+        shell: bash
+        run: bash tools/run_godot_smoke_test.sh scripts/city_street_dressing_test.gd
+
       - name: Capture real Twin City visual proof (spawn + 90-degree orbit)
         timeout-minutes: 5
         shell: bash
@@ -380,6 +385,7 @@ jobs:
           echo "LIVE_WEB_URL=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/"
 
   android:
+    if: false # Phase-one closeout exports Web only; Android APK intentionally deferred.
     name: Build signed debug Android APK
     needs: verify
     runs-on: ubuntu-latest
