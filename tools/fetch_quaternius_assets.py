@@ -43,7 +43,7 @@ def main() -> None:
                 shutil.rmtree(folder)
             folder.mkdir(parents=True)
             subprocess.run(["gdown", "--folder", f"https://drive.google.com/drive/folders/{item['folder']}", "-O", str(folder), "--remaining-ok"], check=True)
-            supported = [p for p in folder.rglob("*") if p.is_file() and p.suffix.lower() in {".gltf",".glb",".bin",".png",".jpg",".jpeg",".webp"}]
+            supported = [p for p in folder.rglob("*") if p.is_file() and p.suffix.lower() in {".gltf",".glb",".fbx",".obj",".blend",".bin",".png",".jpg",".jpeg",".webp"}]
             if not supported:
                 raise SystemExit(f"No supported model/texture files downloaded for {name}")
             marker.write_text("ok", encoding="utf-8")
