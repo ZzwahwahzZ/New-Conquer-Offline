@@ -87,6 +87,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb xorg xz-utils
+      - name: Diagnose scripts and material resources independently before editor import
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot --headless --audio-driver Dummy --path . --script res://tools/diagnose_scripts_materials.gd
+
       - name: Import all project resources (headless Compatibility renderer) and reject parser errors
         shell: bash
         timeout-minutes: 45
