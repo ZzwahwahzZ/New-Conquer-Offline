@@ -35,6 +35,8 @@ static func apply_to_tree(root: Node) -> void:
 	for node in scope.find_children("*", "PanelContainer", true, false):
 		(node as PanelContainer).add_theme_stylebox_override("panel", ornate)
 	for node in scope.find_children("*", "Panel", true, false):
+		if node.name in ["DarkBrownUnderlay", "GoldEngravedOrbRim"]:
+			continue
 		(node as Panel).add_theme_stylebox_override("panel", ornate)
 static func find_texture(category: String, hint: String = "") -> Texture2D:
 	return _find_texture_recursive(UI_ROOT + category, hint.to_lower())
