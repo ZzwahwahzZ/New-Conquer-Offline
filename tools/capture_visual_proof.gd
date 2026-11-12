@@ -112,7 +112,7 @@ func _capture() -> void:
 	camera_rig.set("_current_distance", CAPTURE_CAMERA_DISTANCE)
 	camera_rig.set("pitch_degrees", CAPTURE_CAMERA_PITCH)
 	camera_rig.call("_apply_orbit")
-	var hud := main.get_node_or_null("HUD") as CanvasItem
+	var hud := main.get_node_or_null("HUD") as CanvasLayer
 	if hud != null:
 		hud.visible = false
 	else:
