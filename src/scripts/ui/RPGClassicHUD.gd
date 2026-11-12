@@ -16,6 +16,7 @@ var _quest_panel: Control
 var _quest_title: Label
 var _quest_progress: Label
 var _quest_system: Node
+var _hotkeys: Array[Button] = []
 var _display_hp := 0.0
 var _display_mp := 0.0
 
@@ -30,6 +31,8 @@ func _ready() -> void:
 		ClassSystem.stats_changed.connect(_refresh_stats)
 	if not ClassSystem.xp_skill_changed.is_connected(_refresh_xp_skill):
 		ClassSystem.xp_skill_changed.connect(_refresh_xp_skill)
+	if not GameState.inventory_changed.is_connected(_refresh_hotkeys):
+		GameState.inventory_changed.connect(_refresh_hotkeys)
 	_quest_system = get_tree().get_first_node_in_group("quest_system")
 	if is_instance_valid(_quest_system) and _quest_system.has_signal("changed"):
 		if not _quest_system.changed.is_connected(_refresh_quest):
@@ -37,6 +40,7 @@ func _ready() -> void:
 	get_viewport().size_changed.connect(_layout)
 	_refresh_stats()
 	_refresh_xp_skill(ClassSystem.xp_skill, ClassSystem.xp_skill_max)
+	_refresh_hotkeys()
 	_refresh_quest()
 	_layout()
 
@@ -108,6 +112,9 @@ func _build_bottom_bar() -> void:
 		button.tooltip_text = HOTKEY_LABELS[index]
 		button.pressed.connect(_on_hotkey_pressed.bind(index))
 		row.add_child(button)
+		_hotkeys.append(button)
+		if index >= 7:
+			button.disabled = true
 	for menu_key in MENU_KEYS:
 		var menu := Button.new()
 		menu.name = "Menu" + menu_key
@@ -237,6 +244,17 @@ func _process(delta: float) -> void:
 		_xp.max_value = maxi(1, ClassSystem.get_required_xp())
 		_xp.value = ClassSystem.experience
 
+func _potion_count(item_id: String) -> int:
+	for entry in GameState.profile.get("inventory", []):
+		if str(entry.get("id", "")) == item_id:
+			return int(entry.get("quantity", 1))
+	return 0
+
+func _refresh_hotkeys() -> void:
+	if _hotkeys.size() >= 7:
+		_hotkeys[5].disabled = _potion_count("HP_Potion") <= 0
+		_hotkeys[6].disabled = _potion_count("Mana_Potion") <= 0
+
 func _refresh_stats() -> void:
 	if is_instance_valid(_xp):
 		_xp.max_value = maxi(1, ClassSystem.get_required_xp())
@@ -256,13 +274,19 @@ func _use_xp_skill() -> void:
 		player.call("cast_skill", "XP_Mode")
 
 func _on_hotkey_pressed(index: int) -> void:
+	if index == 5:
+		GameState.use_consumable("HP_Potion")
+		_refresh_hotkeys()
+		return
+	if index == 6:
+		GameState.use_consumable("Mana_Potion")
+		_refresh_hotkeys()
+		return
 	var player := get_tree().get_first_node_in_group("player")
 	if not is_instance_valid(player):
 		return
 	if index < HOTKEY_SKILLS.size() and player.has_method("cast_skill"):
 		player.call("cast_skill", HOTKEY_SKILLS[index])
-	elif player.has_method("use_hotbar_slot"):
-		player.call("use_hotbar_slot", index)
 
 func _open_menu(menu_key: String) -> void:
 	var hud := get_parent()

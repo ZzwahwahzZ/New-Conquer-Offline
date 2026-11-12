@@ -261,6 +261,12 @@ func take_damage(amount: int) -> void:
 	stats_changed.emit()
 	_save()
 
+func restore_hp(amount: int) -> void:
+	if amount <= 0: return
+	hp = mini(max_hp, hp + amount)
+	stats_changed.emit()
+	_save()
+
 func consume_mana(amount: int) -> bool:
 	if amount < 0 or mp < amount: return false
 	mp -= amount
