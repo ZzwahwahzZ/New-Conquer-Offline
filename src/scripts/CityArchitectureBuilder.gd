@@ -75,7 +75,7 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary) -
    for axis in [0,1]:
     var position := Vector3(value,0.0,side*112.0) if axis == 0 else Vector3(side*112.0,0.0,value)
     var building := _make_building(city,p,index,1.0)
-    building.name = city + "_UrbanBuilding_%02d" % index
+    building.name = city + "_DetailedBuilding_%02d" % index
     building.position = position
     building.rotation.y = atan2(-position.x,-position.z)
     slot.add_child(building)
