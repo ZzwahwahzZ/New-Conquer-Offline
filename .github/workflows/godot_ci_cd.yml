@@ -196,17 +196,19 @@ jobs:
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/city_street_dressing_test.gd
 
-      - name: Capture real Twin City visual proof (spawn + 90-degree orbit)
+      - name: Capture nine real architectural proof frames across all six cities
         timeout-minutes: 5
         shell: bash
         run: |
           set -Eeuo pipefail
           mkdir -p reports/visual-proof
           timeout 90s xvfb-run -a godot --path . --script res://tools/capture_visual_proof.gd 2>&1 | tee reports/visual-proof/capture.log
-          test -s reports/visual-proof/screenshot_1_spawn.png
-          test -s reports/visual-proof/screenshot_2_orbit.png
-          file reports/visual-proof/screenshot_1_spawn.png reports/visual-proof/screenshot_2_orbit.png
-          echo "VISUAL_SCREENSHOT_PROOF_PASS"
+          for image in twincity_1_t0.png twincity_2_t3.png twincity_3_t6_orbit.png twincity_4_t9_orbit2.png city_2_desertland.png city_3_volcanoland.png city_4_iceland.png city_5_waterlands.png city_6_darkforest.png; do
+            test -s "reports/visual-proof/$image"
+          done
+          file reports/visual-proof/*.png
+          test "$(find reports/visual-proof -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 9
+          echo "NINE_CITY_ARCHITECTURE_VISUAL_PROOFS_PASS"
 
       - name: Upload Visual Screenshot Proof
         if: always()
