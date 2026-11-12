@@ -34,6 +34,14 @@ func _run() -> void:
 	root.add_child(main)
 	await process_frame
 	await process_frame
+	# Give the isolated visual proof a known full-health/full-mana state without touching saved data.
+	var class_system: Node = root.get_node_or_null("ClassSystem")
+	if class_system == null:
+		_fail("ClassSystem missing; HP/MP orb values cannot be verified")
+		return
+	class_system.set("hp", int(class_system.get("max_hp")))
+	class_system.set("mp", int(class_system.get("max_mp")))
+	class_system.emit_signal("stats_changed")
 	# Resolve autoloads at runtime; never reference their names as parser-time identifiers.
 	var gear_database: Node = root.get_node_or_null("GearDatabase")
 	var gear_system: Node = root.get_node_or_null("GearSystem")
@@ -70,6 +78,12 @@ func _run() -> void:
 	var orb := row.get_node_or_null("SplitCrystalOrb")
 	if orb == null or orb.get_node_or_null("GoldEngravedOrbRim") == null:
 		_fail("split HP/MP orb gold rim missing")
+		return
+	if row.get_node_or_null("ClassicEXP") == null or row.get_node_or_null("MainRow/EXPCellDivider1") != null:
+		_fail("segmented gold EXP ProgressBar missing")
+		return
+	if orb.get_node_or_null("HPValue") == null or orb.get_node("HPValue").text.find(str(class_system.get("hp"))) < 0:
+		_fail("HP orb does not display the actual current HP value")
 		return
 	var hud_root := hud.get_node_or_null("HUDRoot")
 	var joystick := hud_root.get_node_or_null("VirtualJoystick") if hud_root != null else null
