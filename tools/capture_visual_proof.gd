@@ -98,6 +98,10 @@ func _capture() -> void:
 	if not camera.current:
 		_fail("isometric Camera3D is not current")
 		return
+	for required in ["Street_NorthSouth", "Street_EastWest", "CentralDarkSquare", "TwinCity_RaisedFlowerBed_00", "TwinCity_SquareRail_N"]:
+		if main.find_child(required, true, false) == null:
+			_fail("Twin City street detail is missing: " + required)
+			return
 	var classic_hud := main.get_node_or_null("HUD/ClassicHUD") as Control
 	if classic_hud == null:
 		_fail("classic gold HUD is missing")
@@ -127,5 +131,5 @@ func _capture() -> void:
 	if not await _save_frame("screenshot_2_orbit.png"):
 		quit(1)
 		return
-	print("VISUAL_PROOF_PASS: main-scene Twin City frames captured; orbit delta=90 degrees; runtime=%.1fs" % RUN_SECONDS)
+	print("VISUAL_PROOF_PASS: Twin City streets, flowerbeds and iron railings captured; orbit delta=90 degrees; runtime=%.1fs" % RUN_SECONDS)
 	quit(0)
