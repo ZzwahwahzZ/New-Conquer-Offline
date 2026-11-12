@@ -1,5 +1,6 @@
 extends CanvasLayer
 ## Landscape equipment and inventory screen. GearSystem remains the source of truth.
+const ThemeManager = preload("res://src/scripts/ui/RPGIconThemeManager.gd")
 ## The preview rig is procedural until production character/weapon scenes are assigned.
 
 const SLOT_ORDER := ["Helmet", "Necklace", "Armor", "RightHand", "LeftHand", "Ring", "Boots"]
@@ -11,7 +12,7 @@ const QUALITY_COLORS := {
 	"Normal": Color("#e9edf2"), "Refined": Color("#58d879"),
 	"Unique": Color("#54a7ff"), "Elite": Color("#bd6cff"), "Super": Color("#ffc84a")
 }
-const SLOT_ICONS := {"Helmet":"♜", "Necklace":"◇", "Armor":"▣", "RightHand":"⚔", "LeftHand":"⚔", "Ring":"○", "Boots":"⌑"}
+const SLOT_ICONS := {"Helmet":"shield", "Necklace":"gem", "Armor":"shield", "RightHand":"weapon", "LeftHand":"weapon", "Ring":"gem", "Boots":"shield"}
 
 var _root: Control
 var _preview_container: SubViewportContainer
@@ -40,6 +41,7 @@ func _ready() -> void:
 	_build_preview()
 	_connect_gear()
 	_refresh_all()
+	ThemeManager.apply_to_tree(self)
 	visible = false
 
 func toggle() -> void:
@@ -164,6 +166,8 @@ func _build_ui() -> void:
 		button.name = "Equipment_" + slot
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.custom_minimum_size.y = 34
+		button.icon = ThemeManager.item_texture(SLOT_ICONS[slot])
+		button.expand_icon = true
 		button.text = "فارغ"
 		button.pressed.connect(_on_equipment_slot_pressed.bind(slot))
 		row.add_child(button)
@@ -382,6 +386,7 @@ func _refresh_equipment() -> void:
 			button.add_theme_color_override("font_color", Color("#aab0ba"))
 		else:
 			button.text = "%s  +%d" % [str(item.get("name", item.get("id", "قطعة"))), int(item.get("plus", 0))]
+			button.icon = ThemeManager.item_texture(str(item.get("id", "")))
 			button.add_theme_color_override("font_color", _quality_color(str(item.get("quality", "Normal"))))
 
 func _refresh_inventory() -> void:
@@ -408,6 +413,8 @@ func _refresh_inventory() -> void:
 					filled += 1
 			var socket_marks := "●".repeat(filled) + "○".repeat(maxi(0, socket_count - filled)) + "·".repeat(2 - socket_count)
 			button.text = "%s\n+%d\n%s" % [str(item.get("name", item.get("id", "Item"))), int(item.get("plus", 0)), socket_marks]
+			button.icon = ThemeManager.item_texture(str(item.get("id", "")))
+			button.expand_icon = true
 			button.add_theme_color_override("font_color", _quality_color(quality))
 			button.add_theme_stylebox_override("normal", _style(Color("#242a35"), _quality_color(quality), 2, 5))
 			button.pressed.connect(_select_inventory_item.bind(index))
@@ -415,6 +422,7 @@ func _refresh_inventory() -> void:
 			button.text = ""
 			button.disabled = true
 		_grid.add_child(button)
+	ThemeManager.apply_to_tree(_grid)
 
 func _quality_color(quality: String) -> Color:
 	return QUALITY_COLORS.get(quality, QUALITY_COLORS["Normal"])
