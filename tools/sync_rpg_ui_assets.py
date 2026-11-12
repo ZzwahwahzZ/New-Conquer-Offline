@@ -476,29 +476,46 @@ def restore_from_hf(api: HfApi, token: str) -> bool:
 def download_noto_arabic_font() -> None:
     font_dir = DEST / "fonts"
     font_dir.mkdir(parents=True, exist_ok=True)
-    candidates = [
-        ("NotoSansArabic[wght].ttf", "https://raw.githubusercontent.com/google/fonts/main/ofl/notosansarabic/NotoSansArabic%5Bwght%5D.ttf"),
-        ("NotoSansArabic-Regular.ttf", "https://raw.githubusercontent.com/google/fonts/main/ofl/notosansarabic/NotoSansArabic%5Bwght%5D.ttf"),
-    ]
-    for filename, url in candidates:
-        target = font_dir / filename
-        if target.is_file() and target.stat().st_size > 100_000:
-            print(f"NOTO_SANS_ARABIC_FONT_PASS: {target} bytes={target.stat().st_size}")
-            return
-        try:
-            request = urllib.request.Request(url, headers={"User-Agent": "New-Conquer-Offline-NotoArabicSync/1.0"})
-            with urllib.request.urlopen(request, timeout=120) as response, target.open("wb") as output:
-                if response.status != 200:
-                    raise RuntimeError(f"HTTP {response.status} while downloading Noto Sans Arabic")
-                shutil.copyfileobj(response, output)
-            if target.stat().st_size < 100_000:
-                raise RuntimeError("Downloaded font is unexpectedly small")
-            print(f"NOTO_SANS_ARABIC_FONT_PASS: {target} bytes={target.stat().st_size}")
-            return
-        except Exception:
-            target.unlink(missing_ok=True)
-    raise RuntimeError("Unable to download the official Google Fonts Noto Sans Arabic variable font")
-
+    target = font_dir / "NotoSansArabic[wght].ttf"
+    if target.is_file() and target.stat().st_size > 100_000:
+        print(f"NOTO_SANS_ARABIC_FONT_PASS: {target} bytes={target.stat().st_size}")
+        return
+    errors = []
+    # Google Fonts publishes this family with both wdth and wght axes.
+    raw_url = "https://raw.githubusercontent.com/google/fonts/main/ofl/notosansarabic/NotoSansArabic%5Bwdth%2Cwght%5D.ttf"
+    try:
+        request = urllib.request.Request(raw_url, headers={"User-Agent": "New-Conquer-Offline-NotoArabicSync/1.0"})
+        with urllib.request.urlopen(request, timeout=120) as response, target.open("wb") as output:
+            if response.status != 200:
+                raise RuntimeError(f"HTTP {response.status} while downloading Noto Sans Arabic")
+            shutil.copyfileobj(response, output)
+        if target.stat().st_size < 100_000:
+            raise RuntimeError(f"Downloaded Noto Sans Arabic file is too small: {target.stat().st_size} bytes")
+        print(f"NOTO_SANS_ARABIC_FONT_PASS: {target} bytes={target.stat().st_size} source=GoogleFonts")
+        return
+    except Exception as exc:
+        errors.append(f"Google Fonts raw TTF: {type(exc).__name__}: {exc}")
+        target.unlink(missing_ok=True)
+    # Official Noto Fonts release is the independent fallback source.
+    archive_path = Path("/tmp/NotoSansArabic-v2.012.zip")
+    release_url = "https://github.com/notofonts/arabic/releases/download/NotoSansArabic-v2.012/NotoSansArabic-v2.012.zip"
+    try:
+        download(release_url, archive_path)
+        with zipfile.ZipFile(archive_path) as archive:
+            members = [name for name in archive.namelist() if name.endswith("NotoSansArabic[wdth,wght].ttf")]
+            if not members:
+                members = [name for name in archive.namelist() if name.endswith("NotoSansArabic-Regular.ttf")]
+            if not members:
+                raise RuntimeError("Official Noto Arabic release contains no supported TTF")
+            target.write_bytes(archive.read(members[0]))
+        if target.stat().st_size < 100_000:
+            raise RuntimeError("Official Noto Arabic TTF is unexpectedly small")
+        print(f"NOTO_SANS_ARABIC_FONT_PASS: {target} bytes={target.stat().st_size} source=OfficialNotoRelease")
+        return
+    except Exception as exc:
+        errors.append(f"Official Noto release: {type(exc).__name__}: {exc}")
+        target.unlink(missing_ok=True)
+    raise RuntimeError("Unable to download Noto Sans Arabic: " + " | ".join(errors))
 def main() -> None:
     token = os.environ.get("HF_TOKEN", "").strip()
     if not token:
