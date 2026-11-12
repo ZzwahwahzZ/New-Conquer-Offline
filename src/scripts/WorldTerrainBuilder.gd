@@ -148,9 +148,14 @@ static func _add_scene_mesh_collisions(root: Node) -> void:
     mesh_node.create_trimesh_collision()
 
 static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: float) -> void:
- var root_path := "res://assets/environment/kenney/nature-kit/Models/GLTF format"
- var directory := DirAccess.open(root_path)
- if directory == null:
+ var root_paths := [
+  "res://assets/environment/kenney/nature-kit/Models/GLTF format",
+  "res://assets/environment/kenney/nature-kit/Models/GLB format"
+ ]
+ var candidates: Array[String] = []
+ for root_path in root_paths:
+  _collect_kenney_nature_models(root_path, candidates)
+ if candidates.is_empty():
   push_warning("Kenney Nature Kit is not installed; curated CC0 biome dressing remains active.")
   return
  var keywords: Array[String] = []
@@ -161,8 +166,6 @@ static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: flo
   "Waterlands": keywords = ["willow", "tree", "plant", "reed", "rock"]
   "DarkForest": keywords = ["tree", "oak", "pine", "mushroom", "rock"]
   _: keywords = ["tree", "oak", "pine", "bush", "plant"]
- var candidates: Array[String] = []
- _collect_kenney_nature_models(root_path, candidates)
  candidates.sort()
  var accepted: Array[String] = []
  for path in candidates:
