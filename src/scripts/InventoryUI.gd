@@ -277,6 +277,7 @@ func _build_preview() -> void:
 
 	_preview_pivot = Node3D.new()
 	_preview_pivot.name = "CharacterPivot"
+	_preview_pivot.rotation.y = PI # Face the preview camera directly on first open.
 	_preview_viewport.add_child(_preview_pivot)
 	_build_preview_skeleton()
 	_build_preview_mannequin()
