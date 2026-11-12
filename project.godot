@@ -16,6 +16,9 @@ GearSystem="*res://src/scripts/GearSystem.gd"
 GlobalEconomy="*res://src/scripts/GlobalEconomy.gd"
 GameState="*res://scripts/game_state.gd"
 
+[filesystem]
+import/blender/enabled=false
+
 [editor]
 import/use_multiple_threads=false
 
