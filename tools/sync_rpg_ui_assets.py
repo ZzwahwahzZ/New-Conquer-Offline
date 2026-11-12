@@ -123,10 +123,12 @@ def safe_extract(archive_path: Path, destination: Path) -> tuple[list[Path], int
 
 def safe_copy(source: Path, destination_dir: Path, pack_name: str) -> Path:
     destination_dir.mkdir(parents=True, exist_ok=True)
-    prefix = pack_name.replace("-", "_") + "__"
+    relative = source.relative_to(STAGE / "source")
+    parent_hint = "__".join(part for part in relative.parts[1:-1] if part not in (".", ".."))
+    prefix = pack_name.replace("-", "_") + ("__" + parent_hint if parent_hint else "") + "__"
     target = destination_dir / (prefix + source.name)
     if target.exists():
-        target = destination_dir / (prefix + str(abs(hash(source.as_posix()))) + "__" + source.name)
+        raise RuntimeError(f"Duplicate categorized asset name: {target}")
     shutil.copy2(source, target)
     return target
 
