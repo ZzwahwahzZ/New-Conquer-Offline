@@ -1,4 +1,5 @@
 extends Control
+const ThemeManager = preload("res://src/scripts/ui/RPGIconThemeManager.gd")
 ## Classic character status window backed by local character and gear data.
 var _labels: Dictionary = {}
 var _promote: Button
@@ -38,6 +39,7 @@ func _ready() -> void:
 	ClassSystem.character_changed.connect(refresh)
 	GearSystem.equipment_changed.connect(refresh)
 	refresh()
+	ThemeManager.apply_to_tree(self)
 	hide()
 
 func toggle() -> void:
