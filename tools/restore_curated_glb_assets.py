@@ -1,17 +1,13 @@
 #!/usr/bin/env python3
-"""Fetch curated CC0 GLB environment kits, validate them, and mirror them to the HF dataset."""
+"""Fetch curated CC0 GLB environment kits for local integration only; never mirror model files to Hugging Face."""
 from __future__ import annotations
 import hashlib
 import json
-import os
 import struct
 import urllib.request
 from pathlib import Path
-from huggingface_hub import HfApi
 
-REPO_ID = "ZzwahwahzZ/clash-of-legends-terrain-assets"
 DEST = Path(__file__).resolve().parents[1] / "assets" / "environment"
-HF_PREFIX = "settlement-terrain-source/curated-glb"
 SOURCES = {
     "architecture/imperial_china_palace_and_garden.glb": {
         "url": "https://cdn.3dassets.dev/assets/36222/v1/model.glb",
@@ -76,42 +72,19 @@ def download(url: str, target: Path) -> None:
         raise RuntimeError(f"Invalid GLB header/length: {target} version={version} declared={declared_length} actual={len(data)}")
 
 def main() -> None:
-    token = os.environ.get("HF_TOKEN", "").strip()
-    if not token:
-        raise SystemExit("HF_TOKEN is required to mirror curated CC0 GLB files to Hugging Face.")
-    api = HfApi(token=token)
-    manifest = {"repo_id": REPO_ID, "license_policy": "Only CC0 1.0 assets are admitted.", "assets": []}
+    manifest = {"license_policy": "CC0 1.0 only; local game integration; no standalone asset redistribution.", "assets": []}
     for relative, metadata in SOURCES.items():
         target = DEST / relative
         download(metadata["url"], target)
         digest = hashlib.sha256(target.read_bytes()).hexdigest()
-        path_in_repo = f"{HF_PREFIX}/{relative}"
-        api.upload_file(
-            path_or_fileobj=str(target),
-            path_in_repo=path_in_repo,
-            repo_id=REPO_ID,
-            repo_type="dataset",
-            commit_message=f"Add CC0 environment asset: {Path(relative).name}",
-        )
         manifest["assets"].append({
-            **metadata,
-            "path": relative,
-            "hf_path": path_in_repo,
-            "bytes": target.stat().st_size,
-            "sha256": digest,
-            "glb_version": 2,
+            **metadata, "path": relative, "bytes": target.stat().st_size,
+            "sha256": digest, "glb_version": 2,
         })
         print(f"CC0_GLB_READY: {relative} bytes={target.stat().st_size} sha256={digest}")
     manifest_path = DEST / "curated_glb_manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
-    api.upload_file(
-        path_or_fileobj=str(manifest_path),
-        path_in_repo=f"{HF_PREFIX}/curated_glb_manifest.json",
-        repo_id=REPO_ID,
-        repo_type="dataset",
-        commit_message="Add curated CC0 GLB asset manifest",
-    )
-    print(f"CURATED_CC0_GLB_SYNC_PASS: {len(manifest['assets'])} assets mirrored to HF")
+    print(f"CURATED_CC0_GLB_LOCAL_PASS: {len(manifest['assets'])} assets; Hugging Face untouched")
 
 if __name__ == "__main__":
     main()
