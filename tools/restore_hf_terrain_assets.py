@@ -2,6 +2,7 @@
 """Restore only the seven curated PBR packs and five heightmaps from Hugging Face."""
 from __future__ import annotations
 import hashlib
+import re
 import os
 import shutil
 import zipfile
@@ -55,6 +56,27 @@ def normalize_material(folder: Path, files: list[Path]) -> None:
     if not (folder / "albedo.jpg").exists() and not (folder / "albedo.png").exists():
         raise RuntimeError(f"No albedo/color map found in extracted material: {folder}")
 
+def remove_broken_godot_material_resources(folder: Path) -> int:
+    """Remove stale .tres files shipped in texture packs when their res:// maps are absent.
+
+    The game builds these PBR materials in PBRMaterialLibrary.gd from normalized maps;
+    stale source .tres files are not used and otherwise create false resource-load errors.
+    """
+    removed = 0
+    for resource_path in folder.rglob("*.tres"):
+        try:
+            source = resource_path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        references = re.findall(r'path\\s*=\\s*"res://([^"]+)"', source)
+        missing = [relative for relative in references if not (ROOT / relative).is_file()]
+        if missing:
+            resource_path.unlink()
+            removed += 1
+            print("REMOVED_BROKEN_MATERIAL_RESOURCE: " + str(resource_path.relative_to(ROOT)) +
+                  " missing=" + ", ".join(missing))
+    return removed
+
 def main() -> None:
     token = os.environ.get("HF_TOKEN", "").strip()
     if not token:
@@ -96,6 +118,7 @@ def main() -> None:
         target.mkdir(parents=True, exist_ok=True)
         extracted = safe_extract(candidates[0], target)
         normalize_material(target, extracted)
+        remove_broken_godot_material_resources(target)
         restored += 1
 
     required_heightmaps = [
