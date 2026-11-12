@@ -41,7 +41,7 @@ func _ready() -> void:
 		if not _quest_system.changed.is_connected(_refresh_quest):
 			_quest_system.changed.connect(_refresh_quest)
 	get_viewport().size_changed.connect(_layout)
-	_display_hp = float(ClassSystem.hp if ClassSystem.hp > 0 else ClassSystem.max_hp)
+	_display_hp = float(ClassSystem.hp)
 	_display_mp = float(ClassSystem.mp)
 	_refresh_stats()
 	_refresh_xp_skill(ClassSystem.xp_skill, ClassSystem.xp_skill_max)
@@ -296,7 +296,7 @@ func _layout() -> void:
 			joystick.position = Vector2(18, viewport.y - bar_height - joystick.size.y - 10)
 
 func _process(delta: float) -> void:
-	var target_hp := float(ClassSystem.hp if ClassSystem.hp > 0 else ClassSystem.max_hp)
+	var target_hp := float(ClassSystem.hp)
 	_display_hp = lerpf(_display_hp, target_hp, clampf(delta * 10.0, 0.0, 1.0))
 	_display_mp = lerpf(_display_mp, float(ClassSystem.mp), clampf(delta * 10.0, 0.0, 1.0))
 	if is_instance_valid(_orb_material):
