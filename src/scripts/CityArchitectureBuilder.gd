@@ -171,11 +171,32 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
   water.name = "OuterRiverOrLavaChannel"
   var channel := PlaneMesh.new()
   channel.size = Vector2(34.0,180.0)
+  if city == "Waterlands":
+   channel.size = Vector2(100.0,230.0)
   water.mesh = channel
   water.position = Vector3(0,0.08,-205.0)
   outer.add_child(water)
   water.material_override = _material(water_color,0.3)
-  _box(outer,"GrandStoneBridgeAtNorthGate",Vector3(0,0.8,-160.0),Vector3(25.0,1.6,22.0),_material(p.stone,0.86),1.0)
+  if city == "Waterlands":
+   var island_material := _material(Color("#739451"),0.94)
+   for island_data in [{"x":-34.0,"z":-198.0},{"x":0.0,"z":-226.0},{"x":34.0,"z":-198.0}]:
+    var island := MeshInstance3D.new()
+    island.name = "Waterlands_OuterGreenIsland"
+    var island_mesh := CylinderMesh.new()
+    island_mesh.top_radius = 12.0
+    island_mesh.bottom_radius = 14.0
+    island_mesh.height = 1.6
+    island_mesh.radial_segments = 32
+    island.mesh = island_mesh
+    island.position = Vector3(float(island_data.x),0.55,float(island_data.z))
+    outer.add_child(island)
+    island.material_override = island_material
+   _box(outer,"Waterlands_WoodenNorthGateBridge",Vector3(0,1.0,-169.0),Vector3(9.0,0.65,42.0),_material(p.wood,0.88),1.0)
+   for side in [-1.0,1.0]:
+    _box(outer,"Waterlands_WoodenBridgeRail",Vector3(side*4.7,2.0,-169.0),Vector3(0.65,2.0,42.0),_material(p.wood,0.88),1.0)
+   _box(outer,"Waterlands_WoodenIslandCrossing",Vector3(0,1.0,-211.0),Vector3(74.0,0.65,7.0),_material(p.wood,0.88),1.0)
+  else:
+   _box(outer,"GrandStoneBridgeAtNorthGate",Vector3(0,0.8,-160.0),Vector3(25.0,1.6,22.0),_material(p.stone,0.86),1.0)
  print("OPEN_WORLD_BIOME_PASS: %s extent=450x450 multimesh_trees=%d" % [city,count])
 
 static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary) -> void:
