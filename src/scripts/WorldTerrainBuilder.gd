@@ -1,6 +1,7 @@
 extends Node3D
 ## Builds scalable heightfield terrain and hard safety bounds. All collision stays static.
 const PBRMaterialLibrary = preload("res://src/scripts/PBRMaterialLibrary.gd")
+const CityStreetDressing = preload("res://src/scripts/CityStreetDressing.gd")
 const CITY_SIZE := {"TwinCity":600.0,"DesertLand":450.0,"VolcanoLand":450.0,"IceLand":450.0,"Waterlands":450.0,"DarkForest":450.0}
 const HEIGHTS := {
  "TwinCity":"", "DesertLand":"res://assets/environment/heightmaps/04_desert_dunes_heightmap_16bit.png",
@@ -32,7 +33,7 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
   body.add_child(collision)
  parent.add_child(body)
  _bounds(parent,size,city)
- _roads(slot,size,city)
+ CityStreetDressing.build(slot, city, size)
  _place_karst_models(slot,city,size)
  _build_environment_dressing(slot,city,size)
 static func _height_mesh(city: String,size: float) -> ArrayMesh:
