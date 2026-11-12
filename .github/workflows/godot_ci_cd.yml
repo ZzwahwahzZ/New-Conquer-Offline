@@ -75,11 +75,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/quaternius
-          key: ${{ runner.os }}-quaternius-packs-ultimate-fantasy-rts-stylized-nature-modular-medieval-v1
+          key: ${{ runner.os }}-quaternius-github-cc0-0128ca510d653bb0-v2
           restore-keys: |
-            ${{ runner.os }}-quaternius-packs-
+            ${{ runner.os }}-quaternius-github-cc0-
 
-      - name: Download official Quaternius CC0 packs locally
+      - name: Download pinned Quaternius CC0 GLB models from public GitHub
         run: python3 tools/fetch_quaternius_assets.py
 
       - name: Cache Godot imported assets
