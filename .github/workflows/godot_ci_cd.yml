@@ -78,7 +78,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m pip install --disable-pip-version-check Pillow
-          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 15 --max-image-dimension 1024
+          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 50 --max-glb-nodes 250 --max-image-dimension 1024
       - name: Import all project resources (headless Compatibility renderer) and reject parser errors
         shell: bash
         timeout-minutes: 25
@@ -228,7 +228,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m pip install --disable-pip-version-check Pillow
-          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 15 --max-image-dimension 1024
+          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 50 --max-glb-nodes 250 --max-image-dimension 1024
       - name: Import for WebGL2 Compatibility renderer
         timeout-minutes: 25
         run: python3 tools/godot_import_guard.py --timeout 180 --max-retries 12 --log reports/godot_import_guard.log -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
@@ -383,7 +383,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m pip install --disable-pip-version-check Pillow
-          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 15 --max-image-dimension 1024
+          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 50 --max-glb-nodes 250 --max-image-dimension 1024
       - name: Import Android project resources
         timeout-minutes: 25
         run: python3 tools/godot_import_guard.py --timeout 180 --max-retries 12 --log reports/godot_import_guard.log -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose

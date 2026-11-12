@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Restore pinned terrain source assets from the Hugging Face dataset for Godot CI."""
+"""Restore only the seven curated PBR packs and five heightmaps from Hugging Face."""
 from __future__ import annotations
 import hashlib
 import os
@@ -28,13 +28,6 @@ MAP_HINTS = {
     "roughness": ("_roughness",),
     "emission": ("_emission", "_emissive"),
 }
-
-def digest(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open("rb") as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b""):
-            h.update(block)
-    return h.hexdigest()
 
 def safe_extract(zip_path: Path, destination: Path) -> list[Path]:
     extracted: list[Path] = []
@@ -66,11 +59,15 @@ def main() -> None:
     token = os.environ.get("HF_TOKEN", "").strip()
     if not token:
         raise SystemExit("HF_TOKEN secret is required to restore the private terrain dataset.")
+    # Explicit allow-list: models/unclassified is not downloaded at all.
     snapshot = Path(snapshot_download(
         repo_id=REPO_ID,
         repo_type="dataset",
         token=token,
-        allow_patterns=[f"{SOURCE}/**"],
+        allow_patterns=[
+            f"{SOURCE}/heightmaps/png/*.png",
+            f"{SOURCE}/materials/**/*.zip",
+        ],
         local_dir=str(CACHE),
     ))
     source = snapshot / SOURCE
@@ -83,13 +80,6 @@ def main() -> None:
         height_dest.mkdir(parents=True, exist_ok=True)
         for path in heightmaps.glob("*.png"):
             shutil.copy2(path, height_dest / path.name)
-
-    models = source / "models" / "unclassified"
-    model_dest = ASSETS / "models"
-    if models.is_dir():
-        model_dest.mkdir(parents=True, exist_ok=True)
-        for path in models.glob("*.glb"):
-            shutil.copy2(path, model_dest / path.name)
 
     material_source = source / "materials"
     material_dest = ASSETS / "materials"
@@ -121,7 +111,7 @@ def main() -> None:
         raise SystemExit(f"Only {restored} PBR material archives restored; at least five are required.")
     print(f"HF_TERRAIN_ASSETS_RESTORED: {restored} PBR material packs")
     print(f"Heightmaps: {len(required_heightmaps)}")
-    print(f"GLB source models: {len(list(model_dest.glob('*.glb')))} (kept under original unclassified names)")
+    print("UNCLASSIFIED_GLB_DOWNLOAD: SKIPPED (models/unclassified excluded by allow-list)")
     print(f"Godot destination: {ASSETS}")
 
 if __name__ == "__main__":
