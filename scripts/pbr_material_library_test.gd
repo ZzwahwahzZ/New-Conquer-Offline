@@ -12,4 +12,4 @@ func _initialize() -> void:
  var lava: StandardMaterial3D = PBR.build_emissive_material(Color("#ff4b12"))
  assert(lava.emission_enabled)
  print("PBR_MATERIAL_LIBRARY_PASS: six environments, normal/roughness maps, triplanar and emission fallback")
- quit()
+ quit(0)
