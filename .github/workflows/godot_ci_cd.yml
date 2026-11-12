@@ -196,7 +196,7 @@ jobs:
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/city_street_dressing_test.gd
 
-      - name: Capture thirty real architectural proof frames across all six cities
+      - name: Capture thirty close classic-Conquer camera proof frames across all six cities
         timeout-minutes: 15
         shell: bash
         run: |
@@ -206,10 +206,10 @@ jobs:
           cities=(twincity desertland volcanoland iceland waterlands darkforest)
           city_index=1
           for city in "${cities[@]}"; do
-            for sample in 01_t00 02_t04 03_t08 04_t12; do
+            for sample in 01_plaza_close 02_shop_street_close 03_main_gate_horizon 04_outer_world; do
               test -s "reports/visual-proof/city_${city_index}_${city}_${sample}.png"
             done
-            test -s "reports/visual-proof/city_${city_index}_${city}_05_gate_orbit.png"
+            test -s "reports/visual-proof/city_${city_index}_${city}_05_orbit_90.png"
             city_index=$((city_index+1))
           done
           file reports/visual-proof/*.png
