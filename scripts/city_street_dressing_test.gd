@@ -40,6 +40,18 @@ func _run() -> void:
 		var streets := city.get_node_or_null("TerrainAssetSlot")
 		if not _check(streets != null, city_name + " terrain slot missing"):
 			return
+		var bridge_count := 0
+		var bridge_stack: Array[Node] = [city]
+		while not bridge_stack.is_empty():
+			var bridge_node: Node = bridge_stack.pop_back()
+			for child in bridge_node.get_children():
+				bridge_stack.append(child)
+			if bridge_node.is_in_group("world_bridge"):
+				bridge_count += 1
+				if not _check(bridge_node.find_child("BridgeWalkableCollision", true, false) is CollisionShape3D, city_name + " bridge deck has no walkable collision"):
+					return
+		if city_name in ["TwinCity", "Waterlands"] and not _check(bridge_count == 6, city_name + " must have six walkable canal bridges (found %d)" % bridge_count):
+			return
 		for node_name in ["Street_NorthSouth", "Street_EastWest", "CentralDarkSquare"]:
 			if not _check(city.find_child(node_name, true, false) is MeshInstance3D, city_name + " missing " + node_name):
 				return
