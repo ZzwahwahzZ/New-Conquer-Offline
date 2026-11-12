@@ -109,9 +109,19 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  parent.add_child(instance)
  _add_static_mesh_collisions(instance)
  instance.add_to_group("distance_cull_world")
- instance.visibility_range_end = 360.0
- instance.visibility_range_end_margin = 35.0
+ _set_visibility_range(instance, 360.0, 35.0)
  return instance
+
+static func _set_visibility_range(root: Node, range_end: float, margin: float) -> void:
+ var pending: Array[Node] = [root]
+ while not pending.is_empty():
+  var current: Node = pending.pop_back()
+  for child in current.get_children():
+   pending.append(child)
+  if current is GeometryInstance3D:
+   var geometry := current as GeometryInstance3D
+   geometry.visibility_range_end = range_end
+   geometry.visibility_range_end_margin = margin
 
 static func _collect_quaternius_models(path: String, output: Array[String]) -> void:
  var directory := DirAccess.open(path)
