@@ -160,11 +160,11 @@ static func _fallback_ground_material(city: String) -> StandardMaterial3D:
 
 static func _build_flat_twin_city_plaza(parent: Node3D) -> void:
  var plaza := StaticBody3D.new()
- plaza.name = "TwinCityFlatPlaza"
+ plaza.name = "TwinCityFlatPlaza_80x80"
  var floor := MeshInstance3D.new()
  floor.name = "TwinCityImperialStonePlaza"
  var plane := PlaneMesh.new()
- plane.size = Vector2(124.0,124.0)
+ plane.size = Vector2(80.0,80.0)
  floor.mesh = plane
  floor.position.y = 0.018
  floor.material_override = _stone_material()
