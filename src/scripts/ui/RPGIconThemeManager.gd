@@ -81,13 +81,13 @@ static func make_nine_patch(texture: Texture2D, margins: int = 14) -> NinePatchR
 	return patch
 
 static func ornate_frame_texture() -> Texture2D:
-	var texture := load("res://assets/ui/frames/ornate_gold_9slice.svg") as Texture2D
+	var texture := load("res://assets/ui_custom/frames/ornate_gold_9slice.svg") as Texture2D
 	if texture == null:
 		texture = find_texture("frames", "brown")
 	return texture
 
 static func orb_frame_texture() -> Texture2D:
-	return load("res://assets/ui/frames/ornate_orb_ring.svg") as Texture2D
+	return load("res://assets/ui_custom/frames/ornate_orb_ring.svg") as Texture2D
 
 static func frame_style() -> StyleBox:
 	var texture := ornate_frame_texture()
