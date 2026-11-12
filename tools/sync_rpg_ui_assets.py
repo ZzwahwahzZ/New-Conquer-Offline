@@ -2,12 +2,14 @@
 """Fetch verified Kenney CC0 RPG UI packs, classify PNGs, publish to HF and restore to Godot."""
 from __future__ import annotations
 
+import concurrent.futures
 import hashlib
 import json
 import os
 import shutil
 import urllib.request
 import zipfile
+from urllib.parse import quote
 from pathlib import Path, PurePosixPath
 
 from huggingface_hub import HfApi, snapshot_download
@@ -18,7 +20,11 @@ ROOT = Path(__file__).resolve().parents[1]
 DEST = ROOT / "assets" / "ui"
 CACHE = Path("/tmp/hf-rpg-ui-cache")
 STAGE = Path("/tmp/rpg-ui-stage")
-SOURCE_VERSION = "kenney-cc0-rpg-ui-2026-11"
+PUBLISH = Path("/tmp/rpg-ui-publish")
+SOURCE_VERSION = "kenney-cc0-rpg-ui-2026-11-v2"
+MIRROR_REPO = "shorepine/kenney"
+MIRROR_COMMIT = "3694c6879e487c108f55677be7dd2ca75b07cc3b"
+_MIRROR_TREE = None
 MINIMUM_PNG_FILES = 51
 
 # Official Kenney download endpoints are tried first. If Kenney's dynamic
@@ -36,6 +42,42 @@ PACKS = {
         "mirror_url": "https://raw.githubusercontent.com/bill2432/kenney-2d-mirror/main/packs/roguelike-rpg-pack.zip",
         "mirror_sha256": "8e7d2378f8f794245645f6d7dc7aeeb246791410a7e512293c594b46a5a9524b",
         "page": "https://kenney.nl/assets/roguelike-rpg-pack",
+        "license": "CC0-1.0",
+    },
+    "fantasy-ui-borders": {
+        "official_url": "https://kenney.nl/assets/fantasy-ui-borders/download",
+        "mirror_prefix": "ui/Fantasy UI Borders/",
+        "page": "https://kenney.nl/assets/fantasy-ui-borders",
+        "license": "CC0-1.0",
+    },
+    "rune-pack": {
+        "official_url": "https://kenney.nl/assets/rune-pack/download",
+        "mirror_prefix": "2d/Rune Pack/",
+        "page": "https://kenney.nl/assets/rune-pack",
+        "license": "CC0-1.0",
+    },
+    "scribble-dungeons": {
+        "official_url": "https://kenney.nl/assets/scribble-dungeons/download",
+        "mirror_prefix": "2d/Scribble Dungeons/",
+        "page": "https://kenney.nl/assets/scribble-dungeons",
+        "license": "CC0-1.0",
+    },
+    "abstract-platformer": {
+        "official_url": "https://kenney.nl/assets/abstract-platformer/download",
+        "mirror_prefix": "2d/Abstract Platformer/",
+        "page": "https://kenney.nl/assets/abstract-platformer",
+        "license": "CC0-1.0",
+    },
+    "new-platformer-pack": {
+        "official_url": "https://kenney.nl/assets/new-platformer-pack/download",
+        "mirror_prefix": "2d/New Platformer Pack/",
+        "page": "https://kenney.nl/assets/new-platformer-pack",
+        "license": "CC0-1.0",
+    },
+    "board-game-icons": {
+        "official_url": "https://kenney.nl/assets/board-game-icons/download",
+        "mirror_prefix": "icons/Board Game Icons/",
+        "page": "https://kenney.nl/assets/board-game-icons",
         "license": "CC0-1.0",
     },
 }
@@ -60,6 +102,84 @@ def download(url: str, target: Path) -> None:
     if target.stat().st_size < 20_000 or not zipfile.is_zipfile(target):
         raise RuntimeError(f"Not a valid Kenney ZIP archive: {url}")
 
+def get_mirror_tree() -> list[dict]:
+    global _MIRROR_TREE
+    if _MIRROR_TREE is None:
+        url = f"https://api.github.com/repos/{MIRROR_REPO}/git/trees/{MIRROR_COMMIT}?recursive=1"
+        request = urllib.request.Request(url, headers={"User-Agent": "New-Conquer-Offline-KenneyCC0Sync/2.0"})
+        with urllib.request.urlopen(request, timeout=90) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+        if payload.get("truncated"):
+            raise RuntimeError("Pinned Kenney mirror tree was truncated")
+        _MIRROR_TREE = payload.get("tree", [])
+    return _MIRROR_TREE
+
+def include_mirror_asset(pack_name: str, path: str) -> bool:
+    lower = path.lower()
+    filename = PurePosixPath(path).name.lower()
+    if pack_name == "fantasy-ui-borders":
+        return filename.endswith(".png")
+    if pack_name == "rune-pack":
+        return filename.endswith(".png")
+    if pack_name == "scribble-dungeons":
+        return "/double (128px)/items/" in lower and (
+            filename.startswith("weapon_") or filename.startswith("shield_")
+        )
+    if pack_name == "abstract-platformer":
+        return "/items/" in lower and any(token in filename for token in ("gem", "jewel", "crystal"))
+    if pack_name == "new-platformer-pack":
+        return "/double/" in lower and filename.startswith("gem_")
+    if pack_name == "board-game-icons":
+        return "/double (128px)/" in lower and filename.startswith("flask_")
+    return filename.endswith(".png")
+
+def fetch_mirror_file(path: str) -> tuple[str, bytes]:
+    url = f"https://raw.githubusercontent.com/{MIRROR_REPO}/{MIRROR_COMMIT}/{quote(path, safe='/')}"
+    request = urllib.request.Request(url, headers={"User-Agent": "New-Conquer-Offline-KenneyCC0Sync/2.0"})
+    with urllib.request.urlopen(request, timeout=60) as response:
+        data = response.read()
+    if not data.startswith(b"\\x89PNG\\r\\n\\x1a\\n"):
+        raise RuntimeError(f"Mirror item is not a PNG: {path}")
+    return path, data
+
+def download_mirror_subset(pack_name: str, metadata: dict, target: Path) -> dict:
+    prefix = metadata["mirror_prefix"]
+    entries = [
+        item["path"] for item in get_mirror_tree()
+        if item.get("type") == "blob"
+        and item["path"].startswith(prefix)
+        and include_mirror_asset(pack_name, item["path"])
+    ]
+    if not entries:
+        raise RuntimeError(f"No pinned mirror PNGs found for {pack_name}")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(target, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=16) as pool:
+            futures = [pool.submit(fetch_mirror_file, path) for path in entries]
+            for future in concurrent.futures.as_completed(futures):
+                path, data = future.result()
+                relative = path[len(prefix):]
+                archive.writestr(relative, data)
+        provenance = (
+            f"Kenney CC0 mirror subset\\n"
+            f"Repository: https://github.com/{MIRROR_REPO}\\n"
+            f"Pinned commit: {MIRROR_COMMIT}\\n"
+            f"Official source page: {metadata['page']}\\n"
+            f"License: {metadata['license']}\\n"
+        )
+        archive.writestr("MIRROR_PROVENANCE.md", provenance)
+    actual = sha256_file(target)
+    print(f"KENNEY_PINNED_GITHUB_MIRROR_PASS: {pack_name} png={len(entries)} sha256={actual}")
+    return {
+        "source": "verified-pinned-github-mirror-subset",
+        "download_url": f"https://github.com/{MIRROR_REPO}/tree/{MIRROR_COMMIT}",
+        "mirror_repository": f"https://github.com/{MIRROR_REPO}",
+        "mirror_commit": MIRROR_COMMIT,
+        "mirror_png_files": len(entries),
+        "archive_bytes": target.stat().st_size,
+        "sha256": actual,
+    }
+
 def download_pack(pack_name: str, metadata: dict, target: Path) -> dict:
     errors = []
     try:
@@ -75,12 +195,12 @@ def download_pack(pack_name: str, metadata: dict, target: Path) -> dict:
         target.unlink(missing_ok=True)
 
     try:
+        if metadata.get("mirror_prefix"):
+            return download_mirror_subset(pack_name, metadata, target)
         download(metadata["mirror_url"], target)
         actual = sha256_file(target)
         if actual != metadata["mirror_sha256"]:
-            raise RuntimeError(
-                f"GitHub mirror SHA256 mismatch for {pack_name}: {actual}"
-            )
+            raise RuntimeError(f"GitHub mirror SHA256 mismatch for {pack_name}: {actual}")
         print(f"KENNEY_GITHUB_MIRROR_PASS: {pack_name} sha256={actual}")
         return {
             "source": "verified-github-mirror",
@@ -148,12 +268,7 @@ def classify_assets(stage: Path, provenance: dict) -> dict:
         (p for p in source_root.rglob("*") if p.is_file() and p.suffix.lower() in IMAGE_EXTS),
         key=lambda p: p.as_posix().lower(),
     )
-    if len(images) < MINIMUM_PNG_FILES:
-        raise RuntimeError(
-            f"Kenney PNG quality gate failed: {len(images)} PNG files; "
-            f"at least {MINIMUM_PNG_FILES} are required"
-        )
-
+    classified_count = 0
     category_rules = [
         ("weapons", ("weapon", "sword", "bow", "dagger", "axe", "staff", "arrow", "spear")),
         ("armor", ("armor", "armour", "shield", "helmet", "boots", "glove", "robe", "chestplate")),
@@ -161,45 +276,98 @@ def classify_assets(stage: Path, provenance: dict) -> dict:
         ("skills", ("skill", "spell", "magic", "rune", "scroll", "wand")),
         ("potions", ("potion", "flask", "elixir", "health", "mana", "hp_", "mp_")),
     ]
+
     for image_path in images:
         relative = image_path.relative_to(source_root)
         normalized = relative.as_posix().lower().replace(" ", "_").replace("-", "_")
         pack_name = relative.parts[0] if relative.parts else "unknown"
+        filename = image_path.name.lower()
+        target_dir = None
+
         if pack_name == "ui-pack":
             if any(token in normalized for token in ("button", "btn", "checkbox", "check_")):
                 target_dir = stage / "buttons"
-            elif any(token in normalized for token in ("bar", "slider", "progress", "health", "mana")):
+            elif any(token in normalized for token in ("bar", "slider", "slide", "progress", "health", "mana")):
                 target_dir = stage / "bars"
             elif any(token in normalized for token in ("panel", "frame", "window", "border", "dialog", "slot", "input")):
                 target_dir = stage / "frames"
             else:
                 target_dir = stage / "icons" / "misc"
+        elif pack_name == "fantasy-ui-borders":
+            target_dir = stage / "frames"
+        elif pack_name == "rune-pack":
+            target_dir = stage / "icons" / "skills"
+        elif pack_name == "scribble-dungeons":
+            if "/items/" in normalized and filename.startswith("weapon_"):
+                target_dir = stage / "icons" / "weapons"
+            elif "/items/" in normalized and filename.startswith("shield_"):
+                target_dir = stage / "icons" / "armor"
+        elif pack_name == "abstract-platformer":
+            if "/items/" in normalized and any(token in filename for token in ("gem", "jewel", "crystal")):
+                target_dir = stage / "icons" / "gems"
+        elif pack_name == "new-platformer-pack":
+            if "/double/" in normalized and filename.startswith("gem_"):
+                target_dir = stage / "icons" / "gems"
+        elif pack_name == "board-game-icons":
+            if "double (128px)" in normalized and filename.startswith("flask_"):
+                target_dir = stage / "icons" / "potions"
+        elif pack_name == "roguelike-rpg-pack":
+            # Keep the source tilesheet for later world work; do not mislabel it as item icons.
+            continue
         else:
-            target_dir = stage / "icons" / "misc"
             for category, tokens in category_rules:
                 if any(token in normalized for token in tokens):
                     target_dir = stage / "icons" / category
                     break
+
+        if target_dir is None:
+            continue
         safe_copy(image_path, target_dir, pack_name)
-        key = target_dir.relative_to(stage).as_posix()
-        counts[key] += 1
+        counts[target_dir.relative_to(stage).as_posix()] += 1
+        classified_count += 1
+
+    required_minimums = {
+        "frames": 20,
+        "buttons": 20,
+        "bars": 10,
+        "icons/weapons": 10,
+        "icons/armor": 2,
+        "icons/gems": 10,
+        "icons/skills": 30,
+        "icons/potions": 3,
+    }
+    missing = {
+        category: {"actual": counts.get(category, 0), "required": minimum}
+        for category, minimum in required_minimums.items()
+        if counts.get(category, 0) < minimum
+    }
+    if classified_count < MINIMUM_PNG_FILES or missing:
+        raise RuntimeError(
+            "Kenney PNG category quality gate failed: "
+            + json.dumps({"classified_png": classified_count, "required_total": MINIMUM_PNG_FILES, "missing_categories": missing}, sort_keys=True)
+        )
 
     manifest = {
-        "title": "Kenney CC0 RPG UI and item icon library",
+        "title": "Kenney CC0 RPG UI and categorized item icon library",
         "source_version": SOURCE_VERSION,
         "repository": REPO_ID,
         "license": "CC0-1.0",
         "sources": provenance,
         "image_format": "PNG only; PSD files are never extracted or parsed",
-        "image_count": len(images),
+        "source_png_count": len(images),
+        "image_count": classified_count,
         "category_counts": counts,
+        "category_quality_gate": required_minimums,
         "godot_destination": "res://assets/ui/",
         "notes": [
-            "UI Pack provides individual UI PNG sprites for frames, buttons and bars.",
-            "Roguelike/RPG Pack supplies RPG item and environment sprites; filename-based categories are conservative.",
-            "Unmatched sprites remain in icons/misc rather than being mislabeled.",
-            "Kenney asset pages identify both packs as Creative Commons CC0.",
-            "HP and MP orbs are rendered by the project's Godot circular glow shader.",
+            "UI Pack provides separate PNG buttons, sliders/bars and UI glyphs.",
+            "Fantasy UI Borders supplies ornamental RPG panel frames.",
+            "Scribble Dungeons weapon and shield icons are selected from its 128px set.",
+            "Rune Pack PNGs are classified as skill/rune icons.",
+            "Abstract Platformer and New Platformer Pack gem/crystal assets are selected by filename and source folder.",
+            "Board Game Icons flask states are used as potion/flask icons.",
+            "Roguelike/RPG source tilesheets are retained only in the temporary audit stage, never mislabeled as item icons.",
+            "Unmatched files are not forced into a semantic category.",
         ],
     }
     (stage / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
@@ -273,20 +441,42 @@ def main() -> None:
 
     manifest = classify_assets(STAGE, provenance)
     print(
-        f"KENNEY_PNG_QUALITY_PASS: {manifest['image_count']} PNG files "
+        f"KENNEY_PNG_QUALITY_PASS: {manifest['image_count']} categorized PNG files "
         f"(required >50); PSD_IGNORED={ignored_psd_total}"
     )
+    if PUBLISH.exists():
+        shutil.rmtree(PUBLISH)
+    PUBLISH.mkdir(parents=True)
+    for folder_name in ("frames", "buttons", "bars", "icons"):
+        shutil.copytree(STAGE / folder_name, PUBLISH / folder_name)
+    shutil.copy2(STAGE / "manifest.json", PUBLISH / "manifest.json")
+
+    # Remove the previous incomplete bundle so obsolete thumbnails and sprite sheets
+    # cannot remain beside the new curated category structure.
+    try:
+        existing = api.list_repo_files(repo_id=REPO_ID, repo_type=REPO_TYPE)
+        if any(path.startswith("ui_and_icons/") for path in existing):
+            api.delete_folder(
+                path_in_repo="ui_and_icons",
+                repo_id=REPO_ID,
+                repo_type=REPO_TYPE,
+                commit_message="Remove superseded incomplete UI bundle before Kenney refresh",
+            )
+            print("HF_OLD_UI_BUNDLE_CLEANUP_PASS")
+    except Exception as exc:
+        print(f"HF_OLD_UI_BUNDLE_CLEANUP_WARNING: {type(exc).__name__}: {exc}")
+
     api.upload_folder(
-        folder_path=str(STAGE),
+        folder_path=str(PUBLISH),
         path_in_repo="ui_and_icons",
         repo_id=REPO_ID,
         repo_type=REPO_TYPE,
-        commit_message="Replace incomplete UI assets with verified Kenney CC0 PNG packs",
+        commit_message="Publish categorized Kenney CC0 RPG UI and item icons",
     )
     if DEST.exists():
         shutil.rmtree(DEST)
     DEST.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(STAGE, DEST)
+    shutil.copytree(PUBLISH, DEST)
     print(
         f"HF_KENNEY_RPG_UI_SEED_PASS: images={manifest['image_count']} "
         f"categories={json.dumps(manifest['category_counts'], sort_keys=True)}"
