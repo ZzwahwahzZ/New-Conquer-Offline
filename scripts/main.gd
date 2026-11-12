@@ -68,16 +68,8 @@ func _build_arena() -> void:
   add_child(camera_rig)
   var hud: CanvasLayer = load("res://src/scenes/HUD.tscn").instantiate() as CanvasLayer
   add_child(hud)
-  var layer := CanvasLayer.new()
-  add_child(layer)
-  status = Label.new()
-  status.position = Vector2(18,16)
-  status.add_theme_font_size_override("font_size",20)
-  layer.add_child(status)
-  var hint := Label.new()
-  hint.text = "WASD Move | SPACE Jump | F Attack | F5 Save"
-  hint.position = Vector2(18,48)
-  layer.add_child(hint)
+  # Player status and controls now live exclusively in the classic bottom HUD.
+  status = null
 func _add_capsule(parent: Node3D, color: Color, radius: float, height: float) -> void:
   var mesh_node := MeshInstance3D.new()
   var mesh := CapsuleMesh.new()
