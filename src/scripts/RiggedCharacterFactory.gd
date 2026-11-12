@@ -77,7 +77,7 @@ static func set_tint(root: Node, tint: Color) -> void:
    source = mesh_node.get_meta("rigged_original_material") as Material
   if source == null:
    source = mesh_node.material_override
-   if source == null and mesh_node.mesh != null and mesh_node.mesh.get_surface_count() > 0:
+   if source == null and mesh_node.mesh != null and mesh_node.mesh.get_rid().is_valid() and mesh_node.mesh.get_surface_count() > 0:
     source = mesh_node.mesh.surface_get_material(0)
    if source != null:
     mesh_node.set_meta("rigged_original_material", source)
