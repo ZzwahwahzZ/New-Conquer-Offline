@@ -91,11 +91,77 @@ func _build_landmarks() -> void:
 	var slot := get_node_or_null("ArchitectureAssetSlot") as Node3D
 	if slot == null:
 		return
-	# Keep a clear, walkable landmark anchor in the central district.
 	var marker := Marker3D.new()
 	marker.name = "CentralLandmarkAnchor"
-	marker.position = Vector3(0.0, 0.0, 0.0)
+	marker.position = Vector3.ZERO
 	slot.add_child(marker)
+	var spawn := Marker3D.new()
+	spawn.name = "PlayerSpawn"
+	spawn.position = Vector3.ZERO
+	slot.add_child(spawn)
+	if settlement_id == "TwinCity":
+		_build_twincity_reference_landmarks(slot)
+
+func _build_twincity_reference_landmarks(parent: Node3D) -> void:
+	var root := Node3D.new()
+	root.name = "TwinCityReferenceLandmarks"
+	parent.add_child(root)
+	for data in [
+		{"name":"NorthWestReferencePillar","position":Vector3(-12.0,0.0,-12.0)},
+		{"name":"NorthEastReferencePillar","position":Vector3(12.0,0.0,-12.0)},
+		{"name":"SouthWestReferencePillar","position":Vector3(-12.0,0.0,12.0)},
+		{"name":"SouthEastReferencePillar","position":Vector3(12.0,0.0,12.0)}
+	]:
+		_add_reference_pillar(root, str(data.name), data.position, 4.6)
+	var gate := Node3D.new()
+	gate.name = "TwinCitySouthGate"
+	gate.position = Vector3(0.0,0.0,-28.0)
+	root.add_child(gate)
+	_add_reference_pillar(gate, "GateLeftPost", Vector3(-7.0,0.0,0.0), 5.2)
+	_add_reference_pillar(gate, "GateRightPost", Vector3(7.0,0.0,0.0), 5.2)
+	_add_reference_box(gate, "GateCrossbeam", Vector3(0.0,5.45,0.0), Vector3(15.2,0.62,0.9), Color("#8d3029"), 0.35)
+	_add_reference_box(gate, "GateRoof", Vector3(0.0,5.95,0.0), Vector3(17.0,0.28,1.45), Color("#b88a42"), 0.48)
+	_add_reference_box(gate, "GateRoofRidge", Vector3(0.0,6.18,0.0), Vector3(15.8,0.18,0.62), Color("#344f48"), 0.55)
+
+func _add_reference_pillar(parent: Node3D, pillar_name: String, origin: Vector3, height: float) -> void:
+	var pillar := Node3D.new()
+	pillar.name = pillar_name
+	pillar.position = origin
+	parent.add_child(pillar)
+	var base := CylinderMesh.new()
+	base.top_radius = 0.72
+	base.bottom_radius = 0.84
+	base.height = 0.42
+	base.radial_segments = 12
+	_add_reference_mesh(pillar, "StoneBase", base, Vector3(0.0,0.21,0.0), Color("#8b806b"), 0.78)
+	var shaft := CylinderMesh.new()
+	shaft.top_radius = 0.39
+	shaft.bottom_radius = 0.43
+	shaft.height = height
+	shaft.radial_segments = 12
+	_add_reference_mesh(pillar, "RedPillarShaft", shaft, Vector3(0.0,0.42 + height * 0.5,0.0), Color("#963d31"), 0.62)
+	var capital := CylinderMesh.new()
+	capital.top_radius = 0.76
+	capital.bottom_radius = 0.68
+	capital.height = 0.34
+	capital.radial_segments = 12
+	_add_reference_mesh(pillar, "GoldPillarCapital", capital, Vector3(0.0,0.42 + height + 0.17,0.0), Color("#c49a4c"), 0.42)
+
+func _add_reference_mesh(parent: Node3D, node_name: String, mesh: Mesh, local_position: Vector3, color: Color, roughness_value: float) -> void:
+	var visual := MeshInstance3D.new()
+	visual.name = node_name
+	visual.mesh = mesh
+	visual.position = local_position
+	var material := StandardMaterial3D.new()
+	material.albedo_color = color
+	material.roughness = roughness_value
+	visual.material_override = material
+	parent.add_child(visual)
+
+func _add_reference_box(parent: Node3D, node_name: String, local_position: Vector3, dimensions: Vector3, color: Color, roughness_value: float) -> void:
+	var mesh := BoxMesh.new()
+	mesh.size = dimensions
+	_add_reference_mesh(parent, node_name, mesh, local_position, color, roughness_value)
 
 func _build_sanctuary_landmarks() -> void:
 	var slot := get_node_or_null("SanctuaryAnchors") as Node3D
