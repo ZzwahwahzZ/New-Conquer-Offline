@@ -267,6 +267,7 @@ func get_minimap_snapshot() -> Dictionary:
 func spawn_impact_effect(world_position: Vector3) -> void:
 	if not is_instance_valid(current_world) or _active_impacts.size() >= MAX_IMPACT_POOL: return
 	var effect: MeshInstance3D
+	var new_material: StandardMaterial3D = null
 	if not _impact_pool.is_empty():
 		effect = _impact_pool.pop_back()
 		if effect.get_parent() != null: effect.get_parent().remove_child(effect)
@@ -277,13 +278,14 @@ func spawn_impact_effect(world_position: Vector3) -> void:
 		sphere.radius = 0.22
 		sphere.height = 0.44
 		effect.mesh = sphere
-		var material := StandardMaterial3D.new()
-		material.albedo_color = Color(1.0,0.55,0.16,0.9)
-		material.emission_enabled = true
-		material.emission = Color(1.0,0.24,0.04)
-		material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		new_material = StandardMaterial3D.new()
+		new_material.albedo_color = Color(1.0,0.55,0.16,0.9)
+		new_material.emission_enabled = true
+		new_material.emission = Color(1.0,0.24,0.04)
+		new_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	current_world.add_child(effect)
-		effect.material_override = material
+	if new_material != null:
+		effect.material_override = new_material
 	effect.global_position = world_position
 	effect.scale = Vector3.ONE
 	effect.visible = true
