@@ -22,7 +22,7 @@ static func _find_texture_recursive(directory_path: String, hint: String) -> Tex
 		var lower := file_name.to_lower()
 		if not (lower.ends_with(".png") or lower.ends_with(".svg") or lower.ends_with(".webp")):
 			continue
-		if hint.is_empty() or lower.contains(hint):
+		if hint.is_empty() or lower.contains(hint) or (directory_path + "/" + file_name).to_lower().contains(hint):
 			var texture := load(directory_path + "/" + file_name) as Texture2D
 			if texture != null:
 				return texture
@@ -48,7 +48,11 @@ static func make_nine_patch(texture: Texture2D, margins: int = 14) -> NinePatchR
 	return patch
 
 static func frame_style() -> StyleBox:
-	var texture := find_texture("frames", "panel")
+	var texture := find_texture("frames", "brown")
+	if texture == null:
+		texture = find_texture("frames", "gold")
+	if texture == null:
+		texture = find_texture("frames", "panel")
 	if texture == null:
 		texture = find_texture("frames", "frame")
 	if texture != null:
@@ -85,9 +89,11 @@ static func style_button(button: Button, icon_key: String = "") -> void:
 	button.add_theme_color_override("font_hover_color", Color.WHITE)
 	button.add_theme_color_override("font_pressed_color", GOLD_HI)
 	button.add_theme_color_override("font_disabled_color", Color(0.48, 0.46, 0.42, 0.72))
-	var normal_texture := find_texture("buttons", "normal")
-	var hover_texture := find_texture("buttons", "hover")
-	var pressed_texture := find_texture("buttons", "pressed")
+	var normal_texture := find_texture("buttons", "button_rectangle_depth_border")
+	if normal_texture == null:
+		normal_texture = find_texture("buttons", "button_round_depth_border")
+	var hover_texture := find_texture("buttons", "button_rectangle_depth_flat")
+	var pressed_texture := find_texture("buttons", "button_square_depth_border")
 	button.add_theme_stylebox_override("normal", _texture_box(normal_texture) if normal_texture != null else _box(PANEL, GOLD, 1, 7))
 	button.add_theme_stylebox_override("hover", _texture_box(hover_texture) if hover_texture != null else _box(Color(0.12, 0.095, 0.055, 0.98), GOLD_HI, 2, 7))
 	button.add_theme_stylebox_override("pressed", _texture_box(pressed_texture) if pressed_texture != null else _box(Color(0.02, 0.025, 0.035, 1.0), Color("#ffe5a6"), 2, 7))
