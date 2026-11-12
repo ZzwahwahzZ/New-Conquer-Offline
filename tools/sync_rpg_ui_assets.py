@@ -28,7 +28,7 @@ PACKS = {
     },
 }
 IMAGE_EXTS = {".png", ".svg", ".webp"}
-ALLOWED_EXTRACT_EXTS = IMAGE_EXTS | {".txt", ".md", ".json", ".license", ".zip"}
+ALLOWED_EXTRACT_EXTS = IMAGE_EXTS | {".jpg", ".jpeg", ".txt", ".md", ".json", ".license", ".zip", ".psd"}
 
 def download(url: str, target: Path) -> None:
     request = urllib.request.Request(url, headers={"User-Agent": "New-Conquer-Offline-AssetSync/1.0"})
@@ -66,6 +66,46 @@ def safe_extract(archive_path: Path, destination: Path, depth: int = 0) -> list[
         extracted.extend(safe_extract(nested, nested_destination, depth + 1))
     return extracted
 
+
+def export_psd_assets(source_root: Path) -> int:
+    psd_files = list(source_root.rglob("*.psd")) + list(source_root.rglob("*.PSD"))
+    if not psd_files:
+        return 0
+    try:
+        from psd_tools import PSDImage
+    except ImportError:
+        import subprocess
+        import sys
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "--disable-pip-version-check", "psd-tools"])
+        from psd_tools import PSDImage
+    exported = 0
+    for psd_path in psd_files:
+        document = PSDImage.open(psd_path)
+        output_dir = psd_path.parent / (psd_path.stem + "_layers")
+        output_dir.mkdir(parents=True, exist_ok=True)
+        composite = document.composite()
+        if composite is not None:
+            composite_path = output_dir / (psd_path.stem + "_composite.png")
+            composite.save(composite_path)
+            exported += 1
+        for index, layer in enumerate(document.descendants()):
+            try:
+                if layer.is_group() or not layer.is_visible():
+                    continue
+                image = layer.composite()
+                if image is None or image.getbbox() is None:
+                    continue
+                safe_name = "".join(ch if ch.isalnum() or ch in "-_" else "_" for ch in str(layer.name)).strip("_")
+                if not safe_name:
+                    safe_name = f"layer_{index:03d}"
+                target = output_dir / f"{index:03d}_{safe_name[:64]}.png"
+                image.save(target)
+                exported += 1
+            except Exception as error:
+                print(f"PSD_LAYER_SKIP: {psd_path.name} layer={index} name={getattr(layer, 'name', '')!r} error={error}")
+        print(f"PSD_TO_PNG: {psd_path.name} layers_exported={exported} canvas={document.width}x{document.height}")
+    return exported
+
 def classify_assets(stage: Path, provenance: dict) -> dict:
     source_root = stage / "source"
     icons_root = stage / "icons"
@@ -87,7 +127,7 @@ def classify_assets(stage: Path, provenance: dict) -> dict:
     }
     alias_hits = {}
     for path in images:
-        name = path.stem.lower().replace(" ", "_").replace("-", "_")
+        name = relative.as_posix().lower().replace(" ", "_").replace("-", "_")
         relative = path.relative_to(source_root)
         if any(token in name for token in ("button", "btn")):
             shutil.copy2(path, buttons_root / path.name)
@@ -160,6 +200,8 @@ def main() -> None:
             "extracted_files": len(extracted),
         }
         print(f"RPG_UI_PACK_EXTRACTED: {pack_name} files={len(extracted)} bytes={archive.stat().st_size}")
+    psd_exports = export_psd_assets(STAGE / "source")
+    print(f"PSD_LAYER_EXPORT_TOTAL: {psd_exports}")
     manifest = classify_assets(STAGE, provenance)
     if manifest["image_count"] < 20:
         raise SystemExit(f"UI pack extraction yielded too few images: {manifest['image_count']}")
