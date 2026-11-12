@@ -14,7 +14,7 @@ func _check(ok: bool, message: String) -> bool:
 
 func _run() -> void:
 	for city_name in CITIES:
-		var path := "res://src/scenes/world/" + city_name + ".tscn"
+		var path: String = "res://src/scenes/world/" + str(city_name) + ".tscn"
 		var packed := load(path) as PackedScene
 		if not _check(packed != null, city_name + " scene missing"):
 			return
