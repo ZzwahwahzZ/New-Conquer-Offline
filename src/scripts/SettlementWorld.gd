@@ -159,8 +159,8 @@ func _add_reference_mesh(parent: Node3D, node_name: String, mesh: Mesh, local_po
 	var material := StandardMaterial3D.new()
 	material.albedo_color = color
 	material.roughness = roughness_value
-	visual.material_override = material
 	parent.add_child(visual)
+	visual.material_override = material
 
 func _add_reference_box(parent: Node3D, node_name: String, local_position: Vector3, dimensions: Vector3, color: Color, roughness_value: float) -> void:
 	var mesh := BoxMesh.new()
