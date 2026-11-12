@@ -142,7 +142,7 @@ func perform_attack(target: Node3D) -> void:
 	var rig_instance := _visual.get_node_or_null("Rigged_Bot") if is_instance_valid(_visual) else null
 	if rig_instance != null:
 		RiggedCharacterFactory.play_state(rig_instance, "Attack")
-	look_at(Vector3(target.global_position.x,global_position.y,target.global_position.z),Vector3.UP)
+	look_at_from_position(global_position, Vector3(target.global_position.x,global_position.y,target.global_position.z),Vector3.UP)
 	var generation := _actor_generation
 	_visual.scale = Vector3(1.18,0.88,0.88)
 	await get_tree().create_timer(0.16).timeout
@@ -189,7 +189,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			var direction := offset.normalized()
 			velocity = direction * WALK_SPEED
-			look_at(global_position + direction,Vector3.UP)
+			look_at_from_position(global_position, global_position + direction,Vector3.UP)
 			global_position += velocity * delta
 	elif not _idle and not _flying:
 		velocity = Vector3.ZERO
