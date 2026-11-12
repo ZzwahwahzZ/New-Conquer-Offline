@@ -151,8 +151,8 @@ func _make_split_orb() -> Control:
 	_orb_material.shader = preload("res://src/shaders/split_hp_mp_orb.gdshader")
 	_orb_material.set_shader_parameter("hp_fill", 1.0)
 	_orb_material.set_shader_parameter("mp_fill", 1.0)
-	art.material = _orb_material
 	orb.add_child(art)
+	art.material = _orb_material
 	_hp_text = Label.new()
 	_hp_text.name = "HPValue"
 	_hp_text.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
