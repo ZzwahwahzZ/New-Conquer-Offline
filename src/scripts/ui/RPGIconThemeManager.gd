@@ -14,7 +14,7 @@ static func apply_to_tree(root: Node) -> void:
 	if arabic_font != null:
 		var ui_theme := Theme.new()
 		ui_theme.default_font = arabic_font
-		root.theme = ui_theme
+		(root as Control).theme = ui_theme
 	for node in root.find_children("*", "Control", true, false):
 		(node as Control).layout_direction = Control.LAYOUT_DIRECTION_RTL
 	for node in root.find_children("*", "Button", true, false):
