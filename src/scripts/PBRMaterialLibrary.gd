@@ -16,8 +16,8 @@ const BASE_COLORS := {
 }
 const EMISSIVE := {"VolcanoLand": Color("#ff4b12")}
 
-static func build_ground_material(environment_id: String, triplanar: bool = true) -> StandardMaterial3D:
- var key: String = str(MAPS.get(environment_id, "Ground044_2K-JPG"))
+static func build_ground_material(environment_id: String, triplanar: bool = true, pack_override: String = "") -> StandardMaterial3D:
+ var key: String = pack_override if not pack_override.is_empty() else str(MAPS.get(environment_id, "Ground044_2K-JPG"))
  var folder: String = MATERIAL_ROOT + key + "/"
  var material := StandardMaterial3D.new()
  material.resource_name = environment_id + "_PBR_Ground"
@@ -25,12 +25,13 @@ static func build_ground_material(environment_id: String, triplanar: bool = true
  material.albedo_texture = _load_first_map(folder, ["albedo.jpg", "albedo.png", "albedo.webp"], _fallback_texture("albedo", environment_id))
  material.normal_enabled = true
  material.normal_texture = _load_first_map(folder, ["normal.jpg", "normal.png", "normal.webp"], _fallback_texture("normal", environment_id))
- material.roughness = 0.92
+ material.roughness = 0.88
+ material.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_GRAYSCALE
  material.roughness_texture = _load_first_map(folder, ["roughness.jpg", "roughness.png", "roughness.webp"], _fallback_texture("roughness", environment_id))
  material.metallic = 0.0
  material.uv1_triplanar = triplanar
  material.uv1_triplanar_sharpness = 4.0
- material.uv1_scale = Vector3(0.12, 0.12, 0.12)
+ material.uv1_scale = Vector3(0.48, 0.48, 0.48) if triplanar else Vector3(24.0, 24.0, 1.0)
  material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
  material.cull_mode = BaseMaterial3D.CULL_DISABLED
  var emission_map := _load_first_map(folder, ["emission.jpg", "emission.png", "emission.webp"], null)
