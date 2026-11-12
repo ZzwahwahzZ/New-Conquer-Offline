@@ -60,6 +60,7 @@ jobs:
           python3 tools/restore_hf_terrain_assets.py
           python3 tools/sync_rpg_ui_assets.py
           python3 tools/restore_curated_glb_assets.py
+          python3 -m pip install --disable-pip-version-check gdown
           npm install --global @gltf-transform/cli@4.5.1
           while IFS= read -r -d '' asset; do
             temp="${asset%.glb}.dequantized.glb"
@@ -69,6 +70,17 @@ jobs:
             echo "GODOT_COMPATIBLE_GLB: $asset"
           done < <(find assets/environment/architecture assets/environment/biomes assets/environment/nature -type f -name '*.glb' -print0)
           python3 tools/audit_classify_terrain_glb.py
+
+      - name: Cache official Quaternius downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/quaternius
+          key: ${{ runner.os }}-quaternius-packs-ultimate-fantasy-rts-stylized-nature-modular-medieval-v1
+          restore-keys: |
+            ${{ runner.os }}-quaternius-packs-
+
+      - name: Download official Quaternius CC0 packs locally
+        run: python3 tools/fetch_quaternius_assets.py
 
       - name: Cache Godot imported assets
         uses: actions/cache@v4
