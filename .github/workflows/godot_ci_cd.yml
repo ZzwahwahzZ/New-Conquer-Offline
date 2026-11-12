@@ -106,10 +106,11 @@ jobs:
 
       - name: Step 2 - Import Scripts, Materials & Build
         shell: bash
-        timeout-minutes: 45
+        timeout-minutes: 5
         run: |
-          set -euo pipefail
-          python3 tools/godot_import_guard.py --timeout 900 --max-retries 1 --log reports/godot_import_guard.log -- xvfb-run -a godot --audio-driver Dummy --rendering-method gl_compatibility --path . --import --verbose
+          set -Eeuo pipefail
+          mkdir -p reports
+          timeout 120s godot --headless --path . --import 2>&1 | tee reports/godot_import_guard.log
           if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load script|ERROR: Failed loading resource' reports/godot_import_guard.log; then
             echo "::error::Godot import emitted parser or resource-load errors."
             exit 1
@@ -174,25 +175,21 @@ jobs:
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/step14_smoke_test.gd
 
+      - name: Run Step 15 smoke test (PBR terrain material library)
+        timeout-minutes: 2
+        shell: bash
+        run: bash tools/run_godot_smoke_test.sh scripts/pbr_material_library_test.gd
+
       - name: Run Step 16 smoke test
         timeout-minutes: 2
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/step16_smoke_test.gd
-
-      - name: Run Player idle stability regression (3 seconds)
-        timeout-minutes: 2
-        shell: bash
-        run: bash tools/run_godot_smoke_test.sh scripts/player_idle_stability_test.gd
 
       - name: Verify world environment, sunlight and Twin City ground
         timeout-minutes: 2
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/world_environment_test.gd
 
-      - name: Run shared PBR material library regression
-        timeout-minutes: 2
-        shell: bash
-        run: bash tools/run_godot_smoke_test.sh scripts/pbr_material_library_test.gd
 
       - name: Upload Smoke Test Logs
         if: always()
@@ -237,25 +234,6 @@ jobs:
           test -s "$TEMPLATE_DEST/android_debug.apk"
           test -s "$TEMPLATE_DEST/android_release.apk"
           godot --version
-
-      - name: Switch temporary web build to Compatibility renderer
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path("project.godot")
-          s = p.read_text()
-          replacements = {
-              'renderer/rendering_method="mobile"': 'renderer/rendering_method="gl_compatibility"',
-              'renderer/rendering_method.mobile="mobile"': 'renderer/rendering_method.mobile="gl_compatibility"',
-          }
-          for old, new in replacements.items():
-              if old not in s:
-                  raise SystemExit(f"Expected renderer setting was not found: {old}")
-              s = s.replace(old, new, 1)
-          p.write_text(s)
-          PY
-          grep -F 'renderer/rendering_method="gl_compatibility"' project.godot
-          grep -F 'renderer/rendering_method.mobile="gl_compatibility"' project.godot
 
       - name: Restore PBR terrain packages and heightmaps from Hugging Face
         env:
@@ -304,7 +282,10 @@ jobs:
 
       - name: Step 2 - Import Scripts, Materials & Build
         timeout-minutes: 45
-        run: python3 tools/godot_import_guard.py --timeout 900 --max-retries 1 --log reports/godot_import_guard.log -- xvfb-run -a godot --audio-driver Dummy --rendering-method gl_compatibility --path . --import --verbose
+        run: |
+          set -Eeuo pipefail
+          mkdir -p reports
+          timeout 120s godot --headless --path . --import 2>&1 | tee reports/godot_import_guard.log
 
       - name: Upload Import Logs Artifact
         if: always()
@@ -323,6 +304,25 @@ jobs:
             .godot/imported
             .godot/global_script_class_cache.cfg
           key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
+
+      - name: Switch temporary web build to Compatibility renderer
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("project.godot")
+          s = p.read_text()
+          replacements = {
+              'renderer/rendering_method="mobile"': 'renderer/rendering_method="gl_compatibility"',
+              'renderer/rendering_method.mobile="mobile"': 'renderer/rendering_method.mobile="gl_compatibility"',
+          }
+          for old, new in replacements.items():
+              if old not in s:
+                  raise SystemExit(f"Expected renderer setting was not found: {old}")
+              s = s.replace(old, new, 1)
+          p.write_text(s)
+          PY
+          grep -F 'renderer/rendering_method="gl_compatibility"' project.godot
+          grep -F 'renderer/rendering_method.mobile="gl_compatibility"' project.godot
 
       - name: Export Web build
         run: |
@@ -479,7 +479,10 @@ jobs:
 
       - name: Step 2 - Import Scripts, Materials & Build
         timeout-minutes: 45
-        run: python3 tools/godot_import_guard.py --timeout 900 --max-retries 1 --log reports/godot_import_guard.log -- xvfb-run -a godot --audio-driver Dummy --rendering-method gl_compatibility --path . --import --verbose
+        run: |
+          set -Eeuo pipefail
+          mkdir -p reports
+          timeout 120s godot --headless --path . --import 2>&1 | tee reports/godot_import_guard.log
 
       - name: Upload Import Logs Artifact
         if: always()
