@@ -123,10 +123,6 @@ func _run() -> void:
 				brick_normal_found = brick_material != null and brick_material.normal_enabled and brick_material.normal_texture != null
 			if arch_node.name in ["PagodaRoofTier_0", "SandstoneDome", "BasaltBattlement", "SnowRoofTier"]:
 				roof_detail_found = true
-		var kenney_buildings := 0
-		for imported_root in imported_buildings:
-			if imported_root.name.begins_with(city_name + "_KenneyBuilding_"):
-				kenney_buildings += 1
 		var total_buildings := detailed_buildings + imported_buildings.size()
 		if not _check(total_buildings == 24, city_name + " must contain 24 buildings (detailed=%d imported=%d)" % [detailed_buildings, imported_buildings.size()]):
 			return
@@ -138,11 +134,14 @@ func _run() -> void:
 				renderable_imports += 1
 		if not _check(renderable_imports == imported_buildings.size(), city_name + " has imported buildings without renderable mesh geometry"):
 			return
-		if not _check(kenney_buildings == 24, city_name + " must use 24 Kenney GLB buildings (found %d)" % kenney_buildings):
-			return
-		print("CITY_BUILDING_SOURCE_AUDIT: " + city_name + " detailed=" + str(detailed_buildings) + " kenney=" + str(kenney_buildings) + " imported=" + str(imported_buildings.size()) + " renderable_imports=" + str(renderable_imports))
+		print("CITY_BUILDING_SOURCE_AUDIT: " + city_name + " detailed=" + str(detailed_buildings) + " imported=" + str(imported_buildings.size()) + " renderable_imports=" + str(renderable_imports))
 		var gate_count := 0
 		var wall_count := 0
+		var kenney_gate_count := 0
+		var kenney_tower_count := 0
+		var kenney_stall_count := 0
+		var kenney_fountain_found := false
+		var kenney_wall_multi := city.find_child(city_name + "_KenneyCastlePerimeterWalls_MultiMesh", true, false) as MultiMeshInstance3D
 		var open_plaza_found := city.find_child("OpenCentralPlaza_80x80", true, false) != null
 		var outer_world_found := city.find_child(city_name + "_OpenWorld_800x800", true, false) != null
 		var pending_fortifications: Array[Node] = [architecture_slot]
@@ -154,6 +153,14 @@ func _run() -> void:
 				gate_count += 1
 			if fort_node.is_in_group("city_perimeter_wall"):
 				wall_count += 1
+			if fort_node.name == "KenneyGateModel":
+				kenney_gate_count += 1
+			if fort_node.name == "KenneyTowerModel":
+				kenney_tower_count += 1
+			if fort_node.name.begins_with("KenneyMarketStall_"):
+				kenney_stall_count += 1
+			if fort_node.name == "KenneyMarketFountain":
+				kenney_fountain_found = true
 		var total_mesh_nodes := 0
 		var empty_mesh_nodes := 0
 		var mesh_scan: Array[Node] = [city]
@@ -173,6 +180,12 @@ func _run() -> void:
 		print("CITY_MESH_HANDLE_AUDIT: " + city_name + " total=" + str(total_mesh_nodes) + " empty=" + str(empty_mesh_nodes))
 		print("CITY_FORTIFICATION_DEBUG: " + city_name + " gates=" + str(gate_count) + " walls=" + str(wall_count) + " plaza=" + str(open_plaza_found) + " outer=" + str(outer_world_found))
 		if not _check(gate_count == 4 and wall_count >= 8 and open_plaza_found and outer_world_found, city_name + " open plaza/perimeter wall/four gates/800x800 outer world incomplete"):
+			return
+		if not _check(kenney_wall_multi != null and kenney_wall_multi.multimesh != null and kenney_wall_multi.multimesh.instance_count >= 64, city_name + " imported Kenney castle wall modules are missing"):
+			return
+		if not _check(kenney_gate_count == 4 and kenney_tower_count == 8, city_name + " Kenney gatehouses and towers are incomplete"):
+			return
+		if not _check(kenney_stall_count == 4 and kenney_fountain_found, city_name + " Kenney market stalls/fountain are incomplete"):
 			return
 		var planters := 0
 		var railings := 0
