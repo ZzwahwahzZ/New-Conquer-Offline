@@ -11,6 +11,7 @@ var _hp_text: Label
 var _mp_text: Label
 var _xp: ProgressBar
 var _xp_button: Button
+var _xp_separators: Array[ColorRect] = []
 var _quest_panel: Control
 var _quest_title: Label
 var _quest_progress: Label
@@ -40,6 +41,8 @@ func _ready() -> void:
 		if not _quest_system.changed.is_connected(_refresh_quest):
 			_quest_system.changed.connect(_refresh_quest)
 	get_viewport().size_changed.connect(_layout)
+	_display_hp = float(ClassSystem.hp if ClassSystem.hp > 0 else ClassSystem.max_hp)
+	_display_mp = float(ClassSystem.mp)
 	_refresh_stats()
 	_refresh_xp_skill(ClassSystem.xp_skill, ClassSystem.xp_skill_max)
 	_refresh_hotkeys()
@@ -100,10 +103,6 @@ func _build_bottom_bar() -> void:
 	_bar.add_child(row)
 	var split_orb := _make_split_orb()
 	row.add_child(split_orb)
-	var exp_caption := Label.new()
-	exp_caption.text = "EXP"
-	exp_caption.add_theme_color_override("font_color", Color("#f3d58a"))
-	row.add_child(exp_caption)
 	_xp = ProgressBar.new()
 	_xp.name = "ClassicEXP"
 	_xp.min_value = 0
@@ -112,8 +111,22 @@ func _build_bottom_bar() -> void:
 	_xp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_xp.custom_minimum_size = Vector2(90, 9)
 	_xp.add_theme_stylebox_override("background", _flat(Color(0.02,0.025,0.035,1), Color("#72572e"), 1))
-	_xp.add_theme_stylebox_override("fill", _flat(Color("#d7a83e"), Color("#ffe3a0"), 1))
+	_xp.add_theme_stylebox_override("fill", _flat(Color("#e4b83f"), Color("#fff0a6"), 1))
 	row.add_child(_xp)
+	# Ten fine dark dividers make the gold EXP fill read as segmented cells.
+	for segment_index in range(1, 10):
+		var divider := ColorRect.new()
+		divider.name = "EXPCellDivider%d" % segment_index
+		divider.color = Color("#3b2a12")
+		divider.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		divider.anchor_left = float(segment_index) / 10.0
+		divider.anchor_right = divider.anchor_left
+		divider.anchor_top = 0.0
+		divider.anchor_bottom = 1.0
+		divider.offset_left = -1.0
+		divider.offset_right = 1.0
+		_xp.add_child(divider)
+		_xp_separators.append(divider)
 	_xp_button = Button.new()
 	_xp_button.name = "XPModeButton"
 	_xp_button.text = "XP"
@@ -283,7 +296,8 @@ func _layout() -> void:
 			joystick.position = Vector2(18, viewport.y - bar_height - joystick.size.y - 10)
 
 func _process(delta: float) -> void:
-	_display_hp = lerpf(_display_hp, float(ClassSystem.hp), clampf(delta * 10.0, 0.0, 1.0))
+	var target_hp := float(ClassSystem.hp if ClassSystem.hp > 0 else ClassSystem.max_hp)
+	_display_hp = lerpf(_display_hp, target_hp, clampf(delta * 10.0, 0.0, 1.0))
 	_display_mp = lerpf(_display_mp, float(ClassSystem.mp), clampf(delta * 10.0, 0.0, 1.0))
 	if is_instance_valid(_orb_material):
 		_orb_material.set_shader_parameter("hp_fill", clampf(_display_hp / float(maxi(1, ClassSystem.max_hp)), 0.0, 1.0))
