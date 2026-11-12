@@ -22,18 +22,20 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  visual.mesh = mesh
  body.add_child(visual)
  visual.material_override = PBRMaterialLibrary.build_ground_material(city, true, "Ground053_2K-JPG" if city == "TwinCity" else "")
- if city == "TwinCity":
-  # Preserve the terrain node for scene contracts, but only the flat plaza owns a collider.
-  _build_flat_twin_city_plaza(parent)
- else:
-  var collision := CollisionShape3D.new()
-  var shape := ConcavePolygonShape3D.new()
-  shape.set_faces(mesh.get_faces())
-  collision.shape = shape
-  body.add_child(collision)
+ var collision := CollisionShape3D.new()
+ collision.name = "TerrainSurfaceCollision"
+ var shape := ConcavePolygonShape3D.new()
+ shape.set_faces(mesh.get_faces())
+ collision.shape = shape
+ body.add_child(collision)
  parent.add_child(body)
+ if city == "TwinCity":
+  _build_flat_twin_city_plaza(parent)
+ _build_navigation_region(parent, mesh)
  _bounds(parent,size,city)
  CityStreetDressing.build(slot, city, size)
+ _build_environment_dressing(slot, city, size)
+ _build_kenney_nature_scatter(slot, city, size)
 static func _height_mesh(city: String,size: float) -> ArrayMesh:
  var path: String = HEIGHTS.get(city,"")
  var image: Image = null
@@ -68,6 +70,32 @@ static func _height_mesh(city: String,size: float) -> ArrayMesh:
  var arrays=[]; arrays.resize(Mesh.ARRAY_MAX)
  arrays[Mesh.ARRAY_VERTEX]=verts; arrays[Mesh.ARRAY_TEX_UV]=uv; arrays[Mesh.ARRAY_INDEX]=indices
  var mesh:=ArrayMesh.new(); mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays); return mesh
+static func _build_navigation_region(parent: Node3D, terrain_mesh: ArrayMesh) -> void:
+ var arrays := terrain_mesh.surface_get_arrays(0)
+ if arrays.is_empty():
+  push_error("Terrain navigation could not read the heightfield vertex arrays.")
+  return
+ var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+ var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
+ if vertices.is_empty() or indices.is_empty():
+  push_error("Terrain navigation heightfield has no vertices or triangles.")
+  return
+ var nav_mesh := NavigationMesh.new()
+ nav_mesh.agent_height = 1.8
+ nav_mesh.agent_radius = 0.45
+ nav_mesh.agent_max_slope = 42.0
+ nav_mesh.cell_size = 1.0
+ nav_mesh.cell_height = 0.25
+ nav_mesh.vertices = vertices
+ for index in range(0, indices.size(), 3):
+  nav_mesh.add_polygon(PackedInt32Array([indices[index], indices[index + 1], indices[index + 2]]))
+ var region := NavigationRegion3D.new()
+ region.name = "TerrainNavigationRegion"
+ region.navigation_layers = 1
+ region.navigation_mesh = nav_mesh
+ parent.add_child(region)
+ print("TERRAIN_NAVMESH_READY: polygons=%d vertices=%d" % [nav_mesh.get_polygon_count(), vertices.size()])
+
 static func _bounds(parent: Node3D,size: float,city: String) -> void:
  var edge := size * 0.497
  for i in range(4):
@@ -117,6 +145,94 @@ static func _add_scene_mesh_collisions(root: Node) -> void:
    var mesh_node := node as MeshInstance3D
    if mesh_node.mesh != null and mesh_node.mesh.get_rid().is_valid() and mesh_node.mesh.get_surface_count()>0:
     mesh_node.create_trimesh_collision()
+
+static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: float) -> void:
+ var root_path := "res://assets/environment/kenney/nature-kit/Models/GLTF format"
+ var directory := DirAccess.open(root_path)
+ if directory == null:
+  push_warning("Kenney Nature Kit is not installed; curated CC0 biome dressing remains active.")
+  return
+ var keywords: Array[String] = []
+ match city:
+  "DesertLand": keywords = ["cactus", "palm", "rock", "boulder"]
+  "VolcanoLand": keywords = ["rock", "boulder", "stone"]
+  "IceLand": keywords = ["pine", "spruce", "snow", "ice", "rock"]
+  "Waterlands": keywords = ["willow", "tree", "plant", "reed", "rock"]
+  "DarkForest": keywords = ["tree", "oak", "pine", "mushroom", "rock"]
+  _: keywords = ["tree", "oak", "pine", "bush", "plant"]
+ var candidates: Array[String] = []
+ _collect_kenney_nature_models(root_path, candidates)
+ candidates.sort()
+ var accepted: Array[String] = []
+ for path in candidates:
+  var lower := path.get_file().to_lower()
+  if keywords.any(func(word: String) -> bool: return lower.contains(word)):
+   accepted.append(path)
+ if accepted.is_empty():
+  push_warning("No Kenney Nature Kit models matched biome filters for " + city)
+  return
+ var added := 0
+ for path in accepted:
+  if added >= 4:
+   break
+  var packed := load(path) as PackedScene
+  if packed == null:
+   continue
+  var instance := packed.instantiate()
+  var mesh: Mesh = _first_renderable_mesh(instance)
+  instance.free()
+  if mesh == null:
+   continue
+  var multi := MultiMesh.new()
+  multi.transform_format = MultiMesh.TRANSFORM_3D
+  multi.mesh = mesh
+  var count := 32 if city == "IceLand" else 40
+  multi.instance_count = count
+  for index in range(count):
+   var angle := float(index) * 2.399963 + float(added) * 0.61
+   var radius := 166.0 + float((index * 37 + added * 19) % 100) / 100.0 * maxf(35.0, size * 0.28)
+   var base_scale := 4.2 if not path.get_file().to_lower().contains("rock") else 3.0
+   var scale_factor := base_scale * (0.82 + float((index * 13 + added * 7) % 35) / 100.0)
+   var basis := Basis(Vector3.UP, angle).scaled(Vector3.ONE * scale_factor)
+   var position := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
+   multi.set_instance_transform(index, Transform3D(basis, position))
+  var node := MultiMeshInstance3D.new()
+  node.name = city + "_KenneyNature_" + str(added) + "_MultiMesh"
+  node.multimesh = multi
+  node.add_to_group("distance_cull_world")
+  node.visibility_range_end = 440.0
+  node.visibility_range_end_margin = 36.0
+  parent.add_child(node)
+  added += 1
+ print("KENNEY_NATURE_SCATTER_PASS: %s species=%d instances=%d distance_cull=440" % [city, added, added * (32 if city == "IceLand" else 40)])
+
+static func _collect_kenney_nature_models(path: String, output: Array[String]) -> void:
+ var directory := DirAccess.open(path)
+ if directory == null:
+  return
+ directory.list_dir_begin()
+ var entry := directory.get_next()
+ while entry != "":
+  if entry.begins_with("."):
+   entry = directory.get_next()
+   continue
+  var child := path.path_join(entry)
+  if directory.current_is_dir():
+   _collect_kenney_nature_models(child, output)
+  elif entry.get_extension().to_lower() in ["glb", "gltf"]:
+   output.append(child)
+  entry = directory.get_next()
+ directory.list_dir_end()
+
+static func _first_renderable_mesh(root: Node) -> Mesh:
+ var pending: Array[Node] = [root]
+ while not pending.is_empty():
+  var current: Node = pending.pop_back()
+  for child in current.get_children():
+   pending.append(child)
+  if current is MeshInstance3D and (current as MeshInstance3D).mesh != null:
+   return (current as MeshInstance3D).mesh
+ return null
 
 static func _make_procedural_texture(stone: bool) -> Texture2D:
  var image := Image.create(256,256,false,Image.FORMAT_RGBA8)
@@ -171,6 +287,7 @@ static func _build_flat_twin_city_plaza(parent: Node3D) -> void:
  collision.name = "TwinCityFlatPlazaCollision"
  var box := BoxShape3D.new()
  box.size = Vector3(800.0,2.0,800.0)
+ box.size = Vector3(80.0,2.0,80.0)
  collision.shape = box
  collision.position.y = -1.0
  plaza.add_child(collision)
