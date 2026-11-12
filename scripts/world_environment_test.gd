@@ -50,7 +50,7 @@ func _run() -> void:
 		return
 	if not _require(stone_material.albedo_texture.resource_path.contains("Ground044_2K-JPG") and stone_material.normal_texture.resource_path.contains("Ground044_2K-JPG") and stone_material.roughness_texture.resource_path.contains("Ground044_2K-JPG"), "Stone surface is not using the restored Ground044 source maps"):
 		return
-	if not _require(stone_material.uv1_triplanar and stone_material.uv1_scale.x >= 0.45, "Stone PBR tiling/triplanar scale is not configured for visible detail"):
+	if not _require(stone_material.uv1_triplanar and stone_material.uv1_scale.x >= 0.60 and stone_material.normal_scale >= 1.40 and stone_material.detail_enabled and stone_material.detail_albedo == stone_material.albedo_texture, "Stone PBR detail, contrast and triplanar scale are not configured"):
 		return
 
 	var grass := city.find_child("TerrainSurface", true, false) as MeshInstance3D
