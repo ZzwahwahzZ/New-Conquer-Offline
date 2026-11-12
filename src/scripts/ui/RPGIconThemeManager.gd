@@ -129,6 +129,7 @@ static func style_button(button: Button, icon_key: String = "") -> void:
 	button.add_theme_stylebox_override("hover", _texture_box(hover_texture) if hover_texture != null else _box(Color(0.12, 0.095, 0.055, 0.98), GOLD_HI, 2, 7))
 	button.add_theme_stylebox_override("pressed", _texture_box(pressed_texture) if pressed_texture != null else _box(Color(0.02, 0.025, 0.035, 1.0), Color("#ffe5a6"), 2, 7))
 	button.add_theme_stylebox_override("disabled", _box(Color(0.025, 0.03, 0.04, 0.82), Color(0.3, 0.27, 0.21, 0.7), 1, 7))
+	button.icon_max_width = 18
 	if not icon_key.is_empty():
 		var icon := item_texture(icon_key)
 		if icon != null:
