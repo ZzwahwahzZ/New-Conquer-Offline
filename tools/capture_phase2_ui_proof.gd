@@ -148,7 +148,7 @@ func _run() -> void:
 		return
 	var target_enemy: Node3D
 	for frame in range(120):
-		for candidate in get_tree().get_nodes_in_group("enemies"):
+		for candidate in get_nodes_in_group("enemies"):
 			if str(candidate.get("monster_id")) == str(hunt.get("target", "")):
 				target_enemy = candidate
 				break
@@ -159,7 +159,7 @@ func _run() -> void:
 		_fail("No live 3D monster instance matches quest target %s" % str(hunt.get("target", "")))
 		return
 	quest.call("track", "hunt_twin")
-	var player := get_tree().get_first_node_in_group("player")
+	var player := get_first_node_in_group("player")
 	if not is_instance_valid(player) or not bool(player.get("_has_move_target")):
 		_fail("Auto-Quest did not set the player movement target")
 		return
