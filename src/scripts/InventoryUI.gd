@@ -326,10 +326,14 @@ func _build_preview_mannequin() -> void:
 	_add_capsule_mesh(_preview_pivot, Vector3(0, 1.28, 0), 0.34, 0.72, cloth)
 	_add_sphere_mesh(_preview_pivot, Vector3(0, 1.92, 0), 0.19, skin)
 	# Visible facial features on the camera-facing (+Z) side make orientation unambiguous.
+	var face_marker := Node3D.new()
+	face_marker.name = "CameraFacingFace"
+	face_marker.position = Vector3(0, 1.92, 0)
+	_preview_pivot.add_child(face_marker)
 	var eye_mat := _material(Color("#241811"), 0.0)
-	_add_sphere_mesh(_preview_pivot, Vector3(-0.075, 1.95, 0.174), 0.026, eye_mat)
-	_add_sphere_mesh(_preview_pivot, Vector3(0.075, 1.95, 0.174), 0.026, eye_mat)
-	_add_sphere_mesh(_preview_pivot, Vector3(0, 1.895, 0.187), 0.022, skin)
+	_add_sphere_mesh(face_marker, Vector3(-0.075, 0.03, 0.174), 0.026, eye_mat)
+	_add_sphere_mesh(face_marker, Vector3(0.075, 0.03, 0.174), 0.026, eye_mat)
+	_add_sphere_mesh(face_marker, Vector3(0, -0.025, 0.187), 0.022, skin)
 	_add_capsule_mesh(_preview_pivot, Vector3(0.39, 1.28, 0), 0.105, 0.65, cloth)
 	_add_capsule_mesh(_preview_pivot, Vector3(-0.39, 1.28, 0), 0.105, 0.65, cloth)
 	_add_capsule_mesh(_preview_pivot, Vector3(0.16, 0.48, 0), 0.13, 0.8, leather)
