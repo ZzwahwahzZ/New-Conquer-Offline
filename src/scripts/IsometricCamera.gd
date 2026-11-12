@@ -2,8 +2,8 @@ extends Node3D
 ## Smooth player-following isometric orbit camera with mouse, touch drag and pinch zoom.
 @export var target_path: NodePath = NodePath("../Player")
 @export_range(0.1,30.0,0.1) var follow_speed := 10.0
-@export_range(15.0,75.0,1.0) var pitch_degrees := 35.0
-@export_range(8.0,50.0,0.5) var orbit_distance := 13.5
+@export_range(15.0,75.0,1.0) var pitch_degrees := 42.0
+@export_range(8.0,50.0,0.5) var orbit_distance := 20.0
 @export_range(0.05,1.0,0.01) var drag_sensitivity := 0.66
 @export var zoom_step := 2.0
 var _target: Node3D
@@ -14,8 +14,8 @@ var _drag_touch := -1
 var _last_pointer := Vector2.ZERO
 var _touch_points: Dictionary = {}
 var _pinch_distance := 0.0
-var _target_distance := 13.5
-var _current_distance := 13.5
+var _target_distance := 20.0
+var _current_distance := 20.0
 
 func _ready() -> void:
 	_target = get_node_or_null(target_path) as Node3D
