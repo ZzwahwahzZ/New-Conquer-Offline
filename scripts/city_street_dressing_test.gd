@@ -52,7 +52,7 @@ func _run() -> void:
 		var gate_count := 0
 		var wall_count := 0
 		var open_plaza_found := city.find_child("OpenCentralPlaza_80x80", true, false) != null
-		var outer_world_found := city.find_child(city_name + "_OpenWorld_450x450", true, false) != null
+		var outer_world_found := city.find_child(city_name + "_OpenWorld_800x800", true, false) != null
 		var pending_fortifications: Array[Node] = [architecture_slot]
 		while not pending_fortifications.is_empty():
 			var fort_node: Node = pending_fortifications.pop_back()
@@ -80,7 +80,7 @@ func _run() -> void:
 					empty_mesh_nodes += 1
 		print("CITY_MESH_HANDLE_AUDIT: " + city_name + " total=" + str(total_mesh_nodes) + " empty=" + str(empty_mesh_nodes))
 		print("CITY_FORTIFICATION_DEBUG: " + city_name + " gates=" + str(gate_count) + " walls=" + str(wall_count) + " plaza=" + str(open_plaza_found) + " outer=" + str(outer_world_found))
-		if not _check(gate_count == 4 and wall_count >= 8 and open_plaza_found and outer_world_found, city_name + " open plaza/perimeter wall/four gates/450m outer world incomplete"):
+		if not _check(gate_count == 4 and wall_count >= 8 and open_plaza_found and outer_world_found, city_name + " open plaza/perimeter wall/four gates/800x800 outer world incomplete"):
 			return
 		var planters := 0
 		var railings := 0
