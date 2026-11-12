@@ -155,9 +155,9 @@ func _run() -> void:
 	var preview_pivot := inventory_ui.get("_preview_pivot") as Node3D
 	if not is_instance_valid(preview_pivot) or absf(wrapf(preview_pivot.rotation.y, -PI, PI)) > 0.02:
 		_fail("character preview is not oriented toward the camera")
-	var preview_head := inventory_ui.find_child("Head", true, false)
-	if not is_instance_valid(preview_head) or not is_instance_valid(preview_head.get_parent().find_child("*", true, false)):
-		_fail("character preview facial orientation markers are missing")
+	var face_marker := inventory_ui.find_child("CameraFacingFace", true, false) as Node3D
+	if not is_instance_valid(face_marker) or face_marker.position.z != 0.0:
+		_fail("camera-facing character face marker is missing")
 		return
 	var armor_row := inventory_ui.find_child("EquipmentRow_Armor", true, false) as HBoxContainer
 	if not is_instance_valid(armor_row) or armor_row.layout_direction != Control.LAYOUT_DIRECTION_LTR:
