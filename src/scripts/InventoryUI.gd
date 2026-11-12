@@ -33,7 +33,7 @@ var _stat_label: Label
 var _page_label: Label
 var _current_page := 0
 const ITEMS_PER_PAGE := 30
-const GRID_COLUMNS := 6
+const GRID_COLUMNS := 5
 
 func _ready() -> void:
 	add_to_group("inventory_ui")
@@ -89,7 +89,7 @@ func _build_ui() -> void:
 	frame.offset_top = 18
 	frame.offset_right = -24
 	frame.offset_bottom = -18
-	frame.add_theme_stylebox_override("panel", _style(Color("#171b25"), Color("#b58a43"), 3, 12))
+	frame.add_theme_stylebox_override("panel", _style(Color(0.08, 0.06, 0.05, 0.97), Color("#D4AF37"), 4, 8))
 	_root.add_child(frame)
 
 	var body := VBoxContainer.new()
@@ -123,7 +123,7 @@ func _build_ui() -> void:
 
 	var preview_panel := PanelContainer.new()
 	preview_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	preview_panel.add_theme_stylebox_override("panel", _style(Color("#101722"), Color("#77613c"), 2, 8))
+	preview_panel.add_theme_stylebox_override("panel", _style(Color("#17100A"), Color("#A97932"), 2, 5))
 	left.add_child(preview_panel)
 	var preview_stack := VBoxContainer.new()
 	preview_panel.add_child(preview_stack)
@@ -149,7 +149,7 @@ func _build_ui() -> void:
 	left.add_child(_stat_label)
 
 	var slots_panel := PanelContainer.new()
-	slots_panel.add_theme_stylebox_override("panel", _style(Color("#20232b"), Color("#806b48"), 2, 8))
+	slots_panel.add_theme_stylebox_override("panel", _style(Color("#21170E"), Color("#9D7134"), 2, 5))
 	left.add_child(slots_panel)
 	_equipment_list = VBoxContainer.new()
 	_equipment_list.add_theme_constant_override("separation", 3)
@@ -193,7 +193,7 @@ func _build_ui() -> void:
 
 	var grid_panel := PanelContainer.new()
 	grid_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	grid_panel.add_theme_stylebox_override("panel", _style(Color("#111720"), Color("#6d5a3b"), 2, 8))
+	grid_panel.add_theme_stylebox_override("panel", _style(Color("#100B07"), Color("#D4AF37"), 2, 5))
 	right.add_child(grid_panel)
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -399,7 +399,7 @@ func _refresh_inventory() -> void:
 	for i in range(ITEMS_PER_PAGE):
 		var index := _current_page * ITEMS_PER_PAGE + i
 		var button := Button.new()
-		button.custom_minimum_size = Vector2(64, 68)
+		button.custom_minimum_size = Vector2(68, 64)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.add_theme_stylebox_override("normal", _style(Color("#242a35"), Color("#4d5665"), 2, 5))
 		if index < items.size():
@@ -412,7 +412,8 @@ func _refresh_inventory() -> void:
 				if str(socket) != "Empty":
 					filled += 1
 			var socket_marks := "●".repeat(filled) + "○".repeat(maxi(0, socket_count - filled)) + "·".repeat(2 - socket_count)
-			button.text = "%s\n+%d\n%s" % [str(item.get("name", item.get("id", "Item"))), int(item.get("plus", 0)), socket_marks]
+			button.text = "+%d\n%s" % [int(item.get("plus", 0)), socket_marks]
+			button.tooltip_text = "%s | %s" % [str(item.get("name", item.get("id", "Item"))), quality]
 			button.icon = ThemeManager.item_texture(str(item.get("id", "")))
 			button.expand_icon = true
 			button.add_theme_color_override("font_color", _quality_color(quality))
