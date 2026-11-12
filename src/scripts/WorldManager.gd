@@ -365,7 +365,7 @@ func _ensure_world_lighting(world_root: Node3D) -> void:
 		sky.sky_material = sky_material
 		environment.sky = sky
 		environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-		environment.ambient_light_energy = 0.85
+		environment.ambient_light_energy = 0.42
 		environment_node.environment = environment
 		world_root.add_child(environment_node)
 	else:
@@ -378,7 +378,8 @@ func _ensure_world_lighting(world_root: Node3D) -> void:
 		world_root.add_child(sun)
 	sun.rotation_degrees = Vector3(-45.0,-32.0,0.0)
 	sun.light_color = Color("#ffe0a3")
-	sun.light_energy = 1.3
-	sun.shadow_enabled = not OS.has_feature("web")
+	sun.light_energy = 0.78
+	sun.shadow_enabled = true
+	sun.directional_shadow_max_distance = 220.0
 	sun.shadow_bias = 0.035
-	sun.shadow_normal_bias = 1.25
+	sun.shadow_normal_bias = 0.8
