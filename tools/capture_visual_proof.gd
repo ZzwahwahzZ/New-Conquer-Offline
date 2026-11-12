@@ -98,6 +98,22 @@ func _capture() -> void:
 	if not camera.current:
 		_fail("isometric Camera3D is not current")
 		return
+	var classic_hud := main.get_node_or_null("HUD/ClassicHUD") as Control
+	if classic_hud == null:
+		_fail("classic gold HUD is missing")
+		return
+	if classic_hud.get_node_or_null("ClassicConquerBottomBar/MainRow/SplitCrystalOrb") == null:
+		_fail("single split HP/MP crystal orb is missing")
+		return
+	if classic_hud.get_node_or_null("LiveQuestTracker") == null:
+		_fail("live quest tracker is missing")
+		return
+	if not FileAccess.file_exists("res://assets/ui/manifest.json"):
+		_fail("restored Kenney RPG UI manifest is missing")
+		return
+	if not ResourceLoader.exists("res://assets/ui/frames/fantasy_ui_borders__Border__panel-border-000.png"):
+		_fail("real Kenney ornamental frame PNG was not imported")
+		return
 	if camera.global_position.y < player.global_position.y + 3.0:
 		_fail("isometric camera is not elevated above the player; the spawn frame would be ground-obscured")
 		return
