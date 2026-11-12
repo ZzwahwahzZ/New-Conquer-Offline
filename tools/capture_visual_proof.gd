@@ -184,6 +184,20 @@ func _capture() -> void:
 			if not await _save_frame(file_name):
 				quit(1)
 				return
-		print("CITY_5_VIEW_PASS: " + city_id + " plaza=1 shops=1 gate_horizon=1 outer_world=1 orbit90=1")
+		# Dedicated wide panorama: show the new architecture together with the surrounding 800x800 landform.
+		camera.fov = 58.0
+		camera_rig.set("orbit_distance", 180.0)
+		camera_rig.set("pitch_degrees", 48.0)
+		camera_rig.set("_target_distance", 180.0)
+		camera_rig.set("_current_distance", 180.0)
+		camera_rig.call("_apply_orbit")
+		await process_frame
+		await process_frame
+		var panorama_name := "phase3a_panorama_%d_%s.png" % [city_index + 1, city_id.to_lower()]
+		if not await _save_frame(panorama_name):
+			quit(1)
+			return
+		camera.fov = CLASSIC_FOV
+		print("CITY_5_VIEW_AND_PHASE3A_PANORAMA_PASS: " + city_id + " panorama=1")
 	print("VISUAL_PROOF_PASS: 30 real runtime frames; five distinct close Conquer-isometric views per city; distance=20 height=15 pitch=-38.0 fov=45 far=600; HUD hidden.")
 	quit(0)
