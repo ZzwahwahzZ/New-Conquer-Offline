@@ -12,7 +12,7 @@ const CITY_PALETTES := {
 static func build(parent: Node3D, city: String, size: float) -> void:
  var palette: Dictionary = CITY_PALETTES.get(city, CITY_PALETTES["TwinCity"])
  var scale_factor := 1.0
- var radius := 82.0 if city == "TwinCity" else 70.0
+ var radius := 54.0
  var positions := [Vector3(-radius,0,-radius), Vector3(radius,0,-radius), Vector3(-radius,0,radius), Vector3(radius,0,radius)]
  for index in range(positions.size()):
   var building := _make_building(city, palette, index, scale_factor)
