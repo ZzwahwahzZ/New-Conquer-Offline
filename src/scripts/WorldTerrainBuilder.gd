@@ -37,7 +37,15 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  _build_environment_dressing(slot,city,size)
 static func _height_mesh(city: String,size: float) -> ArrayMesh:
  var path: String = HEIGHTS.get(city,"")
- var image: Image = Image.load_from_file(path) if path != "" and FileAccess.file_exists(path) else null
+ var image: Image = null
+ if path != "" and ResourceLoader.exists(path):
+  var height_texture := ResourceLoader.load(path) as Texture2D
+  if height_texture != null:
+   image = height_texture.get_image()
+  if image == null:
+   push_error("Heightmap texture could not be loaded as an imported resource: " + path)
+ elif path != "":
+  push_error("Required terrain heightmap resource is missing: " + path)
  var resolution := 65
  var verts := PackedVector3Array()
  var uv := PackedVector2Array()
