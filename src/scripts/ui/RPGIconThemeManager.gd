@@ -1,13 +1,57 @@
 extends RefCounted
-## Central visual theme for the classic RPG HUD and dynamically created menu buttons.
+## Central RPG UI theme. Uses downloaded transparent art when present and a gold fallback otherwise.
 const GOLD := Color("#c99b4d")
 const GOLD_HI := Color("#f3d58a")
 const PANEL := Color(0.035, 0.045, 0.06, 0.94)
-const ICON_ROOT := "res://assets/ui/icons/"
+const UI_ROOT := "res://assets/ui/"
 
 static func apply_to_tree(root: Node) -> void:
 	for node in root.find_children("*", "Button", true, false):
 		style_button(node as Button, str((node as Button).get_meta("rpg_icon", "")))
+
+static func find_texture(category: String, hint: String = "") -> Texture2D:
+	var directory := DirAccess.open(UI_ROOT + category)
+	if directory == null:
+		return null
+	var files := directory.get_files()
+	files.sort()
+	for file_name in files:
+		var lower := file_name.to_lower()
+		if not (lower.ends_with(".png") or lower.ends_with(".svg") or lower.ends_with(".webp")):
+			continue
+		if hint.is_empty() or lower.contains(hint.to_lower()):
+			var texture := load(UI_ROOT + category + "/" + file_name) as Texture2D
+			if texture != null:
+				return texture
+	return null
+
+static func make_nine_patch(texture: Texture2D, margins: int = 14) -> NinePatchRect:
+	if texture == null:
+		return null
+	var patch := NinePatchRect.new()
+	patch.texture = texture
+	patch.patch_margin_left = margins
+	patch.patch_margin_top = margins
+	patch.patch_margin_right = margins
+	patch.patch_margin_bottom = margins
+	patch.draw_center = true
+	patch.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return patch
+
+static func frame_style() -> StyleBox:
+	var texture := find_texture("frames", "panel")
+	if texture == null:
+		texture = find_texture("frames", "frame")
+	if texture != null:
+		var box := StyleBoxTexture.new()
+		box.texture = texture
+		box.texture_margin_left = 14
+		box.texture_margin_top = 14
+		box.texture_margin_right = 14
+		box.texture_margin_bottom = 14
+		box.modulate_color = Color(1.0, 0.94, 0.82, 1.0)
+		return box
+	return _box(PANEL, GOLD, 1, 8)
 
 static func style_button(button: Button, icon_key: String = "") -> void:
 	if not is_instance_valid(button):
@@ -16,18 +60,27 @@ static func style_button(button: Button, icon_key: String = "") -> void:
 	button.add_theme_color_override("font_hover_color", Color.WHITE)
 	button.add_theme_color_override("font_pressed_color", GOLD_HI)
 	button.add_theme_color_override("font_disabled_color", Color(0.48, 0.46, 0.42, 0.72))
-	button.add_theme_stylebox_override("normal", _box(PANEL, GOLD, 1, 7))
-	button.add_theme_stylebox_override("hover", _box(Color(0.12, 0.095, 0.055, 0.98), GOLD_HI, 2, 7))
-	button.add_theme_stylebox_override("pressed", _box(Color(0.02, 0.025, 0.035, 1.0), Color("#ffe5a6"), 2, 7))
+	var normal_texture := find_texture("buttons", "normal")
+	var hover_texture := find_texture("buttons", "hover")
+	var pressed_texture := find_texture("buttons", "pressed")
+	button.add_theme_stylebox_override("normal", _texture_box(normal_texture) if normal_texture != null else _box(PANEL, GOLD, 1, 7))
+	button.add_theme_stylebox_override("hover", _texture_box(hover_texture) if hover_texture != null else _box(Color(0.12, 0.095, 0.055, 0.98), GOLD_HI, 2, 7))
+	button.add_theme_stylebox_override("pressed", _texture_box(pressed_texture) if pressed_texture != null else _box(Color(0.02, 0.025, 0.035, 1.0), Color("#ffe5a6"), 2, 7))
 	button.add_theme_stylebox_override("disabled", _box(Color(0.025, 0.03, 0.04, 0.82), Color(0.3, 0.27, 0.21, 0.7), 1, 7))
 	if not icon_key.is_empty():
-		var path := ICON_ROOT + icon_key + ".png"
-		if ResourceLoader.exists(path):
-			button.icon = load(path) as Texture2D
+		var icon := find_texture("icons", icon_key)
+		if icon != null:
+			button.icon = icon
 			button.expand_icon = true
 
-static func frame_style() -> StyleBoxFlat:
-	return _box(PANEL, GOLD, 1, 8)
+static func _texture_box(texture: Texture2D) -> StyleBoxTexture:
+	var box := StyleBoxTexture.new()
+	box.texture = texture
+	box.texture_margin_left = 8
+	box.texture_margin_top = 8
+	box.texture_margin_right = 8
+	box.texture_margin_bottom = 8
+	return box
 
 static func _box(fill: Color, border: Color, width: int, radius: int) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()

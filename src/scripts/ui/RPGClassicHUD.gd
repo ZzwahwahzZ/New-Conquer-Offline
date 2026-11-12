@@ -5,14 +5,14 @@ const BAR_RATIO := 0.12
 const HOTKEY_SKILLS := ["Jump", "Fly", "Scatter", "Path_of_Shadow", "XP_Mode"]
 const HOTKEY_LABELS := ["JUMP", "FLY", "AOE", "SHADOW", "XP", "HP POT", "MP POT", "SLOT 8", "SLOT 9", "SLOT 10"]
 const MENU_KEYS := ["Bag", "Equip", "Skills", "Mall", "JiangHu"]
-var _bar: PanelContainer
+var _bar: Control
 var _hp_fill: TextureProgressBar
 var _mp_fill: TextureProgressBar
 var _hp_text: Label
 var _mp_text: Label
 var _xp: ProgressBar
 var _xp_button: Button
-var _quest_panel: PanelContainer
+var _quest_panel: Control
 var _quest_title: Label
 var _quest_progress: Label
 var _quest_system: Node
@@ -52,12 +52,29 @@ func _hide_legacy_hud() -> void:
 			node.hide()
 
 func _build_bottom_bar() -> void:
-	_bar = PanelContainer.new()
+	_bar = Control.new()
 	_bar.name = "ClassicConquerBottomBar"
-	_bar.add_theme_stylebox_override("panel", ThemeManager.frame_style())
+	_bar.mouse_filter = Control.MOUSE_FILTER_PASS
 	add_child(_bar)
+	var frame_texture := ThemeManager.find_texture("frames", "panel")
+	if frame_texture == null:
+		frame_texture = ThemeManager.find_texture("frames", "frame")
+	var patch := ThemeManager.make_nine_patch(frame_texture, 14)
+	if patch != null:
+		patch.name = "NinePatchFrame"
+		patch.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		_bar.add_child(patch)
+	else:
+		var fallback := Panel.new()
+		fallback.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		fallback.add_theme_stylebox_override("panel", ThemeManager.frame_style())
+		fallback.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_bar.add_child(fallback)
 	var row := HBoxContainer.new()
 	row.name = "MainRow"
+	row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	row.offset_left = 4
+	row.offset_right = -4
 	row.add_theme_constant_override("separation", 4)
 	_bar.add_child(row)
 	var hp_orb := _make_orb("HPOrb", Color("#e33a42"), "HP")
@@ -148,12 +165,30 @@ func _make_orb(node_name: String, tint: Color, caption: String) -> Control:
 	return orb
 
 func _build_quest_tracker() -> void:
-	_quest_panel = PanelContainer.new()
+	_quest_panel = Control.new()
 	_quest_panel.name = "LiveQuestTracker"
 	_quest_panel.position = Vector2(16, 115)
 	_quest_panel.custom_minimum_size = Vector2(250, 68)
-	_quest_panel.add_theme_stylebox_override("panel", _flat(Color(0.025,0.035,0.05,0.82), Color("#c99b4d"), 1, 7))
+	_quest_panel.size = Vector2(250, 68)
+	var frame_texture := ThemeManager.find_texture("frames", "quest")
+	if frame_texture == null:
+		frame_texture = ThemeManager.find_texture("frames", "panel")
+	var patch := ThemeManager.make_nine_patch(frame_texture, 12)
+	if patch != null:
+		patch.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		_quest_panel.add_child(patch)
+	else:
+		var fallback := Panel.new()
+		fallback.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		fallback.add_theme_stylebox_override("panel", _flat(Color(0.025,0.035,0.05,0.82), Color("#c99b4d"), 1, 7))
+		fallback.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_quest_panel.add_child(fallback)
 	var body := VBoxContainer.new()
+	body.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	body.offset_left = 8
+	body.offset_right = -8
+	body.offset_top = 5
+	body.offset_bottom = -5
 	body.add_theme_constant_override("separation", 1)
 	_quest_panel.add_child(body)
 	_quest_title = Label.new()
