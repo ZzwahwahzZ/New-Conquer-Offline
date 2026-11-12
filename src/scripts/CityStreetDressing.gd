@@ -93,7 +93,7 @@ static func _add_planter(parent: Node3D, city: String, at: Vector3, seed: int) -
 	flowers.name = "FlowerCluster_MultiMesh"
 	flowers.multimesh = multi
 	var flower_material := _mat(FLOWERS[posmod(seed, FLOWERS.size())], 0.48)
-	flower_material.emission_enabled = city in ["DarkForest", "IceLand"]
+	flower_material.emission_enabled = false
 	flower_material.emission = FLOWERS[posmod(seed, FLOWERS.size())] * 0.28
 	root.add_child(flowers)
 	flowers.material_override = flower_material
@@ -175,9 +175,7 @@ static func _ice_crystal_beds(parent: Node3D) -> void:
 		crystal.mesh = mesh
 		crystal.position = Vector3(-32 + i * 9, 1.2, -29 if i % 2 == 0 else 29)
 		var material := _mat(Color("#9deaff"), 0.18)
-		material.emission_enabled = true
-		material.emission = Color("#65dfff")
-		material.emission_energy_multiplier = 0.7
+		material.emission_enabled = false
 		parent.add_child(crystal)
 		crystal.material_override = material
 
@@ -191,9 +189,7 @@ static func _ancient_lantern_beds(parent: Node3D) -> void:
 		lantern.mesh = mesh
 		lantern.position = Vector3(-40 + i * 8, 1.0, -34 if i % 2 == 0 else 34)
 		var material := _mat(Color("#72d79a"), 0.25)
-		material.emission_enabled = true
-		material.emission = Color("#37f08b")
-		material.emission_energy_multiplier = 1.0
+		material.emission_enabled = false
 		parent.add_child(lantern)
 		lantern.material_override = material
 
@@ -205,15 +201,15 @@ static func _mat(color: Color, roughness: float) -> StandardMaterial3D:
 
 static func _road_color(city: String) -> Color:
 	match city:
-		"DesertLand": return Color("#c8a875")
+		"DesertLand": return Color("#8a6945")
 		"VolcanoLand": return Color("#403b3d")
-		"IceLand": return Color("#d7e7ee")
+		"IceLand": return Color("#627f91")
 		"Waterlands": return Color("#a3a08a")
 		"DarkForest": return Color("#65715c")
 		_: return STONE_LIGHT
 
 static func _plaza_color(city: String) -> Color:
-	return Color("#38363b") if city == "VolcanoLand" else (Color("#4a5157") if city == "DarkForest" else STONE_DARK)
+	return Color("#38363b") if city == "VolcanoLand" else (Color("#4a5157") if city == "DarkForest" else (Color("#435968") if city == "IceLand" else (Color("#665039") if city == "DesertLand" else STONE_DARK)))
 
 static func _border_color(city: String) -> Color:
 	return Color("#6b5143") if city == "DesertLand" else (Color("#455c69") if city == "IceLand" else Color("#77736a"))
