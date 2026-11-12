@@ -159,5 +159,5 @@ func _capture() -> void:
 				quit(1)
 				return
 		print("CITY_5_VIEW_PASS: " + city_id + " plaza=1 shops=1 gate_horizon=1 outer_world=1 orbit90=1")
-	print("VISUAL_PROOF_PASS: 30 real runtime frames; five distinct close Conquer-isometric views per city; distance=20 height=15 pitch=-48.59 fov=45 far=600; HUD hidden.")
+	print("VISUAL_PROOF_PASS: 30 real runtime frames; five distinct close Conquer-isometric views per city; distance=20 height=15 pitch=-38.0 fov=45 far=600; HUD hidden.")
 	quit(0)
