@@ -21,7 +21,7 @@ DEST = ROOT / "assets" / "ui"
 CACHE = Path("/tmp/hf-rpg-ui-cache")
 STAGE = Path("/tmp/rpg-ui-stage")
 PUBLISH = Path("/tmp/rpg-ui-publish")
-SOURCE_VERSION = "kenney-cc0-rpg-ui-2026-11-v2"
+SOURCE_VERSION = "kenney-cc0-rpg-ui-2026-11-v3"
 MIRROR_REPO = "shorepine/kenney"
 MIRROR_COMMIT = "3694c6879e487c108f55677be7dd2ca75b07cc3b"
 _MIRROR_TREE = None
@@ -35,6 +35,16 @@ PACKS = {
         "mirror_url": "https://raw.githubusercontent.com/bill2432/kenney-2d-mirror/main/packs/ui-pack.zip",
         "mirror_sha256": "a8a14a234911eb648c062622915c93e79e94e97cb7f9f375a70f6617f1174318",
         "page": "https://kenney.nl/assets/ui-pack",
+        "license": "CC0-1.0",
+    },
+    "ui-pack-rpg-expansion": {
+        "official_url": "https://kenney.nl/assets/ui-pack-rpg-expansion/download",
+        "page": "https://kenney.nl/assets/ui-pack-rpg-expansion",
+        "license": "CC0-1.0",
+    },
+    "game-icons": {
+        "official_url": "https://kenney.nl/assets/game-icons/download",
+        "page": "https://kenney.nl/assets/game-icons",
         "license": "CC0-1.0",
     },
     "roguelike-rpg-pack": {
@@ -293,6 +303,17 @@ def classify_assets(stage: Path, provenance: dict) -> dict:
                 target_dir = stage / "frames"
             else:
                 target_dir = stage / "icons" / "misc"
+        elif pack_name == "ui-pack-rpg-expansion":
+            if any(token in normalized for token in ("button", "btn", "checkbox", "check_")):
+                target_dir = stage / "buttons"
+            elif any(token in normalized for token in ("bar", "slider", "progress", "health", "mana")):
+                target_dir = stage / "bars"
+            elif any(token in normalized for token in ("panel", "frame", "window", "border", "dialog", "slot")):
+                target_dir = stage / "frames"
+            else:
+                target_dir = stage / "icons" / "misc"
+        elif pack_name == "game-icons":
+            target_dir = stage / "icons" / "misc"
         elif pack_name == "fantasy-ui-borders":
             target_dir = stage / "frames"
         elif pack_name == "rune-pack":
@@ -361,6 +382,8 @@ def classify_assets(stage: Path, provenance: dict) -> dict:
         "godot_destination": "res://assets/ui/",
         "notes": [
             "UI Pack provides separate PNG buttons, sliders/bars and UI glyphs.",
+            "UI Pack (RPG Expansion) contributes its official 85-file CC0 UI extension.",
+            "Game Icons contributes its official 105-file CC0 icon set.",
             "Fantasy UI Borders supplies ornamental RPG panel frames.",
             "Scribble Dungeons weapon and shield icons are selected from its 128px set.",
             "Rune Pack PNGs are classified as skill/rune icons.",
@@ -440,6 +463,13 @@ def main() -> None:
         )
         if png_count == 0:
             raise RuntimeError(f"Kenney pack {pack_name} contains no extracted PNG files")
+        expected_pack_minimums = {"ui-pack-rpg-expansion": 85, "game-icons": 105}
+        expected_minimum = expected_pack_minimums.get(pack_name)
+        if expected_minimum is not None and png_count < expected_minimum:
+            raise RuntimeError(
+                f"Kenney pack {pack_name} has only {png_count} PNG files; "
+                f"expected at least {expected_minimum}"
+            )
         provenance[pack_name] = {
             **source_info,
             "source_page": metadata["page"],
