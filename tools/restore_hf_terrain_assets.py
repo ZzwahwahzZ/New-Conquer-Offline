@@ -66,6 +66,7 @@ def main() -> None:
         token=token,
         allow_patterns=[
             f"{SOURCE}/heightmaps/png/*.png",
+            f"{SOURCE}/materials/*.zip",
             f"{SOURCE}/materials/**/*.zip",
         ],
         local_dir=str(CACHE),
