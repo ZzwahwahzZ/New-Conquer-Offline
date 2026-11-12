@@ -1,4 +1,5 @@
 extends Control
+const ThemeManager = preload("res://src/scripts/ui/RPGIconThemeManager.gd")
 ## Compact top-down map with classic 0..1000 world coordinates.
 var world_manager: Node
 var player: Node3D
@@ -35,7 +36,7 @@ func _process(_delta: float) -> void:
 	settlement_label.text = world_manager.call("get_settlement_name",str(world_manager.get("current_settlement")))
 
 func _draw() -> void:
-	draw_style_box(_panel_style(),Rect2(Vector2.ZERO,Vector2(184,184)))
+	draw_style_box(ThemeManager.frame_style(),Rect2(Vector2.ZERO,Vector2(184,184)))
 	var center := Vector2(92,88)
 	for step in [-60.0,-30.0,0.0,30.0,60.0]:
 		draw_line(center+Vector2(step,-65),center+Vector2(step,65),Color(0.5,0.56,0.58,0.22),1.0)
