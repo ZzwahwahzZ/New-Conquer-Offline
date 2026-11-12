@@ -37,6 +37,29 @@ func _capture() -> void:
 	if game_state == null or class_system == null:
 		_fail("required autoloads are unavailable")
 		return
+	# Seed a deterministic local-only first-run save; this file exists only on the ephemeral CI runner.
+	var fixture := {
+		"character_name":"Visual Proof",
+		"level":1,
+		"experience":0,
+		"gold":100,
+		"hp":100,
+		"max_hp":100,
+		"mp":50,
+		"max_mp":50,
+		"inventory":[],
+		"quests":{"first_hunt":"not_started"},
+		"settlement_id":"TwinCity",
+		"world_position":[0.0,0.0,0.0],
+		"class_id":"Archer"
+	}
+	var save_file := FileAccess.open("user://offline_profile.json", FileAccess.WRITE)
+	if save_file == null:
+		_fail("could not create deterministic CI profile")
+		return
+	save_file.store_string(JSON.stringify(fixture))
+	save_file.close()
+	game_state.call("load_local")
 	game_state.get("profile")["class_id"] = "Archer"
 	if not class_system.call("choose_class", "Archer"):
 		_fail("could not initialize deterministic Archer profile")
