@@ -79,7 +79,7 @@ func _run() -> void:
 	if orb == null or orb.get_node_or_null("GoldEngravedOrbRim") == null:
 		_fail("split HP/MP orb gold rim missing")
 		return
-	if row.get_node_or_null("ClassicEXP") == null or row.get_node_or_null("MainRow/EXPCellDivider1") != null:
+	if row.get_node_or_null("ClassicEXP") == null or row.get_node_or_null("ClassicEXP/EXPCellDivider1") == null:
 		_fail("segmented gold EXP ProgressBar missing")
 		return
 	if orb.get_node_or_null("HPValue") == null or orb.get_node("HPValue").text.find(str(class_system.get("hp"))) < 0:
