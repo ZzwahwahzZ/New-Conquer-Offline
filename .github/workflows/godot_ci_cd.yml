@@ -98,6 +98,10 @@ jobs:
             exit 1
           fi
 
+      - name: Restore canonical project settings after temporary Compatibility import
+        if: always()
+        run: git checkout -- project.godot
+
       - name: Upload Import Logs Artifact
         if: always()
         uses: actions/upload-artifact@v4
