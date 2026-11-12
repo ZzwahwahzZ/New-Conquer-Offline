@@ -72,7 +72,9 @@ jobs:
       - name: Cache Godot imported assets
         uses: actions/cache@v4
         with:
-          path: .godot/imported
+          path: |
+            .godot/imported
+            .godot/global_script_class_cache.cfg
           key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
           restore-keys: |
             ${{ runner.os }}-godot-4.3-imported-
@@ -93,7 +95,16 @@ jobs:
           set -euo pipefail
           godot --headless --audio-driver Dummy --path . --script res://tools/diagnose_scripts_materials.gd
 
-      - name: Import all project resources (headless Compatibility renderer) and reject parser errors
+      - name: Step 1 - Initialize Editor Classes
+        shell: bash
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          python3 tools/godot_import_guard.py --editor-classes --godot godot --project . --log reports/editor_classes.log
+          test -s .godot/global_script_class_cache.cfg
+          echo "EDITOR_CLASSES_INITIALIZATION_PASS"
+
+      - name: Step 2 - Import Scripts, Materials & Build
         shell: bash
         timeout-minutes: 45
         run: |
@@ -121,7 +132,9 @@ jobs:
         if: failure()
         uses: actions/cache/save@v4
         with:
-          path: .godot/imported
+          path: |
+            .godot/imported
+            .godot/global_script_class_cache.cfg
           key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
 
       - name: Verify canonical Mobile renderer and Autoload order
@@ -239,7 +252,9 @@ jobs:
       - name: Cache Godot imported assets
         uses: actions/cache@v4
         with:
-          path: .godot/imported
+          path: |
+            .godot/imported
+            .godot/global_script_class_cache.cfg
           key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
           restore-keys: |
             ${{ runner.os }}-godot-4.3-imported-
@@ -254,7 +269,15 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb xorg xz-utils
-      - name: Import for WebGL2 Compatibility renderer
+      - name: Step 1 - Initialize Editor Classes
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          python3 tools/godot_import_guard.py --editor-classes --godot godot --project . --log reports/editor_classes.log
+          test -s .godot/global_script_class_cache.cfg
+          echo "EDITOR_CLASSES_INITIALIZATION_PASS"
+
+      - name: Step 2 - Import Scripts, Materials & Build
         timeout-minutes: 45
         run: python3 tools/godot_import_guard.py --timeout 900 --max-retries 1 --log reports/godot_import_guard.log -- xvfb-run -a godot --audio-driver Dummy --rendering-method gl_compatibility --path . --import --verbose
 
@@ -271,7 +294,9 @@ jobs:
         if: failure()
         uses: actions/cache/save@v4
         with:
-          path: .godot/imported
+          path: |
+            .godot/imported
+            .godot/global_script_class_cache.cfg
           key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
 
       - name: Export Web build
@@ -402,7 +427,9 @@ jobs:
       - name: Cache Godot imported assets
         uses: actions/cache@v4
         with:
-          path: .godot/imported
+          path: |
+            .godot/imported
+            .godot/global_script_class_cache.cfg
           key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
           restore-keys: |
             ${{ runner.os }}-godot-4.3-imported-
@@ -417,7 +444,15 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb xorg xz-utils
-      - name: Import Android project resources
+      - name: Step 1 - Initialize Editor Classes
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          python3 tools/godot_import_guard.py --editor-classes --godot godot --project . --log reports/editor_classes.log
+          test -s .godot/global_script_class_cache.cfg
+          echo "EDITOR_CLASSES_INITIALIZATION_PASS"
+
+      - name: Step 2 - Import Scripts, Materials & Build
         timeout-minutes: 45
         run: python3 tools/godot_import_guard.py --timeout 900 --max-retries 1 --log reports/godot_import_guard.log -- xvfb-run -a godot --audio-driver Dummy --rendering-method gl_compatibility --path . --import --verbose
 
@@ -434,7 +469,9 @@ jobs:
         if: failure()
         uses: actions/cache/save@v4
         with:
-          path: .godot/imported
+          path: |
+            .godot/imported
+            .godot/global_script_class_cache.cfg
           key: ${{ runner.os }}-godot-4.3-imported-${{ hashFiles('assets/**', '**/*.import') }}
 
       - name: Export debug APK
