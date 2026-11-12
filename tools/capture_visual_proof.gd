@@ -22,6 +22,20 @@ func _fail(message: String) -> void:
 	push_error("VISUAL_PROOF_FAIL: " + message)
 	quit(1)
 
+func _has_renderable_mesh(root_node: Node) -> bool:
+	var pending: Array[Node] = [root_node]
+	while not pending.is_empty():
+		var current: Node = pending.pop_back()
+		for child in current.get_children():
+			pending.append(child)
+		if current is MeshInstance3D and (current as MeshInstance3D).mesh != null:
+			return true
+		if current is MultiMeshInstance3D:
+			var instance := current as MultiMeshInstance3D
+			if instance.multimesh != null and instance.multimesh.mesh != null:
+				return true
+	return false
+
 func _save_frame(file_name: String) -> bool:
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
@@ -135,8 +149,11 @@ func _capture() -> void:
 				_fail("settlement failed to load for visual proof: " + city_id)
 				return
 		var loaded_world := world_manager.get("current_world") as Node3D
-		if loaded_world.find_child(city_id + "_DetailedBuilding_00", true, false) == null:
-			_fail("detailed architecture missing from rendered city: " + city_id)
+		var first_building := loaded_world.find_child(city_id + "_DetailedBuilding_00", true, false)
+		if first_building == null:
+			first_building = loaded_world.find_child(city_id + "_QuaterniusBuilding_00", true, false)
+		if first_building == null or not _has_renderable_mesh(first_building):
+			_fail("renderable detailed or imported architecture missing from rendered city: " + city_id)
 			return
 		if loaded_world.find_child(city_id + "_PerimeterFortifications", true, false) == null:
 			_fail("perimeter walls and gates missing from rendered city: " + city_id)
