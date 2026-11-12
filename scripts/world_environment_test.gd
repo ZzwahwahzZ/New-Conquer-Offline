@@ -1,4 +1,7 @@
 extends SceneTree
+
+func get_tree() -> SceneTree:
+	return self
 ## Runtime regression for settlement lighting and solid Twin City ground.
 func _initialize() -> void:
 	call_deferred("_run")
@@ -37,6 +40,4 @@ func _run() -> void:
 	print("WORLD_ENVIRONMENT_PASS: ProceduralSky + sky ambient 0.85 + active directional sun 1.3")
 	print("TWIN_CITY_VISUAL_PASS: procedural grass + stone paving + imperial palace + dragon bridges")
 	city.queue_free()
-	quit(0)
-	city.queue_free()
-	quit(0)
+	get_tree().quit(0)
