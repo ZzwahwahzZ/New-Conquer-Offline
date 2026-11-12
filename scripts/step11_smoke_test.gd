@@ -71,6 +71,23 @@ func _run() -> void:
 				max_height = maxf(max_height, vertex.y)
 			if not _require(max_height - min_height > 0.05, "Terrain heightfield is flat or heightmap data was not applied: " + city):
 				return
+		var total_mesh_nodes := 0
+		var empty_mesh_nodes := 0
+		var mesh_scan: Array[Node] = [scene]
+		while not mesh_scan.is_empty():
+			var mesh_node: Node = mesh_scan.pop_back()
+			for mesh_child in mesh_node.get_children():
+				mesh_scan.append(mesh_child)
+			if mesh_node is MeshInstance3D:
+				total_mesh_nodes += 1
+				if (mesh_node as MeshInstance3D).mesh == null:
+					empty_mesh_nodes += 1
+			if mesh_node is MultiMeshInstance3D:
+				total_mesh_nodes += 1
+				var mm := (mesh_node as MultiMeshInstance3D).multimesh
+				if mm == null or mm.mesh == null:
+					empty_mesh_nodes += 1
+		print("STEP11_MESH_HANDLE_AUDIT: " + city + " total=" + str(total_mesh_nodes) + " empty=" + str(empty_mesh_nodes))
 		scene.queue_free()
 		await process_frame
 	var source := FileAccess.get_file_as_string("res://project.godot")
