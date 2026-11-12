@@ -208,6 +208,7 @@ jobs:
         run: bash tools/run_godot_smoke_test.sh scripts/city_street_dressing_test.gd
 
       - name: Capture thirty close classic-Conquer camera proof frames across all six cities
+        id: capture_visual_proof
         timeout-minutes: 15
         shell: bash
         run: |
@@ -228,7 +229,7 @@ jobs:
           echo "THIRTY_CITY_ARCHITECTURE_VISUAL_PROOFS_PASS"
 
       - name: Upload Visual Screenshot Proof
-        if: always()
+        if: always() && steps.capture_visual_proof.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: NewConquerOffline-Visual-Screenshot-Proof-30
