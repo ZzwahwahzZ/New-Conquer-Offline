@@ -73,12 +73,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-godot-4.3-imported-
 
+      - name: Sanitize temporary GLB and texture assets before Godot import
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check Pillow
+          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 15 --max-image-dimension 1024
       - name: Import all project resources (headless Compatibility renderer) and reject parser errors
         shell: bash
         timeout-minutes: 25
         run: |
           set -euo pipefail
-          godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose 2>&1 | tee /tmp/godot-import.log
+          python3 tools/godot_import_guard.py --timeout 180 --max-retries 12 -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose 2>&1 | tee /tmp/godot-import.log
           if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load script|ERROR: Failed loading resource' /tmp/godot-import.log; then
             echo "::error::Godot import emitted parser or resource-load errors."
             exit 1
@@ -208,9 +214,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-godot-4.3-imported-
 
+      - name: Sanitize temporary GLB and texture assets before Godot import
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check Pillow
+          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 15 --max-image-dimension 1024
       - name: Import for WebGL2 Compatibility renderer
         timeout-minutes: 25
-        run: godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
+        run: python3 tools/godot_import_guard.py --timeout 180 --max-retries 12 -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
 
       - name: Save partial Godot import cache after failed import
         if: failure()
@@ -348,9 +360,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-godot-4.3-imported-
 
+      - name: Sanitize temporary GLB and texture assets before Godot import
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check Pillow
+          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 15 --max-image-dimension 1024
       - name: Import Android project resources
         timeout-minutes: 25
-        run: godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
+        run: python3 tools/godot_import_guard.py --timeout 180 --max-retries 12 -- godot --headless --rendering-method gl_compatibility --display-driver headless --path . --import --verbose
 
       - name: Save partial Godot import cache after failed import
         if: failure()
