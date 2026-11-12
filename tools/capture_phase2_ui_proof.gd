@@ -98,8 +98,9 @@ func _run() -> void:
 	if ThemeManager.orb_frame_texture() == null or ThemeManager.ornate_frame_texture() == null or not (ThemeManager.frame_style() is StyleBoxTexture):
 		_fail("ornate 9-slice panel frame or engraved orb ring is missing")
 		return
-	if row.get_node_or_null("ClassicEXP") == null or row.get_node_or_null("ClassicEXP/EXPCellDivider1") == null:
-		_fail("segmented gold EXP ProgressBar missing")
+	var exp_bar := classic.get_node_or_null("ClassicEXP") as ProgressBar
+	if exp_bar == null or exp_bar.get_node_or_null("EXPCellDivider1") == null or exp_bar.position.y >= bar.position.y:
+		_fail("thin segmented gold EXP ProgressBar is not positioned above the bottom bar")
 		return
 	if orb.get_node_or_null("HPValue") == null or orb.get_node("HPValue").text.find(str(int(round(float(class_system.get("hp")))))) < 0:
 		_fail("HP orb does not display the actual current HP value")
