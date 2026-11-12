@@ -12,6 +12,20 @@ func _check(ok: bool, message: String) -> bool:
 	quit(1)
 	return false
 
+func _has_renderable_mesh(root_node: Node) -> bool:
+	var pending: Array[Node] = [root_node]
+	while not pending.is_empty():
+		var current: Node = pending.pop_back()
+		for child in current.get_children():
+			pending.append(child)
+		if current is MeshInstance3D and (current as MeshInstance3D).mesh != null:
+			return true
+		if current is MultiMeshInstance3D:
+			var instance := current as MultiMeshInstance3D
+			if instance.multimesh != null and instance.multimesh.mesh != null:
+				return true
+	return false
+
 func _run() -> void:
 	for city_name in CITIES:
 		var path: String = "res://src/scenes/world/" + str(city_name) + ".tscn"
@@ -32,7 +46,8 @@ func _run() -> void:
 		var architecture_slot := city.get_node_or_null("ArchitectureAssetSlot")
 		if not _check(architecture_slot != null, city_name + " architecture slot missing"):
 			return
-		var buildings := 0
+		var detailed_buildings := 0
+		var imported_buildings: Array[Node] = []
 		var brick_normal_found := false
 		var roof_detail_found := false
 		var pending_arch: Array[Node] = [architecture_slot]
@@ -41,14 +56,26 @@ func _run() -> void:
 			for child in arch_node.get_children():
 				pending_arch.append(child)
 			if arch_node.name.begins_with(city_name + "_DetailedBuilding_"):
-				buildings += 1
+				detailed_buildings += 1
+			elif arch_node.name.begins_with(city_name + "_QuaterniusBuilding_"):
+				imported_buildings.append(arch_node)
 			if arch_node.name == "ReliefBrickWalls" and arch_node is MeshInstance3D:
 				var brick_material := (arch_node as MeshInstance3D).material_override as StandardMaterial3D
 				brick_normal_found = brick_material != null and brick_material.normal_enabled and brick_material.normal_texture != null
 			if arch_node.name in ["PagodaRoofTier_0", "SandstoneDome", "BasaltBattlement", "SnowRoofTier"]:
 				roof_detail_found = true
-		if not _check(buildings == 24 and brick_normal_found and roof_detail_found, city_name + " must contain 24 detailed facades with brick normal and city-specific roof kit"):
+		var total_buildings := detailed_buildings + imported_buildings.size()
+		if not _check(total_buildings == 24, city_name + " must contain 24 buildings (detailed=%d imported=%d)" % [detailed_buildings, imported_buildings.size()]):
 			return
+		if detailed_buildings > 0 and not _check(brick_normal_found and roof_detail_found, city_name + " fallback facades must retain brick normal and city-specific roof details"):
+			return
+		var renderable_imports := 0
+		for imported_root in imported_buildings:
+			if _has_renderable_mesh(imported_root):
+				renderable_imports += 1
+		if not _check(renderable_imports == imported_buildings.size(), city_name + " has imported buildings without renderable mesh geometry"):
+			return
+		print("CITY_BUILDING_SOURCE_AUDIT: " + city_name + " detailed=" + str(detailed_buildings) + " quaternius=" + str(imported_buildings.size()) + " renderable_imports=" + str(renderable_imports))
 		var gate_count := 0
 		var wall_count := 0
 		var open_plaza_found := city.find_child("OpenCentralPlaza_80x80", true, false) != null
