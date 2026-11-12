@@ -127,8 +127,12 @@ static func item_texture(item_id: String) -> Texture2D:
 		return fallback_texture
 	var category := "misc"
 	var hint := key
-	if "gem" in key or "crystal" in key or "jewel" in key or key in ["meteor", "dragonball", "rainbow"]:
+	if "gem" in key or "crystal" in key or "jewel" in key or key in ["meteor", "dragonball", "rainbow"] or key.begins_with("dragon_") or key.begins_with("phoenix_") or key.begins_with("rainbow_") or key.begins_with("violet_") or key.begins_with("moon_") or key.begins_with("fury_") or key.begins_with("kylin_"):
 		category = "gems"
+		hint = key.get_slice("_", 0) if key.contains("_") else "gem"
+		var family_texture := find_texture("icons/gems", hint)
+		if family_texture != null:
+			return family_texture
 		hint = "gem"
 	elif "potion" in key or "mana" in key or "health" in key or "flask" in key or key in ["hp", "mp"]:
 		category = "potions"
