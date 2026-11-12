@@ -89,6 +89,15 @@ func _run() -> void:
 	if orb == null or orb.get_node_or_null("GoldEngravedOrbRim") == null:
 		_fail("split HP/MP orb gold rim missing")
 		return
+	if row.get_child_count() == 0 or row.get_child(0) != orb or row.layout_direction != Control.LAYOUT_DIRECTION_LTR:
+		_fail("split HP/MP orb is not the far-left bottom-bar element")
+		return
+	if row.get_node_or_null("XPModeButton") != null:
+		_fail("standalone XP button must be removed")
+		return
+	if ThemeManager.orb_frame_texture() == null or ThemeManager.ornate_frame_texture() == null or not (ThemeManager.frame_style() is StyleBoxTexture):
+		_fail("ornate 9-slice panel frame or engraved orb ring is missing")
+		return
 	if row.get_node_or_null("ClassicEXP") == null or row.get_node_or_null("ClassicEXP/EXPCellDivider1") == null:
 		_fail("segmented gold EXP ProgressBar missing")
 		return
@@ -133,6 +142,20 @@ func _run() -> void:
 	var inventory_ui: Node = get_first_node_in_group("inventory_ui")
 	if not is_instance_valid(inventory_ui):
 		_fail("Character gear and inventory UI is missing")
+		return
+	await process_frame
+	var preview_pivot := inventory_ui.get("_preview_pivot") as Node3D
+	if not is_instance_valid(preview_pivot) or absf(wrapf(preview_pivot.rotation.y - PI, -PI, PI)) > 0.02:
+		_fail("character preview is not rotated 180 degrees toward the camera")
+		return
+	var armor_row := inventory_ui.find_child("EquipmentRow_Armor", true, false) as HBoxContainer
+	if not is_instance_valid(armor_row) or armor_row.layout_direction != Control.LAYOUT_DIRECTION_LTR:
+		_fail("equipment row is not laid out left-to-right for right-side icons")
+		return
+	var armor_label := armor_row.get_node_or_null("EquipmentLabel_Armor") as Label
+	var armor_button := armor_row.get_node_or_null("Equipment_Armor") as Button
+	if not is_instance_valid(armor_label) or not is_instance_valid(armor_button) or armor_button.position.x <= armor_label.position.x:
+		_fail("equipment icon is not visually positioned to the right of its centered label")
 		return
 	if gear_system.inventory.size() != 28:
 		_fail("Expected seven equipment pieces and all 21 gem variants in runtime inventory")
