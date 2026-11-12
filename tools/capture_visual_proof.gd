@@ -2,15 +2,9 @@ extends SceneTree
 ## Captures real rendered frames from the main New Conquer Offline scene under Xvfb.
 const MAIN_SCENE := "res://scenes/main.tscn"
 const OUTPUT_DIR := "res://reports/visual-proof"
-const CAPTURE_CAMERA_DISTANCE := 78.0
+const CAPTURE_CAMERA_DISTANCE := 235.0
 const CAPTURE_CAMERA_PITCH := 48.0
-const CITY_PROOF := [
-	{"id":"DesertLand","file":"city_2_desertland.png"},
-	{"id":"VolcanoLand","file":"city_3_volcanoland.png"},
-	{"id":"IceLand","file":"city_4_iceland.png"},
-	{"id":"Waterlands","file":"city_5_waterlands.png"},
-	{"id":"DarkForest","file":"city_6_darkforest.png"}
-]
+const CITY_IDS := ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"]
 
 func _initialize() -> void:
 	call_deferred("_capture")
@@ -141,63 +135,62 @@ func _capture() -> void:
 	if camera.global_position.y < player.global_position.y + 3.0:
 		_fail("isometric camera is not elevated above the player; the spawn frame would be ground-obscured")
 		return
-	# Twin City: four real frames at t=0, 3, 6 and 9 seconds.
-	await process_frame
-	await process_frame
-	if not await _save_frame("twincity_1_t0.png"):
-		quit(1)
-		return
-	await create_timer(3.0).timeout
-	if not await _save_frame("twincity_2_t3.png"):
-		quit(1)
-		return
-	camera_rig.set("_yaw", PI * 0.5)
-	camera_rig.call("_apply_orbit")
-	await create_timer(3.0).timeout
-	if not await _save_frame("twincity_3_t6_orbit.png"):
-		quit(1)
-		return
-	camera_rig.set("_yaw", PI)
-	camera_rig.call("_apply_orbit")
-	await create_timer(3.0).timeout
-	if not await _save_frame("twincity_4_t9_orbit2.png"):
-		quit(1)
-		return
-	# Load every remaining settlement through the actual WorldManager transition.
-	for city_data in CITY_PROOF:
-		var city_id := str(city_data["id"])
-		await world_manager.call("change_settlement", city_id, true)
-		if not is_instance_valid(camera_rig) or not is_instance_valid(player):
-			_fail("camera or player became invalid during settlement transition: " + city_id)
+	# Five genuine runtime frames for each of the six cities: four stable time samples and one gate approach.
+	var proof_index := 0
+	for city_id in CITY_IDS:
+		if city_id != "TwinCity":
+			await world_manager.call("change_settlement", city_id, true)
+			var city_deadline := Time.get_ticks_msec() + 30000
+			while (world_manager.get("current_settlement") != city_id or world_manager.get("current_world") == null) and Time.get_ticks_msec() < city_deadline:
+				await process_frame
+			if world_manager.get("current_settlement") != city_id or world_manager.get("current_world") == null:
+				_fail("settlement failed to load for visual proof: " + city_id)
+				return
+		var loaded_world := world_manager.get("current_world") as Node3D
+		if loaded_world.find_child(city_id + "_DetailedBuilding_00", true, false) == null:
+			_fail("detailed architecture missing from rendered city: " + city_id)
 			return
+		if loaded_world.find_child(city_id + "_PerimeterFortifications", true, false) == null:
+			_fail("perimeter walls and gates missing from rendered city: " + city_id)
+			return
+		if loaded_world.find_child("OpenCentralPlaza_80x80", true, false) == null:
+			_fail("open central plaza missing from rendered city: " + city_id)
+			return
+		player.global_position = Vector3(0.0, 0.775, 0.0)
 		camera_rig.set("_target_distance", CAPTURE_CAMERA_DISTANCE)
 		camera_rig.set("_current_distance", CAPTURE_CAMERA_DISTANCE)
 		camera_rig.set("pitch_degrees", CAPTURE_CAMERA_PITCH)
 		camera_rig.set("_yaw", 0.0)
 		camera_rig.call("_apply_orbit")
-		var city_environment := world_manager.get("current_world").find_child("SettlementEnvironment", true, false) as WorldEnvironment
+		var city_environment := loaded_world.find_child("SettlementEnvironment", true, false) as WorldEnvironment
 		if city_environment != null and city_environment.environment != null:
 			city_environment.environment.glow_enabled = false
 			city_environment.environment.fog_enabled = false
 			city_environment.environment.ambient_light_energy = 0.45
-			city_environment.environment.tonemap_exposure = 0.72
-		var city_sun := world_manager.get("current_world").find_child("SettlementSun", true, false) as DirectionalLight3D
+			city_environment.environment.tonemap_exposure = 0.9
+		var city_sun := loaded_world.find_child("SettlementSun", true, false) as DirectionalLight3D
 		if city_sun != null:
-			city_sun.light_energy = 0.72
-		var city_deadline := Time.get_ticks_msec() + 20000
-		while (world_manager.get("current_settlement") != city_id or world_manager.get("current_world") == null) and Time.get_ticks_msec() < city_deadline:
-			await process_frame
-		if world_manager.get("current_settlement") != city_id or world_manager.get("current_world") == null:
-			_fail("settlement failed to load for visual proof: " + city_id)
-			return
-		player.global_position = Vector3(0.0, 0.775, 0.0)
-		await create_timer(3.0).timeout
-		var loaded_world := world_manager.get("current_world") as Node3D
-		if loaded_world.find_child(city_id + "_DetailedBuilding_00", true, false) == null:
-			_fail("detailed architecture missing from rendered city: " + city_id)
-			return
-		if not await _save_frame(str(city_data["file"])):
+			city_sun.light_energy = 0.85
+		var slug := city_id.to_lower()
+		for sample in range(4):
+			if sample > 0:
+				await create_timer(4.0).timeout
+			var file_name := "city_%d_%s_%02d_t%02d.png" % [proof_index+1,slug,sample+1,sample*4]
+			if not await _save_frame(file_name):
+				quit(1)
+				return
+		# Gate approach: move to the inside of the northern gate so the arch, outer bridge and biome beyond it fill the view.
+		player.global_position = Vector3(0.0,0.775,-118.0)
+		camera_rig.set("_target_distance", 58.0)
+		camera_rig.set("_current_distance", 58.0)
+		camera_rig.set("_yaw", 0.0)
+		camera_rig.call("_apply_orbit")
+		await create_timer(1.5).timeout
+		var gate_file := "city_%d_%s_05_gate_orbit.png" % [proof_index+1,slug]
+		if not await _save_frame(gate_file):
 			quit(1)
 			return
-	print("VISUAL_PROOF_PASS: 9 genuine runtime frames; TwinCity t=0/3/6/9 with two 90-degree orbits; five other settlements after 3-second stabilization; wide city framing, balanced capture lighting and HUD hidden.")
+		print("CITY_30_FRAME_GROUP_PASS: " + city_id + " stable=4 gate_orbit=1")
+		proof_index += 1
+	print("VISUAL_PROOF_PASS: 30 genuine runtime frames; five per city across all six settlements, four stable time samples at t=0/4/8/12 and one northern gate approach/orbit each; HUD hidden and balanced capture lighting.")
 	quit(0)
