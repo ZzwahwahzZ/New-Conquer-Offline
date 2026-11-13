@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: twin-city-visual-\${{ github.ref }}
+  group: twin-city-visual-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
     env:
       GODOT_VERSION: 4.3
       GODOT_RELEASE: 4.3-stable
-      HF_TOKEN: \${{ secrets.HF_TOKEN }}
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
       GODOT_SILENCE_ROOT_WARNING: '1'
     steps:
       - name: Checkout isolated prototype branch
