@@ -190,3 +190,72 @@ def discover_hanok_pack(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR):
         print("HANOK_PACK_COUNTS", {"manifest":len(rows),"downloaded":downloaded})
     except Exception as exc:
         ERR.append({"asset":"3DAssets.dev:"+pack_slug,"stage":"pack_manifest","reason":str(exc)})
+
+
+def discover_imperial_china_pack(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR):
+    """Import the complete 63-model CC0 Imperial China Palace and Garden pack."""
+    pack_slug = "imperial-china-palace-and-garden"
+    try:
+        payload = getj("https://3dassets.dev/api/v1/packs/" + pack_slug)
+        data = payload.get("data", payload) if isinstance(payload, dict) else payload
+        pack_info = data.get("pack", data) if isinstance(data, dict) else {}
+        rows = data if isinstance(data, list) else []
+        if isinstance(data, dict):
+            for key in ("assets", "models", "items"):
+                if isinstance(data.get(key), list):
+                    rows = data[key]
+                    break
+        if not rows and isinstance(pack_info, dict):
+            for key in ("assets", "models", "items"):
+                if isinstance(pack_info.get(key), list):
+                    rows = pack_info[key]
+                    break
+        if not rows:
+            raise ValueError("Published pack manifest did not contain an assets/models array")
+        existing = {x.get("id") for x in DISC}
+        downloaded = 0
+        for item in rows:
+            if not isinstance(item, dict):
+                continue
+            slug = item.get("slug") or item.get("id")
+            if not slug:
+                continue
+            asset_id = "3dassets-" + safe(slug)
+            if asset_id in existing:
+                continue
+            detail = item
+            cdn = item.get("cdnUrl") or item.get("cdn_url") or item.get("modelUrl")
+            if not (isinstance(cdn, str) and cdn.startswith("https://cdn.3dassets.dev/") and cdn.lower().endswith(".glb")):
+                detail_payload = getj("https://3dassets.dev/api/v1/assets/" + str(slug))
+                detail = detail_payload.get("data", {}) if isinstance(detail_payload, dict) else {}
+                cdn = detail.get("cdnUrl") or detail.get("cdn_url")
+            if not (isinstance(cdn, str) and cdn.startswith("https://cdn.3dassets.dev/") and cdn.lower().endswith(".glb")):
+                ERR.append({"asset":"3DAssets.dev:ImperialChina:"+str(slug),"stage":"manifest","reason":"No canonical direct GLB CDN URL in pack/detail API"})
+                continue
+            name = item.get("name") or item.get("title") or detail.get("name") or detail.get("title") or str(slug)
+            description = item.get("description") or detail.get("description") or ""
+            rec = {
+                "id": asset_id, "name": name, "source": "3DAssets.dev",
+                "source_url": "https://3dassets.dev/assets/" + str(slug),
+                "license": "CC0 1.0 Universal",
+                "authors": {"creator": "3DAssets.dev"},
+                "matches": [("architecture", "Imperial China Palace and Garden")],
+                "download_url": cdn,
+                "api_metadata": {
+                    "description": description,
+                    "tags": "Chinese imperial palace traditional East Asian wuxia architecture",
+                    "pack_description": "Imperial Chinese palace court with ceremonial hall, gate tower, moon gates, covered walkways, arched bridge and garden",
+                },
+                "pack": pack_slug,
+            }
+            try:
+                local_path = fetch(cdn, RAW/"3dassets"/"imperial-china-pack"/(safe(slug)+".glb"))
+                DISC.append(rec)
+                DOWN.append({**rec, "raw": str(local_path), "download_sha256": sha(local_path)})
+                existing.add(asset_id)
+                downloaded += 1
+            except Exception as exc:
+                ERR.append({"asset":"3DAssets.dev:ImperialChina:"+str(slug),"stage":"download","reason":str(exc)})
+        print("IMPERIAL_CHINA_PACK_COUNTS", {"manifest":len(rows),"downloaded":downloaded})
+    except Exception as exc:
+        ERR.append({"asset":"3DAssets.dev:"+pack_slug,"stage":"pack_manifest","reason":str(exc)})
