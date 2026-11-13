@@ -1542,7 +1542,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): [2.200000047683716, 0.6112958192825317, 2.4200000762939453]
 - SHA256: 78fbeaab82db018210e730335c01fd2fce7bcb3552e1d67046d31218cc6e4a73
 
-## textures/opengameart-pbr-marble-and-tile-texture-set/rough_tiles_marble_3.png
+## textures/opengameart-pbr-marble-and-tile-texture-set/preview_marble.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -1551,9 +1551,9 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_21.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 8a71698a788fe0754d04e4250765842e0d858086e5b408e9e3d47d0c897be481
+- SHA256: ff0f0d99e5eb5fc17e619810c6cdfe136a7e5952de57df7eef09113104c51aee
 
-## textures/opengameart-pbr-marble-and-tile-texture-set/preview_tiles_marble_3.png
+## textures/opengameart-pbr-marble-and-tile-texture-set/color_marble.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -1562,95 +1562,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_21.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: ef4b3200185f99f713b0c99244e45fd79241c3048f38146bb5ad6babf566dd1d
-
-## textures/opengameart-pbr-marble-and-tile-texture-set/color_tiles_marble_3.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
-- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: cb6ca0f7518ef589e792638f5b62c9e2f0b16d6022a6870381c99cded0bc62b1
-
-## textures/opengameart-pbr-marble-and-tile-texture-set/normal_tiles_marble_3.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
-- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: a5d4870763575201ce2c0ff3fe9c02abd79eea637d210b7139cad9ea25058a45
-
-## textures/opengameart-pbr-marble-and-tile-texture-set/rough_tiles_marble_2.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
-- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 11e3b975087cef288b9967e273838cb12d3792f41e2b7e2b33ab2fc1bfcbe83c
-
-## textures/opengameart-pbr-marble-and-tile-texture-set/color_tiles_marble_2.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
-- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: da9b20110d3e2cf918bb5083d62b90ad59082622224e080123cc65bc07352cac
-
-## textures/opengameart-pbr-marble-and-tile-texture-set/normal_tiles_marble_2.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
-- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: aa74b70e09dc59ae93503c5568ff04e2c1ee16c30cc9857abd1d715f54a27c13
-
-## textures/opengameart-pbr-marble-and-tile-texture-set/preview_tiles_marble_2.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
-- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 29703c0278f4ad8c661ed390837967043371645d7f76385dbd6d6bf70d54d290
-
-## textures/opengameart-pbr-marble-and-tile-texture-set/color_marble_2.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
-- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: f0c552ae03329aa8fa34b11f0a777d328efa5619d9306ae822e85a38b7772c4a
-
-## textures/opengameart-pbr-marble-and-tile-texture-set/preview_marble_2.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
-- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 5b19e3ca84ad48980dce844fea99c8e5cb459e9754b56a3657ccf0e58e09355b
+- SHA256: 38d2c21b3fb15b9374fc3fe2fe3deec8b5850adf9f66b7b7a3144f834a307cb6
 
 ## textures/opengameart-pbr-marble-and-tile-texture-set/normal_tiles_marble.png
 - Category: pbr_materials
@@ -1662,17 +1574,6 @@ Only files listed in imperial_approved_assets.json are credited.
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: fd23aebde1c9deddcc99eb9727f5b2015c5a7cedf49e19941dba222f430ceaeb
-
-## textures/opengameart-pbr-marble-and-tile-texture-set/color_tiles_marble.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
-- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 2c7b1ad071772a68194df2d5ec893dcba4186a4916592bbb95462a7466d79187
 
 ## textures/opengameart-pbr-marble-and-tile-texture-set/rough_tiles_marble.png
 - Category: pbr_materials
@@ -1696,7 +1597,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 75dbf6409254bba9d5e929fbe87aeecbe888c65ff67045fb392d2f6a26a73003
 
-## textures/opengameart-pbr-marble-and-tile-texture-set/color_marble.png
+## textures/opengameart-pbr-marble-and-tile-texture-set/color_tiles_marble.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -1705,9 +1606,9 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_21.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 38d2c21b3fb15b9374fc3fe2fe3deec8b5850adf9f66b7b7a3144f834a307cb6
+- SHA256: 2c7b1ad071772a68194df2d5ec893dcba4186a4916592bbb95462a7466d79187
 
-## textures/opengameart-pbr-marble-and-tile-texture-set/preview_marble.png
+## textures/opengameart-pbr-marble-and-tile-texture-set/color_marble_2.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -1716,9 +1617,108 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_21.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: ff0f0d99e5eb5fc17e619810c6cdfe136a7e5952de57df7eef09113104c51aee
+- SHA256: f0c552ae03329aa8fa34b11f0a777d328efa5619d9306ae822e85a38b7772c4a
 
-## textures/opengameart-pbr-texture-pack-0/rough_wall.png
+## textures/opengameart-pbr-marble-and-tile-texture-set/preview_marble_2.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 5b19e3ca84ad48980dce844fea99c8e5cb459e9754b56a3657ccf0e58e09355b
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/rough_tiles_marble_3.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 8a71698a788fe0754d04e4250765842e0d858086e5b408e9e3d47d0c897be481
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/normal_tiles_marble_3.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: a5d4870763575201ce2c0ff3fe9c02abd79eea637d210b7139cad9ea25058a45
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/color_tiles_marble_3.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: cb6ca0f7518ef589e792638f5b62c9e2f0b16d6022a6870381c99cded0bc62b1
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/preview_tiles_marble_3.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: ef4b3200185f99f713b0c99244e45fd79241c3048f38146bb5ad6babf566dd1d
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/preview_tiles_marble_2.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 29703c0278f4ad8c661ed390837967043371645d7f76385dbd6d6bf70d54d290
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/color_tiles_marble_2.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: da9b20110d3e2cf918bb5083d62b90ad59082622224e080123cc65bc07352cac
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/normal_tiles_marble_2.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: aa74b70e09dc59ae93503c5568ff04e2c1ee16c30cc9857abd1d715f54a27c13
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/rough_tiles_marble_2.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- Direct download: https://opengameart.org/sites/default/files/textures_21.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 11e3b975087cef288b9967e273838cb12d3792f41e2b7e2b33ab2fc1bfcbe83c
+
+## textures/opengameart-pbr-texture-pack-0/normal_marble.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -1727,9 +1727,9 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_20.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: e257c965485939c9189ac28d0b4bd36fd63937e044a8ca427a71a855e6682663
+- SHA256: f037ca8a8b7494e222e836c8d0d7f3f1b70d2c310614ffb0d3783fb1008eba98
 
-## textures/opengameart-pbr-texture-pack-0/preview_wall.png
+## textures/opengameart-pbr-texture-pack-0/preview_marble.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -1738,9 +1738,9 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_20.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: c4a23bcdc9b6e3f849f06e47b4793199ceee990cb27f401d3bd74acbb07873ce
+- SHA256: 77470ca0de476f1b2dbe219629522eb99e867e76e71b1d6b5659b4e5781025b2
 
-## textures/opengameart-pbr-texture-pack-0/normal_wall.png
+## textures/opengameart-pbr-texture-pack-0/rough_marble.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -1749,9 +1749,9 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_20.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 1e6e9eae8b0053372b2bd70ca0de420dec20b7d8380ed2b59ac4f51f9a502224
+- SHA256: 3092bf0a6a19d3aae72d1a694266717ad9d904a721827b5e5941c7af183d11e9
 
-## textures/opengameart-pbr-texture-pack-0/color_wall.png
+## textures/opengameart-pbr-texture-pack-0/color_marble.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -1760,9 +1760,9 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_20.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 53f20882dbeced8d65f4873c528c18bb8271f65a733e596faa7f1b7f4c02eee6
+- SHA256: 0b197ca46a32bc8c944866b353d30d36ef4a2704f8f724843ce3da1e5c0f2ca3
 
-## textures/opengameart-pbr-texture-pack-0/normal_tiles.png
+## textures/opengameart-pbr-texture-pack-0/rough_marble_2.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -1771,84 +1771,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_20.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 4153989fa2442fb8a2e4c4d9bd54bd2df3db1ffeaa70c1cae6945c9c4f74e6d4
-
-## textures/opengameart-pbr-texture-pack-0/rough_tiles.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack-0
-- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 608e6526f0d4a0139756b8d2106c88f441043be6bde3b1b07b85bfa4a190f72e
-
-## textures/opengameart-pbr-texture-pack-0/color_tiles.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack-0
-- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 96244ce5b9020d95e6b9411290109002c02210eb77b47f6de4b9b7ac8421aabf
-
-## textures/opengameart-pbr-texture-pack-0/preview_tiles.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack-0
-- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 0cb08e51f25a6d55ee47f2fa9bce7500662b0ec5996a2f72ffb0f962ef6fcebd
-
-## textures/opengameart-pbr-texture-pack-0/rough_carpet.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack-0
-- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 03ad0be800e7ee6693a8fe016d25708f56c174fc2bc70f5bac08d40808dad7eb
-
-## textures/opengameart-pbr-texture-pack-0/color_carpet.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack-0
-- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: e22d9bb8b71777d59c92fcb3adf77f77f8741d59029404868f6b840f7d574bc0
-
-## textures/opengameart-pbr-texture-pack-0/preview_carpet.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack-0
-- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 5591fc479f5f45fdb802f427bed058861985238392aa98ef3e38341f5b25797d
-
-## textures/opengameart-pbr-texture-pack-0/normal_carpet.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack-0
-- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: b82bd2436d1fe11a8f6d3ea815c95f3fe95712801a5da7952b31b43a112bec1b
+- SHA256: 26e336b1540b42ca29fc1d3028d91132b05ecbf115ab073222c4a60de8b3ca48
 
 ## textures/opengameart-pbr-texture-pack-0/color_marble_2.png
 - Category: pbr_materials
@@ -1883,7 +1806,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 9834c50338801e711eba914c217dc6c555d2be8a3a1501776aa92e4da7b89bc6
 
-## textures/opengameart-pbr-texture-pack-0/rough_marble_2.png
+## textures/opengameart-pbr-texture-pack-0/preview_wall.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -1892,7 +1815,62 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_20.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 26e336b1540b42ca29fc1d3028d91132b05ecbf115ab073222c4a60de8b3ca48
+- SHA256: c4a23bcdc9b6e3f849f06e47b4793199ceee990cb27f401d3bd74acbb07873ce
+
+## textures/opengameart-pbr-texture-pack-0/normal_wall.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack-0
+- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 1e6e9eae8b0053372b2bd70ca0de420dec20b7d8380ed2b59ac4f51f9a502224
+
+## textures/opengameart-pbr-texture-pack-0/rough_wall.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack-0
+- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: e257c965485939c9189ac28d0b4bd36fd63937e044a8ca427a71a855e6682663
+
+## textures/opengameart-pbr-texture-pack-0/color_wall.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack-0
+- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 53f20882dbeced8d65f4873c528c18bb8271f65a733e596faa7f1b7f4c02eee6
+
+## textures/opengameart-pbr-texture-pack-0/color_stone.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack-0
+- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 169d2250273e22096741141d3db201159592f77560461aeadd13588c60918676
+
+## textures/opengameart-pbr-texture-pack-0/preview_stone.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack-0
+- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 8d3481cedeb05bcfcedebcd127e59d7d92ec76c650b6d41707a67b9e97475836
 
 ## textures/opengameart-pbr-texture-pack-0/normal_stone.png
 - Category: pbr_materials
@@ -1916,39 +1894,6 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 7a629081d49930c0a6131da0f61aac551ea2b944d6974ebc9fa7af5ed2a1800f
 
-## textures/opengameart-pbr-texture-pack-0/preview_stone.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack-0
-- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 8d3481cedeb05bcfcedebcd127e59d7d92ec76c650b6d41707a67b9e97475836
-
-## textures/opengameart-pbr-texture-pack-0/color_stone.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack-0
-- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 169d2250273e22096741141d3db201159592f77560461aeadd13588c60918676
-
-## textures/opengameart-pbr-texture-pack-0/preview_tiles_2.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack-0
-- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 0395fbf401a4ab66643cc3acf3c300ac12ed2afd559b84490bac8366c162c923
-
 ## textures/opengameart-pbr-texture-pack-0/normal_tiles_2.png
 - Category: pbr_materials
 - Style group: pbr_materials
@@ -1959,17 +1904,6 @@ Only files listed in imperial_approved_assets.json are credited.
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: fd23aebde1c9deddcc99eb9727f5b2015c5a7cedf49e19941dba222f430ceaeb
-
-## textures/opengameart-pbr-texture-pack-0/color_tiles_2.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack-0
-- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 36d9fbc2bcfef7a2bc46c715a6d9a0141fc335c47389f850862b92e8d4a06976
 
 ## textures/opengameart-pbr-texture-pack-0/rough_tiles_2.png
 - Category: pbr_materials
@@ -1982,7 +1916,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 5c52c7d859268879c592698bfa19bdded481fc538282accd2a0ff6a71039a41b
 
-## textures/opengameart-pbr-texture-pack-0/rough_marble.png
+## textures/opengameart-pbr-texture-pack-0/preview_tiles_2.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -1991,9 +1925,9 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_20.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 3092bf0a6a19d3aae72d1a694266717ad9d904a721827b5e5941c7af183d11e9
+- SHA256: 0395fbf401a4ab66643cc3acf3c300ac12ed2afd559b84490bac8366c162c923
 
-## textures/opengameart-pbr-texture-pack-0/color_marble.png
+## textures/opengameart-pbr-texture-pack-0/color_tiles_2.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -2002,9 +1936,9 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_20.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 0b197ca46a32bc8c944866b353d30d36ef4a2704f8f724843ce3da1e5c0f2ca3
+- SHA256: 36d9fbc2bcfef7a2bc46c715a6d9a0141fc335c47389f850862b92e8d4a06976
 
-## textures/opengameart-pbr-texture-pack-0/preview_marble.png
+## textures/opengameart-pbr-texture-pack-0/color_tiles.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -2013,9 +1947,9 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_20.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 77470ca0de476f1b2dbe219629522eb99e867e76e71b1d6b5659b4e5781025b2
+- SHA256: 96244ce5b9020d95e6b9411290109002c02210eb77b47f6de4b9b7ac8421aabf
 
-## textures/opengameart-pbr-texture-pack-0/normal_marble.png
+## textures/opengameart-pbr-texture-pack-0/preview_tiles.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -2024,7 +1958,84 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_20.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: f037ca8a8b7494e222e836c8d0d7f3f1b70d2c310614ffb0d3783fb1008eba98
+- SHA256: 0cb08e51f25a6d55ee47f2fa9bce7500662b0ec5996a2f72ffb0f962ef6fcebd
+
+## textures/opengameart-pbr-texture-pack-0/normal_tiles.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack-0
+- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 4153989fa2442fb8a2e4c4d9bd54bd2df3db1ffeaa70c1cae6945c9c4f74e6d4
+
+## textures/opengameart-pbr-texture-pack-0/rough_tiles.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack-0
+- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 608e6526f0d4a0139756b8d2106c88f441043be6bde3b1b07b85bfa4a190f72e
+
+## textures/opengameart-pbr-texture-pack-0/rough_carpet.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack-0
+- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 03ad0be800e7ee6693a8fe016d25708f56c174fc2bc70f5bac08d40808dad7eb
+
+## textures/opengameart-pbr-texture-pack-0/color_carpet.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack-0
+- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: e22d9bb8b71777d59c92fcb3adf77f77f8741d59029404868f6b840f7d574bc0
+
+## textures/opengameart-pbr-texture-pack-0/normal_carpet.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack-0
+- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: b82bd2436d1fe11a8f6d3ea815c95f3fe95712801a5da7952b31b43a112bec1b
+
+## textures/opengameart-pbr-texture-pack-0/preview_carpet.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack-0
+- Direct download: https://opengameart.org/sites/default/files/textures_20.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 5591fc479f5f45fdb802f427bed058861985238392aa98ef3e38341f5b25797d
+
+## textures/opengameart-pbr-texture-pack/RoughWall2.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack
+- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 7b469dd563cec6c65ec518a038f98c2e46d6fba44eae2c62793c839562481b20
 
 ## textures/opengameart-pbr-texture-pack/Wall2Preview.png
 - Category: pbr_materials
@@ -2059,7 +2070,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 54392d84faf6aa248e5c7c539b197055b6b9f140b7b285ac8e281224433f905f
 
-## textures/opengameart-pbr-texture-pack/RoughWall2.png
+## textures/opengameart-pbr-texture-pack/NormalWall.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -2068,7 +2079,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_17.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 7b469dd563cec6c65ec518a038f98c2e46d6fba44eae2c62793c839562481b20
+- SHA256: c9bf9bc474267f42b3ac81ada10a670e135ee30b4d67933b779db2ac680f687f
 
 ## textures/opengameart-pbr-texture-pack/WallPreview.png
 - Category: pbr_materials
@@ -2081,17 +2092,6 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 05c255f293ae4764c97fe20d5b15a4f218ba66926e91b3569ebff15be0a11194
 
-## textures/opengameart-pbr-texture-pack/ColorWall.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack
-- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 1766b85481f5e93c0c88bf67bbedc4abfeaf64fa6d17428d145378f0f622a131
-
 ## textures/opengameart-pbr-texture-pack/RoughWall.png
 - Category: pbr_materials
 - Style group: pbr_materials
@@ -2103,7 +2103,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 9d895510a49a1d87821b12f16363687680ff3d96631f9a746c2ab95238507a6d
 
-## textures/opengameart-pbr-texture-pack/NormalWall.png
+## textures/opengameart-pbr-texture-pack/ColorWall.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -2112,9 +2112,9 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_17.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: c9bf9bc474267f42b3ac81ada10a670e135ee30b4d67933b779db2ac680f687f
+- SHA256: 1766b85481f5e93c0c88bf67bbedc4abfeaf64fa6d17428d145378f0f622a131
 
-## textures/opengameart-pbr-texture-pack/RoughCarpet.png
+## textures/opengameart-pbr-texture-pack/ColorCeiling.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -2123,7 +2123,84 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_17.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 71ad20e84aa69de15ad1c5cfff1f7d9310daa4a5591802c2b7c5685d6fdcb220
+- SHA256: 5bff21d18a9fa3c9b5dd3abfbe01dc6452c106650000d8167b979f2929c346bb
+
+## textures/opengameart-pbr-texture-pack/RoughCeiling.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack
+- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: b8a0e59a537b4e59a27575033910c66b01ce53fb11e9f0cbfe8c8aeb54bae74c
+
+## textures/opengameart-pbr-texture-pack/NormalCeiling.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack
+- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 69c7dc0b047101d6e623cfd401e3034ede4dfa51e84d7e65feca36b9aeb32e7e
+
+## textures/opengameart-pbr-texture-pack/CeilingPreview.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack
+- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: cb176a2b81648074b4b9b2557f5901d0a7170304bc13e08be5cf18b9dbfc5ed6
+
+## textures/opengameart-pbr-texture-pack/NormalTiles.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack
+- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 5662fc7b98fc1ef52b308f0e72d68b702d696c016eeb317d4b48277c4be2afd8
+
+## textures/opengameart-pbr-texture-pack/TilesPreview.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack
+- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 67e3584b2db3fac9a3f1bbea5fa4819ecbc3f34316ff77d3084ef9aad65dcd39
+
+## textures/opengameart-pbr-texture-pack/RoughTiles.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack
+- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 95ef1eca50f8ad98b942fa85989a0318602ffd7f27018d632ef7c2dd3967bfb4
+
+## textures/opengameart-pbr-texture-pack/ColorTiles.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Vosuna
+- Publisher/source: OpenGameArt
+- Asset page: https://opengameart.org/content/pbr-texture-pack
+- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 9492cdafb4d4842d4788d216a8a8b7107c996607721059d5513650bd6e1b78fd
 
 ## textures/opengameart-pbr-texture-pack/CarpetPreview.png
 - Category: pbr_materials
@@ -2158,7 +2235,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: ef8971ac6a45c039d91f047fce0d8692dbe417ba0355369e4e924178625fcca1
 
-## textures/opengameart-pbr-texture-pack/TilesPreview.png
+## textures/opengameart-pbr-texture-pack/RoughCarpet.png
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Vosuna
@@ -2167,84 +2244,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://opengameart.org/sites/default/files/textures_17.zip
 - License: CC0 1.0 Universal
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 67e3584b2db3fac9a3f1bbea5fa4819ecbc3f34316ff77d3084ef9aad65dcd39
-
-## textures/opengameart-pbr-texture-pack/NormalTiles.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack
-- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 5662fc7b98fc1ef52b308f0e72d68b702d696c016eeb317d4b48277c4be2afd8
-
-## textures/opengameart-pbr-texture-pack/ColorTiles.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack
-- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 9492cdafb4d4842d4788d216a8a8b7107c996607721059d5513650bd6e1b78fd
-
-## textures/opengameart-pbr-texture-pack/RoughTiles.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack
-- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 95ef1eca50f8ad98b942fa85989a0318602ffd7f27018d632ef7c2dd3967bfb4
-
-## textures/opengameart-pbr-texture-pack/RoughCeiling.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack
-- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: b8a0e59a537b4e59a27575033910c66b01ce53fb11e9f0cbfe8c8aeb54bae74c
-
-## textures/opengameart-pbr-texture-pack/ColorCeiling.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack
-- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 5bff21d18a9fa3c9b5dd3abfbe01dc6452c106650000d8167b979f2929c346bb
-
-## textures/opengameart-pbr-texture-pack/NormalCeiling.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack
-- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 69c7dc0b047101d6e623cfd401e3034ede4dfa51e84d7e65feca36b9aeb32e7e
-
-## textures/opengameart-pbr-texture-pack/CeilingPreview.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Vosuna
-- Publisher/source: OpenGameArt
-- Asset page: https://opengameart.org/content/pbr-texture-pack
-- Direct download: https://opengameart.org/sites/default/files/textures_17.zip
-- License: CC0 1.0 Universal
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: cb176a2b81648074b4b9b2557f5901d0a7170304bc13e08be5cf18b9dbfc5ed6
+- SHA256: 71ad20e84aa69de15ad1c5cfff1f7d9310daa4a5591802c2b7c5685d6fdcb220
 
 ## models/fern_02.glb
 - Category: nature
@@ -2400,6 +2400,28 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): [0.35209934413433075, 0.14641037583351135, 0.05800367891788483]
 - SHA256: 915dc776dc1868c7fa32f56752eb123c01f01e5c3141faf666cb4e000bb6a0a1
 
+## textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_NormalGL.jpg
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Not individually credited by source
+- Publisher/source: ambientCG
+- Asset page: https://ambientcg.com/a/RoofingTiles013A
+- Direct download: https://ambientcg.com/get?file=RoofingTiles013A_1K-JPG.zip
+- License: CC0 1.0
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 08d9718bd62c5de5c4cc886a68cf3dbad5996136f52f16249b07a896e0c29005
+
+## textures/RoofingTiles013A/RoofingTiles013A.png
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Not individually credited by source
+- Publisher/source: ambientCG
+- Asset page: https://ambientcg.com/a/RoofingTiles013A
+- Direct download: https://ambientcg.com/get?file=RoofingTiles013A_1K-JPG.zip
+- License: CC0 1.0
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: bcd87159c38126e15ab5d403e5e85f52d55c938662af3b625cf9e2578c578414
+
 ## textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_NormalDX.jpg
 - Category: pbr_materials
 - Style group: pbr_materials
@@ -2421,28 +2443,6 @@ Only files listed in imperial_approved_assets.json are credited.
 - License: CC0 1.0
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 4cb93f5e8d84b97f3247aad4051c3805ea51f88a05a6c703abe32ab0bcec65c6
-
-## textures/RoofingTiles013A/RoofingTiles013A.png
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Not individually credited by source
-- Publisher/source: ambientCG
-- Asset page: https://ambientcg.com/a/RoofingTiles013A
-- Direct download: https://ambientcg.com/get?file=RoofingTiles013A_1K-JPG.zip
-- License: CC0 1.0
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: bcd87159c38126e15ab5d403e5e85f52d55c938662af3b625cf9e2578c578414
-
-## textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_NormalGL.jpg
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Not individually credited by source
-- Publisher/source: ambientCG
-- Asset page: https://ambientcg.com/a/RoofingTiles013A
-- Direct download: https://ambientcg.com/get?file=RoofingTiles013A_1K-JPG.zip
-- License: CC0 1.0
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: 08d9718bd62c5de5c4cc886a68cf3dbad5996136f52f16249b07a896e0c29005
 
 ## textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_AmbientOcclusion.jpg
 - Category: pbr_materials
@@ -2488,7 +2488,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 216f868089be5f9bed8cb856d230b529ab35bc0c1887b02224bf6c7fab8e096b
 
-## textures/PavingStones036/PavingStones036_1K-JPG_NormalGL.jpg
+## textures/PavingStones036/PavingStones036_1K-JPG_NormalDX.jpg
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Not individually credited by source
@@ -2497,7 +2497,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip
 - License: CC0 1.0
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 7e86034b299d5628bb072c74ed30364dbab5da21f55e17c675ccbef15b209543
+- SHA256: ddf37a6582df1adf8fea15f4793c09a74320eff5c18ade9d72522ee2f5ff26c2
 
 ## textures/PavingStones036/PavingStones036.png
 - Category: pbr_materials
@@ -2510,17 +2510,6 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: a409a96e2029e93e458ba4ae63d0829c381cb402b1a3b69b77e512a130526347
 
-## textures/PavingStones036/PavingStones036_1K-JPG_AmbientOcclusion.jpg
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Not individually credited by source
-- Publisher/source: ambientCG
-- Asset page: https://ambientcg.com/a/PavingStones036
-- Direct download: https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip
-- License: CC0 1.0
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: a30168f74c40a7debfbb0b4038f438679f89067451e790d679d448e69c52db2b
-
 ## textures/PavingStones036/PavingStones036_1K-JPG_Color.jpg
 - Category: pbr_materials
 - Style group: pbr_materials
@@ -2531,28 +2520,6 @@ Only files listed in imperial_approved_assets.json are credited.
 - License: CC0 1.0
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 065dad4ad95ee74992a6d3cbeb0efb107d3b18a0a3425487bf41452dce12c533
-
-## textures/PavingStones036/PavingStones036_1K-JPG_NormalDX.jpg
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Not individually credited by source
-- Publisher/source: ambientCG
-- Asset page: https://ambientcg.com/a/PavingStones036
-- Direct download: https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip
-- License: CC0 1.0
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: ddf37a6582df1adf8fea15f4793c09a74320eff5c18ade9d72522ee2f5ff26c2
-
-## textures/PavingStones036/PavingStones036_1K-JPG_Roughness.jpg
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Not individually credited by source
-- Publisher/source: ambientCG
-- Asset page: https://ambientcg.com/a/PavingStones036
-- Direct download: https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip
-- License: CC0 1.0
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: d97ddc1b344edf9e799d5a63b497c5bafabf3afe189bca565bbd155c79f269a1
 
 ## textures/PavingStones036/PavingStones036_1K-JPG_Displacement.jpg
 - Category: pbr_materials
@@ -2565,38 +2532,38 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: fdda2fdd3b690c26e3b2de8a779b316fe02e8ccdcd81748758495a88dc8efd5f
 
-## textures/Marble012/Marble012_1K-JPG_Color.jpg
+## textures/PavingStones036/PavingStones036_1K-JPG_Roughness.jpg
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Not individually credited by source
 - Publisher/source: ambientCG
-- Asset page: https://ambientcg.com/a/Marble012
-- Direct download: https://ambientcg.com/get?file=Marble012_1K-JPG.zip
+- Asset page: https://ambientcg.com/a/PavingStones036
+- Direct download: https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip
 - License: CC0 1.0
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: a34b55c889c6b3819d2c351b6409bfd0baf0a0a55b073441850627dfebcdcd1e
+- SHA256: d97ddc1b344edf9e799d5a63b497c5bafabf3afe189bca565bbd155c79f269a1
 
-## textures/Marble012/Marble012_1K-JPG_NormalGL.jpg
+## textures/PavingStones036/PavingStones036_1K-JPG_AmbientOcclusion.jpg
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Not individually credited by source
 - Publisher/source: ambientCG
-- Asset page: https://ambientcg.com/a/Marble012
-- Direct download: https://ambientcg.com/get?file=Marble012_1K-JPG.zip
+- Asset page: https://ambientcg.com/a/PavingStones036
+- Direct download: https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip
 - License: CC0 1.0
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 2e9a56525ffbb7e80854b19985a5c921f91192698ea337f4834192479ba0063b
+- SHA256: a30168f74c40a7debfbb0b4038f438679f89067451e790d679d448e69c52db2b
 
-## textures/Marble012/Marble012_1K-JPG_Displacement.jpg
+## textures/PavingStones036/PavingStones036_1K-JPG_NormalGL.jpg
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Not individually credited by source
 - Publisher/source: ambientCG
-- Asset page: https://ambientcg.com/a/Marble012
-- Direct download: https://ambientcg.com/get?file=Marble012_1K-JPG.zip
+- Asset page: https://ambientcg.com/a/PavingStones036
+- Direct download: https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip
 - License: CC0 1.0
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: c074259c93ed0f9964a2eedb38f3c78321a7c46f5650832bbb7a8e4120dec0fa
+- SHA256: 7e86034b299d5628bb072c74ed30364dbab5da21f55e17c675ccbef15b209543
 
 ## textures/Marble012/Marble012.png
 - Category: pbr_materials
@@ -2609,7 +2576,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 1786e5bf4904c009001d8f58627e3463b14c6bdf63b8e924c03259207d702bd2
 
-## textures/Marble012/Marble012_1K-JPG_Roughness.jpg
+## textures/Marble012/Marble012_1K-JPG_Displacement.jpg
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Not individually credited by source
@@ -2618,7 +2585,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://ambientcg.com/get?file=Marble012_1K-JPG.zip
 - License: CC0 1.0
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: f7afd636d6cca0b470549959c514976186df58ac1013016b6c3919910a6d3a04
+- SHA256: c074259c93ed0f9964a2eedb38f3c78321a7c46f5650832bbb7a8e4120dec0fa
 
 ## textures/Marble012/Marble012_1K-JPG_NormalDX.jpg
 - Category: pbr_materials
@@ -2631,7 +2598,40 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 1b0a67a97bf6a8f9fb4a39b53c77196f22a288ecbe224b481f4cb915f4515354
 
-## textures/Wood096/Wood096_1K-JPG_NormalGL.jpg
+## textures/Marble012/Marble012_1K-JPG_Color.jpg
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Not individually credited by source
+- Publisher/source: ambientCG
+- Asset page: https://ambientcg.com/a/Marble012
+- Direct download: https://ambientcg.com/get?file=Marble012_1K-JPG.zip
+- License: CC0 1.0
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: a34b55c889c6b3819d2c351b6409bfd0baf0a0a55b073441850627dfebcdcd1e
+
+## textures/Marble012/Marble012_1K-JPG_Roughness.jpg
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Not individually credited by source
+- Publisher/source: ambientCG
+- Asset page: https://ambientcg.com/a/Marble012
+- Direct download: https://ambientcg.com/get?file=Marble012_1K-JPG.zip
+- License: CC0 1.0
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: f7afd636d6cca0b470549959c514976186df58ac1013016b6c3919910a6d3a04
+
+## textures/Marble012/Marble012_1K-JPG_NormalGL.jpg
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Not individually credited by source
+- Publisher/source: ambientCG
+- Asset page: https://ambientcg.com/a/Marble012
+- Direct download: https://ambientcg.com/get?file=Marble012_1K-JPG.zip
+- License: CC0 1.0
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 2e9a56525ffbb7e80854b19985a5c921f91192698ea337f4834192479ba0063b
+
+## textures/Wood096/Wood096_1K-JPG_NormalDX.jpg
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Not individually credited by source
@@ -2640,7 +2640,18 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://ambientcg.com/get?file=Wood096_1K-JPG.zip
 - License: CC0 1.0
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 30e56cd5c8e7ec19545a0fe8b339f7311534071a3a9076d034d210ca8dad46f3
+- SHA256: 01ba482e08b2eb0bdf5b546048f8ad84e1136cf278b1d8a99d052f1572f4ddc3
+
+## textures/Wood096/Wood096_1K-JPG_Roughness.jpg
+- Category: pbr_materials
+- Style group: pbr_materials
+- Creator attribution: Not individually credited by source
+- Publisher/source: ambientCG
+- Asset page: https://ambientcg.com/a/Wood096
+- Direct download: https://ambientcg.com/get?file=Wood096_1K-JPG.zip
+- License: CC0 1.0
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: faed70389894632f5a9a62c0942cd3f8e677d6e2a1bf36d91e7ae5952631fa6e
 
 ## textures/Wood096/Wood096_1K-JPG_Displacement.jpg
 - Category: pbr_materials
@@ -2653,7 +2664,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 5b0256ba67ae24f7023a46ff1ed0cab331b6378cf017227ae90de4f7cdf0b20c
 
-## textures/Wood096/Wood096_1K-JPG_NormalDX.jpg
+## textures/Wood096/Wood096_1K-JPG_NormalGL.jpg
 - Category: pbr_materials
 - Style group: pbr_materials
 - Creator attribution: Not individually credited by source
@@ -2662,7 +2673,7 @@ Only files listed in imperial_approved_assets.json are credited.
 - Direct download: https://ambientcg.com/get?file=Wood096_1K-JPG.zip
 - License: CC0 1.0
 - Dimensions (m): not applicable (PBR textures)
-- SHA256: 01ba482e08b2eb0bdf5b546048f8ad84e1136cf278b1d8a99d052f1572f4ddc3
+- SHA256: 30e56cd5c8e7ec19545a0fe8b339f7311534071a3a9076d034d210ca8dad46f3
 
 ## textures/Wood096/Wood096_1K-JPG_Color.jpg
 - Category: pbr_materials
@@ -2685,14 +2696,3 @@ Only files listed in imperial_approved_assets.json are credited.
 - License: CC0 1.0
 - Dimensions (m): not applicable (PBR textures)
 - SHA256: 67bf7b142ba191f5caa9279d6d8f2ce600a7280d6199b5f0f1384c8197af2a14
-
-## textures/Wood096/Wood096_1K-JPG_Roughness.jpg
-- Category: pbr_materials
-- Style group: pbr_materials
-- Creator attribution: Not individually credited by source
-- Publisher/source: ambientCG
-- Asset page: https://ambientcg.com/a/Wood096
-- Direct download: https://ambientcg.com/get?file=Wood096_1K-JPG.zip
-- License: CC0 1.0
-- Dimensions (m): not applicable (PBR textures)
-- SHA256: faed70389894632f5a9a62c0942cd3f8e677d6e2a1bf36d91e7ae5952631fa6e
