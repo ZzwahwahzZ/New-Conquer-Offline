@@ -234,7 +234,7 @@ func _run() -> void:
 				if mm == null or mm.mesh == null:
 					empty_mesh_nodes += 1
 		print("CITY_MESH_HANDLE_AUDIT: " + city_name + " total=" + str(total_mesh_nodes) + " empty=" + str(empty_mesh_nodes))
-		print("CITY_FORTIFICATION_DEBUG: " + city_name + " gates=" + str(gate_count) + " walls=" + str(wall_count) + " plaza=" + str(open_plaza_found) + " outer=" + str(outer_world_found))
+		print("CITY_FORTIFICATION_DEBUG: " + city_name + " gates=" + str(gate_count) + " walls=" + str(wall_count) + " kenney_gates=" + str(kenney_gate_count) + " kenney_towers=" + str(kenney_tower_count) + " kenney_stalls=" + str(kenney_stall_count) + " fountain=" + str(kenney_fountain_found) + " gate_asset=" + str(ResourceLoader.exists("res://assets/environment/kenney/castle-kit/Models/GLB format/gate.glb")) + " tower_asset=" + str(ResourceLoader.exists("res://assets/environment/kenney/castle-kit/Models/GLB format/tower-square.glb")) + " plaza=" + str(open_plaza_found) + " outer=" + str(outer_world_found))
 		if not _check(gate_count == 4 and wall_count >= 8 and open_plaza_found and outer_world_found, city_name + " open plaza/perimeter wall/four gates/800x800 outer world incomplete"):
 			return
 		if not _check(kenney_wall_multi != null and kenney_wall_multi.multimesh != null and kenney_wall_multi.multimesh.mesh != null and kenney_wall_multi.multimesh.instance_count >= 64, city_name + " imported Kenney castle wall modules are missing or non-renderable"):
