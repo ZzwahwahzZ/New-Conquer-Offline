@@ -19,6 +19,16 @@ func _count_group_recursive(node: Node, group_name: String) -> int:
 		total += _count_group_recursive(child, group_name)
 	return total
 
+func _count_multimesh_instances_recursive(node: Node, group_name: String) -> int:
+	var total := 0
+	if node is MultiMeshInstance3D and node.is_in_group(group_name):
+		var multi_node := node as MultiMeshInstance3D
+		if multi_node.multimesh != null:
+			total += multi_node.multimesh.instance_count
+	for child in node.get_children():
+		total += _count_multimesh_instances_recursive(child, group_name)
+	return total
+
 func _count_city_buildings_outside_core(node: Node) -> int:
 	var total := 0
 	if node is Node3D and node.is_in_group("city_building"):
@@ -89,7 +99,10 @@ func _run() -> void:
 		var gate_count := _count_group_recursive(city, "cardinal_gates")
 		var guardian_count := _count_group_recursive(city, "city_guardians")
 		var outside_core_count := _count_city_buildings_outside_core(city)
+		var tree_instance_count := _count_multimesh_instances_recursive(city, "imperial_city_tree_multimesh")
 		if not _require(building_count >= 85 and building_count <= 100 and imported_building_count >= 85 and imported_building_count <= 100 and outside_core_count == 0, "%s generated %d buildings (%d imported); outside 160m core=%d; expected 85-100 entirely inside +/-80m" % [city_id, building_count, imported_building_count, outside_core_count]):
+			return
+		if not _require(tree_instance_count == 50, "%s generated %d/50 real tree instances in MultiMesh batches" % [city_id, tree_instance_count]):
 			return
 		if not _require(gate_count == 4 and _count_named_gates(city) == 4, "%s has %d/4 cardinal gates" % [city_id, gate_count]):
 			return
