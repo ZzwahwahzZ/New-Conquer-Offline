@@ -34,6 +34,12 @@ func _has_renderable_mesh(root_node: Node) -> bool:
 				return true
 	return false
 
+func _collect_unique_building_sources(node: Node, output: Dictionary) -> void:
+	if node.is_in_group("city_building") and node.has_meta("source_asset_path"):
+		output[str(node.get_meta("source_asset_path"))] = true
+	for child in node.get_children():
+		_collect_unique_building_sources(child, output)
+
 func _count_group_recursive(node: Node, group_name: String) -> int:
 	var total := 1 if node.is_in_group(group_name) else 0
 	for child in node.get_children():
@@ -190,6 +196,9 @@ func _capture() -> void:
 		var loaded_world := world_manager.get("current_world") as Node3D
 		var building_count := _count_group_recursive(loaded_world, "city_building")
 		var imported_building_count := _count_group_recursive(loaded_world, "imported_city_building")
+		var unique_building_sources: Dictionary = {}
+		_collect_unique_building_sources(loaded_world, unique_building_sources)
+		var unique_building_source_count := unique_building_sources.size()
 		var gate_count := _count_group_recursive(loaded_world, "cardinal_gates")
 		var guardian_count := _count_group_recursive(loaded_world, "city_guardians")
 		var outside_core_count := _count_city_buildings_outside_core(loaded_world)
@@ -208,8 +217,8 @@ func _capture() -> void:
 		var incense_burner_count := _count_group_recursive(loaded_world, "imperial_plaza_incense_burners")
 		var rockery_count := _count_group_recursive(loaded_world, "imperial_plaza_rockery")
 		var garden_light_count := _count_group_recursive(loaded_world, "imperial_plaza_garden_lights")
-		if building_count < 85 or building_count > 100 or imported_building_count < 85 or imported_building_count > 100 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8 or tree_instance_count != 60 or lantern_light_count != 8 or plaza_statue_count != 1 or chinese_wall_count < 5 or watchtower_count != 4 or market_stall_count != 4 or market_lantern_light_count != 4 or stair_brazier_count != 2 or stair_brazier_light_count != 2 or garden_lantern_count != 4 or lotus_pond_count != 1 or pond_edge_count != 8 or incense_burner_count != 2 or rockery_count != 1 or garden_light_count != 4:
-			_fail("%s visual proof refused: buildings=%d imported=%d outside_170m_core=%d gates=%d guardians=%d trees=%d lantern_lights=%d plaza_statues=%d chinese_walls=%d watchtowers=%d market_stalls=%d market_lights=%d braziers=%d brazier_lights=%d garden_lanterns=%d lotus_ponds=%d pond_edges=%d incense_burners=%d rockery=%d garden_lights=%d" % [city_id, building_count, imported_building_count, outside_core_count, gate_count, guardian_count, tree_instance_count, lantern_light_count, plaza_statue_count, chinese_wall_count, watchtower_count, market_stall_count, market_lantern_light_count, stair_brazier_count, stair_brazier_light_count, garden_lantern_count, lotus_pond_count, pond_edge_count, incense_burner_count, rockery_count, garden_light_count])
+		if building_count < 85 or building_count > 100 or imported_building_count < 85 or imported_building_count > 100 or unique_building_source_count < 5 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8 or tree_instance_count != 60 or lantern_light_count != 8 or plaza_statue_count != 1 or chinese_wall_count < 5 or watchtower_count != 4 or market_stall_count != 4 or market_lantern_light_count != 4 or stair_brazier_count != 2 or stair_brazier_light_count != 2 or garden_lantern_count != 4 or lotus_pond_count != 1 or pond_edge_count != 8 or incense_burner_count != 2 or rockery_count != 1 or garden_light_count != 4:
+			_fail("%s visual proof refused: buildings=%d imported=%d unique_models=%d outside_170m_core=%d gates=%d guardians=%d trees=%d lantern_lights=%d plaza_statues=%d chinese_walls=%d watchtowers=%d market_stalls=%d market_lights=%d braziers=%d brazier_lights=%d garden_lanterns=%d lotus_ponds=%d pond_edges=%d incense_burners=%d rockery=%d garden_lights=%d" % [city_id, building_count, imported_building_count, unique_building_source_count, outside_core_count, gate_count, guardian_count, tree_instance_count, lantern_light_count, plaza_statue_count, chinese_wall_count, watchtower_count, market_stall_count, market_lantern_light_count, stair_brazier_count, stair_brazier_light_count, garden_lantern_count, lotus_pond_count, pond_edge_count, incense_burner_count, rockery_count, garden_light_count])
 			return
 		var first_building := loaded_world.find_child(city_id + "_ChineseImperialBuilding_00", true, false)
 		if first_building == null:
