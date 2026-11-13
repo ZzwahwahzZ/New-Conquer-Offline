@@ -25,9 +25,20 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  visual.material_override = PBRMaterialLibrary.build_ground_material(city, true, "Ground053_2K-JPG" if city == "TwinCity" else "")
  var collision := CollisionShape3D.new()
  collision.name = "TerrainSurfaceCollision"
- var shape := ConcavePolygonShape3D.new()
- shape.set_faces(mesh.get_faces())
- collision.shape = shape
+ # Match the terrain grid with a dedicated heightmap collider; this avoids
+ # unstable concave face buffers on headless physics backends.
+ var terrain_arrays := mesh.surface_get_arrays(0)
+ var terrain_vertices: PackedVector3Array = terrain_arrays[Mesh.ARRAY_VERTEX]
+ var height_shape := HeightMapShape3D.new()
+ var terrain_resolution := 129
+ height_shape.map_width = terrain_resolution
+ height_shape.map_depth = terrain_resolution
+ var height_samples := PackedFloat32Array()
+ height_samples.resize(terrain_resolution * terrain_resolution)
+ for sample_index in range(mini(height_samples.size(), terrain_vertices.size())):
+  height_samples[sample_index] = terrain_vertices[sample_index].y
+ height_shape.map_data = height_samples
+ collision.shape = height_shape
  body.add_child(collision)
  parent.add_child(body)
  if city == "TwinCity":
