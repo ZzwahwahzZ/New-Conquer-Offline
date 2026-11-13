@@ -54,8 +54,8 @@ func _build_environment() -> void:
 	environment.fog_depth_curve = 1.0
 	environment.fog_sky_affect = 0.0
 	environment.glow_enabled = true
-	environment.glow_intensity = 0.3
-	environment.glow_strength = 0.3
+	environment.glow_intensity = 0.35
+	environment.glow_strength = 0.35
 	environment.glow_bloom = 0.0
 	environment.glow_hdr_threshold = 0.82
 	environment.glow_hdr_scale = 1.0
