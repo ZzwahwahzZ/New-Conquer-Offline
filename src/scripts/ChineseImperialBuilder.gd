@@ -31,14 +31,14 @@ static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vec
  parent.add_child(platform_root)
  var platform_width := 34.0 if filename.contains("palace") else 28.0
  var platform_depth := 32.0 if filename.contains("palace") else 25.0
- var platform_size := Vector3(platform_width,3.5,platform_depth)
+ var platform_size := Vector3(platform_width,4.0,platform_depth)
  var paving := PBRMaterialLibrary.build_plaza_material()
  var plinth := MeshInstance3D.new()
- plinth.name = "ChineseImperialRaisedStonePlinth_3_5m"
+ plinth.name = "ChineseImperialRaisedStonePlinth_4_0m"
  var plinth_mesh := BoxMesh.new()
  plinth_mesh.size = platform_size
  plinth.mesh = plinth_mesh
- plinth.position.y = 1.75
+ plinth.position.y = 2.0
  plinth.material_override = paving
  platform_root.add_child(plinth)
  var collision_body := StaticBody3D.new()
@@ -47,10 +47,10 @@ static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vec
  var plinth_shape := BoxShape3D.new()
  plinth_shape.size = platform_size
  plinth_collision.shape = plinth_shape
- plinth_collision.position.y = 1.75
+ plinth_collision.position.y = 2.0
  collision_body.add_child(plinth_collision)
- for step in range(7):
-  var step_center := Vector3(0.0,3.25-float(step)*0.5,platform_depth*0.5+0.55+float(step)*1.05)
+ for step in range(8):
+  var step_center := Vector3(0.0,3.75-float(step)*0.5,platform_depth*0.5+0.55+float(step)*1.05)
   var step_size := Vector3(8.5,0.5,1.1)
   var stair := MeshInstance3D.new()
   stair.name = "ChineseImperialMarbleStair_%02d" % step
@@ -78,7 +78,7 @@ static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vec
  platform_root.add_to_group("distance_cull_world")
  _apply_visibility_range(platform_root,420.0,40.0)
  _add_model_collisions(instance,collision_all)
- print("CHINESE_IMPERIAL_RAISED_PLATFORM_PASS: %s height=3.5m stairs=7" % filename)
+ print("CHINESE_IMPERIAL_RAISED_PLATFORM_PASS: %s height=4.0m stairs=8" % filename)
  return instance
 static func _replace_city_gates(parent: Node3D) -> void:
  var fortification := parent.get_node_or_null("TwinCity_PerimeterFortifications") as Node3D
