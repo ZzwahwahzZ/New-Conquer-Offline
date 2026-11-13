@@ -67,7 +67,7 @@ jobs:
           python3 tools/restore_polyhaven_pbr_textures.py
           python3 tools/restore_imperial_city_pbr_v2.py
           python3 tools/restore_ambientcg_wuxia_textures.py
-          python3 -m py_compile tools/restore_kenney_environment_assets.py tools/restore_chinese_imperial_assets.py tools/restore_opengameart_temple.py tools/restore_polyhaven_pbr_textures.py tools/restore_imperial_city_pbr_v2.py tools/restore_ambientcg_wuxia_textures.py tools/fetch_quaternius_official_packs.py tools/upload_imperial_city_v2_hf.py tools/generate_wuxia_credits.py tools/kenney_asset_preflight.py
+          python3 -m py_compile tools/restore_kenney_environment_assets.py tools/restore_chinese_imperial_assets.py tools/restore_opengameart_temple.py tools/restore_polyhaven_pbr_textures.py tools/restore_imperial_city_pbr_v2.py tools/restore_ambientcg_wuxia_textures.py tools/fetch_quaternius_official_packs.py tools/upload_imperial_city_v2_hf.py tools/upload_wuxia_visual_proof_hf.py tools/generate_wuxia_credits.py tools/kenney_asset_preflight.py
           bash -n tools/run_godot_smoke_test.sh
           npm install --global @gltf-transform/cli@4.5.1
           while IFS= read -r -d '' asset; do
@@ -283,6 +283,23 @@ jobs:
           file reports/visual-proof/*.png
           test "$(find reports/visual-proof -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 12
           echo "TWELVE_CITY_PANORAMIC_PROOF_FRAMES_PASS"
+
+      - name: Publish twelve Wuxia panorama proofs to Hugging Face and repository
+        if: steps.capture_visual_proof.outcome == 'success'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 tools/upload_wuxia_visual_proof_hf.py
+          git add -f reports/visual-proof/*.png reports/visual-proof/README.md
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "docs: add twelve Wuxia imperial city panorama proofs [skip ci]"
+            target_branch="${{ inputs.head_branch || github.head_ref || github.ref_name }}"
+            git push origin "HEAD:${target_branch}"
+          fi
 
       - name: Upload Visual Screenshot Proof
         if: always() && steps.capture_visual_proof.outcome == 'success'
