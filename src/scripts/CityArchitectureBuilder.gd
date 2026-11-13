@@ -529,10 +529,26 @@ static func _instantiate_wuxia_building(parent: Node3D, city: String, index: int
    _add_palace_platform_and_stairs(details,target_width,target_depth)
    details.add_to_group("distance_cull_world")
    _set_visibility_range(details,360.0,35.0)
- _add_static_mesh_collisions(instance)
+ _add_simplified_building_collision(parent,instance)
  instance.add_to_group("distance_cull_world")
  _set_visibility_range(instance,360.0,35.0)
  return instance
+
+static func _add_simplified_building_collision(parent: Node3D, building: Node3D) -> void:
+ var bounds := _renderable_world_bounds(building)
+ if bounds.size.length_squared() <= 0.0001:
+  push_error("WUXIA_BUILDING_COLLIDER_BOUNDS_FAIL: "+building.name)
+  return
+ var body := StaticBody3D.new()
+ body.name = building.name+"_SimplifiedCollision"
+ body.add_to_group("city_building_collision")
+ var collision := CollisionShape3D.new()
+ var shape := BoxShape3D.new()
+ shape.size = Vector3(maxf(bounds.size.x*0.84,1.0),maxf(bounds.size.y,2.0),maxf(bounds.size.z*0.84,1.0))
+ collision.shape = shape
+ body.add_child(collision)
+ parent.add_child(body)
+ body.global_position = bounds.get_center()
 
 static func _add_palace_platform_and_stairs(root: Node3D, width: float, depth: float) -> void:
  var paving := PBRMaterialLibrary.build_imperial_paving_material()
