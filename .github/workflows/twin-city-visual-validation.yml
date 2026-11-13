@@ -1,6 +1,7 @@
 name: Twin City Godot 4.3 Visual Validation
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - twin-city/imperial-visual-prototype
