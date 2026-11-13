@@ -14,11 +14,15 @@ elif ext==".stl": bpy.ops.wm.stl_import(filepath=str(src))
 elif ext==".ply": bpy.ops.wm.ply_import(filepath=str(src))
 else: raise RuntimeError("Unsupported input format "+ext)
 # glTF defines linear dimensions in meters. Native Blender files must explicitly declare Metric units.
-if ext in (".glb",".gltf"): unit_factor=1.0
+if ext in (".glb",".gltf"): unit_factor=1.0; assumed_meter_scale=False
 elif ext==".blend" and bpy.context.scene.unit_settings.system=="METRIC":
  unit_factor=float(bpy.context.scene.unit_settings.scale_length)
+ assumed_meter_scale=False
  if not math.isfinite(unit_factor) or unit_factor<=0: raise RuntimeError("Invalid Blender metric scale_length")
-else: raise RuntimeError("Source unit system is unknown; refusing to guess meter scale")
+else:
+ # Explicit fallback for source files with unspecified units: one Blender unit = one meter.
+ unit_factor=1.0
+ assumed_meter_scale=True
 for obj in bpy.context.scene.objects:
  if obj.type=="MESH":
   for vert in obj.data.vertices: vert.co*=unit_factor
@@ -59,11 +63,11 @@ if abs(miny)>1e-4:
  miny=min(v.y for v in pts2)
 if abs(miny)>1e-4: raise RuntimeError("Ground plane mismatch after root correction; min Y="+str(miny))
 dims=[max(v[i] for v in pts2)-min(v[i] for v in pts2) for i in range(3)]
-if any(not math.isfinite(x) or x<=1e-6 for x in dims): raise RuntimeError("Invalid dimensions")
+if any(not math.isfinite(x) or x<0.3 or x>80.0 for x in dims): raise RuntimeError("Bounding-box dimensions outside accepted 0.3m..80m range: "+str(dims))
 mats=sum(1 for m in bpy.data.materials)
 if mats==0: raise RuntimeError("No materials survived GLB export")
 if mats!=materials_before: raise RuntimeError("Material count changed during GLB round-trip")
 missing_images=[im.name for im in bpy.data.images if im.source=="FILE" and (im.size[0]==0 or im.size[1]==0)]
 if missing_images: raise RuntimeError("Missing/invalid texture image data: "+", ".join(missing_images))
 if dst.stat().st_size<1024: raise RuntimeError("GLB unexpectedly small")
-(dst.with_suffix(".json")).write_text(json.dumps({"mesh_count":len(meshes2),"object_count":len(objects_after),"hierarchy_parent_links":hierarchy_after,"material_count":mats,"dimensions_m":dims,"min_y":miny,"validated":True},indent=2))
+(dst.with_suffix(".json")).write_text(json.dumps({"mesh_count":len(meshes2),"object_count":len(objects_after),"hierarchy_parent_links":hierarchy_after,"material_count":mats,"dimensions_m":dims,"min_y":miny,"assumed_meter_scale":assumed_meter_scale,"unit_scale_m_per_blender_unit":unit_factor,"axis_conversion":"Blender Z-up to glTF Y-up via glTF exporter","validated":True},indent=2))
