@@ -6,9 +6,9 @@ static func build(parent: Node3D, city: String, _size: float) -> void:
  var root := Node3D.new()
  root.name = "TwinCity_ChineseImperialArchitecture"
  parent.add_child(root)
- _add_model(root,"imperial_china_palace_and_garden.glb","TwinCity_ChineseImperialBuilding_00",Vector3(-68.0,0.0,-30.0),Vector3(0.4533619,0.4958047,0.4527178),false)
- _add_model(root,"ceremonial_hall.glb","TwinCity_ChineseImperialBuilding_01",Vector3(-48.0,0.0,30.0),Vector3(0.7761765,0.5195843,1.0210167),true)
- _add_model(root,"water_pavilion.glb","TwinCity_ChineseImperialBuilding_02",Vector3(-28.0,0.0,30.0),Vector3(1.6025455,0.8441558,1.7243667),true)
+ _add_model(root,"imperial_china_palace_and_garden.glb","TwinCity_ChineseImperialBuilding_00",Vector3(-65.45,0.0,-65.45),Vector3(0.4533619,0.4958047,0.4527178),false)
+ _add_model(root,"ceremonial_hall.glb","TwinCity_ChineseImperialBuilding_01",Vector3(65.45,0.0,-65.45),Vector3(0.7761765,0.5195843,1.0210167),true)
+ _add_model(root,"water_pavilion.glb","TwinCity_ChineseImperialBuilding_02",Vector3(-65.45,0.0,65.45),Vector3(1.6025455,0.8441558,1.7243667),true)
  _replace_city_gates(parent)
 static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vector3,model_scale: Vector3,collision_all: bool) -> Node3D:
  var path := ROOT+filename
