@@ -2,7 +2,7 @@ extends Node3D
 
 const ROOT := "res://asset_cache/assets/wuxia_imperial_pack/"
 const MANIFEST := ROOT + "imperial_approved_assets.json"
-const BUILDINGS := ["Ceremonial Hall (Imperial China Palace and Garden)", "Water Pavilion (Imperial China Palace and Garden)", "Lotus pond pavilion (Imperial China Palace and Garden)"]
+const BUILDINGS := ["Hanok Main House (Korean Hanok Village and Street)", "Thatched Outbuilding (Korean Hanok Village and Street)", "Market Stall With Awning (Korean Hanok Village and Street)", "Ceremonial Hall (Imperial China Palace and Garden)", "Water Pavilion (Imperial China Palace and Garden)", "Lotus pond pavilion (Imperial China Palace and Garden)"]
 const TREES := [
 	{"name": "Plum Tree In Blossom (Imperial China Palace and Garden)", "count": 120},
 	{"name": "Bamboo Clump (Imperial China Palace and Garden)", "count": 120},
@@ -14,7 +14,7 @@ var fit_cache: Dictionary = {}
 var materials: Dictionary = {}
 var stats := {"buildings": 0, "district_buildings": 0, "wall_segments": 0, "directional_gates": 0, "bridges": 0,
 	"gate_guardian_pairs": 0, "gate_guardian_statues": 0, "tree_instances": 0,
-	"multimesh_batches": 0, "box_mesh_count": 0, "city_core_m": 170, "world_m": 800, "building_types": 3,
+	"multimesh_batches": 0, "box_mesh_count": 0, "city_core_m": 190, "world_m": 800, "building_types": 6,
 	"architecture_style": "imperial_chinese"}
 
 func _ready() -> void:
@@ -39,7 +39,7 @@ func _load_manifest() -> bool:
 		push_error("Approved manifest is invalid."); return false
 	for category in data.categories:
 		for item in data.categories[category].get("assets", []):
-			if item.get("style_group", "") in ["imperial_chinese", "environmental", "pbr_materials"]:
+			if item.get("style_group", "") in ["imperial_chinese", "korean_hanok", "environmental", "pbr_materials"]:
 				var entry_key := str(item.get("file", "")) if item.get("style_group", "") == "pbr_materials" else str(item.get("name", ""))
 				entries[entry_key] = item
 	print("TWIN_CITY_APPROVED_MANIFEST_PASS: " + str(data.get("total_approved_files", 0)))
@@ -48,7 +48,7 @@ func _load_manifest() -> bool:
 func _packed(name: String) -> PackedScene:
 	if scenes.has(name): return scenes[name] as PackedScene
 	var item: Dictionary = entries.get(name, {})
-	if item.is_empty() or item.get("style_group", "") not in ["imperial_chinese", "environmental"]:
+	if item.is_empty() or item.get("style_group", "") not in ["imperial_chinese", "korean_hanok", "environmental"]:
 		push_error("Unapproved architecture/tree source: " + name); return null
 	var path := ROOT + str(item.file)
 	if not ResourceLoader.exists(path):
@@ -190,11 +190,11 @@ func _build_ground_and_roads() -> void:
 	roads.name = "ImperialStreetNetwork"
 	add_child(roads)
 	var stone := _pbr("PavingStones036", 0.22)
-	_plane(roads, "MainStreetNS", Vector2(10, 170), Vector3(0, 0.015, 0), stone)
-	_plane(roads, "MainStreetEW", Vector2(170, 10), Vector3(0, 0.02, 0), stone)
+	_plane(roads, "MainStreetNS", Vector2(10, 190), Vector3(0, 0.015, 0), stone)
+	_plane(roads, "MainStreetEW", Vector2(190, 10), Vector3(0, 0.02, 0), stone)
 	for offset in [-30.0, 30.0]:
-		_plane(roads, "DistrictStreetNS_" + str(offset), Vector2(5, 170), Vector3(offset, 0.025, 0), stone)
-		_plane(roads, "DistrictStreetEW_" + str(offset), Vector2(170, 5), Vector3(0, 0.03, offset), stone)
+		_plane(roads, "DistrictStreetNS_" + str(offset), Vector2(5, 190), Vector3(offset, 0.025, 0), stone)
+		_plane(roads, "DistrictStreetEW_" + str(offset), Vector2(190, 5), Vector3(0, 0.03, offset), stone)
 	_plane(self, "ImperialMainPlaza_PBR", Vector2(52, 34), Vector3(0, 0.055, 24), _pbr("Marble012", 0.28))
 
 func _build_channels() -> void:
@@ -293,18 +293,18 @@ func _lantern_light(parent: Node3D, pos: Vector3, label: String) -> void:
 
 func _build_districts() -> void:
 	var district := Node3D.new()
-	district.name = "ImperialNeighborhoods_64GLBBuildingsPlus7Landmarks"
+	district.name = "MixedImperialHanokDistricts_64BuildingsPlus7Landmarks"
 	add_child(district)
-	var coords := [16.0,40.0,60.0,78.0]
+	var coords := [14.0,34.0,54.0,74.0]
 	var index := 0
 	for sx in [-1.0,1.0]:
 		for sz in [-1.0,1.0]:
 			for x in range(4):
 				for z in range(4):
 					var pos := Vector3(sx*coords[x],0,sz*coords[z])
-					var asset: String = BUILDINGS[index % 3]
+					var asset: String = BUILDINGS[(index * 5 + x + z * 2) % BUILDINGS.size()]
 					var yaw: float = [0.0, PI / 2.0, PI, -PI / 2.0][(index + x + z) % 4]
-					_place_fit(asset, pos, yaw, Vector3(14,13,14), district, "ChineseBuilding_%03d_%s" % [index+1,["Residence","Shop","Pavilion"][index%3]])
+					_place_fit(asset, pos, yaw, Vector3(16,12,16), district, "ChineseBuilding_%03d_%s" % [index+1,["Residence","Shop","Pavilion","CourtyardHouse","MerchantStall","ImperialAnnex"][index%6]])
 					index += 1
 	stats.district_buildings = index
 	stats.buildings += index
