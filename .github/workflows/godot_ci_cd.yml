@@ -111,7 +111,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          xvfb-run -a godot --headless --audio-driver Dummy --path . --script res://tools/diagnose_scripts_materials.gd
+          timeout 180s xvfb-run -a godot --headless --audio-driver Dummy --path . res://tools/diagnose_scripts_materials.tscn
 
       - name: Godot 4.3 --check-only for PBR and city architecture scripts
         shell: bash
