@@ -11,7 +11,7 @@ const HEIGHTS := {
  "DarkForest":"res://assets/environment/heightmaps/05_dark_forest_valleys_heightmap_16bit.png"}
 const COLORS := {"TwinCity":Color("#6c9849"),"DesertLand":Color("#b58a4e"),"VolcanoLand":Color("#393437"),"IceLand":Color("#b9d9e8"),"Waterlands":Color("#3a9e91"),"DarkForest":Color("#294b32")}
 const MATERIALS := {"TwinCity":"Ground044_2K-JPG","DesertLand":"Ground061_2K-JPG","VolcanoLand":"Rock027_2K-JPG","IceLand":"Snow008C_2K-JPG","Waterlands":"Ground044_2K-JPG","DarkForest":"Ground053_2K-JPG"}
-const KARST_MODELS := ["model.glb","model (1).glb","model (3).glb"]
+const HEIGHT_AMPLITUDE := {"TwinCity":0.0,"DesertLand":30.0,"VolcanoLand":40.0,"IceLand":44.0,"Waterlands":22.0,"DarkForest":32.0}
 static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  var size: float = CITY_SIZE.get(city,450.0)
  var mesh := _height_mesh(city,size)
@@ -22,18 +22,55 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  visual.mesh = mesh
  body.add_child(visual)
  visual.material_override = PBRMaterialLibrary.build_ground_material(city, true, "Ground053_2K-JPG" if city == "TwinCity" else "")
- if city == "TwinCity":
-  # Preserve the terrain node for scene contracts, but only the flat plaza owns a collider.
-  _build_flat_twin_city_plaza(parent)
- else:
-  var collision := CollisionShape3D.new()
-  var shape := ConcavePolygonShape3D.new()
-  shape.set_faces(mesh.get_faces())
-  collision.shape = shape
-  body.add_child(collision)
+ var collision := CollisionShape3D.new()
+ collision.name = "TerrainSurfaceCollision"
+ # Match the terrain grid with a dedicated heightmap collider; this avoids
+ # unstable concave face buffers on headless physics backends.
+ var terrain_arrays := mesh.surface_get_arrays(0)
+ var terrain_vertices: PackedVector3Array = terrain_arrays[Mesh.ARRAY_VERTEX]
+ var height_shape := HeightMapShape3D.new()
+ var terrain_resolution := 129
+ height_shape.map_width = terrain_resolution
+ height_shape.map_depth = terrain_resolution
+ collision.scale = Vector3(size / float(terrain_resolution - 1), 1.0, size / float(terrain_resolution - 1))
+ var height_samples := PackedFloat32Array()
+ height_samples.resize(terrain_resolution * terrain_resolution)
+ for sample_index in range(mini(height_samples.size(), terrain_vertices.size())):
+  height_samples[sample_index] = terrain_vertices[sample_index].y
+ height_shape.map_data = height_samples
+ collision.shape = height_shape
+ body.add_child(collision)
  parent.add_child(body)
+ if city == "TwinCity":
+  _build_flat_twin_city_plaza(parent)
+ _build_navigation_region(parent, mesh)
  _bounds(parent,size,city)
  CityStreetDressing.build(slot, city, size)
+ if city == "Waterlands":
+  _build_water_surface(slot, size)
+ _build_kenney_nature_scatter(slot, city, size)
+static func load_height_image(city: String) -> Image:
+ var path: String = HEIGHTS.get(city, "")
+ if path.is_empty():
+  return null
+ var texture := ResourceLoader.load(path) as Texture2D
+ return texture.get_image() if texture != null else null
+
+static func height_at(city: String, x: float, z: float) -> float:
+ return sample_height_image(load_height_image(city), city, x, z, float(CITY_SIZE.get(city, 800.0)))
+
+static func sample_height_image(image: Image, city: String, x: float, z: float, size: float) -> float:
+ if image == null:
+  return 0.0
+ var u := clampf(x / size + 0.5, 0.0, 1.0)
+ var v := clampf(z / size + 0.5, 0.0, 1.0)
+ var ix := int(round(u * float(image.get_width() - 1)))
+ var iz := int(round(v * float(image.get_height() - 1)))
+ var height := (image.get_pixel(ix, iz).r - 0.5) * float(HEIGHT_AMPLITUDE.get(city, 28.0))
+ if absf(x) < 75.0 and absf(z) < 75.0:
+  height = lerpf(height, 0.0, 0.94)
+ return height
+
 static func _height_mesh(city: String,size: float) -> ArrayMesh:
  var path: String = HEIGHTS.get(city,"")
  var image: Image = null
@@ -45,7 +82,7 @@ static func _height_mesh(city: String,size: float) -> ArrayMesh:
    push_error("Heightmap texture could not be loaded as an imported resource: " + path)
  elif path != "":
   push_error("Required terrain heightmap resource is missing: " + path)
- var resolution := 65
+ var resolution := 129
  var verts := PackedVector3Array()
  var uv := PackedVector2Array()
  var indices := PackedInt32Array()
@@ -55,7 +92,7 @@ static func _height_mesh(city: String,size: float) -> ArrayMesh:
    if image != null:
     var ix := int(float(x)*(image.get_width()-1)/(resolution-1))
     var iz := int(float(z)*(image.get_height()-1)/(resolution-1))
-    h = (image.get_pixel(ix,iz).r-0.5)*28.0
+    h = (image.get_pixel(ix,iz).r-0.5)*float(HEIGHT_AMPLITUDE.get(city,28.0))
    # Flatten the central 150m combat/market district.
    var px := (float(x)/(resolution-1)-0.5)*size
    var pz := (float(z)/(resolution-1)-0.5)*size
@@ -68,6 +105,50 @@ static func _height_mesh(city: String,size: float) -> ArrayMesh:
  var arrays=[]; arrays.resize(Mesh.ARRAY_MAX)
  arrays[Mesh.ARRAY_VERTEX]=verts; arrays[Mesh.ARRAY_TEX_UV]=uv; arrays[Mesh.ARRAY_INDEX]=indices
  var mesh:=ArrayMesh.new(); mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays); return mesh
+static func _build_water_surface(parent: Node3D, size: float) -> void:
+ var ocean := MeshInstance3D.new()
+ ocean.name = "Waterlands_ArchipelagoWaterSurface"
+ var plane := PlaneMesh.new()
+ plane.size = Vector2(size, size)
+ ocean.mesh = plane
+ ocean.position.y = -3.2
+ var material := StandardMaterial3D.new()
+ material.albedo_color = Color("#176b82")
+ material.roughness = 0.22
+ material.metallic = 0.12
+ material.cull_mode = BaseMaterial3D.CULL_DISABLED
+ ocean.material_override = material
+ ocean.add_to_group("distance_cull_world")
+ ocean.visibility_range_end = 620.0
+ ocean.visibility_range_end_margin = 50.0
+ parent.add_child(ocean)
+
+static func _build_navigation_region(parent: Node3D, terrain_mesh: ArrayMesh) -> void:
+ var arrays := terrain_mesh.surface_get_arrays(0)
+ if arrays.is_empty():
+  push_error("Terrain navigation could not read the heightfield vertex arrays.")
+  return
+ var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+ var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
+ if vertices.is_empty() or indices.is_empty():
+  push_error("Terrain navigation heightfield has no vertices or triangles.")
+  return
+ var nav_mesh := NavigationMesh.new()
+ nav_mesh.agent_height = 1.8
+ nav_mesh.agent_radius = 0.45
+ nav_mesh.agent_max_slope = 42.0
+ nav_mesh.cell_size = 1.0
+ nav_mesh.cell_height = 0.25
+ nav_mesh.vertices = vertices
+ for index in range(0, indices.size(), 3):
+  nav_mesh.add_polygon(PackedInt32Array([indices[index], indices[index + 1], indices[index + 2]]))
+ var region := NavigationRegion3D.new()
+ region.name = "TerrainNavigationRegion"
+ region.navigation_layers = 1
+ region.navigation_mesh = nav_mesh
+ parent.add_child(region)
+ print("TERRAIN_NAVMESH_READY: polygons=%d vertices=%d" % [nav_mesh.get_polygon_count(), vertices.size()])
+
 static func _bounds(parent: Node3D,size: float,city: String) -> void:
  var edge := size * 0.497
  for i in range(4):
@@ -89,25 +170,6 @@ static func _roads(slot: Node3D,size: float,city: String) -> void:
   road.material_override=_stone_material()
   slot.add_child(road)
 
-static func _place_karst_models(parent: Node3D,city: String,size: float) -> void:
-  # Only the explicitly named tropical island is semantically safe to place before the
-  # remaining three unclassified GLBs have been inspected and catalogued.
-  if city != "Waterlands":
-    return
-  var island_path := "res://assets/environment/models/tropical-island.glb"
-  if not ResourceLoader.exists(island_path):
-    return
-  var packed := load(island_path) as PackedScene
-  if packed == null:
-    return
-  var island := packed.instantiate() as Node3D
-  if island == null:
-    return
-  island.name = "TropicalIslandImported"
-  island.position = Vector3(-size * 0.28, 0.0, -size * 0.22)
-  parent.add_child(island)
-  # Keep the imported tropical island decorative in headless runs; its complex GLB contains empty mesh handles that cannot produce stable trimesh colliders. The generated heightfield already supplies complete world collision.
-
 static func _add_scene_mesh_collisions(root: Node) -> void:
  var stack: Array[Node] = [root]
  while not stack.is_empty():
@@ -115,8 +177,107 @@ static func _add_scene_mesh_collisions(root: Node) -> void:
   for child in node.get_children(): stack.append(child)
   if node is MeshInstance3D:
    var mesh_node := node as MeshInstance3D
-   if mesh_node.mesh != null and mesh_node.mesh.get_rid().is_valid() and mesh_node.mesh.get_surface_count()>0:
+   if mesh_node.mesh != null and mesh_node.mesh.get_rid().is_valid():
     mesh_node.create_trimesh_collision()
+
+static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: float) -> void:
+ var height_image: Image = null
+ var height_path: String = HEIGHTS.get(city, "")
+ if not height_path.is_empty():
+  var height_texture := ResourceLoader.load(height_path) as Texture2D
+  if height_texture != null:
+   height_image = height_texture.get_image()
+ var root_paths := [
+  "res://assets/environment/kenney/nature-kit/Models/GLTF format",
+  "res://assets/environment/kenney/nature-kit/Models/GLB format"
+ ]
+ var candidates: Array[String] = []
+ for root_path in root_paths:
+  _collect_kenney_nature_models(root_path, candidates)
+ if candidates.is_empty():
+  push_error("Required Kenney Nature Kit models are unavailable; no secondary nature fallback is enabled.")
+  return
+ var preferred_models: Array[String] = []
+ match city:
+  "TwinCity": preferred_models = ["tree_default.glb", "tree_oak.glb", "plant_bush.glb", "grass.glb"]
+  "DesertLand": preferred_models = ["cactus_short.glb", "cactus_tall.glb", "tree_palm.glb", "rock_largeA.glb"]
+  "VolcanoLand": preferred_models = ["rock_largeA.glb", "rock_smallB.glb", "stone_largeB.glb", "stone_largeD.glb"]
+  "IceLand": preferred_models = ["tree_pineDefaultA.glb", "tree_pineDefaultB.glb", "tree_default.glb", "rock_largeA.glb"]
+  "Waterlands": preferred_models = ["tree_palm.glb", "tree_default.glb", "plant_flatTall.glb", "rock_smallA.glb"]
+  "DarkForest": preferred_models = ["tree_oak.glb", "tree_default_dark.glb", "tree_oak_dark.glb", "plant_bushLarge.glb"]
+ candidates.sort()
+ var accepted: Array[String] = []
+ for preferred_name in preferred_models:
+  for path in candidates:
+   if path.get_file() == preferred_name:
+    accepted.append(path)
+    break
+ if accepted.size() != preferred_models.size():
+  push_error("Kenney Nature Kit is missing required biome models for " + city + ": expected=" + str(preferred_models) + " found=" + str(accepted.map(func(path: String) -> String: return path.get_file())))
+  return
+ var added := 0
+ for path in accepted:
+  if added >= 4:
+   break
+  var packed := load(path) as PackedScene
+  if packed == null:
+   continue
+  var instance := packed.instantiate()
+  var mesh: Mesh = _first_renderable_mesh(instance)
+  instance.free()
+  if mesh == null:
+   continue
+  var multi := MultiMesh.new()
+  multi.transform_format = MultiMesh.TRANSFORM_3D
+  multi.mesh = mesh
+  var count := 32 if city == "IceLand" else 40
+  multi.instance_count = count
+  for index in range(count):
+   var angle := float(index) * 2.399963 + float(added) * 0.61
+   var radius := 166.0 + float((index * 37 + added * 19) % 100) / 100.0 * maxf(35.0, size * 0.28)
+   var base_scale := 4.2 if not path.get_file().to_lower().contains("rock") else 3.0
+   var scale_factor := base_scale * (0.82 + float((index * 13 + added * 7) % 35) / 100.0)
+   var basis := Basis(Vector3.UP, angle).scaled(Vector3.ONE * scale_factor)
+   var position := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
+   position.y = sample_height_image(height_image, city, position.x, position.z, size)
+   multi.set_instance_transform(index, Transform3D(basis, position))
+  var node := MultiMeshInstance3D.new()
+  node.name = city + "_KenneyNature_" + str(added) + "_MultiMesh"
+  node.multimesh = multi
+  node.add_to_group("distance_cull_world")
+  node.visibility_range_end = 440.0
+  node.visibility_range_end_margin = 36.0
+  parent.add_child(node)
+  added += 1
+ print("KENNEY_NATURE_SCATTER_PASS: %s species=%d instances=%d distance_cull=440" % [city, added, added * (32 if city == "IceLand" else 40)])
+
+static func _collect_kenney_nature_models(path: String, output: Array[String]) -> void:
+ var directory := DirAccess.open(path)
+ if directory == null:
+  return
+ directory.list_dir_begin()
+ var entry := directory.get_next()
+ while entry != "":
+  if entry.begins_with("."):
+   entry = directory.get_next()
+   continue
+  var child := path.path_join(entry)
+  if directory.current_is_dir():
+   _collect_kenney_nature_models(child, output)
+  elif entry.get_extension().to_lower() in ["glb", "gltf"]:
+   output.append(child)
+  entry = directory.get_next()
+ directory.list_dir_end()
+
+static func _first_renderable_mesh(root: Node) -> Mesh:
+ var pending: Array[Node] = [root]
+ while not pending.is_empty():
+  var current: Node = pending.pop_back()
+  for child in current.get_children():
+   pending.append(child)
+  if current is MeshInstance3D and (current as MeshInstance3D).mesh != null:
+   return (current as MeshInstance3D).mesh
+ return null
 
 static func _make_procedural_texture(stone: bool) -> Texture2D:
  var image := Image.create(256,256,false,Image.FORMAT_RGBA8)
@@ -171,95 +332,9 @@ static func _build_flat_twin_city_plaza(parent: Node3D) -> void:
  collision.name = "TwinCityFlatPlazaCollision"
  var box := BoxShape3D.new()
  box.size = Vector3(800.0,2.0,800.0)
+ box.size = Vector3(80.0,2.0,80.0)
  collision.shape = box
  collision.position.y = -1.0
  plaza.add_child(collision)
  parent.add_child(plaza)
 
-static func _build_environment_dressing(parent: Node3D, city: String, size: float) -> void:
-  var sources: Array[Dictionary] = []
-  match city:
-    "DesertLand":
-      sources = [
-        {"path":"res://assets/environment/nature/date_palm.glb","keywords":["palm","tree"]},
-        {"path":"res://assets/environment/nature/stylized_trees_and_rocks.glb","keywords":["rock","boulder"]}
-      ]
-    "VolcanoLand":
-      sources = [{"path":"res://assets/environment/biomes/volcano_and_lava_fields.glb","keywords":["basalt","rock","boulder","lava"]}]
-    "IceLand":
-      sources = [{"path":"res://assets/environment/nature/alpine_and_arctic_biomes.glb","keywords":["spruce","pine","snow","rock"]}]
-    "Waterlands":
-      sources = [
-        {"path":"res://assets/environment/nature/willow_tree.glb","keywords":["willow","tree"]},
-        {"path":"res://assets/environment/nature/stylized_trees_and_rocks.glb","keywords":["tree","rock"]}
-      ]
-    "DarkForest":
-      sources = [{"path":"res://assets/environment/nature/stylized_trees_and_rocks.glb","keywords":["ancient","oak","dead","tree","pine"]}]
-    _:
-      sources = [{"path":"res://assets/environment/nature/stylized_trees_and_rocks.glb","keywords":["pine","oak","tree","rock"]}]
-  for source in sources:
-    var asset_path := str(source.get("path",""))
-    if not ResourceLoader.exists(asset_path):
-      push_error("Missing CC0 biome GLB: " + asset_path)
-      continue
-    var packed := load(asset_path) as PackedScene
-    if packed == null:
-      push_error("Biome GLB did not import as PackedScene: " + asset_path)
-      continue
-    var source_root := packed.instantiate()
-    if source_root == null:
-      continue
-    var keywords: Array = source.get("keywords", [])
-    var candidates: Array[Mesh] = []
-    var pending: Array[Node] = [source_root]
-    while not pending.is_empty():
-      var current: Node = pending.pop_back()
-      for child in current.get_children():
-        pending.append(child)
-      if current is MeshInstance3D:
-        var mesh_node := current as MeshInstance3D
-        if mesh_node.mesh == null:
-          continue
-        var node_label := (mesh_node.name + " " + mesh_node.mesh.resource_name).to_lower()
-        for word in keywords:
-          if node_label.contains(str(word)):
-            if not candidates.has(mesh_node.mesh):
-              candidates.append(mesh_node.mesh)
-            break
-    source_root.free()
-    if candidates.is_empty():
-      push_warning("No named GLB meshes matched biome filters for " + city + ": " + asset_path)
-      continue
-    var species_limit := mini(candidates.size(), 4)
-    for species_index in range(species_limit):
-      var multimesh := MultiMesh.new()
-      multimesh.transform_format = MultiMesh.TRANSFORM_3D
-      multimesh.mesh = candidates[species_index]
-      var count := 18 if city == "IceLand" else 24
-      multimesh.instance_count = count
-      for index in range(count):
-        var angle := float(index) * 2.399963 + float(species_index) * 0.73
-        var radius := 112.0 + float((index * 37 + species_index * 19) % 100) / 100.0 * maxf(30.0, size * 0.30)
-        var scale_factor := 0.78 + float((index * 17 + species_index * 11) % 55) / 100.0
-        var basis := Basis(Vector3.UP, angle).scaled(Vector3.ONE * scale_factor)
-        var position := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-        multimesh.set_instance_transform(index, Transform3D(basis, position))
-      var instances := MultiMeshInstance3D.new()
-      instances.name = city + "_CC0_" + str(species_index) + "_MultiMesh"
-      instances.multimesh = multimesh
-      instances.add_to_group("distance_cull_world")
-      instances.visibility_range_end = 240.0
-      instances.visibility_range_end_margin = 24.0
-      parent.add_child(instances)
-  # The forest ruins are a single distant landmark, not repeated geometry.
-  if city == "DarkForest":
-    var ruins_path := "res://assets/environment/biomes/jungle_temple_and_stone_city.glb"
-    if ResourceLoader.exists(ruins_path):
-      var ruins_pack := load(ruins_path) as PackedScene
-      if ruins_pack != null:
-        var ruins := ruins_pack.instantiate() as Node3D
-        if ruins != null:
-          ruins.name = "DarkForest_Ruins_CC0"
-          ruins.position = Vector3(-size * 0.18, 0.0, -size * 0.16)
-        ruins.scale = Vector3.ONE * 0.55
-        parent.add_child(ruins)

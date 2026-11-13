@@ -55,7 +55,7 @@ func refresh() -> void:
 	if not is_instance_valid(_list): return
 	for child in _list.get_children(): child.queue_free()
 	for skill_id in CLASS_SKILLS.get(ClassSystem.current_class,["Jump","XP_Mode"]):
-		var data := ClassSystem.get_skill_proficiency(skill_id)
+		var data: Dictionary = ClassSystem.get_skill_proficiency(skill_id)
 		var skill_level := int(data.get("level",1))
 		var xp := int(data.get("xp",0))
 		var required := maxi(1,skill_level*20)

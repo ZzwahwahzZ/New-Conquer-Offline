@@ -1,26 +1,26 @@
 extends RefCounted
 ## Classic Conquer-inspired street fabric shared by all six settlements.
+const PBRMaterialLibrary = preload("res://src/scripts/PBRMaterialLibrary.gd")
 const STONE_LIGHT := Color("#b9b6aa")
 const STONE_DARK := Color("#514b46")
 const IRON := Color("#252a2d")
 const FLOWERS := [Color("#c93442"), Color("#f1c84b"), Color("#e879b5"), Color("#9865d5")]
 
 static func build(parent: Node3D, city: String, size: float) -> void:
-	var half := 110.0 if city == "TwinCity" else 80.0
-	var road_mat := _mat(_road_color(city), 0.88)
-	var plaza_mat := _mat(_plaza_color(city), 0.76)
+	var half := 80.0
+	var road_mat: StandardMaterial3D = PBRMaterialLibrary.build_street_material()
+	road_mat.albedo_color = _road_color(city).lightened(0.35)
+	var plaza_mat: StandardMaterial3D = PBRMaterialLibrary.build_plaza_material()
+	plaza_mat.albedo_color = _plaza_color(city).lightened(0.2)
 	var border_mat := _mat(_border_color(city), 0.72)
 	# Four cardinal avenues, a perimeter loop, and cross-links between districts.
 	_add_plane(parent, "Street_NorthSouth", Vector2(10.0, half * 1.72), road_mat, Vector3(0, 0.045, 0))
 	_add_plane(parent, "Street_EastWest", Vector2(half * 1.72, 10.0), road_mat, Vector3(0, 0.047, 0))
-	for offset in [-42.0, 42.0]:
+	for offset in [-9.0,9.0]:
 		_add_plane(parent, "DistrictLane_NS_" + str(int(offset)), Vector2(5.0, half * 1.48), road_mat, Vector3(offset, 0.052, 0))
 		_add_plane(parent, "DistrictLane_EW_" + str(int(offset)), Vector2(half * 1.48, 5.0), road_mat, Vector3(0, 0.054, offset))
-	_add_plane(parent, "CentralDarkSquare", Vector2(30.0, 30.0), plaza_mat, Vector3(0, 0.062, 0))
-	# Four broad paved approaches link the square to the city gates.
-	for side in [-1.0, 1.0]:
-		_add_plane(parent, "GateApproach_X_" + str(side), Vector2(7.0, half * 0.82), road_mat, Vector3(side * half * 0.48, 0.058, 0))
-		_add_plane(parent, "GateApproach_Z_" + str(side), Vector2(half * 0.82, 7.0), road_mat, Vector3(0, 0.059, side * half * 0.48))
+	_add_plane(parent, "CentralDarkSquare", Vector2(24.0, 24.0), plaza_mat, Vector3(0, 0.062, 0))
+	# The two 10m arterial streets run directly to all four perimeter gates.
 	# Decorative raised stone beds beside avenues and building frontages.
 	var bed_positions: Array[Vector3] = []
 	for axis in [-1.0, 1.0]:
@@ -37,6 +37,11 @@ static func build(parent: Node3D, city: String, size: float) -> void:
 	_add_railing(parent, "SquareRail_W", Vector3(-19, 0, 0), 30.0, city, true)
 	if city == "Waterlands":
 		_waterways(parent, half)
+		_waterlands_promenades(parent, road_mat)
+	if city == "DarkForest":
+		_dark_forest_tree_ring(parent)
+	if city == "TwinCity":
+		_twin_city_canals(parent, half)
 	if city == "VolcanoLand":
 		_lava_channels(parent, half)
 	if city == "IceLand":
@@ -53,9 +58,19 @@ static func _add_plane(parent: Node3D, label: String, dimensions: Vector2, mater
 	var mesh := PlaneMesh.new()
 	mesh.size = dimensions
 	node.mesh = mesh
-	node.position = at
+	var paved_route := label.begins_with("Street_") or label.begins_with("DistrictLane_") or label.begins_with("GateApproach_")
+	node.position = at + (Vector3.UP * (0.6 if label.begins_with("Waterlands_") else 0.45) if paved_route else Vector3.ZERO)
 	parent.add_child(node)
-	node.material_override = material
+	var surface_material := material
+	if material is StandardMaterial3D:
+		var pbr_material := (material as StandardMaterial3D).duplicate() as StandardMaterial3D
+		if pbr_material.resource_name.begins_with("PolyHaven_"):
+			var tile_width := 3.4 if pbr_material.resource_name.contains("Pavement05") else 2.0
+			pbr_material.uv1_scale = Vector3(maxf(1.0, dimensions.x / tile_width), maxf(1.0, dimensions.y / tile_width), 1.0)
+		if paved_route:
+			pbr_material.uv1_triplanar = true
+		surface_material = pbr_material
+	node.material_override = surface_material
 
 static func _add_planter(parent: Node3D, city: String, at: Vector3, seed: int) -> void:
 	var root := Node3D.new()
@@ -148,16 +163,223 @@ static func _add_railing(parent: Node3D, label: String, at: Vector3, length: flo
 static func _waterways(parent: Node3D, half: float) -> void:
 	var water := _mat(Color("#267f91"), 0.22)
 	water.metallic = 0.12
-	_add_plane(parent, "ApeCityCanal_East", Vector2(7, half * 1.55), water, Vector3(half * 0.31, 0.025, 0))
-	_add_plane(parent, "ApeCityCanal_West", Vector2(7, half * 1.55), water, Vector3(-half * 0.31, 0.025, 0))
-	for z in [-42.0, 0.0, 42.0]:
-		_add_plane(parent, "ApeCityTimberBridge", Vector2(10, 8), _mat(Color("#795338"), 0.72), Vector3(0, 0.10, z))
-	_add_railing(parent, "BridgeRail_E", Vector3(5.2, 0, 0), half, city_water())
-	_add_railing(parent, "BridgeRail_W", Vector3(-5.2, 0, 0), half, city_water())
+	var wood := _mat(Color("#795338"), 0.72)
+	var harbor := MeshInstance3D.new()
+	harbor.name = "Waterlands_ArchipelagoWaterSurface"
+	harbor.set_meta("waterfront_design", "Waterlands_ReflectiveInnerHarbor_160m")
+	var harbor_mesh := PlaneMesh.new()
+	harbor_mesh.size = Vector2(160.0, 160.0)
+	harbor.mesh = harbor_mesh
+	harbor.position = Vector3(0.0, -0.35, 0.0)
+	parent.add_child(harbor)
+	var harbor_surface := water.duplicate() as StandardMaterial3D
+	harbor_surface.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	harbor_surface.albedo_color.a = 0.78
+	harbor_surface.roughness = 0.18
+	harbor.material_override = harbor_surface
+	for side in [-1.0, 1.0]:
+		var canal_x: float = float(side) * half * 0.31
+		_add_plane(parent, "ApeCityCanal_" + ("East" if side > 0.0 else "West"), Vector2(7, half * 1.55), water, Vector3(canal_x, -1.0, 0))
+		for z in [-42.0, 0.0, 42.0]:
+			_add_bridge(parent, "ApeCityTimberBridge", Vector3(canal_x, 0.0, z), Vector2(12.0, 9.0), wood, "Waterlands")
 
-static func city_water() -> String:
-	return "Waterlands"
+static func _twin_city_canals(parent: Node3D, half: float) -> void:
+	var water := _mat(Color("#247f9a"), 0.2)
+	water.metallic = 0.14
+	var stone := _mat(Color("#a18b68"), 0.78)
+	for side in [-1.0, 1.0]:
+		var canal_x: float = float(side) * 130.0
+		_add_plane(parent, "TwinCityImperialCanal_" + ("East" if side > 0.0 else "West"), Vector2(9.0, half * 2.1), water, Vector3(canal_x, -1.0, 0))
+		for z in [-70.0, 0.0, 70.0]:
+			_add_bridge(parent, "TwinCityStoneBridge", Vector3(canal_x, 0.0, z), Vector2(15.0, 10.0), stone, "TwinCity")
 
+static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions: Vector2, material: Material, city: String) -> void:
+	var bridge := Node3D.new()
+	bridge.name = city + "_" + prefix + "_" + str(int(at.x)) + "_" + str(int(at.z))
+	bridge.position = at
+	bridge.add_to_group("world_bridge")
+	parent.add_child(bridge)
+	var deck := MeshInstance3D.new()
+	deck.name = "BridgeDeck"
+	var deck_mesh: Mesh
+	if city == "Waterlands":
+		deck_mesh = _arched_wooden_bridge_mesh(dimensions)
+	else:
+		var flat_deck := PlaneMesh.new()
+		flat_deck.size = dimensions
+		deck_mesh = flat_deck
+	deck.mesh = deck_mesh
+	deck.position.y = 0.0 if city == "Waterlands" else 0.12
+	bridge.add_child(deck)
+	deck.material_override = material
+	var imported_bridge_found := false
+	var bridge_model_path := "res://assets/environment/kenney/nature-kit/Models/GLTF format/bridge_wood.glb" if city == "Waterlands" else "res://assets/environment/kenney/nature-kit/Models/GLTF format/bridge_stone.glb"
+	if ResourceLoader.exists(bridge_model_path):
+		var bridge_pack := load(bridge_model_path) as PackedScene
+		if bridge_pack != null:
+			var imported_bridge := bridge_pack.instantiate() as Node3D
+			if imported_bridge != null:
+				# Kenney GLB scenes can include helper MeshInstance3D nodes without geometry.
+				# Hide those nodes before the scene enters the renderer; keep child transforms intact.
+				_sanitize_imported_mesh_nodes(imported_bridge)
+				imported_bridge.name = "KenneyBridgeModel"
+				var bridge_mesh := _first_mesh_node(imported_bridge)
+				if bridge_mesh != null and bridge_mesh.mesh != null:
+					var bounds := bridge_mesh.mesh.get_aabb().size
+					var horizontal_extent := maxf(bounds.x, bounds.z)
+					if horizontal_extent > 0.01:
+						var fit_scale := clampf(dimensions.x / horizontal_extent, 0.8, 3.5)
+						imported_bridge.scale = Vector3.ONE * fit_scale
+						if bounds.z > bounds.x:
+							imported_bridge.rotation.y = PI * 0.5
+						imported_bridge.position.y = 0.6 if city == "Waterlands" else 0.12
+						bridge.add_child(imported_bridge)
+						if city == "Waterlands":
+							imported_bridge.visible = false
+							deck.visible = true
+						else:
+							deck.visible = false
+						imported_bridge_found = true
+	var body := StaticBody3D.new()
+	body.name = "BridgeCollisionBody"
+	var collider := CollisionShape3D.new()
+	collider.name = "BridgeWalkableCollision"
+	var box := BoxShape3D.new()
+	box.size = Vector3(dimensions.x, 0.32, dimensions.y)
+	if city == "Waterlands":
+		var arched_collision := ConcavePolygonShape3D.new()
+		arched_collision.set_faces(deck_mesh.get_faces())
+		collider.shape = arched_collision
+	else:
+		collider.shape = box
+		collider.position.y = -0.04
+	body.add_child(collider)
+	bridge.add_child(body)
+	if not imported_bridge_found:
+		_add_railing(bridge, "BridgeRail_N", Vector3(0, 0, -dimensions.y * 0.5), dimensions.x, city)
+		_add_railing(bridge, "BridgeRail_S", Vector3(0, 0, dimensions.y * 0.5), dimensions.x, city)
+
+static func _arched_wooden_bridge_mesh(dimensions: Vector2) -> ArrayMesh:
+	var vertices := PackedVector3Array()
+	var normals := PackedVector3Array()
+	var uvs := PackedVector2Array()
+	var indices := PackedInt32Array()
+	var steps := 20
+	for step in range(steps + 1):
+		var t := float(step) / float(steps)
+		var z := (t - 0.5) * dimensions.y
+		var y := 0.6 + sin(PI * t) * 0.9
+		vertices.append(Vector3(-dimensions.x * 0.5, y, z))
+		vertices.append(Vector3(dimensions.x * 0.5, y, z))
+		normals.append(Vector3.UP)
+		normals.append(Vector3.UP)
+		uvs.append(Vector2(0.0, t))
+		uvs.append(Vector2(1.0, t))
+	for step in range(steps):
+		var a := step * 2
+		var b := a + 1
+		var c := a + 2
+		var d := a + 3
+		indices.append_array(PackedInt32Array([a, c, b, b, c, d]))
+	var arrays := []
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = vertices
+	arrays[Mesh.ARRAY_NORMAL] = normals
+	arrays[Mesh.ARRAY_TEX_UV] = uvs
+	arrays[Mesh.ARRAY_INDEX] = indices
+	var mesh := ArrayMesh.new()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	return mesh
+
+static func _waterlands_promenades(parent: Node3D, material: Material) -> void:
+	var timber := _mat(Color("#805332"), 0.62)
+	var routes := Node3D.new()
+	routes.name = "Waterlands_RaisedTimberStreetNetwork_0_6m"
+	parent.add_child(routes)
+	for lane in [-48.0, -24.0, 0.0, 24.0, 48.0]:
+		_add_plane(routes, "Waterlands_NS_Promenade_" + str(int(lane)), Vector2(5.0, 160.0), timber, Vector3(lane, 0.6, 0.0))
+		_add_plane(routes, "Waterlands_EW_Promenade_" + str(int(lane)), Vector2(160.0, 5.0), timber, Vector3(0.0, 0.6, lane))
+	for i in range(8):
+		var lantern := MeshInstance3D.new()
+		lantern.name = "Waterlands_RedHarborLantern_%02d" % i
+		var lantern_mesh := SphereMesh.new()
+		lantern_mesh.radius = 0.34
+		lantern_mesh.height = 0.78
+		lantern.mesh = lantern_mesh
+		lantern.position = Vector3(-48.0 + float(i % 2) * 96.0, 2.0, -49.0 + float(i / 2) * 14.0)
+		routes.add_child(lantern)
+		var glow := _mat(Color("#b51f2d"), 0.32)
+		glow.emission_enabled = true
+		glow.emission = Color("#ff243c")
+		glow.emission_energy_multiplier = 1.7
+		lantern.material_override = glow
+		var reflection := MeshInstance3D.new()
+		reflection.name = "Waterlands_RedLanternReflection_%02d" % i
+		var reflection_mesh := BoxMesh.new()
+		reflection_mesh.size = Vector3(1.6, 0.025, 0.34)
+		reflection.mesh = reflection_mesh
+		reflection.position = Vector3(lantern.position.x, -0.32, lantern.position.z)
+		routes.add_child(reflection)
+		reflection.material_override = glow
+	for x in [-60.0, -30.0, 30.0, 60.0]:
+		var pier := MeshInstance3D.new()
+		pier.name = "Waterlands_MarketPier_" + str(int(x))
+		var deck := BoxMesh.new()
+		deck.size = Vector3(12.0, 0.42, 7.0)
+		pier.mesh = deck
+		pier.position = Vector3(x, 0.6, -61.0)
+		routes.add_child(pier)
+		pier.material_override = timber
+	print("WATERLANDS_HARBOR_PASS: raised_walkways=10 elevation=0.6m")
+ 
+static func _dark_forest_tree_ring(parent: Node3D) -> void:
+	var trunks := CylinderMesh.new()
+	trunks.top_radius = 0.48
+	trunks.bottom_radius = 0.82
+	trunks.height = 9.0
+	trunks.radial_segments = 8
+	var crowns := CylinderMesh.new()
+	crowns.top_radius = 0.0
+	crowns.bottom_radius = 4.8
+	crowns.height = 15.0
+	crowns.radial_segments = 7
+	var trunk_batch := MultiMesh.new()
+	trunk_batch.transform_format = MultiMesh.TRANSFORM_3D
+	trunk_batch.mesh = trunks
+	trunk_batch.instance_count = 250
+	var crown_batch := MultiMesh.new()
+	crown_batch.transform_format = MultiMesh.TRANSFORM_3D
+	crown_batch.mesh = crowns
+	crown_batch.instance_count = 250
+	for i in range(250):
+		var angle := TAU * float(i) / 250.0
+		var radius := 104.0 + float((i * 37) % 54)
+		var x := cos(angle) * radius
+		var z := sin(angle) * radius
+		var scale := 0.82 + float(i % 7) * 0.09
+		var basis := Basis.IDENTITY.scaled(Vector3.ONE * scale)
+		trunk_batch.set_instance_transform(i, Transform3D(basis, Vector3(x, 4.5 * scale, z)))
+		crown_batch.set_instance_transform(i, Transform3D(basis, Vector3(x, 12.5 * scale, z)))
+	var bark := MultiMeshInstance3D.new()
+	bark.name = "DarkForest_250AncientTreeTrunks_MultiMesh"
+	bark.multimesh = trunk_batch
+	parent.add_child(bark)
+	bark.material_override = _mat(Color("#4a3025"), 0.96)
+	var canopy := MultiMeshInstance3D.new()
+	canopy.name = "DarkForest_250AncientTreeCrowns_MultiMesh"
+	canopy.multimesh = crown_batch
+	parent.add_child(canopy)
+	canopy.material_override = _mat(Color("#263f2c"), 0.92)
+	for i in range(8):
+		var torch := OmniLight3D.new()
+		torch.name = "DarkForest_WarmGateTorch_%02d" % i
+		torch.position = Vector3(cos(TAU * float(i) / 8.0) * 88.0, 4.0, sin(TAU * float(i) / 8.0) * 88.0)
+		torch.light_color = Color("#ff9b52")
+		torch.light_energy = 1.6
+		torch.omni_range = 16.0
+		parent.add_child(torch)
+	print("DARK_FOREST_DENSITY_PASS: ancient_trees=250 multimesh=2 warm_torches=8")
+ 
 static func _lava_channels(parent: Node3D, half: float) -> void:
 	var lava := _mat(Color("#ed4b18"), 0.3)
 	lava.emission_enabled = true
@@ -192,6 +414,40 @@ static func _ancient_lantern_beds(parent: Node3D) -> void:
 		material.emission_enabled = false
 		parent.add_child(lantern)
 		lantern.material_override = material
+
+static func _first_mesh_node(root: Node) -> MeshInstance3D:
+	var pending: Array[Node] = [root]
+	while not pending.is_empty():
+		var current: Node = pending.pop_back()
+		for child in current.get_children():
+			pending.append(child)
+		if current is MeshInstance3D:
+			var mesh_instance := current as MeshInstance3D
+			if mesh_instance.mesh != null:
+				return mesh_instance
+	return null
+
+static func _sanitize_imported_mesh_nodes(root: Node) -> void:
+	# Remove null-mesh helper nodes from detached GLB scenes before attachment.
+	# Avoid surface-count queries: the headless dummy renderer can receive
+	# a null RID for imported helper meshes even when the resource exists.
+	var pending: Array[Node] = [root]
+	var removed_empty := 0
+	var retained_meshes := 0
+	while not pending.is_empty():
+		var current: Node = pending.pop_back()
+		for child in current.get_children():
+			if child is MeshInstance3D:
+				var mesh_instance := child as MeshInstance3D
+				var invalid_mesh := mesh_instance.mesh == null
+				if invalid_mesh:
+					current.remove_child(child)
+					child.queue_free()
+					removed_empty += 1
+					continue
+				retained_meshes += 1
+			pending.append(child)
+	print("KENNEY_BRIDGE_MESH_AUDIT: removed_empty=" + str(removed_empty) + " retained_renderable=" + str(retained_meshes))
 
 static func _mat(color: Color, roughness: float) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
