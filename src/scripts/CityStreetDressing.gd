@@ -234,7 +234,11 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 							imported_bridge.rotation.y = PI * 0.5
 						imported_bridge.position.y = 0.6 if city == "Waterlands" else 0.12
 						bridge.add_child(imported_bridge)
-						deck.visible = false
+						if city == "Waterlands":
+							imported_bridge.visible = false
+							deck.visible = true
+						else:
+							deck.visible = false
 						imported_bridge_found = true
 	var body := StaticBody3D.new()
 	body.name = "BridgeCollisionBody"
