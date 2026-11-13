@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/build_imperial_assets.yml'
+      - 'tools/fetch_and_normalize_assets.py'
+      - 'tools/normalize_asset_blender.py'
 permissions:
   contents: write
 concurrency:
