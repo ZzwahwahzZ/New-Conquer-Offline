@@ -5,7 +5,7 @@ from datetime import datetime,timezone
 from urllib.parse import urlparse,urljoin,unquote
 import requests
 from huggingface_hub import HfApi,hf_hub_download
-from tools.imperial_extra_sources import discover_3dassets
+from imperial_extra_sources import discover_3dassets
 ROOT=Path.cwd(); OUT=ROOT/"assets/wuxia_imperial_pack"; RAW=ROOT/".asset_work/raw"
 HF_REPO=os.getenv("HF_REPO_ID","ZzwahwahzZ/clash-of-legends-terrain-assets"); PREFIX="assets/wuxia_imperial_pack"
 S=requests.Session(); S.headers.update({"User-Agent":"NewConquerOffline-AssetPipeline/1.0 (GitHub Actions; asset audit)"})
