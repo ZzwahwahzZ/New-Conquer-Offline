@@ -60,7 +60,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/quaternius
-          key: ${{ runner.os }}-quaternius-github-cc0-0128ca510d653bb0-v2
+          key: ${{ runner.os }}-quaternius-github-cc0-0128ca510d653bb0-v3
           restore-keys: |
             ${{ runner.os }}-quaternius-github-cc0-
 
