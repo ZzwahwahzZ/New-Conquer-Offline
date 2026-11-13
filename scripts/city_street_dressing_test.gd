@@ -143,7 +143,17 @@ func _run() -> void:
 			return
 		monster_probe.queue_free()
 		var kenney_scatter := city.find_child(city_name + "_KenneyNature_0_MultiMesh", true, false) as MultiMeshInstance3D
-		if not _check(kenney_scatter != null and kenney_scatter.multimesh != null and kenney_scatter.multimesh.instance_count >= 32, city_name + " Kenney nature MultiMesh scatter is missing"):
+		if not _check(kenney_scatter != null and kenney_scatter.multimesh != null and kenney_scatter.multimesh.mesh != null and kenney_scatter.multimesh.mesh.get_surface_count() > 0 and kenney_scatter.multimesh.instance_count >= 32, city_name + " required Kenney nature MultiMesh has no renderable mesh or instances"):
+			return
+		var duplicate_nature_source := false
+		var nature_stack: Array[Node] = [city]
+		while not nature_stack.is_empty():
+			var nature_node: Node = nature_stack.pop_back()
+			for nature_child in nature_node.get_children():
+				nature_stack.append(nature_child)
+			if nature_node.name.begins_with(city_name + "_QuaterniusBiomeProp_") or nature_node.name.begins_with(city_name + "_CC0_"):
+				duplicate_nature_source = true
+		if not _check(not duplicate_nature_source, city_name + " contains duplicate non-Kenney biome nature props"):
 			return
 		var architecture_slot := city.get_node_or_null("ArchitectureAssetSlot")
 		if not _check(architecture_slot != null, city_name + " architecture slot missing"):
