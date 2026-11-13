@@ -157,10 +157,11 @@ func _capture() -> void:
 				return
 		var loaded_world := world_manager.get("current_world") as Node3D
 		var building_count := _count_group_recursive(loaded_world, "city_building")
+		var imported_building_count := _count_group_recursive(loaded_world, "imported_city_building")
 		var gate_count := _count_group_recursive(loaded_world, "cardinal_gates")
 		var guardian_count := _count_group_recursive(loaded_world, "city_guardians")
-		if building_count < 70 or gate_count != 4 or guardian_count != 8:
-			_fail("%s visual proof refused: buildings=%d gates=%d guardians=%d" % [city_id, building_count, gate_count, guardian_count])
+		if building_count < 70 or imported_building_count < 70 or gate_count != 4 or guardian_count != 8:
+			_fail("%s visual proof refused: buildings=%d imported=%d gates=%d guardians=%d" % [city_id, building_count, imported_building_count, gate_count, guardian_count])
 			return
 		var first_building := loaded_world.find_child(city_id + "_ChineseImperialBuilding_00", true, false)
 		if first_building == null:
