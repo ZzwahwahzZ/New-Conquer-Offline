@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Download Quaternius CC0 packs from public folders linked by quaternius.com and normalize models to GLB."""
 from __future__ import annotations
-import hashlib,json,shutil,subprocess,zipfile
+import hashlib,json,shutil,subprocess,zipfile,urllib.request
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 CACHE=Path.home()/".cache"/"quaternius-official"
@@ -32,7 +32,15 @@ def main():
  if source_root.exists(): shutil.rmtree(source_root)
  source_root.mkdir()
  source_files=[]
+ verified_packs={}
  for slug,(page,url) in PACKS.items():
+  request=urllib.request.Request(page,headers={"User-Agent":"New-Conquer-Offline-License-Check/1.0"})
+  with urllib.request.urlopen(request,timeout=60) as response:
+   page_html=response.read().decode("utf-8","ignore")
+  if "CC0" not in page_html or "Quaternius Asset License" in page_html or "QAL" in page_html:
+   print("QUATERNIUS_LICENSE_REJECTED_OR_UNCLEAR",slug,page,flush=True)
+   continue
+  verified_packs[slug]=(page,url)
   folder=CACHE/slug
   if folder.exists(): shutil.rmtree(folder)
   folder.mkdir()
@@ -49,6 +57,7 @@ def main():
     q=dst/p.relative_to(extracted); q.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(p,q)
     source_files.append({"pack":slug,"source_page":page,"license":"CC0-1.0 (official pack page)","file":str(q.relative_to(source_root)),"bytes":q.stat().st_size})
  models=[p for p in source_root.rglob("*") if p.is_file() and p.suffix.lower() in EXTS]
+ if not verified_packs: raise RuntimeError("No Quaternius packs passed live official CC0 license verification")
  if not models: raise RuntimeError("No model files found in official ZIP archives")
  blender=shutil.which("blender")
  if not blender: raise RuntimeError("Blender missing; cannot convert official FBX/OBJ files to GLB")
@@ -98,10 +107,10 @@ if not records: raise SystemExit("No GLBs converted")
  converted=json.loads(report.read_text())
  counts={}
  for r in converted: counts[r["source"].split("/")[0]]=counts.get(r["source"].split("/")[0],0)+1
- missing=sorted(set(PACKS)-set(counts))
+ missing=sorted(set(verified_packs)-set(counts))
  if missing: raise RuntimeError("No converted models from packs: "+", ".join(missing))
- manifest={"schema_version":2,"source":"Official Quaternius download folders linked from quaternius.com","license":"CC0-1.0 per each official pack page","normalization":"GLB; X/Z centered; world-space Y_min=0.0","packs":{k:{"page":v[0],"download_folder":v[1],"license":"CC0-1.0"} for k,v in PACKS.items()},"source_files":source_files,"converted_models":converted,"model_count":len(converted),"model_count_by_pack":counts}
+ manifest={"schema_version":2,"source":"Official Quaternius download folders linked from quaternius.com","license":"CC0-1.0 per each official pack page","normalization":"GLB; X/Z centered; world-space Y_min=0.0","packs":{k:{"page":v[0],"download_folder":v[1],"license":"CC0-1.0","author":"Quaternius"} for k,v in verified_packs.items()},"source_files":source_files,"converted_models":converted,"model_count":len(converted),"model_count_by_pack":counts}
  (DEST.parent/"quaternius_manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
- (DEST.parent/"QUATERNIUS_CC0_LICENSES.txt").write_text("\n".join(f"{k}: {v[0]} | CC0-1.0" for k,v in PACKS.items())+"\nModels converted from official pack ZIPs; bottom-centered at Y=0.\n",encoding="utf-8")
+ (DEST.parent/"QUATERNIUS_CC0_LICENSES.txt").write_text("\n".join(f"{k}: {v[0]} | Quaternius | CC0-1.0" for k,v in verified_packs.items())+"\nModels converted from official pack ZIPs; bottom-centered at Y=0.\n",encoding="utf-8")
  print("QUATERNIUS_OFFICIAL_PACKS_PASS",len(PACKS),"packs",len(converted),"models",counts,flush=True)
 if __name__=="__main__": main()
