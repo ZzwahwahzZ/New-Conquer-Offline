@@ -46,9 +46,15 @@ func _run() -> void:
 		"res://assets/environment/architecture/imperial_china_palace_and_garden.glb",
 		"res://assets/environment/architecture/ceremonial_hall.glb",
 		"res://assets/environment/architecture/gate_tower.glb",
-		"res://assets/environment/architecture/water_pavilion.glb"
+		"res://assets/environment/architecture/water_pavilion.glb",
+		"res://assets/environment/materials/polyhaven/pavement_05/albedo.jpg",
+		"res://assets/environment/materials/polyhaven/pavement_05/normal.jpg",
+		"res://assets/environment/materials/polyhaven/pavement_05/roughness.jpg",
+		"res://assets/environment/materials/polyhaven/stone_pathway/albedo.jpg",
+		"res://assets/environment/materials/polyhaven/stone_pathway/normal.jpg",
+		"res://assets/environment/materials/polyhaven/stone_pathway/roughness.jpg"
 	]:
-		if not _require(ResourceLoader.exists(asset_path), "Required CC0 Chinese architecture asset missing: " + asset_path):
+		if not _require(ResourceLoader.exists(asset_path), "Required CC0 Chinese/Poly Haven PBR asset missing: " + asset_path):
 			return
 	if not _require(ResourceLoader.load("res://src/scripts/WorldManager.gd") != null, "WorldManager failed to load"):
 		return
@@ -67,7 +73,7 @@ func _run() -> void:
 	if not _require(not settlement_source.contains("ChineseImperialBuilder.build("), "Obsolete enclosed TwinCity imperial block is still being instanced"):
 		return
 	var capture_source := FileAccess.get_file_as_string("res://tools/capture_visual_proof.gd")
-	if not _require(capture_source.contains("CITY_IDS") and capture_source.contains("SHOTS") and capture_source.contains("05_aerial_oblique") and capture_source.contains("PI * 0.5"), "Six-city five-view proof capture or aerial oblique camera is missing"):
+	if not _require(capture_source.contains("CITY_IDS") and capture_source.contains("SHOTS") and capture_source.contains("05_aerial_oblique") and capture_source.contains("PI * 0.5") and capture_source.contains("\"distance\":190.0") and capture_source.contains("orbit_distance\", 210.0"), "Six-city proof capture or wide aerial/panorama camera is missing"):
 		return
 	if not _require(capture_source.contains("const CITY_IDS := [\"TwinCity\",\"DesertLand\",\"VolcanoLand\",\"IceLand\",\"Waterlands\",\"DarkForest\"]") and capture_source.contains("\"suffix\":\"05_aerial_oblique\""), "Six-city proof set or named aerial oblique frame is incomplete"):
 		return

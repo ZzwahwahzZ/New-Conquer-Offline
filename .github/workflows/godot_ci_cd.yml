@@ -45,7 +45,8 @@ jobs:
           python3 tools/sync_rpg_ui_assets.py
           python3 tools/restore_kenney_environment_assets.py
           python3 tools/restore_chinese_imperial_assets.py
-          python3 -m py_compile tools/restore_kenney_environment_assets.py tools/restore_chinese_imperial_assets.py tools/kenney_asset_preflight.py tools/fetch_quaternius_assets.py
+          python3 tools/restore_polyhaven_pbr_textures.py
+          python3 -m py_compile tools/restore_kenney_environment_assets.py tools/restore_chinese_imperial_assets.py tools/restore_polyhaven_pbr_textures.py tools/kenney_asset_preflight.py tools/fetch_quaternius_assets.py
           bash -n tools/run_godot_smoke_test.sh
           npm install --global @gltf-transform/cli@4.5.1
           while IFS= read -r -d '' asset; do

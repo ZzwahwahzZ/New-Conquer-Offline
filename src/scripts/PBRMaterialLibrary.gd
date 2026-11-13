@@ -52,47 +52,30 @@ static func build_ground_material(environment_id: String, triplanar: bool = true
  return material
 
 static func build_street_material() -> StandardMaterial3D:
- var material := build_ground_material("Waterlands", false, "Ground044_2K-JPG")
- material.resource_name = "Shared_StoneStreet_PBR"
- material.albedo_color = Color("#b7b2a6")
- material.detail_enabled = false
- material.uv1_scale = Vector3(18.0, 18.0, 1.0)
- material.roughness = 0.92
- material.metallic = 0.0
- return material
+	return _build_polyhaven_material("pavement_05", "PolyHaven_Pavement05_Street")
 
-static func build_emissive_material(color: Color, energy: float = 1.5, roughness_value: float = 0.35) -> StandardMaterial3D:
- var material := StandardMaterial3D.new()
- material.albedo_color = color
- material.roughness = roughness_value
- material.emission_enabled = true
- material.emission = color
- material.emission_energy_multiplier = energy
- return material
+static func build_plaza_material() -> StandardMaterial3D:
+	return _build_polyhaven_material("stone_pathway", "PolyHaven_StonePathway_Plaza")
 
-static func _load_first_map(folder: String, candidates: Array, fallback: Texture2D) -> Texture2D:
- for candidate in candidates:
-  var path := folder + str(candidate)
-  if FileAccess.file_exists(path):
-   var loaded := load(path) as Texture2D
-   if loaded != null:
-    return loaded
- return fallback
-
-static func _fallback_texture(kind: String, environment_id: String) -> Texture2D:
- var image := Image.create(128, 128, false, Image.FORMAT_RGBA8)
- var base: Color = BASE_COLORS.get(environment_id, Color("#777777"))
- var noise := FastNoiseLite.new()
- noise.seed = abs(hash(environment_id + kind)) % 100000
- noise.frequency = 0.045
- for y in range(128):
-  for x in range(128):
-   var n := noise.get_noise_2d(float(x), float(y))
-   var pixel := Color(0.5 + n * 0.035, 0.5 + n * 0.035, 1.0, 1.0)
-   if kind == "albedo":
-    pixel = base * clampf(0.88 + n * 0.18, 0.65, 1.08)
-   elif kind == "roughness":
-    var rough := clampf(0.88 + n * 0.08, 0.72, 1.0)
-    pixel = Color(rough, rough, rough, 1.0)
-   image.set_pixel(x, y, pixel)
- return ImageTexture.create_from_image(image)
+static func _build_polyhaven_material(asset_id: String, display_name: String) -> StandardMaterial3D:
+	var root := "res://assets/environment/materials/polyhaven/" + asset_id + "/"
+	var albedo_path := root + "albedo.jpg"
+	var normal_path := root + "normal.jpg"
+	var roughness_path := root + "roughness.jpg"
+	if not FileAccess.file_exists(albedo_path) or not FileAccess.file_exists(normal_path) or not FileAccess.file_exists(roughness_path):
+		push_error("Missing verified Poly Haven PBR maps for " + asset_id)
+		return build_ground_material("TwinCity", false, "Ground044_2K-JPG")
+	var material := StandardMaterial3D.new()
+	material.resource_name = display_name
+	material.albedo_texture = load(albedo_path) as Texture2D
+	material.normal_enabled = true
+	material.normal_texture = load(normal_path) as Texture2D
+	material.normal_scale = 1.0
+	material.roughness_texture = load(roughness_path) as Texture2D
+	material.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_GRAYSCALE
+	material.roughness = 0.92
+	material.metallic = 0.0
+	material.uv1_triplanar = false
+	material.uv1_scale = Vector3.ONE
+	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	return material

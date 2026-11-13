@@ -28,7 +28,8 @@ static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
  var plaza := Node3D.new()
  plaza.name = "OpenCentralPlaza_80x80"
  parent.add_child(plaza)
- var stone := _material(p.stone, 0.92)
+ var stone := PBRMaterialLibrary.build_plaza_material()
+ stone.uv1_scale = Vector3(3.9,3.9,1.0)
  for z in range(-5,5):
   for x in range(-5,5):
    var tile := _box(plaza, "DiamondStonePaver_%02d_%02d" % [x+5,z+5], Vector3(float(x)*8.0+4.0,0.055,float(z)*8.0+4.0), Vector3(7.75,0.11,7.75), stone, 1.0)
@@ -67,6 +68,10 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary) -> vo
  var curb_material := _material(p.gold,0.76)
  for direction in range(2):
   var road := _box(roads,"FlagstoneRoad_%d" % direction,Vector3(0,0.055,0),Vector3(10.0,0.02,road_length),road_material,1.0)
+  var road_surface_material := road_material.duplicate() as StandardMaterial3D
+  road_surface_material.albedo_color = Color("#e0ddd3")
+  road_surface_material.uv1_scale = Vector3(10.0/3.4,road_length/3.4,1.0)
+  road.material_override = road_surface_material
   road.rotation_degrees.y = direction*90.0
   for side in [-1.0,1.0]:
    var curb := _box(roads,"RaisedStoneCurb_%d_%d" % [direction,int(side)],Vector3(side*5.35,0.34,0),Vector3(0.65,0.48,road_length),curb_material,1.0)
@@ -135,13 +140,10 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  parent.add_child(instance)
  var source_bounds := _renderable_world_bounds(instance)
  if source_bounds.size.length_squared() > 0.0001:
-  # Fit the horizontal footprint independently from height: stretching a short house uniformly
-  # makes it spill into nearby avenues. Keep X/Z close to source proportions while ensuring
-  # a readable 3-unit footprint and a 6.76-unit facade height with a small vertical safety margin.
-  var horizontal_fit := maxf(3.0 / maxf(source_bounds.size.x, 0.001), 3.0 / maxf(source_bounds.size.z, 0.001))
-  var vertical_fit := 6.76 / maxf(source_bounds.size.y, 0.001)
-  instance.scale *= Vector3(horizontal_fit, vertical_fit, horizontal_fit)
-  print("CITY_QUATERNIUS_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " source_size=" + str(source_bounds.size) + " horizontal_fit=" + str(horizontal_fit) + " vertical_fit=" + str(vertical_fit) + " final_scale=" + str(instance.scale))
+  # Preserve the original horizontal footprint; apply the safety margin only on Y so buildings cannot grow into roads.
+  var fit_factor := maxf(3.0 / maxf(source_bounds.size.x, 0.001), maxf(6.5 / maxf(source_bounds.size.y, 0.001), 3.0 / maxf(source_bounds.size.z, 0.001)))
+  instance.scale *= Vector3(fit_factor, fit_factor * 1.04, fit_factor)
+  print("CITY_QUATERNIUS_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " source_size=" + str(source_bounds.size) + " fit_factor=" + str(fit_factor) + " final_scale=" + str(instance.scale))
  _add_static_mesh_collisions(instance)
  instance.add_to_group("distance_cull_world")
  _set_visibility_range(instance, 360.0, 35.0)

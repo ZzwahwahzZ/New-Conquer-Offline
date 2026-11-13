@@ -198,6 +198,14 @@ func _run() -> void:
 		print("CITY_ROAD_CURB_COUNT_DEBUG: " + city_name + " roads=" + str(architecture_road_count) + " curbs=" + str(architecture_curb_count) + " parent=" + str(architecture_roads) + " children=" + str(road_child_names))
 		if not _check(architecture_road_count == 2 and architecture_curb_count == 4, city_name + " architecture road/curb meshes are duplicated or incomplete; roads=" + str(architecture_road_count) + " curbs=" + str(architecture_curb_count) + " children=" + str(road_child_names)):
 			return
+		var pbr_road := city.find_child("FlagstoneRoad_0", true, false) as MeshInstance3D
+		var pbr_road_material := pbr_road.material_override as StandardMaterial3D if pbr_road != null else null
+		if not _check(pbr_road_material != null and pbr_road_material.resource_name == "PolyHaven_Pavement05_Street" and pbr_road_material.normal_enabled and pbr_road_material.normal_texture != null and pbr_road_material.roughness_texture != null, city_name + " street surface is missing Poly Haven PBR Albedo/Normal/Roughness maps"):
+			return
+		var plaza_paver := city.find_child("DiamondStonePaver_00_00", true, false) as MeshInstance3D
+		var plaza_material := plaza_paver.material_override as StandardMaterial3D if plaza_paver != null else null
+		if not _check(plaza_material != null and plaza_material.resource_name == "PolyHaven_StonePathway_Plaza" and plaza_material.normal_enabled and plaza_material.normal_texture != null and plaza_material.roughness_texture != null, city_name + " central plaza is missing Poly Haven PBR maps"):
+			return
 		var terrain_body := city.find_child("TerrainCollision", true, false) as StaticBody3D
 		var terrain_collider := city.find_child("TerrainSurfaceCollision", true, false) as CollisionShape3D
 		if not _check(terrain_body != null and terrain_collider != null and terrain_collider.shape is HeightMapShape3D and (terrain_collider.shape as HeightMapShape3D).map_width == 129 and (terrain_collider.shape as HeightMapShape3D).map_depth == 129, city_name + " full heightfield terrain collision is missing"):
@@ -381,8 +389,12 @@ func _run() -> void:
 		var env_node := city.get_node_or_null("SettlementEnvironment") as WorldEnvironment
 		if not _check(env_node != null and env_node.environment.tonemap_mode == Environment.TONE_MAPPER_ACES and env_node.environment.ssao_enabled and not env_node.environment.glow_enabled and not env_node.environment.fog_enabled, city_name + " ACES/SSAO environment missing"):
 			return
+		var expected_sun_energy := 0.92 if city_name == "DarkForest" else 0.78
+		var expected_ambient_energy := 0.68 if city_name == "DarkForest" else 0.42
+		if not _check(is_equal_approx(env_node.environment.ambient_light_energy, expected_ambient_energy), city_name + " ambient light energy mismatch"):
+			return
 		var sun := city.get_node_or_null("SettlementSun") as DirectionalLight3D
-		if not _check(sun != null and sun.visible and sun.shadow_enabled and is_equal_approx(sun.light_energy, 0.78), city_name + " directional shadows or balanced 0.78 sun energy missing"):
+		if not _check(sun != null and sun.visible and sun.shadow_enabled and is_equal_approx(sun.light_energy, expected_sun_energy), city_name + " directional shadows or balanced sun energy missing"):
 			return
 		if city_name == "Waterlands" and not _check(city.find_child("ApeCityCanal_East", true, false) != null, "Waterlands canal missing"):
 			return

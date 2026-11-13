@@ -10,9 +10,9 @@ const CITY_IDS := ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands",
 const SHOTS := [
 	{"suffix":"01_plaza_close","position":Vector3(0.0,0.775,0.0),"yaw":0.0},
 	{"suffix":"02_shop_street_close","position":Vector3(0.0,0.775,-70.0),"yaw":0.0},
-	{"suffix":"03_main_gate_horizon","position":Vector3(0.0,0.775,-125.0),"yaw":0.0},
-	{"suffix":"04_outer_world","position":Vector3(0.0,0.775,-174.0),"yaw":0.0},
-	{"suffix":"05_aerial_oblique","position":Vector3(0.0,0.775,0.0),"yaw":PI * 0.5,"distance":72.0,"pitch":58.0}
+	{"suffix":"03_main_gate_horizon","position":Vector3(0.0,0.775,-140.0),"yaw":0.0,"distance":24.0,"pitch":38.0,"fov":55.0},
+	{"suffix":"04_outer_world","position":Vector3(0.0,0.775,-230.0),"yaw":0.0,"distance":45.0,"pitch":32.0,"fov":55.0},
+	{"suffix":"05_aerial_oblique","position":Vector3(0.0,0.775,0.0),"yaw":PI * 0.5,"distance":190.0,"pitch":55.0,"fov":60.0}
 ]
 
 func _initialize() -> void:
@@ -180,6 +180,7 @@ func _capture() -> void:
 			camera_rig.global_position = player.global_position
 			var shot_distance := float(shot.get("distance", CLASSIC_DISTANCE))
 			var shot_pitch := float(shot.get("pitch", CLASSIC_PITCH))
+			camera.fov = float(shot.get("fov", CLASSIC_FOV))
 			camera_rig.set("_target_distance", shot_distance)
 			camera_rig.set("_current_distance", shot_distance)
 			camera_rig.set("pitch_degrees", shot_pitch)
@@ -193,11 +194,11 @@ func _capture() -> void:
 				quit(1)
 				return
 		# Dedicated wide panorama: show the new architecture together with the surrounding 800x800 landform.
-		camera.fov = 58.0
-		camera_rig.set("orbit_distance", 180.0)
-		camera_rig.set("pitch_degrees", 68.0)
-		camera_rig.set("_target_distance", 180.0)
-		camera_rig.set("_current_distance", 180.0)
+		camera.fov = 60.0
+		camera_rig.set("orbit_distance", 210.0)
+		camera_rig.set("pitch_degrees", 65.0)
+		camera_rig.set("_target_distance", 210.0)
+		camera_rig.set("_current_distance", 210.0)
 		camera_rig.call("_apply_orbit")
 		await process_frame
 		await process_frame

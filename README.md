@@ -11,3 +11,8 @@ A focused offline conversion of the original Conquer Online Mobile client and it
 - Defer new gameplay features, world redesign, economy changes, and visual redesign until the original content is running locally.
 
 The first offline milestone is to launch the original content locally without connecting to the original game servers. A successful Godot import or save-data test alone does not count as completion.
+
+
+## Environment texture credits
+
+Street and plaza PBR maps are CC0 assets from Poly Haven: [Pavement 05](https://polyhaven.com/a/pavement_05) and [Stone Pathway](https://polyhaven.com/a/stone_pathway). **Powered by Poly Haven.**

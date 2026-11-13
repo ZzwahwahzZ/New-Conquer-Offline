@@ -1,5 +1,6 @@
 extends RefCounted
 ## Classic Conquer-inspired street fabric shared by all six settlements.
+const PBRMaterialLibrary = preload("res://src/scripts/PBRMaterialLibrary.gd")
 const STONE_LIGHT := Color("#b9b6aa")
 const STONE_DARK := Color("#514b46")
 const IRON := Color("#252a2d")
@@ -7,8 +8,10 @@ const FLOWERS := [Color("#c93442"), Color("#f1c84b"), Color("#e879b5"), Color("#
 
 static func build(parent: Node3D, city: String, size: float) -> void:
 	var half := 110.0 if city == "TwinCity" else 80.0
-	var road_mat := _mat(_road_color(city), 0.88)
-	var plaza_mat := _mat(_plaza_color(city), 0.76)
+	var road_mat := PBRMaterialLibrary.build_street_material()
+	road_mat.albedo_color = _road_color(city).lightened(0.35)
+	var plaza_mat := PBRMaterialLibrary.build_plaza_material()
+	plaza_mat.albedo_color = _plaza_color(city).lightened(0.2)
 	var border_mat := _mat(_border_color(city), 0.72)
 	# Four cardinal avenues, a perimeter loop, and cross-links between districts.
 	_add_plane(parent, "Street_NorthSouth", Vector2(10.0, half * 1.72), road_mat, Vector3(0, 0.045, 0))
@@ -57,7 +60,13 @@ static func _add_plane(parent: Node3D, label: String, dimensions: Vector2, mater
 	node.mesh = mesh
 	node.position = at
 	parent.add_child(node)
-	node.material_override = material
+	var surface_material := material
+	if material is StandardMaterial3D and (material as StandardMaterial3D).resource_name.begins_with("PolyHaven_"):
+		var pbr_material := (material as StandardMaterial3D).duplicate() as StandardMaterial3D
+		var tile_width := 3.4 if pbr_material.resource_name.contains("Pavement05") else 2.0
+		pbr_material.uv1_scale = Vector3(maxf(1.0, dimensions.x / tile_width), maxf(1.0, dimensions.y / tile_width), 1.0)
+		surface_material = pbr_material
+	node.material_override = surface_material
 
 static func _add_planter(parent: Node3D, city: String, at: Vector3, seed: int) -> void:
 	var root := Node3D.new()
