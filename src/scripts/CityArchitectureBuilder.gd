@@ -616,7 +616,7 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
  var gate_material := _material(p.gold,0.72)
  var half := 85.0
  var gap := 7.0
- var kenney_walls := _build_kenney_perimeter_walls(fortification, city, half, gap, height_image)
+ var chinese_walls := _build_chinese_perimeter_walls(fortification, city, half, gap, height_image)
  for side in [-1.0,1.0]:
   for segment in [-1.0,1.0]:
    var start := -half if segment < 0.0 else gap
@@ -624,10 +624,10 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
    var length := finish-start
    var horizontal_wall := _box(fortification,"HighStonePerimeterWall_%s_%s" % [str(int(side)),str(int(segment))],Vector3((start+finish)*0.5,5.0,side*half),Vector3(length,10.0,5.0),wall_material,1.0)
    horizontal_wall.add_to_group("city_perimeter_wall")
-   horizontal_wall.visible = not kenney_walls
+   horizontal_wall.visible = not chinese_walls
    var vertical_wall := _box(fortification,"HighStonePerimeterWall_%s_%s" % [str(int(side)),str(int(segment))],Vector3(side*half,5.0,(start+finish)*0.5),Vector3(5.0,10.0,length),wall_material,1.0)
    vertical_wall.add_to_group("city_perimeter_wall")
-   vertical_wall.visible = not kenney_walls
+   vertical_wall.visible = not chinese_walls
  for direction in range(4):
   var gate := Node3D.new()
   var direction_name: String = ["North","East","South","West"][direction]
@@ -735,68 +735,137 @@ static func _add_kenney_asset(parent: Node3D, city: String, height_image: Image,
  _add_static_mesh_collisions(instance)
  return instance
 
-static func _build_kenney_perimeter_walls(parent: Node3D, city: String, half: float, gap: float, height_image: Image) -> bool:
- var packed := _load_kenney_scene("castle-kit", "wall.glb")
+static func _build_chinese_perimeter_walls(parent: Node3D, city: String, half: float, gap: float, height_image: Image) -> bool:
+ var wall_path := "res://assets/wuxia_imperial_pack/architecture/palace_wall_straight.glb"
+ var corner_path := "res://assets/wuxia_imperial_pack/architecture/palace_wall_corner.glb"
+ if not ResourceLoader.exists(wall_path) or not ResourceLoader.exists(corner_path):
+  push_error("WUXIA_CHINESE_RAMPART_MISSING: palace_wall_straight and palace_wall_corner GLBs are required")
+  return false
+ var packed := ResourceLoader.load(wall_path) as PackedScene
  if packed == null:
+  push_error("WUXIA_CHINESE_RAMPART_IMPORT_FAIL: "+wall_path)
   return false
  var source := packed.instantiate()
  var first_mesh := _first_mesh_node(source)
  if first_mesh == null or first_mesh.mesh == null:
   source.free()
+  push_error("WUXIA_CHINESE_RAMPART_MESH_FAIL: "+wall_path)
   return false
  var wall_mesh: Mesh = first_mesh.mesh
  var bounds := wall_mesh.get_aabb()
  source.free()
- var long_extent := maxf(bounds.size.x, bounds.size.z)
- var depth_extent := minf(bounds.size.x, bounds.size.z)
+ var long_extent := maxf(bounds.size.x,bounds.size.z)
+ var depth_extent := minf(bounds.size.x,bounds.size.z)
  if long_extent <= 0.01 or depth_extent <= 0.01 or bounds.size.y <= 0.01:
+  push_error("WUXIA_CHINESE_RAMPART_BOUNDS_FAIL: "+wall_path)
   return false
  var multi := MultiMesh.new()
  multi.transform_format = MultiMesh.TRANSFORM_3D
  multi.mesh = wall_mesh
- var piece_count := 0
  var segment_data: Array[Dictionary] = []
- for side in [-1.0, 1.0]:
-  for segment in [-1.0, 1.0]:
+ var piece_count := 0
+ for side in [-1.0,1.0]:
+  for segment in [-1.0,1.0]:
    var start := -half if segment < 0.0 else gap
    var finish := -gap if segment < 0.0 else half
-   var length := finish - start
-   var count := maxi(1, int(ceil(length / 8.0)))
-   piece_count += count * 2
+   var count := maxi(1,int(ceil((finish-start)/8.0)))
+   piece_count += count*2
    segment_data.append({"side":side,"horizontal":true,"start":start,"finish":finish,"count":count})
    segment_data.append({"side":side,"horizontal":false,"start":start,"finish":finish,"count":count})
  multi.instance_count = piece_count
  var index := 0
- var local_center := bounds.position + bounds.size * 0.5
+ var local_center := bounds.position + bounds.size*0.5
  for segment in segment_data:
   var side := float(segment["side"])
   var horizontal := bool(segment["horizontal"])
   var start := float(segment["start"])
   var finish := float(segment["finish"])
   var count := int(segment["count"])
-  var spacing := (finish - start) / float(count)
-  var scale_long := spacing / long_extent
-  var scale_height := 10.0 / bounds.size.y
-  var scale_depth := 5.0 / depth_extent
-  var rotation := 0.0 if horizontal else PI * 0.5
-  var basis := Basis(Vector3.UP, rotation).scaled(Vector3(scale_long, scale_height, scale_depth))
+  var spacing := (finish-start)/float(count)
+  var scale_long := spacing/long_extent
+  var scale_height := 10.0/bounds.size.y
+  var scale_depth := 4.0/depth_extent
+  var rotation := 0.0 if horizontal else PI*0.5
+  var basis := Basis(Vector3.UP,rotation).scaled(Vector3(scale_long,scale_height,scale_depth))
   for piece in range(count):
-   var along := start + (float(piece) + 0.5) * spacing
-   var x := along if horizontal else side * half
-   var z := side * half if horizontal else along
-   var ground_y := WorldTerrainBuilder.sample_height_image(height_image, city, x, z, 800.0)
-   var center := Vector3(x, ground_y + 5.0, z)
-   multi.set_instance_transform(index, Transform3D(basis, center - basis * local_center))
+   var along := start+(float(piece)+0.5)*spacing
+   var x := along if horizontal else side*half
+   var z := side*half if horizontal else along
+   var ground_y := WorldTerrainBuilder.sample_height_image(height_image,city,x,z,800.0)
+   var center := Vector3(x,ground_y+5.85,z)
+   multi.set_instance_transform(index,Transform3D(basis,center-basis*local_center))
    index += 1
  var visual := MultiMeshInstance3D.new()
- visual.name = city + "_KenneyCastlePerimeterWalls_MultiMesh"
+ visual.name = city+"_ChineseImperialPalaceWall_MultiMesh"
  visual.multimesh = multi
+ visual.set_meta("source_asset_path",wall_path)
  visual.add_to_group("distance_cull_world")
  visual.add_to_group("city_perimeter_wall")
+ visual.add_to_group("city_chinese_perimeter_wall")
  visual.visibility_range_end = 520.0
  visual.visibility_range_end_margin = 42.0
  parent.add_child(visual)
+ var corner_packed := ResourceLoader.load(corner_path) as PackedScene
+ if corner_packed == null:
+  push_error("WUXIA_CHINESE_RAMPART_CORNER_IMPORT_FAIL: "+corner_path)
+  return false
+ var corner_index := 0
+ for x in [-half,half]:
+  for z in [-half,half]:
+   var corner := corner_packed.instantiate() as Node3D
+   if corner == null:
+    push_error("WUXIA_CHINESE_RAMPART_CORNER_ROOT_FAIL: "+corner_path)
+    return false
+   corner.name = city+"_ChineseRampartCorner_"+str(corner_index)
+   corner.position = Vector3(x,WorldTerrainBuilder.sample_height_image(height_image,city,x,z,800.0)+0.85,z)
+   corner.rotation.y = atan2(-x,-z)
+   corner.add_to_group("city_perimeter_wall")
+   corner.add_to_group("city_chinese_perimeter_wall")
+   corner.set_meta("source_asset_path",corner_path)
+   parent.add_child(corner)
+   _add_static_mesh_collisions(corner)
+   corner_index += 1
+ print("WUXIA_CHINESE_RAMPART_PASS: %s segments=%d corners=4 source=%s" % [city,piece_count,wall_path])
  return true
+
+static func _build_wuxia_market_stalls(parent: Node3D, city: String, height_image: Image) -> void:
+ var path := "res://assets/wuxia_imperial_pack/architecture/asian_market_stall.glb"
+ if not ResourceLoader.exists(path):
+  push_error("WUXIA_ASIAN_MARKET_STALL_MISSING: "+path)
+  return
+ var packed := ResourceLoader.load(path) as PackedScene
+ if packed == null:
+  push_error("WUXIA_ASIAN_MARKET_STALL_IMPORT_FAIL: "+path)
+  return
+ var stalls := [
+  {"at":Vector3(-30.0,0.0,-54.0),"rotation":0.0},
+  {"at":Vector3(30.0,0.0,-54.0),"rotation":PI},
+  {"at":Vector3(-30.0,0.0,54.0),"rotation":0.0},
+  {"at":Vector3(30.0,0.0,54.0),"rotation":PI}
+ ]
+ for index in range(stalls.size()):
+  var data: Dictionary = stalls[index]
+  var at: Vector3 = data["at"]
+  var stall := packed.instantiate() as Node3D
+  if stall == null:
+   push_error("WUXIA_ASIAN_MARKET_STALL_ROOT_FAIL: "+path)
+   continue
+  stall.name = city+"_ChineseMarketStall_%02d" % index
+  stall.position = Vector3(at.x,WorldTerrainBuilder.sample_height_image(height_image,city,at.x,at.z,800.0)+0.85,at.z)
+  stall.rotation.y = float(data["rotation"])
+  stall.scale = Vector3.ONE*1.15
+  stall.add_to_group("city_market_stall")
+  stall.set_meta("source_asset_path",path)
+  parent.add_child(stall)
+  _add_static_mesh_collisions(stall)
+ print("WUXIA_ASIAN_MARKET_STALL_PASS: %s stalls=%d source=%s" % [city,stalls.size(),path])
+
+static func _build_kenney_city_modules(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
+ _build_wuxia_market_stalls(parent,city,height_image)
+ if city == "DesertLand":
+  _add_kenney_asset(parent, city, height_image, "fantasy-town-kit", "windmill.glb", "KenneyDesertWindmill", Vector3(260.0,0.0,-245.0), 0.0, 2.4)
+ elif city == "Waterlands":
+  _add_kenney_asset(parent, city, height_image, "fantasy-town-kit", "watermill.glb", "KenneyWaterlandsWatermill", Vector3(260.0,0.0,-245.0), 0.0, 2.2)
 
 static func _build_kenney_city_modules(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var stalls := [
