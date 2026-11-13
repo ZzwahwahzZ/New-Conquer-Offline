@@ -22,7 +22,7 @@ static func build(parent: Node3D, city: String, size: float) -> void:
  ChineseImperialBuilder.build(parent, city, size)
  _build_kenney_city_modules(parent, city, palette, height_image)
  _build_outer_biome(parent, city, palette, size, height_image)
- print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=80 walls=4 gates=4 open_plaza=80x80 outer_world=800x800" % city)
+ print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=88 walls=4 gates=4 open_plaza=24x24 outer_world=800x800" % city)
 
 static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
  var plaza := Node3D.new()
@@ -91,7 +91,7 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, heigh
 static func _build_urban_alley_multimeshes(parent: Node3D, city: String, material: Material) -> void:
  var terrain_image := WorldTerrainBuilder.load_height_image(city)
  var alley_lines := [-65.45,-39.25,-13.05,13.05,39.25,65.45]
- var segment_centers := [-69.75,-54.25,-38.75,-23.25,-7.75,7.75,23.25,38.75,54.25,69.75]
+ var segment_centers := [-72.0,-58.9,-45.8,-32.7,-19.6,-6.5,6.5,19.6,32.7,45.8,58.9,72.0]
  var alley_mesh := BoxMesh.new()
  alley_mesh.size = Vector3(5.0,0.14,22.0)
  for axis in range(2):
@@ -120,7 +120,7 @@ static func _build_urban_alley_multimeshes(parent: Node3D, city: String, materia
 
 static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var slot := Node3D.new()
- slot.name = city + "_80BuildingUrbanDistrict"
+ slot.name = city + "_88BuildingUrbanDistrict"
  parent.add_child(slot)
  # Ten-by-ten compact blocks fit inside the 160m x 160m urban core.
  # The central 10m north/south and east/west avenues stay open; 81 real
