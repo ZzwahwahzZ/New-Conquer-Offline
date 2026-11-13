@@ -12,7 +12,6 @@ const HEIGHTS := {
 const COLORS := {"TwinCity":Color("#6c9849"),"DesertLand":Color("#b58a4e"),"VolcanoLand":Color("#393437"),"IceLand":Color("#b9d9e8"),"Waterlands":Color("#3a9e91"),"DarkForest":Color("#294b32")}
 const MATERIALS := {"TwinCity":"Ground044_2K-JPG","DesertLand":"Ground061_2K-JPG","VolcanoLand":"Rock027_2K-JPG","IceLand":"Snow008C_2K-JPG","Waterlands":"Ground044_2K-JPG","DarkForest":"Ground053_2K-JPG"}
 const HEIGHT_AMPLITUDE := {"TwinCity":0.0,"DesertLand":30.0,"VolcanoLand":40.0,"IceLand":44.0,"Waterlands":22.0,"DarkForest":32.0}
-const KARST_MODELS := ["model.glb","model (1).glb","model (3).glb"]
 static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  var size: float = CITY_SIZE.get(city,450.0)
  var mesh := _height_mesh(city,size)
@@ -49,7 +48,6 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  CityStreetDressing.build(slot, city, size)
  if city == "Waterlands":
   _build_water_surface(slot, size)
- _build_environment_dressing(slot, city, size)
  _build_kenney_nature_scatter(slot, city, size)
 static func load_height_image(city: String) -> Image:
  var path: String = HEIGHTS.get(city, "")
@@ -172,25 +170,6 @@ static func _roads(slot: Node3D,size: float,city: String) -> void:
   road.material_override=_stone_material()
   slot.add_child(road)
 
-static func _place_karst_models(parent: Node3D,city: String,size: float) -> void:
-  # Only the explicitly named tropical island is semantically safe to place before the
-  # remaining three unclassified GLBs have been inspected and catalogued.
-  if city != "Waterlands":
-    return
-  var island_path := "res://assets/environment/models/tropical-island.glb"
-  if not ResourceLoader.exists(island_path):
-    return
-  var packed := load(island_path) as PackedScene
-  if packed == null:
-    return
-  var island := packed.instantiate() as Node3D
-  if island == null:
-    return
-  island.name = "TropicalIslandImported"
-  island.position = Vector3(-size * 0.28, 0.0, -size * 0.22)
-  parent.add_child(island)
-  # Keep the imported tropical island decorative in headless runs; its complex GLB contains empty mesh handles that cannot produce stable trimesh colliders. The generated heightfield already supplies complete world collision.
-
 static func _add_scene_mesh_collisions(root: Node) -> void:
  var stack: Array[Node] = [root]
  while not stack.is_empty():
@@ -218,22 +197,23 @@ static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: flo
  if candidates.is_empty():
   push_warning("Kenney Nature Kit is not installed; curated CC0 biome dressing remains active.")
   return
- var keywords: Array[String] = []
+ var preferred_models: Array[String] = []
  match city:
-  "DesertLand": keywords = ["cactus", "palm", "rock", "boulder"]
-  "VolcanoLand": keywords = ["rock", "boulder", "stone"]
-  "IceLand": keywords = ["pine", "spruce", "snow", "ice", "rock"]
-  "Waterlands": keywords = ["willow", "tree", "plant", "reed", "rock"]
-  "DarkForest": keywords = ["tree", "oak", "pine", "mushroom", "rock"]
-  _: keywords = ["tree", "oak", "pine", "bush", "plant"]
+  "TwinCity": preferred_models = ["tree_default.glb", "tree_oak.glb", "plant_bush.glb", "grass.glb"]
+  "DesertLand": preferred_models = ["cactus_short.glb", "cactus_tall.glb", "tree_palm.glb", "rock_largeA.glb"]
+  "VolcanoLand": preferred_models = ["rock_largeA.glb", "rock_smallB.glb", "stone_largeB.glb", "stone_largeD.glb"]
+  "IceLand": preferred_models = ["tree_pineDefaultA.glb", "tree_pineDefaultB.glb", "tree_default.glb", "rock_largeA.glb"]
+  "Waterlands": preferred_models = ["tree_palm.glb", "tree_default.glb", "plant_flatTall.glb", "rock_smallA.glb"]
+  "DarkForest": preferred_models = ["tree_oak.glb", "tree_default_dark.glb", "tree_oak_dark.glb", "plant_bushLarge.glb"]
  candidates.sort()
  var accepted: Array[String] = []
- for path in candidates:
-  var lower := path.get_file().to_lower()
-  if keywords.any(func(word: String) -> bool: return lower.contains(word)):
-   accepted.append(path)
- if accepted.is_empty():
-  push_warning("No Kenney Nature Kit models matched biome filters for " + city)
+ for preferred_name in preferred_models:
+  for path in candidates:
+   if path.get_file() == preferred_name:
+    accepted.append(path)
+    break
+ if accepted.size() != preferred_models.size():
+  push_error("Kenney Nature Kit is missing required biome models for " + city + ": expected=" + str(preferred_models) + " found=" + str(accepted.map(func(path: String) -> String: return path.get_file())))
   return
  var added := 0
  for path in accepted:
