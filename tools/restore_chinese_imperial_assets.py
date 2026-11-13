@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Fetch the complete public Imperial China GLB pack, normalize every model and record per-asset provenance."""
 from __future__ import annotations
-import hashlib,json,shutil,struct,subprocess
+import hashlib,json,shutil,struct,subprocess,urllib.parse
 from pathlib import Path
 import urllib.request
 ROOT=Path(__file__).resolve().parents[1]
@@ -54,7 +54,7 @@ def main():
  starter=data.get("starterScene")
  if starter: items.append(starter)
  if len(items)<60: raise RuntimeError(f"Expected complete 63-model pack; manifest exposed only {len(items)} entries")
- manifest={"schema_version":3,"pack":"Imperial China Palace and Garden","provider":"3DAssets.dev","pack_source":"https://3dassets.dev/packs/imperial-china-palace-and-garden","pack_license":"CC0-1.0","normalization":"Blender Z-up bounds; X/Y centered; GLB Y_min=0.0; GLTF Y-up export","model_count":0,"assets":[]}
+ manifest={"schema_version":3,"pack":"Imperial China Palace and Garden","provider":"3DAssets.dev","pack_source":"https://3dassets.dev/packs/imperial-china-palace-and-garden","pack_license":"CC0-1.0","normalization":"Blender Z-up bounds; X/Y centered; GLB Y_min=0.0; GLTF Y-up export","ai_assisted":"3DAssets.dev pack page states 63 of 63 pack files were created with Claude Opus 5; extra search results are credited individually as supplied by their manifests.","model_count":0,"assets":[],"discovery":[]}
  seen=set()
  for item in items:
   aid=str(item.get("id",""))
@@ -96,6 +96,58 @@ def main():
   entry={"id":str(item.get("id","")),"name":str(item.get("name",filename)),"file":str(target.relative_to(ROOT)),"category":"props_nature","source":"https://3dassets.dev/assets/"+asset_slug,"cdn_url":url,"author":str(item.get("author") or "3DAssets.dev"),"license":"CC0-1.0" if license_slug=="cc0-1.0" else "CC-BY-4.0","attribution_required":license_slug!="cc0-1.0","bytes":nbytes,"sha256":digest,"normalization_pending":True}
   manifest["assets"].append(entry)
   print(f"WUXIA_BOTANICAL_GLB: {filename} bytes={nbytes} sha256={digest}",flush=True)
+ # Search the public 3DAssets catalogue for specific Chinese architecture and ceremonial props.
+ search_targets=[
+  ("Chinese pagoda","chinese_pagoda.glb","architecture",("pagoda",)),
+  ("dragon statue","chinese_dragon_statue.glb","props_nature",("dragon","statue")),
+  ("stone fountain","stone_fountain.glb","props_nature",("fountain",)),
+  ("Asian market stall","asian_market_stall.glb","architecture",("stall",)),
+  ("Chinese town house","chinese_town_house.glb","architecture",("house",)),
+  ("stone brazier","stone_brazier.glb","props_nature",("brazier",)),
+ ]
+ for query,filename,folder,required_terms in search_targets:
+  query_url="https://3dassets.dev/api/v1/assets?"+urllib.parse.urlencode({"q":query,"limit":20})
+  results=get_json(query_url).get("data",[])
+  eligible=[]
+  for candidate in results:
+   text_blob=" ".join(str(candidate.get(k,"")) for k in ("name","title","description","shortDescription","tags")).lower()
+   if not all(term in text_blob for term in required_terms): continue
+   lic=candidate.get("license",{})
+   lic_slug=str(lic.get("slug","")).lower()
+   if lic_slug not in ("cc0-1.0","cc-by-4.0","cc-by"): continue
+   eligible.append(candidate)
+  if not eligible:
+   manifest["discovery"].append({"query":query,"status":"no_verified_match"})
+   print("WUXIA_DISCOVERY_MISS:",query,flush=True)
+   continue
+  eligible.sort(key=lambda item:int(item.get("stats",{}).get("triangleCount",0) or 0),reverse=True)
+  candidate=eligible[0]
+  asset_slug=str(candidate.get("slug",""))
+  if not asset_slug:
+   manifest["discovery"].append({"query":query,"status":"missing_slug"})
+   continue
+  detail=get_json("https://3dassets.dev/api/v1/assets/"+asset_slug).get("data",candidate)
+  aid=str(detail.get("id",candidate.get("id","")))
+  if aid in seen:
+   manifest["discovery"].append({"query":query,"status":"already_in_pack","id":aid})
+   continue
+  lic=detail.get("license",candidate.get("license",{}))
+  license_slug=str(lic.get("slug","")).lower()
+  if license_slug not in ("cc0-1.0","cc-by-4.0","cc-by"):
+   manifest["discovery"].append({"query":query,"status":"license_rejected","id":aid})
+   continue
+  url=detail.get("cdnUrl") or candidate.get("cdnUrl")
+  size=int(detail.get("stats",{}).get("fileSize",0) or candidate.get("stats",{}).get("fileSize",0)) or None
+  if not url:
+   manifest["discovery"].append({"query":query,"status":"missing_cdn","id":aid})
+   continue
+  target=DEST/folder/filename
+  digest,nbytes=download(url,target,size)
+  author=str(detail.get("author") or detail.get("creator") or "3DAssets.dev contributor")
+  entry={"id":aid,"name":str(detail.get("name") or candidate.get("name") or query),"file":str(target.relative_to(ROOT)),"category":folder,"source":"https://3dassets.dev/assets/"+asset_slug,"cdn_url":url,"author":author,"license":"CC0-1.0" if license_slug=="cc0-1.0" else "CC-BY-4.0","attribution_required":license_slug!="cc0-1.0","bytes":nbytes,"sha256":digest,"normalization_pending":True}
+  manifest["assets"].append(entry); seen.add(aid)
+  manifest["discovery"].append({"query":query,"status":"downloaded","id":aid,"file":str(target.relative_to(ROOT))})
+  print(f"WUXIA_DISCOVERED_ASSET: query={query} file={filename} license={entry['license']} bytes={nbytes}",flush=True)
  if len(manifest["assets"])<60: raise RuntimeError(f"Only {len(manifest['assets'])} license-approved GLBs were downloaded")
  blender=shutil.which("blender")
  if not blender: raise RuntimeError("Blender is required for measured GLB bottom-origin normalization")
