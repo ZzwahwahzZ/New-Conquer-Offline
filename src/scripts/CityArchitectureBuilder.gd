@@ -26,13 +26,13 @@ static func build(parent: Node3D, city: String, size: float) -> void:
 
 static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
  var plaza := Node3D.new()
- plaza.name = "OpenCentralPlaza_80x80"
+ plaza.name = "OpenCentralPlaza_24x24"
  parent.add_child(plaza)
  var stone: StandardMaterial3D = PBRMaterialLibrary.build_plaza_material()
  stone.uv1_scale = Vector3(3.9,3.9,1.0)
- for z in range(-5,5):
-  for x in range(-5,5):
-   var tile := _box(plaza, "DiamondStonePaver_%02d_%02d" % [x+5,z+5], Vector3(float(x)*8.0+4.0,0.055,float(z)*8.0+4.0), Vector3(7.75,0.11,7.75), stone, 1.0)
+ for z in range(-1,2):
+  for x in range(-1,2):
+   var tile := _box(plaza, "DiamondStonePaver_%02d_%02d" % [x+1,z+1], Vector3(float(x)*8.0,0.055,float(z)*8.0), Vector3(7.75,0.11,7.75), stone, 1.0)
    tile.rotation_degrees.y = 45.0
  var medallion := MeshInstance3D.new()
  medallion.name = "CentralEngravedStoneMedallion"
@@ -90,10 +90,10 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, heigh
 
 static func _build_urban_alley_multimeshes(parent: Node3D, city: String, material: Material) -> void:
  var terrain_image := WorldTerrainBuilder.load_height_image(city)
- var alley_lines := [-46.5, -23.25, 23.25, 46.5]
+ var alley_lines := [-65.45,-39.25,-13.05,13.05,39.25,65.45]
  var segment_centers := [-69.75,-54.25,-38.75,-23.25,-7.75,7.75,23.25,38.75,54.25,69.75]
  var alley_mesh := BoxMesh.new()
- alley_mesh.size = Vector3(4.0,0.14,22.0)
+ alley_mesh.size = Vector3(5.0,0.14,22.0)
  for axis in range(2):
   var multi := MultiMesh.new()
   multi.transform_format = MultiMesh.TRANSFORM_3D
@@ -125,23 +125,38 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
  # Ten-by-ten compact blocks fit inside the 160m x 160m urban core.
  # The central 10m north/south and east/west avenues stay open; 81 real
  # imported buildings occupy the remaining cells with 1.5m block-to-block gaps.
- var coordinates := [-69.75,-54.25,-38.75,-23.25,-7.75,7.75,23.25,38.75,54.25,69.75]
+ var coordinates := [-72.0,-58.9,-45.8,-32.7,-19.6,-6.5,6.5,19.6,32.7,45.8,58.9,72.0]
  var index := 0
  var built_count := 0
- for z in coordinates:
-  for x in coordinates:
+ for row in range(coordinates.size()):
+  for column in range(coordinates.size()):
+   var x := float(coordinates[column])
+   var z := float(coordinates[row])
+   var corner_block := (row < 2 or row >= 10) and (column < 2 or column >= 10)
+   if corner_block:
+    var anchor_row := 0 if row < 2 else 10
+    var anchor_column := 0 if column < 2 else 10
+    if row == anchor_row and column == anchor_column:
+     var palace_center := Vector3((float(coordinates[anchor_column]) + float(coordinates[anchor_column+1])) * 0.5,0.0,(float(coordinates[anchor_row]) + float(coordinates[anchor_row+1])) * 0.5)
+     var palace := _instantiate_quaternius_building(slot,city,index,palace_center,height_image,true)
+     if palace == null:
+      push_error("CITY_IMPORTED_PALACE_MISSING: %s index=%d" % [city,index])
+     else:
+      palace.add_to_group("city_building")
+      built_count += 1
+    index += 1
+    continue
    if absf(x) < 8.0 or absf(z) < 8.0:
     index += 1
     continue
-   var building := _instantiate_quaternius_building(slot,city,index,Vector3(x,0.0,z),height_image)
+   var building := _instantiate_quaternius_building(slot,city,index,Vector3(x,0.0,z),height_image,false)
    if building == null:
     push_error("CITY_IMPORTED_BUILDING_MISSING: %s index=%d; refusing primitive placeholder geometry" % [city,index])
-    index += 1
-    continue
-   building.add_to_group("city_building")
+   else:
+    building.add_to_group("city_building")
+    built_count += 1
    index += 1
-   built_count += 1
- print("CITY_URBAN_DENSITY_PASS: %s buildings=%d footprint=-80..80 grid=10x10" % [city,built_count])
+ print("CITY_URBAN_DENSITY_PASS: %s buildings=%d footprint=-80..80 grid=12x12 four_palaces=true" % [city,built_count])
 
 static func _make_compact_urban_building(city: String, p: Dictionary, index: int) -> Node3D:
  var root := Node3D.new()
@@ -288,7 +303,7 @@ static func _first_mesh_node(root: Node) -> MeshInstance3D:
    return current as MeshInstance3D
  return null
 
-static func _instantiate_quaternius_building(parent: Node3D, city: String, index: int, at: Vector3, height_image: Image) -> Node3D:
+static func _instantiate_quaternius_building(parent: Node3D, city: String, index: int, at: Vector3, height_image: Image, grand_building: bool = false) -> Node3D:
  var candidates: Array[String] = []
  var all_models: Array[String] = []
  _collect_quaternius_models("res://assets/environment/quaternius/ultimate_fantasy_rts", all_models)
@@ -321,10 +336,10 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  parent.add_child(instance)
  var source_bounds := _renderable_world_bounds(instance)
  if source_bounds.size.length_squared() > 0.0001:
-  var grand_building := posmod(index, 17) == 0
-  var target_width := 22.0 if grand_building else (14.0 if posmod(index, 3) == 0 else 10.0)
-  var target_depth := 18.0 if grand_building else (12.0 if posmod(index, 3) == 0 else 10.0)
-  var target_height := 15.0 if grand_building else (10.0 if posmod(index, 3) == 0 else 7.0)
+  var is_grand_building := grand_building
+  var target_width := 22.0 if is_grand_building else (14.0 if posmod(index, 3) == 0 else 10.0)
+  var target_depth := 18.0 if is_grand_building else (12.0 if posmod(index, 3) == 0 else 10.0)
+  var target_height := 15.0 if is_grand_building else (10.0 if posmod(index, 3) == 0 else 7.0)
   var fit_x := target_width / maxf(source_bounds.size.x, 0.001)
   var fit_y := target_height / maxf(source_bounds.size.y, 0.001)
   var fit_z := target_depth / maxf(source_bounds.size.z, 0.001)
