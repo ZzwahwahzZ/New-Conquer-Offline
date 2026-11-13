@@ -94,33 +94,60 @@ def restore_pack(pack_id: str, metadata: dict) -> dict:
     target.mkdir(parents=True, exist_ok=True)
     model_paths: list[str] = []
     license_found = False
-
     with zipfile.ZipFile(archive) as package:
         bad = package.testzip()
         if bad:
             raise RuntimeError(f"{pack_id} ZIP integrity failure at {bad}")
-        for item in package.infolist():
-            if item.is_dir():
-                continue
-            relative = safe_member(item.filename)
-            normalized = relative.as_posix()
-            lower = normalized.lower()
+        members = {safe_member(item.filename).as_posix(): item for item in package.infolist() if not item.is_dir()}
+        expected_models = set(metadata["required_models"])
+        selected: set[str] = set()
+        model_member_paths: dict[str, str] = {}
+        for member_name, item in members.items():
+            relative = PurePosixPath(member_name)
+            lower = member_name.lower()
             is_model_directory = "/models/gltf format/" in ("/" + lower) or "/models/glb format/" in ("/" + lower)
-            is_required_model = is_model_directory and relative.name in set(metadata["required_models"]) and lower.endswith(".glb")
-            is_license = relative.name.lower() in {"license.txt", "license"}
-            # Keep only explicitly referenced, self-contained GLB models.
-            # Unused models, loose textures and the unused Retro Fantasy pack are not imported.
-            if not (is_required_model or is_license):
-                continue
+            if is_model_directory and relative.name in expected_models and lower.endswith(".glb"):
+                selected.add(member_name)
+                model_member_paths[relative.name] = member_name
+            if relative.name.lower() in {"license.txt", "license"}:
+                selected.add(member_name)
+                license_found = True
+        if set(model_member_paths) != expected_models:
+            missing = sorted(expected_models - set(model_member_paths))
+            raise RuntimeError(f"{pack_id} is missing required models: {missing}")
+        # Resolve only the external resources explicitly referenced by selected GLBs.
+        for model_name, member_name in model_member_paths.items():
+            item = members[member_name]
+            with package.open(item) as source:
+                header = source.read(20)
+                if len(header) < 20 or header[:4] != b"glTF":
+                    raise RuntimeError(f"Invalid GLB header in archive: {member_name}")
+                version, declared_length = struct.unpack_from("<II", header, 4)
+                json_length, json_kind = struct.unpack_from("<II", header, 12)
+                if version != 2 or json_kind != 0x4E4F534A or declared_length != item.file_size or 20 + json_length > item.file_size:
+                    raise RuntimeError(f"Invalid GLB JSON chunk in archive: {member_name}")
+                json_bytes = source.read(json_length)
+            document = json.loads(json_bytes.rstrip(b" \\t\\r\\n\\0").decode("utf-8"))
+            for resource in document.get("images", []) + document.get("buffers", []):
+                uri = resource.get("uri")
+                if not uri or uri.startswith("data:"):
+                    continue
+                if uri.startswith("/") or "\\\\" in uri:
+                    raise RuntimeError(f"Unsafe external GLB resource URI: {member_name}: {uri}")
+                dependency = (PurePosixPath(member_name).parent / PurePosixPath(uri)).as_posix()
+                dependency_path = safe_member(dependency)
+                if dependency_path.as_posix() not in members:
+                    raise RuntimeError(f"Missing referenced GLB resource: {member_name} -> {uri}")
+                selected.add(dependency_path.as_posix())
+        for member_name in sorted(selected):
+            item = members[member_name]
+            relative = safe_member(member_name)
             destination = target.joinpath(*relative.parts)
             destination.parent.mkdir(parents=True, exist_ok=True)
             with package.open(item) as source, destination.open("wb") as output:
                 shutil.copyfileobj(source, output)
-            if lower.endswith((".glb", ".gltf")):
+            if relative.name in expected_models and relative.suffix.lower() == ".glb":
                 model_paths.append(destination.relative_to(ROOT).as_posix())
-            if is_license:
-                license_found = True
-
     expected_models = set(metadata["required_models"])
     extracted_names = {Path(model).name for model in model_paths}
     missing_models = sorted(expected_models - extracted_names)
