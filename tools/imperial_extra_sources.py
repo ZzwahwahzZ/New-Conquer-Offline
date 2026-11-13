@@ -65,7 +65,7 @@ def discover_3dassets(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                     continue
                 for item in rows:
                     slug = item.get("slug")
-                    if not slug or slug in seen:
+                    if not slug or slug in seen or "3dassets-"+safe(slug) in {x.get("id") for x in DISC}:
                         continue
                     seen.add(slug)
                     try:
