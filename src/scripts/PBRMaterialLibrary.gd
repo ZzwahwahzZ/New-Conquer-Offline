@@ -53,6 +53,16 @@ static func build_ground_material(environment_id: String, triplanar: bool = true
   material.emission_energy_multiplier = 0.7
  return material
 
+static func build_street_material() -> StandardMaterial3D:
+ var material := build_ground_material("Waterlands", false, "Ground044_2K-JPG")
+ material.resource_name = "Shared_StoneStreet_PBR"
+ material.albedo_color = Color("#b7b2a6")
+ material.detail_enabled = false
+ material.uv1_scale = Vector3(18.0, 18.0, 1.0)
+ material.roughness = 0.92
+ material.metallic = 0.0
+ return material
+
 static func build_emissive_material(color: Color, energy: float = 1.5, roughness_value: float = 0.35) -> StandardMaterial3D:
  var material := StandardMaterial3D.new()
  material.albedo_color = color
