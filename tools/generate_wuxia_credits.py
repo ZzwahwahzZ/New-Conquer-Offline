@@ -12,6 +12,7 @@ def main():
  quaternius=read(PACK/"quaternius_manifest.json")
  poly=read(PACK/"paving"/"polyhaven_pbr"/"manifest.json")
  ambient=read(PACK/"paving"/"ambientcg"/"manifest.json")
+ opengameart=read(PACK/"opengameart_manifest.json")
  lines=[
  "# Wuxia Imperial Pack — Asset Credits & License Register",
  "",
@@ -45,6 +46,8 @@ def main():
   lines.append(f"| Poly Haven — {meta.get('name',aid)} | {author} | CC0-1.0 | — | {meta.get('source','https://polyhaven.com/a/'+aid)} |")
  for aid,meta in ambient.get("assets",{}).items():
   lines.append(f"| ambientCG — {aid} | {meta.get('author','ambientCG contributors')} | {meta.get('license','CC0-1.0')} | — | {meta.get('source','https://ambientcg.com/')} |")
+ for model in opengameart.get("models",[]):
+  lines.append(f"| OpenGameArt — {model.get('name','Modular Temple part')} | {opengameart.get('creator','Unknown creator')} | {opengameart.get('license','CC0-1.0')} | — | {opengameart.get('source','https://opengameart.org/')} |")
  lines += [
  "",
  "## CC-BY source handling",
