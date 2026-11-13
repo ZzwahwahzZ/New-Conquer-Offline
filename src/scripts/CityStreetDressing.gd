@@ -50,7 +50,7 @@ static func _add_plane(parent: Node3D, label: String, dimensions: Vector2, mater
 	mesh.size = dimensions
 	node.mesh = mesh
 	var paved_route := label.begins_with("Street_") or label.begins_with("DistrictLane_") or label.begins_with("GateApproach_")
-	node.position = at + (Vector3.UP * (0.6 if label.begins_with("Waterlands_") else 0.45) if paved_route else Vector3.ZERO)
+	node.position = at + (Vector3.UP * 0.85 if paved_route else Vector3.ZERO)
 	parent.add_child(node)
 	var surface_material := material
 	if material is StandardMaterial3D:
@@ -200,7 +200,7 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 		flat_deck.size = dimensions
 		deck_mesh = flat_deck
 	deck.mesh = deck_mesh
-	deck.position.y = 0.0 if city == "Waterlands" else 0.12
+	deck.position.y = 0.85
 	bridge.add_child(deck)
 	deck.material_override = material
 	var imported_bridge_found := false
@@ -223,7 +223,7 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 						imported_bridge.scale = Vector3.ONE * fit_scale
 						if bounds.z > bounds.x:
 							imported_bridge.rotation.y = PI * 0.5
-						imported_bridge.position.y = 0.6 if city == "Waterlands" else 0.12
+						imported_bridge.position.y = 0.85
 						bridge.add_child(imported_bridge)
 						if city == "Waterlands":
 							imported_bridge.visible = false
@@ -288,8 +288,8 @@ static func _waterlands_promenades(parent: Node3D, material: Material) -> void:
 	routes.name = "Waterlands_RaisedTimberStreetNetwork_0_6m"
 	parent.add_child(routes)
 	for lane in [-48.0, -24.0, 0.0, 24.0, 48.0]:
-		_add_plane(routes, "Waterlands_NS_Promenade_" + str(int(lane)), Vector2(6.0, 170.0), timber, Vector3(lane, 0.6, 0.0))
-		_add_plane(routes, "Waterlands_EW_Promenade_" + str(int(lane)), Vector2(170.0, 6.0), timber, Vector3(0.0, 0.6, lane))
+		_add_plane(routes, "Waterlands_NS_Promenade_" + str(int(lane)), Vector2(6.0, 170.0), timber, Vector3(lane, 0.85, 0.0))
+		_add_plane(routes, "Waterlands_EW_Promenade_" + str(int(lane)), Vector2(170.0, 6.0), timber, Vector3(0.0, 0.85, lane))
 	for i in range(8):
 		var lantern := MeshInstance3D.new()
 		lantern.name = "Waterlands_RedHarborLantern_%02d" % i
@@ -318,10 +318,10 @@ static func _waterlands_promenades(parent: Node3D, material: Material) -> void:
 		var deck := BoxMesh.new()
 		deck.size = Vector3(12.0, 0.42, 7.0)
 		pier.mesh = deck
-		pier.position = Vector3(x, 0.6, -61.0)
+		pier.position = Vector3(x, 0.85, -61.0)
 		routes.add_child(pier)
 		pier.material_override = timber
-	print("WATERLANDS_HARBOR_PASS: raised_walkways=10 elevation=0.6m")
+	print("WATERLANDS_HARBOR_PASS: raised_walkways=10 elevation=0.85m")
  
 static func _lava_channels(parent: Node3D, half: float) -> void:
 	var lava := _mat(Color("#ed4b18"), 0.3)
