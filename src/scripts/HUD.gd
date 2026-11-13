@@ -626,7 +626,7 @@ func _on_hotbar_skill_pressed(index: int) -> void:
 		_on_skill_pressed(_skill_ids[index])
 
 func _refresh_active_skillbar() -> void:
-	var mode := ClassSystem.current_class
+	var mode: String = ClassSystem.current_class
 	if mode == _active_skill_mode:
 		return
 	_active_skill_mode = mode
