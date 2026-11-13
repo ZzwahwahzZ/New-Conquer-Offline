@@ -77,33 +77,18 @@ def main():
   entry={"id":aid,"name":name,"file":str(target.relative_to(ROOT)),"category":folder,"source":page,"cdn_url":url,"author":author,"license":"CC0-1.0" if license_slug=="cc0-1.0" else "CC-BY-4.0","attribution_required":license_slug!="cc0-1.0","bytes":nbytes,"sha256":digest,"normalization_pending":True}
   manifest["assets"].append(entry)
   print(f"WUXIA_IMPERIAL_SOURCE_GLB: id={aid} category={folder} file={target.name} bytes={nbytes} sha256={digest}",flush=True)
- # Additional botanical CC0 GLBs from public 3DAssets.dev asset endpoints.
- for asset_slug,filename in [
-  ("medieval-mmo-starter-realm-willow-tree-e1efef2c","willow_tree.glb"),
-  ("medieval-mmo-starter-realm-pine-tree-76a5817f","pine_tree.glb"),
-  ("medieval-mmo-starter-realm-bush-a8f78fd2","garden_bush.glb"),
- ]:
-  item=get_json("https://3dassets.dev/api/v1/assets/"+asset_slug).get("data",{})
-  lic=item.get("license",{})
-  license_slug=str(lic.get("slug","")).lower()
-  if license_slug not in ("cc0-1.0","cc-by-4.0","cc-by"):
-   raise RuntimeError("Botanical asset license not approved: "+asset_slug+" "+license_slug)
-  url=item.get("cdnUrl")
-  size=int(item.get("stats",{}).get("fileSize",0)) or None
-  if not url: raise RuntimeError("Missing botanical asset CDN URL: "+asset_slug)
-  target=DEST/"props_nature"/filename
-  digest,nbytes=download(url,target,size)
-  entry={"id":str(item.get("id","")),"name":str(item.get("name",filename)),"file":str(target.relative_to(ROOT)),"category":"props_nature","source":"https://3dassets.dev/assets/"+asset_slug,"cdn_url":url,"author":str(item.get("author") or "3DAssets.dev"),"license":"CC0-1.0" if license_slug=="cc0-1.0" else "CC-BY-4.0","attribution_required":license_slug!="cc0-1.0","bytes":nbytes,"sha256":digest,"normalization_pending":True}
-  manifest["assets"].append(entry)
-  print(f"WUXIA_BOTANICAL_GLB: {filename} bytes={nbytes} sha256={digest}",flush=True)
  # Search the public 3DAssets catalogue for specific Chinese architecture and ceremonial props.
  search_targets=[
   ("Chinese pagoda","chinese_pagoda.glb","architecture",("pagoda",)),
   ("dragon statue","chinese_dragon_statue.glb","props_nature",("dragon","statue")),
-  ("stone fountain","stone_fountain.glb","props_nature",("fountain",)),
+  ("stone fountain","stone_fountain.glb","props_nature",("stone","fountain")),
   ("Asian market stall","asian_market_stall.glb","architecture",("stall",)),
   ("Chinese town house","chinese_town_house.glb","architecture",("house",)),
-  ("stone brazier","stone_brazier.glb","props_nature",("brazier",)),
+  ("stone brazier","stone_brazier.glb","props_nature",("stone","brazier")),
+  ("weeping willow","willow_tree.glb","props_nature",("willow",)),
+  ("mountain pine","pine_tree.glb","props_nature",("pine",)),
+  ("garden bush","garden_bush.glb","props_nature",("bush",)),
+  ("bamboo cluster","bamboo_cluster.glb","props_nature",("bamboo",)),
  ]
  for query,filename,folder,required_terms in search_targets:
   query_url="https://3dassets.dev/api/v1/assets?"+urllib.parse.urlencode({"q":query,"limit":20})
@@ -112,6 +97,7 @@ def main():
   for candidate in results:
    text_blob=" ".join(str(candidate.get(k,"")) for k in ("name","title","description","shortDescription","tags")).lower()
    if not all(term in text_blob for term in required_terms): continue
+   if query in ("Chinese pagoda","dragon statue","Asian market stall","Chinese town house") and not any(tag in text_blob for tag in ("chinese","asian","japanese","hanok","imperial")): continue
    lic=candidate.get("license",{})
    lic_slug=str(lic.get("slug","")).lower()
    if lic_slug not in ("cc0-1.0","cc-by-4.0","cc-by"): continue
