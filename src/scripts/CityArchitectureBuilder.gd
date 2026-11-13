@@ -125,10 +125,37 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  # Normalize compact Quaternius source units to readable city-building proportions.
  instance.scale = Vector3(3.0, 2.0, 3.0)
  parent.add_child(instance)
+ var source_bounds := _renderable_world_bounds(instance)
+ if source_bounds.size.length_squared() > 0.0001:
+  var fit_factor := maxf(3.0 / maxf(source_bounds.size.x, 0.001), maxf(6.5 / maxf(source_bounds.size.y, 0.001), 3.0 / maxf(source_bounds.size.z, 0.001)))
+  instance.scale *= Vector3.ONE * fit_factor
+  print("CITY_QUATERNIUS_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " source_size=" + str(source_bounds.size) + " fit_factor=" + str(fit_factor) + " final_scale=" + str(instance.scale))
  _add_static_mesh_collisions(instance)
  instance.add_to_group("distance_cull_world")
  _set_visibility_range(instance, 360.0, 35.0)
  return instance
+
+static func _renderable_world_bounds(root_node: Node) -> AABB:
+ var combined := AABB()
+ var found := false
+ var pending: Array[Node] = [root_node]
+ while not pending.is_empty():
+  var current: Node = pending.pop_back()
+  for child in current.get_children():
+   pending.append(child)
+  if current is MeshInstance3D:
+   var mesh_node := current as MeshInstance3D
+   if mesh_node.mesh != null:
+    var world_bounds: AABB = mesh_node.global_transform * mesh_node.get_aabb()
+    combined = world_bounds if not found else combined.merge(world_bounds)
+    found = true
+  elif current is MultiMeshInstance3D:
+   var multi_node := current as MultiMeshInstance3D
+   if multi_node.multimesh != null and multi_node.multimesh.mesh != null:
+    var multi_bounds: AABB = multi_node.global_transform * multi_node.get_aabb()
+    combined = multi_bounds if not found else combined.merge(multi_bounds)
+    found = true
+ return combined if found else AABB()
 
 static func _set_visibility_range(root: Node, range_end: float, margin: float) -> void:
  var pending: Array[Node] = [root]
