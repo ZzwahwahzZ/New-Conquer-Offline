@@ -8,7 +8,8 @@ static func build(parent: Node3D, city: String, _size: float) -> void:
  var root := Node3D.new()
  root.name = city + "_ChineseImperialArchitecture"
  parent.add_child(root)
- _add_model(root,city,"ceremonial_hall.glb",city+"_ChineseImperialBuilding_00",Vector3(0.0,0.0,-55.0),Vector3.ONE,true)
+ var central_palace_file := "chinese_pagoda.glb" if ResourceLoader.exists(ROOT+"chinese_pagoda.glb") else "ceremonial_hall.glb"
+ _add_model(root,city,central_palace_file,city+"_ChineseImperialBuilding_00",Vector3(0.0,0.0,-55.0),Vector3.ONE,true)
  if city == "TwinCity":
   _add_model(root,city,"gate_tower.glb",city+"_ChineseImperialBuilding_01",Vector3(65.45,0.0,-65.45),Vector3.ONE,true)
   _add_model(root,city,"water_pavilion.glb",city+"_ChineseImperialBuilding_02",Vector3(-65.45,0.0,65.45),Vector3.ONE,true)
@@ -97,6 +98,18 @@ static func _add_stair_guardian_lions(parent: Node3D, platform_depth: float) -> 
  lions.add_to_group("imperial_stair_guardians")
  lions.set_meta("source_asset_path",lion_path)
  parent.add_child(lions)
+ var dragon_path := "res://assets/wuxia_imperial_pack/props_nature/chinese_dragon_statue.glb"
+ if ResourceLoader.exists(dragon_path):
+  var dragon_pack := load(dragon_path) as PackedScene
+  if dragon_pack != null:
+   var dragon := dragon_pack.instantiate() as Node3D
+   if dragon != null:
+    dragon.name = "ChineseImperialDragonStairGuardian"
+    dragon.position = Vector3(-6.5,0.0,platform_depth*0.5+7.5)
+    dragon.scale = Vector3.ONE * 0.8
+    dragon.add_to_group("imperial_dragon_statues")
+    dragon.set_meta("source_asset_path",dragon_path)
+    parent.add_child(dragon)
 
 static func _replace_city_gates(parent: Node3D) -> void:
  var fortification := parent.get_node_or_null("TwinCity_PerimeterFortifications") as Node3D
