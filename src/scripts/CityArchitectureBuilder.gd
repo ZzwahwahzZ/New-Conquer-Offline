@@ -1,6 +1,7 @@
 extends RefCounted
 const WorldTerrainBuilder = preload("res://src/scripts/WorldTerrainBuilder.gd")
 const PBRMaterialLibrary = preload("res://src/scripts/PBRMaterialLibrary.gd")
+const ChineseImperialBuilder = preload("res://src/scripts/ChineseImperialBuilder.gd")
 ## Detailed, lightweight facade and roof kit for all six classic settlements.
 ## Every building is assembled from real 3D meshes; brick relief uses a generated normal map.
 const CITY_PALETTES := {
@@ -18,6 +19,7 @@ static func build(parent: Node3D, city: String, size: float) -> void:
  _build_city_roads(parent, city, palette)
  _build_city_buildings(parent, city, palette, height_image)
  _build_city_walls_and_gates(parent, city, palette, height_image)
+ ChineseImperialBuilder.build(parent, city, size)
  _build_kenney_city_modules(parent, city, palette, height_image)
  _build_outer_biome(parent, city, palette, size, height_image)
  print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=24 walls=4 gates=4 open_plaza=80x80 outer_world=800x800" % city)
@@ -80,6 +82,9 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
   for side in [-1.0,1.0]:
    for axis in [0,1]:
     var position := Vector3(value,0.0,side*30.0) if axis == 0 else Vector3(side*30.0,0.0,value)
+    if city == "TwinCity" and index < 3:
+     index += 1
+     continue
     var imported := _instantiate_quaternius_building(slot, city, index, position, height_image)
     if imported == null:
      var building := _make_building(city,p,index,1.0)

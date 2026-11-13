@@ -28,19 +28,17 @@ static func build_ground_material(environment_id: String, triplanar: bool = true
  material.normal_enabled = true
  material.normal_texture = _load_first_map(folder, ["normal.jpg", "normal.png", "normal.webp"], _fallback_texture("normal", environment_id))
  if environment_id == "TwinCity":
-  material.normal_scale = 1.48
-  material.detail_enabled = true
-  material.detail_albedo = material.albedo_texture
-  material.albedo_color = Color(1.12, 1.12, 1.12, 1.0)
+  material.normal_scale = 1.18
+  material.albedo_color = Color(1.08, 1.08, 1.08, 1.0)
  material.roughness = 0.88
  material.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_GRAYSCALE
  material.roughness_texture = _load_first_map(folder, ["roughness.jpg", "roughness.png", "roughness.webp"], _fallback_texture("roughness", environment_id))
  material.metallic = 0.0
  material.uv1_triplanar = triplanar
  material.uv1_triplanar_sharpness = 4.0
- material.uv1_scale = Vector3(0.48, 0.48, 0.48) if triplanar else Vector3(24.0, 24.0, 1.0)
+ material.uv1_scale = Vector3(0.085, 0.085, 0.085) if triplanar else Vector3(24.0, 24.0, 1.0)
  if environment_id == "TwinCity" and triplanar:
-  material.uv1_scale = Vector3(0.62, 0.62, 0.62)
+  material.uv1_scale = Vector3(0.095, 0.095, 0.095)
  material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
  material.cull_mode = BaseMaterial3D.CULL_DISABLED
  var emission_map := _load_first_map(folder, ["emission.jpg", "emission.png", "emission.webp"], null)

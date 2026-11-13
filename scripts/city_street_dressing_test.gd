@@ -158,6 +158,15 @@ func _run() -> void:
 		if city_name == "TwinCity":
 			if not _check(city.find_child("TwinCityImperialCanal_East", true, false) is MeshInstance3D and city.find_child("TwinCityImperialCanal_West", true, false) is MeshInstance3D, "TwinCity imperial canals are missing"):
 				return
+			var chinese_gate_count := 0
+			for gate_direction in ["North", "East", "South", "West"]:
+				if city.find_child("TwinCity_ChineseGateTower_" + gate_direction, true, false) != null:
+					chinese_gate_count += 1
+			if not _check(chinese_gate_count == 4, "TwinCity requires four imported Chinese gate towers"):
+				return
+			for building_index in range(3):
+				if not _check(city.find_child("TwinCity_ChineseImperialBuilding_%02d" % building_index, true, false) != null, "TwinCity Chinese imperial building GLB missing: " + str(building_index)):
+					return
 		if city_name == "Waterlands":
 			if not _check(city.find_child("Waterlands_ArchipelagoWaterSurface", true, false) is MeshInstance3D and city.find_child("ApeCityCanal_East", true, false) is MeshInstance3D and city.find_child("ApeCityCanal_West", true, false) is MeshInstance3D, "Waterlands archipelago water/island channels are missing"):
 				return
@@ -254,7 +263,7 @@ func _run() -> void:
 			if arch_node.name.begins_with(city_name + "_DetailedBuilding_"):
 				detailed_buildings += 1
 				all_building_roots.append(arch_node)
-			elif arch_node.name.begins_with(city_name + "_QuaterniusBuilding_") or arch_node.name.begins_with(city_name + "_KenneyBuilding_"):
+			elif arch_node.name.begins_with(city_name + "_QuaterniusBuilding_") or arch_node.name.begins_with(city_name + "_KenneyBuilding_") or arch_node.name.begins_with(city_name + "_ChineseImperialBuilding_"):
 				imported_buildings.append(arch_node)
 				all_building_roots.append(arch_node)
 			if arch_node.name == "ReliefBrickWalls" and arch_node is MeshInstance3D:

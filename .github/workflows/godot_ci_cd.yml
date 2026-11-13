@@ -44,7 +44,8 @@ jobs:
           python3 tools/restore_hf_terrain_assets.py
           python3 tools/sync_rpg_ui_assets.py
           python3 tools/restore_kenney_environment_assets.py
-          python3 -m py_compile tools/restore_kenney_environment_assets.py tools/kenney_asset_preflight.py tools/fetch_quaternius_assets.py
+          python3 tools/restore_chinese_imperial_assets.py
+          python3 -m py_compile tools/restore_kenney_environment_assets.py tools/restore_chinese_imperial_assets.py tools/kenney_asset_preflight.py tools/fetch_quaternius_assets.py
           bash -n tools/run_godot_smoke_test.sh
           npm install --global @gltf-transform/cli@4.5.1
           while IFS= read -r -d '' asset; do
@@ -53,7 +54,7 @@ jobs:
             test -s "$temp"
             mv "$temp" "$asset"
             echo "GODOT_COMPATIBLE_GLB: $asset"
-          done < <(find assets/environment/kenney -type f -name '*.glb' -print0)
+          done < <(find assets/environment/kenney assets/environment/architecture -type f -name '*.glb' -print0)
           python3 tools/kenney_asset_preflight.py
       - name: Cache official Quaternius downloads
         uses: actions/cache@v4

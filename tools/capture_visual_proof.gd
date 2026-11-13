@@ -12,7 +12,7 @@ const SHOTS := [
 	{"suffix":"02_shop_street_close","position":Vector3(0.0,0.775,-70.0),"yaw":0.0},
 	{"suffix":"03_main_gate_horizon","position":Vector3(0.0,0.775,-125.0),"yaw":0.0},
 	{"suffix":"04_outer_world","position":Vector3(0.0,0.775,-174.0),"yaw":0.0},
-	{"suffix":"05_orbit_90","position":Vector3(0.0,0.775,0.0),"yaw":PI * 0.5}
+	{"suffix":"05_aerial_oblique","position":Vector3(0.0,0.775,0.0),"yaw":PI * 0.5,"distance":72.0,"pitch":58.0}
 ]
 
 func _initialize() -> void:
@@ -153,7 +153,9 @@ func _capture() -> void:
 				_fail("settlement failed to load for visual proof: " + city_id)
 				return
 		var loaded_world := world_manager.get("current_world") as Node3D
-		var first_building := loaded_world.find_child(city_id + "_KenneyBuilding_00", true, false)
+		var first_building := loaded_world.find_child(city_id + "_ChineseImperialBuilding_00", true, false)
+		if first_building == null:
+			first_building = loaded_world.find_child(city_id + "_KenneyBuilding_00", true, false)
 		if first_building == null:
 			first_building = loaded_world.find_child(city_id + "_DetailedBuilding_00", true, false)
 		if first_building == null:
@@ -176,9 +178,11 @@ func _capture() -> void:
 			var shot_position: Vector3 = shot.position
 			player.global_position = shot_position
 			camera_rig.global_position = player.global_position
-			camera_rig.set("_target_distance", CLASSIC_DISTANCE)
-			camera_rig.set("_current_distance", CLASSIC_DISTANCE)
-			camera_rig.set("pitch_degrees", CLASSIC_PITCH)
+			var shot_distance := float(shot.get("distance", CLASSIC_DISTANCE))
+			var shot_pitch := float(shot.get("pitch", CLASSIC_PITCH))
+			camera_rig.set("_target_distance", shot_distance)
+			camera_rig.set("_current_distance", shot_distance)
+			camera_rig.set("pitch_degrees", shot_pitch)
 			camera_rig.set("_yaw", float(shot.yaw))
 			camera_rig.call("_apply_orbit")
 			await process_frame
@@ -191,7 +195,7 @@ func _capture() -> void:
 		# Dedicated wide panorama: show the new architecture together with the surrounding 800x800 landform.
 		camera.fov = 58.0
 		camera_rig.set("orbit_distance", 180.0)
-		camera_rig.set("pitch_degrees", 48.0)
+		camera_rig.set("pitch_degrees", 68.0)
 		camera_rig.set("_target_distance", 180.0)
 		camera_rig.set("_current_distance", 180.0)
 		camera_rig.call("_apply_orbit")
@@ -203,5 +207,5 @@ func _capture() -> void:
 			return
 		camera.fov = CLASSIC_FOV
 		print("CITY_5_VIEW_AND_PHASE3A_PANORAMA_PASS: " + city_id + " panorama=1")
-	print("VISUAL_PROOF_PASS: 30 real runtime frames + six panoramas; five close Conquer-isometric views per city; HUD visible in all 36 frames.")
+	print("VISUAL_PROOF_PASS: 30 real runtime frames + six panoramas; four close Conquer-isometric views plus one aerial oblique per city; six high-angle panoramas; HUD visible in all 36 frames.")
 	quit(0)
