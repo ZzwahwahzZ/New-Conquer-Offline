@@ -37,7 +37,7 @@ static func _build_open_plaza(parent: Node3D, city: String, p: Dictionary, heigh
  stone.uv1_scale = Vector3(3.9,3.9,1.0)
  for z in range(-3,4):
   for x in range(-3,4):
-   var tile := _box(plaza, "DiamondStonePaver_%02d_%02d" % [x+3,z+3], Vector3(float(x)*7.0,0.055,float(z)*7.0), Vector3(6.85,0.11,6.85), stone, 1.0)
+   var tile := _box(plaza, "DiamondStonePaver_%02d_%02d" % [x+3,z+3], Vector3(float(x)*7.0,0.055,float(z)*7.0), Vector3(4.8,0.11,4.8), stone, 1.0)
    tile.rotation_degrees.y = 45.0
  _add_plaza_statue(plaza)
 
