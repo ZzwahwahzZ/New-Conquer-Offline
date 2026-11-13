@@ -71,7 +71,7 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
  var slot := Node3D.new()
  slot.name = city + "_24BuildingUrbanFabric"
  parent.add_child(slot)
- var coordinates := [-92.0,-56.0,-20.0,20.0,56.0,92.0]
+ var coordinates := [-128.0,-92.0,-56.0,56.0,92.0,128.0]
  var index := 0
  for value in coordinates:
   for side in [-1.0,1.0]:
