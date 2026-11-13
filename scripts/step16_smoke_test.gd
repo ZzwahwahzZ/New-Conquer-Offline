@@ -19,6 +19,16 @@ func _count_group_recursive(node: Node, group_name: String) -> int:
 		total += _count_group_recursive(child, group_name)
 	return total
 
+func _count_city_buildings_outside_core(node: Node) -> int:
+	var total := 0
+	if node is Node3D and node.is_in_group("city_building"):
+		var p := (node as Node3D).global_position
+		if absf(p.x) > 80.0 or absf(p.z) > 80.0:
+			total += 1
+	for child in node.get_children():
+		total += _count_city_buildings_outside_core(child)
+	return total
+
 func _count_named_gates(city: Node) -> int:
 	var total := 0
 	for direction in ["North", "East", "South", "West"]:
@@ -71,7 +81,8 @@ func _run() -> void:
 		var imported_building_count := _count_group_recursive(city, "imported_city_building")
 		var gate_count := _count_group_recursive(city, "cardinal_gates")
 		var guardian_count := _count_group_recursive(city, "city_guardians")
-		if not _require(building_count >= 70 and imported_building_count >= 70, "%s generated %d buildings (%d imported 3D models); minimum 70 real imported buildings" % [city_id, building_count, imported_building_count]):
+		var outside_core_count := _count_city_buildings_outside_core(city)
+		if not _require(building_count >= 80 and building_count <= 100 and imported_building_count >= 80 and imported_building_count <= 100 and outside_core_count == 0, "%s generated %d buildings (%d imported); outside 160m core=%d; expected 80-100 entirely inside +/-80m" % [city_id, building_count, imported_building_count, outside_core_count]):
 			return
 		if not _require(gate_count == 4 and _count_named_gates(city) == 4, "%s has %d/4 cardinal gates" % [city_id, gate_count]):
 			return
@@ -85,5 +96,5 @@ func _run() -> void:
 		city.queue_free()
 		await process_frame
 
-	print("STEP16_PHASE3A_CITY_CONTRACT_PASS: six cities; >=70 buildings, 4 cardinal gates and 8 guardians per city; runtime build_city invocation verified; Mobile renderer and Autoload order preserved.")
+	print("STEP16_PHASE3A_CITY_CONTRACT_PASS: six cities; 80-100 buildings inside each 160m core, 4 cardinal gates and 8 guardians per city; runtime build_city invocation verified; Mobile renderer and Autoload order preserved.")
 	quit(0)
