@@ -549,6 +549,7 @@ static func _add_simplified_building_collision(parent: Node3D, building: Node3D)
  body.add_child(collision)
  parent.add_child(body)
  body.global_position = bounds.get_center()
+ body.global_rotation = Vector3.ZERO
 
 static func _add_palace_platform_and_stairs(root: Node3D, width: float, depth: float) -> void:
  var paving := PBRMaterialLibrary.build_imperial_paving_material()
