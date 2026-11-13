@@ -167,6 +167,15 @@ func _run() -> void:
 			for building_index in range(3):
 				if not _check(city.find_child("TwinCity_ChineseImperialBuilding_%02d" % building_index, true, false) != null, "TwinCity Chinese imperial building GLB missing: " + str(building_index)):
 					return
+			var expected_chinese_positions := [Vector3(-76.0,0.0,-30.0), Vector3(-96.0,0.0,30.0), Vector3(-76.0,0.0,30.0)]
+			var expected_chinese_sizes := [Vector3(14.50758,6.5,14.7486), Vector3(12.57405,6.5,13.47742), Vector3(10.5768,6.5,11.38082)]
+			for building_index in range(3):
+				var chinese_building := city.find_child("TwinCity_ChineseImperialBuilding_%02d" % building_index, true, false) as Node3D
+				if not _check(chinese_building.global_position.distance_to(expected_chinese_positions[building_index]) <= 0.01, "TwinCity Chinese replacement shifted original building coordinate: " + str(building_index)):
+					return
+				var chinese_bounds := _renderable_world_bounds(chinese_building)
+				if not _check(chinese_bounds.size.distance_to(expected_chinese_sizes[building_index]) <= 0.25, "TwinCity Chinese replacement changed original building bounding box: " + str(building_index) + " actual=" + str(chinese_bounds.size) + " expected=" + str(expected_chinese_sizes[building_index])):
+					return
 		if city_name == "Waterlands":
 			if not _check(city.find_child("Waterlands_ArchipelagoWaterSurface", true, false) is MeshInstance3D and city.find_child("ApeCityCanal_East", true, false) is MeshInstance3D and city.find_child("ApeCityCanal_West", true, false) is MeshInstance3D, "Waterlands archipelago water/island channels are missing"):
 				return

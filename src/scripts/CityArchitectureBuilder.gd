@@ -82,7 +82,7 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
   for side in [-1.0,1.0]:
    for axis in [0,1]:
     var position := Vector3(value,0.0,side*30.0) if axis == 0 else Vector3(side*30.0,0.0,value)
-    if city == "TwinCity" and index < 3:
+    if city == "TwinCity" and index in [6, 8, 10]:
      index += 1
      continue
     var imported := _instantiate_quaternius_building(slot, city, index, position, height_image)

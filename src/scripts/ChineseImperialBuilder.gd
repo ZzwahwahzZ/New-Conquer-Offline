@@ -6,9 +6,9 @@ static func build(parent: Node3D, city: String, _size: float) -> void:
  var root := Node3D.new()
  root.name = "TwinCity_ChineseImperialArchitecture"
  parent.add_child(root)
- _add_model(root,"imperial_china_palace_and_garden.glb","TwinCity_ChineseImperialBuilding_00",Vector3(-112.0,0.30,-30.0),Vector3.ONE*0.5,false)
- _add_model(root,"ceremonial_hall.glb","TwinCity_ChineseImperialBuilding_01",Vector3(-30.0,0.0,-112.0),Vector3.ONE*0.9,true)
- _add_model(root,"water_pavilion.glb","TwinCity_ChineseImperialBuilding_02",Vector3(-112.0,0.0,30.0),Vector3.ONE,true)
+ _add_model(root,"imperial_china_palace_and_garden.glb","TwinCity_ChineseImperialBuilding_00",Vector3(-76.0,0.0,-30.0),Vector3(0.4533619,0.4958047,0.4527178),false)
+ _add_model(root,"ceremonial_hall.glb","TwinCity_ChineseImperialBuilding_01",Vector3(-96.0,0.0,30.0),Vector3(0.7761765,0.5195843,1.0210167),true)
+ _add_model(root,"water_pavilion.glb","TwinCity_ChineseImperialBuilding_02",Vector3(-76.0,0.0,30.0),Vector3(1.6025455,0.8441558,1.7243667),true)
  _replace_city_gates(parent)
 static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vector3,model_scale: Vector3,collision_all: bool) -> Node3D:
  var path := ROOT+filename
@@ -42,9 +42,9 @@ static func _replace_city_gates(parent: Node3D) -> void:
    push_error("TwinCity gate anchor missing: "+direction)
    continue
   for child in gate.get_children():
-   if child.name in ["KenneyGateModel","KenneyTowerModel_Left","KenneyTowerModel_Right","GatehouseTower","GateTowerCrenellation","GateArchLintel","ArchColumn"]:
+   if child.name in ["KenneyGateModel","GatehouseTower","GateTowerCrenellation","GateArchLintel","ArchColumn"]:
     child.visible=false
-  _add_model(gate,"gate_tower.glb","TwinCity_ChineseGateTower_"+direction,Vector3(0.0,0.0,-148.0),Vector3.ONE,true)
+  _add_model(gate,"gate_tower.glb","TwinCity_ChineseGateTower_"+direction,Vector3(0.0,0.0,-148.0),Vector3.ONE*1.8,true)
 static func _add_model_collisions(root: Node,all_meshes: bool) -> void:
  for node in _all_nodes(root):
   if not node is MeshInstance3D: continue
