@@ -190,7 +190,7 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
    if absf(x) < 8.0 or absf(z) < 8.0:
     index += 1
     continue
-   var building := _instantiate_quaternius_building(slot,city,index,Vector3(x,0.0,z),height_image,false,p)
+   var building := _instantiate_wuxia_building(slot,city,index,Vector3(x,0.0,z),height_image,false,p)
    if building == null:
     push_error("CITY_IMPORTED_BUILDING_MISSING: %s index=%d; refusing primitive placeholder geometry" % [city,index])
    else:
