@@ -67,7 +67,6 @@ def discover_quaternius(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
     packs = [
         {"slug":"simple-buildings-pack","page":"https://quaternius.com/packs/simplebuildings.html","creator":"Quaternius"},
         {"slug":"buildings-pack","page":"https://quaternius.com/packs/buildings.html","creator":"Quaternius"},
-        {"slug":"medieval-village-pack","page":"https://quaternius.com/packs/medievalvillage.html","creator":"Quaternius"},
         {"slug":"ultimate-nature-pack","page":"https://quaternius.com/packs/ultimatenature.html","creator":"Quaternius"},
         {"slug":"stylized-nature-megakit-official","page":"https://quaternius.com/packs/stylizednaturemegakit.html","creator":"Quaternius"},
     ]
@@ -94,9 +93,9 @@ def discover_quaternius(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
             if not candidates:
                 raise ValueError("No direct downloadable model file or public Drive folder found")
             for index,(url,label) in enumerate(candidates[:2]):
-                rec={"id":"quaternius-"+pack["slug"]+("-"+str(index+1) if index else ""),"name":label or pack["slug"],"source":"Quaternius","source_url":pack["page"],"license":"CC0 1.0 Universal","authors":{"creator":pack["creator"]},"matches":[("architecture","house shop")] if "building" in pack["slug"] or "village" in pack["slug"] else [("nature",pack["slug"])],"download_url":url,"candidate_only":("building" in pack["slug"] or "village" in pack["slug"])}
+                rec={"id":"quaternius-"+pack["slug"]+("-"+str(index+1) if index else ""),"name":label or pack["slug"],"source":"Quaternius","source_url":pack["page"],"license":"CC0 1.0 Universal","authors":{"creator":pack["creator"]},"matches":[("architecture","house shop")] if "building" in pack["slug"] or "village" in pack["slug"] else [("nature",pack["slug"])],"download_url":url,"pack":pack["slug"],"candidate_only":("building" in pack["slug"] or "village" in pack["slug"])}
                 DISC.append(rec)
-                ext=Path(urlparse(url).path).suffix.lower()
+                ext=Path(urlparse(url).path).suffix.lower() or (".zip" if "drive.google.com" in url else "")
                 path=fetch(url,RAW/"quaternius"/(safe(rec["id"])+ext))
                 DOWN.append({**rec,"raw":str(path),"download_sha256":sha(path)})
         except Exception as exc:

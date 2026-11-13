@@ -78,6 +78,7 @@ jobs:
             assets/wuxia_imperial_pack/ASSET_AUDIT_REPORT.md
             assets/wuxia_imperial_pack/manifest.json
             assets/wuxia_imperial_pack/imperial_approved_assets.json
+            assets/wuxia_imperial_pack/candidates/
             CREDITS.md
           if-no-files-found: warn
           retention-days: 30

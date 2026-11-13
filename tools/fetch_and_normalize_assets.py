@@ -159,7 +159,7 @@ def identity_text(record, filename=""):
 
 def is_architecture_candidate(record, filename=""):
  text=identity_text(record,filename)
- return bool(re.search(r"\b(?:house|homes?|shop|shopfront|storefront|market stall|teahouse|tea house|inn|pavilion|village building|building)\b",text,re.I))
+ return bool(re.search(r"\b(?:house|homes?|shops?|shopfront|storefront|market stall|teahouse|tea house|inn|pavilion|village building|buildings?)\b",text,re.I))
 
 def rejected_asset(record):
  text=record_text(record)
@@ -327,7 +327,7 @@ def builddocs(blenderver):
  counts={k:len(v) for k,v in grouped.items()}
  manifest={"schema_version":"1.0","generated_at_utc":datetime.now(timezone.utc).isoformat(),"blender_version":blenderver,"assets":entries}
  (OUT/"manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
- approved={"schema_version":"1.0","generated_at_utc":manifest["generated_at_utc"],"units":"model dimensions are measured GLB bounding boxes in meters; PBR textures have no physical dimensions","categories":{k:{"count":len(v),"assets":v} for k,v in grouped.items()},"total_approved_files":len(entries),"supplemental_candidates":[{"asset_id":r.get("id"),"name":r.get("name"),"source":r.get("source"),"source_url":r.get("source_url"),"license":r.get("license"),"status":"candidate_only_visual_style_review_required"} for r in OK if r.get("candidate_only")]}
+ approved={"schema_version":"1.0","generated_at_utc":manifest["generated_at_utc"],"units":"model dimensions are measured GLB bounding boxes in meters; PBR textures have no physical dimensions","categories":{k:{"count":len(v),"assets":v} for k,v in grouped.items()},"total_approved_files":len(entries),"supplemental_candidates":supplemental}
  (OUT/"imperial_approved_assets.json").write_text(json.dumps(approved,ensure_ascii=False,indent=2))
  lines=["# Wuxia Imperial Asset Audit","","- Blender: "+blenderver,"- Discovered: "+str(len(DISC)),"- Downloaded: "+str(len(DOWN)),"- Validated source assets: "+str(len(OK)),"- Approved file entries: "+str(len(entries)),"- Category counts: "+json.dumps(counts,ensure_ascii=False),"- Errors: "+str(len(ERR)),"","## Approved files"]
  lines += ["- "+x["category"]+" | "+x["file"]+" | "+x["license"]+" | "+x["source"]+" | "+str(x["dimensions_m"] or "PBR texture set") for x in entries]
