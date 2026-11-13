@@ -347,8 +347,23 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
   var fit_z := target_depth / maxf(source_bounds.size.z, 0.001)
   instance.scale *= Vector3(fit_x, fit_y, fit_z)
   print("CITY_QUATERNIUS_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " target=" + str(Vector3(target_width,target_height,target_depth)) + " final_scale=" + str(instance.scale))
- var sampled_ground := WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
- instance.position.y = sampled_ground + (0.45 if city in ["DesertLand","VolcanoLand"] else (0.6 if city == "Waterlands" else 0.0))
+ var fitted_bounds := _renderable_world_bounds(instance)
+ if fitted_bounds.size.length_squared() > 0.0001:
+  # GLB pivots are not guaranteed to sit at the footprint center or ground.
+  # Center the measured mesh bounds on its assigned block before street QA.
+  var target_center_global := parent.to_global(at)
+  var current_global := instance.global_position
+  current_global.x += target_center_global.x - fitted_bounds.get_center().x
+  current_global.z += target_center_global.z - fitted_bounds.get_center().z
+  instance.global_position = current_global
+  var centered_bounds := _renderable_world_bounds(instance)
+  var sampled_ground := WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
+  var clearance := 0.45 if city in ["DesertLand","VolcanoLand"] else (0.6 if city == "Waterlands" else 0.0)
+  var target_base_global := parent.to_global(Vector3(at.x, sampled_ground + clearance, at.z))
+  current_global = instance.global_position
+  current_global.y += target_base_global.y - centered_bounds.position.y
+  instance.global_position = current_global
+  print("CITY_BUILDING_PLACEMENT_PASS: %s index=%d center=%s base_y=%.3f" % [city,index,str(instance.global_position),target_base_global.y])
  _add_static_mesh_collisions(instance)
  instance.add_to_group("distance_cull_world")
  _set_visibility_range(instance, 360.0, 35.0)
