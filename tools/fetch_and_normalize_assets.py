@@ -193,7 +193,7 @@ def strict_filter_self_test():
   ({"id":"viking-longhouse","name":"Longhouse Gable End (Viking Age Longhouse and Longship)"},True,None),
   ({"id":"boundary-tree","name":"Boundary Tree Clump (Caravan Park and Campsite)"},True,None),
   ({"id":"dandelion","name":"Dandelion clump (Lawn Mowing Simulator Kit)"},True,None),
-  ({"id":"dandelion-safe","name":"Dandelion flower"},False,None),
+  ({"id":"dandelion-safe","name":"Dandelion flower"},False,"nature"),
   ({"id":"guardian-lion","name":"Guardian Lion Pair (Imperial China Palace and Garden)"},False,"statues_and_props"),
   ({"id":"hanging-scroll","name":"Hanging Scroll Pair (Imperial China Palace and Garden)"},False,"statues_and_props"),
   ({"id":"floor-cushion","name":"Floor Cushion Set (Imperial China Palace and Garden)"},False,"statues_and_props"),
