@@ -134,7 +134,7 @@ CATEGORY_RULES = {
  "palaces_and_temples": r"\b(?:pagoda|chinese temple|asian temple|japanese temple|korean temple|chinese palace|imperial palace|water pavilion|lotus pond pavilion|ceremonial hall)\b",
  "houses_and_shops": r"\b(?:(?:chinese|asian|japanese|traditional|wooden|hanok)\s+){1,2}(?:town|village|street\s+)?house\b|\b(?:market stall|teahouse|tea house|inn|asian shop|chinese shop)\b",
  "gates_walls_bridges": r"\b(?:moon gate|chinese gate|palace gate|gate tower|watchtower|city wall|palace wall|stone wall|fort wall|arched stone bridge|arch bridge|stone bridge|courtyard entry arch)\b",
- "statues_and_props": r"\b(?:dragon|stone lion|guardian lion|lantern|incense burner|cauldron|brazier|bronze bell|ceremonial drum|altar|throne|folding screen|scroll rack|tea set|tea table|guqin|calligraphy|parasol|banner|pennant|weapon rack|training dummy|fountain|komainu|onigawara|statue|ornament|storage chest|writing desk)\b",
+ "statues_and_props": r"\b(?:dragon|stone lion|guardian lion|lantern|incense burner|cauldron|brazier|bronze bell|ceremonial drum|altar|throne|folding screen|scroll rack|hanging scroll|floor cushion|inkstone|water dropper|tea set|tea table|guqin|calligraphy|parasol|banner|pennant|weapon rack|training dummy|fountain|komainu|onigawara|statue|ornament|storage chest|writing desk)\b",
  "nature": r"\b(?:bamboo|plum tree|willow tree|pine tree|cherry blossom|cherry tree|bonsai|lotus|peony|rockery|shrub|tree clump|blossom|reed clump|bluebell|fern clump|tussock grass|spinifex|grass clump|orchard tree|cattail|tall grass)\b",
  "pbr_materials": r"\b(?:marble|stone|tile|roof tile|wood|timber|pbr|texture)\b",
 }
@@ -189,6 +189,9 @@ def strict_filter_self_test():
   ({"id":"dandelion","name":"Dandelion clump (Lawn Mowing Simulator Kit)"},True,None),
   ({"id":"dandelion-safe","name":"Dandelion flower"},False,None),
   ({"id":"guardian-lion","name":"Guardian Lion Pair (Imperial China Palace and Garden)"},False,"statues_and_props"),
+  ({"id":"hanging-scroll","name":"Hanging Scroll Pair (Imperial China Palace and Garden)"},False,"statues_and_props"),
+  ({"id":"floor-cushion","name":"Floor Cushion Set (Imperial China Palace and Garden)"},False,"statues_and_props"),
+  ({"id":"inkstone","name":"Inkstone and Water Dropper (Imperial China Palace and Garden)"},False,"statues_and_props"),
   ({"id":"imperial-courtyard","name":"Walled palace courtyard and lotus garden (Imperial China Palace and Garden)"},False,"palaces_and_temples"),
   ({"id":"palace-gate","name":"Palace Wall Moon Gate (Imperial China Palace and Garden)"},False,"gates_walls_bridges"),
   ({"id":"bamboo","name":"Bamboo Clump (Imperial China Palace and Garden)"},False,"nature"),
