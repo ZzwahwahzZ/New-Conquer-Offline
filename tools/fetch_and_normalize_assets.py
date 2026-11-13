@@ -120,29 +120,76 @@ def blender(src,dst):
  if not dst.exists() or not meta.exists():
   raise RuntimeError("Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: "+str(dst)+" (exists="+str(dst.exists())+"), metadata: "+str(meta)+" (exists="+str(meta.exists())+"). Blender output:\n"+output[-12000:])
  return json.loads(meta.read_text())
-BLACKLIST = re.compile(r"(?<![a-z0-9])(ufo|jet|ski|safari|african|cruise|ship|boat|church|gothic|cathedral|car|modern|sci[ _-]?fi|space|robot|gun|tank)(?![a-z0-9])", re.I)
-LION = re.compile(r"(?<![a-z0-9])lion(?![a-z0-9])", re.I)
+# Match complete concepts, including source-pack context. Avoid substring traps such as
+# "dandelion" -> "lion" and "longhouse" -> "house".
+BLACKLIST = re.compile(
+ r"\b(?:ufo|jet|ski|safari|african|cruis\w*|ship|boat|yacht|marina|"
+ r"church|gothic|cathedral|car|modern|sci[ _-]?fi|space|robot|gun|tank|"
+ r"viking|longship|caravan|campsite|lawn|mowing|simulator|ocean|sea|"
+ r"jellyfish|wildlife|outback|polar|lighthouse|golf course|"
+ r"park and playground|christmas|halloween|radio telescope|"
+ r"mythic underworld|olympus|griffin airmail)\b", re.I)
+LION = re.compile(r"\blions?\b", re.I)
 CATEGORY_RULES = {
- "palaces_and_temples": r"palace|imperial|throne|temple|pagoda|shrine|pavilion|lotus pond|ceremonial hall",
- "houses_and_shops": r"chinese house|asian house|japanese house|wooden house|traditional house|house|shop|market stall|teahouse|inn",
- "gates_walls_bridges": r"moon gate|gate|wall|watchtower|tower|arched? bridge|stone bridge|bridge",
- "statues_and_props": r"dragon|stone lion|guardian lion|lantern|fountain|incense|cauldron|bronze bell|ceremonial drum|statue",
- "nature": r"bamboo|plum|willow|pine|rockery|rock|lotus|peony|bonsai|cherry blossom|shrub|tree",
- "pbr_materials": r"marble|stone|tile|roof tile|wood|timber|pbr|texture",
+ "palaces_and_temples": r"\b(?:imperial|chinese|asian|japanese|korean)\b.{0,45}\b(?:palace|temple|pagoda|shrine|pavilion|hall|gate|wall|tower)\b|\b(?:palace|temple|pagoda|shrine|water pavilion|lotus pond pavilion|ceremonial hall|moon gate)\b",
+ "houses_and_shops": r"\b(?:chinese|asian|japanese|traditional|wooden|hanok)\s+(?:town|village|street\s+)?house\b|\b(?:market stall|teahouse|tea house|inn|asian shop|chinese shop)\b",
+ "gates_walls_bridges": r"\b(?:moon gate|chinese gate|palace gate|gate tower|watchtower|city wall|palace wall|stone wall|fort wall|arched stone bridge|arch bridge|stone bridge)\b",
+ "statues_and_props": r"\b(?:dragon|stone lion|guardian lion|lantern|incense burner|cauldron|bronze bell|ceremonial drum|altar|throne|folding screen|scroll rack|tea set|guqin|calligraphy|parasol|banner|statue)\b",
+ "nature": r"\b(?:bamboo|plum tree|willow tree|pine tree|cherry blossom|cherry tree|bonsai|lotus|peony|rockery|shrub|tree clump|blossom|reed clump|bluebell|fern clump|tussock grass|spinifex|grass clump)\b",
+ "pbr_materials": r"\b(?:marble|stone|tile|roof tile|wood|timber|pbr|texture)\b",
 }
+def _flatten_text(value):
+ if isinstance(value, dict):
+  return " ".join(_flatten_text(v) for v in value.values())
+ if isinstance(value, (list, tuple, set)):
+  return " ".join(_flatten_text(v) for v in value)
+ if isinstance(value, (str, int, float)):
+  return str(value)
+ return ""
 def record_text(record):
- return re.sub(r"[_-]+", " ", " ".join(str(record.get(k, "")) for k in ("id","name","source","source_url","download_url","tags","description")) + " " + " ".join(map(str, record.get("matches", [])))).lower()
+ # Include tags, description and nested API metadata so parent-pack context is not lost.
+ fields=("id","name","title","source","source_url","download_url","tags","description",
+         "api_metadata","pack","category","filename")
+ return re.sub(r"[_-]+", " ", " ".join(_flatten_text(record.get(k, "")) for k in fields)).lower()
+def identity_text(record, filename=""):
+ # Search terms in the matches field are excluded: a broad query must never turn
+ # an unrelated object into a temple, lion statue, house, or bridge.
+ fields=("id","name","title","source_url","api_metadata","pack")
+ text=" ".join(_flatten_text(record.get(k, "")) for k in fields)
+ return re.sub(r"[_-]+", " ", text + " " + str(filename)).lower()
 def rejected_asset(record):
- text = record_text(record)
+ text=record_text(record)
  if BLACKLIST.search(text): return True
- if LION.search(text) and not re.search(r"stone lion|guardian lion", text): return True
+ if LION.search(text) and not re.search(r"\b(?:stone|guardian)\s+lions?\b", text): return True
  return False
 def asset_category(record, filename=""):
- text = record_text(record) + " " + filename.lower().replace("_"," ").replace("-"," ")
+ text=identity_text(record, filename)
  if record.get("kind") == "pbr" or record.get("source") == "ambientCG": return "pbr_materials"
  for category in ("palaces_and_temples","houses_and_shops","gates_walls_bridges","statues_and_props","nature"):
   if re.search(CATEGORY_RULES[category], text, re.I): return category
  return None
+def strict_filter_self_test():
+ cases=[
+  ({"id":"motor-cruiser","name":"Motor cruiser with flybridge (Marina and Yacht Club)"},True,None),
+  ({"id":"california-sea-lion","name":"california sea lion (Ocean Animals)"},True,None),
+  ({"id":"lions-mane","name":"lions mane jellyfish (Ocean Giants)"},True,None),
+  ({"id":"viking-longhouse","name":"Longhouse Gable End (Viking Age Longhouse and Longship)"},True,None),
+  ({"id":"boundary-tree","name":"Boundary Tree Clump (Caravan Park and Campsite)"},True,None),
+  ({"id":"dandelion","name":"Dandelion clump (Lawn Mowing Simulator Kit)"},True,None),
+  ({"id":"dandelion-safe","name":"Dandelion flower"},False,None),
+  ({"id":"guardian-lion","name":"Guardian lion pair"},False,"statues_and_props"),
+  ({"id":"imperial-temple","name":"Imperial China Palace and Garden - Chinese Temple"},False,"palaces_and_temples"),
+  ({"id":"asian-house","name":"Traditional Asian House"},False,"houses_and_shops"),
+ ]
+ failures=[]
+ for rec,should_reject,should_category in cases:
+  actual_reject=rejected_asset(rec)
+  actual_category=asset_category(rec)
+  if actual_reject!=should_reject or (should_category and actual_category!=should_category):
+   failures.append({"record":rec,"rejected":actual_reject,"category":actual_category,
+                    "expected_rejected":should_reject,"expected_category":should_category})
+ if failures: raise RuntimeError("Strict asset filter self-test failed: "+json.dumps(failures,ensure_ascii=False))
+ print("STRICT_FILTER_SELF_TEST PASS",len(cases),"cases")
 def filter_candidates():
  global DISC, DOWN
  accepted=[]
@@ -254,7 +301,17 @@ def upload(entries):
  api=HfApi(token=token)
  try: api.repo_info(HF_REPO,repo_type="dataset")
  except Exception as e: raise RuntimeError("HF_TOKEN cannot access target dataset; verify write permission: "+str(e))
- api.upload_folder(folder_path=str(OUT),repo_id=HF_REPO,repo_type="dataset",path_in_repo=PREFIX,commit_message="Upload validated Wuxia imperial asset pack")
+ api.upload_folder(folder_path=str(OUT),repo_id=HF_REPO,repo_type="dataset",path_in_repo=PREFIX,commit_message="Synchronize validated Wuxia imperial asset pack")
+ # upload_folder is additive: explicitly remove stale files, but only below this exact prefix.
+ expected_paths={PREFIX+"/"+p.relative_to(OUT).as_posix() for p in OUT.rglob("*") if p.is_file()}
+ remote_paths=set(api.list_repo_files(repo_id=HF_REPO,repo_type="dataset"))
+ stale_paths=sorted(p for p in remote_paths if p.startswith(PREFIX+"/") and p not in expected_paths)
+ if stale_paths:
+  api.delete_files(repo_id=HF_REPO,paths=stale_paths,repo_type="dataset",
+                   commit_message="Remove stale files from synchronized Wuxia imperial asset pack")
+ remaining_paths=set(api.list_repo_files(repo_id=HF_REPO,repo_type="dataset"))
+ leftovers=sorted(p for p in remaining_paths if p.startswith(PREFIX+"/") and p not in expected_paths)
+ if leftovers: raise RuntimeError("Stale files remain under Wuxia pack prefix: "+", ".join(leftovers[:30]))
  for p in [x for x in OUT.rglob("*") if x.is_file()]:
   name=PREFIX+"/"+p.relative_to(OUT).as_posix()
   remote=Path(hf_hub_download(repo_id=HF_REPO,repo_type="dataset",filename=name,token=token,force_download=True))
@@ -271,7 +328,7 @@ def upload(entries):
 def main():
  if not shutil.which(os.getenv("BLENDER_BIN","blender")): raise RuntimeError("Blender executable missing")
  ver=subprocess.check_output([os.getenv("BLENDER_BIN","blender"),"--version"],text=True).splitlines()[0]
- discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
+ strict_filter_self_test(); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
  if not entries:
   print(json.dumps({"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
   raise RuntimeError("No assets passed license and validation checks; see printed per-source diagnostics. No empty upload performed.")
