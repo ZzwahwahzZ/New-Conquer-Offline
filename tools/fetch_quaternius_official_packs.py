@@ -75,13 +75,14 @@ for p in sorted(x for x in src.rglob("*") if x.is_file() and x.suffix.lower() in
   corners=[o.matrix_world@Vector(c) for o in meshes for c in o.bound_box]
   mn=Vector((min(v.x for v in corners),min(v.y for v in corners),min(v.z for v in corners)))
   mx=Vector((max(v.x for v in corners),max(v.y for v in corners),max(v.z for v in corners)))
-  shift=Vector((-(mn.x+mx.x)/2,-mn.y,-(mn.z+mx.z)/2))
+  # Blender is Z-up; export_yup=True converts this Z_min=0 to GLB Y_min=0.
+  shift=Vector((-(mn.x+mx.x)/2,-(mn.y+mx.y)/2,-mn.z))
   for o in bpy.context.scene.objects: o.location+=shift
   bpy.context.view_layer.update()
   corners=[o.matrix_world@Vector(c) for o in meshes for c in o.bound_box]
-  y0=min(v.y for v in corners)
-  if abs(y0)>0.002: raise RuntimeError("Y_min normalization error "+str(y0))
-  dims=[max(v.x for v in corners)-min(v.x for v in corners),max(v.y for v in corners)-min(v.y for v in corners),max(v.z for v in corners)-min(v.z for v in corners)]
+  y0=min(v.z for v in corners)
+  if abs(y0)>0.002: raise RuntimeError("GLB Y_min normalization error "+str(y0))
+  dims=[max(v.x for v in corners)-min(v.x for v in corners),max(v.z for v in corners)-min(v.z for v in corners),max(v.y for v in corners)-min(v.y for v in corners)]
   rel=p.relative_to(src); pack=slug(rel.parts[0]); outdir=out/pack; outdir.mkdir(parents=True,exist_ok=True)
   name=slug(p.stem)+"_"+hashlib.sha1(str(rel).encode()).hexdigest()[:8]+".glb"; target=outdir/name
   bpy.ops.export_scene.gltf(filepath=str(target),export_format="GLB",export_apply=True,export_yup=True,export_animations=False,export_materials="EXPORT")
