@@ -309,8 +309,6 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  var candidates: Array[String] = []
  var all_models: Array[String] = []
  _collect_quaternius_models("res://assets/imperial_city_kit_v2/quaternius", all_models)
- _collect_quaternius_models("res://assets/environment/quaternius/ultimate_fantasy_rts", all_models)
- _collect_quaternius_models("res://assets/environment/quaternius/modular_medieval_buildings", all_models)
  for path in all_models:
   var file_name := path.get_file().to_lower()
   var is_house := file_name.contains("house") or file_name.contains("building") or file_name.contains("hall") or file_name.contains("temple") or file_name.contains("pavilion")
@@ -328,6 +326,7 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  if instance == null:
   return null
  instance.name = city + "_QuaterniusBuilding_%02d" % index
+ instance.set_meta("source_asset_path", selected)
  instance.add_to_group("city_building")
  instance.add_to_group("imported_city_building")
  instance.position = at
