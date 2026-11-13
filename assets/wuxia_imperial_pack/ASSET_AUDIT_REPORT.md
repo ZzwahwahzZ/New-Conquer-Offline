@@ -1,12 +1,12 @@
 # Wuxia Imperial Asset Audit
 
 - Blender: Blender 4.3.2
-- Discovered: 59
-- Downloaded: 59
+- Discovered: 62
+- Downloaded: 62
 - Validated source assets: 52
 - Approved file entries: 75
 - Category counts: {"palaces_and_temples": 4, "houses_and_shops": 0, "gates_walls_bridges": 4, "statues_and_props": 20, "nature": 20, "pbr_materials": 27}
-- Errors: 122
+- Errors: 123
 
 ## Approved files
 - palaces_and_temples | models/3dassets-imperial-china-palace-and-garden-walled--b51639b8-starter-scene.glb | CC0 1.0 Universal | 3DAssets.dev | [32.0, 32.600258111953735, 13.109964370727539]
@@ -86,15 +86,13 @@
 - pbr_materials | textures/Wood096/Wood096.png | CC0 1.0 | ambientCG | PBR texture set
 
 ## Errors
+- 3DAssets.dev:mushroom-farm-and-grow-rooms-lions-mane-mushroom-clust-a6feef6f (detail/download): ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
 - Quaternius:simple-buildings-pack (discover/download): 404 Client Error: Not Found for url: https://drive.usercontent.google.com/download?id=1r-FcNFxC6ziN0oI3GqZJdEkdzglFQHQH&export=download
 - Quaternius:buildings-pack (discover/download): 404 Client Error: Not Found for url: https://drive.usercontent.google.com/download?id=1uWCsV9QfnAu8u_QbwkYwOfuU3McME7CA&export=download
 - Quaternius:medieval-village-pack (discover/download): 404 Client Error: Not Found for url: https://drive.usercontent.google.com/download?id=18T92VcNldHG0ugWo1u0hSJGDLua-n7o5&export=download
 - Quaternius:ultimate-nature-pack (discover/download): 404 Client Error: Not Found for url: https://drive.usercontent.google.com/download?id=1-Kl0L_Jg8awbh0S5T-z3zxh4mVlnxTpa&export=download
 - Quaternius:stylized-nature-megakit-official (discover/download): No direct downloadable model file or public Drive folder found
 - pine_tree_01 (download): file exceeds size limit
-- 3dassets-imperial-china-palace-and-garden-floor-cushion-set-5e179f9f (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
-- 3dassets-imperial-china-palace-and-garden-hanging-scroll-pair-81f2dffc (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
-- 3dassets-imperial-china-palace-and-garden-inkstone-and-water-dr-df828331 (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - 3dassets-royal-court-and-throne-palace-palace-audience-house-55f0cb24 (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - 3dassets-royal-court-and-throne-palace-palace-lantern-post-6a52be2f (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - 3dassets-beach-surf-and-paddle-kit-recreational-jet-ski-a61d9936 (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
@@ -113,7 +111,6 @@
 - 3dassets-feudal-japan-castle-town-komainu-guardian-pair-aedbfa41 (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - 3dassets-savanna-wildlife-lion-cub-c825e39f (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - 3dassets-ocean-giants-kit-lions-mane-jellyfish-71cdb2df (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
-- 3dassets-mushroom-farm-and-grow-rooms-lions-mane-mushroom-clust-a6feef6f (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - 3dassets-griffin-airmail-roost-and-posthouse-folded-wing-griffi-5fc428be (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - 3dassets-moonsteel-convergence-jade-prowler-efa4200b (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - 3dassets-feudal-japan-castle-town-ridge-ornament-onigawara-39f11cb3 (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
@@ -141,6 +138,7 @@
 - 3dassets-fantasy-mmo-city-and-townsfolk-wall-gate-tower-1cf4e6ef (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - 3dassets-viking-age-longhouse-and-longship-longhouse-gable-end-27117688 (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - 3dassets-fantasy-mmo-city-and-townsfolk-pennant-pole-27a7745f (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
+- 3dassets-fantasy-mmo-city-and-townsfolk-plaza-fountain-9b482127 (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - 3dassets-polar-tundra-and-alpine-fauna-bamboo-clump-0fce79a9 (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - 3dassets-halloween-slasher-street-cornstalk-clump-cc4c9832 (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - 3dassets-exotic-wildlife-hd-green-grass-clump-ea7fae55 (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
@@ -201,55 +199,218 @@
 - vintage_flashlight (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - weed_plant_02 (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
 - wild_rooibos_bush (strict_identity_filter): Rejected by strict Wuxia blacklist/whitelist
-- 3dassets-imperial-china-palace-and-garden-calligraphy-brush-sta-2ce8f5d6 (normalize): Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-calligraphy-brush-sta-2ce8f5d6.glb (exists=True), metadata: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-calligraphy-brush-sta-2ce8f5d6.json (exists=False). Blender output:
-20:12:18 | INFO: Data are loaded, start creating Blender stuff
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_0
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_1
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_2
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_3
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_4
-20:12:18 | INFO: glTF import finished in 0.01s
+- 3dassets-imperial-china-palace-and-garden-floor-cushion-set-5e179f9f (normalize): Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-floor-cushion-set-5e179f9f.glb (exists=True), metadata: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-floor-cushion-set-5e179f9f.json (exists=False). Blender output:
+20:18:52 | INFO: Data are loaded, start creating Blender stuff
+20:18:52 | INFO: Blender create Mesh node floor-cushion-set_0
+20:18:52 | INFO: Blender create Mesh node floor-cushion-set_1
+20:18:52 | INFO: Blender create Mesh node floor-cushion-set_2
+20:18:52 | INFO: Blender create Mesh node floor-cushion-set_3
+20:18:52 | INFO: glTF import finished in 0.01s
 INFO Draco mesh compression is available, use library at /home/runner/work/_temp/blender/4.3/python/lib/python3.11/site-packages/libextern_draco.so
-20:12:18 | INFO: Starting glTF 2.0 export
-20:12:18 | INFO: Extracting primitive: calligraphy-brush-stand_0
-20:12:18 | INFO: Primitives created: 1
-20:12:18 | INFO: Extracting primitive: calligraphy-brush-stand_1
-20:12:18 | INFO: Primitives created: 1
-20:12:18 | INFO: Extracting primitive: calligraphy-brush-stand_2
-20:12:18 | INFO: Primitives created: 1
-20:12:18 | INFO: Extracting primitive: calligraphy-brush-stand_3
-20:12:18 | INFO: Primitives created: 1
-20:12:18 | INFO: Extracting primitive: calligraphy-brush-stand_4
-20:12:18 | INFO: Primitives created: 1
-20:12:18 | INFO: Finished glTF 2.0 export in 0.017391681671142578 s
+20:18:52 | INFO: Starting glTF 2.0 export
+20:18:52 | INFO: Extracting primitive: floor-cushion-set_0
+20:18:52 | INFO: Primitives created: 1
+20:18:52 | INFO: Extracting primitive: floor-cushion-set_1
+20:18:52 | INFO: Primitives created: 1
+20:18:52 | INFO: Extracting primitive: floor-cushion-set_2
+20:18:52 | INFO: Primitives created: 1
+20:18:52 | INFO: Extracting primitive: floor-cushion-set_3
+20:18:52 | INFO: Primitives created: 1
+20:18:52 | INFO: Finished glTF 2.0 export in 0.015276670455932617 s
 
-20:12:18 | INFO: Data are loaded, start creating Blender stuff
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_0
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_1
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_2
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_3
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_4
-20:12:18 | INFO: glTF import finished in 0.01s
-20:12:18 | INFO: Starting glTF 2.0 export
-20:12:18 | INFO: Extracting primitive: calligraphy-brush-stand_0
-20:12:18 | INFO: Primitives created: 1
-20:12:18 | INFO: Extracting primitive: calligraphy-brush-stand_1
-20:12:18 | INFO: Primitives created: 1
-20:12:18 | INFO: Extracting primitive: calligraphy-brush-stand_2
-20:12:18 | INFO: Primitives created: 1
-20:12:18 | INFO: Extracting primitive: calligraphy-brush-stand_3
-20:12:18 | INFO: Primitives created: 1
-20:12:18 | INFO: Extracting primitive: calligraphy-brush-stand_4
-20:12:18 | INFO: Primitives created: 1
-20:12:18 | INFO: Finished glTF 2.0 export in 0.016795635223388672 s
+20:18:52 | INFO: Data are loaded, start creating Blender stuff
+20:18:52 | INFO: Blender create Mesh node floor-cushion-set_0
+20:18:52 | INFO: Blender create Mesh node floor-cushion-set_1
+20:18:52 | INFO: Blender create Mesh node floor-cushion-set_2
+20:18:52 | INFO: Blender create Mesh node floor-cushion-set_3
+20:18:52 | INFO: glTF import finished in 0.01s
+20:18:52 | INFO: Starting glTF 2.0 export
+20:18:52 | INFO: Extracting primitive: floor-cushion-set_0
+20:18:52 | INFO: Primitives created: 1
+20:18:52 | INFO: Extracting primitive: floor-cushion-set_1
+20:18:52 | INFO: Primitives created: 1
+20:18:52 | INFO: Extracting primitive: floor-cushion-set_2
+20:18:52 | INFO: Primitives created: 1
+20:18:52 | INFO: Extracting primitive: floor-cushion-set_3
+20:18:52 | INFO: Primitives created: 1
+20:18:52 | INFO: Finished glTF 2.0 export in 0.013933181762695312 s
 
-20:12:18 | INFO: Data are loaded, start creating Blender stuff
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_0
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_1
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_2
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_3
-20:12:18 | INFO: Blender create Mesh node calligraphy-brush-stand_4
-20:12:18 | INFO: glTF import finished in 0.01s
+20:18:52 | INFO: Data are loaded, start creating Blender stuff
+20:18:52 | INFO: Blender create Mesh node floor-cushion-set_0
+20:18:52 | INFO: Blender create Mesh node floor-cushion-set_1
+20:18:52 | INFO: Blender create Mesh node floor-cushion-set_2
+20:18:52 | INFO: Blender create Mesh node floor-cushion-set_3
+20:18:52 | INFO: glTF import finished in 0.01s
+Blender 4.3.2 (hash 32f5fdce0a0a built 2024-12-17 01:31:14)
+
+Blender quit
+
+Traceback (most recent call last):
+  File "/home/runner/work/New-Conquer-Offline/New-Conquer-Offline/tools/normalize_asset_blender.py", line 66, in <module>
+    if any(not math.isfinite(x) or x<0.3 or x>80.0 for x in dims): raise RuntimeError("Bounding-box dimensions outside accepted 0.3m..80m range: "+str(dims))
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Bounding-box dimensions outside accepted 0.3m..80m range: [2.167884349822998, 0.9678844213485718, 0.1600189208984375]
+
+- 3dassets-imperial-china-palace-and-garden-hanging-scroll-pair-81f2dffc (normalize): Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-hanging-scroll-pair-81f2dffc.glb (exists=True), metadata: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-hanging-scroll-pair-81f2dffc.json (exists=False). Blender output:
+20:18:58 | INFO: Data are loaded, start creating Blender stuff
+20:18:58 | INFO: Blender create Mesh node hanging-scroll-pair_0
+20:18:58 | INFO: Blender create Mesh node hanging-scroll-pair_1
+20:18:58 | INFO: Blender create Mesh node hanging-scroll-pair_2
+20:18:58 | INFO: Blender create Mesh node hanging-scroll-pair_3
+20:18:58 | INFO: Blender create Mesh node hanging-scroll-pair_4
+20:18:58 | INFO: Blender create Mesh node hanging-scroll-pair_5
+20:18:58 | INFO: glTF import finished in 0.01s
+INFO Draco mesh compression is available, use library at /home/runner/work/_temp/blender/4.3/python/lib/python3.11/site-packages/libextern_draco.so
+20:18:58 | INFO: Starting glTF 2.0 export
+20:18:58 | INFO: Extracting primitive: hanging-scroll-pair_0
+20:18:58 | INFO: Primitives created: 1
+20:18:58 | INFO: Extracting primitive: hanging-scroll-pair_1
+20:18:58 | INFO: Primitives created: 1
+20:18:58 | INFO: Extracting primitive: hanging-scroll-pair_2
+20:18:58 | INFO: Primitives created: 1
+20:18:58 | INFO: Extracting primitive: hanging-scroll-pair_3
+20:18:58 | INFO: Primitives created: 1
+20:18:58 | INFO: Extracting primitive: hanging-scroll-pair_4
+20:18:58 | INFO: Primitives created: 1
+20:18:58 | INFO: Extracting primitive: hanging-scroll-pair_5
+20:18:58 | INFO: Primitives created: 1
+20:18:58 | INFO: Finished glTF 2.0 export in 0.019214391708374023 s
+
+20:18:58 | INFO: Data are loaded, start creating Blender stuff
+20:18:58 | INFO: Blender create Mesh node hanging-scroll-pair_0
+20:18:58 | INFO: Blender create Mesh node hanging-scroll-pair_1
+20:18:58 | INFO: Blender create Mesh node hanging-scroll-pair_2
+20:18:58 | INFO: Blender create Mesh node hanging-scroll-pair_3
+20:18:58 | INFO: Blender create Mesh node hanging-scroll-pair_4
+20:18:58 | INFO: Blender create Mesh node hanging-scroll-pair_5
+20:18:58 | INFO: glTF import finished in 0.01s
+20:18:58 | INFO: Starting glTF 2.0 export
+20:18:58 | INFO: Extracting primitive: hanging-scroll-pair_0
+20:18:58 | INFO: Primitives created: 1
+20:18:58 | INFO: Extracting primitive: hanging-scroll-pair_1
+20:18:58 | INFO: Primitives created: 1
+20:18:58 | INFO: Extracting primitive: hanging-scroll-pair_2
+20:18:58 | INFO: Primitives created: 1
+20:18:58 | INFO: Extracting primitive: hanging-scroll-pair_3
+20:18:58 | INFO: Primitives created: 1
+20:18:58 | INFO: Extracting primitive: hanging-scroll-pair_4
+20:18:58 | INFO: Primitives created: 1
+20:18:58 | INFO: Extracting primitive: hanging-scroll-pair_5
+20:18:58 | INFO: Primitives created: 1
+20:18:58 | INFO: Finished glTF 2.0 export in 0.0189816951751709 s
+
+20:18:59 | INFO: Data are loaded, start creating Blender stuff
+20:18:59 | INFO: Blender create Mesh node hanging-scroll-pair_0
+20:18:59 | INFO: Blender create Mesh node hanging-scroll-pair_1
+20:18:59 | INFO: Blender create Mesh node hanging-scroll-pair_2
+20:18:59 | INFO: Blender create Mesh node hanging-scroll-pair_3
+20:18:59 | INFO: Blender create Mesh node hanging-scroll-pair_4
+20:18:59 | INFO: Blender create Mesh node hanging-scroll-pair_5
+20:18:59 | INFO: glTF import finished in 0.01s
+Blender 4.3.2 (hash 32f5fdce0a0a built 2024-12-17 01:31:14)
+
+Blender quit
+
+Traceback (most recent call last):
+  File "/home/runner/work/New-Conquer-Offline/New-Conquer-Offline/tools/normalize_asset_blender.py", line 66, in <module>
+    if any(not math.isfinite(x) or x<0.3 or x>80.0 for x in dims): raise RuntimeError("Bounding-box dimensions outside accepted 0.3m..80m range: "+str(dims))
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Bounding-box dimensions outside accepted 0.3m..80m range: [1.4999603033065796, 0.08999297767877579, 1.5199999809265137]
+
+- 3dassets-imperial-china-palace-and-garden-inkstone-and-water-dr-df828331 (normalize): Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-inkstone-and-water-dr-df828331.glb (exists=True), metadata: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-inkstone-and-water-dr-df828331.json (exists=False). Blender output:
+20:19:00 | INFO: Data are loaded, start creating Blender stuff
+20:19:00 | INFO: Blender create Mesh node inkstone-and-water-dropper_0
+20:19:00 | INFO: Blender create Mesh node inkstone-and-water-dropper_1
+20:19:00 | INFO: Blender create Mesh node inkstone-and-water-dropper_2
+20:19:00 | INFO: glTF import finished in 0.01s
+INFO Draco mesh compression is available, use library at /home/runner/work/_temp/blender/4.3/python/lib/python3.11/site-packages/libextern_draco.so
+20:19:00 | INFO: Starting glTF 2.0 export
+20:19:00 | INFO: Extracting primitive: inkstone-and-water-dropper_0
+20:19:00 | INFO: Primitives created: 1
+20:19:00 | INFO: Extracting primitive: inkstone-and-water-dropper_1
+20:19:00 | INFO: Primitives created: 1
+20:19:00 | INFO: Extracting primitive: inkstone-and-water-dropper_2
+20:19:00 | INFO: Primitives created: 1
+20:19:00 | INFO: Finished glTF 2.0 export in 0.010663270950317383 s
+
+20:19:01 | INFO: Data are loaded, start creating Blender stuff
+20:19:01 | INFO: Blender create Mesh node inkstone-and-water-dropper_0
+20:19:01 | INFO: Blender create Mesh node inkstone-and-water-dropper_1
+20:19:01 | INFO: Blender create Mesh node inkstone-and-water-dropper_2
+20:19:01 | INFO: glTF import finished in 0.00s
+20:19:01 | INFO: Starting glTF 2.0 export
+20:19:01 | INFO: Extracting primitive: inkstone-and-water-dropper_0
+20:19:01 | INFO: Primitives created: 1
+20:19:01 | INFO: Extracting primitive: inkstone-and-water-dropper_1
+20:19:01 | INFO: Primitives created: 1
+20:19:01 | INFO: Extracting primitive: inkstone-and-water-dropper_2
+20:19:01 | INFO: Primitives created: 1
+20:19:01 | INFO: Finished glTF 2.0 export in 0.010513067245483398 s
+
+20:19:01 | INFO: Data are loaded, start creating Blender stuff
+20:19:01 | INFO: Blender create Mesh node inkstone-and-water-dropper_0
+20:19:01 | INFO: Blender create Mesh node inkstone-and-water-dropper_1
+20:19:01 | INFO: Blender create Mesh node inkstone-and-water-dropper_2
+20:19:01 | INFO: glTF import finished in 0.00s
+Blender 4.3.2 (hash 32f5fdce0a0a built 2024-12-17 01:31:14)
+
+Blender quit
+
+Traceback (most recent call last):
+  File "/home/runner/work/New-Conquer-Offline/New-Conquer-Offline/tools/normalize_asset_blender.py", line 66, in <module>
+    if any(not math.isfinite(x) or x<0.3 or x>80.0 for x in dims): raise RuntimeError("Bounding-box dimensions outside accepted 0.3m..80m range: "+str(dims))
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Bounding-box dimensions outside accepted 0.3m..80m range: [0.4000000059604645, 0.2599932849407196, 0.08201248198747635]
+
+- 3dassets-imperial-china-palace-and-garden-calligraphy-brush-sta-2ce8f5d6 (normalize): Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-calligraphy-brush-sta-2ce8f5d6.glb (exists=True), metadata: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-calligraphy-brush-sta-2ce8f5d6.json (exists=False). Blender output:
+20:19:01 | INFO: Data are loaded, start creating Blender stuff
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_0
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_1
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_2
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_3
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_4
+20:19:01 | INFO: glTF import finished in 0.01s
+INFO Draco mesh compression is available, use library at /home/runner/work/_temp/blender/4.3/python/lib/python3.11/site-packages/libextern_draco.so
+20:19:01 | INFO: Starting glTF 2.0 export
+20:19:01 | INFO: Extracting primitive: calligraphy-brush-stand_0
+20:19:01 | INFO: Primitives created: 1
+20:19:01 | INFO: Extracting primitive: calligraphy-brush-stand_1
+20:19:01 | INFO: Primitives created: 1
+20:19:01 | INFO: Extracting primitive: calligraphy-brush-stand_2
+20:19:01 | INFO: Primitives created: 1
+20:19:01 | INFO: Extracting primitive: calligraphy-brush-stand_3
+20:19:01 | INFO: Primitives created: 1
+20:19:01 | INFO: Extracting primitive: calligraphy-brush-stand_4
+20:19:01 | INFO: Primitives created: 1
+20:19:01 | INFO: Finished glTF 2.0 export in 0.017939090728759766 s
+
+20:19:01 | INFO: Data are loaded, start creating Blender stuff
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_0
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_1
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_2
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_3
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_4
+20:19:01 | INFO: glTF import finished in 0.01s
+20:19:01 | INFO: Starting glTF 2.0 export
+20:19:01 | INFO: Extracting primitive: calligraphy-brush-stand_0
+20:19:01 | INFO: Primitives created: 1
+20:19:01 | INFO: Extracting primitive: calligraphy-brush-stand_1
+20:19:01 | INFO: Primitives created: 1
+20:19:01 | INFO: Extracting primitive: calligraphy-brush-stand_2
+20:19:01 | INFO: Primitives created: 1
+20:19:01 | INFO: Extracting primitive: calligraphy-brush-stand_3
+20:19:01 | INFO: Primitives created: 1
+20:19:01 | INFO: Extracting primitive: calligraphy-brush-stand_4
+20:19:01 | INFO: Primitives created: 1
+20:19:01 | INFO: Finished glTF 2.0 export in 0.018490314483642578 s
+
+20:19:01 | INFO: Data are loaded, start creating Blender stuff
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_0
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_1
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_2
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_3
+20:19:01 | INFO: Blender create Mesh node calligraphy-brush-stand_4
+20:19:01 | INFO: glTF import finished in 0.01s
 Blender 4.3.2 (hash 32f5fdce0a0a built 2024-12-17 01:31:14)
 
 Blender quit
@@ -261,33 +422,33 @@ Traceback (most recent call last):
 RuntimeError: Bounding-box dimensions outside accepted 0.3m..80m range: [0.6700000017881393, 0.21998931467533112, 0.4500054717063904]
 
 - 3dassets-imperial-china-palace-and-garden-tea-set-on-tray-b6d3f48a (normalize): Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-tea-set-on-tray-b6d3f48a.glb (exists=True), metadata: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-tea-set-on-tray-b6d3f48a.json (exists=False). Blender output:
-20:12:19 | INFO: Data are loaded, start creating Blender stuff
-20:12:19 | INFO: Blender create Mesh node tea-set-on-tray_0
-20:12:19 | INFO: Blender create Mesh node tea-set-on-tray_1
-20:12:19 | INFO: glTF import finished in 0.01s
+20:19:02 | INFO: Data are loaded, start creating Blender stuff
+20:19:02 | INFO: Blender create Mesh node tea-set-on-tray_0
+20:19:02 | INFO: Blender create Mesh node tea-set-on-tray_1
+20:19:02 | INFO: glTF import finished in 0.01s
 INFO Draco mesh compression is available, use library at /home/runner/work/_temp/blender/4.3/python/lib/python3.11/site-packages/libextern_draco.so
-20:12:19 | INFO: Starting glTF 2.0 export
-20:12:19 | INFO: Extracting primitive: tea-set-on-tray_0
-20:12:19 | INFO: Primitives created: 1
-20:12:19 | INFO: Extracting primitive: tea-set-on-tray_1
-20:12:19 | INFO: Primitives created: 1
-20:12:19 | INFO: Finished glTF 2.0 export in 0.009508848190307617 s
+20:19:02 | INFO: Starting glTF 2.0 export
+20:19:02 | INFO: Extracting primitive: tea-set-on-tray_0
+20:19:02 | INFO: Primitives created: 1
+20:19:02 | INFO: Extracting primitive: tea-set-on-tray_1
+20:19:02 | INFO: Primitives created: 1
+20:19:02 | INFO: Finished glTF 2.0 export in 0.010137557983398438 s
 
-20:12:19 | INFO: Data are loaded, start creating Blender stuff
-20:12:19 | INFO: Blender create Mesh node tea-set-on-tray_0
-20:12:19 | INFO: Blender create Mesh node tea-set-on-tray_1
-20:12:19 | INFO: glTF import finished in 0.00s
-20:12:19 | INFO: Starting glTF 2.0 export
-20:12:19 | INFO: Extracting primitive: tea-set-on-tray_0
-20:12:19 | INFO: Primitives created: 1
-20:12:19 | INFO: Extracting primitive: tea-set-on-tray_1
-20:12:19 | INFO: Primitives created: 1
-20:12:19 | INFO: Finished glTF 2.0 export in 0.009722471237182617 s
+20:19:02 | INFO: Data are loaded, start creating Blender stuff
+20:19:02 | INFO: Blender create Mesh node tea-set-on-tray_0
+20:19:02 | INFO: Blender create Mesh node tea-set-on-tray_1
+20:19:02 | INFO: glTF import finished in 0.01s
+20:19:02 | INFO: Starting glTF 2.0 export
+20:19:02 | INFO: Extracting primitive: tea-set-on-tray_0
+20:19:02 | INFO: Primitives created: 1
+20:19:02 | INFO: Extracting primitive: tea-set-on-tray_1
+20:19:02 | INFO: Primitives created: 1
+20:19:02 | INFO: Finished glTF 2.0 export in 0.009660959243774414 s
 
-20:12:19 | INFO: Data are loaded, start creating Blender stuff
-20:12:19 | INFO: Blender create Mesh node tea-set-on-tray_0
-20:12:19 | INFO: Blender create Mesh node tea-set-on-tray_1
-20:12:19 | INFO: glTF import finished in 0.00s
+20:19:02 | INFO: Data are loaded, start creating Blender stuff
+20:19:02 | INFO: Blender create Mesh node tea-set-on-tray_0
+20:19:02 | INFO: Blender create Mesh node tea-set-on-tray_1
+20:19:02 | INFO: glTF import finished in 0.00s
 Blender 4.3.2 (hash 32f5fdce0a0a built 2024-12-17 01:31:14)
 
 Blender quit
@@ -301,22 +462,22 @@ RuntimeError: Bounding-box dimensions outside accepted 0.3m..80m range: [0.62000
 - opengameart-free-bamboo-v1 (normalize): Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/opengameart-free-bamboo-v1.glb (exists=True), metadata: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/opengameart-free-bamboo-v1.json (exists=False). Blender output:
 FBX version: 7200
 INFO Draco mesh compression is available, use library at /home/runner/work/_temp/blender/4.3/python/lib/python3.11/site-packages/libextern_draco.so
-20:12:36 | INFO: Starting glTF 2.0 export
-20:12:36 | INFO: Extracting primitive: Mesh
-20:12:36 | INFO: Primitives created: 1
-20:12:36 | INFO: Finished glTF 2.0 export in 0.004572629928588867 s
+20:19:20 | INFO: Starting glTF 2.0 export
+20:19:20 | INFO: Extracting primitive: Mesh
+20:19:20 | INFO: Primitives created: 1
+20:19:20 | INFO: Finished glTF 2.0 export in 0.004710674285888672 s
 
-20:12:36 | INFO: Data are loaded, start creating Blender stuff
-20:12:36 | INFO: Blender create Mesh node Mesh
-20:12:36 | INFO: glTF import finished in 0.00s
-20:12:36 | INFO: Starting glTF 2.0 export
-20:12:36 | INFO: Extracting primitive: Mesh
-20:12:36 | INFO: Primitives created: 1
-20:12:36 | INFO: Finished glTF 2.0 export in 0.0039632320404052734 s
+20:19:20 | INFO: Data are loaded, start creating Blender stuff
+20:19:20 | INFO: Blender create Mesh node Mesh
+20:19:20 | INFO: glTF import finished in 0.00s
+20:19:20 | INFO: Starting glTF 2.0 export
+20:19:20 | INFO: Extracting primitive: Mesh
+20:19:20 | INFO: Primitives created: 1
+20:19:20 | INFO: Finished glTF 2.0 export in 0.0036966800689697266 s
 
-20:12:36 | INFO: Data are loaded, start creating Blender stuff
-20:12:36 | INFO: Blender create Mesh node Mesh
-20:12:36 | INFO: glTF import finished in 0.00s
+20:19:20 | INFO: Data are loaded, start creating Blender stuff
+20:19:20 | INFO: Blender create Mesh node Mesh
+20:19:20 | INFO: glTF import finished in 0.00s
 Blender 4.3.2 (hash 32f5fdce0a0a built 2024-12-17 01:31:14)
 
 Blender quit
@@ -329,235 +490,235 @@ RuntimeError: Bounding-box dimensions outside accepted 0.3m..80m range: [91.7554
 
 - shrub_01 (normalize): Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/shrub_01.glb (exists=True), metadata: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/shrub_01.json (exists=False). Blender output:
 NFO: Starting glTF 2.0 export
-20:12:37 | INFO: Extracting primitive: Circle.003
-20:12:37 | WARNING: Image '<bpy_struct, Image("shrub_01_alpha.png") at 0x7f8a9ba21020>' has no size and cannot be exported.
-20:12:37 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
-20:12:37 | WARNING: Image '<bpy_struct, Image("shrub_01_rough.png") at 0x7f8a9ba22c20>' has no size and cannot be exported.
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.005
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.006
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.007
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.010
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.019
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.001
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.036
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.048
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.008
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.009
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.011
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.012
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.014
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.020
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.050
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.052
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.054
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.022
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.023
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.024
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.025
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.026
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.027
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.060
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.061
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.062
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.028
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.029
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.030
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.031
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.032
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.033
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.002
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.004
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.013
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Finished glTF 2.0 export in 0.33736705780029297 s
+20:19:21 | INFO: Extracting primitive: Circle.003
+20:19:21 | WARNING: Image '<bpy_struct, Image("shrub_01_alpha.png") at 0x7f4cd9c21020>' has no size and cannot be exported.
+20:19:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+20:19:21 | WARNING: Image '<bpy_struct, Image("shrub_01_rough.png") at 0x7f4cd9c22c20>' has no size and cannot be exported.
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.005
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.006
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.007
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.010
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.019
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.001
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.036
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.048
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.008
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.009
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.011
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.012
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.014
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.020
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.050
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.052
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.054
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.022
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.023
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.024
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.025
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.026
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.027
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.060
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.061
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.062
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.028
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.029
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.030
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.031
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.032
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.033
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.002
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.004
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.013
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Finished glTF 2.0 export in 0.34015464782714844 s
 
-20:12:37 | INFO: Data are loaded, start creating Blender stuff
-20:12:37 | INFO: Blender create Mesh node Circle.003
-20:12:37 | INFO: Blender create Mesh node Circle.005
-20:12:37 | INFO: Blender create Mesh node Circle.006
-20:12:37 | INFO: Blender create Mesh node Circle.007
-20:12:37 | INFO: Blender create Mesh node Circle.010
-20:12:37 | INFO: Blender create Mesh node Circle.019
-20:12:37 | INFO: Blender create Mesh node Circle.001
-20:12:37 | INFO: Blender create Mesh node Circle.036
-20:12:37 | INFO: Blender create Mesh node Circle.048
-20:12:37 | INFO: Blender create Mesh node Circle.008
-20:12:37 | INFO: Blender create Mesh node Circle.009
-20:12:37 | INFO: Blender create Mesh node Circle.011
-20:12:37 | INFO: Blender create Mesh node Circle.012
-20:12:37 | INFO: Blender create Mesh node Circle.014
-20:12:37 | INFO: Blender create Mesh node Circle.020
-20:12:37 | INFO: Blender create Mesh node Circle.050
-20:12:37 | INFO: Blender create Mesh node Circle.052
-20:12:37 | INFO: Blender create Mesh node Circle.054
-20:12:37 | INFO: Blender create Mesh node Circle.022
-20:12:37 | INFO: Blender create Mesh node Circle.023
-20:12:37 | INFO: Blender create Mesh node Circle.024
-20:12:37 | INFO: Blender create Mesh node Circle.025
-20:12:37 | INFO: Blender create Mesh node Circle.026
-20:12:37 | INFO: Blender create Mesh node Circle.027
-20:12:37 | INFO: Blender create Mesh node Circle.060
-20:12:37 | INFO: Blender create Mesh node Circle.061
-20:12:37 | INFO: Blender create Mesh node Circle.062
-20:12:37 | INFO: Blender create Mesh node Circle.028
-20:12:37 | INFO: Blender create Mesh node Circle.029
-20:12:37 | INFO: Blender create Mesh node Circle.030
-20:12:37 | INFO: Blender create Mesh node Circle.031
-20:12:37 | INFO: Blender create Mesh node Circle.032
-20:12:37 | INFO: Blender create Mesh node Circle.033
-20:12:37 | INFO: Blender create Mesh node Circle.002
-20:12:37 | INFO: Blender create Mesh node Circle.004
-20:12:37 | INFO: Blender create Mesh node Circle.013
-20:12:37 | INFO: glTF import finished in 0.33s
-20:12:37 | INFO: Starting glTF 2.0 export
-20:12:37 | INFO: Extracting primitive: Circle.003
-20:12:37 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.005
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.006
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.007
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.010
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.019
-20:12:37 | INFO: Primitives created: 1
-20:12:37 | INFO: Extracting primitive: Circle.001
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.036
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.048
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.008
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.009
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.011
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.012
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.014
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.020
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.050
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.052
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.054
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.022
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.023
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.024
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.025
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.026
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.027
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.060
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.061
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.062
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.028
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.029
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.030
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.031
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.032
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.033
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.002
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.004
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Extracting primitive: Circle.013
-20:12:38 | INFO: Primitives created: 1
-20:12:38 | INFO: Finished glTF 2.0 export in 0.38667964935302734 s
+20:19:21 | INFO: Data are loaded, start creating Blender stuff
+20:19:21 | INFO: Blender create Mesh node Circle.003
+20:19:21 | INFO: Blender create Mesh node Circle.005
+20:19:21 | INFO: Blender create Mesh node Circle.006
+20:19:21 | INFO: Blender create Mesh node Circle.007
+20:19:21 | INFO: Blender create Mesh node Circle.010
+20:19:21 | INFO: Blender create Mesh node Circle.019
+20:19:21 | INFO: Blender create Mesh node Circle.001
+20:19:21 | INFO: Blender create Mesh node Circle.036
+20:19:21 | INFO: Blender create Mesh node Circle.048
+20:19:21 | INFO: Blender create Mesh node Circle.008
+20:19:21 | INFO: Blender create Mesh node Circle.009
+20:19:21 | INFO: Blender create Mesh node Circle.011
+20:19:21 | INFO: Blender create Mesh node Circle.012
+20:19:21 | INFO: Blender create Mesh node Circle.014
+20:19:21 | INFO: Blender create Mesh node Circle.020
+20:19:21 | INFO: Blender create Mesh node Circle.050
+20:19:21 | INFO: Blender create Mesh node Circle.052
+20:19:21 | INFO: Blender create Mesh node Circle.054
+20:19:21 | INFO: Blender create Mesh node Circle.022
+20:19:21 | INFO: Blender create Mesh node Circle.023
+20:19:21 | INFO: Blender create Mesh node Circle.024
+20:19:21 | INFO: Blender create Mesh node Circle.025
+20:19:21 | INFO: Blender create Mesh node Circle.026
+20:19:21 | INFO: Blender create Mesh node Circle.027
+20:19:21 | INFO: Blender create Mesh node Circle.060
+20:19:21 | INFO: Blender create Mesh node Circle.061
+20:19:21 | INFO: Blender create Mesh node Circle.062
+20:19:21 | INFO: Blender create Mesh node Circle.028
+20:19:21 | INFO: Blender create Mesh node Circle.029
+20:19:21 | INFO: Blender create Mesh node Circle.030
+20:19:21 | INFO: Blender create Mesh node Circle.031
+20:19:21 | INFO: Blender create Mesh node Circle.032
+20:19:21 | INFO: Blender create Mesh node Circle.033
+20:19:21 | INFO: Blender create Mesh node Circle.002
+20:19:21 | INFO: Blender create Mesh node Circle.004
+20:19:21 | INFO: Blender create Mesh node Circle.013
+20:19:21 | INFO: glTF import finished in 0.34s
+20:19:21 | INFO: Starting glTF 2.0 export
+20:19:21 | INFO: Extracting primitive: Circle.003
+20:19:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.005
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.006
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.007
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.010
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.019
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.001
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.036
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.048
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.008
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.009
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.011
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.012
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.014
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.020
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.050
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.052
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.054
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.022
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.023
+20:19:21 | INFO: Primitives created: 1
+20:19:21 | INFO: Extracting primitive: Circle.024
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.025
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.026
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.027
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.060
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.061
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.062
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.028
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.029
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.030
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.031
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.032
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.033
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.002
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.004
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Extracting primitive: Circle.013
+20:19:22 | INFO: Primitives created: 1
+20:19:22 | INFO: Finished glTF 2.0 export in 0.38814878463745117 s
 
-20:12:38 | INFO: Data are loaded, start creating Blender stuff
-20:12:38 | INFO: Blender create Mesh node Circle.003
-20:12:38 | INFO: Blender create Mesh node Circle.005
-20:12:38 | INFO: Blender create Mesh node Circle.006
-20:12:38 | INFO: Blender create Mesh node Circle.007
-20:12:38 | INFO: Blender create Mesh node Circle.010
-20:12:38 | INFO: Blender create Mesh node Circle.019
-20:12:38 | INFO: Blender create Mesh node Circle.001
-20:12:38 | INFO: Blender create Mesh node Circle.036
-20:12:38 | INFO: Blender create Mesh node Circle.048
-20:12:38 | INFO: Blender create Mesh node Circle.008
-20:12:38 | INFO: Blender create Mesh node Circle.009
-20:12:38 | INFO: Blender create Mesh node Circle.011
-20:12:38 | INFO: Blender create Mesh node Circle.012
-20:12:38 | INFO: Blender create Mesh node Circle.014
-20:12:38 | INFO: Blender create Mesh node Circle.020
-20:12:38 | INFO: Blender create Mesh node Circle.050
-20:12:38 | INFO: Blender create Mesh node Circle.052
-20:12:38 | INFO: Blender create Mesh node Circle.054
-20:12:38 | INFO: Blender create Mesh node Circle.022
-20:12:38 | INFO: Blender create Mesh node Circle.023
-20:12:38 | INFO: Blender create Mesh node Circle.024
-20:12:38 | INFO: Blender create Mesh node Circle.025
-20:12:38 | INFO: Blender create Mesh node Circle.026
-20:12:38 | INFO: Blender create Mesh node Circle.027
-20:12:38 | INFO: Blender create Mesh node Circle.060
-20:12:38 | INFO: Blender create Mesh node Circle.061
-20:12:38 | INFO: Blender create Mesh node Circle.062
-20:12:38 | INFO: Blender create Mesh node Circle.028
-20:12:38 | INFO: Blender create Mesh node Circle.029
-20:12:38 | INFO: Blender create Mesh node Circle.030
-20:12:38 | INFO: Blender create Mesh node Circle.031
-20:12:38 | INFO: Blender create Mesh node Circle.032
-20:12:38 | INFO: Blender create Mesh node Circle.033
-20:12:38 | INFO: Blender create Mesh node Circle.002
-20:12:38 | INFO: Blender create Mesh node Circle.004
-20:12:38 | INFO: Blender create Mesh node Circle.013
-20:12:38 | INFO: glTF import finished in 0.33s
+20:19:22 | INFO: Data are loaded, start creating Blender stuff
+20:19:22 | INFO: Blender create Mesh node Circle.003
+20:19:22 | INFO: Blender create Mesh node Circle.005
+20:19:22 | INFO: Blender create Mesh node Circle.006
+20:19:22 | INFO: Blender create Mesh node Circle.007
+20:19:22 | INFO: Blender create Mesh node Circle.010
+20:19:22 | INFO: Blender create Mesh node Circle.019
+20:19:22 | INFO: Blender create Mesh node Circle.001
+20:19:22 | INFO: Blender create Mesh node Circle.036
+20:19:22 | INFO: Blender create Mesh node Circle.048
+20:19:22 | INFO: Blender create Mesh node Circle.008
+20:19:22 | INFO: Blender create Mesh node Circle.009
+20:19:22 | INFO: Blender create Mesh node Circle.011
+20:19:22 | INFO: Blender create Mesh node Circle.012
+20:19:22 | INFO: Blender create Mesh node Circle.014
+20:19:22 | INFO: Blender create Mesh node Circle.020
+20:19:22 | INFO: Blender create Mesh node Circle.050
+20:19:22 | INFO: Blender create Mesh node Circle.052
+20:19:22 | INFO: Blender create Mesh node Circle.054
+20:19:22 | INFO: Blender create Mesh node Circle.022
+20:19:22 | INFO: Blender create Mesh node Circle.023
+20:19:22 | INFO: Blender create Mesh node Circle.024
+20:19:22 | INFO: Blender create Mesh node Circle.025
+20:19:22 | INFO: Blender create Mesh node Circle.026
+20:19:22 | INFO: Blender create Mesh node Circle.027
+20:19:22 | INFO: Blender create Mesh node Circle.060
+20:19:22 | INFO: Blender create Mesh node Circle.061
+20:19:22 | INFO: Blender create Mesh node Circle.062
+20:19:22 | INFO: Blender create Mesh node Circle.028
+20:19:22 | INFO: Blender create Mesh node Circle.029
+20:19:22 | INFO: Blender create Mesh node Circle.030
+20:19:22 | INFO: Blender create Mesh node Circle.031
+20:19:22 | INFO: Blender create Mesh node Circle.032
+20:19:22 | INFO: Blender create Mesh node Circle.033
+20:19:22 | INFO: Blender create Mesh node Circle.002
+20:19:22 | INFO: Blender create Mesh node Circle.004
+20:19:22 | INFO: Blender create Mesh node Circle.013
+20:19:22 | INFO: glTF import finished in 0.33s
 Blender 4.3.2 (hash 32f5fdce0a0a built 2024-12-17 01:31:14)
 Read blend: "/home/runner/work/New-Conquer-Offline/New-Conquer-Offline/.asset_work/raw/polyhaven/shrub_01.blend"
 
@@ -571,92 +732,92 @@ RuntimeError: Bounding-box dimensions outside accepted 0.3m..80m range: [2.58666
 
 - shrub_03 (normalize): Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/shrub_03.glb (exists=True), metadata: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/shrub_03.json (exists=False). Blender output:
 INFO Draco mesh compression is available, use library at /home/runner/work/_temp/blender/4.3/python/lib/python3.11/site-packages/libextern_draco.so
-20:12:40 | INFO: Starting glTF 2.0 export
-20:12:40 | INFO: Extracting primitive: Plane.002
-20:12:40 | WARNING: Image '<bpy_struct, Image("shrub_03_alpha.png") at 0x7f4389df1920>' has no size and cannot be exported.
-20:12:40 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
-20:12:40 | WARNING: Image '<bpy_struct, Image("shrub_03_rough.png") at 0x7f4389f29e20>' has no size and cannot be exported.
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.054
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.128
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.090
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.014
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.015
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.016
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.017
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.018
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.019
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.020
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.021
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Finished glTF 2.0 export in 0.050752878189086914 s
+20:19:24 | INFO: Starting glTF 2.0 export
+20:19:24 | INFO: Extracting primitive: Plane.002
+20:19:24 | WARNING: Image '<bpy_struct, Image("shrub_03_alpha.png") at 0x7f7a6cdf1920>' has no size and cannot be exported.
+20:19:24 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+20:19:24 | WARNING: Image '<bpy_struct, Image("shrub_03_rough.png") at 0x7f7a6cf29e20>' has no size and cannot be exported.
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.054
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.128
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.090
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.014
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.015
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.016
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.017
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.018
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.019
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.020
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.021
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Finished glTF 2.0 export in 0.0502324104309082 s
 
-20:12:40 | INFO: Data are loaded, start creating Blender stuff
-20:12:40 | INFO: Blender create Mesh node Plane.002
-20:12:40 | INFO: Blender create Mesh node Plane.054
-20:12:40 | INFO: Blender create Mesh node Plane.128
-20:12:40 | INFO: Blender create Mesh node Plane.090
-20:12:40 | INFO: Blender create Mesh node Plane.014
-20:12:40 | INFO: Blender create Mesh node Plane.015
-20:12:40 | INFO: Blender create Mesh node Plane.016
-20:12:40 | INFO: Blender create Mesh node Plane.017
-20:12:40 | INFO: Blender create Mesh node Plane.018
-20:12:40 | INFO: Blender create Mesh node Plane.019
-20:12:40 | INFO: Blender create Mesh node Plane.020
-20:12:40 | INFO: Blender create Mesh node Plane.021
-20:12:40 | INFO: glTF import finished in 0.04s
-20:12:40 | INFO: Starting glTF 2.0 export
-20:12:40 | INFO: Extracting primitive: Plane.002
-20:12:40 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.054
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.128
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.090
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.014
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.015
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.016
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.017
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.018
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.019
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.020
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Extracting primitive: Plane.021
-20:12:40 | INFO: Primitives created: 1
-20:12:40 | INFO: Finished glTF 2.0 export in 0.04516005516052246 s
+20:19:24 | INFO: Data are loaded, start creating Blender stuff
+20:19:24 | INFO: Blender create Mesh node Plane.002
+20:19:24 | INFO: Blender create Mesh node Plane.054
+20:19:24 | INFO: Blender create Mesh node Plane.128
+20:19:24 | INFO: Blender create Mesh node Plane.090
+20:19:24 | INFO: Blender create Mesh node Plane.014
+20:19:24 | INFO: Blender create Mesh node Plane.015
+20:19:24 | INFO: Blender create Mesh node Plane.016
+20:19:24 | INFO: Blender create Mesh node Plane.017
+20:19:24 | INFO: Blender create Mesh node Plane.018
+20:19:24 | INFO: Blender create Mesh node Plane.019
+20:19:24 | INFO: Blender create Mesh node Plane.020
+20:19:24 | INFO: Blender create Mesh node Plane.021
+20:19:24 | INFO: glTF import finished in 0.04s
+20:19:24 | INFO: Starting glTF 2.0 export
+20:19:24 | INFO: Extracting primitive: Plane.002
+20:19:24 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.054
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.128
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.090
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.014
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.015
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.016
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.017
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.018
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.019
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.020
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.021
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Finished glTF 2.0 export in 0.045023441314697266 s
 
-20:12:40 | INFO: Data are loaded, start creating Blender stuff
-20:12:40 | INFO: Blender create Mesh node Plane.002
-20:12:40 | INFO: Blender create Mesh node Plane.054
-20:12:40 | INFO: Blender create Mesh node Plane.128
-20:12:40 | INFO: Blender create Mesh node Plane.090
-20:12:40 | INFO: Blender create Mesh node Plane.014
-20:12:40 | INFO: Blender create Mesh node Plane.015
-20:12:40 | INFO: Blender create Mesh node Plane.016
-20:12:40 | INFO: Blender create Mesh node Plane.017
-20:12:40 | INFO: Blender create Mesh node Plane.018
-20:12:40 | INFO: Blender create Mesh node Plane.019
-20:12:40 | INFO: Blender create Mesh node Plane.020
-20:12:40 | INFO: Blender create Mesh node Plane.021
-20:12:40 | INFO: glTF import finished in 0.04s
+20:19:24 | INFO: Data are loaded, start creating Blender stuff
+20:19:24 | INFO: Blender create Mesh node Plane.002
+20:19:24 | INFO: Blender create Mesh node Plane.054
+20:19:24 | INFO: Blender create Mesh node Plane.128
+20:19:24 | INFO: Blender create Mesh node Plane.090
+20:19:24 | INFO: Blender create Mesh node Plane.014
+20:19:24 | INFO: Blender create Mesh node Plane.015
+20:19:24 | INFO: Blender create Mesh node Plane.016
+20:19:24 | INFO: Blender create Mesh node Plane.017
+20:19:24 | INFO: Blender create Mesh node Plane.018
+20:19:24 | INFO: Blender create Mesh node Plane.019
+20:19:24 | INFO: Blender create Mesh node Plane.020
+20:19:24 | INFO: Blender create Mesh node Plane.021
+20:19:24 | INFO: glTF import finished in 0.04s
 Blender 4.3.2 (hash 32f5fdce0a0a built 2024-12-17 01:31:14)
 Read blend: "/home/runner/work/New-Conquer-Offline/New-Conquer-Offline/.asset_work/raw/polyhaven/shrub_03.blend"
 
@@ -670,92 +831,92 @@ RuntimeError: Bounding-box dimensions outside accepted 0.3m..80m range: [1.38603
 
 - shrub_04 (normalize): Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/shrub_04.glb (exists=True), metadata: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/shrub_04.json (exists=False). Blender output:
 INFO Draco mesh compression is available, use library at /home/runner/work/_temp/blender/4.3/python/lib/python3.11/site-packages/libextern_draco.so
-20:12:40 | INFO: Starting glTF 2.0 export
-20:12:40 | INFO: Extracting primitive: Plane.014
-20:12:41 | WARNING: Image '<bpy_struct, Image("shrub_04_alpha.png") at 0x7fd57cc8f720>' has no size and cannot be exported.
-20:12:41 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
-20:12:41 | WARNING: Image '<bpy_struct, Image("shrub_04_rough.png") at 0x7fd57cc91320>' has no size and cannot be exported.
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.101
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.063
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.477
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.001
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.002
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.003
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.004
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.005
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.006
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.007
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.008
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Finished glTF 2.0 export in 0.08108949661254883 s
+20:19:24 | INFO: Starting glTF 2.0 export
+20:19:24 | INFO: Extracting primitive: Plane.014
+20:19:24 | WARNING: Image '<bpy_struct, Image("shrub_04_alpha.png") at 0x7fb04aa8e720>' has no size and cannot be exported.
+20:19:24 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+20:19:24 | WARNING: Image '<bpy_struct, Image("shrub_04_rough.png") at 0x7fb04aa90320>' has no size and cannot be exported.
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.101
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.063
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.477
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.001
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.002
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.003
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.004
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.005
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.006
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.007
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Extracting primitive: Plane.008
+20:19:24 | INFO: Primitives created: 1
+20:19:24 | INFO: Finished glTF 2.0 export in 0.08239388465881348 s
 
-20:12:41 | INFO: Data are loaded, start creating Blender stuff
-20:12:41 | INFO: Blender create Mesh node Plane.014
-20:12:41 | INFO: Blender create Mesh node Plane.101
-20:12:41 | INFO: Blender create Mesh node Plane.063
-20:12:41 | INFO: Blender create Mesh node Plane.477
-20:12:41 | INFO: Blender create Mesh node Plane.001
-20:12:41 | INFO: Blender create Mesh node Plane.002
-20:12:41 | INFO: Blender create Mesh node Plane.003
-20:12:41 | INFO: Blender create Mesh node Plane.004
-20:12:41 | INFO: Blender create Mesh node Plane.005
-20:12:41 | INFO: Blender create Mesh node Plane.006
-20:12:41 | INFO: Blender create Mesh node Plane.007
-20:12:41 | INFO: Blender create Mesh node Plane.008
-20:12:41 | INFO: glTF import finished in 0.06s
-20:12:41 | INFO: Starting glTF 2.0 export
-20:12:41 | INFO: Extracting primitive: Plane.014
-20:12:41 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.101
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.063
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.477
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.001
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.002
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.003
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.004
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.005
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.006
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.007
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.008
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Finished glTF 2.0 export in 0.0761709213256836 s
+20:19:25 | INFO: Data are loaded, start creating Blender stuff
+20:19:25 | INFO: Blender create Mesh node Plane.014
+20:19:25 | INFO: Blender create Mesh node Plane.101
+20:19:25 | INFO: Blender create Mesh node Plane.063
+20:19:25 | INFO: Blender create Mesh node Plane.477
+20:19:25 | INFO: Blender create Mesh node Plane.001
+20:19:25 | INFO: Blender create Mesh node Plane.002
+20:19:25 | INFO: Blender create Mesh node Plane.003
+20:19:25 | INFO: Blender create Mesh node Plane.004
+20:19:25 | INFO: Blender create Mesh node Plane.005
+20:19:25 | INFO: Blender create Mesh node Plane.006
+20:19:25 | INFO: Blender create Mesh node Plane.007
+20:19:25 | INFO: Blender create Mesh node Plane.008
+20:19:25 | INFO: glTF import finished in 0.07s
+20:19:25 | INFO: Starting glTF 2.0 export
+20:19:25 | INFO: Extracting primitive: Plane.014
+20:19:25 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.101
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.063
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.477
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.001
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.002
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.003
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.004
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.005
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.006
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.007
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.008
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Finished glTF 2.0 export in 0.08141279220581055 s
 
-20:12:41 | INFO: Data are loaded, start creating Blender stuff
-20:12:41 | INFO: Blender create Mesh node Plane.014
-20:12:41 | INFO: Blender create Mesh node Plane.101
-20:12:41 | INFO: Blender create Mesh node Plane.063
-20:12:41 | INFO: Blender create Mesh node Plane.477
-20:12:41 | INFO: Blender create Mesh node Plane.001
-20:12:41 | INFO: Blender create Mesh node Plane.002
-20:12:41 | INFO: Blender create Mesh node Plane.003
-20:12:41 | INFO: Blender create Mesh node Plane.004
-20:12:41 | INFO: Blender create Mesh node Plane.005
-20:12:41 | INFO: Blender create Mesh node Plane.006
-20:12:41 | INFO: Blender create Mesh node Plane.007
-20:12:41 | INFO: Blender create Mesh node Plane.008
-20:12:41 | INFO: glTF import finished in 0.06s
+20:19:25 | INFO: Data are loaded, start creating Blender stuff
+20:19:25 | INFO: Blender create Mesh node Plane.014
+20:19:25 | INFO: Blender create Mesh node Plane.101
+20:19:25 | INFO: Blender create Mesh node Plane.063
+20:19:25 | INFO: Blender create Mesh node Plane.477
+20:19:25 | INFO: Blender create Mesh node Plane.001
+20:19:25 | INFO: Blender create Mesh node Plane.002
+20:19:25 | INFO: Blender create Mesh node Plane.003
+20:19:25 | INFO: Blender create Mesh node Plane.004
+20:19:25 | INFO: Blender create Mesh node Plane.005
+20:19:25 | INFO: Blender create Mesh node Plane.006
+20:19:25 | INFO: Blender create Mesh node Plane.007
+20:19:25 | INFO: Blender create Mesh node Plane.008
+20:19:25 | INFO: glTF import finished in 0.07s
 Blender 4.3.2 (hash 32f5fdce0a0a built 2024-12-17 01:31:14)
 Read blend: "/home/runner/work/New-Conquer-Offline/New-Conquer-Offline/.asset_work/raw/polyhaven/shrub_04.blend"
 
@@ -769,84 +930,84 @@ RuntimeError: Bounding-box dimensions outside accepted 0.3m..80m range: [0.87099
 
 - shrub_sorrel_01 (normalize): Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/shrub_sorrel_01.glb (exists=True), metadata: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/shrub_sorrel_01.json (exists=False). Blender output:
 INFO Draco mesh compression is available, use library at /home/runner/work/_temp/blender/4.3/python/lib/python3.11/site-packages/libextern_draco.so
-20:12:41 | INFO: Starting glTF 2.0 export
-20:12:41 | INFO: Extracting primitive: Plane.016
-20:12:41 | WARNING: Image '<bpy_struct, Image("shrub_sorrel_01_rough.png") at 0x7f29d8232d20>' has no size and cannot be exported.
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.020
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.026
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.030
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.038
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.044
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.047
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.015
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.014
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.013
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.012
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Finished glTF 2.0 export in 0.028943300247192383 s
+20:19:25 | INFO: Starting glTF 2.0 export
+20:19:25 | INFO: Extracting primitive: Plane.016
+20:19:25 | WARNING: Image '<bpy_struct, Image("shrub_sorrel_01_rough.png") at 0x7f81cb432d20>' has no size and cannot be exported.
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.020
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.026
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.030
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.038
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.044
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.047
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.015
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.014
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.013
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.012
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Finished glTF 2.0 export in 0.02958059310913086 s
 
-20:12:41 | INFO: Data are loaded, start creating Blender stuff
-20:12:41 | INFO: Blender create Mesh node Plane.016
-20:12:41 | INFO: Blender create Mesh node Plane.020
-20:12:41 | INFO: Blender create Mesh node Plane.026
-20:12:41 | INFO: Blender create Mesh node Plane.030
-20:12:41 | INFO: Blender create Mesh node Plane.038
-20:12:41 | INFO: Blender create Mesh node Plane.044
-20:12:41 | INFO: Blender create Mesh node Plane.047
-20:12:41 | INFO: Blender create Mesh node Plane.015
-20:12:41 | INFO: Blender create Mesh node Plane.014
-20:12:41 | INFO: Blender create Mesh node Plane.013
-20:12:41 | INFO: Blender create Mesh node Plane.012
-20:12:41 | INFO: glTF import finished in 0.01s
-20:12:41 | INFO: Starting glTF 2.0 export
-20:12:41 | INFO: Extracting primitive: Plane.016
-20:12:41 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.020
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.026
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.030
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.038
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.044
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.047
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.015
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.014
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.013
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Extracting primitive: Plane.012
-20:12:41 | INFO: Primitives created: 1
-20:12:41 | INFO: Finished glTF 2.0 export in 0.021559953689575195 s
+20:19:25 | INFO: Data are loaded, start creating Blender stuff
+20:19:25 | INFO: Blender create Mesh node Plane.016
+20:19:25 | INFO: Blender create Mesh node Plane.020
+20:19:25 | INFO: Blender create Mesh node Plane.026
+20:19:25 | INFO: Blender create Mesh node Plane.030
+20:19:25 | INFO: Blender create Mesh node Plane.038
+20:19:25 | INFO: Blender create Mesh node Plane.044
+20:19:25 | INFO: Blender create Mesh node Plane.047
+20:19:25 | INFO: Blender create Mesh node Plane.015
+20:19:25 | INFO: Blender create Mesh node Plane.014
+20:19:25 | INFO: Blender create Mesh node Plane.013
+20:19:25 | INFO: Blender create Mesh node Plane.012
+20:19:25 | INFO: glTF import finished in 0.01s
+20:19:25 | INFO: Starting glTF 2.0 export
+20:19:25 | INFO: Extracting primitive: Plane.016
+20:19:25 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.020
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.026
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.030
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.038
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.044
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.047
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.015
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.014
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.013
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Extracting primitive: Plane.012
+20:19:25 | INFO: Primitives created: 1
+20:19:25 | INFO: Finished glTF 2.0 export in 0.022627830505371094 s
 
-20:12:42 | INFO: Data are loaded, start creating Blender stuff
-20:12:42 | INFO: Blender create Mesh node Plane.016
-20:12:42 | INFO: Blender create Mesh node Plane.020
-20:12:42 | INFO: Blender create Mesh node Plane.026
-20:12:42 | INFO: Blender create Mesh node Plane.030
-20:12:42 | INFO: Blender create Mesh node Plane.038
-20:12:42 | INFO: Blender create Mesh node Plane.044
-20:12:42 | INFO: Blender create Mesh node Plane.047
-20:12:42 | INFO: Blender create Mesh node Plane.015
-20:12:42 | INFO: Blender create Mesh node Plane.014
-20:12:42 | INFO: Blender create Mesh node Plane.013
-20:12:42 | INFO: Blender create Mesh node Plane.012
-20:12:42 | INFO: glTF import finished in 0.01s
+20:19:25 | INFO: Data are loaded, start creating Blender stuff
+20:19:25 | INFO: Blender create Mesh node Plane.016
+20:19:25 | INFO: Blender create Mesh node Plane.020
+20:19:25 | INFO: Blender create Mesh node Plane.026
+20:19:25 | INFO: Blender create Mesh node Plane.030
+20:19:25 | INFO: Blender create Mesh node Plane.038
+20:19:25 | INFO: Blender create Mesh node Plane.044
+20:19:25 | INFO: Blender create Mesh node Plane.047
+20:19:25 | INFO: Blender create Mesh node Plane.015
+20:19:25 | INFO: Blender create Mesh node Plane.014
+20:19:25 | INFO: Blender create Mesh node Plane.013
+20:19:25 | INFO: Blender create Mesh node Plane.012
+20:19:25 | INFO: glTF import finished in 0.01s
 Blender 4.3.2 (hash 32f5fdce0a0a built 2024-12-17 01:31:14)
 Read blend: "/home/runner/work/New-Conquer-Offline/New-Conquer-Offline/.asset_work/raw/polyhaven/shrub_sorrel_01.blend"
 
@@ -866,9 +1027,9 @@ RuntimeError: Bounding-box dimensions outside accepted 0.3m..80m range: [0.35209
 ## Hugging Face verification
 - Dataset: ZzwahwahzZ/clash-of-legends-terrain-assets
 - Verified files before final report update: 78
-- assets/wuxia_imperial_pack/ASSET_AUDIT_REPORT.md | 64423 bytes | SHA256 df9ef11327ebb8feb0d4ffb1a0e11eb5b09c54871c8fb495c51b72319b965a7e
-- assets/wuxia_imperial_pack/imperial_approved_assets.json | 101970 bytes | SHA256 05d8b89c770dd3216b605a4c397667b6c87c85b943a7ddae0890d4e91fd7dc14
-- assets/wuxia_imperial_pack/manifest.json | 91243 bytes | SHA256 4028678eb1239a67d696165f51978d0261a3f01f01ebd869762fc8c3f855ee88
+- assets/wuxia_imperial_pack/ASSET_AUDIT_REPORT.md | 75170 bytes | SHA256 16a9a3d29026c318a4a40893b8d432f7b41aa585e363e19c46af6dbdf59a6aa9
+- assets/wuxia_imperial_pack/imperial_approved_assets.json | 101970 bytes | SHA256 55ffa1ae91673a99fad6dda0bf082b6cbc3cf2b93c4821f34cbd12d19c511d08
+- assets/wuxia_imperial_pack/manifest.json | 91243 bytes | SHA256 23e1278bc6a9ff86c2c8d445001c234ab9311200b64f7daad4ddf7ea0a4b39c3
 - assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-walled--b51639b8-starter-scene.glb | 4266212 bytes | SHA256 a8dd1f1be87a140e7c1416d05ba35cf29a4407d4bc52904a5e8478a01a600f7e
 - assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-ceremonial-parasol-cea9c970.glb | 38588 bytes | SHA256 3aac603b04de7575b0ca07f1f5b916fe889956f205e7b1d209f1283cf8b27a0a
 - assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-guqin-on-stand-ba936ac2.glb | 55852 bytes | SHA256 393912f2e2139c162592c5353d7ac847dc733163617cd80b85b26b0e2969418a
