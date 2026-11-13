@@ -511,7 +511,7 @@ static func _build_kenney_perimeter_walls(parent: Node3D, city: String, half: fl
    var start := -half if segment < 0.0 else gap
    var finish := -gap if segment < 0.0 else half
    var length := finish - start
-   var count := maxi(1, int(ceil(length / 16.0)))
+   var count := maxi(1, int(ceil(length / 8.0)))
    piece_count += count * 2
    segment_data.append({"side":side,"horizontal":true,"start":start,"finish":finish,"count":count})
    segment_data.append({"side":side,"horizontal":false,"start":start,"finish":finish,"count":count})
