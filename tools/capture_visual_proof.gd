@@ -8,8 +8,8 @@ const CLASSIC_FOV := 45.0
 const CLASSIC_FAR := 600.0
 const CITY_IDS := ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"]
 const SHOTS := [
-	{"suffix":"01_aerial_overview","position":Vector3(0.0,0.775,0.0),"yaw":PI * 0.25,"distance":230.0,"pitch":62.0,"fov":62.0},
-	{"suffix":"02_inner_street","position":Vector3(0.0,0.775,-72.0),"yaw":0.0,"distance":48.0,"pitch":48.0,"fov":58.0}
+	{"suffix":"01_aerial_overview","position":Vector3(0.0,0.775,0.0),"yaw":PI * 0.25,"distance":230.0,"pitch":46.0,"fov":70.0},
+	{"suffix":"02_inner_street","position":Vector3(40.0,0.775,-135.0),"yaw":0.0,"distance":62.0,"pitch":28.0,"fov":70.0}
 ]
 
 func _initialize() -> void:
