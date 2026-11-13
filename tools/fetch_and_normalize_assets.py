@@ -156,7 +156,8 @@ def process():
      if t in MISSING.get(c,[]): MISSING[c].remove(t)
   except Exception as e: ERR.append({"asset":r["id"],"stage":"normalize","reason":str(e)})
 def builddocs(blenderver):
- OUT.mkdir(parents=True,exist_ok=True); entries=[]\n for category,terms in TERMS.items(): MISSING[category]=[t for t in terms if t not in COVERED.get(category,[])]
+ OUT.mkdir(parents=True,exist_ok=True); entries=[]
+ for category,terms in TERMS.items(): MISSING[category]=[t for t in terms if t not in COVERED.get(category,[])]
  for r in OK:
   paths=r.get("files") or [r["file"]]
   for f in paths:
@@ -198,7 +199,9 @@ def main():
  if not shutil.which(os.getenv("BLENDER_BIN","blender")): raise RuntimeError("Blender executable missing")
  ver=subprocess.check_output([os.getenv("BLENDER_BIN","blender"),"--version"],text=True).splitlines()[0]
  discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); process(); entries=builddocs(ver)
- if not entries:\n  print(json.dumps({"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))\n  raise RuntimeError("No assets passed license and validation checks; see printed per-source diagnostics. No empty upload performed.")
+ if not entries:
+  print(json.dumps({"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
+  raise RuntimeError("No assets passed license and validation checks; see printed per-source diagnostics. No empty upload performed.")
  upload(entries)
  print(json.dumps({"blender":ver,"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"verified_remote":VERIFIED,"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
 if __name__=="__main__": main()
