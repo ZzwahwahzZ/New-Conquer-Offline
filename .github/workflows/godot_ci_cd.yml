@@ -3,6 +3,8 @@ name: Godot 4.3 CI and Web
 on:
   push:
     branches: [main, phase3a-terrain-architecture, imperial-city-v2-official-packs]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -26,6 +28,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
 
       - name: Install Godot 4.3 runtime only (exports paused)
         shell: bash
@@ -90,7 +94,8 @@ jobs:
           git add CREDITS.md
           if ! git diff --cached --quiet; then
             git commit -m "chore: refresh Wuxia asset credits [skip ci]"
-            git push origin "HEAD:${GITHUB_REF_NAME}"
+            target_branch="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+            git push origin "HEAD:${target_branch}"
           fi
       - name: Cache Godot imported assets
         uses: actions/cache@v4
