@@ -36,24 +36,28 @@ def discover_3dassets(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                         continue
                     seen.add(slug)
                     detail = getj("https://3dassets.dev/api/v1/assets/" + str(slug))
+                    # API detail endpoint returns {"data": {...}}.
+                    detail = detail.get("data", detail) if isinstance(detail, dict) else {}
                     license_info = detail.get("license", item.get("license", {}))
                     if isinstance(license_info, dict):
                         license_id = (license_info.get("spdx") or license_info.get("id") or license_info.get("slug") or license_info.get("name") or "").lower()
                     else:
                         license_id = str(license_info).lower()
-                    if license_id and not any(x in license_id for x in ("cc0", "cc0-1.0", "creative commons zero")):
-                        raise ValueError("Asset metadata does not declare CC0: " + str(license_info))
+                    if not any(x in license_id for x in ("cc0", "cc0-1.0", "creative commons zero")):
+                        raise ValueError("Asset metadata does not explicitly declare CC0: " + str(license_info))
+                    if detail.get("status") not in (None, "published"):
+                        raise ValueError("Asset is not published: " + str(detail.get("status")))
                     cdn = detail.get("cdnUrl") or detail.get("downloadUrl") or item.get("cdnUrl") or item.get("downloadUrl")
                     if not cdn:
                         raise ValueError("Canonical asset record has no cdnUrl/downloadUrl")
                     parsed = urlparse(cdn)
                     if parsed.scheme != "https" or not parsed.netloc or not parsed.path.lower().endswith(".glb"):
                         raise ValueError("Expected direct HTTPS GLB URL; got " + str(cdn))
-                    creator = detail.get("contributor") or detail.get("creator") or detail.get("author") or item.get("contributor") or item.get("creator") or "3DAssets.dev contributor (not named in API record)"
+                    creator = detail.get("contributor") or item.get("contributor") or detail.get("creator") or detail.get("author") or item.get("creator") or "Not credited in API metadata"
                     if isinstance(creator, dict):
-                        creator = creator.get("name") or creator.get("username") or creator.get("displayName") or str(creator)
+                        creator = creator.get("name") or creator.get("username") or creator.get("displayName") or "Not credited in API metadata"
                     title = detail.get("title") or detail.get("name") or item.get("title") or item.get("name") or str(slug)
-                    rec = {"id":"3dassets-"+safe(slug),"name":title,"source":"3DAssets.dev","source_url":"https://3dassets.dev/assets/"+str(slug),"license":"CC0 1.0 Universal","authors":{"creator":str(creator)},"matches":[(category,term)],"download_url":cdn}
+                    rec = {"id":"3dassets-"+safe(slug),"name":title,"source":"3DAssets.dev","source_url":detail.get("url") or "https://3dassets.dev/assets/"+str(slug),"license":license_info.get("name", "CC0 1.0 Universal") if isinstance(license_info, dict) else "CC0 1.0 Universal","authors":{"creator":str(creator)},"matches":[(category,term)],"download_url":cdn,"api_metadata":{"status":detail.get("status"),"license_slug":license_id,"cdn_url":cdn,"size_m":(detail.get("stats") or {}).get("sizeMeters)}}
                     DISC.append(rec)
                     path = fetch(cdn, RAW/"3dassets"/(safe(slug)+".glb"))
                     DOWN.append({**rec,"raw":str(path),"download_sha256":sha(path)})
