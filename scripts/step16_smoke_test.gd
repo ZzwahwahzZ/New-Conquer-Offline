@@ -74,7 +74,7 @@ func _run() -> void:
 		return
 	if not _require(builder_source.contains("_OpenWorld_800x800") and builder_source.contains("MultiMeshInstance3D"), "open-world biome and batched foliage builder are missing"):
 		return
-	if not _require(street_source.contains("Waterlands_ReflectiveInnerHarbor_160m") and street_source.contains("Waterlands_RaisedTimberStreetNetwork_0_85m"), "Waterlands raised harbor and 0.85m promenade network are missing"):
+	if not _require(street_source.contains("Waterlands_ReflectiveInnerHarbor_160m") and street_source.contains("Waterlands_RaisedTimberStreetNetwork_0_85m") and street_source.contains("assets/wuxia_imperial_pack/architecture/arched_stone_bridge.glb"), "Waterlands raised harbor and 0.85m promenade network are missing"):
 		return
 	var terrain_source := FileAccess.get_file_as_string("res://src/scripts/WorldTerrainBuilder.gd")
 	if not _require(terrain_source.contains("assets/wuxia_imperial_pack/props_nature") and terrain_source.contains("imperial_city_tree_multimesh"), "real Wuxia willow, pine, bamboo and bush MultiMesh models are not connected"):
