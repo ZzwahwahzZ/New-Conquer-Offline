@@ -70,6 +70,7 @@ jobs:
             mv "$temp" "$asset"
             echo "GODOT_COMPATIBLE_GLB: $asset"
           done < <(find assets/environment/architecture assets/environment/biomes assets/environment/nature assets/environment/kenney -type f -name '*.glb' -print0)
+          python3 tools/kenney_asset_preflight.py
           python3 tools/audit_classify_terrain_glb.py
 
       - name: Cache official Quaternius downloads
