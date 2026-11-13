@@ -593,9 +593,10 @@ static func _build_chinese_gate_details(gate: Node3D, p: Dictionary, city: Strin
 	var door_material := _material(Color("#8f2630"),0.48)
 	# Fourteen-metre clear arch, paired timber leaves, and a two-tier tiled roof.
 	for side in [-1.0,1.0]:
-		_box(gate,"ChineseGateDoorLeaf",Vector3(side*3.15,4.55,-84.55),Vector3(6.1,9.1,0.28),door_material,1.0)
-		_box(gate,"ChineseGateDoorGoldBand",Vector3(side*3.15,6.1,-84.35),Vector3(6.0,0.16,0.08),gold,1.0)
-		_box(gate,"ChineseGateDoorVerticalTrim",Vector3(side*5.85,4.55,-84.35),Vector3(0.18,9.0,0.08),gold,1.0)
+		# The two leaves are swung open against the side towers so the main street remains visible.
+		_box(gate,"ChineseGateDoorLeaf",Vector3(side*6.75,4.55,-84.55),Vector3(0.28,9.1,6.1),door_material,1.0)
+		_box(gate,"ChineseGateDoorGoldBand",Vector3(side*6.55,6.1,-84.55),Vector3(0.08,0.16,6.0),gold,1.0)
+		_box(gate,"ChineseGateDoorVerticalTrim",Vector3(side*6.55,4.55,-81.55),Vector3(0.08,9.0,0.18),gold,1.0)
 	_box(gate,"ChineseGateRoofLower",Vector3(0,12.35,-85.0),Vector3(25.0,0.62,12.0),roof,1.0)
 	_box(gate,"ChineseGateRoofUpper",Vector3(0,13.18,-85.0),Vector3(21.0,0.48,9.0),roof,1.0)
 	_box(gate,"ChineseGateGoldenRidge",Vector3(0,13.58,-85.0),Vector3(18.0,0.22,0.52),gold,1.0)
