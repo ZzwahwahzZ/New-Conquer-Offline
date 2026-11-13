@@ -68,9 +68,10 @@ func _run() -> void:
 		await process_frame
 		await process_frame
 		var building_count := _count_group_recursive(city, "city_building")
+		var imported_building_count := _count_group_recursive(city, "imported_city_building")
 		var gate_count := _count_group_recursive(city, "cardinal_gates")
 		var guardian_count := _count_group_recursive(city, "city_guardians")
-		if not _require(building_count >= 70, "%s generated only %d grouped buildings (minimum 70)" % [city_id, building_count]):
+		if not _require(building_count >= 70 and imported_building_count >= 70, "%s generated %d buildings (%d imported 3D models); minimum 70 real imported buildings" % [city_id, building_count, imported_building_count]):
 			return
 		if not _require(gate_count == 4 and _count_named_gates(city) == 4, "%s has %d/4 cardinal gates" % [city_id, gate_count]):
 			return
@@ -80,7 +81,7 @@ func _run() -> void:
 			var gate := city.find_child(direction + "_GrandCityGate", true, false)
 			if not _require(gate != null and gate.is_in_group("cardinal_gates"), "%s %s gate missing its group" % [city_id, direction]):
 				return
-		print("STEP16_CITY_PASS: %s buildings=%d cardinal_gates=%d city_guardians=%d" % [city_id, building_count, gate_count, guardian_count])
+		print("STEP16_CITY_PASS: %s buildings=%d imported_models=%d cardinal_gates=%d city_guardians=%d" % [city_id, building_count, imported_building_count, gate_count, guardian_count])
 		city.queue_free()
 		await process_frame
 
