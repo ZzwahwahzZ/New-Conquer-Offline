@@ -141,7 +141,7 @@ static func _add_stair_guardian_lions(parent: Node3D, platform_depth: float) -> 
    var dragon := dragon_pack.instantiate() as Node3D
    if dragon != null:
     dragon.name = "ChineseImperialDragonStairGuardian"
-    dragon.position = Vector3(-6.5,0.0,platform_depth*0.5+7.5)
+    dragon.position = Vector3(9.5,0.0,platform_depth*0.5+9.0)
     dragon.scale = Vector3.ONE * 0.8
     dragon.add_to_group("imperial_dragon_statues")
     dragon.set_meta("source_asset_path",dragon_path)
