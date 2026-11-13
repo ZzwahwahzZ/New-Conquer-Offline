@@ -9,7 +9,7 @@ const CLASSIC_FAR := 600.0
 const CITY_IDS := ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"]
 const SHOTS := [
 	{"suffix":"01_aerial_overview","position":Vector3(0.0,48.0,0.0),"yaw":PI * 0.25,"distance":72.0,"pitch":42.0,"fov":68.0},
-	{"suffix":"02_inner_street","position":Vector3(0.0,3.5,-70.0),"yaw":0.0,"distance":18.0,"pitch":14.0,"fov":62.0}
+	{"suffix":"02_inner_street","position":Vector3(0.0,0.0,-87.6),"yaw":0.0,"distance":18.0,"pitch":11.2,"fov":62.0}
 ]
 
 func _initialize() -> void:
@@ -37,6 +37,16 @@ func _count_group_recursive(node: Node, group_name: String) -> int:
 	var total := 1 if node.is_in_group(group_name) else 0
 	for child in node.get_children():
 		total += _count_group_recursive(child, group_name)
+	return total
+
+func _count_city_buildings_outside_core(node: Node) -> int:
+	var total := 0
+	if node is Node3D and node.is_in_group("city_building"):
+		var p := (node as Node3D).global_position
+		if absf(p.x) > 80.0 or absf(p.z) > 80.0:
+			total += 1
+	for child in node.get_children():
+		total += _count_city_buildings_outside_core(child)
 	return total
 
 func _save_frame(file_name: String) -> bool:
@@ -160,8 +170,9 @@ func _capture() -> void:
 		var imported_building_count := _count_group_recursive(loaded_world, "imported_city_building")
 		var gate_count := _count_group_recursive(loaded_world, "cardinal_gates")
 		var guardian_count := _count_group_recursive(loaded_world, "city_guardians")
-		if building_count < 70 or imported_building_count < 70 or gate_count != 4 or guardian_count != 8:
-			_fail("%s visual proof refused: buildings=%d imported=%d gates=%d guardians=%d" % [city_id, building_count, imported_building_count, gate_count, guardian_count])
+		var outside_core_count := _count_city_buildings_outside_core(loaded_world)
+		if building_count < 80 or building_count > 100 or imported_building_count < 80 or imported_building_count > 100 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8:
+			_fail("%s visual proof refused: buildings=%d imported=%d outside_160m_core=%d gates=%d guardians=%d" % [city_id, building_count, imported_building_count, outside_core_count, gate_count, guardian_count])
 			return
 		var first_building := loaded_world.find_child(city_id + "_ChineseImperialBuilding_00", true, false)
 		if first_building == null:
