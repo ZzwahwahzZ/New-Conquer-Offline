@@ -70,6 +70,11 @@ func _run() -> void:
 		return
 	if not _require(builder_source.contains("gate.add_to_group(\"cardinal_gates\")") and builder_source.contains("guard.add_to_group(\"city_guardians\")"), "cardinal gate or guardian groups are not registered"):
 		return
+	if not _require(builder_source.contains("_build_chinese_perimeter_walls") and builder_source.contains("palace_wall_straight.glb") and builder_source.contains("palace_wall_corner.glb") and builder_source.contains("asian_market_stall.glb"), "authentic Chinese palace ramparts or market stalls are not connected"):
+		return
+	var chinese_builder_source := FileAccess.get_file_as_string("res://src/scripts/ChineseImperialBuilder.gd")
+	if not _require(chinese_builder_source.contains("_add_watchtowers") and chinese_builder_source.contains("imperial_watchtowers"), "Chinese imperial watchtowers are not connected"):
+		return
 	if not _require(builder_source.contains("ChineseImperialBuilder.build("), "Chinese imperial architectural assets are not connected"):
 		return
 	if not _require(builder_source.contains("_OpenWorld_800x800") and builder_source.contains("MultiMeshInstance3D"), "open-world biome and batched foliage builder are missing"):
@@ -104,11 +109,20 @@ func _run() -> void:
 		var lantern_light_count := _count_group_recursive(city, "imperial_city_lantern_lights")
 		var plaza_statue_count := _count_group_recursive(city, "imperial_plaza_statue")
 		var chinese_bridge_count := _count_group_recursive(city, "imperial_chinese_arch_bridge")
+		var chinese_wall_count := _count_group_recursive(city, "city_chinese_perimeter_wall")
+		var watchtower_count := _count_group_recursive(city, "imperial_watchtowers")
+		var market_stall_count := _count_group_recursive(city, "city_market_stall")
 		if not _require(building_count >= 85 and building_count <= 100 and imported_building_count >= 85 and imported_building_count <= 100 and outside_core_count == 0, "%s generated %d buildings (%d imported); outside 170m core=%d; expected 85-100 entirely inside +/-85m" % [city_id, building_count, imported_building_count, outside_core_count]):
 			return
 		if not _require(tree_instance_count == 60, "%s generated %d/60 real tree instances in MultiMesh batches" % [city_id, tree_instance_count]):
 			return
 		if not _require(lantern_light_count == 8, "%s generated %d/8 OmniLight3D lanterns" % [city_id, lantern_light_count]):
+			return
+		if not _require(chinese_wall_count >= 5, "%s generated %d/5 Chinese wall and corner sections" % [city_id, chinese_wall_count]):
+			return
+		if not _require(watchtower_count == 4, "%s generated %d/4 Chinese corner watchtowers" % [city_id, watchtower_count]):
+			return
+		if not _require(market_stall_count == 4, "%s generated %d/4 imported Asian market stalls" % [city_id, market_stall_count]):
 			return
 		if city_id in ["TwinCity","Waterlands"] and not _require(chinese_bridge_count >= 6, "%s generated %d/6 authentic arched Chinese bridges" % [city_id, chinese_bridge_count]):
 			return
