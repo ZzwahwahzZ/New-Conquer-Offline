@@ -9,7 +9,7 @@ static func build(parent: Node3D, city: String, _size: float) -> void:
  root.name = city + "_ChineseImperialArchitecture"
  parent.add_child(root)
  var central_palace_file := "chinese_pagoda.glb" if ResourceLoader.exists(ROOT+"chinese_pagoda.glb") else "ceremonial_hall.glb"
- _add_model(root,city,central_palace_file,city+"_ChineseImperialBuilding_00",Vector3(0.0,0.0,-55.0),Vector3.ONE,true)
+ _add_model(root,city,central_palace_file,city+"_ChineseImperialBuilding_00",Vector3(0.0,0.0,0.0),Vector3.ONE,true)
  _add_watchtowers(root,city)
  if city == "TwinCity":
   _add_model(root,city,"gate_tower.glb",city+"_ChineseImperialBuilding_01",Vector3(65.45,0.0,-65.45),Vector3.ONE,true)
@@ -67,8 +67,8 @@ static func _add_model(parent: Node3D,city: String,filename: String,node_name: S
  platform_root.position = Vector3(at.x, WorldTerrainBuilder.height_at(city,at.x,at.z) + 0.85, at.z)
  platform_root.rotation.y = atan2(-at.x,-at.z)
  parent.add_child(platform_root)
- var platform_width := 34.0 if filename.contains("palace") else 28.0
- var platform_depth := 32.0 if filename.contains("palace") else 25.0
+ var platform_width := 28.0
+ var platform_depth := 26.0
  var platform_size := Vector3(platform_width,4.0,platform_depth)
  var paving := PBRMaterialLibrary.build_plaza_material()
  var plinth := MeshInstance3D.new()
