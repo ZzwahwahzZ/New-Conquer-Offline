@@ -564,7 +564,7 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
   fortification.add_child(gate)
   var gate_world_point := gate.to_global(Vector3(0.0,0.0,-85.0))
   var gate_clearance := 0.45 if city in ["DesertLand","VolcanoLand"] else (0.6 if city == "Waterlands" else 0.0)
-  gate.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, gate_world_point.x, gate_world_point.z, 800.0) + gate_clearance
+  gate.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, gate_world_point.x, gate_world_point.z, 800.0) + gate_clearance - fortification.global_position.y
   var kenney_gate := _add_kenney_asset(gate, city, height_image, "castle-kit", "gate.glb", "KenneyGateModel", Vector3(0.0, 0.0, -85.0), 0.0, 2.2)
   if kenney_gate != null:
    kenney_gate.visible = false
