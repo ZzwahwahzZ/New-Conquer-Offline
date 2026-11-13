@@ -48,7 +48,7 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  CityStreetDressing.build(slot, city, size)
  if city == "Waterlands":
   _build_water_surface(slot, size)
- _build_kenney_nature_scatter(slot, city, size)
+ _build_imperial_tree_multimesh(slot, city, size)
 static func load_height_image(city: String) -> Image:
  var path: String = HEIGHTS.get(city, "")
  if path.is_empty():
@@ -180,7 +180,7 @@ static func _add_scene_mesh_collisions(root: Node) -> void:
    if mesh_node.mesh != null and mesh_node.mesh.get_rid().is_valid():
     mesh_node.create_trimesh_collision()
 
-static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: float) -> void:
+static func _build_imperial_tree_multimesh(parent: Node3D, city: String, size: float) -> void:
  var height_image: Image = load_height_image(city)
  var candidates: Array[String] = []
  _collect_kenney_nature_models("res://assets/imperial_city_kit_v2/quaternius/ultimate_nature", candidates)
@@ -189,17 +189,6 @@ static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: flo
   var label := path.get_file().to_lower()
   if (label.contains("tree") or label.contains("pine") or label.contains("willow") or label.contains("palm") or label.contains("bamboo")) and not (label.contains("stump") or label.contains("log") or label.contains("trunk")):
    tree_candidates.append(path)
- if tree_candidates.is_empty():
-  var legacy_roots := [
-   "res://assets/environment/kenney/nature-kit/Models/GLTF format",
-   "res://assets/environment/kenney/nature-kit/Models/GLB format"
-  ]
-  for root_path in legacy_roots:
-   _collect_kenney_nature_models(root_path, candidates)
-  for path in candidates:
-   var label := path.get_file().to_lower()
-   if label.contains("tree") and not (label.contains("stump") or label.contains("log") or label.contains("trunk")):
-    tree_candidates.append(path)
  if tree_candidates.is_empty():
   push_error("IMPERIAL_CITY_TREE_FAIL: no real tree GLB models found for " + city)
   return
@@ -246,6 +235,7 @@ static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: flo
   var node := MultiMeshInstance3D.new()
   node.name = city + "_ImperialTree_" + str(species_index) + "_MultiMesh"
   node.multimesh = multi
+  node.set_meta("source_asset_path", str(species[species_index]["path"]))
   node.add_to_group("imperial_city_tree_multimesh")
   node.add_to_group("distance_cull_world")
   node.visibility_range_end = 440.0
