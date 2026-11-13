@@ -1,0 +1,76 @@
+name: Build Imperial Assets
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build_imperial_assets.yml'
+      - 'tools/fetch_and_normalize_assets.py'
+      - 'tools/normalize_asset_blender.py'
+permissions:
+  contents: write
+concurrency:
+  group: imperial-assets-main
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Install pinned Blender 4.3.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 5 --retry-all-errors https://download.blender.org/release/Blender4.3/blender-4.3.2-linux-x64.tar.xz -o /tmp/blender.tar.xz
+          mkdir -p "$RUNNER_TEMP/blender"
+          tar -xJf /tmp/blender.tar.xz -C "$RUNNER_TEMP/blender" --strip-components=1
+          echo "$RUNNER_TEMP/blender" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/blender/blender" --background --version | tee blender-version.txt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip requests huggingface_hub
+      - name: Check HF token
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          if [ -z "${HF_TOKEN:-}" ]; then
+            echo "::error::HF_TOKEN missing. Add a write-enabled token in Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+      - name: Download, normalize, upload and verify
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_REPO_ID: ZzwahwahzZ/clash-of-legends-terrain-assets
+          BLENDER_BIN: blender
+        run: python tools/fetch_and_normalize_assets.py
+      - name: Commit audit docs to main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CREDITS.md assets/wuxia_imperial_pack/manifest.json assets/wuxia_imperial_pack/ASSET_AUDIT_REPORT.md
+          if git diff --cached --quiet; then
+            echo "No documentation changes."
+          else
+            git commit -m "Add verified imperial asset audit and credits"
+            git push origin HEAD:main
+            git ls-remote origin refs/heads/main | grep -q "$(git rev-parse HEAD)" || { echo "::error::git push verification failed"; exit 1; }
+          fi
+      - name: Preserve audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: imperial-assets-audit
+          path: |
+            assets/wuxia_imperial_pack/ASSET_AUDIT_REPORT.md
+            assets/wuxia_imperial_pack/manifest.json
+            CREDITS.md
+          if-no-files-found: warn
+          retention-days: 30
