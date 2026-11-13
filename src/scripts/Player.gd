@@ -332,7 +332,7 @@ func _guild_attack_multiplier() -> float:
 	return float(guild.call("get_attack_multiplier")) if is_instance_valid(guild) else 1.0
 
 func _cast_scatter() -> void:
-	var scatter_proficiency := ClassSystem.get_skill_proficiency("Scatter")
+	var scatter_proficiency: Dictionary = ClassSystem.get_skill_proficiency("Scatter")
 	var scatter_level := int(scatter_proficiency.get("level", 1))
 	var radius := 7.0 + float(scatter_level) * 0.25
 	var damage := int((18 + int(ClassSystem.get_physical_attack_bonus() * 0.1) + scatter_level * 3) * _xp_damage_multiplier * _guild_attack_multiplier())
@@ -345,7 +345,7 @@ func _cast_scatter() -> void:
 func _start_rapid_fire(skill_id: String = "Rapid_Fire") -> void:
 	var target := _nearest_enemy(8.0)
 	if target == null: return
-	var rapid_proficiency := ClassSystem.get_skill_proficiency(skill_id)
+	var rapid_proficiency: Dictionary = ClassSystem.get_skill_proficiency(skill_id)
 	var level_bonus := int(rapid_proficiency.get("level", 1))
 	for hit_index in range(2):
 		if is_instance_valid(target) and target.has_method("take_damage"):
@@ -356,7 +356,7 @@ func _start_rapid_fire(skill_id: String = "Rapid_Fire") -> void:
 
 func basic_attack() -> bool:
 	if _attack_timer > 0.0: return false
-	var assassin := ClassSystem.current_class == "Oriental_Assassin" and _has_dual_knives()
+	var assassin: bool = ClassSystem.current_class == "Oriental_Assassin" and _has_dual_knives()
 	_attack_timer = 0.24 if assassin else 0.72
 	var target := _nearest_enemy(4.5 if assassin else 3.0)
 	if target == null: return false
