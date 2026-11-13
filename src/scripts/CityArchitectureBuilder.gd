@@ -65,6 +65,18 @@ static func _build_open_plaza(parent: Node3D, city: String, p: Dictionary, heigh
  _add_plaza_statue(plaza)
 
 static func _add_plaza_statue(parent: Node3D) -> void:
+ var fountain_path := "res://assets/wuxia_imperial_pack/props_nature/stone_fountain.glb"
+ if ResourceLoader.exists(fountain_path):
+  var fountain_pack := ResourceLoader.load(fountain_path) as PackedScene
+  if fountain_pack != null:
+   var fountain := fountain_pack.instantiate() as Node3D
+   if fountain != null:
+    fountain.name = "ImperialPlazaStoneFountain"
+    fountain.position = Vector3(0.0,0.12,-16.0)
+    fountain.scale = Vector3.ONE * 1.15
+    fountain.add_to_group("imperial_plaza_fountains")
+    fountain.set_meta("source_asset_path",fountain_path)
+    parent.add_child(fountain)
  var candidates: Array[String] = []
  var lion_path := "res://assets/wuxia_imperial_pack/props_nature/guardian_lion_pair.glb"
  if ResourceLoader.exists(lion_path):
@@ -350,7 +362,7 @@ static func _instantiate_wuxia_building(parent: Node3D, city: String, index: int
  _collect_quaternius_models("res://assets/wuxia_imperial_pack/architecture", all_models)
  for path in all_models:
   var file_name := path.get_file().to_lower()
-  var is_chinese_building := file_name.contains("ceremonial_hall") or file_name.contains("water_pavilion") or file_name.contains("gate_tower")
+  var is_chinese_building := file_name.contains("ceremonial_hall") or file_name.contains("water_pavilion") or file_name.contains("gate_tower") or file_name.contains("chinese_pagoda") or file_name.contains("imperial_temple") or file_name.contains("asian_palace") or file_name.contains("chinese_town_house") or file_name.contains("asian_market_stall")
   if is_chinese_building:
    candidates.append(path)
  if candidates.is_empty():
@@ -670,47 +682,23 @@ static func _build_chinese_gate_details(gate: Node3D, p: Dictionary, city: Strin
         var x := -12.0 + float(rib)*2.0
         _box(gate,"ChineseGateRoofRib",Vector3(x,12.78,-85.0),Vector3(0.12,0.12,10.5),gold if rib in [0,12] else roof,1.0)
     for side in [-1.0,1.0]:
-        var lantern := Node3D.new()
-        lantern.name = "ChineseGateWarmLantern"
-        lantern.position = Vector3(side*8.3,10.2,-80.0)
-        gate.add_child(lantern)
+        var lantern_path := "res://assets/wuxia_imperial_pack/props_nature/hanging_silk_lantern.glb"
+        if not ResourceLoader.exists(lantern_path):
+            push_error("WUXIA_HANGING_LANTERN_MISSING: " + lantern_path)
+            continue
+        var lantern_pack := ResourceLoader.load(lantern_path) as PackedScene
+        if lantern_pack == null:
+            push_error("WUXIA_HANGING_LANTERN_IMPORT_FAIL: " + lantern_path)
+            continue
+        var lantern := lantern_pack.instantiate() as Node3D
+        if lantern == null:
+            continue
+        lantern.name = "ChineseGateImportedHangingRedLantern"
+        lantern.position = Vector3(side*8.3,9.5,-80.0)
+        lantern.scale = Vector3.ONE * 0.9
         lantern.add_to_group("imperial_city_lanterns")
-        var glow := _material(Color("#b62935"),0.35)
-        glow.emission_enabled = true
-        glow.emission = Color("#ff9a52")
-        glow.emission_energy_multiplier = 1.5
-        var body := MeshInstance3D.new()
-        body.name = "RedSilkLanternBody"
-        var body_mesh := CylinderMesh.new()
-        body_mesh.top_radius = 0.29
-        body_mesh.bottom_radius = 0.34
-        body_mesh.height = 0.62
-        body_mesh.radial_segments = 16
-        body.mesh = body_mesh
-        body.material_override = glow
-        lantern.add_child(body)
-        for cap_y in [-0.38,0.38]:
-            var cap := MeshInstance3D.new()
-            cap.name = "GoldenLanternCap"
-            var cap_mesh := CylinderMesh.new()
-            cap_mesh.top_radius = 0.42
-            cap_mesh.bottom_radius = 0.42
-            cap_mesh.height = 0.12
-            cap_mesh.radial_segments = 16
-            cap.mesh = cap_mesh
-            cap.position.y = cap_y
-            cap.material_override = gold
-            lantern.add_child(cap)
-        for frame_x in [-0.25,0.25]:
-            for frame_z in [-0.25,0.25]:
-                var frame := MeshInstance3D.new()
-                frame.name = "LanternGoldenFrame"
-                var frame_mesh := BoxMesh.new()
-                frame_mesh.size = Vector3(0.055,0.72,0.055)
-                frame.mesh = frame_mesh
-                frame.position = Vector3(frame_x,0.0,frame_z)
-                frame.material_override = gold
-                lantern.add_child(frame)
+        lantern.set_meta("source_asset_path",lantern_path)
+        gate.add_child(lantern)
         var light := OmniLight3D.new()
         light.name = "ChineseGateWarmLanternLight"
         light.position = lantern.position
