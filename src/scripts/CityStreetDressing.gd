@@ -62,7 +62,7 @@ static func _add_plane(parent: Node3D, label: String, dimensions: Vector2, mater
 	mesh.size = dimensions
 	node.mesh = mesh
 	var paved_route := label.begins_with("Street_") or label.begins_with("DistrictLane_") or label.begins_with("GateApproach_")
-	node.position = at + (Vector3.UP * (0.6 if label.begins_with("Waterlands_") else 0.36) if paved_route else Vector3.ZERO)
+	node.position = at + (Vector3.UP * (0.6 if label.begins_with("Waterlands_") else 0.45) if paved_route else Vector3.ZERO)
 	parent.add_child(node)
 	var surface_material := material
 	if material is StandardMaterial3D:
@@ -167,6 +167,18 @@ static func _waterways(parent: Node3D, half: float) -> void:
 	var water := _mat(Color("#267f91"), 0.22)
 	water.metallic = 0.12
 	var wood := _mat(Color("#795338"), 0.72)
+	var harbor := MeshInstance3D.new()
+	harbor.name = "Waterlands_ReflectiveInnerHarbor_160m"
+	var harbor_mesh := PlaneMesh.new()
+	harbor_mesh.size = Vector2(160.0, 160.0)
+	harbor.mesh = harbor_mesh
+	harbor.position = Vector3(0.0, -0.35, 0.0)
+	parent.add_child(harbor)
+	var harbor_surface := water.duplicate() as StandardMaterial3D
+	harbor_surface.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	harbor_surface.albedo_color.a = 0.78
+	harbor_surface.roughness = 0.18
+	harbor.material_override = harbor_surface
 	for side in [-1.0, 1.0]:
 		var canal_x: float = float(side) * half * 0.31
 		_add_plane(parent, "ApeCityCanal_" + ("East" if side > 0.0 else "West"), Vector2(7, half * 1.55), water, Vector3(canal_x, -1.0, 0))
