@@ -867,22 +867,6 @@ static func _build_kenney_city_modules(parent: Node3D, city: String, p: Dictiona
  elif city == "Waterlands":
   _add_kenney_asset(parent, city, height_image, "fantasy-town-kit", "watermill.glb", "KenneyWaterlandsWatermill", Vector3(260.0,0.0,-245.0), 0.0, 2.2)
 
-static func _build_kenney_city_modules(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
- var stalls := [
-  {"file":"stall-red.glb","at":Vector3(-30.0,0.0,-54.0),"rotation":0.0},
-  {"file":"stall-green.glb","at":Vector3(30.0,0.0,-54.0),"rotation":PI},
-  {"file":"stall-red.glb","at":Vector3(-30.0,0.0,54.0),"rotation":0.0},
-  {"file":"stall-green.glb","at":Vector3(30.0,0.0,54.0),"rotation":PI}
- ]
- for index in range(stalls.size()):
-  var data: Dictionary = stalls[index]
-  _add_kenney_asset(parent, city, height_image, "fantasy-town-kit", str(data["file"]), "KenneyMarketStall_%02d" % index, data["at"], float(data["rotation"]), 1.5)
- _add_kenney_asset(parent, city, height_image, "fantasy-town-kit", "fountain-square.glb", "KenneyMarketFountain", Vector3(-50.0,0.0,0.0), PI * 0.5, 1.8)
- if city == "DesertLand":
-  _add_kenney_asset(parent, city, height_image, "fantasy-town-kit", "windmill.glb", "KenneyDesertWindmill", Vector3(260.0,0.0,-245.0), 0.0, 2.4)
- elif city == "Waterlands":
-  _add_kenney_asset(parent, city, height_image, "fantasy-town-kit", "watermill.glb", "KenneyWaterlandsWatermill", Vector3(260.0,0.0,-245.0), 0.0, 2.2)
-
 static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size: float, height_image: Image) -> void:
  var outer := Node3D.new()
  outer.name = city + "_OpenWorld_800x800"
