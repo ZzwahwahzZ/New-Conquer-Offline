@@ -28,7 +28,7 @@ static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
  var plaza := Node3D.new()
  plaza.name = "OpenCentralPlaza_80x80"
  parent.add_child(plaza)
- var stone := PBRMaterialLibrary.build_plaza_material()
+ var stone: StandardMaterial3D = PBRMaterialLibrary.build_plaza_material()
  stone.uv1_scale = Vector3(3.9,3.9,1.0)
  for z in range(-5,5):
   for x in range(-5,5):
@@ -64,7 +64,7 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary) -> vo
  parent.add_child(roads)
  var half := 110.0 if city == "TwinCity" else 80.0
  var road_length := half * 1.72
- var road_material := PBRMaterialLibrary.build_street_material()
+ var road_material: StandardMaterial3D = PBRMaterialLibrary.build_street_material()
  var curb_material := _material(p.gold,0.76)
  for direction in range(2):
   var road := _box(roads,"FlagstoneRoad_%d" % direction,Vector3(0,0.055,0),Vector3(10.0,0.02,road_length),road_material,1.0)
@@ -92,8 +92,8 @@ static func _build_urban_alley_multimeshes(parent: Node3D, city: String, materia
   var index := 0
   for line in alley_lines:
    for along in segment_centers:
-    var x := line if axis == 0 else along
-    var z := along if axis == 0 else line
+    var x: float = float(line) if axis == 0 else float(along)
+    var z: float = float(along) if axis == 0 else float(line)
     var ground_y := WorldTerrainBuilder.sample_height_image(terrain_image,city,x,z,800.0)
     var basis := Basis(Vector3.UP,PI*0.5) if axis == 1 else Basis.IDENTITY
     multi.set_instance_transform(index,Transform3D(basis,Vector3(x,ground_y+0.12,z)))
