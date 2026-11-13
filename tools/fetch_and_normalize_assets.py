@@ -79,9 +79,12 @@ def ambientcg():
 def blender(src,dst):
  cmd=[os.getenv("BLENDER_BIN","blender"),"-b","--python",str(ROOT/"tools/normalize_asset_blender.py"),"--","--input",str(src),"--output",str(dst)]
  x=subprocess.run(cmd,text=True,capture_output=True,timeout=900)
- if x.returncode: raise RuntimeError((x.stderr or x.stdout)[-5000:])
+ output=(x.stdout or "")+"\n"+(x.stderr or "")
  meta=dst.with_suffix(".json")
- if not dst.exists() or not meta.exists(): raise RuntimeError("Blender output/validation metadata missing")
+ if x.returncode:
+  raise RuntimeError("Blender exited with code "+str(x.returncode)+":\n"+output[-12000:])
+ if not dst.exists() or not meta.exists():
+  raise RuntimeError("Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: "+str(dst)+" (exists="+str(dst.exists())+"), metadata: "+str(meta)+" (exists="+str(meta.exists())+"). Blender output:\n"+output[-12000:])
  return json.loads(meta.read_text())
 def process():
  for r in DOWN:
