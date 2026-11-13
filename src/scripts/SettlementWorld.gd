@@ -44,7 +44,7 @@ func _build_environment() -> void:
 	environment.ssao_intensity = 1.35
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	environment.ambient_light_color = sky_color.lightened(0.25)
-	environment.ambient_light_energy = 0.68 if city_id == "DarkForest" else 0.42
+	environment.ambient_light_energy = 0.68 if settlement_id == "DarkForest" else 0.42
 	environment.fog_enabled = false
 	environment.fog_light_color = fog_color
 	environment.fog_density = fog_density
@@ -59,7 +59,7 @@ func _build_environment() -> void:
 	var sun := DirectionalLight3D.new()
 	sun.name = "SettlementSun"
 	sun.rotation_degrees = Vector3(-45,-32,0)
-	sun.light_energy = 0.92 if city_id == "DarkForest" else 0.78
+	sun.light_energy = 0.92 if settlement_id == "DarkForest" else 0.78
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 220.0
 	sun.shadow_bias = 0.04
