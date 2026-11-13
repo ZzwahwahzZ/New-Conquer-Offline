@@ -8,8 +8,8 @@ const CLASSIC_FOV := 45.0
 const CLASSIC_FAR := 600.0
 const CITY_IDS := ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"]
 const SHOTS := [
-	{"suffix":"01_aerial_overview","position":Vector3(0.0,0.0,0.0),"yaw":PI * 0.25,"distance":72.0,"pitch":42.0,"fov":96.0},
-	{"suffix":"02_inner_street","position":Vector3(0.0,0.0,-85.0),"yaw":PI,"distance":18.0,"pitch":11.2,"fov":62.0}
+	{"suffix":"01_aerial_overview","position":Vector3(0.0,0.0,0.0),"yaw":PI * 0.25,"distance":110.0,"pitch":42.0,"fov":72.0},
+	{"suffix":"02_inner_street","position":Vector3(0.0,0.0,-85.0),"yaw":0.0,"distance":18.0,"pitch":11.2,"fov":62.0}
 ]
 
 func _initialize() -> void:
@@ -211,7 +211,7 @@ func _capture() -> void:
 				if north_gate == null:
 					_fail("north cardinal gate anchor is missing from " + city_id)
 					return
-				shot_position = north_gate.to_global(Vector3(0.0, 0.0, -85.0))
+				shot_position = north_gate.to_global(Vector3(0.0, 0.0, -66.0))
 			player.global_position = shot_position
 			camera_rig.global_position = player.global_position
 			var shot_distance := float(shot.get("distance", CLASSIC_DISTANCE))
