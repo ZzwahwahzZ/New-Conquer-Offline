@@ -27,7 +27,11 @@ static func build(parent: Node3D, city: String, size: float) -> void:
 static func _build_open_plaza(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var plaza := Node3D.new()
  plaza.name = "OpenCentralPlaza_50x50"
- plaza.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, 0.0, 0.0, 800.0)
+ var plaza_ground := 0.0
+ for sample_z in range(-5,6):
+  for sample_x in range(-5,6):
+   plaza_ground = maxf(plaza_ground,WorldTerrainBuilder.sample_height_image(height_image,city,float(sample_x)*5.0,float(sample_z)*5.0,800.0))
+ plaza.position.y = plaza_ground + 0.85
  parent.add_child(plaza)
  var stone: StandardMaterial3D = PBRMaterialLibrary.build_imperial_paving_material()
  stone.uv1_scale = Vector3(3.9,3.9,1.0)
@@ -65,7 +69,7 @@ static func _add_plaza_statue(parent: Node3D) -> void:
  var lion_path := "res://assets/wuxia_imperial_pack/props_nature/guardian_lion_pair.glb"
  if ResourceLoader.exists(lion_path):
   candidates.append(lion_path)
- candidates = candidates.filter(func(path: String) -> bool: return path.get_file().to_lower().contains("statue"))
+ candidates = candidates.filter(func(path: String) -> bool: return path.get_file().to_lower().contains("guardian_lion_pair"))
  candidates.sort()
  if candidates.is_empty():
   push_error("IMPERIAL_PLAZA_STATUE_MISSING: verified Chinese guardian lion pair is absent from Wuxia Imperial pack")
@@ -415,18 +419,18 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
 static func _add_palace_platform_and_stairs(root: Node3D, width: float, depth: float) -> void:
  var paving := PBRMaterialLibrary.build_imperial_paving_material()
  var marble := PBRMaterialLibrary.build_plaza_material()
- var platform_size := Vector3(width+5.0,3.5,depth+5.0)
- _box(root,"ImperialPalaceRaisedStonePlinth_3_5m",Vector3(0.0,-1.75,0.0),platform_size,paving,1.0)
+ var platform_size := Vector3(width+5.0,4.0,depth+5.0)
+ _box(root,"ImperialPalaceRaisedStonePlinth_3_5m",Vector3(0.0,-2.0,0.0),platform_size,paving,1.0)
  var collision_body := StaticBody3D.new()
  collision_body.name = "ImperialPalacePlinthAndStairCollision"
  var platform_collision := CollisionShape3D.new()
  var platform_shape := BoxShape3D.new()
  platform_shape.size = platform_size
  platform_collision.shape = platform_shape
- platform_collision.position = Vector3(0.0,-1.75,0.0)
+ platform_collision.position = Vector3(0.0,-2.0,0.0)
  collision_body.add_child(platform_collision)
  root.add_child(collision_body)
- for step in range(7):
+ for step in range(8):
   var step_center := Vector3(0.0,-0.25-float(step)*0.5,depth*0.5+3.0+float(step)*1.05)
   var step_size := Vector3(8.5,0.5,1.1)
   _box(root,"ImperialMarbleStair_%02d" % step,step_center,step_size,marble,1.0)
@@ -436,7 +440,7 @@ static func _add_palace_platform_and_stairs(root: Node3D, width: float, depth: f
   stair_collision.shape = stair_shape
   stair_collision.position = step_center
   collision_body.add_child(stair_collision)
- print("IMPERIAL_PALACE_PLATFORM_PASS: height=3.5m marble_stairs=7 width=8.5m")
+ print("IMPERIAL_PALACE_PLATFORM_PASS: height=4.0m marble_stairs=8 width=8.5m")
 
 static func _add_chinese_building_details(root: Node3D, p: Dictionary, width: float, depth: float, height: float) -> void:
     var roof_material := PBRMaterialLibrary.build_chinese_roof_material()
