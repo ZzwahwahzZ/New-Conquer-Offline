@@ -32,7 +32,7 @@ static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vec
  var platform_width := 34.0 if filename.contains("palace") else 28.0
  var platform_depth := 32.0 if filename.contains("palace") else 25.0
  var platform_size := Vector3(platform_width,3.5,platform_depth)
- var paving := PBRMaterialLibrary.build_imperial_paving_material()
+ var paving := PBRMaterialLibrary.build_plaza_material()
  var plinth := MeshInstance3D.new()
  plinth.name = "ChineseImperialRaisedStonePlinth_3_5m"
  var plinth_mesh := BoxMesh.new()
