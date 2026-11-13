@@ -6,7 +6,10 @@
 - Validated source assets: 167
 - Approved file entries: 245
 - Category counts: {"palaces_and_temples": 4, "houses_and_shops": 23, "gates_walls_bridges": 23, "statues_and_props": 58, "nature": 46, "pbr_materials": 91}
-- Errors: 181
+- Style group/category breakdown: {"imperial_chinese": {"palaces_and_temples": 4, "gates_walls_bridges": 17, "statues_and_props": 31, "nature": 11}, "korean_hanok": {"houses_and_shops": 23, "statues_and_props": 27, "gates_walls_bridges": 6, "nature": 6}, "environmental": {"nature": 29}, "pbr_materials": {"pbr_materials": 91}}
+- Operational errors: 4
+- Strict identity-filter exclusions: 174
+- Skipped legacy failures: 3
 
 ## Approved files
 - palaces_and_temples | models/3dassets-imperial-china-palace-and-garden-ceremonial-hall-3f95c2b7.glb | CC0 1.0 Universal | 3DAssets.dev | [16.200000762939453, 13.20005989074707, 12.509994506835938]
@@ -255,367 +258,192 @@
 - pbr_materials | textures/Wood096/Wood096_1K-JPG_Color.jpg | CC0 1.0 | ambientCG | PBR texture set
 - pbr_materials | textures/Wood096/Wood096.png | CC0 1.0 | ambientCG | PBR texture set
 
-## Errors
+## Operational errors
 - Quaternius:simple-buildings-pack (discover/download): 404 Client Error: Not Found for url: https://drive.usercontent.google.com/download?id=1r-FcNFxC6ziN0oI3GqZJdEkdzglFQHQH&export=download
 - Quaternius:buildings-pack (discover/download): 404 Client Error: Not Found for url: https://drive.usercontent.google.com/download?id=1uWCsV9QfnAu8u_QbwkYwOfuU3McME7CA&export=download
 - Quaternius:ultimate-nature-pack (discover/download): 404 Client Error: Not Found for url: https://drive.usercontent.google.com/download?id=1-Kl0L_Jg8awbh0S5T-z3zxh4mVlnxTpa&export=download
 - Quaternius:stylized-nature-megakit-official (discover/download): No direct downloadable model file or public Drive folder found
-- pine_tree_01 (download): file exceeds size limit
-- 3dassets-royal-court-and-throne-palace-palace-lantern-post-6a52be2f (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-beach-surf-and-paddle-kit-recreational-jet-ski-a61d9936 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-ufo-crash-site-and-recovery-facility-triangular-craft-bd7acdcf (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-marina-and-yacht-club-marina-and-yacht-club-motor-crui-f2c8eeb9 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-royal-court-and-throne-palace-royal-cour-dab6f27e-starter-scene (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-royal-court-and-throne-palace-court-harp-526a088b (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-royal-court-and-throne-palace-ceremonial-drum-fbf99710 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-royal-court-and-throne-palace-garden-screen-3ee3eb7f (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-royal-court-and-throne-palace-courtyard-entry-arch-c5cc904e (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-royal-court-and-throne-palace-balustrade-corner-355292d1 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-royal-court-and-throne-palace-balustrade-section-b7f02210 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-royal-court-and-throne-palace-maroon-carpet-runner-7f5991e8 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-royal-court-and-throne-palace-courtyard-paving-8a07a703 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-royal-court-and-throne-palace-court-brazier-9975beb3 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-royal-court-and-throne-palace-topiary-planter-33415f17 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-tactical-shooter-hill-town-fountain-squa-a5996d68-starter-scene (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-hydroelectric-dam-infiltration-dam-maint-c5267f96-starter-scene (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-greek-island-village-and-harbour-island--f1d7f415-starter-scene (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-lantern-watch-guardroom-bench (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-tea-garden-and-processing-house-tea-garden-and-process-9becfa65 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-ceramics-pottery-studio-pottery-courtyar-27e7d90f-starter-scene (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-fantasy-mmo-city-and-townsfolk-auction-house-39ab43f6 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-medieval-mmo-starter-realm-timber-house-small-25223f49 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-medieval-mmo-starter-realm-timber-house-large-4ffa48c3 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-greek-island-village-and-harbour-cube-house-wide-6bc5d91a (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-arcane-academy-and-spell-trials-celestia-3db3a107-starter-scene (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-ore-processing-and-haulage-plant-pump-house-778c76aa (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-viking-age-longhouse-and-longship-turf-pit-house-0d532fe1 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-voxel-city-districts-garage-house-6fa7e8ae (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-creature-husbandry-and-transport-husband-c7dbb5ef-starter-scene (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-arcology-towers-and-skyways-transit-portal-head-house-f12ca1bb (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-pixel-modern-farm-chicken-house-595bbd17 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-moonsteel-convergence-lunar-sanctuary-6d0eac9e-starter-scene (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-storybook-christmas-market-sleigh-delivery-courtyard-3d9f5dd4 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-ore-processing-and-haulage-plant-change-house-70f7554a (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-underground-mine-and-shaft-works-winder-house-aba1d59b (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-storybook-christmas-market-iced-gingerbread-house-4dfd219b (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-christmas-storybook-iced-gingerbread-house-ae97e043 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-medieval-castle-construction-castle-cour-480ed575-starter-scene (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-coastal-saltworks-and-trade-port-coastal-saltworks-and-0bf367c6 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-greek-island-village-and-harbour-cube-house-medium-2499b4b8 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-vertical-farm-and-hydroponics-tower-vertical-farm-and--db2b3b7b (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-abandoned-weather-station-and-storm-shelter-roofed-sta-4b96133a (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-underground-mine-and-shaft-works-main-fan-house-46a91910 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-cold-war-missile-silo-and-command-bunker-site-generato-233c10a8 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-medieval-watermill-and-granary-roofed-watermill-house-d0e0cae0 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-greek-island-village-and-harbour-cube-house-narrow-ecfb6001 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-greek-island-village-and-harbour-cube-house-corner-blo-c475dcb7 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-greek-island-village-and-harbour-house-balcony-b3d22994 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-greek-island-village-and-harbour-external-stair-run-4e3deeba (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-greek-island-village-and-harbour-taverna-front-with-aw-6f2775e2 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-greek-island-village-and-harbour-stone-arch-37b0aed6 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-andean-terraces-and-stone-village-highla-53eb3e64-starter-scene (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-north-pole-village-christmas-village-sce-520b455c-starter-scene (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-medieval-mmo-starter-realm-timber-house-medium-81d882c1 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-japanese-school-and-city-street-school-g-b3013a62-starter-scene (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-japanese-school-and-city-street-class-sign-c7556432 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-japanese-school-and-city-street-ceiling-fan-light-241e2d97 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-japanese-school-and-city-street-bulletin-board-468eac47 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-japanese-school-and-city-street-shoe-locker-bank-6682bca8 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-japanese-school-and-city-street-cleaning-locker-66eb1ddc (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-japanese-school-and-city-street-wall-clock-school-1786617a (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-japanese-school-and-city-street-blackboard-with-chalk--fc405c1d (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-japanese-school-and-city-street-lectern-f8b909de (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-exotic-wildlife-hd-african-lion-male-4417c586 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-savanna-wildlife-lion-male-standing-e2078874 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-open-ocean-and-deep-sea-life-california-sea-lion-58ed43ba (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-exotic-wildlife-hd-lion-cub-b56551f3 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-savanna-wildlife-pride-on-kopje-7de7dc9b (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-feudal-japan-castle-town-komainu-guardian-pair-aedbfa41 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-savanna-wildlife-lion-cub-c825e39f (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-ocean-giants-kit-lions-mane-jellyfish-71cdb2df (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-mushroom-farm-and-grow-rooms-lions-mane-mushroom-clust-a6feef6f (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-griffin-airmail-roost-and-posthouse-folded-wing-griffi-5fc428be (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-moonsteel-convergence-jade-prowler-efa4200b (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-feudal-japan-castle-town-ridge-ornament-onigawara-39f11cb3 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-moonsteel-convergence-obsidian-boss-pit-522724e0 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-sunfall-rift-moba-rift-colossus-6e8b2338 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-sunfall-rift-moba-dawn-warden-26abb3ad (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-mythic-underworld-and-olympus-griffin-statue-fd1dd14b (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-mythic-underworld-and-olympus-chimera-statue-aea02300 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-exotic-wildlife-hd-savanna-waterhole-f5860bf0-starter-scene (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-mythic-underworld-and-olympus-sphinx-statue-b0d55c32 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-mythic-underworld-and-olympus-tripod-cauldron-b86c0ae9 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-mythic-underworld-and-olympus-cerberus-statue-266c7c3a (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-distillery-and-bonded-warehouse-pagoda-roof-vent-a6001cc0 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-lighthouse-and-rocky-coast-lighthouse-dome-and-vane-d40efb1a (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-medieval-mmo-starter-realm-stone-church-dc47dafb (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-desert-mosque-and-madrasa-courtyard-plaster-dome-on-dr-13f97c36 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-cruise-ship-deck-and-lounge-cruise-ship-deck-and-loung-6816fa25 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-fantasy-mmo-city-and-townsfolk-city-cathedral-260bcd65 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-medieval-mmo-starter-realm-wizard-tower-top-ef55c481 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-desert-mosque-and-madrasa-courtyard-glazed-dome-on-dru-634d2284 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-dragons-and-wyverns-cave-mouth-arch-4db4a056 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-vampire-crypt-and-gothic-cathedral-mausoleum-7521cee6 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-wipe-day-survival-island-lighthouse-lantern-room-bc3fcae1 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-city-park-and-playground-park-bandstand-9f4cd475 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-christmas-storybook-winter-gazebo-ffe82bca (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-fantasy-mmo-city-and-townsfolk-wall-gate-tower-1cf4e6ef (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-viking-age-longhouse-and-longship-longhouse-gable-end-27117688 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-fantasy-mmo-city-and-townsfolk-pennant-pole-27a7745f (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-fantasy-mmo-city-and-townsfolk-plaza-fountain-9b482127 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-fantasy-mmo-city-and-townsfolk-guild-throne-36dd32f5 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-dragons-and-wyverns-western-dragon-wings-spread-8d633362 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-wipe-day-survival-island-stone-roof-4d86327d (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-volcano-and-lava-fields-volcano-and-lava-fields-collap-b235ee42 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-medieval-monastery-and-scriptorium-cloister-lean-to-ro-ecf454f9 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-rural-scavenging-settlements-village-bulletin-roof-8e6a8a4d (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-roadside-survival-stops-rest-stop-roof-c18db646 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-polar-tundra-and-alpine-fauna-bamboo-clump-0fce79a9 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-halloween-slasher-street-cornstalk-clump-cc4c9832 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-exotic-wildlife-hd-green-grass-clump-ea7fae55 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-fps-survival-forest-outpost-undergrowth-clump-d68b2daa (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-stylized-trees-and-rocks-kit-fern-clump-52137440 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-dense-temperate-forest-flora-dandelion-clump-e7e170ed (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-radio-telescope-array-and-field-station-scrub-clump-280b15bf (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-exotic-wildlife-hd-savanna-grass-clump-390b90a6 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-dense-temperate-forest-flora-reed-clump-467f08af (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-hot-air-balloon-festival-field-tree-clump-a4c9bb07 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-medieval-mmo-starter-realm-fern-clump-7ebeffc4 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-birds-and-reptiles-hd-reed-clump-ec55c985 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-temperate-forest-ecology-wood-sedge-clump-9f0b2abd (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-caravan-park-and-campsite-tree-clump-dbb974b7 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-city-park-and-playground-shrub-clump-6f521139 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-lawn-mowing-simulator-kit-dandelion-clump-8d61d1ae (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-outback-and-australian-wildlife-spinifex-clump-9db0e241 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-golf-course-and-clubhouse-shrub-clump-23c1fb07 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-temperate-forest-ecology-heather-clump-d5cb5570 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-turning-seasons-tulip-clump-e6a56b00 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-safari-camp-and-bush-lodge-scrub-clump-ed89a8a0 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-underwater-reef-worlds-sea-lettuce-9e95e4af (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-japanese-school-and-city-street-cherry-tree-blossom-618a9f6d (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-japanese-school-and-city-street-cherry-tree-bare-b1e462cf (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-temperate-forest-ecology-wild-cherry-in-blossom-983af861 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-temperate-forest-ecology-blackthorn-in-blossom-a30caea4 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-dense-temperate-forest-flora-cherry-blossom-12744dc9 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-stylized-trees-and-rocks-kit-flower-white-patch-9ead5ba8 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-stylized-trees-and-rocks-kit-bush-flowering-6e410c7f (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-tropical-island-ecology-hibiscus-3fbeec87 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-tropical-island-ecology-morning-glory-runner-a13be759 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-dense-temperate-forest-flora-gorse-bush-43cbdb5d (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-fresh-produce-and-groceries-plum-4b5a5fb2 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-fantasy-mmo-city-and-townsfolk-city-broadleaf-tree-0328372c (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-racecourse-and-parade-ring-paddock-tree-91f358c4 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-gym-and-fitness-studio-weight-plate-tree-e1ac8322 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-greek-island-village-and-harbour-olive-tree-b7baf3c7 (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-allotments-and-community-garden-orchard-tree-328296cc (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-velodrome-and-track-cycling-start-light-tree-e0508ddc (strict_identity_filter): Rejected by blacklist/identity filter
-- 3dassets-greek-island-village-and-harbour-fig-tree-15e48fe1 (strict_identity_filter): Rejected by blacklist/identity filter
-- opengameart-big-stone-bridge (strict_identity_filter): Rejected by blacklist/identity filter
-- opengameart-modular-temple-3d-models (strict_identity_filter): Rejected by blacklist/identity filter
-- opengameart-modular-temple-3d-models-2 (strict_identity_filter): Rejected by blacklist/identity filter
-- opengameart-dragon (strict_identity_filter): Rejected by blacklist/identity filter
-- opengameart-medieval-stone-temple (strict_identity_filter): Rejected by blacklist/identity filter
-- opengameart-stylized-nature-megakit (strict_identity_filter): Rejected by blacklist/identity filter
-- anthurium_botany_01 (strict_identity_filter): Rejected by blacklist/identity filter
-- calathea_orbifolia_01 (strict_identity_filter): Rejected by blacklist/identity filter
-- celandine_01 (strict_identity_filter): Rejected by blacklist/identity filter
-- dandelion_01 (strict_identity_filter): Rejected by blacklist/identity filter
-- didelta_spinosa (strict_identity_filter): Rejected by blacklist/identity filter
-- dry_branches_medium_01 (strict_identity_filter): Rejected by blacklist/identity filter
-- othonna_cerarioides (strict_identity_filter): Rejected by blacklist/identity filter
-- pachira_aquatica_01 (strict_identity_filter): Rejected by blacklist/identity filter
-- pastic_torch_6v (strict_identity_filter): Rejected by blacklist/identity filter
-- pine_sapling_medium (strict_identity_filter): Rejected by blacklist/identity filter
-- portable_welding_cart (strict_identity_filter): Rejected by blacklist/identity filter
-- propane_torch (strict_identity_filter): Rejected by blacklist/identity filter
-- propane_torch_02 (strict_identity_filter): Rejected by blacklist/identity filter
-- searsia_burchellii (strict_identity_filter): Rejected by blacklist/identity filter
-- searsia_lucida (strict_identity_filter): Rejected by blacklist/identity filter
-- signal_flashlight (strict_identity_filter): Rejected by blacklist/identity filter
-- small_plastic_torch (strict_identity_filter): Rejected by blacklist/identity filter
-- vintage_flashlight (strict_identity_filter): Rejected by blacklist/identity filter
-- wild_rooibos_bush (strict_identity_filter): Rejected by blacklist/identity filter
-- opengameart-free-bamboo-v1 (normalize): Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/opengameart-free-bamboo-v1.glb (exists=True), metadata: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/opengameart-free-bamboo-v1.json (exists=False). Blender output:
-FBX version: 7200
-INFO Draco mesh compression is available, use library at /home/runner/work/_temp/blender/4.3/python/lib/python3.11/site-packages/libextern_draco.so
-20:51:00 | INFO: Starting glTF 2.0 export
-20:51:00 | INFO: Extracting primitive: Mesh
-20:51:00 | INFO: Primitives created: 1
-20:51:00 | INFO: Finished glTF 2.0 export in 0.004630088806152344 s
 
-20:51:00 | INFO: Data are loaded, start creating Blender stuff
-20:51:00 | INFO: Blender create Mesh node Mesh
-20:51:00 | INFO: glTF import finished in 0.00s
-20:51:00 | INFO: Starting glTF 2.0 export
-20:51:00 | INFO: Extracting primitive: Mesh
-20:51:00 | INFO: Primitives created: 1
-20:51:00 | INFO: Finished glTF 2.0 export in 0.0037012100219726562 s
+## Strict identity-filter exclusions
+- 3dassets-royal-court-and-throne-palace-palace-lantern-post-6a52be2f
+- 3dassets-beach-surf-and-paddle-kit-recreational-jet-ski-a61d9936
+- 3dassets-ufo-crash-site-and-recovery-facility-triangular-craft-bd7acdcf
+- 3dassets-marina-and-yacht-club-marina-and-yacht-club-motor-crui-f2c8eeb9
+- 3dassets-royal-court-and-throne-palace-royal-cour-dab6f27e-starter-scene
+- 3dassets-royal-court-and-throne-palace-court-harp-526a088b
+- 3dassets-royal-court-and-throne-palace-ceremonial-drum-fbf99710
+- 3dassets-royal-court-and-throne-palace-garden-screen-3ee3eb7f
+- 3dassets-royal-court-and-throne-palace-courtyard-entry-arch-c5cc904e
+- 3dassets-royal-court-and-throne-palace-balustrade-corner-355292d1
+- 3dassets-royal-court-and-throne-palace-balustrade-section-b7f02210
+- 3dassets-royal-court-and-throne-palace-maroon-carpet-runner-7f5991e8
+- 3dassets-royal-court-and-throne-palace-courtyard-paving-8a07a703
+- 3dassets-royal-court-and-throne-palace-court-brazier-9975beb3
+- 3dassets-royal-court-and-throne-palace-topiary-planter-33415f17
+- 3dassets-tactical-shooter-hill-town-fountain-squa-a5996d68-starter-scene
+- 3dassets-hydroelectric-dam-infiltration-dam-maint-c5267f96-starter-scene
+- 3dassets-greek-island-village-and-harbour-island--f1d7f415-starter-scene
+- 3dassets-lantern-watch-guardroom-bench
+- 3dassets-tea-garden-and-processing-house-tea-garden-and-process-9becfa65
+- 3dassets-ceramics-pottery-studio-pottery-courtyar-27e7d90f-starter-scene
+- 3dassets-fantasy-mmo-city-and-townsfolk-auction-house-39ab43f6
+- 3dassets-medieval-mmo-starter-realm-timber-house-small-25223f49
+- 3dassets-medieval-mmo-starter-realm-timber-house-large-4ffa48c3
+- 3dassets-greek-island-village-and-harbour-cube-house-wide-6bc5d91a
+- 3dassets-arcane-academy-and-spell-trials-celestia-3db3a107-starter-scene
+- 3dassets-ore-processing-and-haulage-plant-pump-house-778c76aa
+- 3dassets-viking-age-longhouse-and-longship-turf-pit-house-0d532fe1
+- 3dassets-voxel-city-districts-garage-house-6fa7e8ae
+- 3dassets-creature-husbandry-and-transport-husband-c7dbb5ef-starter-scene
+- 3dassets-arcology-towers-and-skyways-transit-portal-head-house-f12ca1bb
+- 3dassets-pixel-modern-farm-chicken-house-595bbd17
+- 3dassets-moonsteel-convergence-lunar-sanctuary-6d0eac9e-starter-scene
+- 3dassets-storybook-christmas-market-sleigh-delivery-courtyard-3d9f5dd4
+- 3dassets-ore-processing-and-haulage-plant-change-house-70f7554a
+- 3dassets-underground-mine-and-shaft-works-winder-house-aba1d59b
+- 3dassets-storybook-christmas-market-iced-gingerbread-house-4dfd219b
+- 3dassets-christmas-storybook-iced-gingerbread-house-ae97e043
+- 3dassets-medieval-castle-construction-castle-cour-480ed575-starter-scene
+- 3dassets-coastal-saltworks-and-trade-port-coastal-saltworks-and-0bf367c6
+- 3dassets-greek-island-village-and-harbour-cube-house-medium-2499b4b8
+- 3dassets-vertical-farm-and-hydroponics-tower-vertical-farm-and--db2b3b7b
+- 3dassets-abandoned-weather-station-and-storm-shelter-roofed-sta-4b96133a
+- 3dassets-underground-mine-and-shaft-works-main-fan-house-46a91910
+- 3dassets-cold-war-missile-silo-and-command-bunker-site-generato-233c10a8
+- 3dassets-medieval-watermill-and-granary-roofed-watermill-house-d0e0cae0
+- 3dassets-greek-island-village-and-harbour-cube-house-narrow-ecfb6001
+- 3dassets-greek-island-village-and-harbour-cube-house-corner-blo-c475dcb7
+- 3dassets-greek-island-village-and-harbour-house-balcony-b3d22994
+- 3dassets-greek-island-village-and-harbour-external-stair-run-4e3deeba
+- 3dassets-greek-island-village-and-harbour-taverna-front-with-aw-6f2775e2
+- 3dassets-greek-island-village-and-harbour-stone-arch-37b0aed6
+- 3dassets-andean-terraces-and-stone-village-highla-53eb3e64-starter-scene
+- 3dassets-north-pole-village-christmas-village-sce-520b455c-starter-scene
+- 3dassets-medieval-mmo-starter-realm-timber-house-medium-81d882c1
+- 3dassets-japanese-school-and-city-street-school-g-b3013a62-starter-scene
+- 3dassets-japanese-school-and-city-street-class-sign-c7556432
+- 3dassets-japanese-school-and-city-street-ceiling-fan-light-241e2d97
+- 3dassets-japanese-school-and-city-street-bulletin-board-468eac47
+- 3dassets-japanese-school-and-city-street-shoe-locker-bank-6682bca8
+- 3dassets-japanese-school-and-city-street-cleaning-locker-66eb1ddc
+- 3dassets-japanese-school-and-city-street-wall-clock-school-1786617a
+- 3dassets-japanese-school-and-city-street-blackboard-with-chalk--fc405c1d
+- 3dassets-japanese-school-and-city-street-lectern-f8b909de
+- 3dassets-exotic-wildlife-hd-african-lion-male-4417c586
+- 3dassets-savanna-wildlife-lion-male-standing-e2078874
+- 3dassets-open-ocean-and-deep-sea-life-california-sea-lion-58ed43ba
+- 3dassets-exotic-wildlife-hd-lion-cub-b56551f3
+- 3dassets-savanna-wildlife-pride-on-kopje-7de7dc9b
+- 3dassets-feudal-japan-castle-town-komainu-guardian-pair-aedbfa41
+- 3dassets-savanna-wildlife-lion-cub-c825e39f
+- 3dassets-ocean-giants-kit-lions-mane-jellyfish-71cdb2df
+- 3dassets-mushroom-farm-and-grow-rooms-lions-mane-mushroom-clust-a6feef6f
+- 3dassets-griffin-airmail-roost-and-posthouse-folded-wing-griffi-5fc428be
+- 3dassets-moonsteel-convergence-jade-prowler-efa4200b
+- 3dassets-feudal-japan-castle-town-ridge-ornament-onigawara-39f11cb3
+- 3dassets-moonsteel-convergence-obsidian-boss-pit-522724e0
+- 3dassets-sunfall-rift-moba-rift-colossus-6e8b2338
+- 3dassets-mythic-underworld-and-olympus-griffin-statue-fd1dd14b
+- 3dassets-sunfall-rift-moba-dawn-warden-26abb3ad
+- 3dassets-mythic-underworld-and-olympus-chimera-statue-aea02300
+- 3dassets-exotic-wildlife-hd-savanna-waterhole-f5860bf0-starter-scene
+- 3dassets-mythic-underworld-and-olympus-sphinx-statue-b0d55c32
+- 3dassets-mythic-underworld-and-olympus-tripod-cauldron-b86c0ae9
+- 3dassets-mythic-underworld-and-olympus-cerberus-statue-266c7c3a
+- 3dassets-distillery-and-bonded-warehouse-pagoda-roof-vent-a6001cc0
+- 3dassets-lighthouse-and-rocky-coast-lighthouse-dome-and-vane-d40efb1a
+- 3dassets-medieval-mmo-starter-realm-stone-church-dc47dafb
+- 3dassets-desert-mosque-and-madrasa-courtyard-plaster-dome-on-dr-13f97c36
+- 3dassets-cruise-ship-deck-and-lounge-cruise-ship-deck-and-loung-6816fa25
+- 3dassets-fantasy-mmo-city-and-townsfolk-city-cathedral-260bcd65
+- 3dassets-medieval-mmo-starter-realm-wizard-tower-top-ef55c481
+- 3dassets-desert-mosque-and-madrasa-courtyard-glazed-dome-on-dru-634d2284
+- 3dassets-dragons-and-wyverns-cave-mouth-arch-4db4a056
+- 3dassets-vampire-crypt-and-gothic-cathedral-mausoleum-7521cee6
+- 3dassets-wipe-day-survival-island-lighthouse-lantern-room-bc3fcae1
+- 3dassets-city-park-and-playground-park-bandstand-9f4cd475
+- 3dassets-christmas-storybook-winter-gazebo-ffe82bca
+- 3dassets-fantasy-mmo-city-and-townsfolk-wall-gate-tower-1cf4e6ef
+- 3dassets-viking-age-longhouse-and-longship-longhouse-gable-end-27117688
+- 3dassets-fantasy-mmo-city-and-townsfolk-pennant-pole-27a7745f
+- 3dassets-fantasy-mmo-city-and-townsfolk-plaza-fountain-9b482127
+- 3dassets-fantasy-mmo-city-and-townsfolk-guild-throne-36dd32f5
+- 3dassets-dragons-and-wyverns-western-dragon-wings-spread-8d633362
+- 3dassets-wipe-day-survival-island-stone-roof-4d86327d
+- 3dassets-volcano-and-lava-fields-volcano-and-lava-fields-collap-b235ee42
+- 3dassets-medieval-monastery-and-scriptorium-cloister-lean-to-ro-ecf454f9
+- 3dassets-rural-scavenging-settlements-village-bulletin-roof-8e6a8a4d
+- 3dassets-roadside-survival-stops-rest-stop-roof-c18db646
+- 3dassets-polar-tundra-and-alpine-fauna-bamboo-clump-0fce79a9
+- 3dassets-halloween-slasher-street-cornstalk-clump-cc4c9832
+- 3dassets-exotic-wildlife-hd-green-grass-clump-ea7fae55
+- 3dassets-fps-survival-forest-outpost-undergrowth-clump-d68b2daa
+- 3dassets-stylized-trees-and-rocks-kit-fern-clump-52137440
+- 3dassets-dense-temperate-forest-flora-dandelion-clump-e7e170ed
+- 3dassets-radio-telescope-array-and-field-station-scrub-clump-280b15bf
+- 3dassets-exotic-wildlife-hd-savanna-grass-clump-390b90a6
+- 3dassets-dense-temperate-forest-flora-reed-clump-467f08af
+- 3dassets-hot-air-balloon-festival-field-tree-clump-a4c9bb07
+- 3dassets-medieval-mmo-starter-realm-fern-clump-7ebeffc4
+- 3dassets-birds-and-reptiles-hd-reed-clump-ec55c985
+- 3dassets-temperate-forest-ecology-wood-sedge-clump-9f0b2abd
+- 3dassets-caravan-park-and-campsite-tree-clump-dbb974b7
+- 3dassets-city-park-and-playground-shrub-clump-6f521139
+- 3dassets-lawn-mowing-simulator-kit-dandelion-clump-8d61d1ae
+- 3dassets-outback-and-australian-wildlife-spinifex-clump-9db0e241
+- 3dassets-golf-course-and-clubhouse-shrub-clump-23c1fb07
+- 3dassets-temperate-forest-ecology-heather-clump-d5cb5570
+- 3dassets-turning-seasons-tulip-clump-e6a56b00
+- 3dassets-safari-camp-and-bush-lodge-scrub-clump-ed89a8a0
+- 3dassets-underwater-reef-worlds-sea-lettuce-9e95e4af
+- 3dassets-japanese-school-and-city-street-cherry-tree-blossom-618a9f6d
+- 3dassets-japanese-school-and-city-street-cherry-tree-bare-b1e462cf
+- 3dassets-temperate-forest-ecology-wild-cherry-in-blossom-983af861
+- 3dassets-temperate-forest-ecology-blackthorn-in-blossom-a30caea4
+- 3dassets-dense-temperate-forest-flora-cherry-blossom-12744dc9
+- 3dassets-stylized-trees-and-rocks-kit-flower-white-patch-9ead5ba8
+- 3dassets-stylized-trees-and-rocks-kit-bush-flowering-6e410c7f
+- 3dassets-tropical-island-ecology-hibiscus-3fbeec87
+- 3dassets-tropical-island-ecology-morning-glory-runner-a13be759
+- 3dassets-dense-temperate-forest-flora-gorse-bush-43cbdb5d
+- 3dassets-fresh-produce-and-groceries-plum-4b5a5fb2
+- 3dassets-fantasy-mmo-city-and-townsfolk-city-broadleaf-tree-0328372c
+- 3dassets-racecourse-and-parade-ring-paddock-tree-91f358c4
+- 3dassets-gym-and-fitness-studio-weight-plate-tree-e1ac8322
+- 3dassets-greek-island-village-and-harbour-olive-tree-b7baf3c7
+- 3dassets-allotments-and-community-garden-orchard-tree-328296cc
+- 3dassets-velodrome-and-track-cycling-start-light-tree-e0508ddc
+- 3dassets-greek-island-village-and-harbour-fig-tree-15e48fe1
+- opengameart-big-stone-bridge
+- opengameart-modular-temple-3d-models
+- opengameart-modular-temple-3d-models-2
+- opengameart-dragon
+- opengameart-medieval-stone-temple
+- opengameart-stylized-nature-megakit
+- anthurium_botany_01
+- calathea_orbifolia_01
+- celandine_01
+- dandelion_01
+- didelta_spinosa
+- dry_branches_medium_01
+- othonna_cerarioides
+- pachira_aquatica_01
+- pastic_torch_6v
+- pine_sapling_medium
+- portable_welding_cart
+- propane_torch
+- propane_torch_02
+- searsia_burchellii
+- searsia_lucida
+- signal_flashlight
+- small_plastic_torch
+- vintage_flashlight
+- wild_rooibos_bush
 
-20:51:00 | INFO: Data are loaded, start creating Blender stuff
-20:51:00 | INFO: Blender create Mesh node Mesh
-20:51:00 | INFO: glTF import finished in 0.00s
-Blender 4.3.2 (hash 32f5fdce0a0a built 2024-12-17 01:31:14)
-
-Blender quit
-
-Traceback (most recent call last):
-  File "/home/runner/work/New-Conquer-Offline/New-Conquer-Offline/tools/normalize_asset_blender.py", line 66, in <module>
-    if any(not math.isfinite(x) or x<0.05 or x>80.0 for x in dims): raise RuntimeError("Bounding-box dimensions outside accepted 0.05m..80m range: "+str(dims))
-                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-RuntimeError: Bounding-box dimensions outside accepted 0.05m..80m range: [91.75540161132812, 85.47969818115234, 204.75140166282654]
-
-- weed_plant_02 (normalize): Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/weed_plant_02.glb (exists=True), metadata: /home/runner/work/New-Conquer-Offline/New-Conquer-Offline/assets/wuxia_imperial_pack/models/weed_plant_02.json (exists=False). Blender output:
-INFO Draco mesh compression is available, use library at /home/runner/work/_temp/blender/4.3/python/lib/python3.11/site-packages/libextern_draco.so
-20:51:59 | INFO: Starting glTF 2.0 export
-20:51:59 | INFO: Extracting primitive: Plane.001
-20:51:59 | WARNING: Image '<bpy_struct, Image("weed_plant_02_alpha.png") at 0x7f3f64774420>' has no size and cannot be exported.
-20:51:59 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
-20:51:59 | WARNING: Image '<bpy_struct, Image("weed_plant_02_rough.png") at 0x7f3f64775920>' has no size and cannot be exported.
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.003
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.033
-20:51:59 | WARNING: The active Vertex Color will not be exported, as it is not used in the node tree of the material
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.042
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.012
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.002
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.004
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.005
-20:51:59 | WARNING: The active Vertex Color will not be exported, as it is not used in the node tree of the material
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.006
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.007
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.008
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.009
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.010
-20:51:59 | WARNING: The active Vertex Color will not be exported, as it is not used in the node tree of the material
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.011
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.013
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.014
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.015
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.016
-20:51:59 | WARNING: The active Vertex Color will not be exported, as it is not used in the node tree of the material
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.017
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.018
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Finished glTF 2.0 export in 0.05969524383544922 s
-
-20:51:59 | INFO: Data are loaded, start creating Blender stuff
-20:51:59 | INFO: Blender create Mesh node Plane.001
-20:51:59 | INFO: Blender create Mesh node Plane.003
-20:51:59 | INFO: Blender create Mesh node Plane.033
-20:51:59 | INFO: Blender create Mesh node Plane.042
-20:51:59 | INFO: Blender create Mesh node Plane.012
-20:51:59 | INFO: Blender create Mesh node Plane.002
-20:51:59 | INFO: Blender create Mesh node Plane.004
-20:51:59 | INFO: Blender create Mesh node Plane.005
-20:51:59 | INFO: Blender create Mesh node Plane.006
-20:51:59 | INFO: Blender create Mesh node Plane.007
-20:51:59 | INFO: Blender create Mesh node Plane.008
-20:51:59 | INFO: Blender create Mesh node Plane.009
-20:51:59 | INFO: Blender create Mesh node Plane.010
-20:51:59 | INFO: Blender create Mesh node Plane.011
-20:51:59 | INFO: Blender create Mesh node Plane.013
-20:51:59 | INFO: Blender create Mesh node Plane.014
-20:51:59 | INFO: Blender create Mesh node Plane.015
-20:51:59 | INFO: Blender create Mesh node Plane.016
-20:51:59 | INFO: Blender create Mesh node Plane.017
-20:51:59 | INFO: Blender create Mesh node Plane.018
-20:51:59 | INFO: glTF import finished in 0.04s
-20:51:59 | INFO: Starting glTF 2.0 export
-20:51:59 | INFO: Extracting primitive: Plane.001
-20:51:59 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.003
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.033
-20:51:59 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.042
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.012
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.002
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.004
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.005
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.006
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.007
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.008
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.009
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.010
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.011
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.013
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.014
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.015
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.016
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.017
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Extracting primitive: Plane.018
-20:51:59 | INFO: Primitives created: 1
-20:51:59 | INFO: Finished glTF 2.0 export in 0.05744791030883789 s
-
-20:51:59 | INFO: Data are loaded, start creating Blender stuff
-20:51:59 | INFO: Blender create Mesh node Plane.001
-20:51:59 | INFO: Blender create Mesh node Plane.003
-20:51:59 | INFO: Blender create Mesh node Plane.033
-20:51:59 | INFO: Blender create Mesh node Plane.042
-20:51:59 | INFO: Blender create Mesh node Plane.012
-20:51:59 | INFO: Blender create Mesh node Plane.002
-20:51:59 | INFO: Blender create Mesh node Plane.004
-20:51:59 | INFO: Blender create Mesh node Plane.005
-20:51:59 | INFO: Blender create Mesh node Plane.006
-20:51:59 | INFO: Blender create Mesh node Plane.007
-20:51:59 | INFO: Blender create Mesh node Plane.008
-20:51:59 | INFO: Blender create Mesh node Plane.009
-20:51:59 | INFO: Blender create Mesh node Plane.010
-20:51:59 | INFO: Blender create Mesh node Plane.011
-20:51:59 | INFO: Blender create Mesh node Plane.013
-20:51:59 | INFO: Blender create Mesh node Plane.014
-20:51:59 | INFO: Blender create Mesh node Plane.015
-20:51:59 | INFO: Blender create Mesh node Plane.016
-20:51:59 | INFO: Blender create Mesh node Plane.017
-20:51:59 | INFO: Blender create Mesh node Plane.018
-20:51:59 | INFO: glTF import finished in 0.04s
-Blender 4.3.2 (hash 32f5fdce0a0a built 2024-12-17 01:31:14)
-Read blend: "/home/runner/work/New-Conquer-Offline/New-Conquer-Offline/.asset_work/raw/polyhaven/weed_plant_02.blend"
-
-Blender quit
-
-Traceback (most recent call last):
-  File "/home/runner/work/New-Conquer-Offline/New-Conquer-Offline/tools/normalize_asset_blender.py", line 69, in <module>
-    if mats!=materials_before: raise RuntimeError("Material count changed during GLB round-trip")
-                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-RuntimeError: Material count changed during GLB round-trip
-
+## Skipped legacy failures
+- pine_tree_01 (known_legacy_failure): Excluded from final run; prior download exceeded the configured size limit
+- opengameart-free-bamboo-v1 (known_legacy_failure): Excluded from final run; prior normalization failed
+- weed_plant_02 (known_legacy_failure): Excluded from final run; prior normalization failed
 
 ## Supplemental architecture candidates
 - Downloaded and normalized, but not approved for city placement until visual style review.
@@ -635,9 +463,9 @@ RuntimeError: Material count changed during GLB round-trip
 ## Hugging Face verification
 - Dataset: ZzwahwahzZ/clash-of-legends-terrain-assets
 - Verified files before final report update: 254
-- assets/wuxia_imperial_pack/ASSET_AUDIT_REPORT.md | 74657 bytes | SHA256 8544dad5e554f77ddc28353accac965e36b71745aa6d3aa350721d42c8ae80b5
-- assets/wuxia_imperial_pack/imperial_approved_assets.json | 369570 bytes | SHA256 25fb77b45aae6e4257d03f4411c261927bc36e1b9c252b0babd7534a6b88f2a7
-- assets/wuxia_imperial_pack/manifest.json | 324878 bytes | SHA256 18d3a557ce53dabd832a3c575e79e8dbc0332fcc8e1afad2d9d63657ebcf5213
+- assets/wuxia_imperial_pack/ASSET_AUDIT_REPORT.md | 53909 bytes | SHA256 428733d3674beb40890ca98bedfea5808d1b44c8ef4ff21010de8f1778ef687c
+- assets/wuxia_imperial_pack/imperial_approved_assets.json | 380410 bytes | SHA256 63bdf7ac4ee48fd94351ec10700cd9c591fbb83601166956379e29dc1777e969
+- assets/wuxia_imperial_pack/manifest.json | 334315 bytes | SHA256 bf3a8ed84cd0d0e8f5ae729e9241e549748655520dac77bb45ef6b64f10cee87
 - assets/wuxia_imperial_pack/models/grass_medium_02.glb | 531540 bytes | SHA256 229c5b6886203717f69ee3d3f2473c8353d3b0613c80564622aa36f950d16ca3
 - assets/wuxia_imperial_pack/models/3dassets-korean-hanok-village-and-street-exposed-rafter-set-2923ce1a.glb | 21364 bytes | SHA256 c04ae4504cde3822cfeb4d2ba56b437c492f50979e0450bafd15c798fecd7eea
 - assets/wuxia_imperial_pack/models/3dassets-imperial-china-palace-and-garden-covered-walkway-bay-a5e8e636.glb | 105260 bytes | SHA256 315cddcda4beb86e0aa96a2abb2c04244726e2470f43f6ccfad9d876c9c2b626
