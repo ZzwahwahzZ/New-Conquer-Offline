@@ -65,6 +65,9 @@ def discover_opengameart(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
 def discover_quaternius(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
     """Try official Quaternius pack pages. Only use direct file links actually exposed by the live page."""
     packs = [
+        {"slug":"simple-buildings-pack","page":"https://quaternius.com/packs/simplebuildings.html","creator":"Quaternius"},
+        {"slug":"buildings-pack","page":"https://quaternius.com/packs/buildings.html","creator":"Quaternius"},
+        {"slug":"medieval-village-pack","page":"https://quaternius.com/packs/medievalvillage.html","creator":"Quaternius"},
         {"slug":"ultimate-nature-pack","page":"https://quaternius.com/packs/ultimatenature.html","creator":"Quaternius"},
         {"slug":"stylized-nature-megakit-official","page":"https://quaternius.com/packs/stylizednaturemegakit.html","creator":"Quaternius"},
     ]
