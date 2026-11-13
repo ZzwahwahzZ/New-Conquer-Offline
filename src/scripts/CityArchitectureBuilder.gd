@@ -90,7 +90,7 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, heigh
 
 static func _build_urban_alley_multimeshes(parent: Node3D, city: String, material: Material) -> void:
  var terrain_image := WorldTerrainBuilder.load_height_image(city)
- var alley_lines := [-65.45,-39.25,-13.05,13.05,39.25,65.45]
+ var alley_lines := [-9.0,9.0]
  var segment_centers := [-72.0,-58.9,-45.8,-32.7,-19.6,-6.5,6.5,19.6,32.7,45.8,58.9,72.0]
  var alley_mesh := BoxMesh.new()
  alley_mesh.size = Vector3(5.0,0.14,22.0)
