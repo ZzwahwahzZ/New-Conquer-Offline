@@ -103,12 +103,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb xorg xz-utils
-      - name: Diagnose scripts and material resources independently before editor import
-        shell: bash
-        run: |
-          set -euo pipefail
-          godot --headless --audio-driver Dummy --path . --script res://tools/diagnose_scripts_materials.gd
-
       - name: Step 1 - Initialize Editor Classes
         shell: bash
         timeout-minutes: 15
@@ -117,6 +111,12 @@ jobs:
           python3 tools/godot_import_guard.py --editor-classes --godot godot --project . --log reports/editor_classes.log
           test -s .godot/global_script_class_cache.cfg
           echo "EDITOR_CLASSES_INITIALIZATION_PASS"
+
+      - name: Diagnose scripts and material resources after global class initialization
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot --headless --audio-driver Dummy --path . --script res://tools/diagnose_scripts_materials.gd
 
       - name: Step 2 - Import Scripts, Materials & Build
         shell: bash
