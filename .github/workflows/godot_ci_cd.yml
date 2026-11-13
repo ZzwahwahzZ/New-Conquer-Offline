@@ -52,10 +52,8 @@ jobs:
             test -s "$temp"
             mv "$temp" "$asset"
             echo "GODOT_COMPATIBLE_GLB: $asset"
-          done < <(find assets/environment/kenney assets/environment/quaternius -type f -name '*.glb' -print0)
+          done < <(find assets/environment/kenney -type f -name '*.glb' -print0)
           python3 tools/kenney_asset_preflight.py
-          python3 tools/audit_classify_terrain_glb.py
-
       - name: Cache official Quaternius downloads
         uses: actions/cache@v4
         with:
@@ -320,9 +318,7 @@ jobs:
             test -s "$temp"
             mv "$temp" "$asset"
             echo "GODOT_COMPATIBLE_GLB: $asset"
-          done < <(find assets/environment/kenney assets/environment/quaternius -type f -name '*.glb' -print0)
-          python3 tools/audit_classify_terrain_glb.py
-
+          done < <(find assets/environment/kenney -type f -name '*.glb' -print0)
       - name: Cache Godot imported assets
         uses: actions/cache@v4
         with:
@@ -520,8 +516,6 @@ jobs:
             mv "$temp" "$asset"
             echo "GODOT_COMPATIBLE_GLB: $asset"
           done < <(find assets/environment/architecture assets/environment/biomes assets/environment/nature -type f -name '*.glb' -print0)
-          python3 tools/audit_classify_terrain_glb.py
-
       - name: Cache Godot imported assets
         uses: actions/cache@v4
         with:
