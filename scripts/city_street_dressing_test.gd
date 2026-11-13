@@ -208,7 +208,7 @@ func _run() -> void:
 				wall_count += 1
 			if fort_node.name == "KenneyGateModel":
 				kenney_gate_count += 1
-			if fort_node.name == "KenneyTowerModel":
+			if str(fort_node.name).begins_with("KenneyTowerModel_"):
 				kenney_tower_count += 1
 			if fort_node.name.begins_with("KenneyMarketStall_"):
 				kenney_stall_count += 1
