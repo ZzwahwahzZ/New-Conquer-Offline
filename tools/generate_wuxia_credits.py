@@ -52,7 +52,7 @@ def main():
  "",
  "## CC-BY source handling",
  "",
- "The download and attribution pipeline accepts CC-BY when the source API supplies a verified license and creator record. No Sketchfab or OpenGameArt model is represented as included until its actual file, license and author metadata have been downloaded and validated. No guessed or placeholder creator credits are used.",
+ "The download and attribution pipeline accepts CC-BY when the source API supplies a verified license and creator record. OpenGameArt modular temple parts included above are downloaded and validated. Sketchfab models are not represented as included until their actual files, license and author metadata have been downloaded and validated. No guessed or placeholder creator credits are used.",
  "",
  "## Texture author notes",
  "",
