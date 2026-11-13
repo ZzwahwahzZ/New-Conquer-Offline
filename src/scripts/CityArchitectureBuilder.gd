@@ -392,30 +392,84 @@ static func _add_chinese_building_details(root: Node3D, p: Dictionary, width: fl
 		var tier_width := (width + 1.2) * (1.0 if tier == 0 else 0.76)
 		var tier_depth := (depth + 1.2) * (1.0 if tier == 0 else 0.76)
 		var tier_y := 0.16 + float(tier) * 0.78
+		var panel_mesh := BoxMesh.new()
+		panel_mesh.size = Vector3(tier_width*0.56,0.42,tier_depth)
+		var panels := MultiMesh.new()
+		panels.transform_format = MultiMesh.TRANSFORM_3D
+		panels.mesh = panel_mesh
+		panels.instance_count = 2
+		var panel_index := 0
 		for side in [-1.0,1.0]:
-			var panel := _box(roof_root,"ChineseSlopedRoofPanel_%d" % tier,Vector3(side*tier_width*0.22,tier_y,0.0),Vector3(tier_width*0.56,0.42,tier_depth),roof_material,1.0)
-			panel.rotation.z = side*0.22
+			panels.set_instance_transform(panel_index,Transform3D(Basis(Vector3(0,0,1),side*0.22),Vector3(side*tier_width*0.22,tier_y,0.0)))
+			panel_index += 1
+		var panel_batch := MultiMeshInstance3D.new()
+		panel_batch.name = "ChineseSlopedRoofPanels_%d" % tier
+		panel_batch.multimesh = panels
+		panel_batch.material_override = roof_material
+		roof_root.add_child(panel_batch)
+		var rib_mesh := BoxMesh.new()
+		rib_mesh.size = Vector3(0.13,0.12,tier_depth*0.94)
+		var ribs := MultiMesh.new()
+		ribs.transform_format = MultiMesh.TRANSFORM_3D
+		ribs.mesh = rib_mesh
+		ribs.instance_count = 10
+		var rib_index := 0
+		for side in [-1.0,1.0]:
 			for rib in range(5):
 				var rib_x := side*(tier_width*0.22 + float(rib)*tier_width*0.06)
-				var rib_node := _box(roof_root,"ChineseRaisedTileRib_%d" % tier,Vector3(rib_x,tier_y+0.22,0.0),Vector3(0.13,0.12,tier_depth*0.94),gold_material if rib in [0,4] else roof_material,1.0)
-				rib_node.rotation.z = side*0.22
-			var eave := _box(roof_root,"ChineseUpturnedEave_%d" % tier,Vector3(side*tier_width*0.49,tier_y+0.1,0.0),Vector3(1.25,0.24,0.72),gold_material,1.0)
-			eave.rotation.z = -side*0.28
+				ribs.set_instance_transform(rib_index,Transform3D(Basis(Vector3(0,0,1),side*0.22),Vector3(rib_x,tier_y+0.22,0.0)))
+				rib_index += 1
+		var rib_batch := MultiMeshInstance3D.new()
+		rib_batch.name = "ChineseRoofTileRibs_%d" % tier
+		rib_batch.multimesh = ribs
+		rib_batch.material_override = gold_material
+		roof_root.add_child(rib_batch)
+		var eave_mesh := BoxMesh.new()
+		eave_mesh.size = Vector3(1.25,0.24,0.72)
+		var eaves := MultiMesh.new()
+		eaves.transform_format = MultiMesh.TRANSFORM_3D
+		eaves.mesh = eave_mesh
+		eaves.instance_count = 4
+		var eave_index := 0
+		for side in [-1.0,1.0]:
+			for depth_side in [-1.0,1.0]:
+				eaves.set_instance_transform(eave_index,Transform3D(Basis(Vector3(0,0,1),-side*0.28),Vector3(side*tier_width*0.49,tier_y+0.1,depth_side*tier_depth*0.48)))
+				eave_index += 1
+		var eave_batch := MultiMeshInstance3D.new()
+		eave_batch.name = "ChineseUpturnedEaves_%d" % tier
+		eave_batch.multimesh = eaves
+		eave_batch.material_override = gold_material
+		roof_root.add_child(eave_batch)
 		_box(roof_root,"ChineseGoldenRoofRidge_%d" % tier,Vector3(0.0,tier_y+0.32,0.0),Vector3(tier_width*0.72,0.18,0.42),gold_material,1.0)
-	for side in [-1.0,1.0]:
-		_box(root,"ChineseFacadeTimberColumn",Vector3(side*width*0.36,height*0.45,depth*0.5+0.14),Vector3(0.42,height*0.9,0.42),timber_material,1.0)
+	var pillar_mesh := BoxMesh.new()
+	pillar_mesh.size = Vector3(0.42,height*0.9,0.42)
+	var pillars := MultiMesh.new()
+	pillars.transform_format = MultiMesh.TRANSFORM_3D
+	pillars.mesh = pillar_mesh
+	pillars.instance_count = 2
+	pillars.set_instance_transform(0,Transform3D(Basis.IDENTITY,Vector3(-width*0.36,height*0.45,depth*0.5+0.14)))
+	pillars.set_instance_transform(1,Transform3D(Basis.IDENTITY,Vector3(width*0.36,height*0.45,depth*0.5+0.14)))
+	var pillar_batch := MultiMeshInstance3D.new()
+	pillar_batch.name = "ChineseFacadeColumns"
+	pillar_batch.multimesh = pillars
+	pillar_batch.material_override = timber_material
+	root.add_child(pillar_batch)
 	_box(root,"ChineseRedTimberDoor",Vector3(0.0,1.7,depth*0.5+0.22),Vector3(2.1,3.4,0.22),door_material,1.0)
 	_box(root,"ChineseGoldenDoorFrame",Vector3(0.0,3.52,depth*0.5+0.28),Vector3(2.65,0.18,0.12),gold_material,1.0)
-	for side in [-1.0,1.0]:
-		var lantern := MeshInstance3D.new()
-		lantern.name = "ChineseFacadeRedLantern"
-		var lantern_mesh := SphereMesh.new()
-		lantern_mesh.radius = 0.24
-		lantern_mesh.height = 0.5
-		lantern.mesh = lantern_mesh
-		lantern.position = Vector3(side*width*0.43,height*0.72,depth*0.5+0.32)
-		root.add_child(lantern)
-		lantern.material_override = lantern_material
+	var lantern_mesh := SphereMesh.new()
+	lantern_mesh.radius = 0.24
+	lantern_mesh.height = 0.5
+	var lanterns := MultiMesh.new()
+	lanterns.transform_format = MultiMesh.TRANSFORM_3D
+	lanterns.mesh = lantern_mesh
+	lanterns.instance_count = 2
+	lanterns.set_instance_transform(0,Transform3D(Basis.IDENTITY,Vector3(-width*0.43,height*0.72,depth*0.5+0.32)))
+	lanterns.set_instance_transform(1,Transform3D(Basis.IDENTITY,Vector3(width*0.43,height*0.72,depth*0.5+0.32)))
+	var lantern_batch := MultiMeshInstance3D.new()
+	lantern_batch.name = "ChineseFacadeRedLanterns"
+	lantern_batch.multimesh = lanterns
+	lantern_batch.material_override = lantern_material
+	root.add_child(lantern_batch)
 
 static func _renderable_world_bounds(root_node: Node) -> AABB:
  var combined := AABB()
