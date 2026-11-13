@@ -1,8 +1,8 @@
 {
   "dataset": "ZzwahwahzZ/clash-of-legends-terrain-assets",
   "approved_manifest_sha256": "f3da3fbbdcd41bc6610dcb0e45434da7adf9900cdddb5d26160d351165d8f0b5",
-  "restored_files": 32,
-  "restored_glb_models": 20,
+  "restored_files": 76,
+  "restored_glb_models": 64,
   "restored_pbr_textures": 12,
   "files": [
     {
@@ -18,6 +18,13 @@
       "file": "models/3dassets-imperial-china-palace-and-garden-water-pavilion-477e41ba.glb",
       "sha256": "bab023dbb43ed24d45cc1f445519afe55c9b7e549ebabfa5936b1d60b5163ddd",
       "bytes": 182840
+    },
+    {
+      "name": "Walled palace courtyard and lotus garden (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-walled--b51639b8-starter-scene.glb",
+      "sha256": "a8dd1f1be87a140e7c1416d05ba35cf29a4407d4bc52904a5e8478a01a600f7e",
+      "bytes": 4266212
     },
     {
       "name": "Lotus pond pavilion (Imperial China Palace and Garden)",
@@ -55,11 +62,39 @@
       "bytes": 84524
     },
     {
+      "name": "Palace Wall End Pier (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-palace-wall-end-pier-21da0954.glb",
+      "sha256": "69d1a316ac9ed6bad1d5c954f1a7173918fa914b413656b7d4521cf372e781b9",
+      "bytes": 31188
+    },
+    {
+      "name": "Covered Walkway Bay (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-covered-walkway-bay-a5e8e636.glb",
+      "sha256": "315cddcda4beb86e0aa96a2abb2c04244726e2470f43f6ccfad9d876c9c2b626",
+      "bytes": 105260
+    },
+    {
+      "name": "Covered Walkway Corner (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-covered-walkway-corne-b66b3357.glb",
+      "sha256": "afa32561dcf64a4e2255f7045ecb9f032ffe92ce98cf32a8551c15dc50f78265",
+      "bytes": 103868
+    },
+    {
       "name": "Arched Stone Bridge (Imperial China Palace and Garden)",
       "style_group": "imperial_chinese",
       "file": "models/3dassets-imperial-china-palace-and-garden-arched-stone-bridge-f54cac4b.glb",
       "sha256": "3e5c0285931879a032cd51641d9d8e8de9c4bbc1c704452a9e329ee3cd35aafd",
       "bytes": 65076
+    },
+    {
+      "name": "Courtyard Paving Module (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-courtyard-paving-modu-1ccb86aa.glb",
+      "sha256": "ea1301886cbc776325dfb083d5de316e14eeaf6331ab781d9ec3c1919d2f8faa",
+      "bytes": 53592
     },
     {
       "name": "Terrace Platform Module (Imperial China Palace and Garden)",
@@ -76,11 +111,60 @@
       "bytes": 38332
     },
     {
+      "name": "Stone Balustrade Run (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-stone-balustrade-run-3cdcc00b.glb",
+      "sha256": "99073eba0495a36bd8e2cb32b12db0126194e198eb7f745dbe35f4d43023daf3",
+      "bytes": 27208
+    },
+    {
+      "name": "Lacquered Column And Bracket (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-lacquered-column-and--c9255e03.glb",
+      "sha256": "860ee4efc22965ae99e52df5bf4ec16f4a61d6079f9cc8694f2101cb46264fff",
+      "bytes": 43800
+    },
+    {
+      "name": "Bracket Set Cluster (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-bracket-set-cluster-16f17a49.glb",
+      "sha256": "1976b6999fbbbd3bdb90b5f871209f4880c4f7db400438c1801837358a23875c",
+      "bytes": 35692
+    },
+    {
+      "name": "Roof Cassette Hip (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-roof-cassette-hip-2c2e4e52.glb",
+      "sha256": "f15a135d6d9c74ce24652b38c7bd02fe5cc77b0d4a1f93065bf2a7499aa752c5",
+      "bytes": 21156
+    },
+    {
+      "name": "Roof Ridge Run (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-roof-ridge-run-84174949.glb",
+      "sha256": "b0f4b56b8c61013a53a15ae492a6adb6f84d94cb07cf27d789892afc3cea5ffb",
+      "bytes": 11540
+    },
+    {
+      "name": "Latticed Screen Door Set (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-latticed-screen-door--252408e2.glb",
+      "sha256": "186e8a4170eae410375f7d25ea7853929d38d273a25edf932cc4f773bdfdd382",
+      "bytes": 110220
+    },
+    {
       "name": "Dragon Roof Finial (Imperial China Palace and Garden)",
       "style_group": "imperial_chinese",
       "file": "models/3dassets-imperial-china-palace-and-garden-dragon-roof-finial-7dd7653a.glb",
       "sha256": "d669b0fceb234687163e5cac4361a28d408884e8c26193f339e542cd3382b068",
       "bytes": 44704
+    },
+    {
+      "name": "Scholars Stone (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-scholars-stone-05403e94.glb",
+      "sha256": "7843a86dd8ccf0b3a0eeb39a9f74f995d29aa03b3d78591e5a0aa2fa2d802451",
+      "bytes": 58164
     },
     {
       "name": "Standing Garden Lantern (Imperial China Palace and Garden)",
@@ -97,6 +181,34 @@
       "bytes": 37904
     },
     {
+      "name": "Floating Water Lantern (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-floating-water-lanter-5d8204d4.glb",
+      "sha256": "a1493471ab72a7271c14663cba018849d9a0a26f8d31abb15606ac9a5dfc72a6",
+      "bytes": 41284
+    },
+    {
+      "name": "Stone Incense Burner (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-stone-incense-burner-68da1dc2.glb",
+      "sha256": "402af6cce6d17e6393438b04a947cedd849dd411a9fe78424e75e91a69e832d5",
+      "bytes": 29640
+    },
+    {
+      "name": "Bronze Tripod Cauldron (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-bronze-tripod-cauldro-97a938c4.glb",
+      "sha256": "0045769cf32eb969dacb8411f7c321ad9db41ce705708d62a4389b03ebc3d87d",
+      "bytes": 132008
+    },
+    {
+      "name": "Courtyard Well (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-courtyard-well-9fb10316.glb",
+      "sha256": "5e6e29313ec58fe301a0e82356a8e78d4f8fede5c727c1226d3659333feaa4a5",
+      "bytes": 43576
+    },
+    {
       "name": "Imperial Throne Chair (Imperial China Palace and Garden)",
       "style_group": "imperial_chinese",
       "file": "models/3dassets-imperial-china-palace-and-garden-imperial-throne-chair-ddfa68c5.glb",
@@ -104,11 +216,179 @@
       "bytes": 108444
     },
     {
+      "name": "Throne Footstool (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-throne-footstool-b00e5767.glb",
+      "sha256": "cf3f042d40afdaceabc250033d693d02403c7869a976ba2d3f0c4de932e04b34",
+      "bytes": 36572
+    },
+    {
+      "name": "Low Tea Table (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-low-tea-table-44124ae8.glb",
+      "sha256": "f33639e1f7f42e4d816b51a7a321870327d2608a8796995f7c23f08335b644e7",
+      "bytes": 35112
+    },
+    {
+      "name": "Tea Set On Tray (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-tea-set-on-tray-b6d3f48a.glb",
+      "sha256": "6508ec5d2ef5651bd9911aa2887b52c6d9717e54f4a3f0605011b9811849ff21",
+      "bytes": 45316
+    },
+    {
+      "name": "Guqin On Stand (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-guqin-on-stand-ba936ac2.glb",
+      "sha256": "393912f2e2139c162592c5353d7ac847dc733163617cd80b85b26b0e2969418a",
+      "bytes": 55852
+    },
+    {
+      "name": "Calligraphy Brush Stand (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-calligraphy-brush-sta-2ce8f5d6.glb",
+      "sha256": "eb2cb1cdb71613d56e5b6673c9c5ceb0a739bebfa959dc52393d7c291a82e2a5",
+      "bytes": 44952
+    },
+    {
+      "name": "Inkstone And Water Dropper (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-inkstone-and-water-dr-df828331.glb",
+      "sha256": "43202632efa2008d3880c13a31957f67be28614ed379722f99c488d87b0dfe6c",
+      "bytes": 19192
+    },
+    {
+      "name": "Scroll Rack (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-scroll-rack-f7fd0af5.glb",
+      "sha256": "20620cb5b4757a28aa229fb92af8ad5fa0b5fd6e7c614f53bc0c183fae9c99bf",
+      "bytes": 102648
+    },
+    {
+      "name": "Folding Screen (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-folding-screen-5a8651b3.glb",
+      "sha256": "c2e1fb0460c5775c7ed346c8c00722e40b8bd451b882d66a44f7d04b91508ebe",
+      "bytes": 104772
+    },
+    {
+      "name": "Hanging Scroll Pair (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-hanging-scroll-pair-81f2dffc.glb",
+      "sha256": "ce8364d472550d39aba3128eb01bf2a3c6d81fa1f280be936c4cf68e6084b108",
+      "bytes": 29964
+    },
+    {
+      "name": "Ceremonial Banner Pole (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-ceremonial-banner-pol-5795ed1a.glb",
+      "sha256": "0ac32b8cbdca1cba7555f745b5dafdd1bcb1d57d985c56e7ed9f2a210905c6e1",
+      "bytes": 21236
+    },
+    {
+      "name": "Pennant Pair On Poles (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-pennant-pair-on-poles-2d4a0f4c.glb",
+      "sha256": "7269ef6464df08e5f3235793e6c60833054a52f2e33d22f67fbf4a41a8071d48",
+      "bytes": 25268
+    },
+    {
       "name": "Guardian Lion Pair (Imperial China Palace and Garden)",
       "style_group": "imperial_chinese",
       "file": "models/3dassets-imperial-china-palace-and-garden-guardian-lion-pair-58194b81.glb",
       "sha256": "b0e8a705f792c4f81370ce0bc4e5e9db3da0836de1b84f0352f029b12780b3ac",
       "bytes": 136548
+    },
+    {
+      "name": "Polearm Weapon Rack (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-polearm-weapon-rack-b76c138a.glb",
+      "sha256": "1b19831d553eca292c58054f996929028d70b299c91b8a44ef15c413b249a964",
+      "bytes": 85576
+    },
+    {
+      "name": "Training Dummy (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-training-dummy-6fdfc7e8.glb",
+      "sha256": "138dc2db191c7d9c26c0d38d2f42e8e1ba3ea8f83f013632553d75802c307031",
+      "bytes": 35140
+    },
+    {
+      "name": "Ceremonial Drum On Stand (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-ceremonial-drum-on-st-66581778.glb",
+      "sha256": "b7137b74bfa0ad03a8a2f5b9c558647df22c74a34f3689e5053cb9a25e5cf7d0",
+      "bytes": 47792
+    },
+    {
+      "name": "Bronze Bell On Frame (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-bronze-bell-on-frame-7d2d169b.glb",
+      "sha256": "4e031a9cd0a80f1d95c45de6147c19b3fb8ca2503df455fe29d2f777a146b73a",
+      "bytes": 61848
+    },
+    {
+      "name": "Lacquer Storage Chest (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-lacquer-storage-chest-d4266bd5.glb",
+      "sha256": "c9045cce470cc31de58b5081d763b665b2d7842cb8044d2acc58453431721045",
+      "bytes": 51568
+    },
+    {
+      "name": "Scholars Writing Desk (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-scholars-writing-desk-6b32813c.glb",
+      "sha256": "a47e86757569e9da7c6a200b03be503fb8d89bba57ce8e325e997c9b3a53d998",
+      "bytes": 35012
+    },
+    {
+      "name": "Floor Cushion Set (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-floor-cushion-set-5e179f9f.glb",
+      "sha256": "d97683b9f126a1053100df177b2856747d2c4fb92ef393a4b6bc6e98aca9ee36",
+      "bytes": 36264
+    },
+    {
+      "name": "Ancestral Altar Table (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-ancestral-altar-table-d4f28bab.glb",
+      "sha256": "a652004a33debe828c4f1ba258faba0eeb3e3958c1c3acdd9b8f731245be2e39",
+      "bytes": 58672
+    },
+    {
+      "name": "Bronze Brazier Stand (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-bronze-brazier-stand-b637e423.glb",
+      "sha256": "fb832b149e859bf2e7955b0583a554c87bc062273699f1eec86688f7279fd55d",
+      "bytes": 88048
+    },
+    {
+      "name": "Ceremonial Parasol (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-ceremonial-parasol-cea9c970.glb",
+      "sha256": "3aac603b04de7575b0ca07f1f5b916fe889956f205e7b1d209f1283cf8b27a0a",
+      "bytes": 38588
+    },
+    {
+      "name": "Rockery Outcrop (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-rockery-outcrop-a70f96c4.glb",
+      "sha256": "272abddce24cf04194c8af4d46df21a9a286a5a421ad389c72e9ca9a7ccc53f0",
+      "bytes": 37212
+    },
+    {
+      "name": "Lotus Pond Edge Straight (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-lotus-pond-edge-strai-4d658d99.glb",
+      "sha256": "19ffac8d8baebaaa52050066bd2156a3dc859eeefd27e3012c17e9e4e0a89e4c",
+      "bytes": 18588
+    },
+    {
+      "name": "Lotus Pond Edge Corner (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-lotus-pond-edge-corne-f573f9fb.glb",
+      "sha256": "5c9aa07815b009d8b98c9d6277f741e2204c39f1409ae0d8ec5cc1d65166e4a8",
+      "bytes": 22332
     },
     {
       "name": "Pond Water Module (Imperial China Palace and Garden)",
@@ -125,6 +405,13 @@
       "bytes": 58124
     },
     {
+      "name": "Bonsai In Glazed Pot (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-bonsai-in-glazed-pot-e0f303fa.glb",
+      "sha256": "a9137f4df9a51fbd6b815f8c49f885265a4b47a951f09aadd216449518568d8c",
+      "bytes": 57056
+    },
+    {
       "name": "Bamboo Clump (Imperial China Palace and Garden)",
       "style_group": "imperial_chinese",
       "file": "models/3dassets-imperial-china-palace-and-garden-bamboo-clump-66640906.glb",
@@ -137,6 +424,27 @@
       "file": "models/3dassets-imperial-china-palace-and-garden-plum-tree-in-blossom-b09709bd.glb",
       "sha256": "c8fa457292863c3ff5874ca81d44b0c20271b779392d796b324a6238cac97272",
       "bytes": 100220
+    },
+    {
+      "name": "Garden Stone Bench (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-garden-stone-bench-aa1e1d1c.glb",
+      "sha256": "cdea623b881a9fd92d40ffd6219bd224c9e4eb3b5658a3eeb41ced2036d3de0f",
+      "bytes": 14996
+    },
+    {
+      "name": "Stepping Stone Path (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-stepping-stone-path-d1017407.glb",
+      "sha256": "562fdd8d9316f8b6e456022d90a44fc8ff3e32a4f21e179777a4226f8c51d79c",
+      "bytes": 27276
+    },
+    {
+      "name": "Peony Planter (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-peony-planter-f6018406.glb",
+      "sha256": "daf10d7d049e3a374826c76ef3ba943f255c10e1f4d61cab44aefe72f91ded93",
+      "bytes": 77376
     },
     {
       "name": "Pine Tree (Wipe Day Survival Island)",

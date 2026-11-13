@@ -1,9 +1,10 @@
 {
 	"architecture_style": "imperial_chinese",
-	"average_fps_after_capture": 2,
+	"average_fps_after_capture": 3,
 	"box_mesh_count": 0,
 	"bridges": 4,
-	"buildings": 92,
+	"building_types": 3,
+	"buildings": 28,
 	"capture_mode": "Godot 4.3 Xvfb OpenGL Compatibility",
 	"city_core_m": 170,
 	"directional_gates": 4,
