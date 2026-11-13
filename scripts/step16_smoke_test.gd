@@ -112,6 +112,11 @@ func _run() -> void:
 		var chinese_wall_count := _count_group_recursive(city, "city_chinese_perimeter_wall")
 		var watchtower_count := _count_group_recursive(city, "imperial_watchtowers")
 		var market_stall_count := _count_group_recursive(city, "city_market_stall")
+		var garden_lantern_count := _count_group_recursive(city, "imperial_plaza_garden_lanterns")
+		var garden_light_count := _count_group_recursive(city, "imperial_plaza_garden_lights")
+		var lotus_pond_count := _count_group_recursive(city, "imperial_plaza_lotus_pond")
+		var incense_burner_count := _count_group_recursive(city, "imperial_plaza_incense_burners")
+		var rockery_count := _count_group_recursive(city, "imperial_plaza_rockery")
 		if not _require(building_count >= 85 and building_count <= 100 and imported_building_count >= 85 and imported_building_count <= 100 and outside_core_count == 0, "%s generated %d buildings (%d imported); outside 170m core=%d; expected 85-100 entirely inside +/-85m" % [city_id, building_count, imported_building_count, outside_core_count]):
 			return
 		if not _require(tree_instance_count == 60, "%s generated %d/60 real tree instances in MultiMesh batches" % [city_id, tree_instance_count]):
@@ -123,6 +128,8 @@ func _run() -> void:
 		if not _require(watchtower_count == 4, "%s generated %d/4 Chinese corner watchtowers" % [city_id, watchtower_count]):
 			return
 		if not _require(market_stall_count == 4, "%s generated %d/4 imported Asian market stalls" % [city_id, market_stall_count]):
+			return
+		if not _require(garden_lantern_count == 4 and garden_light_count == 4 and lotus_pond_count == 1 and incense_burner_count == 2 and rockery_count == 1, "%s imperial garden props incomplete: lanterns=%d lights=%d ponds=%d burners=%d rockery=%d" % [city_id, garden_lantern_count, garden_light_count, lotus_pond_count, incense_burner_count, rockery_count]):
 			return
 		if city_id in ["TwinCity","Waterlands"] and not _require(chinese_bridge_count >= 6, "%s generated %d/6 authentic arched Chinese bridges" % [city_id, chinese_bridge_count]):
 			return
