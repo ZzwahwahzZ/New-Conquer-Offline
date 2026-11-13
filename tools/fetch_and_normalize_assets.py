@@ -138,7 +138,7 @@ def process():
      dst=OUT/"models"/(safe(r["id"])+(("_"+str(i)) if i else "")+".glb"); dst.parent.mkdir(parents=True,exist_ok=True)
      m=blender(src,dst); OK.append({**r,"kind":"model","file":str(dst),"dimensions_m":m["dimensions_m"],"validation":m})
     for c,t in r["matches"]:
-     if t in MISSING.get(c,[]): MISSING[c].remove(t)
+     if t not in COVERED.setdefault(c,[]): COVERED[c].append(t)
    elif r["source"]=="ambientCG":
     dest=OUT/"textures"/safe(r["id"]); dest.mkdir(parents=True,exist_ok=True); copied=[]
     for src in fs:
