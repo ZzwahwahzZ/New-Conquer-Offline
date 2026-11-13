@@ -194,7 +194,7 @@ def process():
    priority={".glb":0,".gltf":1,".blend":2,".fbx":3,".obj":4,".dae":5,".stl":6,".ply":7}
    models.sort(key=lambda x:(priority.get(x.suffix.lower(),99),str(x).lower()))
    if r.get("source") == "Quaternius":
-    models=[x for x in models if asset_category(r,x.name)=="houses_and_shops" and not rejected_asset({"id":r.get("id",""),"name":x.name})]
+    models=[x for x in models if asset_category({"id":x.name,"name":x.name},x.name)=="houses_and_shops" and not rejected_asset({"id":r.get("id",""),"name":x.name})]
    if models:
     for i,src in enumerate(models[:80]):
      dst=OUT/"models"/(safe(r["id"])+(("_"+str(i)) if i else "")+".glb"); dst.parent.mkdir(parents=True,exist_ok=True)
@@ -225,7 +225,7 @@ def builddocs(blenderver):
   paths=r.get("files") or [r["file"]]
   for f in paths:
    p=Path(f); category=asset_category(r,p.name)
-   if not category or rejected_asset({"id":r.get("id"),"name":r.get("name"),"source":r.get("source"),"source_url":r.get("source_url"),"matches":r.get("matches")}):
+   if not category or rejected_asset({"id":r.get("id"),"name":r.get("name"),"source":r.get("source"),"source_url":r.get("source_url"),"matches":r.get("matches"),"tags":p.name}):
     continue
    item={"asset_id":r["id"],"name":r["name"],"category":category,"file":p.relative_to(OUT).as_posix(),"source":r["source"],"source_url":r["source_url"],"direct_download_url":r.get("download_url"),"license":r["license"],"authors":r["authors"],"dimensions_m":r.get("dimensions_m"),"bytes":p.stat().st_size,"sha256":sha(p),"validation":r["validation"]}
    entries.append(item); grouped[category].append(item)
@@ -236,7 +236,7 @@ def builddocs(blenderver):
  counts={k:len(v) for k,v in grouped.items()}
  manifest={"schema_version":"1.0","generated_at_utc":datetime.now(timezone.utc).isoformat(),"blender_version":blenderver,"assets":entries}
  (OUT/"manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
- approved={"schema_version":"1.0","generated_at_utc":manifest["generated_at_utc"],"units":"model dimensions are measured GLB bounding boxes in meters; PBR textures have no physical dimensions","categories":{k:{"count":len(v),"assets":v} for k,v in grouped.items()},"total_approved_files":len(entries)}
+ approved={"schema_version":"1.0","generated_at_utc":manifest["generated_at_utc"],"units":"model dimensions are measured GLB bounding boxes in meters; PBR textures have no physical dimensions","categories":{k:{"count":len(v),"assets":v} for k,v in grouped.items()},"total_approved_files":len(entries),"supplemental_candidates":[{"asset_id":r.get("id"),"name":r.get("name"),"source":r.get("source"),"source_url":r.get("source_url"),"license":r.get("license"),"status":"candidate_only_visual_style_review_required"} for r in OK if r.get("candidate_only")]}
  (OUT/"imperial_approved_assets.json").write_text(json.dumps(approved,ensure_ascii=False,indent=2))
  lines=["# Wuxia Imperial Asset Audit","","- Blender: "+blenderver,"- Discovered: "+str(len(DISC)),"- Downloaded: "+str(len(DOWN)),"- Validated source assets: "+str(len(OK)),"- Approved file entries: "+str(len(entries)),"- Category counts: "+json.dumps(counts,ensure_ascii=False),"- Errors: "+str(len(ERR)),"","## Approved files"]
  lines += ["- "+x["category"]+" | "+x["file"]+" | "+x["license"]+" | "+x["source"]+" | "+str(x["dimensions_m"] or "PBR texture set") for x in entries]
