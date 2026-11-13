@@ -7,6 +7,12 @@ var material_fail: int = 0
 var failures: Array[String] = []
 var report: FileAccess
 
+class DiagnosticNode extends Node:
+    var owner_tree: SceneTree
+
+    func _ready() -> void:
+        owner_tree.call_deferred("_scan_project")
+
 func _initialize() -> void:
     call_deferred("_start_node_diagnostic")
 
@@ -31,10 +37,10 @@ func _start_node_diagnostic() -> void:
         _finish()
         return
 
-    var diagnostic_node := Node.new()
+    var diagnostic_node := DiagnosticNode.new()
     diagnostic_node.name = "PostImportResourceDiagnostic"
+    diagnostic_node.owner_tree = self
     get_root().add_child(diagnostic_node)
-    diagnostic_node.call_deferred("_run_resource_scan") if diagnostic_node.has_method("_run_resource_scan") else call_deferred("_scan_project")
     
 func _scan_project() -> void:
     _scan("res://")
