@@ -92,7 +92,7 @@ static func _add_stair_guardian_lions(parent: Node3D, platform_depth: float) -> 
  var lions := packed.instantiate() as Node3D
  if lions == null: return
  lions.name = "ChineseImperialStairGuardianLionPair"
- lions.position = Vector3(0.0,0.0,platform_depth*0.5+3.8)
+ lions.position = Vector3(0.0,0.0,platform_depth*0.5+10.0)
  lions.scale = Vector3.ONE * 0.82
  lions.add_to_group("imperial_stair_guardians")
  lions.set_meta("source_asset_path",lion_path)
