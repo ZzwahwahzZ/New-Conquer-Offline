@@ -14,6 +14,8 @@ SOURCES = [
     {"slug":"medieval-stone-temple","page":"https://opengameart.org/content/medieval-stone-temple","creator":"AnyRPG","category":"architecture","term":"stone temple"},
     {"slug":"stylized-nature-megakit","page":"https://opengameart.org/content/stylized-nature-megakit","creator":"Quaternius","category":"nature","term":"nature pack"},
     {"slug":"pbr-marble-and-tile-texture-set","page":"https://opengameart.org/content/pbr-marble-and-tile-texture-set","creator":"Vosuna","category":"pbr","term":"marble and tile PBR textures"},
+    {"slug":"pbr-texture-pack-0","page":"https://opengameart.org/content/pbr-texture-pack-0","creator":"Vosuna","category":"pbr","term":"stone tile marble carpet PBR maps"},
+    {"slug":"pbr-texture-pack","page":"https://opengameart.org/content/pbr-texture-pack","creator":"Vosuna","category":"pbr","term":"low resolution stone tile marble PBR maps"},
 ]
 
 class _Links(HTMLParser):
