@@ -8,9 +8,9 @@ const FLOWERS := [Color("#c93442"), Color("#f1c84b"), Color("#e879b5"), Color("#
 
 static func build(parent: Node3D, city: String, size: float) -> void:
 	var half := 110.0 if city == "TwinCity" else 80.0
-	var road_mat := PBRMaterialLibrary.build_street_material()
+	var road_mat: StandardMaterial3D = PBRMaterialLibrary.build_street_material()
 	road_mat.albedo_color = _road_color(city).lightened(0.35)
-	var plaza_mat := PBRMaterialLibrary.build_plaza_material()
+	var plaza_mat: StandardMaterial3D = PBRMaterialLibrary.build_plaza_material()
 	plaza_mat.albedo_color = _plaza_color(city).lightened(0.2)
 	var border_mat := _mat(_border_color(city), 0.72)
 	# Four cardinal avenues, a perimeter loop, and cross-links between districts.
