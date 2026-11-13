@@ -80,7 +80,7 @@ static func _add_plaza_statue(parent: Node3D) -> void:
  var model_height := maxf(mesh_node.mesh.get_aabb().size.y, 0.01)
  statue.name = "ImperialPlazaStoneStatue"
  statue.scale = Vector3.ONE * (4.8 / model_height)
- statue.position = Vector3(0.0,0.12,23.0)
+ statue.position = Vector3(0.0,0.12,22.0)
  statue.set_meta("source_asset_path", candidates[0])
  statue.add_to_group("imperial_plaza_statue")
  parent.add_child(statue)
