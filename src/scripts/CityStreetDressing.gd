@@ -203,10 +203,15 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 	parent.add_child(bridge)
 	var deck := MeshInstance3D.new()
 	deck.name = "BridgeDeck"
-	var deck_mesh := PlaneMesh.new()
-	deck_mesh.size = dimensions
+	var deck_mesh: Mesh
+	if city == "Waterlands":
+		deck_mesh = _arched_wooden_bridge_mesh(dimensions)
+	else:
+		var flat_deck := PlaneMesh.new()
+		flat_deck.size = dimensions
+		deck_mesh = flat_deck
 	deck.mesh = deck_mesh
-	deck.position.y = 0.6 if city == "Waterlands" else 0.12
+	deck.position.y = 0.0 if city == "Waterlands" else 0.12
 	bridge.add_child(deck)
 	deck.material_override = material
 	var imported_bridge_found := false
@@ -239,13 +244,50 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 	collider.name = "BridgeWalkableCollision"
 	var box := BoxShape3D.new()
 	box.size = Vector3(dimensions.x, 0.32, dimensions.y)
-	collider.shape = box
-	collider.position.y = -0.04
+	if city == "Waterlands":
+		var arched_collision := ConcavePolygonShape3D.new()
+		arched_collision.set_faces(deck_mesh.get_faces())
+		collider.shape = arched_collision
+	else:
+		collider.shape = box
+		collider.position.y = -0.04
 	body.add_child(collider)
 	bridge.add_child(body)
 	if not imported_bridge_found:
 		_add_railing(bridge, "BridgeRail_N", Vector3(0, 0, -dimensions.y * 0.5), dimensions.x, city)
 		_add_railing(bridge, "BridgeRail_S", Vector3(0, 0, dimensions.y * 0.5), dimensions.x, city)
+
+static func _arched_wooden_bridge_mesh(dimensions: Vector2) -> ArrayMesh:
+	var vertices := PackedVector3Array()
+	var normals := PackedVector3Array()
+	var uvs := PackedVector2Array()
+	var indices := PackedInt32Array()
+	var steps := 20
+	for step in range(steps + 1):
+		var t := float(step) / float(steps)
+		var z := (t - 0.5) * dimensions.y
+		var y := 0.6 + sin(PI * t) * 0.9
+		vertices.append(Vector3(-dimensions.x * 0.5, y, z))
+		vertices.append(Vector3(dimensions.x * 0.5, y, z))
+		normals.append(Vector3.UP)
+		normals.append(Vector3.UP)
+		uvs.append(Vector2(0.0, t))
+		uvs.append(Vector2(1.0, t))
+	for step in range(steps):
+		var a := step * 2
+		var b := a + 1
+		var c := a + 2
+		var d := a + 3
+		indices.append_array(PackedInt32Array([a, b, c, b, d, c]))
+	var arrays := []
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = vertices
+	arrays[Mesh.ARRAY_NORMAL] = normals
+	arrays[Mesh.ARRAY_TEX_UV] = uvs
+	arrays[Mesh.ARRAY_INDEX] = indices
+	var mesh := ArrayMesh.new()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	return mesh
 
 static func _waterlands_promenades(parent: Node3D, material: Material) -> void:
 	var timber := _mat(Color("#805332"), 0.62)
@@ -255,6 +297,28 @@ static func _waterlands_promenades(parent: Node3D, material: Material) -> void:
 	for lane in [-48.0, -24.0, 0.0, 24.0, 48.0]:
 		_add_plane(routes, "Waterlands_NS_Promenade_" + str(int(lane)), Vector2(5.0, 160.0), timber, Vector3(lane, 0.6, 0.0))
 		_add_plane(routes, "Waterlands_EW_Promenade_" + str(int(lane)), Vector2(160.0, 5.0), timber, Vector3(0.0, 0.6, lane))
+	for i in range(8):
+		var lantern := MeshInstance3D.new()
+		lantern.name = "Waterlands_RedHarborLantern_%02d" % i
+		var lantern_mesh := SphereMesh.new()
+		lantern_mesh.radius = 0.34
+		lantern_mesh.height = 0.78
+		lantern.mesh = lantern_mesh
+		lantern.position = Vector3(-48.0 + float(i % 2) * 96.0, 2.0, -49.0 + float(i / 2) * 14.0)
+		routes.add_child(lantern)
+		var glow := _mat(Color("#b51f2d"), 0.32)
+		glow.emission_enabled = true
+		glow.emission = Color("#ff243c")
+		glow.emission_energy_multiplier = 1.7
+		lantern.material_override = glow
+		var reflection := MeshInstance3D.new()
+		reflection.name = "Waterlands_RedLanternReflection_%02d" % i
+		var reflection_mesh := BoxMesh.new()
+		reflection_mesh.size = Vector3(1.6, 0.025, 0.34)
+		reflection.mesh = reflection_mesh
+		reflection.position = Vector3(lantern.position.x, -0.32, lantern.position.z)
+		routes.add_child(reflection)
+		reflection.material_override = glow
 	for x in [-60.0, -30.0, 30.0, 60.0]:
 		var pier := MeshInstance3D.new()
 		pier.name = "Waterlands_MarketPier_" + str(int(x))
