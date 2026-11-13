@@ -16,10 +16,10 @@ static func build(parent: Node3D, city: String, size: float) -> void:
 	# Four cardinal avenues, a perimeter loop, and cross-links between districts.
 	_add_plane(parent, "Street_NorthSouth", Vector2(10.0, half * 1.72), road_mat, Vector3(0, 0.045, 0))
 	_add_plane(parent, "Street_EastWest", Vector2(half * 1.72, 10.0), road_mat, Vector3(0, 0.047, 0))
-	for offset in [-42.0, 42.0]:
+	for offset in [-65.45,-39.25,-13.05,13.05,39.25,65.45]:
 		_add_plane(parent, "DistrictLane_NS_" + str(int(offset)), Vector2(5.0, half * 1.48), road_mat, Vector3(offset, 0.052, 0))
 		_add_plane(parent, "DistrictLane_EW_" + str(int(offset)), Vector2(half * 1.48, 5.0), road_mat, Vector3(0, 0.054, offset))
-	_add_plane(parent, "CentralDarkSquare", Vector2(30.0, 30.0), plaza_mat, Vector3(0, 0.062, 0))
+	_add_plane(parent, "CentralDarkSquare", Vector2(24.0, 24.0), plaza_mat, Vector3(0, 0.062, 0))
 	# Four broad paved approaches link the square to the city gates.
 	for side in [-1.0, 1.0]:
 		_add_plane(parent, "GateApproach_X_" + str(side), Vector2(7.0, half * 0.82), road_mat, Vector3(side * half * 0.48, 0.058, 0))
