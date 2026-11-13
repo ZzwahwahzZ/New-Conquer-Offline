@@ -668,25 +668,54 @@ static func _build_chinese_gate_details(gate: Node3D, p: Dictionary, city: Strin
         var x := -12.0 + float(rib)*2.0
         _box(gate,"ChineseGateRoofRib",Vector3(x,12.78,-85.0),Vector3(0.12,0.12,10.5),gold if rib in [0,12] else roof,1.0)
     for side in [-1.0,1.0]:
-        var lantern := MeshInstance3D.new()
+        var lantern := Node3D.new()
         lantern.name = "ChineseGateWarmLantern"
-        var lantern_mesh := SphereMesh.new()
-        lantern_mesh.radius = 0.34
-        lantern_mesh.height = 0.7
-        lantern.mesh = lantern_mesh
         lantern.position = Vector3(side*8.3,10.2,-80.0)
         gate.add_child(lantern)
+        lantern.add_to_group("imperial_city_lanterns")
         var glow := _material(Color("#b62935"),0.35)
         glow.emission_enabled = true
         glow.emission = Color("#ff9a52")
         glow.emission_energy_multiplier = 1.5
-        lantern.material_override = glow
+        var body := MeshInstance3D.new()
+        body.name = "RedSilkLanternBody"
+        var body_mesh := CylinderMesh.new()
+        body_mesh.top_radius = 0.29
+        body_mesh.bottom_radius = 0.34
+        body_mesh.height = 0.62
+        body_mesh.radial_segments = 16
+        body.mesh = body_mesh
+        body.material_override = glow
+        lantern.add_child(body)
+        for cap_y in [-0.38,0.38]:
+            var cap := MeshInstance3D.new()
+            cap.name = "GoldenLanternCap"
+            var cap_mesh := CylinderMesh.new()
+            cap_mesh.top_radius = 0.42
+            cap_mesh.bottom_radius = 0.42
+            cap_mesh.height = 0.12
+            cap_mesh.radial_segments = 16
+            cap.mesh = cap_mesh
+            cap.position.y = cap_y
+            cap.material_override = gold
+            lantern.add_child(cap)
+        for frame_x in [-0.25,0.25]:
+            for frame_z in [-0.25,0.25]:
+                var frame := MeshInstance3D.new()
+                frame.name = "LanternGoldenFrame"
+                var frame_mesh := BoxMesh.new()
+                frame_mesh.size = Vector3(0.055,0.72,0.055)
+                frame.mesh = frame_mesh
+                frame.position = Vector3(frame_x,0.0,frame_z)
+                frame.material_override = gold
+                lantern.add_child(frame)
         var light := OmniLight3D.new()
         light.name = "ChineseGateWarmLanternLight"
         light.position = lantern.position
         light.light_color = Color("#ffad67")
         light.light_energy = 1.15
         light.omni_range = 10.0
+        light.add_to_group("imperial_city_lantern_lights")
         gate.add_child(light)
     print("CITY_CHINESE_GATE_PASS: %s opening=14m height=14m roof=2_tiers lanterns=2" % city)
 
