@@ -28,7 +28,7 @@ static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
  var plaza := Node3D.new()
  plaza.name = "OpenCentralPlaza_24x24"
  parent.add_child(plaza)
- var stone: StandardMaterial3D = PBRMaterialLibrary.build_plaza_material()
+ var stone: StandardMaterial3D = PBRMaterialLibrary.build_imperial_paving_material()
  stone.uv1_scale = Vector3(3.9,3.9,1.0)
  for z in range(-1,2):
   for x in range(-1,2):
