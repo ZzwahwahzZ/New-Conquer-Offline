@@ -1,55 +1,54 @@
-extends SceneTree
+extends Node
 
 var script_ok: int = 0
 var script_fail: int = 0
 var material_ok: int = 0
 var material_fail: int = 0
 var failures: Array[String] = []
-var report: FileAccess
 
-class DiagnosticNode extends Node:
-    var owner_tree: SceneTree
+func _ready() -> void:
+    call_deferred("_run")
 
-    func _ready() -> void:
-        owner_tree.call_deferred("_scan_project")
-
-func _initialize() -> void:
-    call_deferred("_start_node_diagnostic")
-
-func _start_node_diagnostic() -> void:
+func _run() -> void:
+    var log_path: String = "res://reports/godot_import_guard.log"
     DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://reports"))
-    report = FileAccess.open("res://reports/godot_import_guard.log", FileAccess.READ_WRITE)
-    if report == null:
-        push_error("Cannot create reports/godot_import_guard.log")
-        quit(2)
-        return
-    report.seek_end()
-    report.store_line("\n=== POST-IMPORT NODE DIAGNOSTIC ===")
+    var previous_log: String = FileAccess.get_file_as_string(log_path) if FileAccess.file_exists(log_path) else ""
     var required_autoloads: Array[String] = [
         "ClassSystem", "GearDatabase", "GearSystem", "GlobalEconomy", "GameState"
     ]
     var missing_autoloads: Array[String] = []
     for singleton_name in required_autoloads:
-        if get_root().get_node_or_null(NodePath(singleton_name)) == null:
+        if get_node_or_null("/root/" + singleton_name) == null:
             missing_autoloads.append(singleton_name)
-    if not missing_autoloads.is_empty():
-        _record_failure("Autoloads not initialized in required order/context: " + ", ".join(missing_autoloads))
-        _finish()
-        return
 
-    var diagnostic_node := DiagnosticNode.new()
-    diagnostic_node.name = "PostImportResourceDiagnostic"
-    diagnostic_node.owner_tree = self
-    get_root().add_child(diagnostic_node)
-    
-func _scan_project() -> void:
-    _scan("res://")
-    _finish()
+    if not missing_autoloads.is_empty():
+        failures.append("Autoloads not initialized in project scene: " + ", ".join(missing_autoloads))
+    else:
+        _scan("res://")
+
+    var summary: String = "POST_IMPORT_DIAGNOSTIC: scripts_pass=%d scripts_fail=%d materials_pass=%d materials_fail=%d" % [script_ok, script_fail, material_ok, material_fail]
+    var output := previous_log + "\n=== POST-IMPORT SCENE NODE DIAGNOSTIC ===\n"
+    for failure in failures:
+        output += "DIAGNOSTIC_FAILURE: " + failure + "\n"
+    output += summary + "\n"
+    output += "DIRECT_SCRIPT_MATERIAL_DIAGNOSTIC_" + ("FAIL" if script_fail > 0 or material_fail > 0 or not failures.is_empty() else "PASS") + "\n"
+    var report: FileAccess = FileAccess.open(log_path, FileAccess.WRITE)
+    if report == null:
+        push_error("Cannot create reports/godot_import_guard.log")
+        get_tree().quit(2)
+        return
+    report.store_string(output)
+    report.flush()
+    report.close()
+    print(summary)
+    for failure in failures:
+        push_error("DIAGNOSTIC_FAILURE: " + failure)
+    get_tree().quit(1 if script_fail > 0 or material_fail > 0 or not failures.is_empty() else 0)
 
 func _scan(path: String) -> void:
-    var dir := DirAccess.open(path)
+    var dir: DirAccess = DirAccess.open(path)
     if dir == null:
-        _record_failure(path + " (cannot open directory)")
+        failures.append(path + " (cannot open directory)")
         return
     dir.list_dir_begin()
     var entry: String = dir.get_next()
@@ -72,27 +71,27 @@ func _scan(path: String) -> void:
 func _check_script(path: String) -> void:
     if not ResourceLoader.exists(path):
         script_fail += 1
-        _record_failure(path + " (ResourceLoader.exists=false)")
+        failures.append(path + " (ResourceLoader.exists=false)")
         return
-    var parsed: GDScript = ResourceLoader.load(path, "GDScript", ResourceLoader.CACHE_MODE_IGNORE) as GDScript
+    var parsed: GDScript = ResourceLoader.load(path, "GDScript") as GDScript
     if parsed != null:
         script_ok += 1
     else:
         script_fail += 1
-        _record_failure(path + " (GDScript compile/load returned null)")
+        failures.append(path + " (GDScript compile/load returned null)")
 
 func _check_text_resource_dependencies(path: String) -> void:
-    var file := FileAccess.open(path, FileAccess.READ)
+    var file: FileAccess = FileAccess.open(path, FileAccess.READ)
     if file == null:
         material_fail += 1
-        _record_failure(path + " (cannot read text resource)")
+        failures.append(path + " (cannot read text resource)")
         return
     var source: String = file.get_as_text()
     file.close()
     var regex := RegEx.new()
     if regex.compile('path\\s*=\\s*"res://([^"]+)"') != OK:
         material_fail += 1
-        _record_failure(path + " (dependency pattern failed)")
+        failures.append(path + " (dependency pattern failed)")
         return
     var missing: Array[String] = []
     for match_result in regex.search_all(source):
@@ -103,32 +102,16 @@ func _check_text_resource_dependencies(path: String) -> void:
         material_ok += 1
     else:
         material_fail += 1
-        _record_failure(path + " (missing dependencies: " + ", ".join(missing) + ")")
+        failures.append(path + " (missing dependencies: " + ", ".join(missing) + ")")
 
 func _check_resource(path: String) -> void:
     if not ResourceLoader.exists(path):
         material_fail += 1
-        _record_failure(path + " (ResourceLoader.exists=false)")
+        failures.append(path + " (ResourceLoader.exists=false)")
         return
-    var resource: Resource = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
+    var resource: Resource = ResourceLoader.load(path)
     if resource == null:
         material_fail += 1
-        _record_failure(path + " (ResourceLoader.load returned null)")
+        failures.append(path + " (ResourceLoader.load returned null)")
     else:
         material_ok += 1
-
-func _record_failure(message: String) -> void:
-    failures.append(message)
-    if report != null:
-        report.store_line("DIAGNOSTIC_FAILURE: " + message)
-    push_error("DIAGNOSTIC_FAILURE: " + message)
-
-func _finish() -> void:
-    var summary := "DIRECT_DIAGNOSTIC_SCRIPTS: pass=%d fail=%d | MATERIALS: pass=%d fail=%d" % [script_ok, script_fail, material_ok, material_fail]
-    print(summary)
-    if report != null:
-        report.store_line(summary)
-        report.store_line("DIRECT_SCRIPT_MATERIAL_DIAGNOSTIC_" + ("FAIL" if script_fail > 0 or material_fail > 0 else "PASS"))
-        report.flush()
-        report.close()
-    quit(1 if script_fail > 0 or material_fail > 0 else 0)
