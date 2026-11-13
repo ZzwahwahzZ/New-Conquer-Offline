@@ -49,6 +49,12 @@ func _count_city_buildings_outside_core(node: Node) -> int:
 		total += _count_city_buildings_outside_core(child)
 	return total
 
+func _hide_visual_instances(node: Node) -> void:
+	if node is VisualInstance3D:
+		(node as VisualInstance3D).visible = false
+	for child in node.get_children():
+		_hide_visual_instances(child)
+
 func _save_frame(file_name: String) -> bool:
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
@@ -121,9 +127,12 @@ func _capture() -> void:
 	if player == null:
 		_fail("player node is missing from the main scene")
 		return
+	# Keep the HUD, camera and world intact while removing the avatar from proof frames.
+	# This prevents the player from standing directly in the gate opening and obscuring both guards.
 	if not camera.current:
 		_fail("isometric Camera3D is not current")
 		return
+	_hide_visual_instances(player)
 	camera.fov = CLASSIC_FOV
 	camera.far = CLASSIC_FAR
 	var hud := main.get_node_or_null("HUD") as CanvasLayer
@@ -197,6 +206,12 @@ func _capture() -> void:
 			return
 		for shot in SHOTS:
 			var shot_position: Vector3 = shot.position
+			if str(shot.suffix) == "02_inner_street":
+				var north_gate := loaded_world.find_child("North_GrandCityGate", true, false) as Node3D
+				if north_gate == null:
+					_fail("north cardinal gate anchor is missing from " + city_id)
+					return
+				shot_position = north_gate.to_global(Vector3(0.0, 0.0, -85.0))
 			player.global_position = shot_position
 			camera_rig.global_position = player.global_position
 			var shot_distance := float(shot.get("distance", CLASSIC_DISTANCE))
