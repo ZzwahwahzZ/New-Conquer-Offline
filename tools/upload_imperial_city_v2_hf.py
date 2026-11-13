@@ -5,9 +5,9 @@ import hashlib,os
 from pathlib import Path
 from huggingface_hub import HfApi
 ROOT=Path(__file__).resolve().parents[1]
-FOLDER=ROOT/"assets"/"imperial_city_kit_v2"
+FOLDER=ROOT/"assets"/"wuxia_imperial_pack"
 REPO="ZzwahwahzZ/clash-of-legends-terrain-assets"
-PREFIX="assets/imperial_city_kit_v2"
+PREFIX="assets/wuxia_imperial_pack"
 PREFABS=ROOT/"assets"/"prefabs"/"city"
 PREFAB_PREFIX="assets/prefabs/city"
 def main():
@@ -20,7 +20,7 @@ def main():
  expected={PREFIX+"/"+p.relative_to(FOLDER).as_posix():p.stat().st_size for p in files}
  expected.update({PREFAB_PREFIX+"/"+p.relative_to(PREFABS).as_posix():p.stat().st_size for p in prefabs})
  api.upload_folder(repo_id=REPO,repo_type="dataset",folder_path=str(FOLDER),path_in_repo=PREFIX,
-                   commit_message="Upload verified Imperial City Kit v2 official CC0 assets")
+                   commit_message="Upload verified Wuxia Imperial CC0 and CC-BY assets")
  api.upload_folder(repo_id=REPO,repo_type="dataset",folder_path=str(PREFABS),path_in_repo=PREFAB_PREFIX,
                    commit_message="Upload normalized Imperial City v2 Godot prefab scenes")
  remote={}
