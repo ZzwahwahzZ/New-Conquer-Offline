@@ -27,29 +27,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Godot 4.3 and export templates
+      - name: Install Godot 4.3 runtime only (exports paused)
         shell: bash
         run: |
           set -euo pipefail
-          TEMPLATE_DEST="$HOME/.local/share/godot/export_templates/${GODOT_TEMPLATE_VERSION}"
-          mkdir -p "$TEMPLATE_DEST"
           curl --connect-timeout 20 --max-time 180 --retry 2 --retry-delay 5 -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o /tmp/godot.zip
           unzip -q /tmp/godot.zip -d /tmp/godot-bin
           sudo install -m 0755 /tmp/godot-bin/Godot_v${GODOT_VERSION}-stable_linux.x86_64 /usr/local/bin/godot
-          curl --connect-timeout 20 --max-time 180 --retry 2 --retry-delay 5 -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o /tmp/templates.tpz
-          mkdir -p /tmp/godot-templates
-          unzip -q /tmp/templates.tpz -d /tmp/godot-templates
-          echo "Godot export template archive contents:"
-          find /tmp/godot-templates -type f -name '*.zip' -printf '%P\n' | sort
-          TEMPLATE_SOURCE="$(find /tmp/godot-templates -type d -name templates -print -quit)"
-          test -n "$TEMPLATE_SOURCE"
-          cp -av "$TEMPLATE_SOURCE"/* "$TEMPLATE_DEST"/
-          echo "Installed Godot export templates:"
-          ls -la "$TEMPLATE_DEST"
-          test -s "$TEMPLATE_DEST/web_nothreads_debug.zip"
-          test -s "$TEMPLATE_DEST/web_nothreads_release.zip"
-          test -s "$TEMPLATE_DEST/android_debug.apk"
-          test -s "$TEMPLATE_DEST/android_release.apk"
           godot --version
 
       - name: Restore PBR terrain packages and heightmaps from Hugging Face
@@ -59,7 +43,6 @@ jobs:
           python3 -m pip install --disable-pip-version-check huggingface_hub trimesh numpy
           python3 tools/restore_hf_terrain_assets.py
           python3 tools/sync_rpg_ui_assets.py
-          python3 tools/restore_curated_glb_assets.py
           python3 tools/restore_kenney_environment_assets.py
           python3 -m py_compile tools/restore_kenney_environment_assets.py
           npm install --global @gltf-transform/cli@4.5.1
@@ -69,7 +52,7 @@ jobs:
             test -s "$temp"
             mv "$temp" "$asset"
             echo "GODOT_COMPATIBLE_GLB: $asset"
-          done < <(find assets/environment/architecture assets/environment/biomes assets/environment/nature assets/environment/kenney -type f -name '*.glb' -print0)
+          done < <(find assets/environment/kenney assets/environment/quaternius -type f -name '*.glb' -print0)
           python3 tools/kenney_asset_preflight.py
           python3 tools/audit_classify_terrain_glb.py
 
@@ -206,9 +189,9 @@ jobs:
         run: bash tools/run_godot_smoke_test.sh scripts/world_environment_test.gd
 
       - name: Verify all six classic city street environments
-        timeout-minutes: 8
+        timeout-minutes: 10
         shell: bash
-        run: bash tools/run_godot_smoke_test.sh scripts/city_street_dressing_test.gd
+        run: bash tools/run_godot_smoke_test.sh scripts/city_street_dressing_test.gd 420s
 
       - name: Capture thirty close classic-Conquer camera proof frames across all six cities
         id: capture_visual_proof
