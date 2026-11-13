@@ -160,7 +160,7 @@ func _build_environment() -> void:
 	env.sky = sky
 	env.tonemap_mode = Environment.TONE_MAPPER_ACES
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	env.ambient_light_energy = 0.72
+	env.ambient_light_energy = 0.32
 	env.glow_enabled = true
 	env.glow_intensity = 0.35
 	env.glow_strength = 0.55
@@ -175,7 +175,7 @@ func _build_environment() -> void:
 	sun.name = "ImperialDaySun"
 	sun.rotation_degrees = Vector3(-48, -28, 0)
 	sun.light_color = Color("#fff1d8")
-	sun.light_energy = 1.25
+	sun.light_energy = 0.78
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 260
 	add_child(sun)
@@ -362,14 +362,14 @@ func _build_cameras() -> void:
 	aerial.projection = Camera3D.PROJECTION_ORTHOGONAL
 	aerial.size = 250
 	aerial.position = Vector3(190,270,230)
-	aerial.look_at(Vector3.ZERO,Vector3.UP)
 	root.add_child(aerial)
+	aerial.look_at(Vector3.ZERO,Vector3.UP)
 	var street := Camera3D.new()
 	street.name = "StreetCamera"
 	street.fov = 56
-	street.position = Vector3(0,8.5,67)
-	street.look_at(Vector3(0,8,-24),Vector3.UP)
+	street.position = Vector3(0,14,55)
 	root.add_child(street)
+	street.look_at(Vector3(0,7,-25),Vector3.UP)
 
 func _audit() -> void:
 	var pending: Array[Node] = [self]
