@@ -1,7 +1,7 @@
 extends Node3D
 ## World-local director: at most 40 safe-zone actors or 3 hunting actors.
 const Roster = preload("res://src/scripts/VirtualPlayerRoster.gd")
-const BOT_SCENE := preload("res://src/scenes/AIPlayer.tscn")
+const BOT_SCENE: PackedScene = preload("res://src/scenes/AIPlayer.tscn")
 const CITY_CAP := 40
 const HUNT_CAP := 3
 const SPAWN_BATCH := 2

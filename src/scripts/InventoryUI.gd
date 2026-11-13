@@ -537,7 +537,7 @@ func _refresh_stats() -> void:
 		var item: Dictionary = GearSystem.equipment[slot]
 		if item.is_empty():
 			continue
-		var stats := GearSystem.get_item_final_stats(item)
+		var stats: Dictionary = GearSystem.get_item_final_stats(item)
 		atk += int(stats.get("physical_attack", 0)) + int(stats.get("magic_attack", 0))
 		defense += int(stats.get("defense", 0))
 		bonus_hp += int(stats.get("max_hp", 0))

@@ -351,14 +351,14 @@ func _refresh_gem_options() -> void:
 
 func _refresh_artisan() -> void:
 	var level_id := _selected_instance(_level_item)
-	var level_item := GearSystem.get_item_by_instance_id(level_id)
+	var level_item: Dictionary = GearSystem.get_item_by_instance_id(level_id)
 	if level_item.is_empty():
 		_level_info.text = "لا توجد قطعة متاحة."
 		_level_button.disabled = true
 	else:
 		var level := int(level_item.get("required_level", 15))
-		var tier := GearDatabase.LEVEL_TIERS.find(level)
-		var can_level := tier >= 0 and tier < GearDatabase.LEVEL_TIERS.size() - 1
+		var tier: int = GearDatabase.LEVEL_TIERS.find(level)
+		var can_level: bool = tier >= 0 and tier < GearDatabase.LEVEL_TIERS.size() - 1
 		var cost := int(GearSystem.LEVEL_UPGRADE_COSTS.get(level, 0))
 		var rate := float(GearSystem.LEVEL_UPGRADE_RATES.get(level, 0.0)) * 100.0
 		var next_level: int = int(GearDatabase.LEVEL_TIERS[tier + 1]) if can_level else level
@@ -366,12 +366,12 @@ func _refresh_artisan() -> void:
 		_level_button.disabled = not can_level or cost <= 0 or GlobalEconomy.current_gold < cost
 
 	var quality_id := _selected_instance(_quality_item)
-	var quality_item := GearSystem.get_item_by_instance_id(quality_id)
+	var quality_item: Dictionary = GearSystem.get_item_by_instance_id(quality_id)
 	if quality_item.is_empty():
 		_quality_info.text = "لا توجد قطعة متاحة."
 		_quality_button.disabled = true
 	else:
-		var next_quality := GearDatabase.get_quality_upgrade(str(quality_item.get("quality", "Normal")))
+		var next_quality: Dictionary = GearDatabase.get_quality_upgrade(str(quality_item.get("quality", "Normal")))
 		if next_quality.is_empty():
 			_quality_info.text = "وصلت القطعة إلى أعلى جودة: Super."
 			_quality_button.disabled = true
@@ -384,8 +384,8 @@ func _refresh_artisan() -> void:
 			_quality_button.disabled = GlobalEconomy.current_gold < int(next_quality["cost"])
 
 func _refresh_compose() -> void:
-	var item := GearSystem.get_item_by_instance_id(_selected_instance(_compose_item))
-	var progress := GearSystem.get_compose_progress(str(item.get("instance_id", ""))) if not item.is_empty() else {}
+	var item: Dictionary = GearSystem.get_item_by_instance_id(_selected_instance(_compose_item))
+	var progress: Dictionary = GearSystem.get_compose_progress(str(item.get("instance_id", ""))) if not item.is_empty() else {}
 	if progress.is_empty():
 		_compose_progress.value = 0
 		_compose_progress.max_value = 1
@@ -400,7 +400,7 @@ func _refresh_compose() -> void:
 	_compose_button.disabled = required <= 0 or GlobalEconomy.current_gold < GearSystem.COMPOSE_GOLD_COST or (_selected_instance(_minor_one).is_empty() and _selected_instance(_minor_two).is_empty())
 
 func _refresh_sockets() -> void:
-	var item := GearSystem.get_item_by_instance_id(_selected_instance(_socket_item))
+	var item: Dictionary = GearSystem.get_item_by_instance_id(_selected_instance(_socket_item))
 	if item.is_empty():
 		_socket_info.text = "اختر قطعة لعرض المقابس."
 		_socket_button.disabled = true

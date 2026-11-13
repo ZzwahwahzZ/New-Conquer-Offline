@@ -1,4 +1,7 @@
 extends RefCounted
+const WorldTerrainBuilder = preload("res://src/scripts/WorldTerrainBuilder.gd")
+const PBRMaterialLibrary = preload("res://src/scripts/PBRMaterialLibrary.gd")
+const ChineseImperialBuilder = preload("res://src/scripts/ChineseImperialBuilder.gd")
 ## Detailed, lightweight facade and roof kit for all six classic settlements.
 ## Every building is assembled from real 3D meshes; brick relief uses a generated normal map.
 const CITY_PALETTES := {
@@ -11,106 +14,663 @@ const CITY_PALETTES := {
 }
 static func build(parent: Node3D, city: String, size: float) -> void:
  var palette: Dictionary = CITY_PALETTES.get(city, CITY_PALETTES["TwinCity"])
- _build_open_plaza(parent, palette)
- _build_city_roads(parent, palette)
- _build_city_buildings(parent, city, palette)
- _build_city_walls_and_gates(parent, city, palette)
- _build_outer_biome(parent, city, palette, size)
- print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=24 walls=4 gates=4 open_plaza=80x80 outer_world=800x800" % city)
+ var height_image: Image = WorldTerrainBuilder.load_height_image(city)
+ _build_open_plaza(parent, city, palette, height_image)
+ _build_city_roads(parent, city, palette, height_image)
+ _build_city_buildings(parent, city, palette, height_image)
+ _build_city_walls_and_gates(parent, city, palette, height_image)
+ ChineseImperialBuilder.build(parent, city, size)
+ _build_kenney_city_modules(parent, city, palette, height_image)
+ _build_outer_biome(parent, city, palette, size, height_image)
+ print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=85-88 walls=4 gates=4 open_plaza=50x50 city_core=170x170 outer_world=800x800" % city)
 
-static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
+static func _build_open_plaza(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var plaza := Node3D.new()
- plaza.name = "OpenCentralPlaza_80x80"
+ plaza.name = "OpenCentralPlaza_50x50"
+ var plaza_ground := 0.0
+ for sample_z in range(-5,6):
+  for sample_x in range(-5,6):
+   plaza_ground = maxf(plaza_ground,WorldTerrainBuilder.sample_height_image(height_image,city,float(sample_x)*5.0,float(sample_z)*5.0,800.0))
+ plaza.position.y = plaza_ground + 0.85
  parent.add_child(plaza)
- var stone := _material(p.stone, 0.92)
- for z in range(-5,5):
-  for x in range(-5,5):
-   var tile := _box(plaza, "DiamondStonePaver_%02d_%02d" % [x+5,z+5], Vector3(float(x)*8.0+4.0,0.055,float(z)*8.0+4.0), Vector3(7.75,0.11,7.75), stone, 1.0)
+ var stone: StandardMaterial3D = PBRMaterialLibrary.build_imperial_paving_material()
+ stone.uv1_scale = Vector3(3.9,3.9,1.0)
+ for z in range(-3,4):
+  for x in range(-3,4):
+   var tile := _box(plaza, "DiamondStonePaver_%02d_%02d" % [x+3,z+3], Vector3(float(x)*7.0,0.055,float(z)*7.0), Vector3(4.8,0.11,4.8), stone, 1.0)
    tile.rotation_degrees.y = 45.0
- var medallion := MeshInstance3D.new()
- medallion.name = "CentralEngravedStoneMedallion"
- var disk := CylinderMesh.new()
- disk.top_radius = 9.0
- disk.bottom_radius = 9.0
- disk.height = 0.32
- disk.radial_segments = 64
- medallion.mesh = disk
- medallion.position.y = 0.20
- plaza.add_child(medallion)
- medallion.material_override = _material(p.gold,0.72)
- for radius in [7.8,6.2,4.6]:
-  var ring := MeshInstance3D.new()
-  ring.name = "MedallionEngravedRing"
-  var torus := TorusMesh.new()
-  torus.inner_radius = radius
-  torus.outer_radius = radius + 0.16
-  torus.rings = 48
-  torus.ring_segments = 8
-  ring.mesh = torus
-  ring.position.y = 0.39
-  plaza.add_child(ring)
-  ring.material_override = _material(p.accent,0.66)
+ _add_plaza_statue(plaza)
 
-static func _build_city_roads(parent: Node3D, p: Dictionary) -> void:
+static func _add_plaza_statue(parent: Node3D) -> void:
+ var fountain_path := "res://assets/wuxia_imperial_pack/props_nature/stone_fountain.glb"
+ if ResourceLoader.exists(fountain_path):
+  var fountain_pack := ResourceLoader.load(fountain_path) as PackedScene
+  if fountain_pack != null:
+   var fountain := fountain_pack.instantiate() as Node3D
+   if fountain != null:
+    fountain.name = "ImperialPlazaStoneFountain"
+    fountain.position = Vector3(0.0,0.12,-18.0)
+    fountain.scale = Vector3.ONE * 1.15
+    fountain.add_to_group("imperial_plaza_fountains")
+    fountain.set_meta("source_asset_path",fountain_path)
+    parent.add_child(fountain)
+    _add_static_mesh_collisions(fountain)
+ var candidates: Array[String] = []
+ var lion_path := "res://assets/wuxia_imperial_pack/props_nature/guardian_lion_pair.glb"
+ if ResourceLoader.exists(lion_path):
+  candidates.append(lion_path)
+ candidates = candidates.filter(func(path: String) -> bool: return path.get_file().to_lower().contains("guardian_lion_pair"))
+ candidates.sort()
+ if candidates.is_empty():
+  push_error("IMPERIAL_PLAZA_STATUE_MISSING: verified Chinese guardian lion pair is absent from Wuxia Imperial pack")
+  return
+ var packed := ResourceLoader.load(candidates[0]) as PackedScene
+ if packed == null:
+  push_error("IMPERIAL_PLAZA_STATUE_IMPORT_FAIL: " + candidates[0])
+  return
+ var statue := packed.instantiate() as Node3D
+ if statue == null:
+  push_error("IMPERIAL_PLAZA_STATUE_ROOT_FAIL: " + candidates[0])
+  return
+ var mesh_node := _first_mesh_node(statue)
+ if mesh_node == null or mesh_node.mesh == null:
+  statue.free()
+  push_error("IMPERIAL_PLAZA_STATUE_MESH_FAIL: " + candidates[0])
+  return
+ var model_height := maxf(mesh_node.mesh.get_aabb().size.y, 0.01)
+ statue.name = "ImperialPlazaStoneStatue"
+ statue.scale = Vector3.ONE * (4.8 / model_height)
+ statue.position = Vector3(0.0,0.12,22.0)
+ statue.set_meta("source_asset_path", candidates[0])
+ statue.add_to_group("imperial_plaza_statue")
+ parent.add_child(statue)
+ _add_static_mesh_collisions(statue)
+ print("IMPERIAL_PLAZA_STATUE_PASS: " + candidates[0])
+ _add_imperial_plaza_garden_props(parent)
+
+static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
+ var base := "res://assets/wuxia_imperial_pack/props_nature/"
+ var required := [
+  "standing_garden_lantern.glb",
+  "pond_water_module.glb",
+  "lotus_cluster.glb",
+  "lotus_pond_edge_straight.glb",
+  "lotus_pond_edge_corner.glb",
+  "rockery_outcrop.glb",
+  "stone_incense_burner.glb"
+ ]
+ for filename in required:
+  if not ResourceLoader.exists(base+filename):
+   push_error("WUXIA_IMPERIAL_GARDEN_PROP_MISSING: "+base+filename)
+   return
+ var lantern_scene := ResourceLoader.load(base+"standing_garden_lantern.glb") as PackedScene
+ var pond_scene := ResourceLoader.load(base+"pond_water_module.glb") as PackedScene
+ var lotus_scene := ResourceLoader.load(base+"lotus_cluster.glb") as PackedScene
+ var pond_edge_scene := ResourceLoader.load(base+"lotus_pond_edge_straight.glb") as PackedScene
+ var pond_corner_scene := ResourceLoader.load(base+"lotus_pond_edge_corner.glb") as PackedScene
+ var rockery_scene := ResourceLoader.load(base+"rockery_outcrop.glb") as PackedScene
+ var burner_scene := ResourceLoader.load(base+"stone_incense_burner.glb") as PackedScene
+ if lantern_scene == null or pond_scene == null or lotus_scene == null or pond_edge_scene == null or pond_corner_scene == null or rockery_scene == null or burner_scene == null:
+  push_error("WUXIA_IMPERIAL_GARDEN_IMPORT_FAIL: one or more garden GLBs did not import")
+  return
+ var pond := pond_scene.instantiate() as Node3D
+ pond.name = "ImperialLotusPond"
+ pond.position = Vector3(-18.0,0.13,-18.0)
+ pond.scale = Vector3.ONE*2.2
+ pond.add_to_group("imperial_plaza_lotus_pond")
+ pond.set_meta("source_asset_path",base+"pond_water_module.glb")
+ parent.add_child(pond)
+ var pond_edges := [
+  {"at":Vector3(-18.0,0.12,-21.3),"rotation":0.0},
+  {"at":Vector3(-18.0,0.12,-14.7),"rotation":PI},
+  {"at":Vector3(-21.3,0.12,-18.0),"rotation":PI*0.5},
+  {"at":Vector3(-14.7,0.12,-18.0),"rotation":PI*1.5}
+ ]
+ for edge_index in range(pond_edges.size()):
+  var edge_data: Dictionary = pond_edges[edge_index]
+  var edge := pond_edge_scene.instantiate() as Node3D
+  edge.name = "ImperialLotusPondStoneEdge_%02d" % edge_index
+  edge.position = edge_data["at"]
+  edge.rotation.y = float(edge_data["rotation"])
+  edge.scale = Vector3.ONE*2.2
+  edge.add_to_group("imperial_plaza_pond_edges")
+  edge.set_meta("source_asset_path",base+"lotus_pond_edge_straight.glb")
+  parent.add_child(edge)
+ var pond_corners := [
+  {"at":Vector3(-21.3,0.12,-21.3),"rotation":0.0},
+  {"at":Vector3(-14.7,0.12,-21.3),"rotation":PI*0.5},
+  {"at":Vector3(-14.7,0.12,-14.7),"rotation":PI},
+  {"at":Vector3(-21.3,0.12,-14.7),"rotation":PI*1.5}
+ ]
+ for corner_index in range(pond_corners.size()):
+  var corner_data: Dictionary = pond_corners[corner_index]
+  var pond_corner := pond_corner_scene.instantiate() as Node3D
+  pond_corner.name = "ImperialLotusPondStoneCorner_%02d" % corner_index
+  pond_corner.position = corner_data["at"]
+  pond_corner.rotation.y = float(corner_data["rotation"])
+  pond_corner.scale = Vector3.ONE*2.2
+  pond_corner.add_to_group("imperial_plaza_pond_edges")
+  pond_corner.set_meta("source_asset_path",base+"lotus_pond_edge_corner.glb")
+  parent.add_child(pond_corner)
+  _add_static_mesh_collisions(pond_corner)
+ var lotus := lotus_scene.instantiate() as Node3D
+ lotus.name = "ImperialLotusPondFlowerCluster"
+ lotus.position = Vector3(-18.0,0.2,-18.0)
+ lotus.scale = Vector3.ONE*1.15
+ lotus.add_to_group("imperial_plaza_garden_props")
+ lotus.set_meta("source_asset_path",base+"lotus_cluster.glb")
+ parent.add_child(lotus)
+ var rockery := rockery_scene.instantiate() as Node3D
+ rockery.name = "ImperialPlazaRockeryOutcrop"
+ rockery.position = Vector3(19.0,0.12,0.0)
+ rockery.scale = Vector3.ONE*1.05
+ rockery.add_to_group("imperial_plaza_rockery")
+ rockery.set_meta("source_asset_path",base+"rockery_outcrop.glb")
+ parent.add_child(rockery)
+ _add_static_mesh_collisions(rockery)
+ for index in range(2):
+  var burner := burner_scene.instantiate() as Node3D
+  burner.name = "ImperialPlazaStoneIncenseBurner_%02d" % index
+  burner.position = Vector3(-17.0 if index == 0 else 17.0,0.12,18.0)
+  burner.scale = Vector3.ONE*0.9
+  burner.add_to_group("imperial_plaza_incense_burners")
+  burner.set_meta("source_asset_path",base+"stone_incense_burner.glb")
+  parent.add_child(burner)
+  _add_static_mesh_collisions(burner)
+ var lantern_positions := [Vector3(-23.0,0.12,-23.0),Vector3(23.0,0.12,-23.0),Vector3(-23.0,0.12,23.0),Vector3(23.0,0.12,23.0)]
+ for index in range(lantern_positions.size()):
+  var lantern := lantern_scene.instantiate() as Node3D
+  lantern.name = "ImperialPlazaStandingGardenLantern_%02d" % index
+  lantern.position = lantern_positions[index]
+  lantern.scale = Vector3.ONE*1.15
+  lantern.add_to_group("imperial_plaza_garden_lanterns")
+  lantern.set_meta("source_asset_path",base+"standing_garden_lantern.glb")
+  parent.add_child(lantern)
+  _add_static_mesh_collisions(lantern)
+  var light := OmniLight3D.new()
+  light.name = "ImperialPlazaGardenLanternLight_%02d" % index
+  light.position = lantern.position+Vector3(0.0,1.8,0.0)
+  light.light_color = Color("#ffd49a")
+  light.light_energy = 0.42
+  light.omni_range = 6.0
+  light.add_to_group("imperial_plaza_garden_lights")
+  parent.add_child(light)
+ print("WUXIA_IMPERIAL_GARDEN_PASS: lotus_pond=1 lotus_cluster=1 rockery=1 incense_burners=2 standing_lanterns=4")
+
+static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var roads := Node3D.new()
  roads.name = "StoneRoadNetwork"
  parent.add_child(roads)
- var road_material := _material(p.stone.lightened(0.12),0.94)
+ var half := 85.0
+ var road_length := 170.0
+ # Raise the two arterial routes above the highest sampled terrain along their
+ # full extent so desert, volcanic and archipelago ground cannot swallow them.
+ var road_clearance_height := 0.0
+ for sample_index in range(65):
+  var along := lerpf(-road_length * 0.5, road_length * 0.5, float(sample_index) / 64.0)
+  road_clearance_height = maxf(road_clearance_height, WorldTerrainBuilder.sample_height_image(height_image,city,0.0,along,800.0))
+  road_clearance_height = maxf(road_clearance_height, WorldTerrainBuilder.sample_height_image(height_image,city,along,0.0,800.0))
+ road_clearance_height += 0.85
+ var road_material: StandardMaterial3D = PBRMaterialLibrary.build_street_material()
  var curb_material := _material(p.gold,0.76)
- for direction in range(4):
-  var road := _box(roads,"FlagstoneRoad_%d" % direction,Vector3(0,0.10,0),Vector3(14,0.20,300),road_material,1.0)
+ for direction in range(2):
+  var road := _box(roads,"FlagstoneRoad_%d" % direction,Vector3(0,0.055,0),Vector3(12.0,0.02,road_length),road_material,1.0)
+  var road_surface_material := road_material.duplicate() as StandardMaterial3D
+  road_surface_material.albedo_color = Color("#e0ddd3")
+  road_surface_material.uv1_scale = Vector3(10.0/3.4,road_length/3.4,1.0)
+  road.material_override = road_surface_material
   road.rotation_degrees.y = direction*90.0
+  road.position.y = road_clearance_height
+  road_surface_material.uv1_triplanar = true
   for side in [-1.0,1.0]:
-   var curb := _box(roads,"RaisedStoneCurb",Vector3(side*8.0,0.34,0),Vector3(0.65,0.48,300),curb_material,1.0)
+   var curb := _box(roads,"RaisedStoneCurb_%d_%d" % [direction,int(side)],Vector3(side*6.35,0.34,0),Vector3(0.65,0.48,road_length),curb_material,1.0)
    curb.rotation_degrees.y = direction*90.0
+ _build_urban_alley_multimeshes(roads,city,road_material)
 
-static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary) -> void:
- var slot := Node3D.new()
- slot.name = city + "_24BuildingUrbanFabric"
- parent.add_child(slot)
- var coordinates := [-92.0,-56.0,-20.0,20.0,56.0,92.0]
- var index := 0
- for value in coordinates:
-  for side in [-1.0,1.0]:
-   for axis in [0,1]:
-    var position := Vector3(value,0.0,side*112.0) if axis == 0 else Vector3(side*112.0,0.0,value)
-    var imported := _instantiate_quaternius_building(slot, city, index, position)
-    if imported == null:
-     var building := _make_building(city,p,index,1.0)
-     building.name = city + "_DetailedBuilding_%02d" % index
-     building.position = position
-     building.rotation.y = atan2(-position.x,-position.z)
-     slot.add_child(building)
+static func _build_urban_alley_multimeshes(parent: Node3D, city: String, material: Material) -> void:
+ var terrain_image := WorldTerrainBuilder.load_height_image(city)
+ var alley_lines := [-10.0,10.0]
+ var segment_centers := [-77.0,-63.0,-49.0,-35.0,-21.0,-7.0,7.0,21.0,35.0,49.0,63.0,77.0]
+ var alley_mesh := BoxMesh.new()
+ alley_mesh.size = Vector3(6.0,0.14,14.0)
+ for axis in range(2):
+  var multi := MultiMesh.new()
+  multi.transform_format = MultiMesh.TRANSFORM_3D
+  multi.mesh = alley_mesh
+  multi.instance_count = alley_lines.size() * segment_centers.size()
+  var index := 0
+  for line in alley_lines:
+   for along in segment_centers:
+    var x: float = float(line) if axis == 0 else float(along)
+    var z: float = float(along) if axis == 0 else float(line)
+    var ground_y := WorldTerrainBuilder.sample_height_image(terrain_image,city,x,z,800.0)
+    var basis := Basis(Vector3.UP,PI*0.5) if axis == 1 else Basis.IDENTITY
+    multi.set_instance_transform(index,Transform3D(basis,Vector3(x,ground_y+0.85,z)))
     index += 1
+  var alley := MultiMeshInstance3D.new()
+  alley.name = city + ("_UrbanAlleys_NorthSouth_MultiMesh" if axis == 0 else "_UrbanAlleys_EastWest_MultiMesh")
+  alley.multimesh = multi
+  alley.material_override = material
+  alley.add_to_group("distance_cull_world")
+  alley.visibility_range_end = 420.0
+  alley.visibility_range_end_margin = 36.0
+  parent.add_child(alley)
+ print("CITY_URBAN_ALLEY_PASS: %s directions=2 segments_per_direction=%d" % [city,alley_lines.size()*segment_centers.size()])
 
-static func _instantiate_quaternius_building(parent: Node3D, city: String, index: int, at: Vector3) -> Node3D:
+static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
+ var slot := Node3D.new()
+ slot.name = city + "_88BuildingUrbanDistrict"
+ parent.add_child(slot)
+ # Twelve-by-twelve compact blocks fit inside the 170m x 170m imperial city core.
+ # The central 12m arterial roads and 6m secondary lanes stay open; 85-88 real
+ # imported buildings occupy the remaining cells with compact block-to-block spacing.
+ var coordinates := [-77.0,-63.0,-49.0,-35.0,-21.0,-7.0,7.0,21.0,35.0,49.0,63.0,77.0]
+ var index := 0
+ var built_count := 0
+ for row in range(coordinates.size()):
+  for column in range(coordinates.size()):
+   var x := float(coordinates[column])
+   var z := float(coordinates[row])
+   var corner_block := (row < 2 or row >= 10) and (column < 2 or column >= 10)
+   if corner_block:
+    var anchor_row := 0 if row < 2 else 10
+    var anchor_column := 0 if column < 2 else 10
+    if row == anchor_row and column == anchor_column:
+     var twin_chinese_palace := city == "TwinCity" and ((anchor_row == 0 and anchor_column == 0) or (anchor_row == 0 and anchor_column == 10) or (anchor_row == 10 and anchor_column == 0))
+     if not twin_chinese_palace:
+      var palace_center := Vector3((float(coordinates[anchor_column]) + float(coordinates[anchor_column+1])) * 0.5,0.0,(float(coordinates[anchor_row]) + float(coordinates[anchor_row+1])) * 0.5)
+      var palace := _instantiate_wuxia_building(slot,city,index,palace_center,height_image,true,p)
+      if palace == null:
+       push_error("CITY_IMPORTED_PALACE_MISSING: %s index=%d" % [city,index])
+      else:
+       palace.add_to_group("city_building")
+       built_count += 1
+    index += 1
+    continue
+   if absf(x) < 8.0 or absf(z) < 8.0:
+    index += 1
+    continue
+   var building := _instantiate_wuxia_building(slot,city,index,Vector3(x,0.0,z),height_image,false,p)
+   if building == null:
+    push_error("CITY_IMPORTED_BUILDING_MISSING: %s index=%d; refusing primitive placeholder geometry" % [city,index])
+   else:
+    building.add_to_group("city_building")
+    built_count += 1
+   index += 1
+ print("CITY_URBAN_DENSITY_PASS: %s buildings=%d footprint=-85..85 grid=12x12 four_palaces=true" % [city,built_count])
+
+static func _make_compact_urban_building(city: String, p: Dictionary, index: int) -> Node3D:
+ var root := Node3D.new()
+ root.add_to_group("city_building")
+ var variation := 0.82 + float((index * 7) % 13) * 0.012
+ var width := 17.0 * variation
+ var depth := 13.0 * variation
+ var height := 7.0 + float(index % 4) * 0.75
+ var wall := _material(p.wall,0.9)
+ wall.normal_enabled = true
+ wall.normal_texture = _brick_normal()
+ var stone := _material(p.stone,0.86)
+ var wood := _material(p.wood,0.72)
+ var roof := _material(p.roof,0.68)
+ var trim := _material(p.gold,0.48)
+ var foundation := MeshInstance3D.new()
+ foundation.name = "RaisedStoneFoundation"
+ var foundation_mesh := BoxMesh.new()
+ foundation_mesh.size = Vector3(width,0.8,depth)
+ foundation.mesh = foundation_mesh
+ foundation.position.y = 0.42
+ foundation.material_override = stone
+ root.add_child(foundation)
+ var walls := MeshInstance3D.new()
+ walls.name = "ReliefBrickWalls"
+ var wall_mesh := BoxMesh.new()
+ wall_mesh.size = Vector3(width-1.2,height,depth-1.2)
+ walls.mesh = wall_mesh
+ walls.position.y = 0.8 + height*0.5
+ walls.material_override = wall
+ root.add_child(walls)
+ var timber := MeshInstance3D.new()
+ timber.name = "UpperTimberFrieze"
+ var timber_mesh := BoxMesh.new()
+ timber_mesh.size = Vector3(width+0.1,0.42,depth+0.1)
+ timber.mesh = timber_mesh
+ timber.position.y = 0.8 + height
+ timber.material_override = wood
+ root.add_child(timber)
+ var roof_root := Node3D.new()
+ roof_root.name = "CitySpecificRoof"
+ roof_root.position.y = 0.8 + height + 0.55
+ root.add_child(roof_root)
+ match city:
+  "DesertLand":
+   var dome := MeshInstance3D.new()
+   dome.name = "SandstoneDome"
+   var dome_mesh := SphereMesh.new()
+   dome_mesh.radius = minf(width,depth)*0.34
+   dome_mesh.height = minf(width,depth)*0.48
+   dome.mesh = dome_mesh
+   dome.position.y = 1.2
+   dome.material_override = roof
+   roof_root.add_child(dome)
+  "VolcanoLand":
+   var basalt := MeshInstance3D.new()
+   basalt.name = "BasaltBattlement"
+   var basalt_mesh := BoxMesh.new()
+   basalt_mesh.size = Vector3(width+1.0,0.85,depth+1.0)
+   basalt.mesh = basalt_mesh
+   basalt.position.y = 0.25
+   basalt.material_override = roof
+   roof_root.add_child(basalt)
+   for spire_index in range(3):
+    var spire := MeshInstance3D.new()
+    spire.name = "ObsidianSpire"
+    var spire_mesh := CylinderMesh.new()
+    spire_mesh.top_radius = 0.08
+    spire_mesh.bottom_radius = 0.52
+    spire_mesh.height = 2.6
+    spire.mesh = spire_mesh
+    spire.position = Vector3((float(spire_index)-1.0)*width*0.28,1.8,-depth*0.28)
+    spire.material_override = trim
+    roof_root.add_child(spire)
+  "IceLand":
+   var ice := MeshInstance3D.new()
+   ice.name = "SnowRoofTier"
+   var ice_mesh := BoxMesh.new()
+   ice_mesh.size = Vector3(width+1.4,0.9,depth+1.4)
+   ice.mesh = ice_mesh
+   ice.position.y = 0.2
+   ice.material_override = roof
+   roof_root.add_child(ice)
+  _:
+   for tier in range(2):
+    var tier_node := MeshInstance3D.new()
+    tier_node.name = "PagodaRoofTier_%d" % tier
+    var tier_mesh := BoxMesh.new()
+    tier_mesh.size = Vector3(width+1.8-float(tier)*3.2,0.52,depth+1.8-float(tier)*2.6)
+    tier_node.mesh = tier_mesh
+    tier_node.position.y = 0.22 + float(tier)*0.9
+    tier_node.material_override = roof
+    roof_root.add_child(tier_node)
+ # A batched window set keeps facade rhythm without spawning dozens of individual nodes.
+ var window_mesh := BoxMesh.new()
+ window_mesh.size = Vector3(1.25,1.75,0.16)
+ var windows := MultiMesh.new()
+ windows.transform_format = MultiMesh.TRANSFORM_3D
+ windows.mesh = window_mesh
+ windows.instance_count = 4
+ for wi in range(4):
+  var wx := -width*0.28 + float(wi%2)*width*0.56
+  var wy := 2.7 + float(wi/2)*2.2
+  windows.set_instance_transform(wi,Transform3D(Basis.IDENTITY,Vector3(wx,wy,depth*0.5+0.02)))
+ var window_batch := MultiMeshInstance3D.new()
+ window_batch.name = "FacadeWindows_MultiMesh"
+ window_batch.multimesh = windows
+ window_batch.material_override = wood
+ root.add_child(window_batch)
+ var door := MeshInstance3D.new()
+ door.name = "MainTimberDoor"
+ var door_mesh := BoxMesh.new()
+ door_mesh.size = Vector3(2.1,3.1,0.22)
+ door.mesh = door_mesh
+ door.position = Vector3(0.0,2.35,depth*0.5+0.12)
+ door.material_override = wood
+ root.add_child(door)
+ var lintel := MeshInstance3D.new()
+ lintel.name = "GoldenDoorLintel"
+ var lintel_mesh := BoxMesh.new()
+ lintel_mesh.size = Vector3(2.8,0.28,0.3)
+ lintel.mesh = lintel_mesh
+ lintel.position = Vector3(0.0,4.0,depth*0.5+0.14)
+ lintel.material_override = trim
+ root.add_child(lintel)
+ var collision_body := StaticBody3D.new()
+ collision_body.name = "BuildingCollision"
+ var collision := CollisionShape3D.new()
+ var collision_box := BoxShape3D.new()
+ collision_box.size = Vector3(width,height+1.0,depth)
+ collision.shape = collision_box
+ collision.position.y = (height+1.0)*0.5
+ collision_body.add_child(collision)
+ root.add_child(collision_body)
+ return root
+
+static func _first_mesh_node(root: Node) -> MeshInstance3D:
+ var pending: Array[Node] = [root]
+ while not pending.is_empty():
+  var current: Node = pending.pop_back()
+  for child in current.get_children():
+   pending.append(child)
+  if current is MeshInstance3D and (current as MeshInstance3D).mesh != null:
+   return current as MeshInstance3D
+ return null
+
+static func _instantiate_wuxia_building(parent: Node3D, city: String, index: int, at: Vector3, height_image: Image, grand_building: bool, p: Dictionary) -> Node3D:
  var candidates: Array[String] = []
  var all_models: Array[String] = []
- _collect_quaternius_models("res://assets/environment/quaternius/ultimate_fantasy_rts", all_models)
- _collect_quaternius_models("res://assets/environment/quaternius/modular_medieval_buildings", all_models)
+ _collect_quaternius_models("res://assets/wuxia_imperial_pack/architecture", all_models)
  for path in all_models:
   var file_name := path.get_file().to_lower()
-  if ["building","house","tower","wall","castle","shop","keep","gate","barrack","forge","blacksmith","hall"].any(func(word: String) -> bool: return file_name.contains(word)):
+  var is_chinese_building := file_name.contains("ceremonial_hall") or file_name.contains("water_pavilion") or file_name.contains("gate_tower") or file_name.contains("chinese_pagoda") or file_name.contains("imperial_temple") or file_name.contains("asian_palace") or file_name.contains("chinese_town_house") or file_name.contains("chinese_courtyard_house") or file_name.contains("asian_wooden_house") or file_name.contains("chinese_merchant_house") or file_name.contains("chinese_tea_house") or file_name.contains("chinese_shop_house") or file_name.contains("chinese_ancestral_hall") or file_name.contains("chinese_courtyard_residence") or file_name.contains("traditional_chinese_pavilion") or file_name.contains("asian_townhouse") or file_name.contains("chinese_merchant_compound")
+  if is_chinese_building:
    candidates.append(path)
  if candidates.is_empty():
+  push_error("WUXIA_CHINESE_BUILDING_ASSETS_MISSING: no palace/hall/pavilion/gate GLBs found")
   return null
  candidates.sort()
  var selected := candidates[index % candidates.size()]
- var packed := load(selected) as PackedScene
+ var packed := ResourceLoader.load(selected) as PackedScene
  if packed == null:
+  push_error("WUXIA_CHINESE_BUILDING_IMPORT_FAIL: " + selected)
   return null
  var instance := packed.instantiate() as Node3D
  if instance == null:
+  push_error("WUXIA_CHINESE_BUILDING_ROOT_FAIL: " + selected)
   return null
- instance.name = city + "_QuaterniusBuilding_%02d" % index
+ instance.name = city + "_WuxiaChineseBuilding_%02d" % index
+ instance.set_meta("source_asset_path", selected)
+ instance.add_to_group("city_building")
+ instance.add_to_group("imported_city_building")
  instance.position = at
+ instance.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
  instance.rotation.y = atan2(-at.x,-at.z)
- instance.scale = Vector3.ONE
  parent.add_child(instance)
- _add_static_mesh_collisions(instance)
+ var target_width := 22.0 if grand_building else (14.0 if posmod(index, 3) == 0 else 10.0)
+ var target_depth := 18.0 if grand_building else (12.0 if posmod(index, 3) == 0 else 10.0)
+ var target_height := 15.0 if grand_building else (10.0 if posmod(index, 3) == 0 else 7.0)
+ var source_bounds := _renderable_world_bounds(instance)
+ if source_bounds.size.length_squared() > 0.0001:
+  var uniform_fit := minf(target_width/maxf(source_bounds.size.x,0.001),minf(target_height/maxf(source_bounds.size.y,0.001),target_depth/maxf(source_bounds.size.z,0.001)))
+  instance.scale = Vector3.ONE * uniform_fit
+  print("CITY_WUXIA_CHINESE_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " target=" + str(Vector3(target_width,target_height,target_depth)) + " scale=" + str(uniform_fit))
+ var target_center_global := parent.to_global(at)
+ var sampled_ground := WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
+ var clearance := 0.85
+ var target_base_global := parent.to_global(Vector3(at.x, sampled_ground + clearance + (4.0 if grand_building else 0.0), at.z))
+ var fitted_bounds := _renderable_world_bounds(instance)
+ if fitted_bounds.size.length_squared() > 0.0001:
+  var current_global := instance.global_position
+  current_global.x += target_center_global.x - fitted_bounds.get_center().x
+  current_global.z += target_center_global.z - fitted_bounds.get_center().z
+  instance.global_position = current_global
+  var centered_bounds := _renderable_world_bounds(instance)
+  current_global = instance.global_position
+  current_global.y += target_base_global.y - centered_bounds.position.y
+  instance.global_position = current_global
+  print("CITY_WUXIA_BUILDING_PLACEMENT_PASS: %s index=%d base_y=%.3f" % [city,index,target_base_global.y])
+  if grand_building:
+   var details := Node3D.new()
+   details.name = city + "_ImperialPalacePlinth_%02d" % index
+   parent.add_child(details)
+   details.global_position = Vector3(target_center_global.x,target_base_global.y,target_center_global.z)
+   details.global_rotation = instance.global_rotation
+   _add_palace_platform_and_stairs(details,target_width,target_depth)
+   details.add_to_group("distance_cull_world")
+   _set_visibility_range(details,360.0,35.0)
+ _add_simplified_building_collision(parent,instance)
  instance.add_to_group("distance_cull_world")
- _set_visibility_range(instance, 360.0, 35.0)
+ _set_visibility_range(instance,360.0,35.0)
  return instance
+
+static func _add_simplified_building_collision(parent: Node3D, building: Node3D) -> void:
+ var bounds := _renderable_world_bounds(building)
+ if bounds.size.length_squared() <= 0.0001:
+  push_error("WUXIA_BUILDING_COLLIDER_BOUNDS_FAIL: "+building.name)
+  return
+ var body := StaticBody3D.new()
+ body.name = building.name+"_SimplifiedCollision"
+ body.add_to_group("city_building_collision")
+ var collision := CollisionShape3D.new()
+ var shape := BoxShape3D.new()
+ shape.size = Vector3(maxf(bounds.size.x*0.84,1.0),maxf(bounds.size.y,2.0),maxf(bounds.size.z*0.84,1.0))
+ collision.shape = shape
+ body.add_child(collision)
+ parent.add_child(body)
+ body.global_position = bounds.get_center()
+ body.global_rotation = Vector3.ZERO
+
+static func _add_palace_platform_and_stairs(root: Node3D, width: float, depth: float) -> void:
+ var paving := PBRMaterialLibrary.build_imperial_paving_material()
+ var marble := PBRMaterialLibrary.build_plaza_material()
+ var platform_size := Vector3(width+5.0,4.0,depth+5.0)
+ _box(root,"ImperialPalaceRaisedStonePlinth_4_0m",Vector3(0.0,-2.0,0.0),platform_size,paving,1.0)
+ var collision_body := StaticBody3D.new()
+ collision_body.name = "ImperialPalacePlinthAndStairCollision"
+ var platform_collision := CollisionShape3D.new()
+ var platform_shape := BoxShape3D.new()
+ platform_shape.size = platform_size
+ platform_collision.shape = platform_shape
+ platform_collision.position = Vector3(0.0,-2.0,0.0)
+ collision_body.add_child(platform_collision)
+ root.add_child(collision_body)
+ for step in range(8):
+  var step_center := Vector3(0.0,-0.25-float(step)*0.5,depth*0.5+3.0+float(step)*1.05)
+  var step_size := Vector3(8.5,0.5,1.1)
+  _box(root,"ImperialMarbleStair_%02d" % step,step_center,step_size,marble,1.0)
+  var stair_collision := CollisionShape3D.new()
+  var stair_shape := BoxShape3D.new()
+  stair_shape.size = step_size
+  stair_collision.shape = stair_shape
+  stair_collision.position = step_center
+  collision_body.add_child(stair_collision)
+ print("IMPERIAL_PALACE_PLATFORM_PASS: height=4.0m marble_stairs=8 width=8.5m")
+
+static func _add_chinese_building_details(root: Node3D, p: Dictionary, width: float, depth: float, height: float) -> void:
+    var roof_material := PBRMaterialLibrary.build_chinese_roof_material()
+    var gold_material := _material(p.gold,0.4)
+    var timber_material := PBRMaterialLibrary.build_chinese_red_wood_material()
+    var door_material := PBRMaterialLibrary.build_chinese_red_wood_material()
+    var lantern_material := PBRMaterialLibrary.build_emissive_material(Color("#a52b35"))
+    lantern_material.emission_enabled = true
+    lantern_material.emission = Color("#ff3842")
+    lantern_material.emission_energy_multiplier = 1.25
+    var roof_root := Node3D.new()
+    roof_root.name = "ChineseTwoTierTiledPagodaRoof"
+    roof_root.position.y = height - 0.25
+    root.add_child(roof_root)
+    for tier in range(2):
+        var tier_width := (width + 1.2) * (1.0 if tier == 0 else 0.76)
+        var tier_depth := (depth + 1.2) * (1.0 if tier == 0 else 0.76)
+        var tier_y := 0.16 + float(tier) * 0.78
+        var panel_mesh := BoxMesh.new()
+        panel_mesh.size = Vector3(tier_width*0.56,0.42,tier_depth)
+        var panels := MultiMesh.new()
+        panels.transform_format = MultiMesh.TRANSFORM_3D
+        panels.mesh = panel_mesh
+        panels.instance_count = 2
+        var panel_index := 0
+        for side in [-1.0,1.0]:
+            panels.set_instance_transform(panel_index,Transform3D(Basis(Vector3(0,0,1),side*0.22),Vector3(side*tier_width*0.22,tier_y,0.0)))
+            panel_index += 1
+        var panel_batch := MultiMeshInstance3D.new()
+        panel_batch.name = "ChineseSlopedRoofPanels_%d" % tier
+        panel_batch.multimesh = panels
+        panel_batch.material_override = roof_material
+        roof_root.add_child(panel_batch)
+        var rib_mesh := BoxMesh.new()
+        rib_mesh.size = Vector3(0.13,0.12,tier_depth*0.94)
+        var ribs := MultiMesh.new()
+        ribs.transform_format = MultiMesh.TRANSFORM_3D
+        ribs.mesh = rib_mesh
+        ribs.instance_count = 10
+        var rib_index := 0
+        for side in [-1.0,1.0]:
+            for rib in range(5):
+                var rib_x: float = float(side)*(tier_width*0.22 + float(rib)*tier_width*0.06)
+                ribs.set_instance_transform(rib_index,Transform3D(Basis(Vector3(0,0,1),side*0.22),Vector3(rib_x,tier_y+0.22,0.0)))
+                rib_index += 1
+        var rib_batch := MultiMeshInstance3D.new()
+        rib_batch.name = "ChineseRoofTileRibs_%d" % tier
+        rib_batch.multimesh = ribs
+        rib_batch.material_override = gold_material
+        roof_root.add_child(rib_batch)
+        var eave_mesh := BoxMesh.new()
+        eave_mesh.size = Vector3(1.25,0.24,0.72)
+        var eaves := MultiMesh.new()
+        eaves.transform_format = MultiMesh.TRANSFORM_3D
+        eaves.mesh = eave_mesh
+        eaves.instance_count = 4
+        var eave_index := 0
+        for side in [-1.0,1.0]:
+            for depth_side in [-1.0,1.0]:
+                eaves.set_instance_transform(eave_index,Transform3D(Basis(Vector3(0,0,1),-side*0.28),Vector3(side*tier_width*0.49,tier_y+0.1,depth_side*tier_depth*0.48)))
+                eave_index += 1
+        var eave_batch := MultiMeshInstance3D.new()
+        eave_batch.name = "ChineseUpturnedEaves_%d" % tier
+        eave_batch.multimesh = eaves
+        eave_batch.material_override = gold_material
+        roof_root.add_child(eave_batch)
+        _box(roof_root,"ChineseGoldenRoofRidge_%d" % tier,Vector3(0.0,tier_y+0.32,0.0),Vector3(tier_width*0.72,0.18,0.42),gold_material,1.0)
+    var pillar_mesh := BoxMesh.new()
+    pillar_mesh.size = Vector3(0.42,height*0.9,0.42)
+    var pillars := MultiMesh.new()
+    pillars.transform_format = MultiMesh.TRANSFORM_3D
+    pillars.mesh = pillar_mesh
+    pillars.instance_count = 2
+    pillars.set_instance_transform(0,Transform3D(Basis.IDENTITY,Vector3(-width*0.36,height*0.45,depth*0.5+0.14)))
+    pillars.set_instance_transform(1,Transform3D(Basis.IDENTITY,Vector3(width*0.36,height*0.45,depth*0.5+0.14)))
+    var pillar_batch := MultiMeshInstance3D.new()
+    pillar_batch.name = "ChineseFacadeColumns"
+    pillar_batch.multimesh = pillars
+    pillar_batch.material_override = timber_material
+    root.add_child(pillar_batch)
+    _box(root,"ChineseRedTimberDoor",Vector3(0.0,1.7,depth*0.5+0.22),Vector3(2.1,3.4,0.22),door_material,1.0)
+    _box(root,"ChineseGoldenDoorFrame",Vector3(0.0,3.52,depth*0.5+0.28),Vector3(2.65,0.18,0.12),gold_material,1.0)
+    var lantern_mesh := SphereMesh.new()
+    lantern_mesh.radius = 0.24
+    lantern_mesh.height = 0.5
+    var lanterns := MultiMesh.new()
+    lanterns.transform_format = MultiMesh.TRANSFORM_3D
+    lanterns.mesh = lantern_mesh
+    lanterns.instance_count = 2
+    lanterns.set_instance_transform(0,Transform3D(Basis.IDENTITY,Vector3(-width*0.43,height*0.72,depth*0.5+0.32)))
+    lanterns.set_instance_transform(1,Transform3D(Basis.IDENTITY,Vector3(width*0.43,height*0.72,depth*0.5+0.32)))
+    var lantern_batch := MultiMeshInstance3D.new()
+    lantern_batch.name = "ChineseFacadeRedLanterns"
+    lantern_batch.multimesh = lanterns
+    lantern_batch.material_override = lantern_material
+    root.add_child(lantern_batch)
+
+static func _renderable_world_bounds(root_node: Node) -> AABB:
+ var combined := AABB()
+ var found := false
+ var pending: Array[Node] = [root_node]
+ while not pending.is_empty():
+  var current: Node = pending.pop_back()
+  for child in current.get_children():
+   pending.append(child)
+  if current is MeshInstance3D:
+   var mesh_node := current as MeshInstance3D
+   if mesh_node.mesh != null:
+    var world_bounds: AABB = mesh_node.global_transform * mesh_node.get_aabb()
+    combined = world_bounds if not found else combined.merge(world_bounds)
+    found = true
+  elif current is MultiMeshInstance3D:
+   var multi_node := current as MultiMeshInstance3D
+   if multi_node.multimesh != null and multi_node.multimesh.mesh != null:
+    var multi_bounds: AABB = multi_node.global_transform * multi_node.get_aabb()
+    combined = multi_bounds if not found else combined.merge(multi_bounds)
+    found = true
+ return combined if found else AABB()
 
 static func _set_visibility_range(root: Node, range_end: float, margin: float) -> void:
  var pending: Array[Node] = [root]
@@ -149,18 +709,19 @@ static func _add_static_mesh_collisions(root: Node3D) -> void:
    pending.append(child)
   if current is MeshInstance3D:
    var mesh_node := current as MeshInstance3D
-   if mesh_node.mesh != null and mesh_node.mesh.get_surface_count() > 0:
+   if mesh_node.mesh != null and mesh_node.mesh.get_rid().is_valid():
     mesh_node.create_trimesh_collision()
 
-static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Dictionary) -> void:
+static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var fortification := Node3D.new()
  fortification.name = city + "_PerimeterFortifications"
  parent.add_child(fortification)
  var wall_material := _material(p.stone.darkened(0.12),0.9)
  var tower_material := _material(p.wall,0.86)
  var gate_material := _material(p.gold,0.72)
- var half := 148.0
- var gap := 15.0
+ var half := 85.0
+ var gap := 7.0
+ var chinese_walls := _build_chinese_perimeter_walls(fortification, city, half, gap, height_image)
  for side in [-1.0,1.0]:
   for segment in [-1.0,1.0]:
    var start := -half if segment < 0.0 else gap
@@ -168,179 +729,326 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
    var length := finish-start
    var horizontal_wall := _box(fortification,"HighStonePerimeterWall_%s_%s" % [str(int(side)),str(int(segment))],Vector3((start+finish)*0.5,5.0,side*half),Vector3(length,10.0,5.0),wall_material,1.0)
    horizontal_wall.add_to_group("city_perimeter_wall")
+   horizontal_wall.visible = not chinese_walls
    var vertical_wall := _box(fortification,"HighStonePerimeterWall_%s_%s" % [str(int(side)),str(int(segment))],Vector3(side*half,5.0,(start+finish)*0.5),Vector3(5.0,10.0,length),wall_material,1.0)
    vertical_wall.add_to_group("city_perimeter_wall")
+   vertical_wall.visible = not chinese_walls
  for direction in range(4):
   var gate := Node3D.new()
-  gate.name = ["North","East","South","West"][direction] + "_GrandCityGate"
+  var direction_name: String = ["North","East","South","West"][direction]
+  gate.name = direction_name + "_GrandCityGate"
+  gate.add_to_group("cardinal_gates")
+  gate.set_meta("cardinal_direction",direction_name)
   gate.rotation_degrees.y = direction*90.0
   fortification.add_child(gate)
+  var gate_world_point := gate.to_global(Vector3(0.0,0.0,-85.0))
+  var gate_clearance := 0.85
+  gate.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, gate_world_point.x, gate_world_point.z, 800.0) + gate_clearance - fortification.global_position.y
+  var kenney_gate := _add_kenney_asset(gate, city, height_image, "castle-kit", "gate.glb", "KenneyGateModel", Vector3(0.0, 0.0, -85.0), 0.0, 2.2)
+  if kenney_gate != null:
+   kenney_gate.visible = false
+   for collision_node in kenney_gate.find_children("*","CollisionShape3D",true,false):
+    (collision_node as CollisionShape3D).disabled = true
   for side in [-1.0,1.0]:
-   _box(gate,"GatehouseTower",Vector3(side*17.0,9.0,-148.0),Vector3(11.0,18.0,13.0),tower_material,1.0)
-   _box(gate,"GateTowerCrenellation",Vector3(side*17.0,18.5,-148.0),Vector3(13.0,1.0,15.0),gate_material,1.0)
-   _box(gate,"GateGuardianStand",Vector3(side*9.0,0.15,-132.0),Vector3(1.6,0.3,1.6),wall_material,1.0)
-   _build_gate_guard(gate,side,p)
-  _box(gate,"GateArchLintel",Vector3(0,17.2,-148.0),Vector3(24.0,3.0,9.0),gate_material,1.0)
+   var tower_side_name := "Left" if side < 0.0 else "Right"
+   var kenney_tower := _add_kenney_asset(gate, city, height_image, "castle-kit", "tower-square.glb", "KenneyTowerModel_" + tower_side_name, Vector3(side*11.0, 0.0, -85.0), 0.0, 1.8)
+   if kenney_tower != null:
+    kenney_tower.visible = false
+    for collision_node in kenney_tower.find_children("*","CollisionShape3D",true,false):
+     (collision_node as CollisionShape3D).disabled = true
+   _box(gate,"GatehouseTower",Vector3(side*10.0,5.7,-85.0),Vector3(4.5,11.4,9.0),tower_material,1.0)
+   _box(gate,"GateTowerCrenellation",Vector3(side*10.0,11.9,-85.0),Vector3(5.0,0.6,11.0),gate_material,1.0)
+   _box(gate,"GateGuardianStand",Vector3(side*5.5,0.15,-80.0),Vector3(1.6,0.3,1.6),wall_material,1.0)
+   _build_gate_guard(gate,side,p,direction_name)
+  _box(gate,"GateArchLintel",Vector3(0,11.4,-85.0),Vector3(18.0,1.5,8.0),gate_material,1.0)
   for x in [-8.0,8.0]:
-   _box(gate,"ArchColumn",Vector3(x,7.0,-148.0),Vector3(2.0,14.0,7.0),gate_material,1.0)
+   _box(gate,"ArchColumn",Vector3(x,5.5,-85.0),Vector3(2.0,11.0,7.0),gate_material,1.0)
+  _build_chinese_gate_details(gate,p,city)
 
-static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size: float) -> void:
+static func _build_chinese_gate_details(gate: Node3D, p: Dictionary, city: String) -> void:
+    var roof := PBRMaterialLibrary.build_chinese_roof_material()
+    var gold := _material(p.gold,0.42)
+    var wood := PBRMaterialLibrary.build_chinese_red_wood_material()
+    var door_material := _material(Color("#8f2630"),0.48)
+    # Fourteen-metre clear arch, paired timber leaves, and a two-tier tiled roof.
+    for side in [-1.0,1.0]:
+        # The two leaves are swung open against the side towers so the main street remains visible.
+        _box(gate,"ChineseGateDoorLeaf",Vector3(side*6.75,4.55,-84.55),Vector3(0.28,9.1,6.1),door_material,1.0)
+        _box(gate,"ChineseGateDoorGoldBand",Vector3(side*6.55,6.1,-84.55),Vector3(0.08,0.16,6.0),gold,1.0)
+        _box(gate,"ChineseGateDoorVerticalTrim",Vector3(side*6.55,4.55,-81.55),Vector3(0.08,9.0,0.18),gold,1.0)
+    _box(gate,"ChineseGateRoofLower",Vector3(0,12.35,-85.0),Vector3(25.0,0.62,12.0),roof,1.0)
+    _box(gate,"ChineseGateRoofUpper",Vector3(0,13.18,-85.0),Vector3(21.0,0.48,9.0),roof,1.0)
+    _box(gate,"ChineseGateGoldenRidge",Vector3(0,13.58,-85.0),Vector3(18.0,0.22,0.52),gold,1.0)
+    for side in [-1.0,1.0]:
+        for depth_side in [-1.0,1.0]:
+            var eave := _box(gate,"ChineseGateUpturnedEave",Vector3(side*11.8,12.72,-85.0+depth_side*5.4),Vector3(3.0,0.28,0.72),gold,1.0)
+            eave.rotation.z = -side*0.22
+    for rib in range(13):
+        var x := -12.0 + float(rib)*2.0
+        _box(gate,"ChineseGateRoofRib",Vector3(x,12.78,-85.0),Vector3(0.12,0.12,10.5),gold if rib in [0,12] else roof,1.0)
+    for side in [-1.0,1.0]:
+        var lantern_path := "res://assets/wuxia_imperial_pack/props_nature/hanging_silk_lantern.glb"
+        if not ResourceLoader.exists(lantern_path):
+            push_error("WUXIA_HANGING_LANTERN_MISSING: " + lantern_path)
+            continue
+        var lantern_pack := ResourceLoader.load(lantern_path) as PackedScene
+        if lantern_pack == null:
+            push_error("WUXIA_HANGING_LANTERN_IMPORT_FAIL: " + lantern_path)
+            continue
+        var lantern := lantern_pack.instantiate() as Node3D
+        if lantern == null:
+            continue
+        lantern.name = "ChineseGateImportedHangingRedLantern"
+        lantern.position = Vector3(side*8.3,9.5,-80.0)
+        lantern.scale = Vector3.ONE * 0.9
+        lantern.add_to_group("imperial_city_lanterns")
+        lantern.set_meta("source_asset_path",lantern_path)
+        gate.add_child(lantern)
+        var light := OmniLight3D.new()
+        light.name = "ChineseGateWarmLanternLight"
+        light.position = lantern.position
+        light.light_color = Color("#ffad67")
+        light.light_energy = 1.15
+        light.omni_range = 10.0
+        light.add_to_group("imperial_city_lantern_lights")
+        gate.add_child(light)
+    print("CITY_CHINESE_GATE_PASS: %s opening=14m height=14m roof=2_tiers lanterns=2" % city)
+
+static func _load_kenney_scene(kit: String, file_name: String) -> PackedScene:
+ for format_name in ["GLB format", "GLTF format"]:
+  var path := "res://assets/environment/kenney/%s/Models/%s/%s" % [kit, format_name, file_name]
+  if ResourceLoader.exists(path):
+   return ResourceLoader.load(path) as PackedScene
+ return null
+
+static func _add_kenney_asset(parent: Node3D, city: String, height_image: Image, kit: String, file_name: String, node_name: String, at: Vector3, rotation: float, scale_factor: float) -> Node3D:
+ var packed := _load_kenney_scene(kit, file_name)
+ if packed == null:
+  return null
+ var instance := packed.instantiate() as Node3D
+ if instance == null:
+  return null
+ instance.name = node_name
+ var world_at := parent.to_global(at)
+ instance.position = at
+ instance.position.y += WorldTerrainBuilder.sample_height_image(height_image, city, world_at.x, world_at.z, 800.0) + 0.85 - parent.global_position.y
+ instance.rotation.y = rotation
+ instance.scale = Vector3.ONE * scale_factor
+ parent.add_child(instance)
+ instance.add_to_group("distance_cull_world")
+ _set_visibility_range(instance, 420.0, 40.0)
+ _add_static_mesh_collisions(instance)
+ return instance
+
+static func _build_chinese_perimeter_walls(parent: Node3D, city: String, half: float, gap: float, height_image: Image) -> bool:
+ var wall_path := "res://assets/wuxia_imperial_pack/architecture/palace_wall_straight.glb"
+ var corner_path := "res://assets/wuxia_imperial_pack/architecture/palace_wall_corner.glb"
+ if not ResourceLoader.exists(wall_path) or not ResourceLoader.exists(corner_path):
+  push_error("WUXIA_CHINESE_RAMPART_MISSING: palace_wall_straight and palace_wall_corner GLBs are required")
+  return false
+ var packed := ResourceLoader.load(wall_path) as PackedScene
+ if packed == null:
+  push_error("WUXIA_CHINESE_RAMPART_IMPORT_FAIL: "+wall_path)
+  return false
+ var source := packed.instantiate()
+ var first_mesh := _first_mesh_node(source)
+ if first_mesh == null or first_mesh.mesh == null:
+  source.free()
+  push_error("WUXIA_CHINESE_RAMPART_MESH_FAIL: "+wall_path)
+  return false
+ var wall_mesh: Mesh = first_mesh.mesh
+ var bounds := wall_mesh.get_aabb()
+ source.free()
+ var long_extent := maxf(bounds.size.x,bounds.size.z)
+ var depth_extent := minf(bounds.size.x,bounds.size.z)
+ if long_extent <= 0.01 or depth_extent <= 0.01 or bounds.size.y <= 0.01:
+  push_error("WUXIA_CHINESE_RAMPART_BOUNDS_FAIL: "+wall_path)
+  return false
+ var multi := MultiMesh.new()
+ multi.transform_format = MultiMesh.TRANSFORM_3D
+ multi.mesh = wall_mesh
+ var segment_data: Array[Dictionary] = []
+ var piece_count := 0
+ for side in [-1.0,1.0]:
+  for segment in [-1.0,1.0]:
+   var start := -half if segment < 0.0 else gap
+   var finish := -gap if segment < 0.0 else half
+   var count := maxi(1,int(ceil((finish-start)/8.0)))
+   piece_count += count*2
+   segment_data.append({"side":side,"horizontal":true,"start":start,"finish":finish,"count":count})
+   segment_data.append({"side":side,"horizontal":false,"start":start,"finish":finish,"count":count})
+ multi.instance_count = piece_count
+ var index := 0
+ var local_center := bounds.position + bounds.size*0.5
+ var long_axis_is_x := bounds.size.x >= bounds.size.z
+ var wall_body := StaticBody3D.new()
+ wall_body.name = city+"_ChineseImperialRampartCollision"
+ for segment in segment_data:
+  var side := float(segment["side"])
+  var horizontal := bool(segment["horizontal"])
+  var start := float(segment["start"])
+  var finish := float(segment["finish"])
+  var count := int(segment["count"])
+  var spacing := (finish-start)/float(count)
+  var scale_long := spacing/long_extent
+  var scale_height := 10.0/bounds.size.y
+  var scale_depth := 4.0/depth_extent
+  var scale_vector := Vector3(scale_long,scale_height,scale_depth) if long_axis_is_x else Vector3(scale_depth,scale_height,scale_long)
+  var base_rotation := 0.0 if long_axis_is_x else PI*0.5
+  var rotation := base_rotation + (0.0 if horizontal else PI*0.5)
+  var basis := Basis(Vector3.UP,rotation).scaled(scale_vector)
+  for piece in range(count):
+   var along := start+(float(piece)+0.5)*spacing
+   var x := along if horizontal else side*half
+   var z := side*half if horizontal else along
+   var ground_y := WorldTerrainBuilder.sample_height_image(height_image,city,x,z,800.0)
+   var center := Vector3(x,ground_y+5.85,z)
+   multi.set_instance_transform(index,Transform3D(basis,center-basis*local_center))
+   var wall_collision := CollisionShape3D.new()
+   var wall_shape := BoxShape3D.new()
+   wall_shape.size = Vector3(bounds.size.x*scale_vector.x,bounds.size.y*scale_vector.y,bounds.size.z*scale_vector.z)
+   wall_collision.shape = wall_shape
+   wall_collision.position = center
+   wall_collision.rotation.y = rotation
+   wall_body.add_child(wall_collision)
+   index += 1
+ var visual := MultiMeshInstance3D.new()
+ visual.name = city+"_ChineseImperialPalaceWall_MultiMesh"
+ visual.multimesh = multi
+ visual.set_meta("source_asset_path",wall_path)
+ visual.add_to_group("distance_cull_world")
+ visual.add_to_group("city_perimeter_wall")
+ visual.add_to_group("city_chinese_perimeter_wall")
+ visual.visibility_range_end = 520.0
+ visual.visibility_range_end_margin = 42.0
+ parent.add_child(visual)
+ parent.add_child(wall_body)
+ var corner_packed := ResourceLoader.load(corner_path) as PackedScene
+ if corner_packed == null:
+  push_error("WUXIA_CHINESE_RAMPART_CORNER_IMPORT_FAIL: "+corner_path)
+  return false
+ var corner_index := 0
+ for x in [-half,half]:
+  for z in [-half,half]:
+   var corner := corner_packed.instantiate() as Node3D
+   if corner == null:
+    push_error("WUXIA_CHINESE_RAMPART_CORNER_ROOT_FAIL: "+corner_path)
+    return false
+   corner.name = city+"_ChineseRampartCorner_"+str(corner_index)
+   corner.position = Vector3(x,WorldTerrainBuilder.sample_height_image(height_image,city,x,z,800.0)+0.85,z)
+   corner.rotation.y = atan2(-x,-z)
+   corner.add_to_group("city_perimeter_wall")
+   corner.add_to_group("city_chinese_perimeter_wall")
+   corner.set_meta("source_asset_path",corner_path)
+   parent.add_child(corner)
+   _add_static_mesh_collisions(corner)
+   corner_index += 1
+ print("WUXIA_CHINESE_RAMPART_PASS: %s segments=%d corners=4 source=%s" % [city,piece_count,wall_path])
+ return true
+
+static func _build_wuxia_market_stalls(parent: Node3D, city: String, height_image: Image) -> void:
+ var dedicated_path := "res://assets/wuxia_imperial_pack/architecture/asian_market_stall.glb"
+ var walkway_path := "res://assets/wuxia_imperial_pack/architecture/covered_walkway_bay.glb"
+ var counter_path := "res://assets/wuxia_imperial_pack/props_nature/low_tea_table.glb"
+ var screen_path := "res://assets/wuxia_imperial_pack/architecture/latticed_screen_door_set.glb"
+ var lantern_path := "res://assets/wuxia_imperial_pack/props_nature/hanging_silk_lantern.glb"
+ var dedicated: PackedScene = ResourceLoader.load(dedicated_path) as PackedScene if ResourceLoader.exists(dedicated_path) else null
+ var walkway: PackedScene = ResourceLoader.load(walkway_path) as PackedScene if ResourceLoader.exists(walkway_path) else null
+ var counter: PackedScene = ResourceLoader.load(counter_path) as PackedScene if ResourceLoader.exists(counter_path) else null
+ var screen: PackedScene = ResourceLoader.load(screen_path) as PackedScene if ResourceLoader.exists(screen_path) else null
+ var lantern: PackedScene = ResourceLoader.load(lantern_path) as PackedScene if ResourceLoader.exists(lantern_path) else null
+ if dedicated == null and (walkway == null or counter == null or screen == null or lantern == null):
+  push_error("WUXIA_MARKET_STALL_COMPONENTS_MISSING: require a dedicated stall or covered walkway, tea counter, lattice screen and red lantern GLBs")
+  return
+ var stalls := [
+  {"at":Vector3(-12.0,0.0,-54.0),"rotation":PI*0.5},
+  {"at":Vector3(12.0,0.0,-54.0),"rotation":PI*1.5},
+  {"at":Vector3(-12.0,0.0,54.0),"rotation":PI*0.5},
+  {"at":Vector3(12.0,0.0,54.0),"rotation":PI*1.5}
+ ]
+ for index in range(stalls.size()):
+  var data: Dictionary = stalls[index]
+  var at: Vector3 = data["at"]
+  var stall := Node3D.new()
+  stall.name = city+"_ChineseMarketStall_%02d" % index
+  stall.position = Vector3(at.x,WorldTerrainBuilder.sample_height_image(height_image,city,at.x,at.z,800.0)+0.85,at.z)
+  stall.rotation.y = float(data["rotation"])
+  if dedicated != null:
+   var dedicated_instance := dedicated.instantiate() as Node3D
+   if dedicated_instance != null:
+    dedicated_instance.scale = Vector3.ONE*1.15
+    stall.add_child(dedicated_instance)
+    stall.set_meta("source_asset_path",dedicated_path)
+  else:
+   var roofed_bay := walkway.instantiate() as Node3D
+   var rear_screen := screen.instantiate() as Node3D
+   var red_lantern := lantern.instantiate() as Node3D
+   if roofed_bay == null or rear_screen == null or red_lantern == null:
+    push_error("WUXIA_MARKET_STALL_COMPOSITE_FAIL: "+city+" index="+str(index))
+    stall.free()
+    continue
+   roofed_bay.name = "ImportedChineseCoveredWalkwayStall"
+   stall.add_child(roofed_bay)
+   for counter_index in range(2):
+    var tea_counter := counter.instantiate() as Node3D
+    if tea_counter == null:
+     continue
+    tea_counter.name = "ImportedLowTeaTableVendorCounter_%02d" % counter_index
+    tea_counter.position = Vector3(-0.72+float(counter_index)*1.44,0.02,1.0)
+    tea_counter.scale = Vector3.ONE*1.15
+    stall.add_child(tea_counter)
+   rear_screen.name = "ImportedChineseLatticeBackScreen"
+   rear_screen.position = Vector3(0.0,0.0,-1.65)
+   rear_screen.scale = Vector3.ONE*0.95
+   stall.add_child(rear_screen)
+   red_lantern.name = "ImportedHangingRedSilkLantern"
+   red_lantern.position = Vector3(0.0,2.2,0.0)
+   red_lantern.scale = Vector3.ONE*0.58
+   stall.add_child(red_lantern)
+   stall.set_meta("source_asset_paths",[walkway_path,counter_path,screen_path,lantern_path])
+  var stall_light := OmniLight3D.new()
+  stall_light.name = "ChineseMarketStallWarmLanternLight"
+  stall_light.position = Vector3(0.0,2.8,0.0)
+  stall_light.light_color = Color("#ffad67")
+  stall_light.light_energy = 0.38
+  stall_light.omni_range = 5.0
+  stall_light.add_to_group("imperial_market_lantern_lights")
+  stall.add_child(stall_light)
+  stall.add_to_group("city_market_stall")
+  parent.add_child(stall)
+  _add_static_mesh_collisions(stall)
+ print("WUXIA_ASIAN_MARKET_STALL_PASS: %s stalls=%d composite=%s" % [city,stalls.size(),str(dedicated==null)])
+
+static func _build_kenney_city_modules(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
+ _build_wuxia_market_stalls(parent,city,height_image)
+ if city == "DesertLand":
+  _add_kenney_asset(parent, city, height_image, "fantasy-town-kit", "windmill.glb", "KenneyDesertWindmill", Vector3(260.0,0.0,-245.0), 0.0, 2.4)
+ elif city == "Waterlands":
+  _add_kenney_asset(parent, city, height_image, "fantasy-town-kit", "watermill.glb", "KenneyWaterlandsWatermill", Vector3(260.0,0.0,-245.0), 0.0, 2.2)
+
+static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size: float, height_image: Image) -> void:
  var outer := Node3D.new()
  outer.name = city + "_OpenWorld_800x800"
  parent.add_child(outer)
- var ground_color := Color("#6c9849")
- match city:
-  "DesertLand": ground_color = Color("#D4A359")
-  "VolcanoLand": ground_color = Color("#393437")
-  "IceLand": ground_color = Color("#A8D0E6")
-  "Waterlands": ground_color = Color("#3a9e91")
-  "DarkForest": ground_color = Color("#294b32")
+ # The 800x800 heightfield is the only visible ground; keep this safety plane below its lowest elevation.
  var ground := MeshInstance3D.new()
- ground.name = "SeamlessOuterBiomeGround"
+ ground.name = "SeamlessOuterBiomeSafetyPlane"
  var plane := PlaneMesh.new()
- plane.size = Vector2(800.0,800.0)
+ plane.size = Vector2(800.0, 800.0)
  ground.mesh = plane
- ground.position = Vector3(0,-18.0,0)
+ ground.position = Vector3(0.0, -30.0, 0.0)
  outer.add_child(ground)
- ground.material_override = _material(ground_color,1.0)
+ ground.material_override = _material(Color("#343a36"), 1.0)
+ _build_walkable_outer_routes(outer, city, p, height_image)
  _build_horizon_ridge(outer, city, p)
- _build_walkable_outer_routes(outer, city, p)
- var trunk := CylinderMesh.new()
- trunk.top_radius = 0.28
- trunk.bottom_radius = 0.58
- trunk.height = 7.0
- var canopy: PrimitiveMesh
- if city in ["DesertLand","VolcanoLand","IceLand","DarkForest"]:
-  var evergreen := CylinderMesh.new()
-  evergreen.top_radius = 0.0
-  evergreen.bottom_radius = 3.8
-  evergreen.height = 8.5
-  canopy = evergreen
- else:
-  var broadleaf := SphereMesh.new()
-  broadleaf.radius = 3.6
-  broadleaf.height = 6.8
-  canopy = broadleaf
- var trunk_mm := MultiMesh.new()
- trunk_mm.transform_format = MultiMesh.TRANSFORM_3D
- trunk_mm.mesh = trunk
- var canopy_mm := MultiMesh.new()
- canopy_mm.transform_format = MultiMesh.TRANSFORM_3D
- canopy_mm.mesh = canopy
- var count := 0 if city == "VolcanoLand" else 96
- trunk_mm.instance_count = count
- canopy_mm.instance_count = count
- for i in range(count):
-  var angle := float(i)*2.399963
-  var radius := 166.0 + float((i*37)%64)
-  var pos := Vector3(cos(angle)*radius,3.5,sin(angle)*radius)
-  var basis := Basis(Vector3.UP,angle).scaled(Vector3.ONE*(0.72+float(i%5)*0.12))
-  trunk_mm.set_instance_transform(i,Transform3D(basis,pos))
-  canopy_mm.set_instance_transform(i,Transform3D(basis,pos+Vector3(0,5.5,0)))
- var trunks := MultiMeshInstance3D.new()
- trunks.name = city+"_OuterTreeTrunks_MultiMesh"
- trunks.multimesh = trunk_mm
- trunks.visibility_range_end = 250.0
- trunks.visibility_range_end_margin = 30.0
- outer.add_child(trunks)
- trunks.material_override = _material(p.wood,0.95)
- var crowns := MultiMeshInstance3D.new()
- crowns.name = city+"_OuterCanopy_MultiMesh"
- crowns.multimesh = canopy_mm
- crowns.visibility_range_end = 250.0
- crowns.visibility_range_end_margin = 30.0
- outer.add_child(crowns)
- crowns.material_override = _material(p.accent,0.95)
- _place_quaternius_nature(outer, city)
- var water_color := Color("#4c9eb0")
- if city == "VolcanoLand": water_color = Color("#d75b2d")
- elif city == "DesertLand": water_color = Color("#4a9a75")
- elif city == "IceLand": water_color = Color("#a7dbe9")
- elif city == "Waterlands": water_color = Color("#397f86")
- if city in ["TwinCity","VolcanoLand","Waterlands"]:
-  var water := MeshInstance3D.new()
-  water.name = "OuterRiverOrLavaChannel"
-  var channel := PlaneMesh.new()
-  channel.size = Vector2(34.0,180.0)
-  if city == "Waterlands":
-   channel.size = Vector2(100.0,230.0)
-  water.mesh = channel
-  water.position = Vector3(0,0.08,-205.0)
-  outer.add_child(water)
-  water.material_override = _material(water_color,0.3)
-  if city == "Waterlands":
-   var island_material := _material(Color("#739451"),0.94)
-   for island_data in [{"x":-34.0,"z":-198.0},{"x":0.0,"z":-226.0},{"x":34.0,"z":-198.0}]:
-    var island := MeshInstance3D.new()
-    island.name = "Waterlands_OuterGreenIsland"
-    var island_mesh := CylinderMesh.new()
-    island_mesh.top_radius = 12.0
-    island_mesh.bottom_radius = 14.0
-    island_mesh.height = 1.6
-    island_mesh.radial_segments = 32
-    island.mesh = island_mesh
-    island.position = Vector3(float(island_data.x),0.55,float(island_data.z))
-    outer.add_child(island)
-    island.material_override = island_material
-   _box(outer,"Waterlands_WoodenNorthGateBridge",Vector3(0,1.0,-169.0),Vector3(9.0,0.65,42.0),_material(p.wood,0.88),1.0)
-   for side in [-1.0,1.0]:
-    _box(outer,"Waterlands_WoodenBridgeRail",Vector3(side*4.7,2.0,-169.0),Vector3(0.65,2.0,42.0),_material(p.wood,0.88),1.0)
-   _box(outer,"Waterlands_WoodenIslandCrossing",Vector3(0,1.0,-211.0),Vector3(74.0,0.65,7.0),_material(p.wood,0.88),1.0)
-  else:
-   _box(outer,"GrandStoneBridgeAtNorthGate",Vector3(0,0.8,-160.0),Vector3(25.0,1.6,22.0),_material(p.stone,0.86),1.0)
- print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 multimesh_instances=%d horizon_ridge=44 ramps=4 canyon_pass=1" % [city,count])
-
-static func _place_quaternius_nature(parent: Node3D, city: String) -> void:
- var keywords: Array[String] = []
- match city:
-  "TwinCity": keywords = ["tree","oak","bush","rock"]
-  "DesertLand": keywords = ["palm","cactus","desert","rock"]
-  "VolcanoLand": keywords = ["rock","basalt","volcano","lava"]
-  "IceLand": keywords = ["pine","spruce","snow","ice","rock"]
-  "Waterlands": keywords = ["willow","palm","tree","rock"]
-  "DarkForest": keywords = ["ancient","tree","log","stump","rock","oak"]
- var candidates: Array[String] = []
- _collect_quaternius_models("res://assets/environment/quaternius/ultimate_stylized_nature", candidates)
- candidates.sort()
- var selected: Array[String] = []
- for path in candidates:
-  var file_name := path.get_file().to_lower()
-  for keyword in keywords:
-   if file_name.contains(keyword):
-    selected.append(path)
-    break
- if selected.is_empty():
-  push_warning("Quaternius biome models not found by semantic filename for " + city)
-  return
- var placed := 0
- for i in range(mini(18, selected.size() * 3)):
-  var path := selected[i % selected.size()]
-  var packed := load(path) as PackedScene
-  if packed == null:
-   continue
-  var prop := packed.instantiate() as Node3D
-  if prop == null:
-   continue
-  var angle := float(i) * 2.399963
-  var radius := 238.0 + float((i * 31) % 82)
-  prop.name = city + "_QuaterniusBiomeProp_%02d" % i
-  prop.position = Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-  prop.rotation.y = angle
-  var scale_factor := 0.9 + float(i % 5) * 0.18
-  prop.scale = Vector3.ONE * scale_factor
-  parent.add_child(prop)
-  prop.add_to_group("distance_cull_world")
-  _set_visibility_range(prop, 320.0, 32.0)
-  placed += 1
- print("QUATERNIUS_BIOME_PROPS_PASS: %s placed=%d" % [city, placed])
+ print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 heightmap_ground=1 height_aligned_routes=4 horizon_ridge=44 kenney_nature=1" % city)
 
 static func _build_horizon_ridge(parent: Node3D, city: String, p: Dictionary) -> void:
- var ridge_mesh := CylinderMesh.new()
- ridge_mesh.top_radius = 0.0
- ridge_mesh.bottom_radius = 46.0
- ridge_mesh.height = 112.0
- ridge_mesh.radial_segments = 7
- ridge_mesh.rings = 3
+ var ridge_mesh := SphereMesh.new()
+ ridge_mesh.radius = 48.0
+ ridge_mesh.height = 76.0
+ ridge_mesh.radial_segments = 12
+ ridge_mesh.rings = 8
  var ridge_mm := MultiMesh.new()
  ridge_mm.transform_format = MultiMesh.TRANSFORM_3D
  ridge_mm.mesh = ridge_mesh
@@ -348,10 +1056,10 @@ static func _build_horizon_ridge(parent: Node3D, city: String, p: Dictionary) ->
  for i in range(44):
   var angle := TAU * float(i) / 44.0
   var radius := 354.0 + float((i * 17) % 38)
-  var height_scale := 0.72 + float((i * 13) % 65) / 100.0
-  var scale := Vector3(0.78 + float(i % 4) * 0.12, height_scale, 0.78 + float(i % 5) * 0.10)
+  var height_scale := 0.68 + float((i * 13) % 42) / 100.0
+  var scale := Vector3(1.05 + float(i % 4) * 0.10, height_scale, 1.2 + float(i % 5) * 0.08)
   var basis := Basis(Vector3.UP, angle * 0.12).scaled(scale)
-  var position := Vector3(cos(angle) * radius, 38.0, sin(angle) * radius)
+  var position := Vector3(cos(angle) * radius, 8.0, sin(angle) * radius)
   ridge_mm.set_instance_transform(i, Transform3D(basis, position))
  var ridge := MultiMeshInstance3D.new()
  ridge.name = city + "_DistantHorizonMountainRidge"
@@ -362,52 +1070,72 @@ static func _build_horizon_ridge(parent: Node3D, city: String, p: Dictionary) ->
  ridge.add_to_group("distance_cull_world")
  parent.add_child(ridge)
 
-static func _build_walkable_outer_routes(parent: Node3D, city: String, p: Dictionary) -> void:
+static func _build_walkable_outer_routes(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var route_root := Node3D.new()
- route_root.name = city + "_WalkableRampsAndCanyonPasses"
+ route_root.name = city + "_HeightAlignedRampsAndPasses"
  parent.add_child(route_root)
- var ramp_material := _material(p.stone.lightened(0.08), 0.96)
- for i in range(4):
-  var angle := float(i) * PI * 0.5
-  var ramp_body := StaticBody3D.new()
-  ramp_body.name = city + "_WalkableRamp_%d" % i
-  ramp_body.position = Vector3(cos(angle) * 205.0, 3.0, sin(angle) * 205.0)
-  ramp_body.rotation.y = -angle
-  ramp_body.rotation.x = deg_to_rad(-10.0)
-  var ramp_mesh := MeshInstance3D.new()
-  var ramp := BoxMesh.new()
-  ramp.size = Vector3(22.0, 2.0, 76.0)
-  ramp_mesh.mesh = ramp
-  ramp_body.add_child(ramp_mesh)
-  ramp_mesh.material_override = ramp_material
-  var ramp_collision := CollisionShape3D.new()
-  var ramp_shape := BoxShape3D.new()
-  ramp_shape.size = ramp.size
-  ramp_collision.shape = ramp_shape
-  ramp_body.add_child(ramp_collision)
-  route_root.add_child(ramp_body)
- var canyon_material := _material(p.stone.darkened(0.12), 1.0)
- for side in [-1.0, 1.0]:
-  var canyon_wall := StaticBody3D.new()
-  canyon_wall.name = city + "_CanyonPassWall"
-  canyon_wall.position = Vector3(side * 22.0, 12.0, -286.0)
-  var wall_mesh := MeshInstance3D.new()
-  var wall := BoxMesh.new()
-  wall.size = Vector3(10.0, 30.0, 112.0)
-  wall_mesh.mesh = wall
-  canyon_wall.add_child(wall_mesh)
-  wall_mesh.material_override = canyon_material
-  var wall_collision := CollisionShape3D.new()
-  var wall_shape := BoxShape3D.new()
-  wall_shape.size = wall.size
-  wall_collision.shape = wall_shape
-  canyon_wall.add_child(wall_collision)
-  route_root.add_child(canyon_wall)
+ var route_material := _material(p.stone.lightened(0.08), 0.94)
+ for route_index in range(4):
+  var angle := float(route_index) * PI * 0.5
+  var direction := Vector2(cos(angle), sin(angle))
+  var lateral := Vector2(-direction.y, direction.x)
+  var vertices := PackedVector3Array()
+  var normals := PackedVector3Array()
+  var uv := PackedVector2Array()
+  var indices := PackedInt32Array()
+  var steps := 49
+  for step in range(steps):
+   var distance := 145.0 + float(step) * 4.0
+   var center := direction * distance
+   var left := center + lateral * 4.5
+   var right := center - lateral * 4.5
+   var left_height := WorldTerrainBuilder.sample_height_image(height_image, city, left.x, left.y, 800.0) + 0.85
+   var right_height := WorldTerrainBuilder.sample_height_image(height_image, city, right.x, right.y, 800.0) + 0.85
+   vertices.append(Vector3(left.x, left_height, left.y))
+   vertices.append(Vector3(right.x, right_height, right.y))
+   for point in [left, right]:
+    var slope_x := WorldTerrainBuilder.sample_height_image(height_image, city, point.x - 1.0, point.y, 800.0) - WorldTerrainBuilder.sample_height_image(height_image, city, point.x + 1.0, point.y, 800.0)
+    var slope_z := WorldTerrainBuilder.sample_height_image(height_image, city, point.x, point.y - 1.0, 800.0) - WorldTerrainBuilder.sample_height_image(height_image, city, point.x, point.y + 1.0, 800.0)
+    normals.append(Vector3(slope_x, 2.0, slope_z).normalized())
+   uv.append(Vector2(0.0, float(step) / float(steps - 1)))
+   uv.append(Vector2(1.0, float(step) / float(steps - 1)))
+  for step in range(steps - 1):
+   var a := step * 2
+   var b := a + 1
+   var c := a + 2
+   var d := a + 3
+   indices.append_array(PackedInt32Array([a, c, b, b, c, d]))
+  var arrays := []
+  arrays.resize(Mesh.ARRAY_MAX)
+  arrays[Mesh.ARRAY_VERTEX] = vertices
+  arrays[Mesh.ARRAY_NORMAL] = normals
+  arrays[Mesh.ARRAY_TEX_UV] = uv
+  arrays[Mesh.ARRAY_INDEX] = indices
+  var route_mesh := ArrayMesh.new()
+  route_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+  var body := StaticBody3D.new()
+  body.name = city + "_HeightAlignedTrail_%d" % route_index
+  var visual := MeshInstance3D.new()
+  visual.name = "HeightAlignedStoneTrail"
+  visual.mesh = route_mesh
+  visual.material_override = route_material
+  body.add_child(visual)
+  var collision := CollisionShape3D.new()
+  collision.name = "HeightAlignedTrailCollision"
+  var shape := ConcavePolygonShape3D.new()
+  shape.set_faces(route_mesh.get_faces())
+  collision.shape = shape
+  body.add_child(collision)
+  body.add_to_group("distance_cull_world")
+  _set_visibility_range(body, 520.0, 40.0)
+  route_root.add_child(body)
 
-static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary) -> void:
+static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary, direction_name: String) -> void:
  var guard := Node3D.new()
- guard.name = "GateGuardian_" + ("Left" if side < 0.0 else "Right")
- guard.position = Vector3(side*9.0,0.0,-132.0)
+ guard.name = "CityGuardian_" + direction_name + "_" + ("Left" if side < 0.0 else "Right")
+ guard.add_to_group("city_guardians")
+ guard.set_meta("gate_direction",direction_name)
+ guard.position = Vector3(side*5.5,0.0,-80.0)
  parent.add_child(guard)
  var armor := _material(p.wood,0.62)
  var trim := _material(p.gold,0.5)
@@ -435,6 +1163,15 @@ static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary) -> voi
  helmet.position.y = 2.31
  guard.add_child(helmet)
  helmet.material_override = trim
+ var steel := _material(p.stone,0.48)
+ var red_accent := _material(p.accent,0.42)
+ _box(guard,"ArmoredBreastplate",Vector3(0.0,1.32,0.36),Vector3(0.86,0.72,0.24),steel,1.0)
+ _box(guard,"GoldBreastplateEmblem",Vector3(0.0,1.42,0.5),Vector3(0.28,0.34,0.06),trim,1.0)
+ for arm_side in [-1.0,1.0]:
+  _box(guard,"ArmoredShoulderPauldron",Vector3(arm_side*0.48,1.72,0.02),Vector3(0.5,0.34,0.48),trim,1.0)
+  _box(guard,"ArmoredForearmBracer",Vector3(arm_side*0.55,1.12,0.16),Vector3(0.24,0.5,0.34),steel,1.0)
+  _box(guard,"ArmoredShinGreave",Vector3(arm_side*0.22,0.48,0.18),Vector3(0.25,0.72,0.34),steel,1.0)
+ _box(guard,"CrimsonBackCape",Vector3(0.0,1.22,-0.32),Vector3(0.72,1.1,0.12),red_accent,1.0)
  var spear := MeshInstance3D.new()
  var spear_mesh := CylinderMesh.new()
  spear_mesh.top_radius = 0.035
@@ -444,6 +1181,16 @@ static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary) -> voi
  spear.position = Vector3(side*-0.58,1.35,0.0)
  guard.add_child(spear)
  spear.material_override = trim
+ var spear_tip := MeshInstance3D.new()
+ spear_tip.name = "PolishedSpearHead"
+ var spear_tip_mesh := CylinderMesh.new()
+ spear_tip_mesh.top_radius = 0.0
+ spear_tip_mesh.bottom_radius = 0.12
+ spear_tip_mesh.height = 0.42
+ spear_tip.mesh = spear_tip_mesh
+ spear_tip.position = Vector3(side*-0.58,2.82,0.0)
+ guard.add_child(spear_tip)
+ spear_tip.material_override = trim
 
 static func _make_building(city: String, p: Dictionary, index: int, s: float) -> Node3D:
  var root := Node3D.new()

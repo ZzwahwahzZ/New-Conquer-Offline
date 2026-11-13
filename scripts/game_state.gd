@@ -3,7 +3,7 @@ signal stats_changed
 signal inventory_changed
 signal quest_changed
 const SAVE_PATH := "user://offline_profile.json"
-var profile := {"character_name":"Player","level":1,"experience":0,"gold":100,"hp":100,"max_hp":100,"mp":50,"max_mp":50,"inventory":[],"quests":{"first_hunt":"not_started"},"settlement_id":"TwinCity","world_position":[0.0,0.0,0.0],"player_guild_name":"","player_guild_rank":"","player_guild_donation":0,"guild_war_title":""}
+var profile: Dictionary = {"character_name":"Player","level":1,"experience":0,"gold":100,"hp":100,"max_hp":100,"mp":50,"max_mp":50,"inventory":[],"quests":{"first_hunt":"not_started"},"settlement_id":"TwinCity","world_position":[0.0,0.0,0.0],"player_guild_name":"","player_guild_rank":"","player_guild_donation":0,"guild_war_title":""}
 func _ready() -> void:
   if not GlobalEconomy.gold_changed.is_connected(_on_global_gold_changed):
     GlobalEconomy.gold_changed.connect(_on_global_gold_changed)
@@ -16,8 +16,8 @@ func _on_global_gold_changed(new_amount: int) -> void:
 func add_gold(amount: int) -> void:
   GlobalEconomy.add_gold(amount)
 func add_experience(amount: int) -> void:
-  var guild = get_tree().get_first_node_in_group("guild_system")
-  var xp_multiplier := float(guild.call("get_xp_multiplier")) if is_instance_valid(guild) else 1.0
+  var guild: Node = get_tree().get_first_node_in_group("guild_system")
+  var xp_multiplier: float = float(guild.call("get_xp_multiplier")) if is_instance_valid(guild) else 1.0
   profile.experience = maxi(0, int(profile.experience) + int(round(float(amount) * xp_multiplier)))
   while profile.experience >= int(profile.level) * 100:
     profile.experience -= int(profile.level) * 100
@@ -28,8 +28,8 @@ func add_experience(amount: int) -> void:
     profile.mp = profile.max_mp
   stats_changed.emit()
 func damage_player(amount: int) -> void:
-  var guild = get_tree().get_first_node_in_group("guild_system")
-  var mitigation := float(guild.call("get_defense_multiplier")) if is_instance_valid(guild) else 1.0
+  var guild: Node = get_tree().get_first_node_in_group("guild_system")
+  var mitigation: float = float(guild.call("get_defense_multiplier")) if is_instance_valid(guild) else 1.0
   profile.hp = maxi(0, int(profile.hp) - int(round(float(maxi(0,amount)) / mitigation)))
   stats_changed.emit()
 func add_item(item_id: String, quantity: int = 1) -> void:
@@ -45,7 +45,7 @@ func use_consumable(item_id: String) -> bool:
   if item_id != "HP_Potion" and item_id != "Mana_Potion":
     return false
   var inventory: Array = profile.get("inventory", [])
-  var found_index := -1
+  var found_index: int = -1
   for index in range(inventory.size()):
     var entry: Dictionary = inventory[index]
     if str(entry.get("id", "")) == item_id and int(entry.get("quantity", 1)) > 0:
@@ -61,7 +61,7 @@ func use_consumable(item_id: String) -> bool:
     if ClassSystem.mp >= ClassSystem.max_mp:
       return false
     ClassSystem.restore_mana(maxi(1, int(round(float(ClassSystem.max_mp) * 0.30))))
-  var remaining := int(inventory[found_index].get("quantity", 1)) - 1
+  var remaining: int = int(inventory[found_index].get("quantity", 1)) - 1
   if remaining <= 0:
     inventory.remove_at(found_index)
   else:

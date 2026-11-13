@@ -39,18 +39,23 @@ func _build_environment() -> void:
 	environment.sky = sky
 	environment.background_color = sky_color
 	environment.tonemap_mode = Environment.TONE_MAPPER_ACES
+	environment.tonemap_exposure = 1.05
 	environment.ssao_enabled = true
 	environment.ssao_radius = 2.4
 	environment.ssao_intensity = 1.35
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	environment.ambient_light_color = sky_color.lightened(0.25)
-	environment.ambient_light_energy = 0.42
-	environment.fog_enabled = false
+	environment.ambient_light_energy = 0.68 if settlement_id == "DarkForest" else 0.42
+	environment.fog_enabled = true
 	environment.fog_light_color = fog_color
-	environment.fog_density = fog_density
-	environment.glow_enabled = false
-	environment.glow_intensity = 0.0
-	environment.glow_strength = 0.0
+	environment.fog_density = 0.0015
+	environment.fog_depth_begin = 125.0
+	environment.fog_depth_end = 450.0
+	environment.fog_depth_curve = 1.0
+	environment.fog_sky_affect = 0.0
+	environment.glow_enabled = true
+	environment.glow_intensity = 0.35
+	environment.glow_strength = 0.35
 	environment.glow_bloom = 0.0
 	environment.glow_hdr_threshold = 0.82
 	environment.glow_hdr_scale = 1.0
@@ -59,7 +64,7 @@ func _build_environment() -> void:
 	var sun := DirectionalLight3D.new()
 	sun.name = "SettlementSun"
 	sun.rotation_degrees = Vector3(-45,-32,0)
-	sun.light_energy = 0.78
+	sun.light_energy = 0.92 if settlement_id == "DarkForest" else 0.78
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 220.0
 	sun.shadow_bias = 0.04
@@ -186,24 +191,24 @@ func _configure_city_atmosphere() -> void:
 		"TwinCity":
 			sky_color = Color("#f5c982")
 			fog_color = Color("#e9c58c")
-			fog_density = 0.0018
+			fog_density = 0.0015
 		"DesertLand":
 			sky_color = Color("#d8ae70")
 			fog_color = Color("#d6a65f")
-			fog_density = 0.009
+			fog_density = 0.0015
 		"VolcanoLand":
 			sky_color = Color("#6d3425")
 			fog_color = Color("#d66a32")
-			fog_density = 0.007
+			fog_density = 0.0015
 		"IceLand":
 			sky_color = Color("#8fc9e7")
 			fog_color = Color("#a8d9f0")
-			fog_density = 0.006
+			fog_density = 0.0015
 		"Waterlands":
 			sky_color = Color("#76c7c6")
 			fog_color = Color("#83d6ce")
-			fog_density = 0.004
+			fog_density = 0.0015
 		"DarkForest":
 			sky_color = Color("#183b32")
 			fog_color = Color("#36745a")
-			fog_density = 0.012
+			fog_density = 0.0015

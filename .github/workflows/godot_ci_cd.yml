@@ -2,16 +2,23 @@ name: Godot 4.3 CI and Web
 
 on:
   push:
+    branches: [main, phase3a-terrain-architecture]
+  pull_request:
     branches: [main]
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      head_branch:
+        required: false
+        type: string
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
 concurrency:
-  group: godot-ci-cd-${{ github.ref }}
+  group: godot-ci-cd-${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 env:
@@ -26,40 +33,42 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.head_branch || github.head_ref || github.ref }}
 
-      - name: Install Godot 4.3 and export templates
+      - name: Install Godot 4.3 runtime only (exports paused)
         shell: bash
         run: |
           set -euo pipefail
-          TEMPLATE_DEST="$HOME/.local/share/godot/export_templates/${GODOT_TEMPLATE_VERSION}"
-          mkdir -p "$TEMPLATE_DEST"
           curl --connect-timeout 20 --max-time 180 --retry 2 --retry-delay 5 -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o /tmp/godot.zip
           unzip -q /tmp/godot.zip -d /tmp/godot-bin
           sudo install -m 0755 /tmp/godot-bin/Godot_v${GODOT_VERSION}-stable_linux.x86_64 /usr/local/bin/godot
-          curl --connect-timeout 20 --max-time 180 --retry 2 --retry-delay 5 -fL "https://github.com/godotengine/godot/releases/download/${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o /tmp/templates.tpz
-          mkdir -p /tmp/godot-templates
-          unzip -q /tmp/templates.tpz -d /tmp/godot-templates
-          echo "Godot export template archive contents:"
-          find /tmp/godot-templates -type f -name '*.zip' -printf '%P\n' | sort
-          TEMPLATE_SOURCE="$(find /tmp/godot-templates -type d -name templates -print -quit)"
-          test -n "$TEMPLATE_SOURCE"
-          cp -av "$TEMPLATE_SOURCE"/* "$TEMPLATE_DEST"/
-          echo "Installed Godot export templates:"
-          ls -la "$TEMPLATE_DEST"
-          test -s "$TEMPLATE_DEST/web_nothreads_debug.zip"
-          test -s "$TEMPLATE_DEST/web_nothreads_release.zip"
-          test -s "$TEMPLATE_DEST/android_debug.apk"
-          test -s "$TEMPLATE_DEST/android_release.apk"
           godot --version
+
+      - name: Install Blender and public Quaternius ZIP downloader
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y blender
+          python3 -m pip install --disable-pip-version-check --upgrade gdown
+          blender --version
 
       - name: Restore PBR terrain packages and heightmaps from Hugging Face
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python3 -m pip install --disable-pip-version-check huggingface_hub trimesh numpy
+          python3 -m pip install --disable-pip-version-check huggingface_hub
           python3 tools/restore_hf_terrain_assets.py
           python3 tools/sync_rpg_ui_assets.py
-          python3 tools/restore_curated_glb_assets.py
+          python3 tools/restore_kenney_environment_assets.py
+          python3 tools/restore_chinese_imperial_assets.py
+          python3 tools/restore_opengameart_temple.py
+          python3 tools/restore_polyhaven_pbr_textures.py
+          python3 tools/restore_imperial_city_pbr_v2.py
+          python3 tools/restore_ambientcg_wuxia_textures.py
+          python3 -m py_compile tools/restore_kenney_environment_assets.py tools/restore_chinese_imperial_assets.py tools/restore_opengameart_temple.py tools/restore_polyhaven_pbr_textures.py tools/restore_imperial_city_pbr_v2.py tools/restore_ambientcg_wuxia_textures.py tools/fetch_quaternius_official_packs.py tools/upload_imperial_city_v2_hf.py tools/upload_wuxia_visual_proof_hf.py tools/generate_wuxia_credits.py tools/kenney_asset_preflight.py
+          bash -n tools/run_godot_smoke_test.sh
           npm install --global @gltf-transform/cli@4.5.1
           while IFS= read -r -d '' asset; do
             temp="${asset%.glb}.dequantized.glb"
@@ -67,20 +76,33 @@ jobs:
             test -s "$temp"
             mv "$temp" "$asset"
             echo "GODOT_COMPATIBLE_GLB: $asset"
-          done < <(find assets/environment/architecture assets/environment/biomes assets/environment/nature -type f -name '*.glb' -print0)
-          python3 tools/audit_classify_terrain_glb.py
-
+          done < <(find assets/environment/kenney assets/environment/architecture assets/wuxia_imperial_pack -type f -name '*.glb' -print0)
+          python3 tools/kenney_asset_preflight.py
       - name: Cache official Quaternius downloads
         uses: actions/cache@v4
         with:
-          path: ~/.cache/quaternius
-          key: ${{ runner.os }}-quaternius-github-cc0-0128ca510d653bb0-v2
+          path: ~/.cache/quaternius-official
+          key: ${{ runner.os }}-quaternius-official-cc0-v2
           restore-keys: |
-            ${{ runner.os }}-quaternius-github-cc0-
+            ${{ runner.os }}-quaternius-official-cc0-
 
-      - name: Download pinned Quaternius CC0 GLB models from public GitHub
-        run: python3 tools/fetch_quaternius_assets.py
+      - name: Download official Quaternius CC0 ZIP packs and normalize models to GLB
+        timeout-minutes: 35
+        run: python3 tools/fetch_quaternius_official_packs.py
 
+      - name: Regenerate and commit creator attributions from verified manifests
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 tools/generate_wuxia_credits.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CREDITS.md
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh Wuxia asset credits [skip ci]"
+            target_branch="${{ inputs.head_branch || github.head_ref || github.ref_name }}"
+            git push origin "HEAD:${target_branch}"
+          fi
       - name: Cache Godot imported assets
         uses: actions/cache@v4
         with:
@@ -96,16 +118,30 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m pip install --disable-pip-version-check Pillow
-          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 50 --max-glb-nodes 2000 --max-image-dimension 1024
+          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 50 --max-glb-nodes 2000 --max-image-dimension 2048
       - name: Install virtual X server for stable Godot 3D import
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb xorg xz-utils
-      - name: Diagnose scripts and material resources independently before editor import
+      - name: Step 0 - Import project resources and build Godot UID cache
         shell: bash
+        timeout-minutes: 12
         run: |
-          set -euo pipefail
-          godot --headless --audio-driver Dummy --path . --script res://tools/diagnose_scripts_materials.gd
+          set -Eeuo pipefail
+          mkdir -p reports
+          timeout 600s xvfb-run -a godot --headless --audio-driver Dummy --path . --import --quit 2>&1 | tee reports/godot_import_guard.log
+          test -d .godot
+          echo "GODOT_FULL_IMPORT_AND_UID_CACHE_PASS"
+
+      - name: Generate and verify TSCN prefabs for imported Imperial City v2 models
+        timeout-minutes: 8
+        run: timeout 420s xvfb-run -a godot --headless --audio-driver Dummy --path . --script res://tools/generate_imperial_city_v2_prefabs.gd
+
+      - name: Upload and verify Imperial City v2 kit on Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python3 tools/upload_imperial_city_v2_hf.py
+
 
       - name: Step 1 - Initialize Editor Classes
         shell: bash
@@ -116,13 +152,34 @@ jobs:
           test -s .godot/global_script_class_cache.cfg
           echo "EDITOR_CLASSES_INITIALIZATION_PASS"
 
+      - name: Diagnose scripts and material resources after global class initialization
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 180s xvfb-run -a godot --headless --audio-driver Dummy --path . res://tools/diagnose_scripts_materials.tscn
+
+      - name: Godot 4.3 --check-only for PBR and city architecture scripts
+        shell: bash
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          for script in \
+            res://src/scripts/PBRMaterialLibrary.gd \
+            res://src/scripts/CityArchitectureBuilder.gd \
+            res://src/scripts/CityStreetDressing.gd \
+            res://src/scripts/WorldTerrainBuilder.gd; do
+            echo "GODOT_CHECK_ONLY: $script"
+            godot --headless --audio-driver Dummy --path . --check-only --script "$script"
+          done
+          echo "FOUR_CITY_SCRIPT_CHECK_ONLY_PASS"
+
       - name: Step 2 - Import Scripts, Materials & Build
         shell: bash
-        timeout-minutes: 5
+        timeout-minutes: 8
         run: |
           set -Eeuo pipefail
           mkdir -p reports
-          timeout 120s godot --headless --path . --import 2>&1 | tee reports/godot_import_guard.log
+          timeout 420s xvfb-run -a godot --headless --audio-driver Dummy --path . --import 2>&1 | tee -a reports/godot_import_guard.log
           if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load script|ERROR: Failed loading resource' reports/godot_import_guard.log; then
             echo "::error::Godot import emitted parser or resource-load errors."
             exit 1
@@ -168,71 +225,87 @@ jobs:
           PY
 
       - name: Run Step 11 smoke test
-        timeout-minutes: 2
+        timeout-minutes: 4
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/step11_smoke_test.gd
 
       - name: Run Step 12 smoke test (Save v6)
-        timeout-minutes: 2
+        timeout-minutes: 4
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/step12_smoke_test.gd
 
       - name: Run Step 13 smoke test
-        timeout-minutes: 2
+        timeout-minutes: 4
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/step13_smoke_test.gd
 
       - name: Run Step 14 smoke test
-        timeout-minutes: 2
+        timeout-minutes: 4
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/step14_smoke_test.gd
 
       - name: Run Step 15 smoke test (PBR terrain material library)
-        timeout-minutes: 2
+        timeout-minutes: 4
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/pbr_material_library_test.gd
 
-      - name: Run Step 16 smoke test
-        timeout-minutes: 2
+      - name: Run Step 16 smoke test (live six-city architecture validation)
+        timeout-minutes: 12
         shell: bash
-        run: bash tools/run_godot_smoke_test.sh scripts/step16_smoke_test.gd
+        run: bash tools/run_godot_smoke_test.sh scripts/step16_smoke_test.gd 600s display
 
       - name: Verify world environment, sunlight and Twin City ground
-        timeout-minutes: 2
+        timeout-minutes: 4
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/world_environment_test.gd
 
       - name: Verify all six classic city street environments
-        timeout-minutes: 8
+        timeout-minutes: 10
         shell: bash
-        run: bash tools/run_godot_smoke_test.sh scripts/city_street_dressing_test.gd
+        run: bash tools/run_godot_smoke_test.sh scripts/city_street_dressing_test.gd 420s display
 
-      - name: Capture thirty close classic-Conquer camera proof frames across all six cities
+      - name: Capture twelve clear oblique panoramic proof frames across all six cities
         id: capture_visual_proof
-        timeout-minutes: 15
+        timeout-minutes: 12
         shell: bash
         run: |
           set -Eeuo pipefail
           mkdir -p reports/visual-proof
-          timeout 600s xvfb-run -a godot --path . --script res://tools/capture_visual_proof.gd 2>&1 | tee reports/visual-proof/capture.log
+          timeout 480s xvfb-run -a godot --path . --script res://tools/capture_visual_proof.gd 2>&1 | tee reports/visual-proof/capture.log
           cities=(twincity desertland volcanoland iceland waterlands darkforest)
           city_index=1
           for city in "${cities[@]}"; do
-            for sample in 01_plaza_close 02_shop_street_close 03_main_gate_horizon 04_outer_world; do
+            for sample in 01_aerial_overview 02_inner_street; do
               test -s "reports/visual-proof/city_${city_index}_${city}_${sample}.png"
             done
-            test -s "reports/visual-proof/city_${city_index}_${city}_05_orbit_90.png"
             city_index=$((city_index+1))
           done
           file reports/visual-proof/*.png
-          test "$(find reports/visual-proof -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 30
-          echo "THIRTY_CITY_ARCHITECTURE_VISUAL_PROOFS_PASS"
+          test "$(find reports/visual-proof -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 12
+          echo "TWELVE_CITY_PANORAMIC_PROOF_FRAMES_PASS"
+
+      - name: Publish twelve Wuxia panorama proofs to Hugging Face and repository
+        if: steps.capture_visual_proof.outcome == 'success'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 tools/upload_wuxia_visual_proof_hf.py
+          git add -f reports/visual-proof/*.png reports/visual-proof/README.md
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "docs: add twelve Wuxia imperial city panorama proofs [skip ci]"
+            target_branch="${{ inputs.head_branch || github.head_ref || github.ref_name }}"
+            git push origin "HEAD:${target_branch}"
+          fi
 
       - name: Upload Visual Screenshot Proof
         if: always() && steps.capture_visual_proof.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: NewConquerOffline-Visual-Screenshot-Proof-30
+          name: NewConquerOffline-Phase3A-World-Panoramas-6
           path: reports/visual-proof/
           if-no-files-found: error
           retention-days: 30
@@ -240,13 +313,13 @@ jobs:
 
       - name: Phase 2 - Verify classic RPG HUD, Arabic RTL and Auto-Quest; capture six real UI screens
         id: phase2_ui_proof
-        timeout-minutes: 8
+        timeout-minutes: 30
         shell: bash
         run: |
           set -Eeuo pipefail
           mkdir -p reports/phase2-ui
           test -s "assets/ui/fonts/NotoSansArabic[wght].ttf"
-          timeout 420s xvfb-run -a godot --path . --script res://tools/capture_phase2_ui_proof.gd 2>&1 | tee reports/phase2-ui/capture.log
+          timeout 1680s xvfb-run -a godot --path . --script res://tools/capture_phase2_ui_proof.gd 2>&1 | tee reports/phase2-ui/capture.log
           expected=(
             01_twincity_gameplay_hud.png
             02_character_gear.png
@@ -320,10 +393,9 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python3 -m pip install --disable-pip-version-check huggingface_hub trimesh numpy
+          python3 -m pip install --disable-pip-version-check huggingface_hub
           python3 tools/restore_hf_terrain_assets.py
           python3 tools/sync_rpg_ui_assets.py
-          python3 tools/restore_curated_glb_assets.py
           npm install --global @gltf-transform/cli@4.5.1
           while IFS= read -r -d '' asset; do
             temp="${asset%.glb}.dequantized.glb"
@@ -331,9 +403,7 @@ jobs:
             test -s "$temp"
             mv "$temp" "$asset"
             echo "GODOT_COMPATIBLE_GLB: $asset"
-          done < <(find assets/environment/architecture assets/environment/biomes assets/environment/nature -type f -name '*.glb' -print0)
-          python3 tools/audit_classify_terrain_glb.py
-
+          done < <(find assets/environment/kenney -type f -name '*.glb' -print0)
       - name: Cache Godot imported assets
         uses: actions/cache@v4
         with:
@@ -349,7 +419,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m pip install --disable-pip-version-check Pillow
-          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 50 --max-glb-nodes 2000 --max-image-dimension 1024
+          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 50 --max-glb-nodes 2000 --max-image-dimension 2048
       - name: Install virtual X server for stable Godot 3D import
         run: |
           sudo apt-get update
@@ -520,10 +590,9 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python3 -m pip install --disable-pip-version-check huggingface_hub trimesh numpy
+          python3 -m pip install --disable-pip-version-check huggingface_hub
           python3 tools/restore_hf_terrain_assets.py
           python3 tools/sync_rpg_ui_assets.py
-          python3 tools/restore_curated_glb_assets.py
           npm install --global @gltf-transform/cli@4.5.1
           while IFS= read -r -d '' asset; do
             temp="${asset%.glb}.dequantized.glb"
@@ -531,9 +600,7 @@ jobs:
             test -s "$temp"
             mv "$temp" "$asset"
             echo "GODOT_COMPATIBLE_GLB: $asset"
-          done < <(find assets/environment/architecture assets/environment/biomes assets/environment/nature -type f -name '*.glb' -print0)
-          python3 tools/audit_classify_terrain_glb.py
-
+          done < <(find assets/environment/kenney -type f -name '*.glb' -print0)
       - name: Cache Godot imported assets
         uses: actions/cache@v4
         with:

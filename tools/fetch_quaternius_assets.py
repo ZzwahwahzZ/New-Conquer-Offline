@@ -39,20 +39,6 @@ ASSETS = {
         "modular_medieval_buildings_pack/WatchTowerWRoof.glb",
         "modular_medieval_buildings_pack/Watchtower.glb",
     ],
-    "ultimate_stylized_nature": [
-        "nature_pack/BirchTree_1.glb",
-        "nature_pack/BirchTree_Snow_1.glb",
-        "nature_pack/BirchTree_Dead_1.glb",
-        "nature_pack/CommonTree_1.glb",
-        "nature_pack/PineTree_1.glb",
-        "nature_pack/PineTree_Snow_1.glb",
-        "nature_pack/PalmTree_1.glb",
-        "nature_pack/Bush_1.glb",
-        "nature_pack/Rock_1.glb",
-        "nature_pack/Rock_2.glb",
-        "nature_pack/Rock_Moss_1.glb",
-        "nature_pack/Rock_Snow_1.glb",
-    ],
 }
 
 def fetch(url: str, target: Path) -> None:

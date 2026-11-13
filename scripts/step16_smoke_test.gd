@@ -1,7 +1,7 @@
 extends SceneTree
 
-func get_tree() -> SceneTree:
-	return self
+const CITIES := ["TwinCity", "DesertLand", "VolcanoLand", "IceLand", "Waterlands", "DarkForest"]
+const REQUIRED_AUTOLOAD_ORDER := ["ClassSystem=", "GearDatabase=", "GearSystem=", "GlobalEconomy=", "GameState="]
 
 func _initialize() -> void:
 	call_deferred("_run")
@@ -9,55 +9,158 @@ func _initialize() -> void:
 func _require(condition: bool, message: String) -> bool:
 	if condition:
 		return true
-	push_error(message)
-	get_tree().quit(1)
+	push_error("STEP16_CITY_CONTRACT_FAIL: " + message)
+	quit(1)
 	return false
 
-func _run() -> void:
-	# Step 11 already performs runtime instantiation of all six cities and
-	# validates their terrain, collisions, anchors and architecture. Keep this
-	# second-stage guard resource-only: repeatedly creating/freeing hundreds of
-	# MeshInstance3D nodes under Godot 4.3's dummy --headless renderer triggers
-	# the known mesh_get_surface_count null-RID shutdown bug (godotengine/godot#86806).
-	var cities := ["TwinCity", "DesertLand", "VolcanoLand", "IceLand", "Waterlands", "DarkForest"]
-	for city in cities:
-		var path := "res://src/scenes/world/%s.tscn" % city
-		if not _require(ResourceLoader.exists(path), "Missing city scene resource: " + city):
-			return
-		var packed := ResourceLoader.load(path) as PackedScene
-		if not _require(packed != null, "City scene resource failed to load: " + city):
-			return
+func _collect_unique_building_sources(node: Node, output: Dictionary) -> void:
+	if node.is_in_group("city_building") and node.has_meta("source_asset_path"):
+		output[str(node.get_meta("source_asset_path"))] = true
+	for child in node.get_children():
+		_collect_unique_building_sources(child, output)
 
-	var source := FileAccess.get_file_as_string("res://project.godot")
-	var order := ["ClassSystem=", "GearDatabase=", "GearSystem=", "GlobalEconomy=", "GameState="]
+func _count_group_recursive(node: Node, group_name: String) -> int:
+	var total := 1 if node.is_in_group(group_name) else 0
+	for child in node.get_children():
+		total += _count_group_recursive(child, group_name)
+	return total
+
+func _count_multimesh_instances_recursive(node: Node, group_name: String) -> int:
+	var total := 0
+	if node is MultiMeshInstance3D and node.is_in_group(group_name):
+		var multi_node := node as MultiMeshInstance3D
+		if multi_node.multimesh != null:
+			total += multi_node.multimesh.instance_count
+	for child in node.get_children():
+		total += _count_multimesh_instances_recursive(child, group_name)
+	return total
+
+func _count_city_buildings_outside_core(node: Node) -> int:
+	var total := 0
+	if node is Node3D and node.is_in_group("city_building"):
+		var p := (node as Node3D).global_position
+		if absf(p.x) > 85.0 or absf(p.z) > 85.0:
+			total += 1
+	for child in node.get_children():
+		total += _count_city_buildings_outside_core(child)
+	return total
+
+func _count_named_gates(city: Node) -> int:
+	var total := 0
+	for direction in ["North", "East", "South", "West"]:
+		if city.find_child(direction + "_GrandCityGate", true, false) != null:
+			total += 1
+	return total
+
+func _run() -> void:
+	var project_source := FileAccess.get_file_as_string("res://project.godot")
 	var previous := -1
-	for key in order:
-		var at := source.find(key)
+	for key in REQUIRED_AUTOLOAD_ORDER:
+		var at := project_source.find(key)
 		if not _require(at > previous, "Autoload order changed at " + key):
 			return
 		previous = at
-	if not _require(source.contains('renderer/rendering_method="mobile"'), "Canonical Mobile renderer setting changed"):
+	if not _require(project_source.contains('renderer/rendering_method="mobile"'), "canonical Mobile renderer setting changed"):
 		return
-	if not _require(ResourceLoader.load("res://src/scripts/CityArchitectureBuilder.gd") != null, "CityArchitectureBuilder failed to load"):
+
+	var builder_path := "res://src/scripts/CityArchitectureBuilder.gd"
+	var settlement_path := "res://src/scripts/SettlementWorld.gd"
+	if not _require(ResourceLoader.load(builder_path) != null, "CityArchitectureBuilder failed to load"):
 		return
-	if not _require(ResourceLoader.load("res://src/scripts/WorldManager.gd") != null, "WorldManager failed to load"):
+	var builder_source := FileAccess.get_file_as_string(builder_path)
+	var settlement_source := FileAccess.get_file_as_string(settlement_path)
+	var street_source := FileAccess.get_file_as_string("res://src/scripts/CityStreetDressing.gd")
+	if not _require(settlement_source.contains("CityArchitectureBuilder.build(get_node(\"ArchitectureAssetSlot\"), settlement_id"), "SettlementWorld does not invoke build_city before validation"):
 		return
-	if not _require(ResourceLoader.load("res://src/scripts/WorldTerrainBuilder.gd") != null, "WorldTerrainBuilder failed to load"):
+	if not _require(builder_source.contains("_instantiate_wuxia_building(slot") and builder_source.contains("assets/wuxia_imperial_pack/architecture") and builder_source.contains("OpenCentralPlaza_50x50") and builder_source.contains("ImperialPalaceRaisedStonePlinth_4_0m") and builder_source.contains("Vector3(12.0,0.02,road_length)") and builder_source.contains("Vector3(6.0,0.14,14.0)") and builder_source.contains("detailed_buildings=85-88"), "verified Wuxia Chinese GLBs are not connected to the 85-100 building city builder"):
 		return
-	var architecture_source := FileAccess.get_file_as_string("res://src/scripts/CityArchitectureBuilder.gd")
-	if not _require(architecture_source.contains("OpenCentralPlaza_80x80") and architecture_source.contains("CentralEngravedStoneMedallion"), "Open 80x80 plaza and engraved medallion builder are missing"):
+	if not _require(builder_source.contains("gate.add_to_group(\"cardinal_gates\")") and builder_source.contains("guard.add_to_group(\"city_guardians\")"), "cardinal gate or guardian groups are not registered"):
 		return
-	if not _require(architecture_source.contains("detailed_buildings=24") and architecture_source.contains("_GrandCityGate") and architecture_source.contains("GateGuardian_"), "24-building urban fabric, cardinal gates or guardians are missing"):
+	if not _require(builder_source.contains("_build_chinese_perimeter_walls") and builder_source.contains("palace_wall_straight.glb") and builder_source.contains("palace_wall_corner.glb") and builder_source.contains("covered_walkway_bay.glb") and builder_source.contains("low_tea_table.glb") and builder_source.contains("latticed_screen_door_set.glb"), "authentic Chinese palace ramparts or market stalls are not connected"):
 		return
-	if not _require(architecture_source.contains("_OpenWorld_800x800") and architecture_source.contains("MultiMeshInstance3D"), "450x450 open-world biome or MultiMesh foliage builder is missing"):
+	var chinese_builder_source := FileAccess.get_file_as_string("res://src/scripts/ChineseImperialBuilder.gd")
+	if not _require(chinese_builder_source.contains("_add_watchtowers") and chinese_builder_source.contains("imperial_watchtowers"), "Chinese imperial watchtowers are not connected"):
 		return
-	var settlement_source := FileAccess.get_file_as_string("res://src/scripts/SettlementWorld.gd")
-	if not _require(not settlement_source.contains("ChineseImperialBuilder.build("), "Obsolete enclosed TwinCity imperial block is still being instanced"):
+	if not _require(builder_source.contains("ChineseImperialBuilder.build("), "Chinese imperial architectural assets are not connected"):
 		return
-	var capture_source := FileAccess.get_file_as_string("res://tools/capture_visual_proof.gd")
-	if not _require(capture_source.contains("CITY_IDS") and capture_source.contains("SHOTS") and capture_source.contains("05_orbit_90") and capture_source.contains("PI * 0.5"), "Six-city five-view proof capture or 90-degree gate orbit is missing"):
+	if not _require(builder_source.contains("_OpenWorld_800x800") and builder_source.contains("MultiMeshInstance3D"), "open-world biome and batched foliage builder are missing"):
 		return
-	if not _require(capture_source.contains("const CITY_IDS := [\"TwinCity\",\"DesertLand\",\"VolcanoLand\",\"IceLand\",\"Waterlands\",\"DarkForest\"]") and capture_source.contains("\"suffix\":\"05_orbit_90\""), "Six-city proof set or named 90-degree orbit frame is incomplete"):
+	if not _require(street_source.contains("Waterlands_ReflectiveInnerHarbor_160m") and street_source.contains("Waterlands_RaisedTimberStreetNetwork_0_85m") and street_source.contains("assets/wuxia_imperial_pack/architecture/arched_stone_bridge.glb"), "Waterlands raised harbor and 0.85m promenade network are missing"):
 		return
-	print("STEP16_PHASE1_OPEN_PLAZA_24_BUILDINGS_FOUR_GATES_800M_WORLD_AND_30_FRAME_PROOF_PASS")
-	get_tree().quit(0)
+	var terrain_source := FileAccess.get_file_as_string("res://src/scripts/WorldTerrainBuilder.gd")
+	if not _require(terrain_source.contains("assets/wuxia_imperial_pack/props_nature") and terrain_source.contains("imperial_city_tree_multimesh"), "real Wuxia willow, pine, bamboo and bush MultiMesh models are not connected"):
+		return
+	if not _require(settlement_source.contains("environment.fog_depth_begin = 125.0") and settlement_source.contains("environment.fog_depth_end = 450.0") and settlement_source.contains("environment.fog_sky_affect = 0.0"), "distant horizon-only fog settings are missing"):
+		return
+
+	for city_id in CITIES:
+		var scene_path := "res://src/scenes/world/%s.tscn" % city_id
+		var packed := ResourceLoader.load(scene_path) as PackedScene
+		if not _require(packed != null, "missing or invalid city scene: " + city_id):
+			return
+		var city := packed.instantiate() as Node3D
+		if not _require(city != null, "city root is not Node3D: " + city_id):
+			return
+		# Adding the actual scene runs SettlementWorld._ready(), which calls build_city()
+		# and constructs its architecture before any structural counts are performed.
+		root.add_child(city)
+		await process_frame
+		await process_frame
+		var building_count := _count_group_recursive(city, "city_building")
+		var imported_building_count := _count_group_recursive(city, "imported_city_building")
+		var unique_building_sources: Dictionary = {}
+		_collect_unique_building_sources(city, unique_building_sources)
+		var unique_building_source_count := unique_building_sources.size()
+		var gate_count := _count_group_recursive(city, "cardinal_gates")
+		var guardian_count := _count_group_recursive(city, "city_guardians")
+		var outside_core_count := _count_city_buildings_outside_core(city)
+		var tree_instance_count := _count_multimesh_instances_recursive(city, "imperial_city_tree_multimesh")
+		var lantern_light_count := _count_group_recursive(city, "imperial_city_lantern_lights")
+		var plaza_statue_count := _count_group_recursive(city, "imperial_plaza_statue")
+		var chinese_bridge_count := _count_group_recursive(city, "imperial_chinese_arch_bridge")
+		var chinese_wall_count := _count_group_recursive(city, "city_chinese_perimeter_wall")
+		var watchtower_count := _count_group_recursive(city, "imperial_watchtowers")
+		var market_stall_count := _count_group_recursive(city, "city_market_stall")
+		var market_lantern_light_count := _count_group_recursive(city, "imperial_market_lantern_lights")
+		var stair_brazier_count := _count_group_recursive(city, "imperial_stair_braziers")
+		var stair_brazier_light_count := _count_group_recursive(city, "imperial_stair_brazier_lights")
+		var garden_lantern_count := _count_group_recursive(city, "imperial_plaza_garden_lanterns")
+		var garden_light_count := _count_group_recursive(city, "imperial_plaza_garden_lights")
+		var lotus_pond_count := _count_group_recursive(city, "imperial_plaza_lotus_pond")
+		var pond_edge_count := _count_group_recursive(city, "imperial_plaza_pond_edges")
+		var incense_burner_count := _count_group_recursive(city, "imperial_plaza_incense_burners")
+		var rockery_count := _count_group_recursive(city, "imperial_plaza_rockery")
+		if not _require(building_count >= 85 and building_count <= 100 and imported_building_count >= 85 and imported_building_count <= 100 and unique_building_source_count >= 5 and outside_core_count == 0, "%s generated %d buildings (%d imported, %d unique models); outside 170m core=%d; expected 85-100 and at least five unique models" % [city_id, building_count, imported_building_count, unique_building_source_count, outside_core_count]):
+			return
+		if not _require(tree_instance_count == 60, "%s generated %d/60 real tree instances in MultiMesh batches" % [city_id, tree_instance_count]):
+			return
+		if not _require(lantern_light_count == 8, "%s generated %d/8 OmniLight3D lanterns" % [city_id, lantern_light_count]):
+			return
+		if not _require(chinese_wall_count >= 5, "%s generated %d/5 Chinese wall and corner sections" % [city_id, chinese_wall_count]):
+			return
+		if not _require(watchtower_count == 4, "%s generated %d/4 Chinese corner watchtowers" % [city_id, watchtower_count]):
+			return
+		if not _require(market_stall_count == 4, "%s generated %d/4 imported Asian market stalls" % [city_id, market_stall_count]):
+			return
+		if not _require(market_lantern_light_count == 4 and stair_brazier_count == 2 and stair_brazier_light_count == 2, "%s market/brazier lighting incomplete: market=%d braziers=%d brazier_lights=%d" % [city_id, market_lantern_light_count, stair_brazier_count, stair_brazier_light_count]):
+			return
+		if not _require(garden_lantern_count == 4 and garden_light_count == 4 and lotus_pond_count == 1 and pond_edge_count == 8 and incense_burner_count == 2 and rockery_count == 1, "%s imperial garden props incomplete: lanterns=%d lights=%d ponds=%d pond_edges=%d burners=%d rockery=%d" % [city_id, garden_lantern_count, garden_light_count, lotus_pond_count, pond_edge_count, incense_burner_count, rockery_count]):
+			return
+		if city_id in ["TwinCity","Waterlands"] and not _require(chinese_bridge_count >= 6, "%s generated %d/6 authentic arched Chinese bridges" % [city_id, chinese_bridge_count]):
+			return
+		if not _require(plaza_statue_count == 1, "%s generated %d/1 imported plaza statue" % [city_id, plaza_statue_count]):
+			return
+		if not _require(gate_count == 4 and _count_named_gates(city) == 4, "%s has %d/4 cardinal gates" % [city_id, gate_count]):
+			return
+		if not _require(guardian_count == 8, "%s has %d/8 city guardians" % [city_id, guardian_count]):
+			return
+		for direction in ["North", "East", "South", "West"]:
+			var gate := city.find_child(direction + "_GrandCityGate", true, false)
+			if not _require(gate != null and gate.is_in_group("cardinal_gates"), "%s %s gate missing its group" % [city_id, direction]):
+				return
+		print("STEP16_CITY_PASS: %s buildings=%d imported_models=%d cardinal_gates=%d city_guardians=%d trees=%d" % [city_id, building_count, imported_building_count, gate_count, guardian_count, tree_instance_count])
+		city.queue_free()
+		await process_frame
+
+	print("STEP16_PHASE3A_CITY_CONTRACT_PASS: six cities; 85-100 imported buildings inside each 170m core; 60 trees per city (360 total), 4 cardinal gates and 8 guardians per city; runtime build_city invocation verified; Mobile renderer and Autoload order preserved.")
+	quit(0)

@@ -23,10 +23,26 @@ var _attack_timer: float = 0.0
 var _provoked: bool = false
 var _health_bar: ProgressBar
 var _health_viewport: SubViewport
+var _navigation_agent: NavigationAgent3D
+var _last_navigation_target := Vector3(1e20, 1e20, 1e20)
 
 func _ready() -> void:
 	hp = max_hp
 	add_to_group("enemies")
+	floor_snap_length = 0.4
+	floor_max_angle = deg_to_rad(42.0)
+	floor_stop_on_slope = true
+	floor_block_on_wall = true
+	safe_margin = 0.03
+	_navigation_agent = NavigationAgent3D.new()
+	_navigation_agent.name = "TerrainNavigationAgent"
+	_navigation_agent.navigation_layers = 1
+	_navigation_agent.path_desired_distance = 0.75
+	_navigation_agent.target_desired_distance = 1.2
+	_navigation_agent.radius = 0.45
+	_navigation_agent.height = 1.8
+	_navigation_agent.avoidance_enabled = false
+	add_child(_navigation_agent)
 	if not is_instance_valid(target):
 		var players := get_tree().get_nodes_in_group("player")
 		if not players.is_empty():
@@ -52,6 +68,10 @@ func take_damage(amount: int) -> void:
 func _physics_process(delta: float) -> void:
 	if hp <= 0:
 		return
+	if is_on_floor():
+		velocity.y = 0.0
+	else:
+		velocity.y -= float(ProjectSettings.get_setting("physics/3d/default_gravity")) * delta
 	_attack_timer = maxf(0.0, _attack_timer - delta)
 	if not is_instance_valid(target):
 		var players := get_tree().get_nodes_in_group("player")
@@ -73,6 +93,15 @@ func _physics_process(delta: float) -> void:
 
 	if distance > attack_range:
 		var direction := offset.normalized()
+		if is_instance_valid(_navigation_agent):
+			if _last_navigation_target.distance_to(target.global_position) > 0.8:
+				_navigation_agent.target_position = target.global_position
+				_last_navigation_target = target.global_position
+			var next_path_point := _navigation_agent.get_next_path_position()
+			var path_direction := next_path_point - global_position
+			path_direction.y = 0.0
+			if path_direction.length_squared() > 0.01:
+				direction = path_direction.normalized()
 		velocity.x = direction.x * move_speed
 		velocity.z = direction.z * move_speed
 		rotation.y = lerp_angle(rotation.y, atan2(-direction.x, -direction.z), 8.0 * delta)
