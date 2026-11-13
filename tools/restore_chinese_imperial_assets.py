@@ -11,11 +11,6 @@ UA="New-Conquer-Offline-Wuxia-Imperial-Pack/3.0"
 PINNED={
  "36222":"imperial_china_palace_and_garden.glb",
  "36211":"guardian_lion_pair.glb",
- "36188":"hanging_silk_lantern.glb",
- "36179":"dragon_roof_finial.glb",
- "36167":"covered_walkway_bay.glb",
- "36201":"low_tea_table.glb",
- "36182":"latticed_screen_door_set.glb",
  "36163":"ceremonial_hall.glb",
  "36164":"gate_tower.glb",
  "36161":"palace_wall_straight.glb",
