@@ -107,7 +107,13 @@ def process():
     for src in fs:
      if src.is_file() and src.suffix.lower() in (".jpg",".jpeg",".png",".tif",".tiff",".exr"):
       shutil.copy2(src,dest/src.name); copied.append(str(dest/src.name))
-    if not copied: raise ValueError("No PBR image maps found in archive")
+    names=[Path(x).name.lower() for x in copied]
+    has_color=any(("color" in n or "albedo" in n or "basecolor" in n) for n in names)
+    has_normal=any("normal" in n for n in names)
+    has_rough=any("roughness" in n for n in names)
+    if not (has_color and has_normal and has_rough):
+     shutil.rmtree(dest,ignore_errors=True)
+     raise ValueError("Incomplete PBR set; required Albedo/Color, Normal and Roughness maps")
     OK.append({**r,"kind":"pbr","files":copied,"dimensions_m":None,"validation":{"maps":[Path(x).name for x in copied]}})
     for c,t in r["matches"]:
      if t in MISSING.get(c,[]): MISSING[c].remove(t)
@@ -143,9 +149,14 @@ def upload(entries):
   remote=Path(hf_hub_download(repo_id=HF_REPO,repo_type="dataset",filename=name,token=token,force_download=True))
   if p.stat().st_size!=remote.stat().st_size or sha(p)!=sha(remote): raise RuntimeError("Remote SHA256/size mismatch: "+name)
   VERIFIED.append({"path":name,"bytes":p.stat().st_size,"sha256":sha(p)})
- with open(OUT/"ASSET_AUDIT_REPORT.md","a") as f:
-  f.write("\n## Hugging Face verification\n- Dataset: "+HF_REPO+"\n- Verified files: "+str(len(VERIFIED))+"\n")
+ report=OUT/"ASSET_AUDIT_REPORT.md"
+ with open(report,"a") as f:
+  f.write("\n## Hugging Face verification\n- Dataset: "+HF_REPO+"\n- Verified files before final report update: "+str(len(VERIFIED))+"\n")
   for x in VERIFIED: f.write("- "+x["path"]+" | "+str(x["bytes"])+" bytes | SHA256 "+x["sha256"]+"\n")
+ api.upload_file(path_or_fileobj=str(report),path_in_repo=PREFIX+"/ASSET_AUDIT_REPORT.md",repo_id=HF_REPO,repo_type="dataset",token=token,commit_message="Publish final asset audit verification")
+ remote=Path(hf_hub_download(repo_id=HF_REPO,repo_type="dataset",filename=PREFIX+"/ASSET_AUDIT_REPORT.md",token=token,force_download=True))
+ if sha(report)!=sha(remote) or report.stat().st_size!=remote.stat().st_size:
+  raise RuntimeError("Final audit report failed remote SHA256/size verification")
 def main():
  if not shutil.which(os.getenv("BLENDER_BIN","blender")): raise RuntimeError("Blender executable missing")
  ver=subprocess.check_output([os.getenv("BLENDER_BIN","blender"),"--version"],text=True).splitlines()[0]
