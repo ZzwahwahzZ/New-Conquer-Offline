@@ -85,6 +85,7 @@ func _run() -> void:
 		var ray := PhysicsRayQueryParameters3D.create(Vector3(137.0, 160.0, 173.0), Vector3(137.0, -160.0, 173.0))
 		ray.collision_mask = 1
 		var ground_hit := city.get_world_3d().direct_space_state.intersect_ray(ray)
+		print("TERRAIN_RAY_DIAGNOSTIC: " + city_name + " hit=" + str(not ground_hit.is_empty()) + " collider=" + str(ground_hit.get("collider")) + " hit_position=" + str(ground_hit.get("position", Vector3.ZERO)) + " terrain_layer=" + str(terrain_body.collision_layer) + " terrain_mask=" + str(terrain_body.collision_mask) + " collider_disabled=" + str(terrain_collider.disabled))
 		if not _check(not ground_hit.is_empty() and ground_hit.collider == terrain_body, city_name + " terrain collision did not match the heightfield surface"):
 			return
 		var navigation_region := city.find_child("TerrainNavigationRegion", true, false) as NavigationRegion3D
