@@ -431,17 +431,17 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
   var kenney_gate := _add_kenney_asset(gate, city, height_image, "castle-kit", "gate.glb", "KenneyGateModel", Vector3(0.0, 0.0, -88.0), 0.0, 2.2)
   for side in [-1.0,1.0]:
    var tower_side_name := "Left" if side < 0.0 else "Right"
-   var kenney_tower := _add_kenney_asset(gate, city, height_image, "castle-kit", "tower-square.glb", "KenneyTowerModel_" + tower_side_name, Vector3(side*17.0, 0.0, -88.0), 0.0, 1.8)
-   var tower_block := _box(gate,"GatehouseTower",Vector3(side*17.0,9.0,-88.0),Vector3(11.0,18.0,13.0),tower_material,1.0)
+   var kenney_tower := _add_kenney_asset(gate, city, height_image, "castle-kit", "tower-square.glb", "KenneyTowerModel_" + tower_side_name, Vector3(side*11.0, 0.0, -88.0), 0.0, 1.8)
+   var tower_block := _box(gate,"GatehouseTower",Vector3(side*11.0,7.0,-88.0),Vector3(8.0,14.0,9.0),tower_material,1.0)
    tower_block.visible = kenney_tower == null
-   var tower_cap := _box(gate,"GateTowerCrenellation",Vector3(side*17.0,18.5,-88.0),Vector3(13.0,1.0,15.0),gate_material,1.0)
+   var tower_cap := _box(gate,"GateTowerCrenellation",Vector3(side*11.0,14.5,-88.0),Vector3(9.0,0.8,11.0),gate_material,1.0)
    tower_cap.visible = kenney_tower == null
-   _box(gate,"GateGuardianStand",Vector3(side*9.0,0.15,-72.0),Vector3(1.6,0.3,1.6),wall_material,1.0)
+   _box(gate,"GateGuardianStand",Vector3(side*5.5,0.15,-72.0),Vector3(1.6,0.3,1.6),wall_material,1.0)
    _build_gate_guard(gate,side,p,direction_name)
-  var lintel := _box(gate,"GateArchLintel",Vector3(0,17.2,-88.0),Vector3(24.0,3.0,9.0),gate_material,1.0)
+  var lintel := _box(gate,"GateArchLintel",Vector3(0,13.2,-88.0),Vector3(16.0,2.0,8.0),gate_material,1.0)
   lintel.visible = kenney_gate == null
-  for x in [-8.0,8.0]:
-   var column := _box(gate,"ArchColumn",Vector3(x,7.0,-88.0),Vector3(2.0,14.0,7.0),gate_material,1.0)
+  for x in [-7.0,7.0]:
+   var column := _box(gate,"ArchColumn",Vector3(x,6.0,-88.0),Vector3(2.0,12.0,7.0),gate_material,1.0)
    column.visible = kenney_gate == null
 
 static func _load_kenney_scene(kit: String, file_name: String) -> PackedScene:
@@ -659,7 +659,7 @@ static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary, direct
  guard.name = "CityGuardian_" + direction_name + "_" + ("Left" if side < 0.0 else "Right")
  guard.add_to_group("city_guardians")
  guard.set_meta("gate_direction",direction_name)
- guard.position = Vector3(side*9.0,0.0,-72.0)
+ guard.position = Vector3(side*5.5,0.0,-72.0)
  parent.add_child(guard)
  var armor := _material(p.wood,0.62)
  var trim := _material(p.gold,0.5)
