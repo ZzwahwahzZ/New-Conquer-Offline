@@ -9,7 +9,7 @@ import re
 SOURCES = [
     {"slug":"big-stone-bridge","page":"https://opengameart.org/content/big-stone-bridge","creator":"KHORNE","category":"architecture","term":"stone bridge"},
     {"slug":"modular-temple-3d-models","page":"https://opengameart.org/content/modular-temple-3d-models","creator":"Keith at Fertile Soil Productions","category":"architecture","term":"temple"},
-    {"slug":"dragon","page":"https://opengameart.org/content/dragon","creator":"Bitiquinho","category":"ornaments","term":"dragon statue"},
+    {"slug":"dragon","page":"https://opengameart.org/content/dragon","creator":"Bitiquinho","category":"ornaments","term":"dragon model"},
     {"slug":"free-bamboo-v1","page":"https://opengameart.org/content/free-bamboo-v1","creator":"Yughues","category":"nature","term":"bamboo"},
     {"slug":"medieval-stone-temple","page":"https://opengameart.org/content/medieval-stone-temple","creator":"AnyRPG","category":"architecture","term":"stone temple"},
     {"slug":"stylized-nature-megakit","page":"https://opengameart.org/content/stylized-nature-megakit","creator":"Quaternius","category":"nature","term":"nature pack"},
