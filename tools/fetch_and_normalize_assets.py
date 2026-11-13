@@ -349,7 +349,7 @@ def builddocs(blenderver):
    if not category or rejected_asset({"id":r.get("id"),"name":r.get("name"),"source":r.get("source"),"source_url":r.get("source_url"),"matches":r.get("matches"),"tags":p.name}):
     continue
    aid=str(r.get("id","")).lower()
-   style_group="imperial_chinese" if "imperial-china-palace-and-garden" in aid else "korean_hanok" if "korean-hanok-village-and-street" in aid else "environmental"
+   style_group="imperial_chinese" if "imperial-china-palace-and-garden" in aid else "korean_hanok" if "korean-hanok-village-and-street" in aid else "pbr_materials" if category=="pbr_materials" else "environmental"
    item={"asset_id":r["id"],"name":r["name"],"category":category,"style_group":style_group,"file":p.relative_to(OUT).as_posix(),"source":r["source"],"source_url":r["source_url"],"direct_download_url":r.get("download_url"),"license":r["license"],"authors":r["authors"],"dimensions_m":r.get("dimensions_m"),"bytes":p.stat().st_size,"sha256":sha(p),"validation":r["validation"]}
    entries.append(item); grouped[category].append(item)
  approved_paths={x["file"] for x in entries} | candidate_paths
