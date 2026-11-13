@@ -2,7 +2,7 @@ name: Godot 4.3 CI and Web
 
 on:
   push:
-    branches: [main, phase3a-terrain-architecture, imperial-city-v2-official-packs]
+    branches: [main, phase3a-terrain-architecture]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -18,7 +18,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: godot-ci-cd-${{ github.ref }}
+  group: godot-ci-cd-${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 env:
@@ -63,6 +63,7 @@ jobs:
           python3 tools/sync_rpg_ui_assets.py
           python3 tools/restore_kenney_environment_assets.py
           python3 tools/restore_chinese_imperial_assets.py
+          python3 tools/restore_opengameart_temple.py
           python3 tools/restore_polyhaven_pbr_textures.py
           python3 tools/restore_imperial_city_pbr_v2.py
           python3 tools/restore_ambientcg_wuxia_textures.py
