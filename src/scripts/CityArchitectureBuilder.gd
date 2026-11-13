@@ -514,11 +514,15 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
   var kenney_gate := _add_kenney_asset(gate, city, height_image, "castle-kit", "gate.glb", "KenneyGateModel", Vector3(0.0, 0.0, -85.0), 0.0, 2.2)
   if kenney_gate != null:
    kenney_gate.visible = false
+   for collision_node in kenney_gate.find_children("*","CollisionShape3D",true,false):
+    (collision_node as CollisionShape3D).disabled = true
   for side in [-1.0,1.0]:
    var tower_side_name := "Left" if side < 0.0 else "Right"
    var kenney_tower := _add_kenney_asset(gate, city, height_image, "castle-kit", "tower-square.glb", "KenneyTowerModel_" + tower_side_name, Vector3(side*11.0, 0.0, -85.0), 0.0, 1.8)
    if kenney_tower != null:
     kenney_tower.visible = false
+    for collision_node in kenney_tower.find_children("*","CollisionShape3D",true,false):
+     (collision_node as CollisionShape3D).disabled = true
    _box(gate,"GatehouseTower",Vector3(side*10.0,5.7,-85.0),Vector3(4.5,11.4,9.0),tower_material,1.0)
    _box(gate,"GateTowerCrenellation",Vector3(side*10.0,11.9,-85.0),Vector3(5.0,0.6,11.0),gate_material,1.0)
    _box(gate,"GateGuardianStand",Vector3(side*5.5,0.15,-80.0),Vector3(1.6,0.3,1.6),wall_material,1.0)
@@ -538,7 +542,6 @@ static func _build_chinese_gate_details(gate: Node3D, p: Dictionary, city: Strin
 		_box(gate,"ChineseGateDoorLeaf",Vector3(side*3.15,4.55,-84.55),Vector3(6.1,9.1,0.28),door_material,1.0)
 		_box(gate,"ChineseGateDoorGoldBand",Vector3(side*3.15,6.1,-84.35),Vector3(6.0,0.16,0.08),gold,1.0)
 		_box(gate,"ChineseGateDoorVerticalTrim",Vector3(side*5.85,4.55,-84.35),Vector3(0.18,9.0,0.08),gold,1.0)
-		_box(gate,"ChineseGateFrontColumn",Vector3(side*8.1,5.4,-80.2),Vector3(0.62,10.8,0.62),wood,1.0)
 	_box(gate,"ChineseGateRoofLower",Vector3(0,12.35,-85.0),Vector3(25.0,0.62,12.0),roof,1.0)
 	_box(gate,"ChineseGateRoofUpper",Vector3(0,13.18,-85.0),Vector3(21.0,0.48,9.0),roof,1.0)
 	_box(gate,"ChineseGateGoldenRidge",Vector3(0,13.58,-85.0),Vector3(18.0,0.22,0.52),gold,1.0)
