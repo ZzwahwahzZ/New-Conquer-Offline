@@ -55,10 +55,13 @@ static func build_ground_material(environment_id: String, triplanar: bool = true
  return material
 
 static func build_street_material() -> StandardMaterial3D:
-    return _build_polyhaven_material("pavement_05", "PolyHaven_Pavement05_Street")
+    return _build_polyhaven_material("cobblestone_floor_04", "PolyHaven_CobblestoneFloor04_Street")
 
 static func build_plaza_material() -> StandardMaterial3D:
-    return _build_polyhaven_material("stone_pathway", "PolyHaven_StonePathway_Plaza")
+    return _build_polyhaven_material("marble_01", "PolyHaven_Marble01_Plaza")
+
+static func build_imperial_paving_material() -> StandardMaterial3D:
+    return _build_polyhaven_material("stone_tiles_02", "PolyHaven_StoneTiles02_ImperialPaving")
 
 static func _build_polyhaven_material(asset_id: String, display_name: String) -> StandardMaterial3D:
     var root := "res://assets/environment/materials/polyhaven/" + asset_id + "/"
