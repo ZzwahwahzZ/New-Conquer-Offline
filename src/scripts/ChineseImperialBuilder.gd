@@ -1,6 +1,6 @@
 extends RefCounted
 ## Imports original CC0 Chinese palace courtyard, ceremonial hall, pavilion and gate towers.
-const ROOT := "res://assets/environment/architecture/"
+const ROOT := "res://assets/wuxia_imperial_pack/architecture/"
 const PBRMaterialLibrary = preload("res://src/scripts/PBRMaterialLibrary.gd")
 static func build(parent: Node3D, city: String, _size: float) -> void:
  if city != "TwinCity": return
