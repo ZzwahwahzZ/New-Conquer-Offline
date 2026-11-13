@@ -26,7 +26,7 @@ static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vec
   return null
  var platform_root := Node3D.new()
  platform_root.name = node_name + "_RaisedImperialPlinth"
- platform_root.position = at
+ platform_root.position = Vector3(at.x, WorldTerrainBuilder.height_at("TwinCity",at.x,at.z) + 0.85, at.z)
  platform_root.rotation.y = atan2(-at.x,-at.z)
  parent.add_child(platform_root)
  var platform_width := 34.0 if filename.contains("palace") else 28.0
