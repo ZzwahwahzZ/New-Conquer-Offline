@@ -267,19 +267,28 @@ static func _first_mesh_node(root: Node) -> MeshInstance3D:
 	return null
 
 static func _sanitize_imported_mesh_nodes(root: Node) -> void:
+	# Hidden MeshInstance3D nodes still reach RenderingServer and can emit
+	# mesh_get_surface_count(null). Remove invalid nodes from the detached GLB
+	# scene before it is attached to the live city tree.
 	var pending: Array[Node] = [root]
-	var hidden_empty := 0
+	var removed_empty := 0
+	var retained_meshes := 0
 	while not pending.is_empty():
 		var current: Node = pending.pop_back()
 		for child in current.get_children():
+			if child is MeshInstance3D:
+				var mesh_instance := child as MeshInstance3D
+				var invalid_mesh := mesh_instance.mesh == null
+				if not invalid_mesh:
+					invalid_mesh = mesh_instance.mesh.get_surface_count() == 0
+				if invalid_mesh:
+					current.remove_child(child)
+					child.queue_free()
+					removed_empty += 1
+					continue
+				retained_meshes += 1
 			pending.append(child)
-		if current is MeshInstance3D:
-			var mesh_instance := current as MeshInstance3D
-			if mesh_instance.mesh == null or mesh_instance.mesh.get_surface_count() == 0:
-				mesh_instance.visible = false
-				hidden_empty += 1
-	if hidden_empty > 0:
-		print("KENNEY_BRIDGE_EMPTY_MESH_NODES_SANITIZED: " + str(hidden_empty))
+	print("KENNEY_BRIDGE_MESH_AUDIT: removed_empty=" + str(removed_empty) + " retained_renderable=" + str(retained_meshes))
 
 static func _mat(color: Color, roughness: float) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
