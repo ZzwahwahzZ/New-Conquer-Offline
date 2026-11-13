@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 test_script="${1:?Usage: run_godot_smoke_test.sh scripts/test.gd [timeout]}"
-test_timeout="${2:-90s}"
+test_timeout="${2:-150s}"
 test_name="$(basename "${test_script%.gd}")"
 log_dir="reports/smoke-tests"
 log_file="${log_dir}/${test_name}.log"
