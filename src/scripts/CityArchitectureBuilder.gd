@@ -16,7 +16,7 @@ static func build(parent: Node3D, city: String, size: float) -> void:
  var palette: Dictionary = CITY_PALETTES.get(city, CITY_PALETTES["TwinCity"])
  var height_image: Image = WorldTerrainBuilder.load_height_image(city)
  _build_open_plaza(parent, palette)
- _build_city_roads(parent, city, palette)
+ _build_city_roads(parent, city, palette, height_image)
  _build_city_buildings(parent, city, palette, height_image)
  _build_city_walls_and_gates(parent, city, palette, height_image)
  ChineseImperialBuilder.build(parent, city, size)
@@ -58,12 +58,20 @@ static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
   plaza.add_child(ring)
   ring.material_override = _material(p.accent,0.66)
 
-static func _build_city_roads(parent: Node3D, city: String, p: Dictionary) -> void:
+static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var roads := Node3D.new()
  roads.name = "StoneRoadNetwork"
  parent.add_child(roads)
  var half := 110.0 if city == "TwinCity" else 80.0
  var road_length := half * 1.72
+ # Raise the two arterial routes above the highest sampled terrain along their
+ # full extent so desert, volcanic and archipelago ground cannot swallow them.
+ var road_clearance_height := 0.0
+ for sample_index in range(65):
+  var along := lerpf(-road_length * 0.5, road_length * 0.5, float(sample_index) / 64.0)
+  road_clearance_height = maxf(road_clearance_height, WorldTerrainBuilder.sample_height_image(height_image,city,0.0,along,800.0))
+  road_clearance_height = maxf(road_clearance_height, WorldTerrainBuilder.sample_height_image(height_image,city,along,0.0,800.0))
+ road_clearance_height += 0.36
  var road_material: StandardMaterial3D = PBRMaterialLibrary.build_street_material()
  var curb_material := _material(p.gold,0.76)
  for direction in range(2):
@@ -73,6 +81,8 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary) -> vo
   road_surface_material.uv1_scale = Vector3(10.0/3.4,road_length/3.4,1.0)
   road.material_override = road_surface_material
   road.rotation_degrees.y = direction*90.0
+  road.position.y = road_clearance_height
+  road_surface_material.uv1_triplanar = true
   for side in [-1.0,1.0]:
    var curb := _box(roads,"RaisedStoneCurb_%d_%d" % [direction,int(side)],Vector3(side*5.35,0.34,0),Vector3(0.65,0.48,road_length),curb_material,1.0)
    curb.rotation_degrees.y = direction*90.0
@@ -96,7 +106,7 @@ static func _build_urban_alley_multimeshes(parent: Node3D, city: String, materia
     var z: float = float(along) if axis == 0 else float(line)
     var ground_y := WorldTerrainBuilder.sample_height_image(terrain_image,city,x,z,800.0)
     var basis := Basis(Vector3.UP,PI*0.5) if axis == 1 else Basis.IDENTITY
-    multi.set_instance_transform(index,Transform3D(basis,Vector3(x,ground_y+0.12,z)))
+    multi.set_instance_transform(index,Transform3D(basis,Vector3(x,ground_y+0.36,z)))
     index += 1
   var alley := MultiMeshInstance3D.new()
   alley.name = city + ("_UrbanAlleys_NorthSouth_MultiMesh" if axis == 0 else "_UrbanAlleys_EastWest_MultiMesh")
