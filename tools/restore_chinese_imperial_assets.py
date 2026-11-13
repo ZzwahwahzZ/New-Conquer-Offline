@@ -109,7 +109,7 @@ def main():
   for candidate in results:
    text_blob=" ".join(str(candidate.get(k,"")) for k in ("name","title","description","shortDescription","tags")).lower()
    if not all(term in text_blob for term in required_terms): continue
-   if query in ("Chinese pagoda","dragon statue","Asian market stall","Chinese town house") and not any(tag in text_blob for tag in ("chinese","asian","japanese","hanok","imperial")): continue
+   if query.lower() in ("chinese pagoda","dragon statue","asian market stall","chinese town house","chinese courtyard house","asian wooden house","chinese merchant house","chinese tea house","chinese shop house") and not any(tag in text_blob for tag in ("chinese","asian","japanese","hanok","imperial")): continue
    lic=candidate.get("license",{})
    lic_slug=str(lic.get("slug","")).lower()
    if lic_slug not in ("cc0-1.0","cc-by-4.0") and not (lic_slug=="cc-by" and lic.get("url")): continue
@@ -131,7 +131,7 @@ def main():
    continue
   lic=detail.get("license",candidate.get("license",{}))
   license_slug=str(lic.get("slug","")).lower()
-  if license_slug not in ("cc0-1.0","cc-by-4.0","cc-by"):
+  if license_slug not in ("cc0-1.0","cc-by-4.0") and not (license_slug=="cc-by" and lic.get("url")):
    manifest["discovery"].append({"query":query,"status":"license_rejected","id":aid})
    continue
   url=detail.get("cdnUrl") or candidate.get("cdnUrl")
