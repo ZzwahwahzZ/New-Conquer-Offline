@@ -40,6 +40,16 @@ func _count_group_recursive(node: Node, group_name: String) -> int:
 		total += _count_group_recursive(child, group_name)
 	return total
 
+func _count_multimesh_instances_recursive(node: Node, group_name: String) -> int:
+	var total := 0
+	if node is MultiMeshInstance3D and node.is_in_group(group_name):
+		var multi_node := node as MultiMeshInstance3D
+		if multi_node.multimesh != null:
+			total += multi_node.multimesh.instance_count
+	for child in node.get_children():
+		total += _count_multimesh_instances_recursive(child, group_name)
+	return total
+
 func _count_city_buildings_outside_core(node: Node) -> int:
 	var total := 0
 	if node is Node3D and node.is_in_group("city_building"):
@@ -183,7 +193,8 @@ func _capture() -> void:
 		var gate_count := _count_group_recursive(loaded_world, "cardinal_gates")
 		var guardian_count := _count_group_recursive(loaded_world, "city_guardians")
 		var outside_core_count := _count_city_buildings_outside_core(loaded_world)
-		if building_count < 85 or building_count > 100 or imported_building_count < 85 or imported_building_count > 100 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8:
+		var tree_instance_count := _count_multimesh_instances_recursive(loaded_world, "imperial_city_tree_multimesh")
+		if building_count < 85 or building_count > 100 or imported_building_count < 85 or imported_building_count > 100 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8 or tree_instance_count != 50:
 			_fail("%s visual proof refused: buildings=%d imported=%d outside_160m_core=%d gates=%d guardians=%d" % [city_id, building_count, imported_building_count, outside_core_count, gate_count, guardian_count])
 			return
 		var first_building := loaded_world.find_child(city_id + "_ChineseImperialBuilding_00", true, false)
