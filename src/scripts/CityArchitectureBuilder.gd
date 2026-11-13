@@ -76,7 +76,7 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
  for value in coordinates:
   for side in [-1.0,1.0]:
    for axis in [0,1]:
-    var position := Vector3(value,0.0,side*112.0) if axis == 0 else Vector3(side*112.0,0.0,value)
+    var position := Vector3(value,0.0,side*18.0) if axis == 0 else Vector3(side*18.0,0.0,value)
     var imported := _instantiate_quaternius_building(slot, city, index, position, height_image)
     if imported == null:
      var building := _make_building(city,p,index,1.0)
@@ -104,7 +104,9 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  _collect_quaternius_models("res://assets/environment/quaternius/modular_medieval_buildings", all_models)
  for path in all_models:
   var file_name := path.get_file().to_lower()
-  if ["building","house","tower","wall","castle","shop","keep","gate","barrack","forge","blacksmith","hall"].any(func(word: String) -> bool: return file_name.contains(word)):
+  var is_house := file_name.contains("house")
+  var is_tower := file_name.contains("tower") and not file_name.contains("wall")
+  if is_house or is_tower:
    candidates.append(path)
  if candidates.is_empty():
   return null
@@ -120,7 +122,8 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  instance.position = at
  instance.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
  instance.rotation.y = atan2(-at.x,-at.z)
- instance.scale = Vector3.ONE
+ # Normalize compact Quaternius source units to readable city-building proportions.
+ instance.scale = Vector3(4.0, 2.0, 4.0)
  parent.add_child(instance)
  _add_static_mesh_collisions(instance)
  instance.add_to_group("distance_cull_world")
