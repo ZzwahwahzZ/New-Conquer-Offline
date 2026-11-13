@@ -8,7 +8,7 @@ const CLASSIC_FOV := 45.0
 const CLASSIC_FAR := 600.0
 const CITY_IDS := ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"]
 const SHOTS := [
-	{"suffix":"01_aerial_overview","position":Vector3(0.0,48.0,0.0),"yaw":PI * 0.25,"distance":72.0,"pitch":42.0,"fov":68.0},
+	{"suffix":"01_aerial_overview","position":Vector3(0.0,48.0,0.0),"yaw":PI * 0.25,"distance":72.0,"pitch":42.0,"fov":96.0},
 	{"suffix":"02_inner_street","position":Vector3(0.0,0.0,-87.6),"yaw":0.0,"distance":18.0,"pitch":11.2,"fov":62.0}
 ]
 
