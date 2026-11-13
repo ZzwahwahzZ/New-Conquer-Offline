@@ -10,6 +10,7 @@ API="https://3dassets.dev/api/v1/packs/imperial-china-palace-and-garden"
 UA="New-Conquer-Offline-Wuxia-Imperial-Pack/3.0"
 PINNED={
  "36222":"imperial_china_palace_and_garden.glb",
+ "36211":"guardian_lion_pair.glb",
  "36163":"ceremonial_hall.glb",
  "36164":"gate_tower.glb",
  "36161":"palace_wall_straight.glb",
@@ -27,7 +28,7 @@ def download(url,dest,expected):
  req=urllib.request.Request(url,headers={"User-Agent":UA})
  with urllib.request.urlopen(req,timeout=180) as response,tmp.open("wb") as output:
   if response.status!=200: raise RuntimeError(f"HTTP {response.status} downloading {url}")
-  shutil.copyfileobj(response,tmp)
+  shutil.copyfileobj(response,output)
  data=tmp.read_bytes()
  if len(data)!=expected or len(data)<20 or data[:4]!=b"glTF":
   tmp.unlink(missing_ok=True); raise RuntimeError(f"Invalid GLB payload {dest.name}: bytes={len(data)} expected={expected}")
@@ -124,7 +125,7 @@ if len(records)<60: raise SystemExit("fewer than 60 GLBs were normalized")
  normalized=json.loads((DEST/"normalization_report.json").read_text())
  by_file={r["file"]:r for r in normalized}
  for entry in manifest["assets"]:
-  rel=Path(entry["file"]).relative_to(ROOT).as_posix()
+  rel=Path(entry["file"]).relative_to(DEST).as_posix()
   if rel not in by_file: raise RuntimeError("Normalized model missing from report: "+rel)
   entry.update(by_file[rel]); entry["normalization_pending"]=False
  manifest["model_count"]=len(normalized)
