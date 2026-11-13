@@ -183,7 +183,7 @@ static func _add_scene_mesh_collisions(root: Node) -> void:
 static func _build_imperial_tree_multimesh(parent: Node3D, city: String, size: float) -> void:
  var height_image: Image = load_height_image(city)
  var candidates: Array[String] = []
- _collect_kenney_nature_models("res://assets/wuxia_imperial_pack/quaternius/ultimate_nature", candidates)
+ _collect_kenney_nature_models("res://assets/wuxia_imperial_pack/props_nature", candidates)
  var tree_candidates: Array[String] = []
  for path in candidates:
   var label := path.get_file().to_lower()
@@ -204,7 +204,7 @@ static func _build_imperial_tree_multimesh(parent: Node3D, city: String, size: f
   if mesh == null:
    continue
   species.append({"path":model_path,"mesh":mesh})
-  if species.size() >= 3:
+  if species.size() >= 5:
    break
  if species.is_empty():
   push_error("IMPERIAL_CITY_TREE_FAIL: tree models could not be imported for " + city)
@@ -222,10 +222,17 @@ static func _build_imperial_tree_multimesh(parent: Node3D, city: String, size: f
   multi.mesh = mesh
   multi.instance_count = count
   var model_height := maxf(mesh.get_aabb().size.y, 0.01)
+  var species_name := str(species[species_index]["path"]).get_file().to_lower()
+  var species_height := 5.0
+  if species_name.contains("pine"): species_height = 8.0
+  elif species_name.contains("willow"): species_height = 5.0
+  elif species_name.contains("bamboo"): species_height = 4.0
+  elif species_name.contains("bush"): species_height = 1.8
+  elif species_name.contains("plum"): species_height = 3.6
   for index in range(count):
    var angle := float(global_index) * 2.399963 + float(city_index) * 0.47
    var radius := 96.0 + float((global_index * 37 + species_index * 19 + city_index * 11) % 58)
-   var target_height := 5.5 + float((global_index * 13 + species_index * 7) % 36) * 0.12
+   var target_height := species_height * (0.88 + float((global_index * 13 + species_index * 7) % 25) * 0.01)
    var scale_factor := target_height / model_height
    var basis := Basis(Vector3.UP, angle).scaled(Vector3.ONE * scale_factor)
    var position := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
