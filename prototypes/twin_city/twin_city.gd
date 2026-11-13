@@ -303,7 +303,7 @@ func _build_districts() -> void:
 					if (x==0 and z==0) or (x==1 and z==0): continue
 					var pos := Vector3(sx*coords[x],0,sz*coords[z])
 					var asset: String = BUILDINGS[index % 3]
-					var yaw := [0.0,PI/2,PI,-PI/2][(index+x+z)%4]
+					var yaw: float = [0.0, PI / 2.0, PI, -PI / 2.0][(index + x + z) % 4]
 					_place_fit(asset, pos, yaw, Vector3(8.5,8,7.5), district, "ChineseBuilding_%03d_%s" % [index+1,["Residence","Shop","Pavilion"][index%3]])
 					index += 1
 	stats.buildings = index
