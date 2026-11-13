@@ -120,6 +120,40 @@ def blender(src,dst):
  if not dst.exists() or not meta.exists():
   raise RuntimeError("Blender returned exit code 0 but output/validation metadata is missing. Expected GLB: "+str(dst)+" (exists="+str(dst.exists())+"), metadata: "+str(meta)+" (exists="+str(meta.exists())+"). Blender output:\n"+output[-12000:])
  return json.loads(meta.read_text())
+BLACKLIST = re.compile(r"(?<![a-z0-9])(ufo|jet|ski|safari|african|cruise|ship|boat|church|gothic|cathedral|car|modern|sci[ _-]?fi|space|robot|gun|tank)(?![a-z0-9])", re.I)
+LION = re.compile(r"(?<![a-z0-9])lion(?![a-z0-9])", re.I)
+CATEGORY_RULES = {
+ "palaces_and_temples": r"palace|imperial|throne|temple|pagoda|shrine|pavilion|lotus pond|ceremonial hall",
+ "houses_and_shops": r"chinese house|asian house|japanese house|wooden house|traditional house|house|shop|market stall|teahouse|inn",
+ "gates_walls_bridges": r"moon gate|gate|wall|watchtower|tower|arched? bridge|stone bridge|bridge",
+ "statues_and_props": r"dragon|stone lion|guardian lion|lantern|fountain|incense|cauldron|bronze bell|ceremonial drum|statue",
+ "nature": r"bamboo|plum|willow|pine|rockery|rock|lotus|peony|bonsai|cherry blossom|shrub|tree",
+ "pbr_materials": r"marble|stone|tile|roof tile|wood|timber|pbr|texture",
+}
+def record_text(record):
+ return re.sub(r"[_-]+", " ", " ".join(str(record.get(k, "")) for k in ("id","name","source","source_url","download_url","tags","description")) + " " + " ".join(map(str, record.get("matches", [])))).lower()
+def rejected_asset(record):
+ text = record_text(record)
+ if BLACKLIST.search(text): return True
+ if LION.search(text) and not re.search(r"stone lion|guardian lion", text): return True
+ return False
+def asset_category(record, filename=""):
+ text = record_text(record) + " " + filename.lower().replace("_"," ").replace("-"," ")
+ if record.get("kind") == "pbr" or record.get("source") == "ambientCG": return "pbr_materials"
+ for category in ("palaces_and_temples","houses_and_shops","gates_walls_bridges","statues_and_props","nature"):
+  if re.search(CATEGORY_RULES[category], text, re.I): return category
+ return None
+def filter_candidates():
+ global DISC, DOWN
+ accepted=[]
+ for record in DOWN:
+  if rejected_asset(record) or not asset_category(record):
+   ERR.append({"asset":record.get("id"),"stage":"strict_identity_filter","reason":"Rejected by strict Wuxia blacklist/whitelist"})
+  else: accepted.append(record)
+ DOWN[:] = accepted
+ accepted_ids={x.get("id") for x in accepted}
+ DISC[:] = [x for x in DISC if x.get("id") in accepted_ids]
+ print("STRICT_FILTER",json.dumps({"discovered":len(DISC),"retained":len(DOWN)},ensure_ascii=False))
 def process():
  for r in DOWN:
   try:
@@ -159,8 +193,10 @@ def process():
    models=[x for x in fs if x.is_file() and x.suffix.lower() in (".blend",".glb",".gltf",".fbx",".obj",".dae",".stl",".ply")]
    priority={".glb":0,".gltf":1,".blend":2,".fbx":3,".obj":4,".dae":5,".stl":6,".ply":7}
    models.sort(key=lambda x:(priority.get(x.suffix.lower(),99),str(x).lower()))
+   if r.get("source") == "Quaternius":
+    models=[x for x in models if asset_category(r,x.name)=="houses_and_shops" and not rejected_asset({"id":r.get("id",""),"name":x.name})]
    if models:
-    for i,src in enumerate(models[:4]):
+    for i,src in enumerate(models[:80]):
      dst=OUT/"models"/(safe(r["id"])+(("_"+str(i)) if i else "")+".glb"); dst.parent.mkdir(parents=True,exist_ok=True)
      m=blender(src,dst); OK.append({**r,"kind":"model","file":str(dst),"dimensions_m":m["dimensions_m"],"validation":m})
     for c,t in r["matches"]:
@@ -182,24 +218,29 @@ def process():
      if t not in COVERED.setdefault(c,[]): COVERED[c].append(t)
   except Exception as e: ERR.append({"asset":r["id"],"stage":"normalize","reason":str(e)})
 def builddocs(blenderver):
- OUT.mkdir(parents=True,exist_ok=True); entries=[]
- for category,terms in TERMS.items(): MISSING[category]=[t for t in terms if t not in COVERED.get(category,[])]
+ OUT.mkdir(parents=True,exist_ok=True); entries=[]; grouped={k:[] for k in CATEGORY_RULES}
  for r in OK:
   paths=r.get("files") or [r["file"]]
   for f in paths:
-   p=Path(f); entries.append({"asset_id":r["id"],"name":r["name"],"file":p.relative_to(OUT).as_posix(),"source":r["source"],"source_url":r["source_url"],"direct_download_url":r.get("download_url"),"license":r["license"],"authors":r["authors"],"downloaded_at_utc":datetime.now(timezone.utc).isoformat(),"dimensions_m":r.get("dimensions_m"),"bytes":p.stat().st_size,"sha256":sha(p),"validation":r["validation"]})
- manifest={"generated_at_utc":datetime.now(timezone.utc).isoformat(),"blender_version":blenderver,"assets":entries}
+   p=Path(f); category=asset_category(r,p.name)
+   if not category or rejected_asset({"id":r.get("id"),"name":r.get("name"),"source":r.get("source"),"source_url":r.get("source_url"),"matches":r.get("matches")}):
+    continue
+   item={"asset_id":r["id"],"name":r["name"],"category":category,"file":p.relative_to(OUT).as_posix(),"source":r["source"],"source_url":r["source_url"],"direct_download_url":r.get("download_url"),"license":r["license"],"authors":r["authors"],"dimensions_m":r.get("dimensions_m"),"bytes":p.stat().st_size,"sha256":sha(p),"validation":r["validation"]}
+   entries.append(item); grouped[category].append(item)
+ counts={k:len(v) for k,v in grouped.items()}
+ manifest={"schema_version":"1.0","generated_at_utc":datetime.now(timezone.utc).isoformat(),"blender_version":blenderver,"assets":entries}
  (OUT/"manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
- lines=["# Wuxia Imperial Asset Audit","",f"- Blender: {blenderver}",f"- Discovered: {len(DISC)}",f"- Downloaded: {len(DOWN)}",f"- Locally validated: {len(OK)}",f"- Manifest file entries: {len(entries)}",f"- Errors: {len(ERR)}","","## Accepted files"]
- lines += [f"- {e['file']} | {e['license']} | {e['source']} | {e['bytes']} bytes | SHA256 {e['sha256']} | dimensions m: {e['dimensions_m'] or 'texture set'}" for e in entries]
- lines += ["","## Errors"]+[f"- {e['asset']} ({e['stage']}): {e['reason']}" for e in ERR] if ERR else ["","## Errors","- None"]
- lines += ["","## الأصول الناقصة المطلوبة"]+[f"- {k}: {', '.join(v) if v else 'تم العثور على أصل مرشح'}" for k,v in MISSING.items()]
- lines += ["","## Licensing","- Poly Haven models: publisher-declared CC0; unique User-Agent used.","- ambientCG materials: publisher-declared CC0 1.0.","- OpenGameArt texture packs: live page license and direct file link are checked before download.","- Assets without verified publisher licensing were not accepted."]
+ approved={"schema_version":"1.0","generated_at_utc":manifest["generated_at_utc"],"units":"model dimensions are measured GLB bounding boxes in meters; PBR textures have no physical dimensions","categories":{k:{"count":len(v),"assets":v} for k,v in grouped.items()},"total_approved_files":len(entries)}
+ (OUT/"imperial_approved_assets.json").write_text(json.dumps(approved,ensure_ascii=False,indent=2))
+ lines=["# Wuxia Imperial Asset Audit","","- Blender: "+blenderver,"- Discovered: "+str(len(DISC)),"- Downloaded: "+str(len(DOWN)),"- Validated source assets: "+str(len(OK)),"- Approved file entries: "+str(len(entries)),"- Category counts: "+json.dumps(counts,ensure_ascii=False),"- Errors: "+str(len(ERR)),"","## Approved files"]
+ lines += ["- "+x["category"]+" | "+x["file"]+" | "+x["license"]+" | "+x["source"]+" | "+str(x["dimensions_m"] or "PBR texture set") for x in entries]
+ lines += ["","## Errors"]+["- "+x["asset"]+" ("+x["stage"]+"): "+x["reason"] for x in ERR] if ERR else ["","## Errors","- None"]
+ lines += ["","## Approval rules","- Strict blacklist and Wuxia/classical Asian/nature/PBR whitelist applied.","- Generic Quaternius buildings are considered only when individual filenames identify houses or shops; visual style inspection remains required before city placement."]
  (OUT/"ASSET_AUDIT_REPORT.md").write_text("\n".join(lines)+"\n")
- c=["# Third-party asset credits","","Only successfully downloaded and locally validated assets are listed."]
- for e in entries:
-  c += ["", "## "+e["file"],"- Creator: "+(", ".join(e["authors"].keys()) if e["authors"] else e["source"]),"- Source: "+e["source_url"],"- Direct download: "+str(e["direct_download_url"] or "source page"),"- License: "+e["license"],"- Dimensions (m): "+str(e["dimensions_m"] or "not applicable"),"- SHA256: "+e["sha256"]]
- (ROOT/"CREDITS.md").write_text("\n".join(c)+"\n")
+ credits=["# Third-party asset credits","","Only files listed in imperial_approved_assets.json are credited."]
+ for x in entries:
+  credits += ["","## "+x["file"],"- Category: "+x["category"],"- Creator: "+(", ".join(x["authors"].keys()) if x["authors"] else x["source"]),"- Source: "+x["source_url"],"- License: "+x["license"],"- Dimensions (m): "+str(x["dimensions_m"] or "not applicable (PBR textures)"),"- SHA256: "+x["sha256"]]
+ (ROOT/"CREDITS.md").write_text("\n".join(credits)+"\n")
  return entries
 def upload(entries):
  token=os.getenv("HF_TOKEN","").strip()
@@ -224,7 +265,7 @@ def upload(entries):
 def main():
  if not shutil.which(os.getenv("BLENDER_BIN","blender")): raise RuntimeError("Blender executable missing")
  ver=subprocess.check_output([os.getenv("BLENDER_BIN","blender"),"--version"],text=True).splitlines()[0]
- discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); process(); entries=builddocs(ver)
+ discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
  if not entries:
   print(json.dumps({"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
   raise RuntimeError("No assets passed license and validation checks; see printed per-source diagnostics. No empty upload performed.")
