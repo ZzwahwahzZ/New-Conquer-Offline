@@ -76,7 +76,7 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
  for value in coordinates:
   for side in [-1.0,1.0]:
    for axis in [0,1]:
-    var position := Vector3(value,0.0,side*18.0) if axis == 0 else Vector3(side*18.0,0.0,value)
+    var position := Vector3(value,0.0,side*12.0) if axis == 0 else Vector3(side*12.0,0.0,value)
     var imported := _instantiate_quaternius_building(slot, city, index, position, height_image)
     if imported == null:
      var building := _make_building(city,p,index,1.0)
@@ -123,7 +123,7 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  instance.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
  instance.rotation.y = atan2(-at.x,-at.z)
  # Normalize compact Quaternius source units to readable city-building proportions.
- instance.scale = Vector3(4.0, 2.0, 4.0)
+ instance.scale = Vector3(3.0, 2.0, 3.0)
  parent.add_child(instance)
  _add_static_mesh_collisions(instance)
  instance.add_to_group("distance_cull_world")
