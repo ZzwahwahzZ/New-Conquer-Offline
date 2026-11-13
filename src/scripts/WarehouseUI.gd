@@ -1,6 +1,6 @@
 extends CanvasLayer
 const ThemeManager = preload("res://src/scripts/ui/RPGIconThemeManager.gd")
-const CAPACITY: int = 80
+const CAPACITY=80
 var page: int = 0
 var panel: PanelContainer
 var grid: GridContainer
