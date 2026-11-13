@@ -4,14 +4,15 @@ const ROOT := "res://assets/wuxia_imperial_pack/architecture/"
 const PBRMaterialLibrary = preload("res://src/scripts/PBRMaterialLibrary.gd")
 const WorldTerrainBuilder = preload("res://src/scripts/WorldTerrainBuilder.gd")
 static func build(parent: Node3D, city: String, _size: float) -> void:
- if city != "TwinCity": return
+ if city not in ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"]: return
  var root := Node3D.new()
- root.name = "TwinCity_ChineseImperialArchitecture"
+ root.name = city + "_ChineseImperialArchitecture"
  parent.add_child(root)
- _add_model(root,"imperial_china_palace_and_garden.glb","TwinCity_ChineseImperialBuilding_00",Vector3(-65.45,0.0,-65.45),Vector3(0.4533619,0.4958047,0.4527178),false)
- _add_model(root,"ceremonial_hall.glb","TwinCity_ChineseImperialBuilding_01",Vector3(65.45,0.0,-65.45),Vector3(0.7761765,0.5195843,1.0210167),true)
- _add_model(root,"water_pavilion.glb","TwinCity_ChineseImperialBuilding_02",Vector3(-65.45,0.0,65.45),Vector3(1.6025455,0.8441558,1.7243667),true)
- _replace_city_gates(parent)
+ _add_model(root,"ceremonial_hall.glb",city+"_ChineseImperialBuilding_00",Vector3(0.0,0.0,-55.0),Vector3.ONE,true)
+ if city == "TwinCity":
+  _add_model(root,"gate_tower.glb",city+"_ChineseImperialBuilding_01",Vector3(65.45,0.0,-65.45),Vector3.ONE,true)
+  _add_model(root,"water_pavilion.glb",city+"_ChineseImperialBuilding_02",Vector3(-65.45,0.0,65.45),Vector3.ONE,true)
+  _replace_city_gates(parent)
 static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vector3,model_scale: Vector3,collision_all: bool) -> Node3D:
  var path := ROOT+filename
  if not ResourceLoader.exists(path):
@@ -68,10 +69,10 @@ static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vec
   stair_collision.position = step_center
   collision_body.add_child(stair_collision)
  platform_root.add_child(collision_body)
+ _add_stair_guardian_lions(platform_root,platform_depth)
  instance.name=node_name
- if node_name.begins_with("TwinCity_ChineseImperialBuilding_"):
-  instance.add_to_group("city_building")
-  instance.add_to_group("imported_city_building")
+ instance.add_to_group("city_building")
+ instance.add_to_group("imported_city_building")
  instance.position=Vector3(0.0,3.5,0.0)
  instance.scale=model_scale
  platform_root.add_child(instance)
@@ -81,6 +82,22 @@ static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vec
  _add_model_collisions(instance,collision_all)
  print("CHINESE_IMPERIAL_RAISED_PLATFORM_PASS: %s height=4.0m stairs=8" % filename)
  return instance
+static func _add_stair_guardian_lions(parent: Node3D, platform_depth: float) -> void:
+ var lion_path := "res://assets/wuxia_imperial_pack/props_nature/guardian_lion_pair.glb"
+ if not ResourceLoader.exists(lion_path):
+  push_error("WUXIA_STAIR_GUARDIANS_MISSING: "+lion_path)
+  return
+ var packed := load(lion_path) as PackedScene
+ if packed == null: return
+ var lions := packed.instantiate() as Node3D
+ if lions == null: return
+ lions.name = "ChineseImperialStairGuardianLionPair"
+ lions.position = Vector3(0.0,0.0,platform_depth*0.5+3.8)
+ lions.scale = Vector3.ONE * 0.82
+ lions.add_to_group("imperial_stair_guardians")
+ lions.set_meta("source_asset_path",lion_path)
+ parent.add_child(lions)
+
 static func _replace_city_gates(parent: Node3D) -> void:
  var fortification := parent.get_node_or_null("TwinCity_PerimeterFortifications") as Node3D
  if fortification == null:
