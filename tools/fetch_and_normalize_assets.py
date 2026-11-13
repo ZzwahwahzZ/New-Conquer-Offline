@@ -2,13 +2,13 @@
 import os,re,json,hashlib,shutil,subprocess,zipfile
 from pathlib import Path
 from datetime import datetime,timezone
-from urllib.parse import urlparse
+from urllib.parse import urlparse,urljoin,unquote
 import requests
 from huggingface_hub import HfApi,hf_hub_download
 ROOT=Path.cwd(); OUT=ROOT/"assets/wuxia_imperial_pack"; RAW=ROOT/".asset_work/raw"
 HF_REPO=os.getenv("HF_REPO_ID","ZzwahwahzZ/clash-of-legends-terrain-assets"); PREFIX="assets/wuxia_imperial_pack"
 S=requests.Session(); S.headers.update({"User-Agent":"NewConquerOffline-AssetPipeline/1.0 (GitHub Actions; asset audit)"})
-TERMS={"architecture":["chinese temple","imperial palace","asian house","asian shop","chinese gate","watchtower","stone bridge","pagoda","asian architecture","wall"],"ornaments":["dragon statue","guardian lion","stone fountain","chinese lantern","torch"],"nature":["willow tree","pine tree","bamboo","bush","shrub"],"pbr":["ornamental paving","paving stones","stone","marble","red roof tile","wood"]}
+TERMS={"architecture":["chinese temple","imperial palace","asian house","asian shop","chinese gate","watchtower","stone bridge","pagoda","asian architecture","stone wall","fort wall","city wall"],"ornaments":["dragon statue","guardian lion","stone fountain","chinese lantern","torch"],"nature":["willow tree","pine tree","bamboo","bush","shrub"],"pbr":["ornamental paving","paving stones","stone","marble","red roof tile","wood"]}
 MISSING={k:list(v) for k,v in TERMS.items()}; DISC=[]; DOWN=[]; OK=[]; ERR=[]; VERIFIED=[]
 def sha(p):
  h=hashlib.sha256()
@@ -43,19 +43,33 @@ def polyhaven():
  assets=getj("https://api.polyhaven.com/assets",{"type":"models"})
  for aid,m in assets.items():
   hay=" ".join([aid,str(m.get("name","")),str(m.get("category",""))," ".join(m.get("tags",[]) if isinstance(m.get("tags"),list) else [])]).lower()
-  matches=[(c,t) for c,ts in TERMS.items() if c!="pbr" for t in ts if t in hay]
+  hay=re.sub(r"[_-]+"," ",hay)
+  matches=[(c,t) for c,ts in TERMS.items() if c!="pbr" for t in ts if re.search(r"(?<![a-z0-9])"+re.escape(t)+r"(?![a-z0-9])",hay)]
   if not matches: continue
   rec={"id":aid,"name":m.get("name",aid),"source":"Poly Haven","source_url":"https://polyhaven.com/a/"+aid,"license":"CC0 1.0","authors":m.get("authors",{}),"matches":matches}
   DISC.append(rec)
   try:
    files=getj("https://api.polyhaven.com/files/"+aid)
    choices=[]
+   priority={".glb":0,".blend":1,".zip":2,".gltf":3,".fbx":4,".obj":5,".dae":6}
    for v in leaves(files):
     u=v["url"]; ext=Path(urlparse(u).path).suffix.lower()
-    if ext in (".blend",".glb",".gltf",".fbx",".obj",".dae",".zip"): choices.append((0 if ext in (".blend",".glb",".gltf") else 1,int(v.get("size",0) or 0),u,ext))
+    if ext in priority: choices.append((priority[ext],-int(v.get("size",0) or 0),u,ext))
    if not choices: raise ValueError("No supported model format in official API")
-   choices.sort(key=lambda x:(x[0],x[1] or 10**12))
-   _,_,u,e=choices[0]; p=fetch(u,RAW/"polyhaven"/(safe(aid)+e))
+   choices.sort(key=lambda x:(x[0],x[1]))
+   _,_,u,e=choices[0]
+   if e==".gltf":
+    p=RAW/"polyhaven"/safe(aid)/(safe(aid)+e); fetch(u,p)
+    doc=json.loads(p.read_text(encoding="utf-8"))
+    for group in ("buffers","images"):
+     for item in doc.get(group,[]):
+      uri=item.get("uri")
+      if not uri or uri.startswith("data:"): continue
+      parsed=urlparse(uri)
+      rel=Path(unquote(parsed.path))
+      if rel.is_absolute() or ".." in rel.parts: raise ValueError("Unsafe glTF dependency path: "+uri)
+      dep=urljoin(u,uri); fetch(dep,p.parent/rel)
+   else: p=fetch(u,RAW/"polyhaven"/(safe(aid)+e))
    DOWN.append({**rec,"download_url":u,"raw":str(p),"download_sha256":sha(p)})
   except Exception as e: ERR.append({"asset":aid,"stage":"download","reason":str(e)})
 def ambientcg():
