@@ -64,6 +64,30 @@ func _renderable_world_bounds(root_node: Node) -> AABB:
 				found = true
 	return combined if found else AABB()
 
+func _building_overlaps_street(bounds: AABB, city_name: String) -> bool:
+	var half := 110.0 if city_name == "TwinCity" else 80.0
+	var corridors: Array[Rect2] = [
+		Rect2(Vector2(-7.0, -150.0), Vector2(14.0, 300.0)),
+		Rect2(Vector2(-150.0, -7.0), Vector2(300.0, 14.0)),
+		Rect2(Vector2(-5.0, -half * 0.86), Vector2(10.0, half * 1.72)),
+		Rect2(Vector2(-half * 0.86, -5.0), Vector2(half * 1.72, 10.0))
+	]
+	for offset in [-42.0, 42.0]:
+		corridors.append(Rect2(Vector2(offset - 2.5, -half * 0.74), Vector2(5.0, half * 1.48)))
+		corridors.append(Rect2(Vector2(-half * 0.74, offset - 2.5), Vector2(half * 1.48, 5.0)))
+	for side in [-1.0, 1.0]:
+		var approach := side * half * 0.48
+		var approach_length := half * 0.82
+		corridors.append(Rect2(Vector2(approach - 3.5, -approach_length * 0.5), Vector2(7.0, approach_length)))
+		corridors.append(Rect2(Vector2(-approach_length * 0.5, approach - 3.5), Vector2(approach_length, 7.0)))
+	var bounds_min := Vector2(bounds.position.x, bounds.position.z)
+	var bounds_max := bounds_min + Vector2(bounds.size.x, bounds.size.z)
+	for corridor in corridors:
+		var corridor_max := corridor.position + corridor.size
+		if bounds_min.x < corridor_max.x and bounds_max.x > corridor.position.x and bounds_min.y < corridor_max.y and bounds_max.y > corridor.position.y:
+			return true
+	return false
+
 func _run() -> void:
 	for city_name in CITIES:
 		var path: String = "res://src/scenes/world/" + str(city_name) + ".tscn"
@@ -119,6 +143,17 @@ func _run() -> void:
 		for node_name in ["Street_NorthSouth", "Street_EastWest", "CentralDarkSquare"]:
 			if not _check(city.find_child(node_name, true, false) is MeshInstance3D, city_name + " missing " + node_name):
 				return
+		var architecture_roads := city.find_child("StoneRoadNetwork", true, false)
+		var architecture_road_count := 0
+		var architecture_curb_count := 0
+		if architecture_roads != null:
+			for road_node in architecture_roads.get_children():
+				if road_node.name.begins_with("FlagstoneRoad_"):
+					architecture_road_count += 1
+				elif road_node.name == "RaisedStoneCurb":
+					architecture_curb_count += 1
+		if not _check(architecture_road_count == 2 and architecture_curb_count == 4, city_name + " architecture road/curb meshes are duplicated or incomplete"):
+			return
 		var terrain_body := city.find_child("TerrainCollision", true, false) as StaticBody3D
 		var terrain_collider := city.find_child("TerrainSurfaceCollision", true, false) as CollisionShape3D
 		if not _check(terrain_body != null and terrain_collider != null and terrain_collider.shape is HeightMapShape3D and (terrain_collider.shape as HeightMapShape3D).map_width == 129 and (terrain_collider.shape as HeightMapShape3D).map_depth == 129, city_name + " full heightfield terrain collision is missing"):
@@ -182,6 +217,7 @@ func _run() -> void:
 			return
 		var detailed_buildings := 0
 		var imported_buildings: Array[Node] = []
+		var all_building_roots: Array[Node] = []
 		var brick_normal_found := false
 		var roof_detail_found := false
 		var pending_arch: Array[Node] = [architecture_slot]
@@ -191,8 +227,10 @@ func _run() -> void:
 				pending_arch.append(child)
 			if arch_node.name.begins_with(city_name + "_DetailedBuilding_"):
 				detailed_buildings += 1
+				all_building_roots.append(arch_node)
 			elif arch_node.name.begins_with(city_name + "_QuaterniusBuilding_") or arch_node.name.begins_with(city_name + "_KenneyBuilding_"):
 				imported_buildings.append(arch_node)
+				all_building_roots.append(arch_node)
 			if arch_node.name == "ReliefBrickWalls" and arch_node is MeshInstance3D:
 				var brick_material := (arch_node as MeshInstance3D).material_override as StandardMaterial3D
 				brick_normal_found = brick_material != null and brick_material.normal_enabled and brick_material.normal_texture != null
@@ -203,6 +241,12 @@ func _run() -> void:
 			return
 		if detailed_buildings > 0 and not _check(brick_normal_found and roof_detail_found, city_name + " fallback facades must retain brick normal and city-specific roof details"):
 			return
+		for building_root in all_building_roots:
+			var building_bounds := _renderable_world_bounds(building_root)
+			if not _check(building_bounds.size.length_squared() > 0.01, city_name + " building has no measurable renderable bounds: " + str(building_root.name)):
+				return
+			if not _check(not _building_overlaps_street(building_bounds, city_name), city_name + " building footprint blocks a street/avenue/gate approach: " + str(building_root.name) + " bounds=" + str(building_bounds)):
+				return
 		var renderable_imports := 0
 		for imported_root in imported_buildings:
 			if _has_renderable_mesh(imported_root):
