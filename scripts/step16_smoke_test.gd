@@ -56,7 +56,7 @@ func _run() -> void:
 	var street_source := FileAccess.get_file_as_string("res://src/scripts/CityStreetDressing.gd")
 	if not _require(settlement_source.contains("CityArchitectureBuilder.build(get_node(\"ArchitectureAssetSlot\"), settlement_id"), "SettlementWorld does not invoke build_city before validation"):
 		return
-	if not _require(builder_source.contains("_instantiate_quaternius_building(slot") and builder_source.contains("detailed_buildings=80"), "imported modular building generation is not connected to the 80-building city builder"):
+	if not _require(builder_source.contains("_instantiate_quaternius_building(slot") and builder_source.contains("detailed_buildings=88"), "imported modular building generation is not connected to the 80-building city builder"):
 		return
 	if not _require(builder_source.contains("gate.add_to_group(\"cardinal_gates\")") and builder_source.contains("guard.add_to_group(\"city_guardians\")"), "cardinal gate or guardian groups are not registered"):
 		return
