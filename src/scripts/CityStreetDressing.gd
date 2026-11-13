@@ -152,7 +152,7 @@ static func _waterways(parent: Node3D, half: float) -> void:
 	water.metallic = 0.12
 	var wood := _mat(Color("#795338"), 0.72)
 	for side in [-1.0, 1.0]:
-		var canal_x := side * half * 0.31
+		var canal_x: float = float(side) * half * 0.31
 		_add_plane(parent, "ApeCityCanal_" + ("East" if side > 0.0 else "West"), Vector2(7, half * 1.55), water, Vector3(canal_x, 0.025, 0))
 		for z in [-42.0, 0.0, 42.0]:
 			_add_bridge(parent, "ApeCityTimberBridge", Vector3(canal_x, 0.0, z), Vector2(12.0, 9.0), wood, "Waterlands")
@@ -162,7 +162,7 @@ static func _twin_city_canals(parent: Node3D, half: float) -> void:
 	water.metallic = 0.14
 	var stone := _mat(Color("#a18b68"), 0.78)
 	for side in [-1.0, 1.0]:
-		var canal_x := side * 130.0
+		var canal_x: float = float(side) * 130.0
 		_add_plane(parent, "TwinCityImperialCanal_" + ("East" if side > 0.0 else "West"), Vector2(9.0, half * 2.1), water, Vector3(canal_x, 0.02, 0))
 		for z in [-70.0, 0.0, 70.0]:
 			_add_bridge(parent, "TwinCityStoneBridge", Vector3(canal_x, 0.0, z), Vector2(15.0, 10.0), stone, "TwinCity")
