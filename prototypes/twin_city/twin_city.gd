@@ -301,7 +301,6 @@ func _build_districts() -> void:
 		for sz in [-1.0,1.0]:
 			for x in range(4):
 				for z in range(4):
-					if (x==0 and z==0) or (x==1 and z==0): continue
 					var pos := Vector3(sx*coords[x],0,sz*coords[z])
 					var asset: String = BUILDINGS[index % 3]
 					var yaw: float = [0.0, PI / 2.0, PI, -PI / 2.0][(index + x + z) % 4]
