@@ -137,19 +137,18 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
     var anchor_row := 0 if row < 2 else 10
     var anchor_column := 0 if column < 2 else 10
     if row == anchor_row and column == anchor_column:
-     var palace_center := Vector3((float(coordinates[anchor_column]) + float(coordinates[anchor_column+1])) * 0.5,0.0,(float(coordinates[anchor_row]) + float(coordinates[anchor_row+1])) * 0.5)
-     var palace := _instantiate_quaternius_building(slot,city,index,palace_center,height_image,true)
-     if palace == null:
-      push_error("CITY_IMPORTED_PALACE_MISSING: %s index=%d" % [city,index])
-     else:
-      palace.add_to_group("city_building")
-      built_count += 1
+     var twin_chinese_palace := city == "TwinCity" and ((anchor_row == 0 and anchor_column == 0) or (anchor_row == 0 and anchor_column == 10) or (anchor_row == 10 and anchor_column == 0))
+     if not twin_chinese_palace:
+      var palace_center := Vector3((float(coordinates[anchor_column]) + float(coordinates[anchor_column+1])) * 0.5,0.0,(float(coordinates[anchor_row]) + float(coordinates[anchor_row+1])) * 0.5)
+      var palace := _instantiate_quaternius_building(slot,city,index,palace_center,height_image,true)
+      if palace == null:
+       push_error("CITY_IMPORTED_PALACE_MISSING: %s index=%d" % [city,index])
+      else:
+       palace.add_to_group("city_building")
+       built_count += 1
     index += 1
     continue
    if absf(x) < 8.0 or absf(z) < 8.0:
-    index += 1
-    continue
-   if city == "TwinCity" and Vector2(x,z) in [Vector2(-72.0,-32.7),Vector2(-45.8,32.7),Vector2(-32.7,32.7)]:
     index += 1
     continue
    var building := _instantiate_quaternius_building(slot,city,index,Vector3(x,0.0,z),height_image,false)
