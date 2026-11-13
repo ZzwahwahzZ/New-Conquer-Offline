@@ -86,9 +86,15 @@ def discover_quaternius(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                 if Path(path).suffix in (".zip",".glb",".gltf",".blend",".fbx",".obj"):
                     candidates.append((absolute,label))
             if not candidates:
-                raise ValueError("No direct downloadable model file link exposed; official page points to a hosted download flow")
+                # Quaternius legacy pages expose a public Drive folder through a JS download button.
+                folder = re.search(r"drive/folders/([A-Za-z0-9_-]+)", html)
+                if folder:
+                    folder_id = folder.group(1)
+                    candidates = [("https://drive.google.com/uc?export=download&id=" + folder_id, "official Quaternius pack archive")]
+            if not candidates:
+                raise ValueError("No direct downloadable model file or public Drive folder found")
             for index,(url,label) in enumerate(candidates[:2]):
-                rec={"id":"quaternius-"+pack["slug"]+("-"+str(index+1) if index else ""),"name":label or pack["slug"],"source":"Quaternius","source_url":pack["page"],"license":"CC0 1.0 Universal","authors":{"creator":pack["creator"]},"matches":[("nature",pack["slug"])],"download_url":url}
+                rec={"id":"quaternius-"+pack["slug"]+("-"+str(index+1) if index else ""),"name":label or pack["slug"],"source":"Quaternius","source_url":pack["page"],"license":"CC0 1.0 Universal","authors":{"creator":pack["creator"]},"matches":[("architecture","house shop")] if "building" in pack["slug"] or "village" in pack["slug"] else [("nature",pack["slug"])],"download_url":url,"candidate_only":("building" in pack["slug"] or "village" in pack["slug"])}
                 DISC.append(rec)
                 ext=Path(urlparse(url).path).suffix.lower()
                 path=fetch(url,RAW/"quaternius"/(safe(rec["id"])+ext))
