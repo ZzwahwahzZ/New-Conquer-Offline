@@ -1,0 +1,19 @@
+{
+	"architecture_style": "imperial_chinese",
+	"average_fps_after_capture": 2,
+	"box_mesh_count": 0,
+	"bridges": 4,
+	"buildings": 92,
+	"capture_mode": "Godot 4.3 Xvfb OpenGL Compatibility",
+	"city_core_m": 170,
+	"directional_gates": 4,
+	"gate_guardian_pairs": 4,
+	"gate_guardian_statues": 8,
+	"godot_version": "4.3-stable (official)",
+	"multimesh_batches": 7,
+	"screenshot_height": 1080,
+	"screenshot_width": 1920,
+	"tree_instances": 350,
+	"wall_segments": 144,
+	"world_m": 800
+}

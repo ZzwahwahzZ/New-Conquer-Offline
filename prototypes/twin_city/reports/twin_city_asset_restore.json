@@ -1,0 +1,233 @@
+{
+  "dataset": "ZzwahwahzZ/clash-of-legends-terrain-assets",
+  "approved_manifest_sha256": "f3da3fbbdcd41bc6610dcb0e45434da7adf9900cdddb5d26160d351165d8f0b5",
+  "restored_files": 32,
+  "restored_glb_models": 20,
+  "restored_pbr_textures": 12,
+  "files": [
+    {
+      "name": "Ceremonial Hall (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-ceremonial-hall-3f95c2b7.glb",
+      "sha256": "b40c7cace84cf016e2334cf47bf211a42be84fa51e1403db1f2300c8d11ca782",
+      "bytes": 699244
+    },
+    {
+      "name": "Water Pavilion (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-water-pavilion-477e41ba.glb",
+      "sha256": "bab023dbb43ed24d45cc1f445519afe55c9b7e549ebabfa5936b1d60b5163ddd",
+      "bytes": 182840
+    },
+    {
+      "name": "Lotus pond pavilion (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-lotus-pond-pavilion-f0b2d3d6.glb",
+      "sha256": "70616742cf9fe139d4b3eed706d10cbd688ab8f5a2e65e502d409b2923cede75",
+      "bytes": 912956
+    },
+    {
+      "name": "Gate Tower (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-gate-tower-9d0d0bb6.glb",
+      "sha256": "e397492657cb0a90ba2c7f75107f9eba00bd41272785caeed7ec8ad504a4aa4e",
+      "bytes": 335736
+    },
+    {
+      "name": "Palace Wall Straight (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-palace-wall-straight-02b9fb76.glb",
+      "sha256": "901fb692b9fe351398d14ed7856ba8ceba66a4eb81249bbde3fbeb418339dfd4",
+      "bytes": 17412
+    },
+    {
+      "name": "Palace Wall Corner (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-palace-wall-corner-92015453.glb",
+      "sha256": "b35a5a8b734bbb59bf41194613a577e533203e2281f63f36fdc9bc436d8a3481",
+      "bytes": 40884
+    },
+    {
+      "name": "Palace Wall Moon Gate (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-palace-wall-moon-gate-a6732c7f.glb",
+      "sha256": "afa16579d3ad6ee41a22b17b2e19143f7bdffc274542f2bfa3d1a5e23f4dacf9",
+      "bytes": 84524
+    },
+    {
+      "name": "Arched Stone Bridge (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-arched-stone-bridge-f54cac4b.glb",
+      "sha256": "3e5c0285931879a032cd51641d9d8e8de9c4bbc1c704452a9e329ee3cd35aafd",
+      "bytes": 65076
+    },
+    {
+      "name": "Terrace Platform Module (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-terrace-platform-modu-9ce05313.glb",
+      "sha256": "e79ca3843346689361d5860f7e8a1c618a07a8285385dc41e7ab5d9c73c980eb",
+      "bytes": 13928
+    },
+    {
+      "name": "Terrace Step Flight (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-terrace-step-flight-50686acc.glb",
+      "sha256": "42cde14883182da93bb71dcf0281d8ba6c1af35f4f5b76172ceed40745d85c0a",
+      "bytes": 38332
+    },
+    {
+      "name": "Dragon Roof Finial (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-dragon-roof-finial-7dd7653a.glb",
+      "sha256": "d669b0fceb234687163e5cac4361a28d408884e8c26193f339e542cd3382b068",
+      "bytes": 44704
+    },
+    {
+      "name": "Standing Garden Lantern (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-standing-garden-lante-038d9d21.glb",
+      "sha256": "0537e7a49ae4e0126109906f6264c08a2584a3d06868d4a8f9aab8c7cd531265",
+      "bytes": 38936
+    },
+    {
+      "name": "Hanging Silk Lantern (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-hanging-silk-lantern-24c01831.glb",
+      "sha256": "66c3862b945bc3e0c4ecf987e2a93b38e0516c1d91114c0a184a5ee832250fde",
+      "bytes": 37904
+    },
+    {
+      "name": "Imperial Throne Chair (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-imperial-throne-chair-ddfa68c5.glb",
+      "sha256": "72f967ed7134128dae93df55a622b85756f7297f63bc0c520488899c68c968b8",
+      "bytes": 108444
+    },
+    {
+      "name": "Guardian Lion Pair (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-guardian-lion-pair-58194b81.glb",
+      "sha256": "b0e8a705f792c4f81370ce0bc4e5e9db3da0836de1b84f0352f029b12780b3ac",
+      "bytes": 136548
+    },
+    {
+      "name": "Pond Water Module (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-pond-water-module-65897aa1.glb",
+      "sha256": "da01c9feee3c3e5b3413d824c5618465aba6cffb8a83389107ae2016d41e56c2",
+      "bytes": 5720
+    },
+    {
+      "name": "Lotus Cluster (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-lotus-cluster-9b11a9b2.glb",
+      "sha256": "d4861753d497af44db09234813116fdc6765f6ea918e378ed047b61d442b73cb",
+      "bytes": 58124
+    },
+    {
+      "name": "Bamboo Clump (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-bamboo-clump-66640906.glb",
+      "sha256": "13822c4b7a95dde6eb9d27d966c843144e447dcbba7cc49417e05145390efbbf",
+      "bytes": 125716
+    },
+    {
+      "name": "Plum Tree In Blossom (Imperial China Palace and Garden)",
+      "style_group": "imperial_chinese",
+      "file": "models/3dassets-imperial-china-palace-and-garden-plum-tree-in-blossom-b09709bd.glb",
+      "sha256": "c8fa457292863c3ff5874ca81d44b0c20271b779392d796b324a6238cac97272",
+      "bytes": 100220
+    },
+    {
+      "name": "Pine Tree (Wipe Day Survival Island)",
+      "style_group": "environmental",
+      "file": "models/3dassets-wipe-day-survival-island-pine-tree-dfc88d2b.glb",
+      "sha256": "65fb9c0d832a64099d388e190c46084fc404b58cdefd7e95457fc9bf887a7db6",
+      "bytes": 12408
+    },
+    {
+      "name": "Roofing Tiles 013 A",
+      "style_group": "pbr_materials",
+      "file": "textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_NormalGL.jpg",
+      "sha256": "08d9718bd62c5de5c4cc886a68cf3dbad5996136f52f16249b07a896e0c29005",
+      "bytes": 718594
+    },
+    {
+      "name": "Roofing Tiles 013 A",
+      "style_group": "pbr_materials",
+      "file": "textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_Roughness.jpg",
+      "sha256": "4cb93f5e8d84b97f3247aad4051c3805ea51f88a05a6c703abe32ab0bcec65c6",
+      "bytes": 564671
+    },
+    {
+      "name": "Roofing Tiles 013 A",
+      "style_group": "pbr_materials",
+      "file": "textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_Color.jpg",
+      "sha256": "13779a23d342e1f80001d380889744eb6795460e8b8b993f7b9bb89da78089d4",
+      "bytes": 403258
+    },
+    {
+      "name": "Paving Stones 036",
+      "style_group": "pbr_materials",
+      "file": "textures/PavingStones036/PavingStones036_1K-JPG_Color.jpg",
+      "sha256": "065dad4ad95ee74992a6d3cbeb0efb107d3b18a0a3425487bf41452dce12c533",
+      "bytes": 1796007
+    },
+    {
+      "name": "Paving Stones 036",
+      "style_group": "pbr_materials",
+      "file": "textures/PavingStones036/PavingStones036_1K-JPG_Roughness.jpg",
+      "sha256": "d97ddc1b344edf9e799d5a63b497c5bafabf3afe189bca565bbd155c79f269a1",
+      "bytes": 688711
+    },
+    {
+      "name": "Paving Stones 036",
+      "style_group": "pbr_materials",
+      "file": "textures/PavingStones036/PavingStones036_1K-JPG_NormalGL.jpg",
+      "sha256": "7e86034b299d5628bb072c74ed30364dbab5da21f55e17c675ccbef15b209543",
+      "bytes": 2139484
+    },
+    {
+      "name": "Marble 012",
+      "style_group": "pbr_materials",
+      "file": "textures/Marble012/Marble012_1K-JPG_Color.jpg",
+      "sha256": "a34b55c889c6b3819d2c351b6409bfd0baf0a0a55b073441850627dfebcdcd1e",
+      "bytes": 1220876
+    },
+    {
+      "name": "Marble 012",
+      "style_group": "pbr_materials",
+      "file": "textures/Marble012/Marble012_1K-JPG_Roughness.jpg",
+      "sha256": "f7afd636d6cca0b470549959c514976186df58ac1013016b6c3919910a6d3a04",
+      "bytes": 535814
+    },
+    {
+      "name": "Marble 012",
+      "style_group": "pbr_materials",
+      "file": "textures/Marble012/Marble012_1K-JPG_NormalGL.jpg",
+      "sha256": "2e9a56525ffbb7e80854b19985a5c921f91192698ea337f4834192479ba0063b",
+      "bytes": 342955
+    },
+    {
+      "name": "Wood 096",
+      "style_group": "pbr_materials",
+      "file": "textures/Wood096/Wood096_1K-JPG_Roughness.jpg",
+      "sha256": "faed70389894632f5a9a62c0942cd3f8e677d6e2a1bf36d91e7ae5952631fa6e",
+      "bytes": 629325
+    },
+    {
+      "name": "Wood 096",
+      "style_group": "pbr_materials",
+      "file": "textures/Wood096/Wood096_1K-JPG_NormalGL.jpg",
+      "sha256": "30e56cd5c8e7ec19545a0fe8b339f7311534071a3a9076d034d210ca8dad46f3",
+      "bytes": 864486
+    },
+    {
+      "name": "Wood 096",
+      "style_group": "pbr_materials",
+      "file": "textures/Wood096/Wood096_1K-JPG_Color.jpg",
+      "sha256": "fa6b603dda286865a82a93a483c341a975a7d3062dd0f291b57800f7ac4d1b66",
+      "bytes": 914353
+    }
+  ]
+}
