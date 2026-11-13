@@ -13,6 +13,7 @@ SOURCES = [
     {"slug":"free-bamboo-v1","page":"https://opengameart.org/content/free-bamboo-v1","creator":"Yughues","category":"nature","term":"bamboo"},
     {"slug":"medieval-stone-temple","page":"https://opengameart.org/content/medieval-stone-temple","creator":"AnyRPG","category":"architecture","term":"stone temple"},
     {"slug":"stylized-nature-megakit","page":"https://opengameart.org/content/stylized-nature-megakit","creator":"Quaternius","category":"nature","term":"nature pack"},
+    {"slug":"pbr-marble-and-tile-texture-set","page":"https://opengameart.org/content/pbr-marble-and-tile-texture-set","creator":"Vosuna","category":"pbr","term":"marble and tile PBR textures"},
 ]
 
 class _Links(HTMLParser):
