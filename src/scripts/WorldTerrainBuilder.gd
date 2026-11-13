@@ -177,7 +177,7 @@ static func _add_scene_mesh_collisions(root: Node) -> void:
   for child in node.get_children(): stack.append(child)
   if node is MeshInstance3D:
    var mesh_node := node as MeshInstance3D
-   if mesh_node.mesh != null and mesh_node.mesh.get_rid().is_valid() and mesh_node.mesh.get_surface_count()>0:
+   if mesh_node.mesh != null and mesh_node.mesh.get_rid().is_valid():
     mesh_node.create_trimesh_collision()
 
 static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: float) -> void:
