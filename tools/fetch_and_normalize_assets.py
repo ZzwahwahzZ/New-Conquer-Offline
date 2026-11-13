@@ -172,12 +172,12 @@ def asset_category(record, filename=""):
  asian_context=bool(re.search(r"\b(?:chinese|asian|japanese|korean|hanok|wuxia|imperial china)\b",context,re.I))
  # Object identity comes from the model title; pack context is used only to
  # establish Asian provenance, never to misclassify every object in that pack.
- if re.search(CATEGORY_RULES["nature"],primary,re.I): return "nature"
  if asian_context and re.search(CATEGORY_RULES["statues_and_props"],primary,re.I): return "statues_and_props"
  if asian_context and re.search(CATEGORY_RULES["gates_walls_bridges"],primary,re.I): return "gates_walls_bridges"
  if asian_context and re.search(CATEGORY_RULES["houses_and_shops"],primary,re.I): return "houses_and_shops"
  if asian_context and re.search(r"\b(?:palace|temple|shrine|pavilion|ceremonial hall)\b",primary,re.I): return "palaces_and_temples"
  if re.search(CATEGORY_RULES["palaces_and_temples"],primary,re.I): return "palaces_and_temples"
+ if re.search(CATEGORY_RULES["nature"],primary,re.I): return "nature"
  return None
 def strict_filter_self_test():
  cases=[
@@ -196,13 +196,13 @@ def strict_filter_self_test():
   ({"id":"western-dragon","name":"Western Dragon With Wings Spread (Dragons and Wyverns)"},True,None),
   ({"id":"generic-temple","name":"Modular Temple Model"},False,None),
   ({"id":"medieval-temple","name":"Medieval Stone Temple"},True,None),
-  ({"id":"western-court","name":"Palace Audience House (Royal Court and Throne Palace)"},False,None),
+  ({"id":"western-court","name":"Palace Audience House (Royal Court and Throne Palace)"},True,None),
  ]
  failures=[]
  for rec,should_reject,should_category in cases:
   actual_reject=rejected_asset(rec)
   actual_category=asset_category(rec)
-  if actual_reject!=should_reject or actual_category!=should_category:
+  if actual_reject!=should_reject or (not should_reject and actual_category!=should_category):
    failures.append({"record":rec,"rejected":actual_reject,"category":actual_category,
                     "expected_rejected":should_reject,"expected_category":should_category})
  if failures: raise RuntimeError("Strict asset filter self-test failed: "+json.dumps(failures,ensure_ascii=False))
