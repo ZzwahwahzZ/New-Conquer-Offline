@@ -229,6 +229,10 @@ def builddocs(blenderver):
     continue
    item={"asset_id":r["id"],"name":r["name"],"category":category,"file":p.relative_to(OUT).as_posix(),"source":r["source"],"source_url":r["source_url"],"direct_download_url":r.get("download_url"),"license":r["license"],"authors":r["authors"],"dimensions_m":r.get("dimensions_m"),"bytes":p.stat().st_size,"sha256":sha(p),"validation":r["validation"]}
    entries.append(item); grouped[category].append(item)
+ approved_paths={x["file"] for x in entries}
+ for stale in list(OUT.rglob("*")):
+  if stale.is_file() and stale.relative_to(OUT).as_posix() not in approved_paths:
+   stale.unlink()
  counts={k:len(v) for k,v in grouped.items()}
  manifest={"schema_version":"1.0","generated_at_utc":datetime.now(timezone.utc).isoformat(),"blender_version":blenderver,"assets":entries}
  (OUT/"manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
