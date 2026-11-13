@@ -63,7 +63,7 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, heigh
  roads.name = "StoneRoadNetwork"
  parent.add_child(roads)
  var half := 80.0
- var road_length := 160.0
+ var road_length := 170.0
  # Raise the two arterial routes above the highest sampled terrain along their
  # full extent so desert, volcanic and archipelago ground cannot swallow them.
  var road_clearance_height := 0.0
@@ -460,21 +460,69 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
   gate.set_meta("cardinal_direction",direction_name)
   gate.rotation_degrees.y = direction*90.0
   fortification.add_child(gate)
+  var gate_world_point := gate.to_global(Vector3(0.0,0.0,-85.0))
+  var gate_clearance := 0.45 if city in ["DesertLand","VolcanoLand"] else (0.6 if city == "Waterlands" else 0.0)
+  gate.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, gate_world_point.x, gate_world_point.z, 800.0) + gate_clearance
   var kenney_gate := _add_kenney_asset(gate, city, height_image, "castle-kit", "gate.glb", "KenneyGateModel", Vector3(0.0, 0.0, -85.0), 0.0, 2.2)
+  if kenney_gate != null:
+   kenney_gate.visible = false
   for side in [-1.0,1.0]:
    var tower_side_name := "Left" if side < 0.0 else "Right"
    var kenney_tower := _add_kenney_asset(gate, city, height_image, "castle-kit", "tower-square.glb", "KenneyTowerModel_" + tower_side_name, Vector3(side*11.0, 0.0, -85.0), 0.0, 1.8)
-   var tower_block := _box(gate,"GatehouseTower",Vector3(side*11.0,7.0,-85.0),Vector3(8.0,14.0,9.0),tower_material,1.0)
-   tower_block.visible = kenney_tower == null
-   var tower_cap := _box(gate,"GateTowerCrenellation",Vector3(side*11.0,14.5,-85.0),Vector3(9.0,0.8,11.0),gate_material,1.0)
-   tower_cap.visible = kenney_tower == null
+   if kenney_tower != null:
+    kenney_tower.visible = false
+   _box(gate,"GatehouseTower",Vector3(side*11.0,5.7,-85.0),Vector3(8.0,11.4,9.0),tower_material,1.0)
+   _box(gate,"GateTowerCrenellation",Vector3(side*11.0,11.9,-85.0),Vector3(9.0,0.6,11.0),gate_material,1.0)
    _box(gate,"GateGuardianStand",Vector3(side*5.5,0.15,-80.0),Vector3(1.6,0.3,1.6),wall_material,1.0)
    _build_gate_guard(gate,side,p,direction_name)
-  var lintel := _box(gate,"GateArchLintel",Vector3(0,13.2,-85.0),Vector3(16.0,2.0,8.0),gate_material,1.0)
-  lintel.visible = kenney_gate == null
+  _box(gate,"GateArchLintel",Vector3(0,11.4,-85.0),Vector3(16.0,1.5,8.0),gate_material,1.0)
   for x in [-7.0,7.0]:
-   var column := _box(gate,"ArchColumn",Vector3(x,6.0,-85.0),Vector3(2.0,12.0,7.0),gate_material,1.0)
-   column.visible = kenney_gate == null
+   _box(gate,"ArchColumn",Vector3(x,5.5,-85.0),Vector3(2.0,11.0,7.0),gate_material,1.0)
+  _build_chinese_gate_details(gate,p,city)
+
+static func _build_chinese_gate_details(gate: Node3D, p: Dictionary, city: String) -> void:
+	var roof := _material(p.roof,0.66)
+	var gold := _material(p.gold,0.42)
+	var wood := _material(p.wood,0.68)
+	var door_material := _material(Color("#8f2630"),0.48)
+	# Fourteen-metre clear arch, paired timber leaves, and a two-tier tiled roof.
+	for side in [-1.0,1.0]:
+		_box(gate,"ChineseGateDoorLeaf",Vector3(side*3.15,4.55,-84.55),Vector3(6.1,9.1,0.28),door_material,1.0)
+		_box(gate,"ChineseGateDoorGoldBand",Vector3(side*3.15,6.1,-84.35),Vector3(6.0,0.16,0.08),gold,1.0)
+		_box(gate,"ChineseGateDoorVerticalTrim",Vector3(side*5.85,4.55,-84.35),Vector3(0.18,9.0,0.08),gold,1.0)
+		_box(gate,"ChineseGateFrontColumn",Vector3(side*8.1,5.4,-80.2),Vector3(0.62,10.8,0.62),wood,1.0)
+	_box(gate,"ChineseGateRoofLower",Vector3(0,12.35,-85.0),Vector3(22.0,0.62,12.0),roof,1.0)
+	_box(gate,"ChineseGateRoofUpper",Vector3(0,13.18,-85.0),Vector3(18.0,0.48,9.0),roof,1.0)
+	_box(gate,"ChineseGateGoldenRidge",Vector3(0,13.58,-85.0),Vector3(16.0,0.22,0.52),gold,1.0)
+	for side in [-1.0,1.0]:
+		for depth_side in [-1.0,1.0]:
+			var eave := _box(gate,"ChineseGateUpturnedEave",Vector3(side*10.2,12.72,-85.0+depth_side*5.4),Vector3(3.0,0.28,0.72),gold,1.0)
+			eave.rotation.z = -side*0.22
+	for rib in range(9):
+		var x := -8.4 + float(rib)*2.1
+		_box(gate,"ChineseGateRoofRib",Vector3(x,12.78,-85.0),Vector3(0.12,0.12,10.5),gold if rib in [0,8] else roof,1.0)
+	for side in [-1.0,1.0]:
+		var lantern := MeshInstance3D.new()
+		lantern.name = "ChineseGateWarmLantern"
+		var lantern_mesh := SphereMesh.new()
+		lantern_mesh.radius = 0.34
+		lantern_mesh.height = 0.7
+		lantern.mesh = lantern_mesh
+		lantern.position = Vector3(side*8.3,10.2,-80.0)
+		gate.add_child(lantern)
+		var glow := _material(Color("#b62935"),0.35)
+		glow.emission_enabled = true
+		glow.emission = Color("#ff9a52")
+		glow.emission_energy_multiplier = 1.5
+		lantern.material_override = glow
+		var light := OmniLight3D.new()
+		light.name = "ChineseGateWarmLanternLight"
+		light.position = lantern.position
+		light.light_color = Color("#ffad67")
+		light.light_energy = 1.15
+		light.omni_range = 10.0
+		gate.add_child(light)
+	print("CITY_CHINESE_GATE_PASS: %s opening=14m height=14m roof=2_tiers lanterns=2" % city)
 
 static func _load_kenney_scene(kit: String, file_name: String) -> PackedScene:
  for format_name in ["GLB format", "GLTF format"]:
