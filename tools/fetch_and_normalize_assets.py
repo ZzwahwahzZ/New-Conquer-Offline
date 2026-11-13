@@ -132,7 +132,7 @@ BLACKLIST = re.compile(
 LION = re.compile(r"\blions?\b", re.I)
 CATEGORY_RULES = {
  "palaces_and_temples": r"\b(?:imperial|chinese|asian|japanese|korean)\b.{0,45}\b(?:palace|temple|pagoda|shrine|pavilion|hall|gate|wall|tower)\b|\b(?:palace|temple|pagoda|shrine|water pavilion|lotus pond pavilion|ceremonial hall|moon gate)\b",
- "houses_and_shops": r"\b(?:chinese|asian|japanese|traditional|wooden|hanok)\s+(?:town|village|street\s+)?house\b|\b(?:market stall|teahouse|tea house|inn|asian shop|chinese shop)\b",
+ "houses_and_shops": r"\b(?:(?:chinese|asian|japanese|traditional|wooden|hanok)\s+){1,2}(?:town|village|street\s+)?house\b|\b(?:market stall|teahouse|tea house|inn|asian shop|chinese shop)\b",
  "gates_walls_bridges": r"\b(?:moon gate|chinese gate|palace gate|gate tower|watchtower|city wall|palace wall|stone wall|fort wall|arched stone bridge|arch bridge|stone bridge)\b",
  "statues_and_props": r"\b(?:dragon|stone lion|guardian lion|lantern|incense burner|cauldron|bronze bell|ceremonial drum|altar|throne|folding screen|scroll rack|tea set|guqin|calligraphy|parasol|banner|statue)\b",
  "nature": r"\b(?:bamboo|plum tree|willow tree|pine tree|cherry blossom|cherry tree|bonsai|lotus|peony|rockery|shrub|tree clump|blossom|reed clump|bluebell|fern clump|tussock grass|spinifex|grass clump)\b",
