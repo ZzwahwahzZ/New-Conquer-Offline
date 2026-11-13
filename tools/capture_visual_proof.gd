@@ -205,14 +205,14 @@ func _capture() -> void:
 		if first_building == null:
 			first_building = loaded_world.find_child(city_id + "_DetailedBuilding_00", true, false)
 		if first_building == null:
-			first_building = loaded_world.find_child(city_id + "_QuaterniusBuilding_00", true, false)
+			first_building = loaded_world.find_child(city_id + "_WuxiaChineseBuilding_00", true, false)
 		if first_building == null or not _has_renderable_mesh(first_building):
 			_fail("renderable detailed or imported architecture missing from rendered city: " + city_id)
 			return
 		if loaded_world.find_child(city_id + "_PerimeterFortifications", true, false) == null:
 			_fail("perimeter walls and gates missing from rendered city: " + city_id)
 			return
-		if loaded_world.find_child("OpenCentralPlaza_24x24", true, false) == null:
+		if loaded_world.find_child("OpenCentralPlaza_50x50", true, false) == null:
 			_fail("open central plaza missing from rendered city: " + city_id)
 			return
 		var city_environment := loaded_world.find_child("SettlementEnvironment", true, false) as WorldEnvironment
