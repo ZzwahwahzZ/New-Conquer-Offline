@@ -213,7 +213,8 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 				# Kenney GLB scenes can include helper MeshInstance3D nodes without geometry.
 				# Hide those nodes before the scene enters the renderer; keep child transforms intact.
 				_sanitize_imported_mesh_nodes(imported_bridge)
-				imported_bridge.name = "KenneyBridgeModel"
+				imported_bridge.name = "WuxiaArchedStoneBridge"
+					imported_bridge.add_to_group("imperial_chinese_arch_bridge")
 				var bridge_mesh := _first_mesh_node(imported_bridge)
 				if bridge_mesh != null and bridge_mesh.mesh != null:
 					var bounds := bridge_mesh.mesh.get_aabb().size
