@@ -58,3 +58,34 @@ def discover_opengameart(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                 DOWN.append({**rec,"raw":str(path),"download_sha256":sha(path)})
         except Exception as exc:
             ERR.append({"asset":"OpenGameArt:"+src["slug"],"stage":"discover/download","reason":str(exc)})
+
+def discover_quaternius(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
+    """Try official Quaternius pack pages. Only use direct file links actually exposed by the live page."""
+    packs = [
+        {"slug":"ultimate-nature-pack","page":"https://quaternius.com/packs/ultimatenature.html","creator":"Quaternius"},
+        {"slug":"stylized-nature-megakit-official","page":"https://quaternius.com/packs/stylizednaturemegakit.html","creator":"Quaternius"},
+    ]
+    for pack in packs:
+        try:
+            response=session.get(pack["page"],timeout=(20,60),headers={"User-Agent":"NewConquerOffline-AssetFetcher/1.0"})
+            response.raise_for_status()
+            html=response.text
+            if not re.search(r"CC0|publicdomain/zero/1\\.0",html,re.I):
+                raise ValueError("Official Quaternius page did not expose CC0 license text")
+            parser=_Links(); parser.feed(html)
+            candidates=[]
+            for href,label in parser.links:
+                absolute=urljoin(pack["page"],href)
+                path=urlparse(absolute).path.lower()
+                if Path(path).suffix in (".zip",".glb",".gltf",".blend",".fbx",".obj"):
+                    candidates.append((absolute,label))
+            if not candidates:
+                raise ValueError("No direct downloadable model file link exposed; official page points to a hosted download flow")
+            for index,(url,label) in enumerate(candidates[:2]):
+                rec={"id":"quaternius-"+pack["slug"]+("-"+str(index+1) if index else ""),"name":label or pack["slug"],"source":"Quaternius","source_url":pack["page"],"license":"CC0 1.0 Universal","authors":{"creator":pack["creator"]},"matches":[("nature",pack["slug"])],"download_url":url}
+                DISC.append(rec)
+                ext=Path(urlparse(url).path).suffix.lower()
+                path=fetch(url,RAW/"quaternius"/(safe(rec["id"])+ext))
+                DOWN.append({**rec,"raw":str(path),"download_sha256":sha(path)})
+        except Exception as exc:
+            ERR.append({"asset":"Quaternius:"+pack["slug"],"stage":"discover/download","reason":str(exc)})
