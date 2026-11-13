@@ -5,6 +5,7 @@ from datetime import datetime,timezone
 from urllib.parse import urlparse,urljoin,unquote
 import requests
 from huggingface_hub import HfApi,hf_hub_download
+from tools.imperial_extra_sources import discover_3dassets
 ROOT=Path.cwd(); OUT=ROOT/"assets/wuxia_imperial_pack"; RAW=ROOT/".asset_work/raw"
 HF_REPO=os.getenv("HF_REPO_ID","ZzwahwahzZ/clash-of-legends-terrain-assets"); PREFIX="assets/wuxia_imperial_pack"
 S=requests.Session(); S.headers.update({"User-Agent":"NewConquerOffline-AssetPipeline/1.0 (GitHub Actions; asset audit)"})
@@ -177,7 +178,7 @@ def upload(entries):
 def main():
  if not shutil.which(os.getenv("BLENDER_BIN","blender")): raise RuntimeError("Blender executable missing")
  ver=subprocess.check_output([os.getenv("BLENDER_BIN","blender"),"--version"],text=True).splitlines()[0]
- polyhaven(); ambientcg(); process(); entries=builddocs(ver)
+ discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); process(); entries=builddocs(ver)
  if not entries: raise RuntimeError("No assets passed license and validation checks; no empty upload performed.")
  upload(entries)
  print(json.dumps({"blender":ver,"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"verified_remote":VERIFIED,"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
