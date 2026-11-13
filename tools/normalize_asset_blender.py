@@ -27,6 +27,7 @@ objects_before=list(bpy.context.scene.objects)
 meshes=[o for o in objects_before if o.type=="MESH"]
 if not meshes: raise RuntimeError("No mesh objects")
 hierarchy_before=sum(1 for o in objects_before if o.parent is not None)
+materials_before=sum(1 for m in bpy.data.materials)
 bpy.context.view_layer.update()
 pts=[o.matrix_world @ Vector(c) for o in meshes for c in o.bound_box]
 minz=min(v.z for v in pts)
@@ -47,5 +48,8 @@ if abs(miny)>1e-4: raise RuntimeError("Ground plane mismatch; min Y="+str(miny))
 if any(not math.isfinite(x) or x<=1e-6 for x in dims): raise RuntimeError("Invalid dimensions")
 mats=sum(1 for m in bpy.data.materials)
 if mats==0: raise RuntimeError("No materials survived GLB export")
+if mats!=materials_before: raise RuntimeError("Material count changed during GLB round-trip")
+missing_images=[im.name for im in bpy.data.images if im.source=="FILE" and (im.size[0]==0 or im.size[1]==0)]
+if missing_images: raise RuntimeError("Missing/invalid texture image data: "+", ".join(missing_images))
 if dst.stat().st_size<1024: raise RuntimeError("GLB unexpectedly small")
 (dst.with_suffix(".json")).write_text(json.dumps({"mesh_count":len(meshes2),"object_count":len(objects_after),"hierarchy_parent_links":hierarchy_after,"material_count":mats,"dimensions_m":dims,"min_y":miny,"validated":True},indent=2))
