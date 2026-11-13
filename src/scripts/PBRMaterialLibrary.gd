@@ -52,30 +52,41 @@ static func build_ground_material(environment_id: String, triplanar: bool = true
  return material
 
 static func build_street_material() -> StandardMaterial3D:
-	return _build_polyhaven_material("pavement_05", "PolyHaven_Pavement05_Street")
+    return _build_polyhaven_material("pavement_05", "PolyHaven_Pavement05_Street")
 
 static func build_plaza_material() -> StandardMaterial3D:
-	return _build_polyhaven_material("stone_pathway", "PolyHaven_StonePathway_Plaza")
+    return _build_polyhaven_material("stone_pathway", "PolyHaven_StonePathway_Plaza")
 
 static func _build_polyhaven_material(asset_id: String, display_name: String) -> StandardMaterial3D:
-	var root := "res://assets/environment/materials/polyhaven/" + asset_id + "/"
-	var albedo_path := root + "albedo.jpg"
-	var normal_path := root + "normal.jpg"
-	var roughness_path := root + "roughness.jpg"
-	if not FileAccess.file_exists(albedo_path) or not FileAccess.file_exists(normal_path) or not FileAccess.file_exists(roughness_path):
-		push_error("Missing verified Poly Haven PBR maps for " + asset_id)
-		return build_ground_material("TwinCity", false, "Ground044_2K-JPG")
-	var material := StandardMaterial3D.new()
-	material.resource_name = display_name
-	material.albedo_texture = load(albedo_path) as Texture2D
-	material.normal_enabled = true
-	material.normal_texture = load(normal_path) as Texture2D
-	material.normal_scale = 1.0
-	material.roughness_texture = load(roughness_path) as Texture2D
-	material.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_GRAYSCALE
-	material.roughness = 0.92
-	material.metallic = 0.0
-	material.uv1_triplanar = false
-	material.uv1_scale = Vector3.ONE
-	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
-	return material
+    var root := "res://assets/environment/materials/polyhaven/" + asset_id + "/"
+    var albedo_path := root + "albedo.jpg"
+    var normal_path := root + "normal.jpg"
+    var roughness_path := root + "roughness.jpg"
+    if not FileAccess.file_exists(albedo_path) or not FileAccess.file_exists(normal_path) or not FileAccess.file_exists(roughness_path):
+        push_error("Missing verified Poly Haven PBR maps for " + asset_id)
+        return build_ground_material("TwinCity", false, "Ground044_2K-JPG")
+    var material := StandardMaterial3D.new()
+    material.resource_name = display_name
+    material.albedo_texture = load(albedo_path) as Texture2D
+    material.normal_enabled = true
+    material.normal_texture = load(normal_path) as Texture2D
+    material.normal_scale = 1.0
+    material.roughness_texture = load(roughness_path) as Texture2D
+    material.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_GRAYSCALE
+    material.roughness = 0.92
+    material.metallic = 0.0
+    material.uv1_triplanar = false
+    material.uv1_scale = Vector3.ONE
+    material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+    return material
+
+
+static func build_emissive_material(color: Color) -> StandardMaterial3D:
+    var material := StandardMaterial3D.new()
+    material.resource_name = "Generated_Emissive_Material"
+    material.albedo_color = color
+    material.emission_enabled = true
+    material.emission = color
+    material.emission_energy_multiplier = 1.0
+    material.roughness = 0.42
+    return material
