@@ -190,7 +190,7 @@ jobs:
       - name: Verify all six classic city street environments
         timeout-minutes: 10
         shell: bash
-        run: bash tools/run_godot_smoke_test.sh scripts/city_street_dressing_test.gd 420s
+        run: bash tools/run_godot_smoke_test.sh scripts/city_street_dressing_test.gd 420s display
 
       - name: Capture thirty close classic-Conquer camera proof frames across all six cities
         id: capture_visual_proof
