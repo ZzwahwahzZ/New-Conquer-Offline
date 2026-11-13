@@ -145,6 +145,27 @@ static func _add_stair_guardian_lions(parent: Node3D, platform_depth: float) -> 
     dragon.add_to_group("imperial_dragon_statues")
     dragon.set_meta("source_asset_path",dragon_path)
     parent.add_child(dragon)
+ var brazier_path := "res://assets/wuxia_imperial_pack/props_nature/stone_brazier.glb"
+ if ResourceLoader.exists(brazier_path):
+  var brazier_pack := load(brazier_path) as PackedScene
+  if brazier_pack != null:
+   for side in [-1.0,1.0]:
+    var brazier := brazier_pack.instantiate() as Node3D
+    if brazier == null: continue
+    brazier.name = "ChineseImperialStairStoneBrazier"
+    brazier.position = Vector3(side*6.5,0.0,platform_depth*0.5+6.0)
+    brazier.scale = Vector3.ONE*0.82
+    brazier.add_to_group("imperial_stair_braziers")
+    brazier.set_meta("source_asset_path",brazier_path)
+    parent.add_child(brazier)
+    var brazier_light := OmniLight3D.new()
+    brazier_light.name = "ChineseImperialStoneBrazierLight"
+    brazier_light.position = brazier.position+Vector3(0.0,1.6,0.0)
+    brazier_light.light_color = Color("#ff9a55")
+    brazier_light.light_energy = 0.85
+    brazier_light.omni_range = 7.0
+    brazier_light.add_to_group("imperial_stair_brazier_lights")
+    parent.add_child(brazier_light)
 
 static func _replace_city_gates(parent: Node3D) -> void:
  var fortification := parent.get_node_or_null("TwinCity_PerimeterFortifications") as Node3D
