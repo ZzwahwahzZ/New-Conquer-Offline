@@ -137,6 +137,25 @@ def process():
     with py7zr.SevenZipFile(p,mode="r") as z: z.extractall(path=d)
     fs=list(d.rglob("*"))
    else: fs=[p]
+   is_pbr = r["source"]=="ambientCG" or any(c=="pbr" for c,t in r.get("matches",[]))
+   if is_pbr:
+    dest=OUT/"textures"/safe(r["id"]); dest.mkdir(parents=True,exist_ok=True); copied=[]
+    for src in fs:
+     if src.is_file() and src.suffix.lower() in (".jpg",".jpeg",".png",".tif",".tiff",".exr"):
+      target=dest/src.name
+      if not target.exists(): shutil.copy2(src,target)
+      copied.append(str(target))
+    names=[Path(x).name.lower() for x in copied]
+    has_color=any(("color" in n or "albedo" in n or "basecolor" in n or "diff" in n) for n in names)
+    has_normal=any("normal" in n for n in names)
+    has_rough=any(("rough" in n or "roughness" in n) for n in names)
+    if not (has_color and has_normal and has_rough):
+     shutil.rmtree(dest,ignore_errors=True)
+     raise ValueError("Incomplete PBR set; required Albedo/Color, Normal and Roughness maps")
+    OK.append({**r,"kind":"pbr","files":copied,"dimensions_m":None,"validation":{"maps":[Path(x).name for x in copied],"color":has_color,"normal":has_normal,"roughness":has_rough}})
+    for c,t in r["matches"]:
+     if t not in COVERED.setdefault(c,[]): COVERED[c].append(t)
+    continue
    models=[x for x in fs if x.is_file() and x.suffix.lower() in (".blend",".glb",".gltf",".fbx",".obj",".dae",".stl",".ply")]
    priority={".glb":0,".gltf":1,".blend":2,".fbx":3,".obj":4,".dae":5,".stl":6,".ply":7}
    models.sort(key=lambda x:(priority.get(x.suffix.lower(),99),str(x).lower()))
@@ -175,7 +194,7 @@ def builddocs(blenderver):
  lines += [f"- {e['file']} | {e['license']} | {e['source']} | {e['bytes']} bytes | SHA256 {e['sha256']} | dimensions m: {e['dimensions_m'] or 'texture set'}" for e in entries]
  lines += ["","## Errors"]+[f"- {e['asset']} ({e['stage']}): {e['reason']}" for e in ERR] if ERR else ["","## Errors","- None"]
  lines += ["","## الأصول الناقصة المطلوبة"]+[f"- {k}: {', '.join(v) if v else 'تم العثور على أصل مرشح'}" for k,v in MISSING.items()]
- lines += ["","## Licensing","- Poly Haven models: publisher-declared CC0; unique User-Agent used.","- ambientCG materials: publisher-declared CC0 1.0.","- Assets without verified publisher licensing were not accepted."]
+ lines += ["","## Licensing","- Poly Haven models: publisher-declared CC0; unique User-Agent used.","- ambientCG materials: publisher-declared CC0 1.0.","- OpenGameArt texture packs: live page license and direct file link are checked before download.","- Assets without verified publisher licensing were not accepted."]
  (OUT/"ASSET_AUDIT_REPORT.md").write_text("\n".join(lines)+"\n")
  c=["# Third-party asset credits","","Only successfully downloaded and locally validated assets are listed."]
  for e in entries:
