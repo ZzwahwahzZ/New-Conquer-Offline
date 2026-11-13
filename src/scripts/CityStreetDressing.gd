@@ -188,6 +188,9 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 		if bridge_pack != null:
 			var imported_bridge := bridge_pack.instantiate() as Node3D
 			if imported_bridge != null:
+				# Kenney GLB scenes can include helper MeshInstance3D nodes without geometry.
+				# Hide those nodes before the scene enters the renderer; keep child transforms intact.
+				_sanitize_imported_mesh_nodes(imported_bridge)
 				imported_bridge.name = "KenneyBridgeModel"
 				var bridge_mesh := _first_mesh_node(imported_bridge)
 				if bridge_mesh != null and bridge_mesh.mesh != null:
@@ -257,9 +260,26 @@ static func _first_mesh_node(root: Node) -> MeshInstance3D:
 		var current: Node = pending.pop_back()
 		for child in current.get_children():
 			pending.append(child)
-		if current is MeshInstance3D and (current as MeshInstance3D).mesh != null:
-			return current as MeshInstance3D
+		if current is MeshInstance3D:
+			var mesh_instance := current as MeshInstance3D
+			if mesh_instance.mesh != null and mesh_instance.mesh.get_surface_count() > 0:
+				return mesh_instance
 	return null
+
+static func _sanitize_imported_mesh_nodes(root: Node) -> void:
+	var pending: Array[Node] = [root]
+	var hidden_empty := 0
+	while not pending.is_empty():
+		var current: Node = pending.pop_back()
+		for child in current.get_children():
+			pending.append(child)
+		if current is MeshInstance3D:
+			var mesh_instance := current as MeshInstance3D
+			if mesh_instance.mesh == null or mesh_instance.mesh.get_surface_count() == 0:
+				mesh_instance.visible = false
+				hidden_empty += 1
+	if hidden_empty > 0:
+		print("KENNEY_BRIDGE_EMPTY_MESH_NODES_SANITIZED: " + str(hidden_empty))
 
 static func _mat(color: Color, roughness: float) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
