@@ -1,5 +1,6 @@
 extends RefCounted
 const WorldTerrainBuilder = preload("res://src/scripts/WorldTerrainBuilder.gd")
+const PBRMaterialLibrary = preload("res://src/scripts/PBRMaterialLibrary.gd")
 ## Detailed, lightweight facade and roof kit for all six classic settlements.
 ## Every building is assembled from real 3D meshes; brick relief uses a generated normal map.
 const CITY_PALETTES := {
