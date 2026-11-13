@@ -76,6 +76,37 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary) -> vo
   for side in [-1.0,1.0]:
    var curb := _box(roads,"RaisedStoneCurb_%d_%d" % [direction,int(side)],Vector3(side*5.35,0.34,0),Vector3(0.65,0.48,road_length),curb_material,1.0)
    curb.rotation_degrees.y = direction*90.0
+ _build_urban_alley_multimeshes(roads,city,road_material)
+
+static func _build_urban_alley_multimeshes(parent: Node3D, city: String, material: Material) -> void:
+ var terrain_image := WorldTerrainBuilder.load_height_image(city)
+ var alley_lines := [-120.0,-96.0,-72.0,-48.0,48.0,72.0,96.0,120.0]
+ var segment_centers := [-132.0,-108.0,-84.0,-60.0,-36.0,-12.0,12.0,36.0,60.0,84.0,108.0,132.0]
+ var alley_mesh := BoxMesh.new()
+ alley_mesh.size = Vector3(4.0,0.14,22.0)
+ for axis in range(2):
+  var multi := MultiMesh.new()
+  multi.transform_format = MultiMesh.TRANSFORM_3D
+  multi.mesh = alley_mesh
+  multi.instance_count = alley_lines.size() * segment_centers.size()
+  var index := 0
+  for line in alley_lines:
+   for along in segment_centers:
+    var x := line if axis == 0 else along
+    var z := along if axis == 0 else line
+    var ground_y := WorldTerrainBuilder.sample_height_image(terrain_image,city,x,z,800.0)
+    var basis := Basis(Vector3.UP,PI*0.5) if axis == 1 else Basis.IDENTITY
+    multi.set_instance_transform(index,Transform3D(basis,Vector3(x,ground_y+0.12,z)))
+    index += 1
+  var alley := MultiMeshInstance3D.new()
+  alley.name = city + ("_UrbanAlleys_NorthSouth_MultiMesh" if axis == 0 else "_UrbanAlleys_EastWest_MultiMesh")
+  alley.multimesh = multi
+  alley.material_override = material
+  alley.add_to_group("distance_cull_world")
+  alley.visibility_range_end = 420.0
+  alley.visibility_range_end_margin = 36.0
+  parent.add_child(alley)
+ print("CITY_URBAN_ALLEY_PASS: %s directions=2 segments_per_direction=%d" % [city,alley_lines.size()*segment_centers.size()])
 
 static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var slot := Node3D.new()
@@ -85,17 +116,25 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
  # the preserved central square, with the two cardinal avenues and gate approaches left open.
  var coordinates := [-132.0,-108.0,-84.0,-60.0,60.0,84.0,108.0,132.0]
  var index := 0
+ var built_count := 0
  for z in coordinates:
   for x in coordinates:
-   var at := Vector3(x,0.0,z)
+   if city == "TwinCity":
+    var reserved := false
+    for landmark in [Vector2(-76.0,-30.0),Vector2(-96.0,30.0),Vector2(-76.0,30.0)]:
+     if Vector2(x,z).distance_to(landmark) < 15.0:
+      reserved = true
+    if reserved:
+     index += 1
+     continue
    var building := _make_compact_urban_building(city,p,index)
    building.name = city + "_DetailedBuilding_%02d" % index
-   building.position = at
-   building.position.y = WorldTerrainBuilder.sample_height_image(height_image,city,x,z,800.0)
+   building.position = Vector3(x,WorldTerrainBuilder.sample_height_image(height_image,city,x,z,800.0),z)
    building.rotation.y = atan2(-x,-z)
    slot.add_child(building)
    index += 1
- print("CITY_URBAN_DENSITY_PASS: %s buildings=%d grid=8x8 preserved_central_plaza=true" % [city,index])
+   built_count += 1
+ print("CITY_URBAN_DENSITY_PASS: %s buildings=%d grid=8x8 reserved_landmarks=true" % [city,built_count])
 
 static func _make_compact_urban_building(city: String, p: Dictionary, index: int) -> Node3D:
  var root := Node3D.new()
