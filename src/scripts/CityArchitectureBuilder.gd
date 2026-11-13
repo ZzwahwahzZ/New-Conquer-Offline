@@ -116,6 +116,8 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
   "standing_garden_lantern.glb",
   "pond_water_module.glb",
   "lotus_cluster.glb",
+  "lotus_pond_edge_straight.glb",
+  "lotus_pond_edge_corner.glb",
   "rockery_outcrop.glb",
   "stone_incense_burner.glb"
  ]
@@ -126,9 +128,11 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
  var lantern_scene := ResourceLoader.load(base+"standing_garden_lantern.glb") as PackedScene
  var pond_scene := ResourceLoader.load(base+"pond_water_module.glb") as PackedScene
  var lotus_scene := ResourceLoader.load(base+"lotus_cluster.glb") as PackedScene
+ var pond_edge_scene := ResourceLoader.load(base+"lotus_pond_edge_straight.glb") as PackedScene
+ var pond_corner_scene := ResourceLoader.load(base+"lotus_pond_edge_corner.glb") as PackedScene
  var rockery_scene := ResourceLoader.load(base+"rockery_outcrop.glb") as PackedScene
  var burner_scene := ResourceLoader.load(base+"stone_incense_burner.glb") as PackedScene
- if lantern_scene == null or pond_scene == null or lotus_scene == null or rockery_scene == null or burner_scene == null:
+ if lantern_scene == null or pond_scene == null or lotus_scene == null or pond_edge_scene == null or pond_corner_scene == null or rockery_scene == null or burner_scene == null:
   push_error("WUXIA_IMPERIAL_GARDEN_IMPORT_FAIL: one or more garden GLBs did not import")
   return
  var pond := pond_scene.instantiate() as Node3D
@@ -138,6 +142,38 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
  pond.add_to_group("imperial_plaza_lotus_pond")
  pond.set_meta("source_asset_path",base+"pond_water_module.glb")
  parent.add_child(pond)
+ var pond_edges := [
+  {"at":Vector3(-16.0,0.12,-19.3),"rotation":0.0},
+  {"at":Vector3(-16.0,0.12,-12.7),"rotation":PI},
+  {"at":Vector3(-19.3,0.12,-16.0),"rotation":PI*0.5},
+  {"at":Vector3(-12.7,0.12,-16.0),"rotation":PI*1.5}
+ ]
+ for edge_index in range(pond_edges.size()):
+  var edge_data: Dictionary = pond_edges[edge_index]
+  var edge := pond_edge_scene.instantiate() as Node3D
+  edge.name = "ImperialLotusPondStoneEdge_%02d" % edge_index
+  edge.position = edge_data["at"]
+  edge.rotation.y = float(edge_data["rotation"])
+  edge.scale = Vector3.ONE*2.2
+  edge.add_to_group("imperial_plaza_pond_edges")
+  edge.set_meta("source_asset_path",base+"lotus_pond_edge_straight.glb")
+  parent.add_child(edge)
+ var pond_corners := [
+  {"at":Vector3(-19.3,0.12,-19.3),"rotation":0.0},
+  {"at":Vector3(-12.7,0.12,-19.3),"rotation":PI*0.5},
+  {"at":Vector3(-12.7,0.12,-12.7),"rotation":PI},
+  {"at":Vector3(-19.3,0.12,-12.7),"rotation":PI*1.5}
+ ]
+ for corner_index in range(pond_corners.size()):
+  var corner_data: Dictionary = pond_corners[corner_index]
+  var pond_corner := pond_corner_scene.instantiate() as Node3D
+  pond_corner.name = "ImperialLotusPondStoneCorner_%02d" % corner_index
+  pond_corner.position = corner_data["at"]
+  pond_corner.rotation.y = float(corner_data["rotation"])
+  pond_corner.scale = Vector3.ONE*2.2
+  pond_corner.add_to_group("imperial_plaza_pond_edges")
+  pond_corner.set_meta("source_asset_path",base+"lotus_pond_edge_corner.glb")
+  parent.add_child(pond_corner)
  var lotus := lotus_scene.instantiate() as Node3D
  lotus.name = "ImperialLotusPondFlowerCluster"
  lotus.position = Vector3(-16.0,0.2,-16.0)
