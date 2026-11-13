@@ -82,7 +82,7 @@ for obj_path in sorted(src.rglob("*.obj")):
  selected_set=set(selected)
  roots=[o for o in selected if o.parent not in selected_set]
  for obj in roots: obj.location+=shift
- scene_name=slug(obj_path.stem)
+ scene_name=slug("_".join(obj_path.relative_to(src).with_suffix("").parts))
  dest=out/(scene_name+".glb")
  bpy.ops.object.select_all(action="DESELECT")
  for obj in selected: obj.select_set(True)
