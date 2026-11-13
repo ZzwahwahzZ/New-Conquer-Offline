@@ -37,7 +37,7 @@ def fetch(u,p,limit=500*1024*1024):
 def leaves(x):
  if isinstance(x,dict):
   for k,v in x.items():
-   if isinstance(v,dict) and any(isinstance(v.get(k),str) for k in ("url","downloadLink","rawLink")): yield v
+   if isinstance(v,dict) and any(isinstance(v.get(field),str) for field in ("url","downloadLink","rawLink","downloadUrl")): yield v
    else: yield from leaves(v)
  elif isinstance(x,list):
   for v in x: yield from leaves(v)
@@ -100,7 +100,7 @@ def ambientcg():
     if not asset_id: continue
     urls=download_urls(it.get("downloads",{}))
     # Only download complete archives; the archive retains all source maps and metadata.
-    urls=[u for u in urls if urlparse(u).path.lower().endswith(".zip")]
+    urls=[u for u in urls if ".zip" in u.lower()]
     if not urls:
      raise ValueError("No direct ZIP URL found in v3 downloads metadata")
     u=urls[0]
@@ -138,6 +138,8 @@ def process():
     fs=list(d.rglob("*"))
    else: fs=[p]
    models=[x for x in fs if x.is_file() and x.suffix.lower() in (".blend",".glb",".gltf",".fbx",".obj",".dae",".stl",".ply")]
+   priority={".glb":0,".gltf":1,".blend":2,".fbx":3,".obj":4,".dae":5,".stl":6,".ply":7}
+   models.sort(key=lambda x:(priority.get(x.suffix.lower(),99),str(x).lower()))
    if models:
     for i,src in enumerate(models[:4]):
      dst=OUT/"models"/(safe(r["id"])+(("_"+str(i)) if i else "")+".glb"); dst.parent.mkdir(parents=True,exist_ok=True)
