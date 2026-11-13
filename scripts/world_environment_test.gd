@@ -68,8 +68,8 @@ func _run() -> void:
 	var old_enclosed_block := city.find_child("TwinCity_ImperialChina_GLBAsset", true, false)
 	if not _require(old_enclosed_block == null, "Obsolete enclosed imperial architecture must not cover the open spawn plaza"):
 		return
-	var open_plaza := city.find_child("OpenCentralPlaza_80x80", true, false) as Node3D
-	if not _require(open_plaza != null and open_plaza.find_child("CentralEngravedStoneMedallion", true, false) != null, "Open 80x80 diamond-paved plaza and central medallion are missing"):
+	var open_plaza := city.find_child("OpenCentralPlaza_24x24", true, false) as Node3D
+	if not _require(open_plaza != null and open_plaza.find_child("CentralEngravedStoneMedallion", true, false) != null, "Open 24x24 diamond-paved plaza and central medallion are missing"):
 		return
 	var spawn := city.get_node_or_null("ArchitectureAssetSlot/PlayerSpawn") as Marker3D
 	if not _require(spawn != null and spawn.position.is_zero_approx(), "TwinCity player spawn anchor must be centered at X=0, Y=0, Z=0"):
