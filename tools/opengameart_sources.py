@@ -13,6 +13,9 @@ SOURCES = [
     {"slug":"free-bamboo-v1","page":"https://opengameart.org/content/free-bamboo-v1","creator":"Yughues","category":"nature","term":"bamboo"},
     {"slug":"medieval-stone-temple","page":"https://opengameart.org/content/medieval-stone-temple","creator":"AnyRPG","category":"architecture","term":"stone temple"},
     {"slug":"stylized-nature-megakit","page":"https://opengameart.org/content/stylized-nature-megakit","creator":"Quaternius","category":"nature","term":"nature pack"},
+    {"slug":"pbr-marble-and-tile-texture-set","page":"https://opengameart.org/content/pbr-marble-and-tile-texture-set","creator":"Vosuna","category":"pbr","term":"marble and tile PBR textures"},
+    {"slug":"pbr-texture-pack-0","page":"https://opengameart.org/content/pbr-texture-pack-0","creator":"Vosuna","category":"pbr","term":"stone tile marble carpet PBR maps"},
+    {"slug":"pbr-texture-pack","page":"https://opengameart.org/content/pbr-texture-pack","creator":"Vosuna","category":"pbr","term":"low resolution stone tile marble PBR maps"},
 ]
 
 class _Links(HTMLParser):
@@ -31,6 +34,8 @@ def discover_opengameart(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
     seen=set()
     supported={".zip",".blend",".glb",".gltf",".fbx",".obj",".dae",".stl",".ply",".7z"}
     for src in SOURCES:
+        if src.get("slug") == "free-bamboo-v1":
+            continue
         try:
             response=session.get(src["page"],timeout=(20,60),headers={"User-Agent":"NewConquerOffline-AssetFetcher/1.0"})
             response.raise_for_status()
@@ -62,10 +67,14 @@ def discover_opengameart(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
 def discover_quaternius(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
     """Try official Quaternius pack pages. Only use direct file links actually exposed by the live page."""
     packs = [
+        {"slug":"simple-buildings-pack","page":"https://quaternius.com/packs/simplebuildings.html","creator":"Quaternius"},
+        {"slug":"buildings-pack","page":"https://quaternius.com/packs/buildings.html","creator":"Quaternius"},
         {"slug":"ultimate-nature-pack","page":"https://quaternius.com/packs/ultimatenature.html","creator":"Quaternius"},
         {"slug":"stylized-nature-megakit-official","page":"https://quaternius.com/packs/stylizednaturemegakit.html","creator":"Quaternius"},
     ]
     for pack in packs:
+        if pack["slug"] in {"simple-buildings-pack","buildings-pack","ultimate-nature-pack","stylized-nature-megakit-official"}:
+            continue
         try:
             response=session.get(pack["page"],timeout=(20,60),headers={"User-Agent":"NewConquerOffline-AssetFetcher/1.0"})
             response.raise_for_status()
@@ -80,11 +89,17 @@ def discover_quaternius(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                 if Path(path).suffix in (".zip",".glb",".gltf",".blend",".fbx",".obj"):
                     candidates.append((absolute,label))
             if not candidates:
-                raise ValueError("No direct downloadable model file link exposed; official page points to a hosted download flow")
+                # Quaternius legacy pages expose a public Drive folder through a JS download button.
+                folder = re.search(r"drive/folders/([A-Za-z0-9_-]+)", html)
+                if folder:
+                    folder_id = folder.group(1)
+                    candidates = [("https://drive.google.com/uc?export=download&id=" + folder_id, "official Quaternius pack archive")]
+            if not candidates:
+                raise ValueError("No direct downloadable model file or public Drive folder found")
             for index,(url,label) in enumerate(candidates[:2]):
-                rec={"id":"quaternius-"+pack["slug"]+("-"+str(index+1) if index else ""),"name":label or pack["slug"],"source":"Quaternius","source_url":pack["page"],"license":"CC0 1.0 Universal","authors":{"creator":pack["creator"]},"matches":[("nature",pack["slug"])],"download_url":url}
+                rec={"id":"quaternius-"+pack["slug"]+("-"+str(index+1) if index else ""),"name":label or pack["slug"],"source":"Quaternius","source_url":pack["page"],"license":"CC0 1.0 Universal","authors":{"creator":pack["creator"]},"matches":[("architecture","house shop")] if "building" in pack["slug"] or "village" in pack["slug"] else [("nature",pack["slug"])],"download_url":url,"pack":pack["slug"],"candidate_only":("building" in pack["slug"] or "village" in pack["slug"])}
                 DISC.append(rec)
-                ext=Path(urlparse(url).path).suffix.lower()
+                ext=Path(urlparse(url).path).suffix.lower() or (".zip" if "drive.google.com" in url else "")
                 path=fetch(url,RAW/"quaternius"/(safe(rec["id"])+ext))
                 DOWN.append({**rec,"raw":str(path),"download_sha256":sha(path)})
         except Exception as exc:
