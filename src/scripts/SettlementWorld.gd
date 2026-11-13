@@ -45,7 +45,7 @@ func _build_environment() -> void:
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	environment.ambient_light_color = sky_color.lightened(0.25)
 	environment.ambient_light_energy = 0.68 if settlement_id == "DarkForest" else 0.42
-	environment.fog_enabled = false
+	environment.fog_enabled = settlement_id == "DarkForest"
 	environment.fog_light_color = fog_color
 	environment.fog_density = fog_density
 	environment.glow_enabled = false
