@@ -50,8 +50,26 @@ func _run() -> void:
 				bridge_count += 1
 				if not _check(bridge_node.find_child("BridgeWalkableCollision", true, false) is CollisionShape3D, city_name + " bridge deck has no walkable collision"):
 					return
-				if city_name in ["TwinCity", "Waterlands"] and not _check(bridge_node.find_child("KenneyBridgeModel", true, false) is Node3D, city_name + " bridge is missing its imported Kenney 3D model"):
-					return
+				if city_name in ["TwinCity", "Waterlands"]:
+					var imported_model := bridge_node.find_child("KenneyBridgeModel", true, false) as Node3D
+					if not _check(imported_model != null, city_name + " bridge is missing its imported Kenney 3D model"):
+						return
+					var model_stack: Array[Node] = [imported_model]
+					var model_meshes := 0
+					var null_meshes := 0
+					while not model_stack.is_empty():
+						var model_node: Node = model_stack.pop_back()
+						for model_child in model_node.get_children():
+							model_stack.append(model_child)
+						if model_node is MeshInstance3D:
+							var model_mesh := (model_node as MeshInstance3D).mesh
+							if model_mesh == null:
+								null_meshes += 1
+							else:
+								model_meshes += 1
+					print("KENNEY_BRIDGE_MODEL_AUDIT: " + city_name + " meshes=" + str(model_meshes) + " null_meshes=" + str(null_meshes))
+					if not _check(model_meshes > 0 and null_meshes == 0, city_name + " imported Kenney bridge contains no renderable geometry or still has null mesh nodes"):
+						return
 		if city_name in ["TwinCity", "Waterlands"] and not _check(bridge_count == 6, city_name + " must have six walkable canal bridges (found %d)" % bridge_count):
 			return
 		if city_name == "TwinCity":
