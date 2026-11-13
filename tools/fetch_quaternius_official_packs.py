@@ -5,7 +5,7 @@ import hashlib,json,shutil,subprocess,zipfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 CACHE=Path.home()/".cache"/"quaternius-official"
-DEST=ROOT/"assets"/"imperial_city_kit_v2"/"quaternius"
+DEST=ROOT/"assets"/"wuxia_imperial_pack"/"quaternius"
 PACKS={
 "modular_medieval_buildings":("https://quaternius.com/packs/modularmedievalbuildings.html","https://drive.google.com/drive/folders/1WCmnrS1fYQLYfRwztVErgAOyWXdJiVIo?usp=sharing"),
 "ultimate_buildings":("https://quaternius.com/packs/ultimatetexturedbuildings.html","https://drive.google.com/drive/folders/1RE3qXhbE5yGS3t-xGFJ8GmOtTgCUF3LQ?usp=sharing"),
