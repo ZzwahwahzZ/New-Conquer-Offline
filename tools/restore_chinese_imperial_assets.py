@@ -125,7 +125,7 @@ if len(records)<60: raise SystemExit("fewer than 60 GLBs were normalized")
  normalized=json.loads((DEST/"normalization_report.json").read_text())
  by_file={r["file"]:r for r in normalized}
  for entry in manifest["assets"]:
-  rel=Path(entry["file"]).relative_to(DEST).as_posix()
+  rel=Path(entry["file"]).relative_to(DEST.relative_to(ROOT)).as_posix()
   if rel not in by_file: raise RuntimeError("Normalized model missing from report: "+rel)
   entry.update(by_file[rel]); entry["normalization_pending"]=False
  manifest["model_count"]=len(normalized)
