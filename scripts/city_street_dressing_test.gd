@@ -76,7 +76,7 @@ func _building_overlaps_street(bounds: AABB, city_name: String) -> bool:
 		corridors.append(Rect2(Vector2(offset - 2.5, -half * 0.74), Vector2(5.0, half * 1.48)))
 		corridors.append(Rect2(Vector2(-half * 0.74, offset - 2.5), Vector2(half * 1.48, 5.0)))
 	for side in [-1.0, 1.0]:
-		var approach := side * half * 0.48
+		var approach: float = float(side) * half * 0.48
 		var approach_length := half * 0.82
 		corridors.append(Rect2(Vector2(approach - 3.5, -approach_length * 0.5), Vector2(7.0, approach_length)))
 		corridors.append(Rect2(Vector2(-approach_length * 0.5, approach - 3.5), Vector2(approach_length, 7.0)))
