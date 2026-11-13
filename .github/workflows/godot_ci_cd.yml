@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -56,7 +56,8 @@ jobs:
           python3 tools/restore_chinese_imperial_assets.py
           python3 tools/restore_polyhaven_pbr_textures.py
           python3 tools/restore_imperial_city_pbr_v2.py
-          python3 -m py_compile tools/restore_kenney_environment_assets.py tools/restore_chinese_imperial_assets.py tools/restore_polyhaven_pbr_textures.py tools/restore_imperial_city_pbr_v2.py tools/fetch_quaternius_official_packs.py tools/upload_imperial_city_v2_hf.py tools/kenney_asset_preflight.py
+          python3 tools/restore_ambientcg_wuxia_textures.py
+          python3 -m py_compile tools/restore_kenney_environment_assets.py tools/restore_chinese_imperial_assets.py tools/restore_polyhaven_pbr_textures.py tools/restore_imperial_city_pbr_v2.py tools/restore_ambientcg_wuxia_textures.py tools/fetch_quaternius_official_packs.py tools/upload_imperial_city_v2_hf.py tools/generate_wuxia_credits.py tools/kenney_asset_preflight.py
           bash -n tools/run_godot_smoke_test.sh
           npm install --global @gltf-transform/cli@4.5.1
           while IFS= read -r -d '' asset; do
@@ -65,7 +66,7 @@ jobs:
             test -s "$temp"
             mv "$temp" "$asset"
             echo "GODOT_COMPATIBLE_GLB: $asset"
-          done < <(find assets/environment/kenney assets/environment/architecture -type f -name '*.glb' -print0)
+          done < <(find assets/environment/kenney assets/environment/architecture assets/wuxia_imperial_pack -type f -name '*.glb' -print0)
           python3 tools/kenney_asset_preflight.py
       - name: Cache official Quaternius downloads
         uses: actions/cache@v4
@@ -79,6 +80,18 @@ jobs:
         timeout-minutes: 35
         run: python3 tools/fetch_quaternius_official_packs.py
 
+      - name: Regenerate and commit creator attributions from verified manifests
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 tools/generate_wuxia_credits.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CREDITS.md
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh Wuxia asset credits [skip ci]"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
       - name: Cache Godot imported assets
         uses: actions/cache@v4
         with:
@@ -94,7 +107,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m pip install --disable-pip-version-check Pillow
-          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 50 --max-glb-nodes 2000 --max-image-dimension 1024
+          python3 tools/sanitize_godot_assets.py --root . --quarantine /tmp/godot-asset-quarantine --max-glb-mb 50 --max-glb-nodes 2000 --max-image-dimension 2048
       - name: Install virtual X server for stable Godot 3D import
         run: |
           sudo apt-get update
