@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-11-13T20:19:26.133832+00:00",
+  "generated_at_utc": "2026-11-13T20:38:02.478038+00:00",
   "units": "model dimensions are measured GLB bounding boxes in meters; PBR textures have no physical dimensions",
   "categories": {
     "palaces_and_temples": {
-      "count": 4,
+      "count": 3,
       "assets": [
         {
           "asset_id": "3dassets-imperial-china-palace-and-garden-walled--b51639b8-starter-scene",
@@ -72,42 +72,6 @@
               7.950078010559082
             ],
             "min_y": -5.960464477539063e-08,
-            "assumed_meter_scale": false,
-            "unit_scale_m_per_blender_unit": 1.0,
-            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
-            "validated": true
-          }
-        },
-        {
-          "asset_id": "3dassets-distillery-and-bonded-warehouse-pagoda-roof-vent-a6001cc0",
-          "name": "Pagoda Roof Kiln Vent (Distillery and Bonded Warehouse)",
-          "category": "palaces_and_temples",
-          "file": "models/3dassets-distillery-and-bonded-warehouse-pagoda-roof-vent-a6001cc0.glb",
-          "source": "3DAssets.dev",
-          "source_url": "https://3dassets.dev/assets/distillery-and-bonded-warehouse-pagoda-roof-vent-a6001cc0",
-          "direct_download_url": "https://cdn.3dassets.dev/assets/38710/v1/model.glb",
-          "license": "CC0 1.0 Universal",
-          "authors": {
-            "creator": "3D Assets"
-          },
-          "dimensions_m": [
-            3.5999999046325684,
-            3.5999999046325684,
-            3.8399391174316406
-          ],
-          "bytes": 63268,
-          "sha256": "dee5018dfc57111c7f2068be9e924201e48d7a575446656d6d9257866c1ba7f3",
-          "validation": {
-            "mesh_count": 3,
-            "object_count": 4,
-            "hierarchy_parent_links": 3,
-            "material_count": 3,
-            "dimensions_m": [
-              3.5999999046325684,
-              3.5999999046325684,
-              3.8399391174316406
-            ],
-            "min_y": 0.0,
             "assumed_meter_scale": false,
             "unit_scale_m_per_blender_unit": 1.0,
             "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
@@ -1031,7 +995,7 @@
       ]
     },
     "nature": {
-      "count": 20,
+      "count": 28,
       "assets": [
         {
           "asset_id": "3dassets-imperial-china-palace-and-garden-peony-planter-f6018406",
@@ -1214,42 +1178,6 @@
           }
         },
         {
-          "asset_id": "3dassets-stylized-trees-and-rocks-kit-fern-clump-52137440",
-          "name": "Stylized Fern Clump (Stylized Trees and Rocks Kit)",
-          "category": "nature",
-          "file": "models/3dassets-stylized-trees-and-rocks-kit-fern-clump-52137440.glb",
-          "source": "3DAssets.dev",
-          "source_url": "https://3dassets.dev/assets/stylized-trees-and-rocks-kit-fern-clump-52137440",
-          "direct_download_url": "https://cdn.3dassets.dev/assets/38747/v1/model.glb",
-          "license": "CC0 1.0 Universal",
-          "authors": {
-            "creator": "3D Assets"
-          },
-          "dimensions_m": [
-            0.6539055109024048,
-            0.7506752014160156,
-            0.5654749274253845
-          ],
-          "bytes": 49276,
-          "sha256": "7120c7b516fb2cfe1c05490c29f7c3bfecb05d2c013cf16818195b952dcbd6db",
-          "validation": {
-            "mesh_count": 1,
-            "object_count": 2,
-            "hierarchy_parent_links": 1,
-            "material_count": 1,
-            "dimensions_m": [
-              0.6539055109024048,
-              0.7506752014160156,
-              0.5654749274253845
-            ],
-            "min_y": 0.0,
-            "assumed_meter_scale": false,
-            "unit_scale_m_per_blender_unit": 1.0,
-            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
-            "validated": true
-          }
-        },
-        {
           "asset_id": "3dassets-quiet-lake-fishing-reed-clump-d86f7970",
           "name": "Cattail Reed Clump (Quiet Lake Fishing)",
           "category": "nature",
@@ -1286,105 +1214,33 @@
           }
         },
         {
-          "asset_id": "3dassets-dense-temperate-forest-flora-reed-clump-467f08af",
-          "name": "Reed Clump (Dense Temperate Forest Flora)",
+          "asset_id": "3dassets-botanical-glasshouse-and-palm-house-botanical-glasshou-9c6e83f9",
+          "name": "Fern bed clump, 1.2 m (Botanical Glasshouse and Palm House)",
           "category": "nature",
-          "file": "models/3dassets-dense-temperate-forest-flora-reed-clump-467f08af.glb",
+          "file": "models/3dassets-botanical-glasshouse-and-palm-house-botanical-glasshou-9c6e83f9.glb",
           "source": "3DAssets.dev",
-          "source_url": "https://3dassets.dev/assets/dense-temperate-forest-flora-reed-clump-467f08af",
-          "direct_download_url": "https://cdn.3dassets.dev/assets/28403/v1/model.glb",
+          "source_url": "https://3dassets.dev/assets/botanical-glasshouse-and-palm-house-botanical-glasshou-9c6e83f9",
+          "direct_download_url": "https://cdn.3dassets.dev/assets/38588/v1/model.glb",
           "license": "CC0 1.0 Universal",
           "authors": {
             "creator": "3D Assets"
           },
           "dimensions_m": [
-            0.6644526124000549,
-            0.6300249695777893,
-            1.6503551006317139
+            1.8225460052490234,
+            1.6454474925994873,
+            0.5958719253540039
           ],
-          "bytes": 26360,
-          "sha256": "aa00124b5102ed6550d27e194a508588c5da97d588eebe308175f2f55d15870c",
+          "bytes": 335748,
+          "sha256": "dfd830b2736347f27b63c9dd4097da072b70056895359fa3eb5ff69e89da1019",
           "validation": {
             "mesh_count": 2,
             "object_count": 3,
             "hierarchy_parent_links": 2,
             "material_count": 2,
             "dimensions_m": [
-              0.6644526124000549,
-              0.6300249695777893,
-              1.6503551006317139
-            ],
-            "min_y": 0.0,
-            "assumed_meter_scale": false,
-            "unit_scale_m_per_blender_unit": 1.0,
-            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
-            "validated": true
-          }
-        },
-        {
-          "asset_id": "3dassets-hot-air-balloon-festival-field-tree-clump-a4c9bb07",
-          "name": "Field Tree Clump (Hot Air Balloon Festival)",
-          "category": "nature",
-          "file": "models/3dassets-hot-air-balloon-festival-field-tree-clump-a4c9bb07.glb",
-          "source": "3DAssets.dev",
-          "source_url": "https://3dassets.dev/assets/hot-air-balloon-festival-field-tree-clump-a4c9bb07",
-          "direct_download_url": "https://cdn.3dassets.dev/assets/38495/v1/model.glb",
-          "license": "CC0 1.0 Universal",
-          "authors": {
-            "creator": "3D Assets"
-          },
-          "dimensions_m": [
-            4.3351569175720215,
-            3.566527843475342,
-            5.118000030517578
-          ],
-          "bytes": 30964,
-          "sha256": "bb9c6835658b09828ddcdca89720df088c4134b7d913db95c3a64f0225f39349",
-          "validation": {
-            "mesh_count": 2,
-            "object_count": 3,
-            "hierarchy_parent_links": 2,
-            "material_count": 2,
-            "dimensions_m": [
-              4.3351569175720215,
-              3.566527843475342,
-              5.118000030517578
-            ],
-            "min_y": 0.0,
-            "assumed_meter_scale": false,
-            "unit_scale_m_per_blender_unit": 1.0,
-            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
-            "validated": true
-          }
-        },
-        {
-          "asset_id": "3dassets-birds-and-reptiles-hd-reed-clump-ec55c985",
-          "name": "Reed clump (Birds and Reptiles HD)",
-          "category": "nature",
-          "file": "models/3dassets-birds-and-reptiles-hd-reed-clump-ec55c985.glb",
-          "source": "3DAssets.dev",
-          "source_url": "https://3dassets.dev/assets/birds-and-reptiles-hd-reed-clump-ec55c985",
-          "direct_download_url": "https://cdn.3dassets.dev/assets/28118/v1/model.glb",
-          "license": "CC0 1.0 Universal",
-          "authors": {
-            "creator": "3D Assets"
-          },
-          "dimensions_m": [
-            0.7601621747016907,
-            0.9309440851211548,
-            1.5172479152679443
-          ],
-          "bytes": 152940,
-          "sha256": "be838c949529e166f9824901affdf2a0870641567198e8c9491a3885c7d5f21d",
-          "validation": {
-            "mesh_count": 2,
-            "object_count": 3,
-            "hierarchy_parent_links": 2,
-            "material_count": 2,
-            "dimensions_m": [
-              0.7601621747016907,
-              0.9309440851211548,
-              1.5172479152679443
+              1.8225460052490234,
+              1.6454474925994873,
+              0.5958719253540039
             ],
             "min_y": 0.0,
             "assumed_meter_scale": false,
@@ -1502,42 +1358,6 @@
           }
         },
         {
-          "asset_id": "3dassets-japanese-school-and-city-street-cherry-tree-blossom-618a9f6d",
-          "name": "Cherry Tree in Blossom (Japanese School and City Street)",
-          "category": "nature",
-          "file": "models/3dassets-japanese-school-and-city-street-cherry-tree-blossom-618a9f6d.glb",
-          "source": "3DAssets.dev",
-          "source_url": "https://3dassets.dev/assets/japanese-school-and-city-street-cherry-tree-blossom-618a9f6d",
-          "direct_download_url": "https://cdn.3dassets.dev/assets/30082/v1/model.glb",
-          "license": "CC0 1.0 Universal",
-          "authors": {
-            "creator": "3D Assets"
-          },
-          "dimensions_m": [
-            4.0909184217453,
-            4.088421821594238,
-            4.560077667236328
-          ],
-          "bytes": 200364,
-          "sha256": "eebd9251202197d89b0daf9f46f922bf329bd1b51f79e527789fd365669ba5a4",
-          "validation": {
-            "mesh_count": 3,
-            "object_count": 4,
-            "hierarchy_parent_links": 3,
-            "material_count": 3,
-            "dimensions_m": [
-              4.0909184217453,
-              4.088421821594238,
-              4.560077667236328
-            ],
-            "min_y": 0.0,
-            "assumed_meter_scale": false,
-            "unit_scale_m_per_blender_unit": 1.0,
-            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
-            "validated": true
-          }
-        },
-        {
           "asset_id": "3dassets-almanac-gardens-blossom-orchard-tree-40e484ef",
           "name": "Blossoming orchard tree (Almanac Gardens: Country Garden Seasons)",
           "category": "nature",
@@ -1574,33 +1394,33 @@
           }
         },
         {
-          "asset_id": "3dassets-japanese-school-and-city-street-cherry-tree-bare-b1e462cf",
-          "name": "Cherry Tree, Bare (Japanese School and City Street)",
+          "asset_id": "3dassets-theme-park-rides-and-coasters-theme-park-rides-and-coa-0a2475e3",
+          "name": "Flowering Park Tree (Theme Park Rides and Coasters)",
           "category": "nature",
-          "file": "models/3dassets-japanese-school-and-city-street-cherry-tree-bare-b1e462cf.glb",
+          "file": "models/3dassets-theme-park-rides-and-coasters-theme-park-rides-and-coa-0a2475e3.glb",
           "source": "3DAssets.dev",
-          "source_url": "https://3dassets.dev/assets/japanese-school-and-city-street-cherry-tree-bare-b1e462cf",
-          "direct_download_url": "https://cdn.3dassets.dev/assets/30079/v1/model.glb",
+          "source_url": "https://3dassets.dev/assets/theme-park-rides-and-coasters-theme-park-rides-and-coa-0a2475e3",
+          "direct_download_url": "https://cdn.3dassets.dev/assets/28703/v1/model.glb",
           "license": "CC0 1.0 Universal",
           "authors": {
             "creator": "3D Assets"
           },
           "dimensions_m": [
-            2.440551280975342,
-            2.381378173828125,
-            3.644587516784668
+            3.799999952316284,
+            3.445643901824951,
+            5.050091743469238
           ],
-          "bytes": 107328,
-          "sha256": "0710e8e15c555ec66e143733c3bcdaea8b5bb147d5598dee82311ef1231ccbaf",
+          "bytes": 99440,
+          "sha256": "e0842295fa0c5cd7e0013689ad943450d0592bc030de2b4436e3adc353ae61c1",
           "validation": {
-            "mesh_count": 2,
-            "object_count": 3,
-            "hierarchy_parent_links": 2,
-            "material_count": 2,
+            "mesh_count": 4,
+            "object_count": 5,
+            "hierarchy_parent_links": 4,
+            "material_count": 4,
             "dimensions_m": [
-              2.440551280975342,
-              2.381378173828125,
-              3.644587516784668
+              3.799999952316284,
+              3.445643901824951,
+              5.050091743469238
             ],
             "min_y": 0.0,
             "assumed_meter_scale": false,
@@ -1610,33 +1430,141 @@
           }
         },
         {
-          "asset_id": "3dassets-temperate-forest-ecology-wild-cherry-in-blossom-983af861",
-          "name": "Wild cherry in blossom (Forest Trees and Woodland Plants)",
+          "asset_id": "3dassets-desert-mosque-and-madrasa-courtyard-courtyard-tree-in--7057a18b",
+          "name": "Courtyard Tree In A Well (Desert Mosque and Madrasa Courtyard)",
           "category": "nature",
-          "file": "models/3dassets-temperate-forest-ecology-wild-cherry-in-blossom-983af861.glb",
+          "file": "models/3dassets-desert-mosque-and-madrasa-courtyard-courtyard-tree-in--7057a18b.glb",
           "source": "3DAssets.dev",
-          "source_url": "https://3dassets.dev/assets/temperate-forest-ecology-wild-cherry-in-blossom-983af861",
-          "direct_download_url": "https://cdn.3dassets.dev/assets/3783/v1/model.glb",
+          "source_url": "https://3dassets.dev/assets/desert-mosque-and-madrasa-courtyard-courtyard-tree-in--7057a18b",
+          "direct_download_url": "https://cdn.3dassets.dev/assets/38135/v1/model.glb",
           "license": "CC0 1.0 Universal",
           "authors": {
             "creator": "3D Assets"
           },
           "dimensions_m": [
-            6.655344009399414,
-            6.459383010864258,
-            15.78445053100586
+            3.7447574138641357,
+            3.2478487491607666,
+            4.329975605010986
           ],
-          "bytes": 235364,
-          "sha256": "8132890e63b1bea55f6f30b896d62f0f3fc89ee2852baec00c232eb22edb282e",
+          "bytes": 35240,
+          "sha256": "404ffa538822c7af36cff81e035c2888871f930f7c829dcec2f88fbf10929f5c",
+          "validation": {
+            "mesh_count": 4,
+            "object_count": 5,
+            "hierarchy_parent_links": 4,
+            "material_count": 4,
+            "dimensions_m": [
+              3.7447574138641357,
+              3.2478487491607666,
+              4.329975605010986
+            ],
+            "min_y": 0.0,
+            "assumed_meter_scale": false,
+            "unit_scale_m_per_blender_unit": 1.0,
+            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+            "validated": true
+          }
+        },
+        {
+          "asset_id": "3dassets-bellroot-fen-floodward-marches-ceremonial-bellroot-tre-aec588ae",
+          "name": "Ceremonial Bellroot Tree (Bellroot Fen Floodward Marches)",
+          "category": "nature",
+          "file": "models/3dassets-bellroot-fen-floodward-marches-ceremonial-bellroot-tre-aec588ae.glb",
+          "source": "3DAssets.dev",
+          "source_url": "https://3dassets.dev/assets/bellroot-fen-floodward-marches-ceremonial-bellroot-tre-aec588ae",
+          "direct_download_url": "https://cdn.3dassets.dev/assets/32932/v1/model.glb",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "3D Assets"
+          },
+          "dimensions_m": [
+            2.3633511066436768,
+            2.483859062194824,
+            3.932957172393799
+          ],
+          "bytes": 355504,
+          "sha256": "83454e04c35e0caf3bef6abc1da159b97dc4348acd9bd99982e992cbf2951906",
+          "validation": {
+            "mesh_count": 2,
+            "object_count": 3,
+            "hierarchy_parent_links": 2,
+            "material_count": 2,
+            "dimensions_m": [
+              2.3633511066436768,
+              2.483859062194824,
+              3.932957172393799
+            ],
+            "min_y": 0.0,
+            "assumed_meter_scale": false,
+            "unit_scale_m_per_blender_unit": 1.0,
+            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+            "validated": true
+          }
+        },
+        {
+          "asset_id": "3dassets-jungle-temple-and-stone-city-buttress-root-tree-44607ba7",
+          "name": "Buttress Root Tree (Jungle Temple and Stone City)",
+          "category": "nature",
+          "file": "models/3dassets-jungle-temple-and-stone-city-buttress-root-tree-44607ba7.glb",
+          "source": "3DAssets.dev",
+          "source_url": "https://3dassets.dev/assets/jungle-temple-and-stone-city-buttress-root-tree-44607ba7",
+          "direct_download_url": "https://cdn.3dassets.dev/assets/36137/v1/model.glb",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "3D Assets"
+          },
+          "dimensions_m": [
+            8.788387298583984,
+            7.947019815444946,
+            10.732723236083984
+          ],
+          "bytes": 247000,
+          "sha256": "ab853e7a42a6d1d02ec0a17e913272a0c1e973eef8d9fd30d7156d3e4bbe1262",
           "validation": {
             "mesh_count": 3,
             "object_count": 4,
             "hierarchy_parent_links": 3,
             "material_count": 3,
             "dimensions_m": [
-              6.655344009399414,
-              6.459383010864258,
-              15.78445053100586
+              8.788387298583984,
+              7.947019815444946,
+              10.732723236083984
+            ],
+            "min_y": -2.384185791015625e-07,
+            "assumed_meter_scale": false,
+            "unit_scale_m_per_blender_unit": 1.0,
+            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+            "validated": true
+          }
+        },
+        {
+          "asset_id": "3dassets-wipe-day-survival-island-pine-tree-dfc88d2b",
+          "name": "Pine Tree (Wipe Day Survival Island)",
+          "category": "nature",
+          "file": "models/3dassets-wipe-day-survival-island-pine-tree-dfc88d2b.glb",
+          "source": "3DAssets.dev",
+          "source_url": "https://3dassets.dev/assets/wipe-day-survival-island-pine-tree-dfc88d2b",
+          "direct_download_url": "https://cdn.3dassets.dev/assets/27427/v1/model.glb",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "3D Assets"
+          },
+          "dimensions_m": [
+            2.700247049331665,
+            2.700247049331665,
+            6.0
+          ],
+          "bytes": 12408,
+          "sha256": "65fb9c0d832a64099d388e190c46084fc404b58cdefd7e95457fc9bf887a7db6",
+          "validation": {
+            "mesh_count": 2,
+            "object_count": 3,
+            "hierarchy_parent_links": 2,
+            "material_count": 2,
+            "dimensions_m": [
+              2.700247049331665,
+              2.700247049331665,
+              6.0
             ],
             "min_y": 0.0,
             "assumed_meter_scale": false,
@@ -1646,33 +1574,105 @@
           }
         },
         {
-          "asset_id": "3dassets-temperate-forest-ecology-blackthorn-in-blossom-a30caea4",
-          "name": "Blackthorn in blossom (Forest Trees and Woodland Plants)",
+          "asset_id": "3dassets-jungle-temple-and-stone-city-jungle-canopy-tree-6e668f41",
+          "name": "Jungle Canopy Tree (Jungle Temple and Stone City)",
           "category": "nature",
-          "file": "models/3dassets-temperate-forest-ecology-blackthorn-in-blossom-a30caea4.glb",
+          "file": "models/3dassets-jungle-temple-and-stone-city-jungle-canopy-tree-6e668f41.glb",
           "source": "3DAssets.dev",
-          "source_url": "https://3dassets.dev/assets/temperate-forest-ecology-blackthorn-in-blossom-a30caea4",
-          "direct_download_url": "https://cdn.3dassets.dev/assets/3835/v1/model.glb",
+          "source_url": "https://3dassets.dev/assets/jungle-temple-and-stone-city-jungle-canopy-tree-6e668f41",
+          "direct_download_url": "https://cdn.3dassets.dev/assets/36136/v1/model.glb",
           "license": "CC0 1.0 Universal",
           "authors": {
             "creator": "3D Assets"
           },
           "dimensions_m": [
-            4.114948272705078,
-            3.8452844619750977,
-            3.0275700092315674
+            10.698561668395996,
+            9.962006092071533,
+            16.057167053222656
           ],
-          "bytes": 201148,
-          "sha256": "bee48c0bde0b62af16b9a946b1778e4fca161164551cbdd921ef738a53d8fed0",
+          "bytes": 240176,
+          "sha256": "c4798c3425cbef97b44f3e722e95a3e9df373667a24cd57d0f38f2d141b5f0df",
           "validation": {
-            "mesh_count": 2,
-            "object_count": 3,
-            "hierarchy_parent_links": 2,
-            "material_count": 2,
+            "mesh_count": 3,
+            "object_count": 4,
+            "hierarchy_parent_links": 3,
+            "material_count": 3,
             "dimensions_m": [
-              4.114948272705078,
-              3.8452844619750977,
-              3.0275700092315674
+              10.698561668395996,
+              9.962006092071533,
+              16.057167053222656
+            ],
+            "min_y": -4.76837158203125e-07,
+            "assumed_meter_scale": false,
+            "unit_scale_m_per_blender_unit": 1.0,
+            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+            "validated": true
+          }
+        },
+        {
+          "asset_id": "3dassets-wipe-day-survival-island-dead-tree-c66812b4",
+          "name": "Dead Tree (Wipe Day Survival Island)",
+          "category": "nature",
+          "file": "models/3dassets-wipe-day-survival-island-dead-tree-c66812b4.glb",
+          "source": "3DAssets.dev",
+          "source_url": "https://3dassets.dev/assets/wipe-day-survival-island-dead-tree-c66812b4",
+          "direct_download_url": "https://cdn.3dassets.dev/assets/27431/v1/model.glb",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "3D Assets"
+          },
+          "dimensions_m": [
+            3.1159894466400146,
+            2.3929814100265503,
+            4.480106353759766
+          ],
+          "bytes": 24660,
+          "sha256": "66ad9a71b9ba119d873b27f6eca71c2344fc24b0b6c38059a35f37e869a9a6cf",
+          "validation": {
+            "mesh_count": 1,
+            "object_count": 2,
+            "hierarchy_parent_links": 1,
+            "material_count": 1,
+            "dimensions_m": [
+              3.1159894466400146,
+              2.3929814100265503,
+              4.480106353759766
+            ],
+            "min_y": 1.1920928955078125e-07,
+            "assumed_meter_scale": false,
+            "unit_scale_m_per_blender_unit": 1.0,
+            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+            "validated": true
+          }
+        },
+        {
+          "asset_id": "3dassets-harvest-hearth-fan-trained-orchard-tree",
+          "name": "Harvest Hearth Fan Trained Orchard Tree",
+          "category": "nature",
+          "file": "models/3dassets-harvest-hearth-fan-trained-orchard-tree.glb",
+          "source": "3DAssets.dev",
+          "source_url": "https://3dassets.dev/assets/harvest-hearth-fan-trained-orchard-tree",
+          "direct_download_url": "https://cdn.3dassets.dev/assets/58/v1/model.glb",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "3D Assets"
+          },
+          "dimensions_m": [
+            2.200000047683716,
+            0.6112958192825317,
+            2.4200000762939453
+          ],
+          "bytes": 219828,
+          "sha256": "78fbeaab82db018210e730335c01fd2fce7bcb3552e1d67046d31218cc6e4a73",
+          "validation": {
+            "mesh_count": 4,
+            "object_count": 5,
+            "hierarchy_parent_links": 4,
+            "material_count": 4,
+            "dimensions_m": [
+              2.200000047683716,
+              0.6112958192825317,
+              2.4200000762939453
             ],
             "min_y": 0.0,
             "assumed_meter_scale": false,
@@ -1682,33 +1682,290 @@
           }
         },
         {
-          "asset_id": "3dassets-dense-temperate-forest-flora-cherry-blossom-12744dc9",
-          "name": "Wild Cherry In Blossom (Dense Temperate Forest Flora)",
+          "asset_id": "fern_02",
+          "name": "Fern 02",
           "category": "nature",
-          "file": "models/3dassets-dense-temperate-forest-flora-cherry-blossom-12744dc9.glb",
-          "source": "3DAssets.dev",
-          "source_url": "https://3dassets.dev/assets/dense-temperate-forest-flora-cherry-blossom-12744dc9",
-          "direct_download_url": "https://cdn.3dassets.dev/assets/28343/v1/model.glb",
-          "license": "CC0 1.0 Universal",
+          "file": "models/fern_02.glb",
+          "source": "Poly Haven",
+          "source_url": "https://polyhaven.com/a/fern_02",
+          "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/2k/fern_02/fern_02_2k.blend",
+          "license": "CC0 1.0",
           "authors": {
-            "creator": "3D Assets"
+            "Rob Tuytel": "scanning",
+            "Rico Cilliers": "modeling"
           },
           "dimensions_m": [
-            9.50271987915039,
-            8.812499046325684,
-            14.19395637512207
+            1.9725297689437866,
+            1.7240276634693146,
+            0.427694708108902
           ],
-          "bytes": 102828,
-          "sha256": "ee7fedac34fd1f3b06b78d6f2df991532123f21fd42c314b5aea5b804d9e4260",
+          "bytes": 181172,
+          "sha256": "7ba4867e72ab398034b1177152087af978a67548d1ef4710f58f11dd1ff51b3a",
           "validation": {
-            "mesh_count": 2,
-            "object_count": 3,
-            "hierarchy_parent_links": 2,
+            "mesh_count": 4,
+            "object_count": 4,
+            "hierarchy_parent_links": 0,
+            "material_count": 1,
+            "dimensions_m": [
+              1.9725297689437866,
+              1.7240276634693146,
+              0.427694708108902
+            ],
+            "min_y": -2.9802322387695312e-08,
+            "assumed_meter_scale": false,
+            "unit_scale_m_per_blender_unit": 1.0,
+            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+            "validated": true
+          }
+        },
+        {
+          "asset_id": "grass_bermuda_01",
+          "name": "Grass Bermuda 01",
+          "category": "nature",
+          "file": "models/grass_bermuda_01.glb",
+          "source": "Poly Haven",
+          "source_url": "https://polyhaven.com/a/grass_bermuda_01",
+          "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/grass_bermuda_01/grass_bermuda_01_1k.blend",
+          "license": "CC0 1.0",
+          "authors": {
+            "Rico Cilliers": "All"
+          },
+          "dimensions_m": [
+            2.976682126522064,
+            0.7404540777206421,
+            0.740454763174057
+          ],
+          "bytes": 119776,
+          "sha256": "030443b9eab433d46307f91f96780e7d30881a5dbfc1039174a4041d920576ab",
+          "validation": {
+            "mesh_count": 43,
+            "object_count": 43,
+            "hierarchy_parent_links": 0,
             "material_count": 2,
             "dimensions_m": [
-              9.50271987915039,
-              8.812499046325684,
-              14.19395637512207
+              2.976682126522064,
+              0.7404540777206421,
+              0.740454763174057
+            ],
+            "min_y": 0.0,
+            "assumed_meter_scale": false,
+            "unit_scale_m_per_blender_unit": 1.0,
+            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+            "validated": true
+          }
+        },
+        {
+          "asset_id": "grass_medium_01",
+          "name": "Grass Medium 01",
+          "category": "nature",
+          "file": "models/grass_medium_01.glb",
+          "source": "Poly Haven",
+          "source_url": "https://polyhaven.com/a/grass_medium_01",
+          "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/4k/grass_medium_01/grass_medium_01_4k.blend",
+          "license": "CC0 1.0",
+          "authors": {
+            "Rob Tuytel": "Photography",
+            "Rico Cilliers": "Modeling"
+          },
+          "dimensions_m": [
+            6.999597787857056,
+            0.699999988079071,
+            0.7000000178813934
+          ],
+          "bytes": 3328104,
+          "sha256": "52dda2f58ff2dacfe163cd51bfedd02384b68208eb5089049231f0b6f1ee4c78",
+          "validation": {
+            "mesh_count": 103,
+            "object_count": 103,
+            "hierarchy_parent_links": 0,
+            "material_count": 2,
+            "dimensions_m": [
+              6.999597787857056,
+              0.699999988079071,
+              0.7000000178813934
+            ],
+            "min_y": 0.0,
+            "assumed_meter_scale": false,
+            "unit_scale_m_per_blender_unit": 1.0,
+            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+            "validated": true
+          }
+        },
+        {
+          "asset_id": "grass_medium_02",
+          "name": "Grass Medium 02",
+          "category": "nature",
+          "file": "models/grass_medium_02.glb",
+          "source": "Poly Haven",
+          "source_url": "https://polyhaven.com/a/grass_medium_02",
+          "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/4k/grass_medium_02/grass_medium_02_4k.blend",
+          "license": "CC0 1.0",
+          "authors": {
+            "Rico Cilliers": "All"
+          },
+          "dimensions_m": [
+            3.193347956985235,
+            0.7175963521003723,
+            0.7534119486808777
+          ],
+          "bytes": 531540,
+          "sha256": "229c5b6886203717f69ee3d3f2473c8353d3b0613c80564622aa36f950d16ca3",
+          "validation": {
+            "mesh_count": 11,
+            "object_count": 11,
+            "hierarchy_parent_links": 0,
+            "material_count": 2,
+            "dimensions_m": [
+              3.193347956985235,
+              0.7175963521003723,
+              0.7534119486808777
+            ],
+            "min_y": 0.0,
+            "assumed_meter_scale": false,
+            "unit_scale_m_per_blender_unit": 1.0,
+            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+            "validated": true
+          }
+        },
+        {
+          "asset_id": "island_tree_01",
+          "name": "Island Tree 01",
+          "category": "nature",
+          "file": "models/island_tree_01.glb",
+          "source": "Poly Haven",
+          "source_url": "https://polyhaven.com/a/island_tree_01",
+          "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/4k/island_tree_01/island_tree_01_4k.blend",
+          "license": "CC0 1.0",
+          "authors": {
+            "Rob Tuytel": "scanning, processing",
+            "Rico Cilliers": "cleanup, processing"
+          },
+          "dimensions_m": [
+            11.547818422317505,
+            4.818506717681885,
+            5.027446746826172
+          ],
+          "bytes": 86675080,
+          "sha256": "93d5a4b947c916409c8021637bf7de11a9ea1907ef774571bcdc30befceef7ef",
+          "validation": {
+            "mesh_count": 17,
+            "object_count": 17,
+            "hierarchy_parent_links": 0,
+            "material_count": 3,
+            "dimensions_m": [
+              11.547818422317505,
+              4.818506717681885,
+              5.027446746826172
+            ],
+            "min_y": 0.0,
+            "assumed_meter_scale": false,
+            "unit_scale_m_per_blender_unit": 1.0,
+            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+            "validated": true
+          }
+        },
+        {
+          "asset_id": "island_tree_02",
+          "name": "Island Tree 02",
+          "category": "nature",
+          "file": "models/island_tree_02.glb",
+          "source": "Poly Haven",
+          "source_url": "https://polyhaven.com/a/island_tree_02",
+          "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/2k/island_tree_02/island_tree_02_2k.blend",
+          "license": "CC0 1.0",
+          "authors": {
+            "Rob Tuytel": "scanning, processing",
+            "Rico Cilliers": "cleanup, processing"
+          },
+          "dimensions_m": [
+            8.48551321029663,
+            4.078615665435791,
+            3.5301053524017334
+          ],
+          "bytes": 56989756,
+          "sha256": "0b448b4d46b81a25941148f676ce1b29705e798a8c72e1d5d82cad751e6ddb53",
+          "validation": {
+            "mesh_count": 17,
+            "object_count": 17,
+            "hierarchy_parent_links": 0,
+            "material_count": 3,
+            "dimensions_m": [
+              8.48551321029663,
+              4.078615665435791,
+              3.5301053524017334
+            ],
+            "min_y": 0.0,
+            "assumed_meter_scale": false,
+            "unit_scale_m_per_blender_unit": 1.0,
+            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+            "validated": true
+          }
+        },
+        {
+          "asset_id": "island_tree_03",
+          "name": "Island Tree 03",
+          "category": "nature",
+          "file": "models/island_tree_03.glb",
+          "source": "Poly Haven",
+          "source_url": "https://polyhaven.com/a/island_tree_03",
+          "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/8k/island_tree_03/island_tree_03_8k.blend",
+          "license": "CC0 1.0",
+          "authors": {
+            "Rob Tuytel": "scanning, processing",
+            "Rico Cilliers": "cleanup, processing"
+          },
+          "dimensions_m": [
+            8.48988127708435,
+            2.9132323265075684,
+            2.615518093109131
+          ],
+          "bytes": 109531556,
+          "sha256": "506ab82cebe27636f95cb899ead4a2e4b4ee3bcceecb16d958ca0fba26b6254d",
+          "validation": {
+            "mesh_count": 17,
+            "object_count": 17,
+            "hierarchy_parent_links": 0,
+            "material_count": 3,
+            "dimensions_m": [
+              8.48988127708435,
+              2.9132323265075684,
+              2.615518093109131
+            ],
+            "min_y": 0.0,
+            "assumed_meter_scale": false,
+            "unit_scale_m_per_blender_unit": 1.0,
+            "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+            "validated": true
+          }
+        },
+        {
+          "asset_id": "periwinkle_plant",
+          "name": "Periwinkle Plant",
+          "category": "nature",
+          "file": "models/periwinkle_plant.glb",
+          "source": "Poly Haven",
+          "source_url": "https://polyhaven.com/a/periwinkle_plant",
+          "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/4k/periwinkle_plant/periwinkle_plant_4k.blend",
+          "license": "CC0 1.0",
+          "authors": {
+            "Amal Kumar": "All"
+          },
+          "dimensions_m": [
+            1.2353671789169312,
+            0.33493995666503906,
+            0.4110017012571916
+          ],
+          "bytes": 4021780,
+          "sha256": "f5adedbb32c59b92850ebe78c8721e4b65a8787e2fd6b03b6496733d3953caf0",
+          "validation": {
+            "mesh_count": 42,
+            "object_count": 42,
+            "hierarchy_parent_links": 0,
+            "material_count": 1,
+            "dimensions_m": [
+              1.2353671789169312,
+              0.33493995666503906,
+              0.4110017012571916
             ],
             "min_y": 0.0,
             "assumed_meter_scale": false,
@@ -1756,8 +2013,2920 @@
       ]
     },
     "pbr_materials": {
-      "count": 27,
+      "count": 91,
       "assets": [
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/preview_marble.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1205619,
+          "sha256": "ff0f0d99e5eb5fc17e619810c6cdfe136a7e5952de57df7eef09113104c51aee",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/color_marble.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 2644180,
+          "sha256": "38d2c21b3fb15b9374fc3fe2fe3deec8b5850adf9f66b7b7a3144f834a307cb6",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/normal_tiles_marble.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 296279,
+          "sha256": "fd23aebde1c9deddcc99eb9727f5b2015c5a7cedf49e19941dba222f430ceaeb",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/rough_tiles_marble.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 120148,
+          "sha256": "5c52c7d859268879c592698bfa19bdded481fc538282accd2a0ff6a71039a41b",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/preview_tiles_marble.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1273518,
+          "sha256": "75dbf6409254bba9d5e929fbe87aeecbe888c65ff67045fb392d2f6a26a73003",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/color_tiles_marble.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 2758242,
+          "sha256": "2c7b1ad071772a68194df2d5ec893dcba4186a4916592bbb95462a7466d79187",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/color_marble_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 8127692,
+          "sha256": "f0c552ae03329aa8fa34b11f0a777d328efa5619d9306ae822e85a38b7772c4a",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/preview_marble_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1319016,
+          "sha256": "5b19e3ca84ad48980dce844fea99c8e5cb459e9754b56a3657ccf0e58e09355b",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/rough_tiles_marble_3.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 74472,
+          "sha256": "8a71698a788fe0754d04e4250765842e0d858086e5b408e9e3d47d0c897be481",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/normal_tiles_marble_3.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 105896,
+          "sha256": "a5d4870763575201ce2c0ff3fe9c02abd79eea637d210b7139cad9ea25058a45",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/color_tiles_marble_3.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 5368684,
+          "sha256": "cb6ca0f7518ef589e792638f5b62c9e2f0b16d6022a6870381c99cded0bc62b1",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/preview_tiles_marble_3.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1411036,
+          "sha256": "ef4b3200185f99f713b0c99244e45fd79241c3048f38146bb5ad6babf566dd1d",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/preview_tiles_marble_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1415333,
+          "sha256": "29703c0278f4ad8c661ed390837967043371645d7f76385dbd6d6bf70d54d290",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/color_tiles_marble_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 8213698,
+          "sha256": "da9b20110d3e2cf918bb5083d62b90ad59082622224e080123cc65bc07352cac",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/normal_tiles_marble_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 109522,
+          "sha256": "aa74b70e09dc59ae93503c5568ff04e2c1ee16c30cc9857abd1d715f54a27c13",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-marble-and-tile-texture-set",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-marble-and-tile-texture-set/rough_tiles_marble_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-marble-and-tile-texture-set",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_21.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 104415,
+          "sha256": "11e3b975087cef288b9967e273838cb12d3792f41e2b7e2b33ab2fc1bfcbe83c",
+          "validation": {
+            "maps": [
+              "preview_marble.png",
+              "color_marble.png",
+              "normal_tiles_marble.png",
+              "rough_tiles_marble.png",
+              "preview_tiles_marble.png",
+              "color_tiles_marble.png",
+              "color_marble_2.png",
+              "preview_marble_2.png",
+              "rough_tiles_marble_3.png",
+              "normal_tiles_marble_3.png",
+              "color_tiles_marble_3.png",
+              "preview_tiles_marble_3.png",
+              "preview_tiles_marble_2.png",
+              "color_tiles_marble_2.png",
+              "normal_tiles_marble_2.png",
+              "rough_tiles_marble_2.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/normal_marble.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 2530557,
+          "sha256": "f037ca8a8b7494e222e836c8d0d7f3f1b70d2c310614ffb0d3783fb1008eba98",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/preview_marble.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1082677,
+          "sha256": "77470ca0de476f1b2dbe219629522eb99e867e76e71b1d6b5659b4e5781025b2",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/rough_marble.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 927011,
+          "sha256": "3092bf0a6a19d3aae72d1a694266717ad9d904a721827b5e5941c7af183d11e9",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/color_marble.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 3278316,
+          "sha256": "0b197ca46a32bc8c944866b353d30d36ef4a2704f8f724843ce3da1e5c0f2ca3",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/rough_marble_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1327049,
+          "sha256": "26e336b1540b42ca29fc1d3028d91132b05ecbf115ab073222c4a60de8b3ca48",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/color_marble_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 8334929,
+          "sha256": "82ac0f7b4d53fd48f8c654cb05eaf3dc4f26613c40636ce62a3746792831af6b",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/normal_marble_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1611540,
+          "sha256": "f31408ef13e4ec927b28002fd866f33ab6e8581eb44779b666cd31fd82860736",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/preview_marble_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1446644,
+          "sha256": "9834c50338801e711eba914c217dc6c555d2be8a3a1501776aa92e4da7b89bc6",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/preview_wall.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1163019,
+          "sha256": "c4a23bcdc9b6e3f849f06e47b4793199ceee990cb27f401d3bd74acbb07873ce",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/normal_wall.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 2645379,
+          "sha256": "1e6e9eae8b0053372b2bd70ca0de420dec20b7d8380ed2b59ac4f51f9a502224",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/rough_wall.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 2466117,
+          "sha256": "e257c965485939c9189ac28d0b4bd36fd63937e044a8ca427a71a855e6682663",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/color_wall.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 696860,
+          "sha256": "53f20882dbeced8d65f4873c528c18bb8271f65a733e596faa7f1b7f4c02eee6",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/color_stone.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1867025,
+          "sha256": "169d2250273e22096741141d3db201159592f77560461aeadd13588c60918676",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/preview_stone.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1206176,
+          "sha256": "8d3481cedeb05bcfcedebcd127e59d7d92ec76c650b6d41707a67b9e97475836",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/normal_stone.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 5875864,
+          "sha256": "50860fea853687c9b49dd3c116330580975a557f0b19fe70daeb2f373dc46c9a",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/rough_stone.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 153002,
+          "sha256": "7a629081d49930c0a6131da0f61aac551ea2b944d6974ebc9fa7af5ed2a1800f",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/normal_tiles_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 296279,
+          "sha256": "fd23aebde1c9deddcc99eb9727f5b2015c5a7cedf49e19941dba222f430ceaeb",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/rough_tiles_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 120148,
+          "sha256": "5c52c7d859268879c592698bfa19bdded481fc538282accd2a0ff6a71039a41b",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/preview_tiles_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1127129,
+          "sha256": "0395fbf401a4ab66643cc3acf3c300ac12ed2afd559b84490bac8366c162c923",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/color_tiles_2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 3409190,
+          "sha256": "36d9fbc2bcfef7a2bc46c715a6d9a0141fc335c47389f850862b92e8d4a06976",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/color_tiles.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1478780,
+          "sha256": "96244ce5b9020d95e6b9411290109002c02210eb77b47f6de4b9b7ac8421aabf",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/preview_tiles.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1196502,
+          "sha256": "0cb08e51f25a6d55ee47f2fa9bce7500662b0ec5996a2f72ffb0f962ef6fcebd",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/normal_tiles.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 644576,
+          "sha256": "4153989fa2442fb8a2e4c4d9bd54bd2df3db1ffeaa70c1cae6945c9c4f74e6d4",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/rough_tiles.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 263963,
+          "sha256": "608e6526f0d4a0139756b8d2106c88f441043be6bde3b1b07b85bfa4a190f72e",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/rough_carpet.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 93130,
+          "sha256": "03ad0be800e7ee6693a8fe016d25708f56c174fc2bc70f5bac08d40808dad7eb",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/color_carpet.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 7332583,
+          "sha256": "e22d9bb8b71777d59c92fcb3adf77f77f8741d59029404868f6b840f7d574bc0",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/normal_carpet.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 11392135,
+          "sha256": "b82bd2436d1fe11a8f6d3ea815c95f3fe95712801a5da7952b31b43a112bec1b",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack-0",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack-0/preview_carpet.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack-0",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_20.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1713230,
+          "sha256": "5591fc479f5f45fdb802f427bed058861985238392aa98ef3e38341f5b25797d",
+          "validation": {
+            "maps": [
+              "normal_marble.png",
+              "preview_marble.png",
+              "rough_marble.png",
+              "color_marble.png",
+              "rough_marble_2.png",
+              "color_marble_2.png",
+              "normal_marble_2.png",
+              "preview_marble_2.png",
+              "preview_wall.png",
+              "normal_wall.png",
+              "rough_wall.png",
+              "color_wall.png",
+              "color_stone.png",
+              "preview_stone.png",
+              "normal_stone.png",
+              "rough_stone.png",
+              "normal_tiles_2.png",
+              "rough_tiles_2.png",
+              "preview_tiles_2.png",
+              "color_tiles_2.png",
+              "color_tiles.png",
+              "preview_tiles.png",
+              "normal_tiles.png",
+              "rough_tiles.png",
+              "rough_carpet.png",
+              "color_carpet.png",
+              "normal_carpet.png",
+              "preview_carpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/RoughWall2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 531260,
+          "sha256": "7b469dd563cec6c65ec518a038f98c2e46d6fba44eae2c62793c839562481b20",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/Wall2Preview.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 226748,
+          "sha256": "bf5b546b71c428276b858a29d5489d14161b59894fe6caa06e37c2d8304c48e0",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/NormalWall2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1705924,
+          "sha256": "70646b95518ef41de914415bd6f0913d634b7e5267433e33b65d9b59c8136cef",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/ColorWall2.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 451691,
+          "sha256": "54392d84faf6aa248e5c7c539b197055b6b9f140b7b285ac8e281224433f905f",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/NormalWall.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 1231479,
+          "sha256": "c9bf9bc474267f42b3ac81ada10a670e135ee30b4d67933b779db2ac680f687f",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/WallPreview.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 261156,
+          "sha256": "05c255f293ae4764c97fe20d5b15a4f218ba66926e91b3569ebff15be0a11194",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/RoughWall.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 365659,
+          "sha256": "9d895510a49a1d87821b12f16363687680ff3d96631f9a746c2ab95238507a6d",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/ColorWall.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 557210,
+          "sha256": "1766b85481f5e93c0c88bf67bbedc4abfeaf64fa6d17428d145378f0f622a131",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/ColorCeiling.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 951333,
+          "sha256": "5bff21d18a9fa3c9b5dd3abfbe01dc6452c106650000d8167b979f2929c346bb",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/RoughCeiling.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 493161,
+          "sha256": "b8a0e59a537b4e59a27575033910c66b01ce53fb11e9f0cbfe8c8aeb54bae74c",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/NormalCeiling.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 2549173,
+          "sha256": "69c7dc0b047101d6e623cfd401e3034ede4dfa51e84d7e65feca36b9aeb32e7e",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/CeilingPreview.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 306032,
+          "sha256": "cb176a2b81648074b4b9b2557f5901d0a7170304bc13e08be5cf18b9dbfc5ed6",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/NormalTiles.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 17165,
+          "sha256": "5662fc7b98fc1ef52b308f0e72d68b702d696c016eeb317d4b48277c4be2afd8",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/TilesPreview.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 247353,
+          "sha256": "67e3584b2db3fac9a3f1bbea5fa4819ecbc3f34316ff77d3084ef9aad65dcd39",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/RoughTiles.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 316286,
+          "sha256": "95ef1eca50f8ad98b942fa85989a0318602ffd7f27018d632ef7c2dd3967bfb4",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/ColorTiles.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 392826,
+          "sha256": "9492cdafb4d4842d4788d216a8a8b7107c996607721059d5513650bd6e1b78fd",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/CarpetPreview.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 363831,
+          "sha256": "8e8a12ad32c10ec67db7c363b41973b5d0a8fb1275666e0443110523e518bea1",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/NormalCarpet.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 836828,
+          "sha256": "dcca8ec1d2e02f743ae9f7b4e14c5efaa9b61abfa3b322cc4b752b43a3c5f810",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/ColorCarpet.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 313671,
+          "sha256": "ef8971ac6a45c039d91f047fce0d8692dbe417ba0355369e4e924178625fcca1",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
+        {
+          "asset_id": "opengameart-pbr-texture-pack",
+          "name": "textures.zip",
+          "category": "pbr_materials",
+          "file": "textures/opengameart-pbr-texture-pack/RoughCarpet.png",
+          "source": "OpenGameArt",
+          "source_url": "https://opengameart.org/content/pbr-texture-pack",
+          "direct_download_url": "https://opengameart.org/sites/default/files/textures_17.zip",
+          "license": "CC0 1.0 Universal",
+          "authors": {
+            "creator": "Vosuna"
+          },
+          "dimensions_m": null,
+          "bytes": 259418,
+          "sha256": "71ad20e84aa69de15ad1c5cfff1f7d9310daa4a5591802c2b7c5685d6fdcb220",
+          "validation": {
+            "maps": [
+              "RoughWall2.png",
+              "Wall2Preview.png",
+              "NormalWall2.png",
+              "ColorWall2.png",
+              "NormalWall.png",
+              "WallPreview.png",
+              "RoughWall.png",
+              "ColorWall.png",
+              "ColorCeiling.png",
+              "RoughCeiling.png",
+              "NormalCeiling.png",
+              "CeilingPreview.png",
+              "NormalTiles.png",
+              "TilesPreview.png",
+              "RoughTiles.png",
+              "ColorTiles.png",
+              "CarpetPreview.png",
+              "NormalCarpet.png",
+              "ColorCarpet.png",
+              "RoughCarpet.png"
+            ],
+            "color": true,
+            "normal": true,
+            "roughness": true
+          }
+        },
         {
           "asset_id": "RoofingTiles013A",
           "name": "Roofing Tiles 013 A",
@@ -2567,6 +5736,71 @@
       ]
     }
   },
-  "total_approved_files": 75,
-  "supplemental_candidates": []
+  "total_approved_files": 146,
+  "supplemental_candidates": [
+    {
+      "asset_id": "3dassets-royal-court-and-throne-palace-palace-audience-house-55f0cb24",
+      "name": "Palace Audience House (Royal Court and Throne Palace)",
+      "candidate_category": "houses_and_shops",
+      "file": "candidates/models/3dassets-royal-court-and-throne-palace-palace-audience-house-55f0cb24.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/royal-court-and-throne-palace-palace-audience-house-55f0cb24",
+      "license": "CC0 1.0 Universal",
+      "bytes": 1055596,
+      "sha256": "ef490acb5230009be64a448daa3fc94b640aec99a613419b3bb9741ce7be82a8",
+      "dimensions_m": [
+        8.399999618530273,
+        4.520572662353516,
+        5.150219917297363
+      ],
+      "validation": {
+        "mesh_count": 6,
+        "object_count": 7,
+        "hierarchy_parent_links": 6,
+        "material_count": 6,
+        "dimensions_m": [
+          8.399999618530273,
+          4.520572662353516,
+          5.150219917297363
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-feudal-japan-castle-town-bath-house-f3524f03",
+      "name": "Bath House (Feudal Japan Castle Town)",
+      "candidate_category": "houses_and_shops",
+      "file": "candidates/models/3dassets-feudal-japan-castle-town-bath-house-f3524f03.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/feudal-japan-castle-town-bath-house-f3524f03",
+      "license": "CC0 1.0 Universal",
+      "bytes": 219168,
+      "sha256": "650cdc4462e26b34b4f0c24f50c338a83d298b45f48329b13ccd64353079c044",
+      "dimensions_m": [
+        7.199999809265137,
+        7.0,
+        5.000213623046875
+      ],
+      "validation": {
+        "mesh_count": 7,
+        "object_count": 8,
+        "hierarchy_parent_links": 7,
+        "material_count": 7,
+        "dimensions_m": [
+          7.199999809265137,
+          7.0,
+          5.000213623046875
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    }
+  ]
 }

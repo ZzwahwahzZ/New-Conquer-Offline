@@ -210,14 +210,6 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): [0.7581887543201447, 1.301856517791748, 0.9803181886672974]
 - SHA256: d669b0fceb234687163e5cac4361a28d408884e8c26193f339e542cd3382b068
 
-## models/3dassets-distillery-and-bonded-warehouse-pagoda-roof-vent-a6001cc0.glb
-- Category: palaces_and_temples
-- Creator: creator
-- Source: https://3dassets.dev/assets/distillery-and-bonded-warehouse-pagoda-roof-vent-a6001cc0
-- License: CC0 1.0 Universal
-- Dimensions (m): [3.5999999046325684, 3.5999999046325684, 3.8399391174316406]
-- SHA256: dee5018dfc57111c7f2068be9e924201e48d7a575446656d6d9257866c1ba7f3
-
 ## models/3dassets-imperial-china-palace-and-garden-water-pavilion-477e41ba.glb
 - Category: palaces_and_temples
 - Creator: creator
@@ -266,14 +258,6 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): [1.2573845386505127, 1.0190083980560303, 1.1279890537261963]
 - SHA256: 3c4d4186d50de3b74093ffba8a0608c10da3768cd7223293c8dc13bfe1e6c1d0
 
-## models/3dassets-stylized-trees-and-rocks-kit-fern-clump-52137440.glb
-- Category: nature
-- Creator: creator
-- Source: https://3dassets.dev/assets/stylized-trees-and-rocks-kit-fern-clump-52137440
-- License: CC0 1.0 Universal
-- Dimensions (m): [0.6539055109024048, 0.7506752014160156, 0.5654749274253845]
-- SHA256: 7120c7b516fb2cfe1c05490c29f7c3bfecb05d2c013cf16818195b952dcbd6db
-
 ## models/3dassets-quiet-lake-fishing-reed-clump-d86f7970.glb
 - Category: nature
 - Creator: creator
@@ -282,29 +266,13 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): [0.8716316819190979, 0.6000507473945618, 1.2649999856948853]
 - SHA256: e483599972317079652f5066d93add8ef3f455eb8b8e3432dfce1f91b8fb7037
 
-## models/3dassets-dense-temperate-forest-flora-reed-clump-467f08af.glb
+## models/3dassets-botanical-glasshouse-and-palm-house-botanical-glasshou-9c6e83f9.glb
 - Category: nature
 - Creator: creator
-- Source: https://3dassets.dev/assets/dense-temperate-forest-flora-reed-clump-467f08af
+- Source: https://3dassets.dev/assets/botanical-glasshouse-and-palm-house-botanical-glasshou-9c6e83f9
 - License: CC0 1.0 Universal
-- Dimensions (m): [0.6644526124000549, 0.6300249695777893, 1.6503551006317139]
-- SHA256: aa00124b5102ed6550d27e194a508588c5da97d588eebe308175f2f55d15870c
-
-## models/3dassets-hot-air-balloon-festival-field-tree-clump-a4c9bb07.glb
-- Category: nature
-- Creator: creator
-- Source: https://3dassets.dev/assets/hot-air-balloon-festival-field-tree-clump-a4c9bb07
-- License: CC0 1.0 Universal
-- Dimensions (m): [4.3351569175720215, 3.566527843475342, 5.118000030517578]
-- SHA256: bb9c6835658b09828ddcdca89720df088c4134b7d913db95c3a64f0225f39349
-
-## models/3dassets-birds-and-reptiles-hd-reed-clump-ec55c985.glb
-- Category: nature
-- Creator: creator
-- Source: https://3dassets.dev/assets/birds-and-reptiles-hd-reed-clump-ec55c985
-- License: CC0 1.0 Universal
-- Dimensions (m): [0.7601621747016907, 0.9309440851211548, 1.5172479152679443]
-- SHA256: be838c949529e166f9824901affdf2a0870641567198e8c9491a3885c7d5f21d
+- Dimensions (m): [1.8225460052490234, 1.6454474925994873, 0.5958719253540039]
+- SHA256: dfd830b2736347f27b63c9dd4097da072b70056895359fa3eb5ff69e89da1019
 
 ## models/3dassets-andean-terraces-and-stone-village-tussock-grass-clump-49aaee8d.glb
 - Category: nature
@@ -330,14 +298,6 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): [3.9689583778381348, 3.2557644844055176, 3.9669275283813477]
 - SHA256: c8fa457292863c3ff5874ca81d44b0c20271b779392d796b324a6238cac97272
 
-## models/3dassets-japanese-school-and-city-street-cherry-tree-blossom-618a9f6d.glb
-- Category: nature
-- Creator: creator
-- Source: https://3dassets.dev/assets/japanese-school-and-city-street-cherry-tree-blossom-618a9f6d
-- License: CC0 1.0 Universal
-- Dimensions (m): [4.0909184217453, 4.088421821594238, 4.560077667236328]
-- SHA256: eebd9251202197d89b0daf9f46f922bf329bd1b51f79e527789fd365669ba5a4
-
 ## models/3dassets-almanac-gardens-blossom-orchard-tree-40e484ef.glb
 - Category: nature
 - Creator: creator
@@ -346,37 +306,645 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): [2.8052310943603516, 2.623551845550537, 3.566063165664673]
 - SHA256: 56425d2a2648199e74e47a2d5f27d10bbb324fa20635496ad686b762950cf520
 
-## models/3dassets-japanese-school-and-city-street-cherry-tree-bare-b1e462cf.glb
+## models/3dassets-theme-park-rides-and-coasters-theme-park-rides-and-coa-0a2475e3.glb
 - Category: nature
 - Creator: creator
-- Source: https://3dassets.dev/assets/japanese-school-and-city-street-cherry-tree-bare-b1e462cf
+- Source: https://3dassets.dev/assets/theme-park-rides-and-coasters-theme-park-rides-and-coa-0a2475e3
 - License: CC0 1.0 Universal
-- Dimensions (m): [2.440551280975342, 2.381378173828125, 3.644587516784668]
-- SHA256: 0710e8e15c555ec66e143733c3bcdaea8b5bb147d5598dee82311ef1231ccbaf
+- Dimensions (m): [3.799999952316284, 3.445643901824951, 5.050091743469238]
+- SHA256: e0842295fa0c5cd7e0013689ad943450d0592bc030de2b4436e3adc353ae61c1
 
-## models/3dassets-temperate-forest-ecology-wild-cherry-in-blossom-983af861.glb
+## models/3dassets-desert-mosque-and-madrasa-courtyard-courtyard-tree-in--7057a18b.glb
 - Category: nature
 - Creator: creator
-- Source: https://3dassets.dev/assets/temperate-forest-ecology-wild-cherry-in-blossom-983af861
+- Source: https://3dassets.dev/assets/desert-mosque-and-madrasa-courtyard-courtyard-tree-in--7057a18b
 - License: CC0 1.0 Universal
-- Dimensions (m): [6.655344009399414, 6.459383010864258, 15.78445053100586]
-- SHA256: 8132890e63b1bea55f6f30b896d62f0f3fc89ee2852baec00c232eb22edb282e
+- Dimensions (m): [3.7447574138641357, 3.2478487491607666, 4.329975605010986]
+- SHA256: 404ffa538822c7af36cff81e035c2888871f930f7c829dcec2f88fbf10929f5c
 
-## models/3dassets-temperate-forest-ecology-blackthorn-in-blossom-a30caea4.glb
+## models/3dassets-bellroot-fen-floodward-marches-ceremonial-bellroot-tre-aec588ae.glb
 - Category: nature
 - Creator: creator
-- Source: https://3dassets.dev/assets/temperate-forest-ecology-blackthorn-in-blossom-a30caea4
+- Source: https://3dassets.dev/assets/bellroot-fen-floodward-marches-ceremonial-bellroot-tre-aec588ae
 - License: CC0 1.0 Universal
-- Dimensions (m): [4.114948272705078, 3.8452844619750977, 3.0275700092315674]
-- SHA256: bee48c0bde0b62af16b9a946b1778e4fca161164551cbdd921ef738a53d8fed0
+- Dimensions (m): [2.3633511066436768, 2.483859062194824, 3.932957172393799]
+- SHA256: 83454e04c35e0caf3bef6abc1da159b97dc4348acd9bd99982e992cbf2951906
 
-## models/3dassets-dense-temperate-forest-flora-cherry-blossom-12744dc9.glb
+## models/3dassets-jungle-temple-and-stone-city-buttress-root-tree-44607ba7.glb
 - Category: nature
 - Creator: creator
-- Source: https://3dassets.dev/assets/dense-temperate-forest-flora-cherry-blossom-12744dc9
+- Source: https://3dassets.dev/assets/jungle-temple-and-stone-city-buttress-root-tree-44607ba7
 - License: CC0 1.0 Universal
-- Dimensions (m): [9.50271987915039, 8.812499046325684, 14.19395637512207]
-- SHA256: ee7fedac34fd1f3b06b78d6f2df991532123f21fd42c314b5aea5b804d9e4260
+- Dimensions (m): [8.788387298583984, 7.947019815444946, 10.732723236083984]
+- SHA256: ab853e7a42a6d1d02ec0a17e913272a0c1e973eef8d9fd30d7156d3e4bbe1262
+
+## models/3dassets-wipe-day-survival-island-pine-tree-dfc88d2b.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/wipe-day-survival-island-pine-tree-dfc88d2b
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.700247049331665, 2.700247049331665, 6.0]
+- SHA256: 65fb9c0d832a64099d388e190c46084fc404b58cdefd7e95457fc9bf887a7db6
+
+## models/3dassets-jungle-temple-and-stone-city-jungle-canopy-tree-6e668f41.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/jungle-temple-and-stone-city-jungle-canopy-tree-6e668f41
+- License: CC0 1.0 Universal
+- Dimensions (m): [10.698561668395996, 9.962006092071533, 16.057167053222656]
+- SHA256: c4798c3425cbef97b44f3e722e95a3e9df373667a24cd57d0f38f2d141b5f0df
+
+## models/3dassets-wipe-day-survival-island-dead-tree-c66812b4.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/wipe-day-survival-island-dead-tree-c66812b4
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.1159894466400146, 2.3929814100265503, 4.480106353759766]
+- SHA256: 66ad9a71b9ba119d873b27f6eca71c2344fc24b0b6c38059a35f37e869a9a6cf
+
+## models/3dassets-harvest-hearth-fan-trained-orchard-tree.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/harvest-hearth-fan-trained-orchard-tree
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.200000047683716, 0.6112958192825317, 2.4200000762939453]
+- SHA256: 78fbeaab82db018210e730335c01fd2fce7bcb3552e1d67046d31218cc6e4a73
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/preview_marble.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: ff0f0d99e5eb5fc17e619810c6cdfe136a7e5952de57df7eef09113104c51aee
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/color_marble.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 38d2c21b3fb15b9374fc3fe2fe3deec8b5850adf9f66b7b7a3144f834a307cb6
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/normal_tiles_marble.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: fd23aebde1c9deddcc99eb9727f5b2015c5a7cedf49e19941dba222f430ceaeb
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/rough_tiles_marble.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 5c52c7d859268879c592698bfa19bdded481fc538282accd2a0ff6a71039a41b
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/preview_tiles_marble.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 75dbf6409254bba9d5e929fbe87aeecbe888c65ff67045fb392d2f6a26a73003
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/color_tiles_marble.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 2c7b1ad071772a68194df2d5ec893dcba4186a4916592bbb95462a7466d79187
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/color_marble_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: f0c552ae03329aa8fa34b11f0a777d328efa5619d9306ae822e85a38b7772c4a
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/preview_marble_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 5b19e3ca84ad48980dce844fea99c8e5cb459e9754b56a3657ccf0e58e09355b
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/rough_tiles_marble_3.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 8a71698a788fe0754d04e4250765842e0d858086e5b408e9e3d47d0c897be481
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/normal_tiles_marble_3.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: a5d4870763575201ce2c0ff3fe9c02abd79eea637d210b7139cad9ea25058a45
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/color_tiles_marble_3.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: cb6ca0f7518ef589e792638f5b62c9e2f0b16d6022a6870381c99cded0bc62b1
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/preview_tiles_marble_3.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: ef4b3200185f99f713b0c99244e45fd79241c3048f38146bb5ad6babf566dd1d
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/preview_tiles_marble_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 29703c0278f4ad8c661ed390837967043371645d7f76385dbd6d6bf70d54d290
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/color_tiles_marble_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: da9b20110d3e2cf918bb5083d62b90ad59082622224e080123cc65bc07352cac
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/normal_tiles_marble_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: aa74b70e09dc59ae93503c5568ff04e2c1ee16c30cc9857abd1d715f54a27c13
+
+## textures/opengameart-pbr-marble-and-tile-texture-set/rough_tiles_marble_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-marble-and-tile-texture-set
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 11e3b975087cef288b9967e273838cb12d3792f41e2b7e2b33ab2fc1bfcbe83c
+
+## textures/opengameart-pbr-texture-pack-0/normal_marble.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: f037ca8a8b7494e222e836c8d0d7f3f1b70d2c310614ffb0d3783fb1008eba98
+
+## textures/opengameart-pbr-texture-pack-0/preview_marble.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 77470ca0de476f1b2dbe219629522eb99e867e76e71b1d6b5659b4e5781025b2
+
+## textures/opengameart-pbr-texture-pack-0/rough_marble.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 3092bf0a6a19d3aae72d1a694266717ad9d904a721827b5e5941c7af183d11e9
+
+## textures/opengameart-pbr-texture-pack-0/color_marble.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 0b197ca46a32bc8c944866b353d30d36ef4a2704f8f724843ce3da1e5c0f2ca3
+
+## textures/opengameart-pbr-texture-pack-0/rough_marble_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 26e336b1540b42ca29fc1d3028d91132b05ecbf115ab073222c4a60de8b3ca48
+
+## textures/opengameart-pbr-texture-pack-0/color_marble_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 82ac0f7b4d53fd48f8c654cb05eaf3dc4f26613c40636ce62a3746792831af6b
+
+## textures/opengameart-pbr-texture-pack-0/normal_marble_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: f31408ef13e4ec927b28002fd866f33ab6e8581eb44779b666cd31fd82860736
+
+## textures/opengameart-pbr-texture-pack-0/preview_marble_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 9834c50338801e711eba914c217dc6c555d2be8a3a1501776aa92e4da7b89bc6
+
+## textures/opengameart-pbr-texture-pack-0/preview_wall.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: c4a23bcdc9b6e3f849f06e47b4793199ceee990cb27f401d3bd74acbb07873ce
+
+## textures/opengameart-pbr-texture-pack-0/normal_wall.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 1e6e9eae8b0053372b2bd70ca0de420dec20b7d8380ed2b59ac4f51f9a502224
+
+## textures/opengameart-pbr-texture-pack-0/rough_wall.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: e257c965485939c9189ac28d0b4bd36fd63937e044a8ca427a71a855e6682663
+
+## textures/opengameart-pbr-texture-pack-0/color_wall.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 53f20882dbeced8d65f4873c528c18bb8271f65a733e596faa7f1b7f4c02eee6
+
+## textures/opengameart-pbr-texture-pack-0/color_stone.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 169d2250273e22096741141d3db201159592f77560461aeadd13588c60918676
+
+## textures/opengameart-pbr-texture-pack-0/preview_stone.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 8d3481cedeb05bcfcedebcd127e59d7d92ec76c650b6d41707a67b9e97475836
+
+## textures/opengameart-pbr-texture-pack-0/normal_stone.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 50860fea853687c9b49dd3c116330580975a557f0b19fe70daeb2f373dc46c9a
+
+## textures/opengameart-pbr-texture-pack-0/rough_stone.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 7a629081d49930c0a6131da0f61aac551ea2b944d6974ebc9fa7af5ed2a1800f
+
+## textures/opengameart-pbr-texture-pack-0/normal_tiles_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: fd23aebde1c9deddcc99eb9727f5b2015c5a7cedf49e19941dba222f430ceaeb
+
+## textures/opengameart-pbr-texture-pack-0/rough_tiles_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 5c52c7d859268879c592698bfa19bdded481fc538282accd2a0ff6a71039a41b
+
+## textures/opengameart-pbr-texture-pack-0/preview_tiles_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 0395fbf401a4ab66643cc3acf3c300ac12ed2afd559b84490bac8366c162c923
+
+## textures/opengameart-pbr-texture-pack-0/color_tiles_2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 36d9fbc2bcfef7a2bc46c715a6d9a0141fc335c47389f850862b92e8d4a06976
+
+## textures/opengameart-pbr-texture-pack-0/color_tiles.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 96244ce5b9020d95e6b9411290109002c02210eb77b47f6de4b9b7ac8421aabf
+
+## textures/opengameart-pbr-texture-pack-0/preview_tiles.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 0cb08e51f25a6d55ee47f2fa9bce7500662b0ec5996a2f72ffb0f962ef6fcebd
+
+## textures/opengameart-pbr-texture-pack-0/normal_tiles.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 4153989fa2442fb8a2e4c4d9bd54bd2df3db1ffeaa70c1cae6945c9c4f74e6d4
+
+## textures/opengameart-pbr-texture-pack-0/rough_tiles.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 608e6526f0d4a0139756b8d2106c88f441043be6bde3b1b07b85bfa4a190f72e
+
+## textures/opengameart-pbr-texture-pack-0/rough_carpet.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 03ad0be800e7ee6693a8fe016d25708f56c174fc2bc70f5bac08d40808dad7eb
+
+## textures/opengameart-pbr-texture-pack-0/color_carpet.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: e22d9bb8b71777d59c92fcb3adf77f77f8741d59029404868f6b840f7d574bc0
+
+## textures/opengameart-pbr-texture-pack-0/normal_carpet.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: b82bd2436d1fe11a8f6d3ea815c95f3fe95712801a5da7952b31b43a112bec1b
+
+## textures/opengameart-pbr-texture-pack-0/preview_carpet.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack-0
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 5591fc479f5f45fdb802f427bed058861985238392aa98ef3e38341f5b25797d
+
+## textures/opengameart-pbr-texture-pack/RoughWall2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 7b469dd563cec6c65ec518a038f98c2e46d6fba44eae2c62793c839562481b20
+
+## textures/opengameart-pbr-texture-pack/Wall2Preview.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: bf5b546b71c428276b858a29d5489d14161b59894fe6caa06e37c2d8304c48e0
+
+## textures/opengameart-pbr-texture-pack/NormalWall2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 70646b95518ef41de914415bd6f0913d634b7e5267433e33b65d9b59c8136cef
+
+## textures/opengameart-pbr-texture-pack/ColorWall2.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 54392d84faf6aa248e5c7c539b197055b6b9f140b7b285ac8e281224433f905f
+
+## textures/opengameart-pbr-texture-pack/NormalWall.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: c9bf9bc474267f42b3ac81ada10a670e135ee30b4d67933b779db2ac680f687f
+
+## textures/opengameart-pbr-texture-pack/WallPreview.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 05c255f293ae4764c97fe20d5b15a4f218ba66926e91b3569ebff15be0a11194
+
+## textures/opengameart-pbr-texture-pack/RoughWall.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 9d895510a49a1d87821b12f16363687680ff3d96631f9a746c2ab95238507a6d
+
+## textures/opengameart-pbr-texture-pack/ColorWall.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 1766b85481f5e93c0c88bf67bbedc4abfeaf64fa6d17428d145378f0f622a131
+
+## textures/opengameart-pbr-texture-pack/ColorCeiling.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 5bff21d18a9fa3c9b5dd3abfbe01dc6452c106650000d8167b979f2929c346bb
+
+## textures/opengameart-pbr-texture-pack/RoughCeiling.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: b8a0e59a537b4e59a27575033910c66b01ce53fb11e9f0cbfe8c8aeb54bae74c
+
+## textures/opengameart-pbr-texture-pack/NormalCeiling.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 69c7dc0b047101d6e623cfd401e3034ede4dfa51e84d7e65feca36b9aeb32e7e
+
+## textures/opengameart-pbr-texture-pack/CeilingPreview.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: cb176a2b81648074b4b9b2557f5901d0a7170304bc13e08be5cf18b9dbfc5ed6
+
+## textures/opengameart-pbr-texture-pack/NormalTiles.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 5662fc7b98fc1ef52b308f0e72d68b702d696c016eeb317d4b48277c4be2afd8
+
+## textures/opengameart-pbr-texture-pack/TilesPreview.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 67e3584b2db3fac9a3f1bbea5fa4819ecbc3f34316ff77d3084ef9aad65dcd39
+
+## textures/opengameart-pbr-texture-pack/RoughTiles.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 95ef1eca50f8ad98b942fa85989a0318602ffd7f27018d632ef7c2dd3967bfb4
+
+## textures/opengameart-pbr-texture-pack/ColorTiles.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 9492cdafb4d4842d4788d216a8a8b7107c996607721059d5513650bd6e1b78fd
+
+## textures/opengameart-pbr-texture-pack/CarpetPreview.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 8e8a12ad32c10ec67db7c363b41973b5d0a8fb1275666e0443110523e518bea1
+
+## textures/opengameart-pbr-texture-pack/NormalCarpet.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: dcca8ec1d2e02f743ae9f7b4e14c5efaa9b61abfa3b322cc4b752b43a3c5f810
+
+## textures/opengameart-pbr-texture-pack/ColorCarpet.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: ef8971ac6a45c039d91f047fce0d8692dbe417ba0355369e4e924178625fcca1
+
+## textures/opengameart-pbr-texture-pack/RoughCarpet.png
+- Category: pbr_materials
+- Creator: creator
+- Source: https://opengameart.org/content/pbr-texture-pack
+- License: CC0 1.0 Universal
+- Dimensions (m): not applicable (PBR textures)
+- SHA256: 71ad20e84aa69de15ad1c5cfff1f7d9310daa4a5591802c2b7c5685d6fdcb220
+
+## models/fern_02.glb
+- Category: nature
+- Creator: Rob Tuytel, Rico Cilliers
+- Source: https://polyhaven.com/a/fern_02
+- License: CC0 1.0
+- Dimensions (m): [1.9725297689437866, 1.7240276634693146, 0.427694708108902]
+- SHA256: 7ba4867e72ab398034b1177152087af978a67548d1ef4710f58f11dd1ff51b3a
+
+## models/grass_bermuda_01.glb
+- Category: nature
+- Creator: Rico Cilliers
+- Source: https://polyhaven.com/a/grass_bermuda_01
+- License: CC0 1.0
+- Dimensions (m): [2.976682126522064, 0.7404540777206421, 0.740454763174057]
+- SHA256: 030443b9eab433d46307f91f96780e7d30881a5dbfc1039174a4041d920576ab
+
+## models/grass_medium_01.glb
+- Category: nature
+- Creator: Rob Tuytel, Rico Cilliers
+- Source: https://polyhaven.com/a/grass_medium_01
+- License: CC0 1.0
+- Dimensions (m): [6.999597787857056, 0.699999988079071, 0.7000000178813934]
+- SHA256: 52dda2f58ff2dacfe163cd51bfedd02384b68208eb5089049231f0b6f1ee4c78
+
+## models/grass_medium_02.glb
+- Category: nature
+- Creator: Rico Cilliers
+- Source: https://polyhaven.com/a/grass_medium_02
+- License: CC0 1.0
+- Dimensions (m): [3.193347956985235, 0.7175963521003723, 0.7534119486808777]
+- SHA256: 229c5b6886203717f69ee3d3f2473c8353d3b0613c80564622aa36f950d16ca3
+
+## models/island_tree_01.glb
+- Category: nature
+- Creator: Rob Tuytel, Rico Cilliers
+- Source: https://polyhaven.com/a/island_tree_01
+- License: CC0 1.0
+- Dimensions (m): [11.547818422317505, 4.818506717681885, 5.027446746826172]
+- SHA256: 93d5a4b947c916409c8021637bf7de11a9ea1907ef774571bcdc30befceef7ef
+
+## models/island_tree_02.glb
+- Category: nature
+- Creator: Rob Tuytel, Rico Cilliers
+- Source: https://polyhaven.com/a/island_tree_02
+- License: CC0 1.0
+- Dimensions (m): [8.48551321029663, 4.078615665435791, 3.5301053524017334]
+- SHA256: 0b448b4d46b81a25941148f676ce1b29705e798a8c72e1d5d82cad751e6ddb53
+
+## models/island_tree_03.glb
+- Category: nature
+- Creator: Rob Tuytel, Rico Cilliers
+- Source: https://polyhaven.com/a/island_tree_03
+- License: CC0 1.0
+- Dimensions (m): [8.48988127708435, 2.9132323265075684, 2.615518093109131]
+- SHA256: 506ab82cebe27636f95cb899ead4a2e4b4ee3bcceecb16d958ca0fba26b6254d
+
+## models/periwinkle_plant.glb
+- Category: nature
+- Creator: Amal Kumar
+- Source: https://polyhaven.com/a/periwinkle_plant
+- License: CC0 1.0
+- Dimensions (m): [1.2353671789169312, 0.33493995666503906, 0.4110017012571916]
+- SHA256: f5adedbb32c59b92850ebe78c8721e4b65a8787e2fd6b03b6496733d3953caf0
 
 ## models/shrub_02.glb
 - Category: nature
