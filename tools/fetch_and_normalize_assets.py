@@ -131,6 +131,11 @@ def process():
       q=Path(n)
       if not q.is_absolute() and ".." not in q.parts: z.extract(n,d)
     fs=list(d.rglob("*"))
+   elif p.suffix.lower()==".7z":
+    import py7zr
+    d=RAW/"unpacked"/safe(r["id"]); d.mkdir(parents=True,exist_ok=True)
+    with py7zr.SevenZipFile(p,mode="r") as z: z.extractall(path=d)
+    fs=list(d.rglob("*"))
    else: fs=[p]
    models=[x for x in fs if x.is_file() and x.suffix.lower() in (".blend",".glb",".gltf",".fbx",".obj",".dae",".stl",".ply")]
    if models:
