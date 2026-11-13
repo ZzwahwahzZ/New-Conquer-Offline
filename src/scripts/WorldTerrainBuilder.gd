@@ -181,45 +181,32 @@ static func _add_scene_mesh_collisions(root: Node) -> void:
     mesh_node.create_trimesh_collision()
 
 static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: float) -> void:
- var height_image: Image = null
- var height_path: String = HEIGHTS.get(city, "")
- if not height_path.is_empty():
-  var height_texture := ResourceLoader.load(height_path) as Texture2D
-  if height_texture != null:
-   height_image = height_texture.get_image()
- var root_paths := [
-  "res://assets/environment/kenney/nature-kit/Models/GLTF format",
-  "res://assets/environment/kenney/nature-kit/Models/GLB format"
- ]
+ var height_image: Image = load_height_image(city)
  var candidates: Array[String] = []
- for root_path in root_paths:
-  _collect_kenney_nature_models(root_path, candidates)
- if candidates.is_empty():
-  push_error("Required Kenney Nature Kit models are unavailable; no secondary nature fallback is enabled.")
-  return
- var preferred_models: Array[String] = []
- match city:
-  "TwinCity": preferred_models = ["tree_default.glb", "tree_oak.glb", "plant_bush.glb", "grass.glb"]
-  "DesertLand": preferred_models = ["cactus_short.glb", "cactus_tall.glb", "tree_palm.glb", "rock_largeA.glb"]
-  "VolcanoLand": preferred_models = ["rock_largeA.glb", "rock_smallB.glb", "stone_largeB.glb", "stone_largeD.glb"]
-  "IceLand": preferred_models = ["tree_pineDefaultA.glb", "tree_pineDefaultB.glb", "tree_default.glb", "rock_largeA.glb"]
-  "Waterlands": preferred_models = ["tree_palm.glb", "tree_default.glb", "plant_flatTall.glb", "rock_smallA.glb"]
-  "DarkForest": preferred_models = ["tree_oak.glb", "tree_default_dark.glb", "tree_oak_dark.glb", "plant_bushLarge.glb"]
- candidates.sort()
- var accepted: Array[String] = []
- for preferred_name in preferred_models:
+ _collect_kenney_nature_models("res://assets/imperial_city_kit_v2/quaternius/ultimate_nature", candidates)
+ var tree_candidates: Array[String] = []
+ for path in candidates:
+  var label := path.get_file().to_lower()
+  if (label.contains("tree") or label.contains("pine") or label.contains("willow") or label.contains("palm") or label.contains("bamboo")) and not (label.contains("stump") or label.contains("log") or label.contains("trunk")):
+   tree_candidates.append(path)
+ if tree_candidates.is_empty():
+  var legacy_roots := [
+   "res://assets/environment/kenney/nature-kit/Models/GLTF format",
+   "res://assets/environment/kenney/nature-kit/Models/GLB format"
+  ]
+  for root_path in legacy_roots:
+   _collect_kenney_nature_models(root_path, candidates)
   for path in candidates:
-   if path.get_file() == preferred_name:
-    accepted.append(path)
-    break
- if accepted.size() != preferred_models.size():
-  push_error("Kenney Nature Kit is missing required biome models for " + city + ": expected=" + str(preferred_models) + " found=" + str(accepted.map(func(path: String) -> String: return path.get_file())))
+   var label := path.get_file().to_lower()
+   if label.contains("tree") and not (label.contains("stump") or label.contains("log") or label.contains("trunk")):
+    tree_candidates.append(path)
+ if tree_candidates.is_empty():
+  push_error("IMPERIAL_CITY_TREE_FAIL: no real tree GLB models found for " + city)
   return
- var added := 0
- for path in accepted:
-  if added >= 4:
-   break
-  var packed := load(path) as PackedScene
+ tree_candidates.sort()
+ var species: Array[Dictionary] = []
+ for model_path in tree_candidates:
+  var packed := ResourceLoader.load(model_path) as PackedScene
   if packed == null:
    continue
   var instance := packed.instantiate()
@@ -227,29 +214,44 @@ static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: flo
   instance.free()
   if mesh == null:
    continue
+  species.append({"path":model_path,"mesh":mesh})
+  if species.size() >= 3:
+   break
+ if species.is_empty():
+  push_error("IMPERIAL_CITY_TREE_FAIL: tree models could not be imported for " + city)
+  return
+ const TREES_PER_CITY := 50
+ var city_index := maxi(0, ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"].find(city))
+ var base_count := int(TREES_PER_CITY / species.size())
+ var remainder := posmod(TREES_PER_CITY, species.size())
+ var global_index := 0
+ for species_index in range(species.size()):
+  var mesh := species[species_index]["mesh"] as Mesh
+  var count := base_count + (1 if species_index < remainder else 0)
   var multi := MultiMesh.new()
   multi.transform_format = MultiMesh.TRANSFORM_3D
   multi.mesh = mesh
-  var count := 32 if city == "IceLand" else 40
   multi.instance_count = count
+  var model_height := maxf(mesh.get_aabb().size.y, 0.01)
   for index in range(count):
-   var angle := float(index) * 2.399963 + float(added) * 0.61
-   var radius := 166.0 + float((index * 37 + added * 19) % 100) / 100.0 * maxf(35.0, size * 0.28)
-   var base_scale := 4.2 if not path.get_file().to_lower().contains("rock") else 3.0
-   var scale_factor := base_scale * (0.82 + float((index * 13 + added * 7) % 35) / 100.0)
+   var angle := float(global_index) * 2.399963 + float(city_index) * 0.47
+   var radius := 96.0 + float((global_index * 37 + species_index * 19 + city_index * 11) % 58)
+   var target_height := 5.5 + float((global_index * 13 + species_index * 7) % 36) * 0.12
+   var scale_factor := target_height / model_height
    var basis := Basis(Vector3.UP, angle).scaled(Vector3.ONE * scale_factor)
    var position := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
    position.y = sample_height_image(height_image, city, position.x, position.z, size)
    multi.set_instance_transform(index, Transform3D(basis, position))
+   global_index += 1
   var node := MultiMeshInstance3D.new()
-  node.name = city + "_KenneyNature_" + str(added) + "_MultiMesh"
+  node.name = city + "_ImperialTree_" + str(species_index) + "_MultiMesh"
   node.multimesh = multi
+  node.add_to_group("imperial_city_tree_multimesh")
   node.add_to_group("distance_cull_world")
   node.visibility_range_end = 440.0
   node.visibility_range_end_margin = 36.0
   parent.add_child(node)
-  added += 1
- print("KENNEY_NATURE_SCATTER_PASS: %s species=%d instances=%d distance_cull=440" % [city, added, added * (32 if city == "IceLand" else 40)])
+ print("IMPERIAL_CITY_TREE_MULTIMESH_PASS: %s trees=%d species=%d source=%s" % [city, TREES_PER_CITY, species.size(), str(species.map(func(item: Dictionary) -> String: return str(item["path"]).get_file()))])
 
 static func _collect_kenney_nature_models(path: String, output: Array[String]) -> void:
  var directory := DirAccess.open(path)
