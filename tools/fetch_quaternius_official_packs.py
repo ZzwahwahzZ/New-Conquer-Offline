@@ -86,7 +86,8 @@ for p in sorted(x for x in src.rglob("*") if x.is_file() and x.suffix.lower() in
   mx=Vector((max(v.x for v in corners),max(v.y for v in corners),max(v.z for v in corners)))
   # Blender is Z-up; export_yup=True converts this Z_min=0 to GLB Y_min=0.
   shift=Vector((-(mn.x+mx.x)/2,-(mn.y+mx.y)/2,-mn.z))
-  for o in bpy.context.scene.objects: o.location+=shift
+  for o in bpy.context.scene.objects:
+   if o.parent is None: o.location+=shift
   bpy.context.view_layer.update()
   corners=[o.matrix_world@Vector(c) for o in meshes for c in o.bound_box]
   y0=min(v.z for v in corners)
@@ -112,5 +113,5 @@ if not records: raise SystemExit("No GLBs converted")
  manifest={"schema_version":2,"source":"Official Quaternius download folders linked from quaternius.com","license":"CC0-1.0 per each official pack page","normalization":"GLB; X/Z centered; world-space Y_min=0.0","packs":{k:{"page":v[0],"download_folder":v[1],"license":"CC0-1.0","author":"Quaternius"} for k,v in verified_packs.items()},"source_files":source_files,"converted_models":converted,"model_count":len(converted),"model_count_by_pack":counts}
  (DEST.parent/"quaternius_manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
  (DEST.parent/"QUATERNIUS_CC0_LICENSES.txt").write_text("\n".join(f"{k}: {v[0]} | Quaternius | CC0-1.0" for k,v in verified_packs.items())+"\nModels converted from official pack ZIPs; bottom-centered at Y=0.\n",encoding="utf-8")
- print("QUATERNIUS_OFFICIAL_PACKS_PASS",len(PACKS),"packs",len(converted),"models",counts,flush=True)
+ print("QUATERNIUS_OFFICIAL_PACKS_PASS",len(verified_packs),"packs",len(converted),"models",counts,flush=True)
 if __name__=="__main__": main()
