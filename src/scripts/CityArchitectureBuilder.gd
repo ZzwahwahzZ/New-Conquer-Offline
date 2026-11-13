@@ -437,11 +437,11 @@ static func _add_palace_platform_and_stairs(root: Node3D, width: float, depth: f
  print("IMPERIAL_PALACE_PLATFORM_PASS: height=3.5m marble_stairs=7 width=8.5m")
 
 static func _add_chinese_building_details(root: Node3D, p: Dictionary, width: float, depth: float, height: float) -> void:
-    var roof_material := _material(p.roof,0.66)
+    var roof_material := PBRMaterialLibrary.build_chinese_roof_material()
     var gold_material := _material(p.gold,0.4)
-    var timber_material := _material(p.wood,0.62)
-    var door_material := _material(Color("#8f2630"),0.46)
-    var lantern_material := _material(Color("#a52b35"),0.34)
+    var timber_material := PBRMaterialLibrary.build_chinese_red_wood_material()
+    var door_material := PBRMaterialLibrary.build_chinese_red_wood_material()
+    var lantern_material := PBRMaterialLibrary.build_emissive_material(Color("#a52b35"))
     lantern_material.emission_enabled = true
     lantern_material.emission = Color("#ff3842")
     lantern_material.emission_energy_multiplier = 1.25
