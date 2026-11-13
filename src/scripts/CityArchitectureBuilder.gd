@@ -738,7 +738,7 @@ static func _add_kenney_asset(parent: Node3D, city: String, height_image: Image,
  instance.name = node_name
  var world_at := parent.to_global(at)
  instance.position = at
- instance.position.y += WorldTerrainBuilder.sample_height_image(height_image, city, world_at.x, world_at.z, 800.0) - parent.global_position.y
+ instance.position.y += WorldTerrainBuilder.sample_height_image(height_image, city, world_at.x, world_at.z, 800.0) + 0.85 - parent.global_position.y
  instance.rotation.y = rotation
  instance.scale = Vector3.ONE * scale_factor
  parent.add_child(instance)
@@ -889,8 +889,8 @@ static func _build_walkable_outer_routes(parent: Node3D, city: String, p: Dictio
    var center := direction * distance
    var left := center + lateral * 4.5
    var right := center - lateral * 4.5
-   var left_height := WorldTerrainBuilder.sample_height_image(height_image, city, left.x, left.y, 800.0) + 0.10
-   var right_height := WorldTerrainBuilder.sample_height_image(height_image, city, right.x, right.y, 800.0) + 0.10
+   var left_height := WorldTerrainBuilder.sample_height_image(height_image, city, left.x, left.y, 800.0) + 0.85
+   var right_height := WorldTerrainBuilder.sample_height_image(height_image, city, right.x, right.y, 800.0) + 0.85
    vertices.append(Vector3(left.x, left_height, left.y))
    vertices.append(Vector3(right.x, right_height, right.y))
    for point in [left, right]:
