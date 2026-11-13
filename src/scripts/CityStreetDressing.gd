@@ -58,13 +58,17 @@ static func _add_plane(parent: Node3D, label: String, dimensions: Vector2, mater
 	var mesh := PlaneMesh.new()
 	mesh.size = dimensions
 	node.mesh = mesh
-	node.position = at
+	var paved_route := label.begins_with("Street_") or label.begins_with("DistrictLane_") or label.begins_with("GateApproach_")
+	node.position = at + (Vector3.UP * 0.36 if paved_route else Vector3.ZERO)
 	parent.add_child(node)
 	var surface_material := material
-	if material is StandardMaterial3D and (material as StandardMaterial3D).resource_name.begins_with("PolyHaven_"):
+	if material is StandardMaterial3D:
 		var pbr_material := (material as StandardMaterial3D).duplicate() as StandardMaterial3D
-		var tile_width := 3.4 if pbr_material.resource_name.contains("Pavement05") else 2.0
-		pbr_material.uv1_scale = Vector3(maxf(1.0, dimensions.x / tile_width), maxf(1.0, dimensions.y / tile_width), 1.0)
+		if pbr_material.resource_name.begins_with("PolyHaven_"):
+			var tile_width := 3.4 if pbr_material.resource_name.contains("Pavement05") else 2.0
+			pbr_material.uv1_scale = Vector3(maxf(1.0, dimensions.x / tile_width), maxf(1.0, dimensions.y / tile_width), 1.0)
+		if paved_route:
+			pbr_material.uv1_triplanar = true
 		surface_material = pbr_material
 	node.material_override = surface_material
 
