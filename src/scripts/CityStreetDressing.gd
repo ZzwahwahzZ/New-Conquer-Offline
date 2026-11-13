@@ -204,7 +204,7 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 	bridge.add_child(deck)
 	deck.material_override = material
 	var imported_bridge_found := false
-	var bridge_model_path := "res://assets/environment/kenney/nature-kit/Models/GLTF format/bridge_wood.glb" if city == "Waterlands" else "res://assets/environment/kenney/nature-kit/Models/GLTF format/bridge_stone.glb"
+	var bridge_model_path := "res://assets/wuxia_imperial_pack/architecture/arched_stone_bridge.glb"
 	if ResourceLoader.exists(bridge_model_path):
 		var bridge_pack := load(bridge_model_path) as PackedScene
 		if bridge_pack != null:
@@ -225,11 +225,8 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 							imported_bridge.rotation.y = PI * 0.5
 						imported_bridge.position.y = 0.85
 						bridge.add_child(imported_bridge)
-						if city == "Waterlands":
-							imported_bridge.visible = false
-							deck.visible = true
-						else:
-							deck.visible = false
+						imported_bridge.visible = true
+						deck.visible = false
 						imported_bridge_found = true
 	var body := StaticBody3D.new()
 	body.name = "BridgeCollisionBody"
@@ -285,7 +282,7 @@ static func _arched_wooden_bridge_mesh(dimensions: Vector2) -> ArrayMesh:
 static func _waterlands_promenades(parent: Node3D, material: Material) -> void:
 	var timber := _mat(Color("#805332"), 0.62)
 	var routes := Node3D.new()
-	routes.name = "Waterlands_RaisedTimberStreetNetwork_0_6m"
+	routes.name = "Waterlands_RaisedTimberStreetNetwork_0_85m"
 	parent.add_child(routes)
 	for lane in [-48.0, -24.0, 0.0, 24.0, 48.0]:
 		_add_plane(routes, "Waterlands_NS_Promenade_" + str(int(lane)), Vector2(6.0, 170.0), timber, Vector3(lane, 0.85, 0.0))
