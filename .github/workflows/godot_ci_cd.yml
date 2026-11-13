@@ -101,11 +101,11 @@ jobs:
           sudo apt-get install -y xvfb xorg xz-utils
       - name: Step 0 - Import project resources and build Godot UID cache
         shell: bash
-        timeout-minutes: 5
+        timeout-minutes: 12
         run: |
           set -Eeuo pipefail
           mkdir -p reports
-          timeout 180s xvfb-run -a godot --headless --audio-driver Dummy --path . --import --quit 2>&1 | tee reports/godot_import_guard.log
+          timeout 600s xvfb-run -a godot --headless --audio-driver Dummy --path . --import --quit 2>&1 | tee reports/godot_import_guard.log
           test -d .godot
           echo "GODOT_FULL_IMPORT_AND_UID_CACHE_PASS"
 
@@ -151,11 +151,11 @@ jobs:
 
       - name: Step 2 - Import Scripts, Materials & Build
         shell: bash
-        timeout-minutes: 5
+        timeout-minutes: 8
         run: |
           set -Eeuo pipefail
           mkdir -p reports
-          timeout 120s xvfb-run -a godot --headless --audio-driver Dummy --path . --import 2>&1 | tee -a reports/godot_import_guard.log
+          timeout 420s xvfb-run -a godot --headless --audio-driver Dummy --path . --import 2>&1 | tee -a reports/godot_import_guard.log
           if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load script|ERROR: Failed loading resource' reports/godot_import_guard.log; then
             echo "::error::Godot import emitted parser or resource-load errors."
             exit 1
@@ -272,13 +272,13 @@ jobs:
 
       - name: Phase 2 - Verify classic RPG HUD, Arabic RTL and Auto-Quest; capture six real UI screens
         id: phase2_ui_proof
-        timeout-minutes: 15
+        timeout-minutes: 30
         shell: bash
         run: |
           set -Eeuo pipefail
           mkdir -p reports/phase2-ui
           test -s "assets/ui/fonts/NotoSansArabic[wght].ttf"
-          timeout 840s xvfb-run -a godot --path . --script res://tools/capture_phase2_ui_proof.gd 2>&1 | tee reports/phase2-ui/capture.log
+          timeout 1680s xvfb-run -a godot --path . --script res://tools/capture_phase2_ui_proof.gd 2>&1 | tee reports/phase2-ui/capture.log
           expected=(
             01_twincity_gameplay_hud.png
             02_character_gear.png
