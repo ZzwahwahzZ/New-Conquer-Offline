@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      head_branch:
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -29,7 +34,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref || github.ref }}
+          ref: ${{ inputs.head_branch || github.head_ref || github.ref }}
 
       - name: Install Godot 4.3 runtime only (exports paused)
         shell: bash
@@ -94,7 +99,7 @@ jobs:
           git add CREDITS.md
           if ! git diff --cached --quiet; then
             git commit -m "chore: refresh Wuxia asset credits [skip ci]"
-            target_branch="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+            target_branch="${{ inputs.head_branch || github.head_ref || github.ref_name }}"
             git push origin "HEAD:${target_branch}"
           fi
       - name: Cache Godot imported assets
