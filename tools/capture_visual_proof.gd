@@ -199,8 +199,11 @@ func _capture() -> void:
 		var chinese_wall_count := _count_group_recursive(loaded_world, "city_chinese_perimeter_wall")
 		var watchtower_count := _count_group_recursive(loaded_world, "imperial_watchtowers")
 		var market_stall_count := _count_group_recursive(loaded_world, "city_market_stall")
-		if building_count < 85 or building_count > 100 or imported_building_count < 85 or imported_building_count > 100 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8 or tree_instance_count != 60 or lantern_light_count != 8 or plaza_statue_count != 1 or chinese_wall_count < 5 or watchtower_count != 4 or market_stall_count != 4:
-			_fail("%s visual proof refused: buildings=%d imported=%d outside_170m_core=%d gates=%d guardians=%d trees=%d lantern_lights=%d plaza_statues=%d chinese_walls=%d watchtowers=%d market_stalls=%d" % [city_id, building_count, imported_building_count, outside_core_count, gate_count, guardian_count, tree_instance_count, lantern_light_count, plaza_statue_count, chinese_wall_count, watchtower_count, market_stall_count])
+		var garden_lantern_count := _count_group_recursive(loaded_world, "imperial_plaza_garden_lanterns")
+		var lotus_pond_count := _count_group_recursive(loaded_world, "imperial_plaza_lotus_pond")
+		var incense_burner_count := _count_group_recursive(loaded_world, "imperial_plaza_incense_burners")
+		if building_count < 85 or building_count > 100 or imported_building_count < 85 or imported_building_count > 100 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8 or tree_instance_count != 60 or lantern_light_count != 8 or plaza_statue_count != 1 or chinese_wall_count < 5 or watchtower_count != 4 or market_stall_count != 4 or garden_lantern_count != 4 or lotus_pond_count != 1 or incense_burner_count != 2:
+			_fail("%s visual proof refused: buildings=%d imported=%d outside_170m_core=%d gates=%d guardians=%d trees=%d lantern_lights=%d plaza_statues=%d chinese_walls=%d watchtowers=%d market_stalls=%d garden_lanterns=%d lotus_ponds=%d incense_burners=%d" % [city_id, building_count, imported_building_count, outside_core_count, gate_count, guardian_count, tree_instance_count, lantern_light_count, plaza_statue_count, chinese_wall_count, watchtower_count, market_stall_count, garden_lantern_count, lotus_pond_count, incense_burner_count])
 			return
 		var first_building := loaded_world.find_child(city_id + "_ChineseImperialBuilding_00", true, false)
 		if first_building == null:
