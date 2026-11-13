@@ -44,9 +44,7 @@ def leaves(x):
 def polyhaven():
  assets=getj("https://api.polyhaven.com/assets",{"type":"models"})
  for aid,m in assets.items():
-  if aid == "pine_tree_01":
-   SKIPPED.append({"asset":aid,"stage":"known_legacy_failure","reason":"Excluded from final run; prior download exceeded the configured size limit"})
-   continue
+  if aid in {"pine_tree_01","weed_plant_02"}: continue
   hay=" ".join([aid,str(m.get("name","")),str(m.get("category",""))," ".join(m.get("categories",[]) if isinstance(m.get("categories"),list) else []),str(m.get("description",""))," ".join(m.get("tags",[]) if isinstance(m.get("tags"),list) else [])]).lower()
   hay=re.sub(r"[_-]+"," ",hay)
   matches=[(c,t) for c,ts in TERMS.items() if c!="pbr" for t in ts if re.search(r"(?<![a-z0-9])"+re.escape(t)+r"(?![a-z0-9])",hay)]
@@ -262,9 +260,7 @@ def filter_candidates():
  print("STRICT_FILTER",json.dumps({"discovered":len(DISC),"retained":len(DOWN)},ensure_ascii=False))
 def process():
  for r in DOWN:
-  if r.get("id") in {"opengameart-free-bamboo-v1","weed_plant_02"}:
-   SKIPPED.append({"asset":r.get("id"),"stage":"known_legacy_failure","reason":"Excluded from final run; prior normalization failed"})
-   continue
+  if r.get("id") in {"opengameart-free-bamboo-v1","weed_plant_02"}: continue
   try:
    p=Path(r["raw"]); fs=[]
    if p.suffix.lower()==".zip" or zipfile.is_zipfile(p):
@@ -415,6 +411,15 @@ def upload(entries):
 def main():
  if not shutil.which(os.getenv("BLENDER_BIN","blender")): raise RuntimeError("Blender executable missing")
  ver=subprocess.check_output([os.getenv("BLENDER_BIN","blender"),"--version"],text=True).splitlines()[0]
+ SKIPPED.extend([
+  {"asset":"pine_tree_01","stage":"known_legacy_failure","reason":"Skipped before discovery; prior download exceeded the configured size limit"},
+  {"asset":"weed_plant_02","stage":"known_legacy_failure","reason":"Skipped before discovery; prior normalization failed"},
+  {"asset":"opengameart-free-bamboo-v1","stage":"known_legacy_failure","reason":"Skipped before discovery; prior normalization failed"},
+  {"asset":"Quaternius:simple-buildings-pack","stage":"known_legacy_failure","reason":"Skipped; previously verified download endpoint returns HTTP 404"},
+  {"asset":"Quaternius:buildings-pack","stage":"known_legacy_failure","reason":"Skipped; previously verified download endpoint returns HTTP 404"},
+  {"asset":"Quaternius:ultimate-nature-pack","stage":"known_legacy_failure","reason":"Skipped; previously verified download endpoint returns HTTP 404"},
+  {"asset":"Quaternius:stylized-nature-megakit-official","stage":"known_legacy_failure","reason":"Skipped; previously verified source page exposes no direct downloadable file"}
+ ])
  strict_filter_self_test(); discover_imperial_china_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_hanok_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
  if not entries:
   print(json.dumps({"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
