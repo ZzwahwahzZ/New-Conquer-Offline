@@ -196,8 +196,11 @@ func _capture() -> void:
 		var tree_instance_count := _count_multimesh_instances_recursive(loaded_world, "imperial_city_tree_multimesh")
 		var lantern_light_count := _count_group_recursive(loaded_world, "imperial_city_lantern_lights")
 		var plaza_statue_count := _count_group_recursive(loaded_world, "imperial_plaza_statue")
-		if building_count < 85 or building_count > 100 or imported_building_count < 85 or imported_building_count > 100 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8 or tree_instance_count != 60 or lantern_light_count != 8 or plaza_statue_count != 1:
-			_fail("%s visual proof refused: buildings=%d imported=%d outside_170m_core=%d gates=%d guardians=%d trees=%d lantern_lights=%d plaza_statues=%d" % [city_id, building_count, imported_building_count, outside_core_count, gate_count, guardian_count, tree_instance_count, lantern_light_count, plaza_statue_count])
+		var chinese_wall_count := _count_group_recursive(loaded_world, "city_chinese_perimeter_wall")
+		var watchtower_count := _count_group_recursive(loaded_world, "imperial_watchtowers")
+		var market_stall_count := _count_group_recursive(loaded_world, "city_market_stall")
+		if building_count < 85 or building_count > 100 or imported_building_count < 85 or imported_building_count > 100 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8 or tree_instance_count != 60 or lantern_light_count != 8 or plaza_statue_count != 1 or chinese_wall_count < 5 or watchtower_count != 4 or market_stall_count != 4:
+			_fail("%s visual proof refused: buildings=%d imported=%d outside_170m_core=%d gates=%d guardians=%d trees=%d lantern_lights=%d plaza_statues=%d chinese_walls=%d watchtowers=%d market_stalls=%d" % [city_id, building_count, imported_building_count, outside_core_count, gate_count, guardian_count, tree_instance_count, lantern_light_count, plaza_statue_count, chinese_wall_count, watchtower_count, market_stall_count])
 			return
 		var first_building := loaded_world.find_child(city_id + "_ChineseImperialBuilding_00", true, false)
 		if first_building == null:
