@@ -51,7 +51,7 @@ func _run() -> void:
 	print("TWIN_CITY_STONE_SOURCE_PATHS: albedo=%s normal=%s roughness=%s" % [stone_material.albedo_texture.resource_path, stone_material.normal_texture.resource_path, stone_material.roughness_texture.resource_path])
 	if not _require(stone_material.albedo_texture.resource_path.contains("Ground044_2K-JPG") and stone_material.normal_texture.resource_path.contains("Ground044_2K-JPG") and stone_material.roughness_texture.resource_path.contains("Ground044_2K-JPG"), "Stone surface is not using the restored Ground044 source maps"):
 		return
-	if not _require(stone_material.uv1_triplanar and stone_material.uv1_scale.x >= 0.60 and stone_material.normal_scale >= 1.40 and stone_material.detail_enabled and stone_material.detail_albedo == stone_material.albedo_texture, "Stone PBR detail, contrast and triplanar scale are not configured"):
+	if not _require(stone_material.uv1_triplanar and stone_material.uv1_scale.x >= 0.08 and stone_material.uv1_scale.x <= 0.11 and stone_material.normal_scale >= 1.10 and stone_material.normal_scale <= 1.30 and not stone_material.detail_enabled, "Stone PBR anti-aliasing, contrast and triplanar scale are not configured"):
 		return
 
 	var grass := city.find_child("TerrainSurface", true, false) as MeshInstance3D
@@ -62,7 +62,7 @@ func _run() -> void:
 		return
 	if not _require(grass_material.albedo_texture.resource_path.contains("Ground053_2K-JPG") and grass_material.normal_texture.resource_path.contains("Ground053_2K-JPG") and grass_material.roughness_texture.resource_path.contains("Ground053_2K-JPG"), "Grass surface is not using the restored Ground053 source maps"):
 		return
-	if not _require(grass_material.uv1_triplanar and grass_material.uv1_scale.x >= 0.45, "Grass PBR tiling/triplanar scale is not configured for visible detail"):
+	if not _require(grass_material.uv1_triplanar and grass_material.uv1_scale.x >= 0.08 and grass_material.uv1_scale.x <= 0.11, "Grass PBR anti-aliasing/triplanar scale is not configured for visible detail"):
 		return
 
 	var old_enclosed_block := city.find_child("TwinCity_ImperialChina_GLBAsset", true, false)
