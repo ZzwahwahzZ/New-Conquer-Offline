@@ -40,7 +40,7 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python3 -m pip install --disable-pip-version-check huggingface_hub trimesh numpy
+          python3 -m pip install --disable-pip-version-check huggingface_hub
           python3 tools/restore_hf_terrain_assets.py
           python3 tools/sync_rpg_ui_assets.py
           python3 tools/restore_kenney_environment_assets.py
@@ -308,7 +308,7 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python3 -m pip install --disable-pip-version-check huggingface_hub trimesh numpy
+          python3 -m pip install --disable-pip-version-check huggingface_hub
           python3 tools/restore_hf_terrain_assets.py
           python3 tools/sync_rpg_ui_assets.py
           npm install --global @gltf-transform/cli@4.5.1
@@ -505,7 +505,7 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python3 -m pip install --disable-pip-version-check huggingface_hub trimesh numpy
+          python3 -m pip install --disable-pip-version-check huggingface_hub
           python3 tools/restore_hf_terrain_assets.py
           python3 tools/sync_rpg_ui_assets.py
           npm install --global @gltf-transform/cli@4.5.1
