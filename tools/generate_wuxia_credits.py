@@ -26,6 +26,8 @@ def main():
  "",
  "## Included 3D assets",
  "",
+ "AI provenance reported by the source pack: " + str(china.get("ai_assisted","not supplied by source")),
+ "",
  "| Asset / pack | Creator | License | Source |",
  "|---|---|---|---|"
  ]
