@@ -2,21 +2,37 @@
 
 Only files listed in imperial_approved_assets.json are credited.
 
-## models/3dassets-imperial-china-palace-and-garden-walled--b51639b8-starter-scene.glb
+## models/3dassets-imperial-china-palace-and-garden-ceremonial-hall-3f95c2b7.glb
 - Category: palaces_and_temples
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-walled--b51639b8-starter-scene
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-ceremonial-hall-3f95c2b7
 - License: CC0 1.0 Universal
-- Dimensions (m): [32.0, 32.600258111953735, 13.109964370727539]
-- SHA256: a8dd1f1be87a140e7c1416d05ba35cf29a4407d4bc52904a5e8478a01a600f7e
+- Dimensions (m): [16.200000762939453, 13.20005989074707, 12.509994506835938]
+- SHA256: b40c7cace84cf016e2334cf47bf211a42be84fa51e1403db1f2300c8d11ca782
 
-## models/3dassets-imperial-china-palace-and-garden-imperial-throne-chair-ddfa68c5.glb
-- Category: statues_and_props
+## models/3dassets-imperial-china-palace-and-garden-gate-tower-9d0d0bb6.glb
+- Category: gates_walls_bridges
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-imperial-throne-chair-ddfa68c5
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-gate-tower-9d0d0bb6
 - License: CC0 1.0 Universal
-- Dimensions (m): [2.299999952316284, 1.89990234375, 1.8399419784545898]
-- SHA256: 72f967ed7134128dae93df55a622b85756f7297f63bc0c520488899c68c968b8
+- Dimensions (m): [11.199999809265137, 7.200512409210205, 9.98005199432373]
+- SHA256: e397492657cb0a90ba2c7f75107f9eba00bd41272785caeed7ec8ad504a4aa4e
+
+## models/3dassets-imperial-china-palace-and-garden-palace-wall-straight-02b9fb76.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-palace-wall-straight-02b9fb76
+- License: CC0 1.0 Universal
+- Dimensions (m): [4.099999904632568, 0.6601641774177551, 2.7799336910247803]
+- SHA256: 901fb692b9fe351398d14ed7856ba8ceba66a4eb81249bbde3fbeb418339dfd4
+
+## models/3dassets-imperial-china-palace-and-garden-palace-wall-corner-92015453.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-palace-wall-corner-92015453
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.609999895095825, 2.609999895095825, 3.209937334060669]
+- SHA256: b35a5a8b734bbb59bf41194613a577e533203e2281f63f36fdc9bc436d8a3481
 
 ## models/3dassets-imperial-china-palace-and-garden-palace-wall-moon-gate-a6732c7f.glb
 - Category: gates_walls_bridges
@@ -34,85 +50,365 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): [2.549989342689514, 1.2799005508422852, 3.7800018787384033]
 - SHA256: 69d1a316ac9ed6bad1d5c954f1a7173918fa914b413656b7d4521cf372e781b9
 
-## models/3dassets-imperial-china-palace-and-garden-palace-wall-corner-92015453.glb
+## models/3dassets-imperial-china-palace-and-garden-covered-walkway-bay-a5e8e636.glb
 - Category: gates_walls_bridges
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-palace-wall-corner-92015453
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-covered-walkway-bay-a5e8e636
 - License: CC0 1.0 Universal
-- Dimensions (m): [2.609999895095825, 2.609999895095825, 3.209937334060669]
-- SHA256: b35a5a8b734bbb59bf41194613a577e533203e2281f63f36fdc9bc436d8a3481
+- Dimensions (m): [4.099999904632568, 3.8998992443084717, 4.339853286743164]
+- SHA256: 315cddcda4beb86e0aa96a2abb2c04244726e2470f43f6ccfad9d876c9c2b626
 
-## models/3dassets-imperial-china-palace-and-garden-palace-wall-straight-02b9fb76.glb
+## models/3dassets-imperial-china-palace-and-garden-covered-walkway-corne-b66b3357.glb
 - Category: gates_walls_bridges
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-palace-wall-straight-02b9fb76
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-covered-walkway-corne-b66b3357
 - License: CC0 1.0 Universal
-- Dimensions (m): [4.099999904632568, 0.6601641774177551, 2.7799336910247803]
-- SHA256: 901fb692b9fe351398d14ed7856ba8ceba66a4eb81249bbde3fbeb418339dfd4
+- Dimensions (m): [4.199999809265137, 4.199999809265137, 4.830069065093994]
+- SHA256: afa32561dcf64a4e2255f7045ecb9f032ffe92ce98cf32a8551c15dc50f78265
 
-## models/3dassets-imperial-china-palace-and-garden-lotus-pond-pavilion-f0b2d3d6.glb
+## models/3dassets-imperial-china-palace-and-garden-water-pavilion-477e41ba.glb
 - Category: palaces_and_temples
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-lotus-pond-pavilion-f0b2d3d6
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-water-pavilion-477e41ba
 - License: CC0 1.0 Universal
-- Dimensions (m): [20.0, 17.00994497537613, 7.950078010559082]
-- SHA256: 70616742cf9fe139d4b3eed706d10cbd688ab8f5a2e65e502d409b2923cede75
+- Dimensions (m): [6.599999904632568, 6.599999904632568, 7.700037002563477]
+- SHA256: bab023dbb43ed24d45cc1f445519afe55c9b7e549ebabfa5936b1d60b5163ddd
 
-## models/3dassets-imperial-china-palace-and-garden-ceremonial-parasol-cea9c970.glb
+## models/3dassets-imperial-china-palace-and-garden-arched-stone-bridge-f54cac4b.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-arched-stone-bridge-f54cac4b
+- License: CC0 1.0 Universal
+- Dimensions (m): [8.399999618530273, 2.999615430831909, 3.8599443435668945]
+- SHA256: 3e5c0285931879a032cd51641d9d8e8de9c4bbc1c704452a9e329ee3cd35aafd
+
+## models/3dassets-imperial-china-palace-and-garden-courtyard-paving-modu-1ccb86aa.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-courtyard-paving-modu-1ccb86aa
+- License: CC0 1.0 Universal
+- Dimensions (m): [4.0, 4.0, 0.16016113758087158]
+- SHA256: ea1301886cbc776325dfb083d5de316e14eeaf6331ab781d9ec3c1919d2f8faa
+
+## models/3dassets-imperial-china-palace-and-garden-terrace-platform-modu-9ce05313.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-terrace-platform-modu-9ce05313
+- License: CC0 1.0 Universal
+- Dimensions (m): [4.139999866485596, 4.139999866485596, 1.1498805284500122]
+- SHA256: e79ca3843346689361d5860f7e8a1c618a07a8285385dc41e7ab5d9c73c980eb
+
+## models/3dassets-imperial-china-palace-and-garden-terrace-step-flight-50686acc.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-terrace-step-flight-50686acc
+- License: CC0 1.0 Universal
+- Dimensions (m): [4.199999809265137, 2.200299024581909, 1.1501387357711792]
+- SHA256: 42cde14883182da93bb71dcf0281d8ba6c1af35f4f5b76172ceed40745d85c0a
+
+## models/3dassets-imperial-china-palace-and-garden-stone-balustrade-run-3cdcc00b.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-stone-balustrade-run-3cdcc00b
+- License: CC0 1.0 Universal
+- Dimensions (m): [4.260000228881836, 0.2600177228450775, 1.04007089138031]
+- SHA256: 99073eba0495a36bd8e2cb32b12db0126194e198eb7f745dbe35f4d43023daf3
+
+## models/3dassets-imperial-china-palace-and-garden-lacquered-column-and--c9255e03.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-lacquered-column-and--c9255e03
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.9002176523208618, 1.0200384855270386, 5.3899736404418945]
+- SHA256: 860ee4efc22965ae99e52df5bf4ec16f4a61d6079f9cc8694f2101cb46264fff
+
+## models/3dassets-imperial-china-palace-and-garden-bracket-set-cluster-16f17a49.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-bracket-set-cluster-16f17a49
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.899999976158142, 1.173058271408081, 1.010391116142273]
+- SHA256: 1976b6999fbbbd3bdb90b5f871209f4880c4f7db400438c1801837358a23875c
+
+## models/3dassets-imperial-china-palace-and-garden-roof-cassette-hip-2c2e4e52.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-roof-cassette-hip-2c2e4e52
+- License: CC0 1.0 Universal
+- Dimensions (m): [4.800000190734863, 4.800000190734863, 1.2998168468475342]
+- SHA256: f15a135d6d9c74ce24652b38c7bd02fe5cc77b0d4a1f93065bf2a7499aa752c5
+
+## models/3dassets-imperial-china-palace-and-garden-roof-ridge-run-84174949.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-roof-ridge-run-84174949
+- License: CC0 1.0 Universal
+- Dimensions (m): [4.0, 0.4199346899986267, 0.5000897645950317]
+- SHA256: b0f4b56b8c61013a53a15ae492a6adb6f84d94cb07cf27d789892afc3cea5ffb
+
+## models/3dassets-imperial-china-palace-and-garden-dragon-roof-finial-7dd7653a.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-ceremonial-parasol-cea9c970
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-dragon-roof-finial-7dd7653a
 - License: CC0 1.0 Universal
-- Dimensions (m): [1.812147617340088, 1.840000033378601, 3.2600178718566895]
-- SHA256: 3aac603b04de7575b0ca07f1f5b916fe889956f205e7b1d209f1283cf8b27a0a
+- Dimensions (m): [0.7581887543201447, 1.301856517791748, 0.9803181886672974]
+- SHA256: d669b0fceb234687163e5cac4361a28d408884e8c26193f339e542cd3382b068
 
-## models/3dassets-imperial-china-palace-and-garden-bronze-brazier-stand-b637e423.glb
+## models/3dassets-imperial-china-palace-and-garden-latticed-screen-door--252408e2.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-latticed-screen-door--252408e2
+- License: CC0 1.0 Universal
+- Dimensions (m): [4.400000095367432, 0.34000062942504883, 3.0801477432250977]
+- SHA256: 186e8a4170eae410375f7d25ea7853929d38d273a25edf932cc4f773bdfdd382
+
+## models/3dassets-imperial-china-palace-and-garden-rockery-outcrop-a70f96c4.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-rockery-outcrop-a70f96c4
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.217923164367676, 2.3428244590759277, 2.5174384117126465]
+- SHA256: 272abddce24cf04194c8af4d46df21a9a286a5a421ad389c72e9ca9a7ccc53f0
+
+## models/3dassets-imperial-china-palace-and-garden-lotus-pond-edge-strai-4d658d99.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-lotus-pond-edge-strai-4d658d99
+- License: CC0 1.0 Universal
+- Dimensions (m): [4.107131242752075, 2.0599279403686523, 1.0745781660079956]
+- SHA256: 19ffac8d8baebaaa52050066bd2156a3dc859eeefd27e3012c17e9e4e0a89e4c
+
+## models/3dassets-imperial-china-palace-and-garden-lotus-pond-edge-corne-f573f9fb.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-lotus-pond-edge-corne-f573f9fb
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.759999990463257, 2.759999990463257, 0.639819324016571]
+- SHA256: 5c9aa07815b009d8b98c9d6277f741e2204c39f1409ae0d8ec5cc1d65166e4a8
+
+## models/3dassets-imperial-china-palace-and-garden-pond-water-module-65897aa1.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-pond-water-module-65897aa1
+- License: CC0 1.0 Universal
+- Dimensions (m): [4.0, 4.0, 0.3599169850349426]
+- SHA256: da01c9feee3c3e5b3413d824c5618465aba6cffb8a83389107ae2016d41e56c2
+
+## models/3dassets-imperial-china-palace-and-garden-lotus-cluster-9b11a9b2.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-lotus-cluster-9b11a9b2
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.9789681434631348, 1.9400737285614014, 0.5798937082290649]
+- SHA256: d4861753d497af44db09234813116fdc6765f6ea918e378ed047b61d442b73cb
+
+## models/3dassets-imperial-china-palace-and-garden-scholars-stone-05403e94.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-bronze-brazier-stand-b637e423
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-scholars-stone-05403e94
 - License: CC0 1.0 Universal
-- Dimensions (m): [1.0499999523162842, 1.0499999523162842, 0.9879619181156158]
-- SHA256: fb832b149e859bf2e7955b0583a554c87bc062273699f1eec86688f7279fd55d
+- Dimensions (m): [1.606583595275879, 1.1200000047683716, 2.0968475341796875]
+- SHA256: 7843a86dd8ccf0b3a0eeb39a9f74f995d29aa03b3d78591e5a0aa2fa2d802451
 
-## models/3dassets-imperial-china-palace-and-garden-ancestral-altar-table-d4f28bab.glb
+## models/3dassets-imperial-china-palace-and-garden-standing-garden-lante-038d9d21.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-ancestral-altar-table-d4f28bab
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-standing-garden-lante-038d9d21
 - License: CC0 1.0 Universal
-- Dimensions (m): [2.205381393432617, 0.519863486289978, 1.5100218057632446]
-- SHA256: a652004a33debe828c4f1ba258faba0eeb3e3958c1c3acdd9b8f731245be2e39
+- Dimensions (m): [0.7200000286102295, 0.7200000286102295, 2.6199951171875]
+- SHA256: 0537e7a49ae4e0126109906f6264c08a2584a3d06868d4a8f9aab8c7cd531265
 
-## models/3dassets-imperial-china-palace-and-garden-scholars-writing-desk-6b32813c.glb
+## models/3dassets-imperial-china-palace-and-garden-hanging-silk-lantern-24c01831.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-scholars-writing-desk-6b32813c
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-hanging-silk-lantern-24c01831
 - License: CC0 1.0 Universal
-- Dimensions (m): [1.440000057220459, 0.7201098799705505, 0.8099368810653687]
-- SHA256: a47e86757569e9da7c6a200b03be503fb8d89bba57ce8e325e997c9b3a53d998
+- Dimensions (m): [1.0245736837387085, 0.5264165997505188, 2.7346410751342773]
+- SHA256: 66c3862b945bc3e0c4ecf987e2a93b38e0516c1d91114c0a184a5ee832250fde
 
-## models/3dassets-imperial-china-palace-and-garden-bronze-bell-on-frame-7d2d169b.glb
+## models/3dassets-imperial-china-palace-and-garden-floating-water-lanter-5d8204d4.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-bronze-bell-on-frame-7d2d169b
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-floating-water-lanter-5d8204d4
 - License: CC0 1.0 Universal
-- Dimensions (m): [2.550053358078003, 1.2401195764541626, 3.0]
-- SHA256: 4e031a9cd0a80f1d95c45de6147c19b3fb8ca2503df455fe29d2f777a146b73a
+- Dimensions (m): [0.6200000047683716, 0.6200000047683716, 0.47937286482192576]
+- SHA256: a1493471ab72a7271c14663cba018849d9a0a26f8d31abb15606ac9a5dfc72a6
 
-## models/3dassets-imperial-china-palace-and-garden-lacquer-storage-chest-d4266bd5.glb
+## models/3dassets-imperial-china-palace-and-garden-stone-incense-burner-68da1dc2.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-lacquer-storage-chest-d4266bd5
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-stone-incense-burner-68da1dc2
 - License: CC0 1.0 Universal
-- Dimensions (m): [1.4199999570846558, 0.8251582384109497, 1.6539809703826904]
-- SHA256: c9045cce470cc31de58b5081d763b665b2d7842cb8044d2acc58453431721045
+- Dimensions (m): [0.8272847533226013, 1.153503179550171, 1.5001718997955322]
+- SHA256: 402af6cce6d17e6393438b04a947cedd849dd411a9fe78424e75e91a69e832d5
 
-## models/3dassets-imperial-china-palace-and-garden-ceremonial-drum-on-st-66581778.glb
+## models/3dassets-imperial-china-palace-and-garden-bronze-tripod-cauldro-97a938c4.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-ceremonial-drum-on-st-66581778
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-bronze-tripod-cauldro-97a938c4
 - License: CC0 1.0 Universal
-- Dimensions (m): [1.7400000095367432, 1.2523271767422557, 1.896229863166809]
-- SHA256: b7137b74bfa0ad03a8a2f5b9c558647df22c74a34f3689e5053cb9a25e5cf7d0
+- Dimensions (m): [1.600000023841858, 1.9659563302993774, 2.716742753982544]
+- SHA256: 0045769cf32eb969dacb8411f7c321ad9db41ce705708d62a4389b03ebc3d87d
+
+## models/3dassets-imperial-china-palace-and-garden-courtyard-well-9fb10316.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-courtyard-well-9fb10316
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.490027666091919, 1.6000854969024658, 2.7000482082366943]
+- SHA256: 5e6e29313ec58fe301a0e82356a8e78d4f8fede5c727c1226d3659333feaa4a5
+
+## models/3dassets-imperial-china-palace-and-garden-bonsai-in-glazed-pot-e0f303fa.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-bonsai-in-glazed-pot-e0f303fa
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.7438200116157532, 0.6000000238418579, 1.2409878969192505]
+- SHA256: a9137f4df9a51fbd6b815f8c49f885265a4b47a951f09aadd216449518568d8c
+
+## models/3dassets-imperial-china-palace-and-garden-bamboo-clump-66640906.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-bamboo-clump-66640906
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.7347018718719482, 2.0981807708740234, 4.321521759033203]
+- SHA256: 13822c4b7a95dde6eb9d27d966c843144e447dcbba7cc49417e05145390efbbf
+
+## models/3dassets-imperial-china-palace-and-garden-plum-tree-in-blossom-b09709bd.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-plum-tree-in-blossom-b09709bd
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.9689583778381348, 3.2557644844055176, 3.9669275283813477]
+- SHA256: c8fa457292863c3ff5874ca81d44b0c20271b779392d796b324a6238cac97272
+
+## models/3dassets-imperial-china-palace-and-garden-garden-stone-bench-aa1e1d1c.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-garden-stone-bench-aa1e1d1c
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.7999999523162842, 0.5723289176821709, 0.6023085117340088]
+- SHA256: cdea623b881a9fd92d40ffd6219bd224c9e4eb3b5658a3eeb41ced2036d3de0f
+
+## models/3dassets-imperial-china-palace-and-garden-stepping-stone-path-d1017407.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-stepping-stone-path-d1017407
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.4000670909881592, 4.0, 0.22656941413879395]
+- SHA256: 562fdd8d9316f8b6e456022d90a44fc8ff3e32a4f21e179777a4226f8c51d79c
+
+## models/3dassets-imperial-china-palace-and-garden-peony-planter-f6018406.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-peony-planter-f6018406
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.0364954471588135, 0.8843671083450317, 1.2800124511122704]
+- SHA256: daf10d7d049e3a374826c76ef3ba943f255c10e1f4d61cab44aefe72f91ded93
+
+## models/3dassets-imperial-china-palace-and-garden-imperial-throne-chair-ddfa68c5.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-imperial-throne-chair-ddfa68c5
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.299999952316284, 1.89990234375, 1.8399419784545898]
+- SHA256: 72f967ed7134128dae93df55a622b85756f7297f63bc0c520488899c68c968b8
+
+## models/3dassets-imperial-china-palace-and-garden-throne-footstool-b00e5767.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-throne-footstool-b00e5767
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.8799999952316284, 0.5599536299705505, 0.3219665288925171]
+- SHA256: cf3f042d40afdaceabc250033d693d02403c7869a976ba2d3f0c4de932e04b34
+
+## models/3dassets-imperial-china-palace-and-garden-low-tea-table-44124ae8.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-low-tea-table-44124ae8
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.1399999856948853, 0.6599871516227722, 0.42003294825553894]
+- SHA256: f33639e1f7f42e4d816b51a7a321870327d2608a8796995f7c23f08335b644e7
+
+## models/3dassets-imperial-china-palace-and-garden-tea-set-on-tray-b6d3f48a.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-tea-set-on-tray-b6d3f48a
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.6200000047683716, 0.4200189411640167, 0.20701131224632263]
+- SHA256: 6508ec5d2ef5651bd9911aa2887b52c6d9717e54f4a3f0605011b9811849ff21
+
+## models/3dassets-imperial-china-palace-and-garden-guqin-on-stand-ba936ac2.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-guqin-on-stand-ba936ac2
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.2767153978347778, 0.43994981050491333, 0.6599417328834534]
+- SHA256: 393912f2e2139c162592c5353d7ac847dc733163617cd80b85b26b0e2969418a
+
+## models/3dassets-imperial-china-palace-and-garden-calligraphy-brush-sta-2ce8f5d6.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-calligraphy-brush-sta-2ce8f5d6
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.6700000017881393, 0.21998931467533112, 0.4500054717063904]
+- SHA256: eb2cb1cdb71613d56e5b6673c9c5ceb0a739bebfa959dc52393d7c291a82e2a5
+
+## models/3dassets-imperial-china-palace-and-garden-inkstone-and-water-dr-df828331.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-inkstone-and-water-dr-df828331
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.4000000059604645, 0.2599932849407196, 0.08201248198747635]
+- SHA256: 43202632efa2008d3880c13a31957f67be28614ed379722f99c488d87b0dfe6c
+
+## models/3dassets-imperial-china-palace-and-garden-scroll-rack-f7fd0af5.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-scroll-rack-f7fd0af5
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.2400281429290771, 0.42506177723407745, 1.600000023841858]
+- SHA256: 20620cb5b4757a28aa229fb92af8ad5fa0b5fd6e7c614f53bc0c183fae9c99bf
+
+## models/3dassets-imperial-china-palace-and-garden-folding-screen-5a8651b3.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-folding-screen-5a8651b3
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.1090638637542725, 0.802658174186945, 1.9599937219172716]
+- SHA256: c2e1fb0460c5775c7ed346c8c00722e40b8bd451b882d66a44f7d04b91508ebe
+
+## models/3dassets-imperial-china-palace-and-garden-hanging-scroll-pair-81f2dffc.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-hanging-scroll-pair-81f2dffc
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.4999603033065796, 0.08999297767877579, 1.5199999809265137]
+- SHA256: ce8364d472550d39aba3128eb01bf2a3c6d81fa1f280be936c4cf68e6084b108
+
+## models/3dassets-imperial-china-palace-and-garden-ceremonial-banner-pol-5795ed1a.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-ceremonial-banner-pol-5795ed1a
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.0399198830127716, 0.699999988079071, 4.440019607543945]
+- SHA256: 0ac32b8cbdca1cba7555f745b5dafdd1bcb1d57d985c56e7ed9f2a210905c6e1
+
+## models/3dassets-imperial-china-palace-and-garden-pennant-pair-on-poles-2d4a0f4c.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-pennant-pair-on-poles-2d4a0f4c
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.5300000309944153, 0.40005797147750854, 2.9299683570861816]
+- SHA256: 7269ef6464df08e5f3235793e6c60833054a52f2e33d22f67fbf4a41a8071d48
+
+## models/3dassets-imperial-china-palace-and-garden-guardian-lion-pair-58194b81.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-guardian-lion-pair-58194b81
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.700000047683716, 1.4599628448486328, 2.0500290393829346]
+- SHA256: b0e8a705f792c4f81370ce0bc4e5e9db3da0836de1b84f0352f029b12780b3ac
 
 ## models/3dassets-imperial-china-palace-and-garden-polearm-weapon-rack-b76c138a.glb
 - Category: statues_and_props
@@ -130,93 +426,501 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): [1.100000023841858, 1.100000023841858, 1.9439254999160767]
 - SHA256: 138dc2db191c7d9c26c0d38d2f42e8e1ba3ea8f83f013632553d75802c307031
 
-## models/3dassets-imperial-china-palace-and-garden-guardian-lion-pair-58194b81.glb
+## models/3dassets-imperial-china-palace-and-garden-ceremonial-drum-on-st-66581778.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-guardian-lion-pair-58194b81
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-ceremonial-drum-on-st-66581778
 - License: CC0 1.0 Universal
-- Dimensions (m): [2.700000047683716, 1.4599628448486328, 2.0500290393829346]
-- SHA256: b0e8a705f792c4f81370ce0bc4e5e9db3da0836de1b84f0352f029b12780b3ac
+- Dimensions (m): [1.7400000095367432, 1.2523271767422557, 1.896229863166809]
+- SHA256: b7137b74bfa0ad03a8a2f5b9c558647df22c74a34f3689e5053cb9a25e5cf7d0
 
-## models/3dassets-imperial-china-palace-and-garden-pennant-pair-on-poles-2d4a0f4c.glb
+## models/3dassets-imperial-china-palace-and-garden-bronze-bell-on-frame-7d2d169b.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-pennant-pair-on-poles-2d4a0f4c
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-bronze-bell-on-frame-7d2d169b
 - License: CC0 1.0 Universal
-- Dimensions (m): [1.5300000309944153, 0.40005797147750854, 2.9299683570861816]
-- SHA256: 7269ef6464df08e5f3235793e6c60833054a52f2e33d22f67fbf4a41a8071d48
+- Dimensions (m): [2.550053358078003, 1.2401195764541626, 3.0]
+- SHA256: 4e031a9cd0a80f1d95c45de6147c19b3fb8ca2503df455fe29d2f777a146b73a
 
-## models/3dassets-imperial-china-palace-and-garden-ceremonial-banner-pol-5795ed1a.glb
+## models/3dassets-imperial-china-palace-and-garden-lacquer-storage-chest-d4266bd5.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-ceremonial-banner-pol-5795ed1a
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-lacquer-storage-chest-d4266bd5
 - License: CC0 1.0 Universal
-- Dimensions (m): [1.0399198830127716, 0.699999988079071, 4.440019607543945]
-- SHA256: 0ac32b8cbdca1cba7555f745b5dafdd1bcb1d57d985c56e7ed9f2a210905c6e1
+- Dimensions (m): [1.4199999570846558, 0.8251582384109497, 1.6539809703826904]
+- SHA256: c9045cce470cc31de58b5081d763b665b2d7842cb8044d2acc58453431721045
 
-## models/3dassets-imperial-china-palace-and-garden-folding-screen-5a8651b3.glb
+## models/3dassets-imperial-china-palace-and-garden-scholars-writing-desk-6b32813c.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-folding-screen-5a8651b3
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-scholars-writing-desk-6b32813c
 - License: CC0 1.0 Universal
-- Dimensions (m): [2.1090638637542725, 0.802658174186945, 1.9599937219172716]
-- SHA256: c2e1fb0460c5775c7ed346c8c00722e40b8bd451b882d66a44f7d04b91508ebe
+- Dimensions (m): [1.440000057220459, 0.7201098799705505, 0.8099368810653687]
+- SHA256: a47e86757569e9da7c6a200b03be503fb8d89bba57ce8e325e997c9b3a53d998
 
-## models/3dassets-imperial-china-palace-and-garden-scroll-rack-f7fd0af5.glb
+## models/3dassets-imperial-china-palace-and-garden-floor-cushion-set-5e179f9f.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-scroll-rack-f7fd0af5
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-floor-cushion-set-5e179f9f
 - License: CC0 1.0 Universal
-- Dimensions (m): [1.2400281429290771, 0.42506177723407745, 1.600000023841858]
-- SHA256: 20620cb5b4757a28aa229fb92af8ad5fa0b5fd6e7c614f53bc0c183fae9c99bf
+- Dimensions (m): [2.167884349822998, 0.9678844213485718, 0.1600189208984375]
+- SHA256: d97683b9f126a1053100df177b2856747d2c4fb92ef393a4b6bc6e98aca9ee36
 
-## models/3dassets-imperial-china-palace-and-garden-guqin-on-stand-ba936ac2.glb
+## models/3dassets-imperial-china-palace-and-garden-ancestral-altar-table-d4f28bab.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-guqin-on-stand-ba936ac2
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-ancestral-altar-table-d4f28bab
 - License: CC0 1.0 Universal
-- Dimensions (m): [1.2767153978347778, 0.43994981050491333, 0.6599417328834534]
-- SHA256: 393912f2e2139c162592c5353d7ac847dc733163617cd80b85b26b0e2969418a
+- Dimensions (m): [2.205381393432617, 0.519863486289978, 1.5100218057632446]
+- SHA256: a652004a33debe828c4f1ba258faba0eeb3e3958c1c3acdd9b8f731245be2e39
 
-## models/3dassets-imperial-china-palace-and-garden-low-tea-table-44124ae8.glb
+## models/3dassets-imperial-china-palace-and-garden-bronze-brazier-stand-b637e423.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-low-tea-table-44124ae8
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-bronze-brazier-stand-b637e423
 - License: CC0 1.0 Universal
-- Dimensions (m): [1.1399999856948853, 0.6599871516227722, 0.42003294825553894]
-- SHA256: f33639e1f7f42e4d816b51a7a321870327d2608a8796995f7c23f08335b644e7
+- Dimensions (m): [1.0499999523162842, 1.0499999523162842, 0.9879619181156158]
+- SHA256: fb832b149e859bf2e7955b0583a554c87bc062273699f1eec86688f7279fd55d
 
-## models/3dassets-imperial-china-palace-and-garden-throne-footstool-b00e5767.glb
+## models/3dassets-imperial-china-palace-and-garden-ceremonial-parasol-cea9c970.glb
 - Category: statues_and_props
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-throne-footstool-b00e5767
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-ceremonial-parasol-cea9c970
 - License: CC0 1.0 Universal
-- Dimensions (m): [0.8799999952316284, 0.5599536299705505, 0.3219665288925171]
-- SHA256: cf3f042d40afdaceabc250033d693d02403c7869a976ba2d3f0c4de932e04b34
+- Dimensions (m): [1.812147617340088, 1.840000033378601, 3.2600178718566895]
+- SHA256: 3aac603b04de7575b0ca07f1f5b916fe889956f205e7b1d209f1283cf8b27a0a
 
-## models/3dassets-imperial-china-palace-and-garden-peony-planter-f6018406.glb
-- Category: nature
-- Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-peony-planter-f6018406
-- License: CC0 1.0 Universal
-- Dimensions (m): [1.0364954471588135, 0.8843671083450317, 1.2800124511122704]
-- SHA256: daf10d7d049e3a374826c76ef3ba943f255c10e1f4d61cab44aefe72f91ded93
-
-## models/3dassets-imperial-china-palace-and-garden-dragon-roof-finial-7dd7653a.glb
-- Category: statues_and_props
-- Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-dragon-roof-finial-7dd7653a
-- License: CC0 1.0 Universal
-- Dimensions (m): [0.7581887543201447, 1.301856517791748, 0.9803181886672974]
-- SHA256: d669b0fceb234687163e5cac4361a28d408884e8c26193f339e542cd3382b068
-
-## models/3dassets-imperial-china-palace-and-garden-water-pavilion-477e41ba.glb
+## models/3dassets-imperial-china-palace-and-garden-walled--b51639b8-starter-scene.glb
 - Category: palaces_and_temples
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-water-pavilion-477e41ba
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-walled--b51639b8-starter-scene
 - License: CC0 1.0 Universal
-- Dimensions (m): [6.599999904632568, 6.599999904632568, 7.700037002563477]
-- SHA256: bab023dbb43ed24d45cc1f445519afe55c9b7e549ebabfa5936b1d60b5163ddd
+- Dimensions (m): [32.0, 32.600258111953735, 13.109964370727539]
+- SHA256: a8dd1f1be87a140e7c1416d05ba35cf29a4407d4bc52904a5e8478a01a600f7e
+
+## models/3dassets-imperial-china-palace-and-garden-lotus-pond-pavilion-f0b2d3d6.glb
+- Category: palaces_and_temples
+- Creator: creator
+- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-lotus-pond-pavilion-f0b2d3d6
+- License: CC0 1.0 Universal
+- Dimensions (m): [20.0, 17.00994497537613, 7.950078010559082]
+- SHA256: 70616742cf9fe139d4b3eed706d10cbd688ab8f5a2e65e502d409b2923cede75
+
+## models/3dassets-korean-hanok-village-and-street-hanok-main-house-58d31dd2.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-hanok-main-house-58d31dd2
+- License: CC0 1.0 Universal
+- Dimensions (m): [11.199999809265137, 7.963423728942871, 5.718005180358887]
+- SHA256: af29925eb414df85d6302ca4cbee905330194828b9857ac71579c96ec3af098a
+
+## models/3dassets-korean-hanok-village-and-street-hanok-side-wing-13e49593.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-hanok-side-wing-13e49593
+- License: CC0 1.0 Universal
+- Dimensions (m): [7.900000095367432, 5.80029296875, 4.989847660064697]
+- SHA256: f4bd6e46c0d9e083e7976977bde61e3c06798e24648602cddc444ed2d36c2a23
+
+## models/3dassets-korean-hanok-village-and-street-village-gate-house-94dd896b.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-village-gate-house-94dd896b
+- License: CC0 1.0 Universal
+- Dimensions (m): [7.300000190734863, 3.829676389694214, 5.670260906219482]
+- SHA256: 4b79d510bb9cec5e7c0361aaa56a1c6b9a524161afe0eba86c3be3a64bfa2ca2
+
+## models/3dassets-korean-hanok-village-and-street-stone-plinth-base-modu-fd550e95.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-stone-plinth-base-modu-fd550e95
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 3.0, 0.4998931884765625]
+- SHA256: 78b1d18b30317fd9d31bc794395a523b9b7004dd0cc22e412224ba90bf6bc9a8
+
+## models/3dassets-korean-hanok-village-and-street-hanok-maru-floor-modul-1be3f4e4.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-hanok-maru-floor-modul-1be3f4e4
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 2.987914562225342, 0.13994842767715454]
+- SHA256: 4cb483131266b8c81b58037c01495e3dbff38dda58040746aa98f4e9f280edc4
+
+## models/3dassets-korean-hanok-village-and-street-hanok-post-and-beam-fr-919433bc.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-hanok-post-and-beam-fr-919433bc
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 0.7991882562637329, 3.0565409660339355]
+- SHA256: 9609170ab7a2098f3190081b31c86845a57ac2d6480d81b3a7b3669b3428f81d
+
+## models/3dassets-korean-hanok-village-and-street-hanok-room-module-bc2bd008.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-hanok-room-module-bc2bd008
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 3.010060355067253, 2.640066146850586]
+- SHA256: 35f7ac5729e8d388d99ca7dd0585d71d5645af38d8ee00c8c9c6635e9b446131
+
+## models/3dassets-korean-hanok-village-and-street-hipped-tile-roof-modul-fb2a5427.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-hipped-tile-roof-modul-fb2a5427
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0002684593200684, 3.8299999237060547, 1.0502197742462158]
+- SHA256: e4229242d2952192051128b9551a5d4a5ae8af599debf59006b8ac030a4a5090
+
+## models/3dassets-korean-hanok-village-and-street-gabled-tile-roof-modul-b0f6ca5f.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-gabled-tile-roof-modul-b0f6ca5f
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0002684593200684, 3.8299999237060547, 1.0502197742462158]
+- SHA256: bd842997b0a193ab7d27811e5e2f36c7c20e74d47178be9c64db887605427b41
+
+## models/3dassets-korean-hanok-village-and-street-roof-ridge-tile-run-84fe6e09.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-roof-ridge-tile-run-84fe6e09
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 0.4200567603111267, 0.4149296283721924]
+- SHA256: 508c4048829ba3a2ab69ac95c41f440331d332b5cb588dfaa54dfd05bae6e913
+
+## models/3dassets-korean-hanok-village-and-street-eave-tile-run-3ddac357.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-eave-tile-run-3ddac357
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 0.429944783449173, 0.3313405215740204]
+- SHA256: afb7d9d146ea54aa276151b85cc174c5def525a2b5a934c7064f124d2a6e51af
+
+## models/3dassets-korean-hanok-village-and-street-exposed-rafter-set-2923ce1a.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-exposed-rafter-set-2923ce1a
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 1.4199347496032715, 0.8801232576370239]
+- SHA256: c04ae4504cde3822cfeb4d2ba56b437c492f50979e0450bafd15c798fecd7eea
+
+## models/3dassets-korean-hanok-village-and-street-sliding-lattice-door-s-c6fbf39d.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-sliding-lattice-door-s-c6fbf39d
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.640000104904175, 0.34000062942504883, 2.4198858737945557]
+- SHA256: b67d3cfe35c8fc9339cfd8a4151a4b4b4026f20292eecbeafde47ec67130bfe5
+
+## models/3dassets-korean-hanok-village-and-street-sliding-lattice-door-s-6d7207d6.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-sliding-lattice-door-s-6d7207d6
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.640000104904175, 0.34000062942504883, 2.4198858737945557]
+- SHA256: 63ff788e7ec248e0adc7bfa94b1433db417e1b37907a7df963f51a9f9b39b192
+
+## models/3dassets-korean-hanok-village-and-street-hanji-lattice-window-ff57a158.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-hanji-lattice-window-ff57a158
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.5, 0.2999359369277954, 1.419980525970459]
+- SHA256: ffc1d8244008169ca8ba284b8b7656c8b3309e0a2d11c60c6556e5abb7437f11
+
+## models/3dassets-korean-hanok-village-and-street-lifting-lattice-window-1962214e.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-lifting-lattice-window-1962214e
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.5, 1.31384686101228, 1.419980525970459]
+- SHA256: 5ab8d4ac059ada3b102bc00c4c2b90d3267a4bde73278f7abbfac1c6487b03e2
+
+## models/3dassets-korean-hanok-village-and-street-village-wall-straight-10dd1da2.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-village-wall-straight-10dd1da2
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 0.6200140118598938, 2.1099789142608643]
+- SHA256: 980445aa18194b6fd6ba5ac1ecccfe46cda9309804574b24b5c5286cb48eff82
+
+## models/3dassets-korean-hanok-village-and-street-village-wall-corner-36c0db5b.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-village-wall-corner-36c0db5b
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.8300000429153442, 1.8300000429153442, 2.220001697540283]
+- SHA256: 5c0700c524da1d0700638a1cd2c2cdaebf405e334108b4e968c140dbc371e36c
+
+## models/3dassets-korean-hanok-village-and-street-village-wall-end-pier-1430de44.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-village-wall-end-pier-1430de44
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.8600000143051147, 0.8600000143051147, 2.239961862564087]
+- SHA256: 7b97f8d101a6a1f3e317ce3445c65f670188792748da05aac2e2c9e8906d2ed2
+
+## models/3dassets-korean-hanok-village-and-street-courtyard-ground-modul-6ce611a9.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-courtyard-ground-modul-6ce611a9
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 3.0, 0.15235166251659393]
+- SHA256: dd45705d31917eaf683b457dea17c928db06dd39e5ab44224e5c3b794bb1ff87
+
+## models/3dassets-korean-hanok-village-and-street-stone-street-module-92994f78.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-stone-street-module-92994f78
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 3.0, 0.13989806175231934]
+- SHA256: 16fd76419f1b479d85767c6bf37d90a06ab3b21bf5de66aae5adae33e38abecc
+
+## models/3dassets-korean-hanok-village-and-street-stepped-lane-module-647f30fc.glb
+- Category: gates_walls_bridges
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-stepped-lane-module-647f30fc
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 2.8798789978027344, 0.9061250686645508]
+- SHA256: ca48124d80b4d6174f9a8bf737998f125653d499cbe9bc42822816fbafeb186b
+
+## models/3dassets-korean-hanok-village-and-street-ondol-firebox-3a9ac24d.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-ondol-firebox-3a9ac24d
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.8999804258346558, 1.7369685214944184, 1.3600361943244934]
+- SHA256: deb7ca2b3d71a124f7b886aef2c7e730e3a857047ad0c0369a64b75b840128de
+
+## models/3dassets-korean-hanok-village-and-street-ondol-flue-run-bcb58056.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-ondol-flue-run-bcb58056
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 0.7397686839103699, 0.5200353860855103]
+- SHA256: f4a8dbc40f5926abb64cb8725f76a95bbda47acb232e9d3ecc327107bb4af696
+
+## models/3dassets-korean-hanok-village-and-street-chimney-stack-b7f9cd50.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-chimney-stack-b7f9cd50
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.059999942779541, 1.059999942779541, 3.180014133453369]
+- SHA256: e91e94d56da403f19398ddb4415ee323434bafcb2c2df807835df54424b88a0d
+
+## models/3dassets-korean-hanok-village-and-street-kitchen-hearth-block-9012cad3.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-kitchen-hearth-block-9012cad3
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.5, 1.3701285123825073, 1.9903806447982788]
+- SHA256: 10351f5c90ca43123b316ccb86cff749ab94a8550f7c661c3bb52b6aabce3b40
+
+## models/3dassets-korean-hanok-village-and-street-thatched-outbuilding-d60d046d.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-thatched-outbuilding-d60d046d
+- License: CC0 1.0 Universal
+- Dimensions (m): [4.644000053405762, 4.050112843513489, 3.9155356884002686]
+- SHA256: c59916f4bd30e869a615f145fa595201ae58fcc2a711d7f4096a9c9979f603c3
+
+## models/3dassets-korean-hanok-village-and-street-jangdokdae-terrace-fd10afaf.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-jangdokdae-terrace-fd10afaf
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.4800000190734863, 2.759934186935425, 0.34000763297080994]
+- SHA256: 48efb8a7df6a7ae4242c7bfac763cc1bc1d8135058c3d1b0d415c34705c332a1
+
+## models/3dassets-korean-hanok-village-and-street-onggi-jar-large-57747607.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-onggi-jar-large-57747607
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.8400530815124512, 0.8400530815124512, 1.2193714380264282]
+- SHA256: cfde33f78ff68b8924ed643de441b9815ae0c1b2e9df3ce8d6da1803dbceaf73
+
+## models/3dassets-korean-hanok-village-and-street-onggi-jar-medium-106bc5df.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-onggi-jar-medium-106bc5df
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.5799999833106995, 0.5799999833106995, 0.8281373977661133]
+- SHA256: 76140bb47e066b3b77e54a3fd4980b062f56b5de2835d762448c300064dca83a
+
+## models/3dassets-korean-hanok-village-and-street-onggi-jar-small-ed06606f.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-onggi-jar-small-ed06606f
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.3799999952316284, 0.3799999952316284, 0.5025795102119446]
+- SHA256: 3e6cf897c184c8f6c36aef5c029584826ca7dff0e2bf38c431d8fe1166e08ee3
+
+## models/3dassets-korean-hanok-village-and-street-chest-of-drawers-af1b6672.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-chest-of-drawers-af1b6672
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.1800169944763184, 0.8070777133107185, 1.2599999904632568]
+- SHA256: ab253b0306a35111282d834662a3f2f91c0409cfc89d58253f156420eeed6efd
+
+## models/3dassets-korean-hanok-village-and-street-wooden-rice-chest-a32e48a3.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-wooden-rice-chest-a32e48a3
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.0, 0.8925403356552124, 1.6907396912574768]
+- SHA256: b215a011b8ac43d7641a1b6c7de21ea3a8e5de43cef8779c8456c753fb645712
+
+## models/3dassets-korean-hanok-village-and-street-low-table-d9a2a718.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-low-table-d9a2a718
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.7918943166732788, 0.800000011920929, 0.35042575001716614]
+- SHA256: cc2b4e8cba8f7191572c8ec3cc1e57e0c3f4cad3f6338b8592bd3a900e59d384
+
+## models/3dassets-korean-hanok-village-and-street-floor-cushion-set-dc9c83b9.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-floor-cushion-set-dc9c83b9
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.3700000047683716, 0.6399075388908386, 0.1520129144191742]
+- SHA256: a7ea908e3a892345b16e31e9b77438399f86c89f5672916e9a97c89f3a8e5e11
+
+## models/3dassets-korean-hanok-village-and-street-folding-screen-9e9bc656.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-folding-screen-9e9bc656
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.506604552268982, 0.492585645057261, 1.7000000476837158]
+- SHA256: 9a955ac33f405c93f2e4071172cb21925757008433003501985e2c96f24d939c
+
+## models/3dassets-korean-hanok-village-and-street-charcoal-brazier-2aca29dc.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-charcoal-brazier-2aca29dc
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.6106149554252625, 0.6200000047683716, 0.4852791130542755]
+- SHA256: f114c93c4088450d2485b75ca5d0ccca27b6643c2df90470a213b5b97d759cd5
+
+## models/3dassets-korean-hanok-village-and-street-hanging-paper-lantern-539f8e2b.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-hanging-paper-lantern-539f8e2b
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.35395875573158264, 0.3450865149497986, 1.091325397719629]
+- SHA256: 21333c08e54767a176898784cabbf13089e15d7f0607f5cd13c3363afbf6a1f9
+
+## models/3dassets-korean-hanok-village-and-street-standing-paper-lamp-e8a82fcc.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-standing-paper-lamp-e8a82fcc
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.6499999761581421, 0.6499999761581421, 1.6799999475479126]
+- SHA256: b5efe50394f4d125053b21ba20d5d3185a1d3c8a7cd7ecbe2bf29a1ab21f925b
+
+## models/3dassets-korean-hanok-village-and-street-wooden-bench-94b3dfde.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-wooden-bench-94b3dfde
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.899999976158142, 0.5268566012382507, 0.5194616317749023]
+- SHA256: 13582acb42e1d690411abefb720d1501759a6585c5807cee3f2fbc4e3a521fcf
+
+## models/3dassets-korean-hanok-village-and-street-hand-loom-278890aa.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-hand-loom-278890aa
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.600000023841858, 1.2212267015129328, 1.4900000095367432]
+- SHA256: 6221153dd83bfc240a15125693f039d98ea72c1c0b474d37c07370a9dd556d4a
+
+## models/3dassets-korean-hanok-village-and-street-mortar-and-pestle-stan-26fabc1b.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-mortar-and-pestle-stan-26fabc1b
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.0494519472122192, 0.8510841578245163, 1.5243090391159058]
+- SHA256: b1a71bb3efcc16452ac69007f60cf1f45188baee0082654ff976f5417871f345
+
+## models/3dassets-korean-hanok-village-and-street-stone-water-basin-3fc6ace3.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-stone-water-basin-3fc6ace3
+- License: CC0 1.0 Universal
+- Dimensions (m): [0.7718085050582886, 0.7775989174842834, 0.5587655305862427]
+- SHA256: 00a8d17488e68876cf046f78d3544018ae9e1fcb24dc6cd169b7cf2cbb8e83d6
+
+## models/3dassets-korean-hanok-village-and-street-water-trough-878d599c.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-water-trough-878d599c
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.559999942779541, 0.6599065661430359, 0.6998980045318604]
+- SHA256: 0dd001fdf003f3edd8420aa29a76a964e92a30a9a5b0560538390c6f8ee5a1e7
+
+## models/3dassets-korean-hanok-village-and-street-well-head-2795f6c1.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-well-head-2795f6c1
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.200000047683716, 2.200000047683716, 2.4400336742401123]
+- SHA256: bc82e79ca8a0ebdd450b7a432d40cda1e7db82f6127956e885adb372d966c5a1
+
+## models/3dassets-korean-hanok-village-and-street-wooden-bucket-pair-2b3f71d9.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-wooden-bucket-pair-2b3f71d9
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.2400000095367432, 0.5999243259429932, 0.5399810671806335]
+- SHA256: 70d98ddae8c5cb28cb46916cd81227462e1178b3e1381bb09773edd716cee52b
+
+## models/3dassets-korean-hanok-village-and-street-firewood-stack-ef44023d.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-firewood-stack-ef44023d
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.8200000524520874, 0.8282479643821716, 1.1000982522964478]
+- SHA256: 0ed93bd6b38e63fd1ae690e8c19428ab4f8cb7ef43601844e6ed4e7a5102c804
+
+## models/3dassets-korean-hanok-village-and-street-straw-rice-sack-stack-56a248a9.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-straw-rice-sack-stack-56a248a9
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.1469625234603882, 1.1399844884872437, 1.2400106191635132]
+- SHA256: 6dc5ab6b47246fc8ba9fc0bc1df3c3234b01ba5b9d7c85585ab22d89967c38ca
+
+## models/3dassets-korean-hanok-village-and-street-clay-roof-tile-stack-f7d92f3d.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-clay-roof-tile-stack-f7d92f3d
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.1399999856948853, 0.7299869358539581, 0.8760051131248474]
+- SHA256: b628b0503e24b0415019c1e5afc03f5c80cf275ce63cede03741164a27a32bc4
+
+## models/3dassets-korean-hanok-village-and-street-market-stall-with-awni-064ed223.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-market-stall-with-awni-064ed223
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.6600000858306885, 1.2740927934646606, 2.5800042152404785]
+- SHA256: 77543abca2bfec385258e7a278f59139708503a0aa03b669ef889d76b6d0c9e8
+
+## models/3dassets-korean-hanok-village-and-street-produce-basket-set-0d57d77d.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-produce-basket-set-0d57d77d
+- License: CC0 1.0 Universal
+- Dimensions (m): [1.2193856239318848, 0.9876178801059723, 0.35910268127918243]
+- SHA256: f0a2ef4f1edc89ec5d7d6f8039f64660e5cae61bdb79eb4d97b274e90deafa39
+
+## models/3dassets-korean-hanok-village-and-street-hanging-sign-board-15b20163.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-hanging-sign-board-15b20163
+- License: CC0 1.0 Universal
+- Dimensions (m): [2.130115509033203, 0.41703394055366516, 2.6493844985961914]
+- SHA256: adee48863af1814025e1d2d85bce557cdaadc08d1ea820caccf08dda311fac15
 
 ## models/3dassets-korean-hanok-village-and-street-stone-pagoda-ornament-5acf5291.glb
 - Category: statues_and_props
@@ -226,6 +930,22 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): [1.5001013278961182, 1.5001013278961182, 2.569999933242798]
 - SHA256: 972178d4ab73638dc2cd6bc315ff7019ccdbd11692db1d6a8213cd325be6a2a3
 
+## models/3dassets-korean-hanok-village-and-street-persimmon-tree-ec7be2f6.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-persimmon-tree-ec7be2f6
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.8136415481567383, 4.159424781799316, 3.9632716178894043]
+- SHA256: 97dec2ad53616ebfc26c3f31d6703fe79f02fac05f313dddea7db81e0130d1a5
+
+## models/3dassets-korean-hanok-village-and-street-pine-tree-3a5a94a4.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-pine-tree-3a5a94a4
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.118192672729492, 2.4246474504470825, 4.4686665534973145]
+- SHA256: d43ab34766e9be535fc87a06346db5633e9c1c4dc6f84dc44344aee9665ebe66
+
 ## models/3dassets-korean-hanok-village-and-street-bamboo-clump-01131093.glb
 - Category: nature
 - Creator: creator
@@ -234,13 +954,53 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): [1.8385021686553955, 2.270370602607727, 4.409794330596924]
 - SHA256: 13ee5a65ba949aa601eed8ecc92e1a643f30a2cc7442d228c92a778e537ef915
 
-## models/3dassets-imperial-china-palace-and-garden-bamboo-clump-66640906.glb
+## models/3dassets-korean-hanok-village-and-street-persimmon-drying-rack-e6c7ede2.glb
 - Category: nature
 - Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-bamboo-clump-66640906
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-persimmon-drying-rack-e6c7ede2
 - License: CC0 1.0 Universal
-- Dimensions (m): [1.7347018718719482, 2.0981807708740234, 4.321521759033203]
-- SHA256: 13822c4b7a95dde6eb9d27d966c843144e447dcbba7cc49417e05145390efbbf
+- Dimensions (m): [1.3356932401657104, 1.4400020837783813, 1.9244860410690308]
+- SHA256: 3ad3300e3d7130241b7209cbd836c4a90e721f43347c74d6a56ea6b997c27aee
+
+## models/3dassets-korean-hanok-village-and-street-stepping-stone-path-d15fb986.glb
+- Category: statues_and_props
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-stepping-stone-path-d15fb986
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.1209230422973633, 1.0998564958572388, 0.18667113780975342]
+- SHA256: eacb02f8cad05a297e636148b7d911c4500994ae581c3cee29b209ba334bf6e1
+
+## models/3dassets-korean-hanok-village-and-street-lotus-pond-edge-straig-ba4093ac.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-lotus-pond-edge-straig-ba4093ac
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 1.0814522504806519, 0.7004608511924744]
+- SHA256: e792a902227ddb05d0ed2bc476cb16f14c3da134a111a9974e69423ce09610bd
+
+## models/3dassets-korean-hanok-village-and-street-pond-water-module-4e3f2baa.glb
+- Category: nature
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-pond-water-module-4e3f2baa
+- License: CC0 1.0 Universal
+- Dimensions (m): [3.0, 3.0, 0.9000340104103088]
+- SHA256: e3affb2a11aa6f91651e8b0bcd1dc68288ecbc1c33fb9f5b43d208012757d6cc
+
+## models/3dassets-korean-hanok-village-and-street-walled-h-d28cafda-starter-scene.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-walled-h-d28cafda-starter-scene
+- License: CC0 1.0 Universal
+- Dimensions (m): [30.0, 33.41499996185303, 6.138171657919884]
+- SHA256: 405a7407bc459deb6279a9d3a02c5fca45e01cf087c8db2f52bb6bb37b1f37bc
+
+## models/3dassets-korean-hanok-village-and-street-village-gate-and-marke-813aa6fd.glb
+- Category: houses_and_shops
+- Creator: creator
+- Source: https://3dassets.dev/assets/korean-hanok-village-and-street-village-gate-and-marke-813aa6fd
+- License: CC0 1.0 Universal
+- Dimensions (m): [19.579999923706055, 12.990400314331055, 5.790155410766602]
+- SHA256: d45d6250727731172114917addd8191065b7869d2308618ff5481c3789d1528f
 
 ## models/3dassets-botanical-glasshouse-and-palm-house-botanical-glasshou-5298b114.glb
 - Category: nature
@@ -289,14 +1049,6 @@ Only files listed in imperial_approved_assets.json are credited.
 - License: CC0 1.0 Universal
 - Dimensions (m): [0.5550598502159119, 0.5394894480705261, 0.5805000066757202]
 - SHA256: d1b1ceb0e8c87d7fed4bca304efe4e138f09a6de24e42e29773efec44c7a48ad
-
-## models/3dassets-imperial-china-palace-and-garden-plum-tree-in-blossom-b09709bd.glb
-- Category: nature
-- Creator: creator
-- Source: https://3dassets.dev/assets/imperial-china-palace-and-garden-plum-tree-in-blossom-b09709bd
-- License: CC0 1.0 Universal
-- Dimensions (m): [3.9689583778381348, 3.2557644844055176, 3.9669275283813477]
-- SHA256: c8fa457292863c3ff5874ca81d44b0c20271b779392d796b324a6238cac97272
 
 ## models/3dassets-almanac-gardens-blossom-orchard-tree-40e484ef.glb
 - Category: nature
@@ -938,6 +1690,14 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): [8.48988127708435, 2.9132323265075684, 2.615518093109131]
 - SHA256: 506ab82cebe27636f95cb899ead4a2e4b4ee3bcceecb16d958ca0fba26b6254d
 
+## models/nettle_plant.glb
+- Category: nature
+- Creator: Rob Tuytel, Rico Cilliers
+- Source: https://polyhaven.com/a/nettle_plant
+- License: CC0 1.0
+- Dimensions (m): [1.083681657910347, 0.09468342363834381, 0.22425410337746143]
+- SHA256: 8b9f9389f70508a5a9c94534d6b63ceaa94abc1f0cc8c19a1934a41ed3169df6
+
 ## models/periwinkle_plant.glb
 - Category: nature
 - Creator: Amal Kumar
@@ -946,6 +1706,14 @@ Only files listed in imperial_approved_assets.json are credited.
 - Dimensions (m): [1.2353671789169312, 0.33493995666503906, 0.4110017012571916]
 - SHA256: f5adedbb32c59b92850ebe78c8721e4b65a8787e2fd6b03b6496733d3953caf0
 
+## models/shrub_01.glb
+- Category: nature
+- Creator: Rico Cilliers
+- Source: https://polyhaven.com/a/shrub_01
+- License: CC0 1.0
+- Dimensions (m): [2.586661398410797, 0.21897432208061218, 0.4045823737978935]
+- SHA256: 51e5e4e7d469854917de19124f5c0582b2d868e948433e046c5f4b9f59113755
+
 ## models/shrub_02.glb
 - Category: nature
 - Creator: Rico Cilliers
@@ -953,6 +1721,30 @@ Only files listed in imperial_approved_assets.json are credited.
 - License: CC0 1.0
 - Dimensions (m): [5.340904474258423, 2.089372180402279, 2.3099996894598007]
 - SHA256: 3f94b09e69630d4264a0e8a0c6be54c26df9169bc403548ce9d41b148edb01d5
+
+## models/shrub_03.glb
+- Category: nature
+- Creator: Rico Cilliers
+- Source: https://polyhaven.com/a/shrub_03
+- License: CC0 1.0
+- Dimensions (m): [1.3860314041376114, 0.15120303630828857, 0.40460952604189515]
+- SHA256: 9fa0ad063e7c06a625acbb906fc45d203ab8538e5cd7cf4c0eb773539f34d14d
+
+## models/shrub_04.glb
+- Category: nature
+- Creator: Rico Cilliers
+- Source: https://polyhaven.com/a/shrub_04
+- License: CC0 1.0
+- Dimensions (m): [0.8709928840398788, 0.186920166015625, 0.28804527409374714]
+- SHA256: 69348590b0b154411efac89fabd76b0c688e8dbad7aeb42121ebd9d72f82a7f8
+
+## models/shrub_sorrel_01.glb
+- Category: nature
+- Creator: Rico Cilliers
+- Source: https://polyhaven.com/a/shrub_sorrel_01
+- License: CC0 1.0
+- Dimensions (m): [0.35209934413433075, 0.14641037583351135, 0.05800367891788483]
+- SHA256: 915dc776dc1868c7fa32f56752eb123c01f01e5c3141faf666cb4e000bb6a0a1
 
 ## textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_NormalGL.jpg
 - Category: pbr_materials
