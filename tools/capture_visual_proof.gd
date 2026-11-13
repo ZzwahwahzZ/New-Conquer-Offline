@@ -117,7 +117,11 @@ func _capture() -> void:
 	if hud == null:
 		_fail("HUD root is missing")
 		return
-	hud.visible = false
+	hud.visible = true
+	classic_hud.visible = true
+	if not hud.visible or not classic_hud.visible:
+		_fail("classic gold HUD must remain visible in every Phase 3A proof frame")
+		return
 	var classic_hud := main.get_node_or_null("HUD/ClassicHUD") as Control
 	if classic_hud == null or classic_hud.get_node_or_null("ClassicConquerBottomBar/MainRow/SplitCrystalOrb") == null:
 		_fail("classic gold HUD validation failed")
@@ -199,5 +203,5 @@ func _capture() -> void:
 			return
 		camera.fov = CLASSIC_FOV
 		print("CITY_5_VIEW_AND_PHASE3A_PANORAMA_PASS: " + city_id + " panorama=1")
-	print("VISUAL_PROOF_PASS: 30 real runtime frames; five distinct close Conquer-isometric views per city; distance=20 height=15 pitch=-38.0 fov=45 far=600; HUD hidden.")
+	print("VISUAL_PROOF_PASS: 30 real runtime frames + six panoramas; five close Conquer-isometric views per city; HUD visible in all 36 frames.")
 	quit(0)

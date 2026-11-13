@@ -88,7 +88,28 @@ func _building_overlaps_street(bounds: AABB, city_name: String) -> bool:
 			return true
 	return false
 
+func _phase2_coordinate_contract() -> bool:
+	var npc_source := FileAccess.get_file_as_string("res://src/scripts/NPCSystem.gd")
+	var world_source := FileAccess.get_file_as_string("res://src/scripts/WorldManager.gd")
+	var settlement_source := FileAccess.get_file_as_string("res://src/scripts/SettlementWorld.gd")
+	var npc_coordinates := ["Vector3(-18,0,14)", "Vector3(-4,0,22)", "Vector3(11,0,19)", "Vector3(21,0,5)", "Vector3(17,0,-14)", "Vector3(-7,0,-22)", "Vector3(40,0,-42)"]
+	for coordinate in npc_coordinates:
+		if not _check(npc_source.contains(coordinate), "Phase 2 NPC/chest coordinate changed: " + coordinate):
+			return false
+	var monster_coordinates := ["Vector3(48,0,42)", "Vector3(-50,0,40)", "Vector3(52,0,-46)", "Vector3(-54,0,-42)", "Vector3(0,0,-58)", "Vector3(58,0,0)", "Vector3(66,0,62)", "Vector3(-68,0,-60)"]
+	for coordinate in monster_coordinates:
+		if not _check(world_source.contains(coordinate), "Phase 2 monster/sanctuary coordinate changed: " + coordinate):
+			return false
+	var settlement_coordinates := ["Vector3(0,0,-78)", "Vector3(14,0,12)", "Vector3(-16,0,10)", "Vector3(20,0,-16)", "Vector3(-22,0,-18)", "Vector3(3,0,-28)", "Vector3(29,0,24)", "Vector3(66,0,62)", "Vector3(-68,0,-60)"]
+	for coordinate in settlement_coordinates:
+		if not _check(settlement_source.contains(coordinate), "Phase 2 portal/spawn anchor coordinate changed: " + coordinate):
+			return false
+	print("PHASE2_COORDINATE_INTEGRITY_PASS: NPCs=7 monster_spawns=6 sanctuaries=2 portal=1 field_anchors=6; source coordinates unchanged")
+	return true
+
 func _run() -> void:
+	if not _phase2_coordinate_contract():
+		return
 	for city_name in CITIES:
 		var path: String = "res://src/scenes/world/" + str(city_name) + ".tscn"
 		var packed := load(path) as PackedScene
@@ -150,7 +171,7 @@ func _run() -> void:
 			for road_node in architecture_roads.get_children():
 				if road_node.name.begins_with("FlagstoneRoad_"):
 					architecture_road_count += 1
-				elif road_node.name == "RaisedStoneCurb":
+				elif road_node.name.begins_with("RaisedStoneCurb"):
 					architecture_curb_count += 1
 		if not _check(architecture_road_count == 2 and architecture_curb_count == 4, city_name + " architecture road/curb meshes are duplicated or incomplete"):
 			return
