@@ -135,7 +135,8 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  parent.add_child(instance)
  var source_bounds := _renderable_world_bounds(instance)
  if source_bounds.size.length_squared() > 0.0001:
-  var fit_factor := maxf(3.0 / maxf(source_bounds.size.x, 0.001), maxf(6.5 / maxf(source_bounds.size.y, 0.001), 3.0 / maxf(source_bounds.size.z, 0.001)))
+  # Keep a 4% vertical safety margin above the test's 6.5-unit minimum so float rounding and imported-node transforms cannot land exactly on the failing boundary.
+  var fit_factor := maxf(3.0 / maxf(source_bounds.size.x, 0.001), maxf(6.76 / maxf(source_bounds.size.y, 0.001), 3.0 / maxf(source_bounds.size.z, 0.001)))
   instance.scale *= Vector3.ONE * fit_factor
   print("CITY_QUATERNIUS_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " source_size=" + str(source_bounds.size) + " fit_factor=" + str(fit_factor) + " final_scale=" + str(instance.scale))
  _add_static_mesh_collisions(instance)
