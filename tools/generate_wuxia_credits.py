@@ -30,7 +30,7 @@ def main():
  "AI provenance reported by the source pack: " + str(china.get("ai_assisted","not supplied by source")),
  "",
  "| Asset / pack | Creator | License | License URL | Required attribution | Source |",
- "|---|---|---|---|"
+ "|---|---|---|---|---|---|"
  ]
  for item in china.get("assets",[]):
   name=str(item.get("name","Unnamed asset")).replace("|","/")
@@ -63,8 +63,8 @@ def main():
  "## Change log",
  "",
  "- This register is generated from the exact asset manifests on each CI build.",
- "- CC-BY attribution is mandatory whenever a CC-BY asset is moved from the reviewed list into the included library."
+ "- CC-BY attribution is mandatory for every included CC-BY asset."
  ]
  (ROOT/"CREDITS.md").write_text("\n".join(lines)+"\n",encoding="utf-8")
- print(f"WUXIA_CREDITS_GENERATED: included_china={len(china.get('assets',[]))} quaternius_packs={len(quaternius.get('packs',{}))} polyhaven={len(poly.get('assets',{}))} ambientcg={len(ambient.get('assets',{}))}")
+ print(f"WUXIA_CREDITS_GENERATED: included_china={len(china.get('assets',[]))} quaternius_packs={len(quaternius.get('packs',{}))} polyhaven={len(poly.get('assets',{}))} ambientcg={len(ambient.get('assets',{}))} opengameart={len(opengameart.get('models',[]))}")
 if __name__=="__main__": main()
