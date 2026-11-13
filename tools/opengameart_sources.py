@@ -29,7 +29,7 @@ class _Links(HTMLParser):
 
 def discover_opengameart(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
     seen=set()
-    supported={".zip",".blend",".glb",".gltf",".fbx",".obj",".dae",".stl",".ply"}
+    supported={".zip",".blend",".glb",".gltf",".fbx",".obj",".dae",".stl",".ply",".7z"}
     for src in SOURCES:
         try:
             response=session.get(src["page"],timeout=(20,60),headers={"User-Agent":"NewConquerOffline-AssetFetcher/1.0"})
