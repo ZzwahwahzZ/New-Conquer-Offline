@@ -420,7 +420,7 @@ static func _add_palace_platform_and_stairs(root: Node3D, width: float, depth: f
  var paving := PBRMaterialLibrary.build_imperial_paving_material()
  var marble := PBRMaterialLibrary.build_plaza_material()
  var platform_size := Vector3(width+5.0,4.0,depth+5.0)
- _box(root,"ImperialPalaceRaisedStonePlinth_3_5m",Vector3(0.0,-2.0,0.0),platform_size,paving,1.0)
+ _box(root,"ImperialPalaceRaisedStonePlinth_4_0m",Vector3(0.0,-2.0,0.0),platform_size,paving,1.0)
  var collision_body := StaticBody3D.new()
  collision_body.name = "ImperialPalacePlinthAndStairCollision"
  var platform_collision := CollisionShape3D.new()
