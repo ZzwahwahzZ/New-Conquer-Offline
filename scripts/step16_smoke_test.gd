@@ -53,6 +53,7 @@ func _run() -> void:
 		return
 	var builder_source := FileAccess.get_file_as_string(builder_path)
 	var settlement_source := FileAccess.get_file_as_string(settlement_path)
+	var street_source := FileAccess.get_file_as_string("res://src/scripts/CityStreetDressing.gd")
 	if not _require(settlement_source.contains("CityArchitectureBuilder.build(get_node(\"ArchitectureAssetSlot\"), settlement_id"), "SettlementWorld does not invoke build_city before validation"):
 		return
 	if not _require(builder_source.contains("_instantiate_quaternius_building(slot") and builder_source.contains("detailed_buildings=80"), "imported modular building generation is not connected to the 80-building city builder"):
@@ -62,6 +63,12 @@ func _run() -> void:
 	if not _require(builder_source.contains("ChineseImperialBuilder.build("), "Chinese imperial architectural assets are not connected"):
 		return
 	if not _require(builder_source.contains("_OpenWorld_800x800") and builder_source.contains("MultiMeshInstance3D"), "open-world biome and batched foliage builder are missing"):
+		return
+	if not _require(street_source.contains("Waterlands_ReflectiveInnerHarbor_160m") and street_source.contains("Waterlands_RaisedTimberStreetNetwork_0_6m"), "Waterlands raised harbor and 0.6m promenade network are missing"):
+		return
+	if not _require(street_source.contains("DarkForest_250AncientTreeTrunks_MultiMesh") and street_source.contains("DarkForest_250AncientTreeCrowns_MultiMesh"), "DarkForest 250-tree MultiMesh canopy is missing"):
+		return
+	if not _require(settlement_source.contains("environment.fog_enabled = settlement_id == \"DarkForest\""), "DarkForest atmospheric fog is not enabled"):
 		return
 
 	for city_id in CITIES:
