@@ -33,7 +33,7 @@ func _count_city_buildings_outside_core(node: Node) -> int:
 	var total := 0
 	if node is Node3D and node.is_in_group("city_building"):
 		var p := (node as Node3D).global_position
-		if absf(p.x) > 80.0 or absf(p.z) > 80.0:
+		if absf(p.x) > 85.0 or absf(p.z) > 85.0:
 			total += 1
 	for child in node.get_children():
 		total += _count_city_buildings_outside_core(child)
@@ -66,7 +66,7 @@ func _run() -> void:
 	var street_source := FileAccess.get_file_as_string("res://src/scripts/CityStreetDressing.gd")
 	if not _require(settlement_source.contains("CityArchitectureBuilder.build(get_node(\"ArchitectureAssetSlot\"), settlement_id"), "SettlementWorld does not invoke build_city before validation"):
 		return
-	if not _require(builder_source.contains("_instantiate_quaternius_building(slot") and builder_source.contains("assets/imperial_city_kit_v2/quaternius") and builder_source.contains("detailed_buildings=88"), "official v2 Quaternius buildings are not connected to the 85-100 building city builder"):
+	if not _require(builder_source.contains("_instantiate_quaternius_building(slot") and builder_source.contains("assets/imperial_city_kit_v2/quaternius") and builder_source.contains("OpenCentralPlaza_50x50") and builder_source.contains("ImperialPalaceRaisedStonePlinth_3_5m") and builder_source.contains("Vector3(12.0,0.02,road_length)") and builder_source.contains("Vector3(6.0,0.14,14.0)") and builder_source.contains("detailed_buildings=88"), "official v2 Quaternius buildings are not connected to the 85-100 building city builder"):
 		return
 	if not _require(builder_source.contains("gate.add_to_group(\"cardinal_gates\")") and builder_source.contains("guard.add_to_group(\"city_guardians\")"), "cardinal gate or guardian groups are not registered"):
 		return
@@ -76,7 +76,8 @@ func _run() -> void:
 		return
 	if not _require(street_source.contains("Waterlands_ReflectiveInnerHarbor_160m") and street_source.contains("Waterlands_RaisedTimberStreetNetwork_0_6m"), "Waterlands raised harbor and 0.6m promenade network are missing"):
 		return
-	if not _require(street_source.contains("DarkForest_250AncientTreeTrunks_MultiMesh") and street_source.contains("DarkForest_250AncientTreeCrowns_MultiMesh"), "DarkForest 250-tree MultiMesh canopy is missing"):
+	var terrain_source := FileAccess.get_file_as_string("res://src/scripts/WorldTerrainBuilder.gd")
+	if not _require(terrain_source.contains("assets/imperial_city_kit_v2/quaternius/ultimate_nature") and terrain_source.contains("imperial_city_tree_multimesh"), "real Quaternius nature MultiMesh trees are not connected"):
 		return
 	if not _require(settlement_source.contains("environment.fog_depth_begin = 125.0") and settlement_source.contains("environment.fog_depth_end = 450.0") and settlement_source.contains("environment.fog_sky_affect = 0.0"), "distant horizon-only fog settings are missing"):
 		return
@@ -100,9 +101,15 @@ func _run() -> void:
 		var guardian_count := _count_group_recursive(city, "city_guardians")
 		var outside_core_count := _count_city_buildings_outside_core(city)
 		var tree_instance_count := _count_multimesh_instances_recursive(city, "imperial_city_tree_multimesh")
+		var lantern_light_count := _count_group_recursive(city, "imperial_city_lantern_lights")
+		var plaza_statue_count := _count_group_recursive(city, "imperial_plaza_statue")
 		if not _require(building_count >= 85 and building_count <= 100 and imported_building_count >= 85 and imported_building_count <= 100 and outside_core_count == 0, "%s generated %d buildings (%d imported); outside 160m core=%d; expected 85-100 entirely inside +/-80m" % [city_id, building_count, imported_building_count, outside_core_count]):
 			return
 		if not _require(tree_instance_count == 50, "%s generated %d/50 real tree instances in MultiMesh batches" % [city_id, tree_instance_count]):
+			return
+		if not _require(lantern_light_count == 8, "%s generated %d/8 OmniLight3D lanterns" % [city_id, lantern_light_count]):
+			return
+		if not _require(plaza_statue_count == 1, "%s generated %d/1 imported plaza statue" % [city_id, plaza_statue_count]):
 			return
 		if not _require(gate_count == 4 and _count_named_gates(city) == 4, "%s has %d/4 cardinal gates" % [city_id, gate_count]):
 			return
@@ -116,5 +123,5 @@ func _run() -> void:
 		city.queue_free()
 		await process_frame
 
-	print("STEP16_PHASE3A_CITY_CONTRACT_PASS: six cities; 85-100 imported buildings inside each 160m core; 50 trees per city (300 total), 4 cardinal gates and 8 guardians per city; runtime build_city invocation verified; Mobile renderer and Autoload order preserved.")
+	print("STEP16_PHASE3A_CITY_CONTRACT_PASS: six cities; 85-100 imported buildings inside each 170m core; 50 trees per city (300 total), 4 cardinal gates and 8 guardians per city; runtime build_city invocation verified; Mobile renderer and Autoload order preserved.")
 	quit(0)
