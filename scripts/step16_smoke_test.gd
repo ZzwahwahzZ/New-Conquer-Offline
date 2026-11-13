@@ -40,6 +40,16 @@ func _run() -> void:
 		return
 	if not _require(ResourceLoader.load("res://src/scripts/CityArchitectureBuilder.gd") != null, "CityArchitectureBuilder failed to load"):
 		return
+	if not _require(ResourceLoader.load("res://src/scripts/ChineseImperialBuilder.gd") != null, "ChineseImperialBuilder failed to load"):
+		return
+	for asset_path in [
+		"res://assets/environment/architecture/imperial_china_palace_and_garden.glb",
+		"res://assets/environment/architecture/ceremonial_hall.glb",
+		"res://assets/environment/architecture/gate_tower.glb",
+		"res://assets/environment/architecture/water_pavilion.glb"
+	]:
+		if not _require(ResourceLoader.exists(asset_path), "Required CC0 Chinese architecture asset missing: " + asset_path):
+			return
 	if not _require(ResourceLoader.load("res://src/scripts/WorldManager.gd") != null, "WorldManager failed to load"):
 		return
 	if not _require(ResourceLoader.load("res://src/scripts/WorldTerrainBuilder.gd") != null, "WorldTerrainBuilder failed to load"):
@@ -49,15 +59,17 @@ func _run() -> void:
 		return
 	if not _require(architecture_source.contains("detailed_buildings=24") and architecture_source.contains("_GrandCityGate") and architecture_source.contains("GateGuardian_"), "24-building urban fabric, cardinal gates or guardians are missing"):
 		return
+	if not _require(architecture_source.contains("ChineseImperialBuilder.build("), "TwinCity CC0 Chinese imperial architecture is not connected to the city builder"):
+		return
 	if not _require(architecture_source.contains("_OpenWorld_800x800") and architecture_source.contains("MultiMeshInstance3D"), "450x450 open-world biome or MultiMesh foliage builder is missing"):
 		return
 	var settlement_source := FileAccess.get_file_as_string("res://src/scripts/SettlementWorld.gd")
 	if not _require(not settlement_source.contains("ChineseImperialBuilder.build("), "Obsolete enclosed TwinCity imperial block is still being instanced"):
 		return
 	var capture_source := FileAccess.get_file_as_string("res://tools/capture_visual_proof.gd")
-	if not _require(capture_source.contains("CITY_IDS") and capture_source.contains("SHOTS") and capture_source.contains("05_orbit_90") and capture_source.contains("PI * 0.5"), "Six-city five-view proof capture or 90-degree gate orbit is missing"):
+	if not _require(capture_source.contains("CITY_IDS") and capture_source.contains("SHOTS") and capture_source.contains("05_aerial_oblique") and capture_source.contains("PI * 0.5"), "Six-city five-view proof capture or aerial oblique camera is missing"):
 		return
-	if not _require(capture_source.contains("const CITY_IDS := [\"TwinCity\",\"DesertLand\",\"VolcanoLand\",\"IceLand\",\"Waterlands\",\"DarkForest\"]") and capture_source.contains("\"suffix\":\"05_orbit_90\""), "Six-city proof set or named 90-degree orbit frame is incomplete"):
+	if not _require(capture_source.contains("const CITY_IDS := [\"TwinCity\",\"DesertLand\",\"VolcanoLand\",\"IceLand\",\"Waterlands\",\"DarkForest\"]") and capture_source.contains("\"suffix\":\"05_aerial_oblique\""), "Six-city proof set or named aerial oblique frame is incomplete"):
 		return
-	print("STEP16_PHASE1_OPEN_PLAZA_24_BUILDINGS_FOUR_GATES_800M_WORLD_AND_30_FRAME_PROOF_PASS")
+	print("STEP16_PHASE1_OPEN_PLAZA_24_BUILDINGS_FOUR_GATES_800M_WORLD_AND_36_FRAME_PROOF_PASS")
 	get_tree().quit(0)
