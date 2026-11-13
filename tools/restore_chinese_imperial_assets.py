@@ -70,7 +70,7 @@ def main():
   if license_slug not in ("cc0-1.0","cc-by-4.0","cc-by"):
    print("WUXIA_ASSET_LICENSE_SKIP",aid,license_slug,flush=True); continue
   name=str(item.get("name") or item.get("title") or f"imperial_asset_{aid}")
-  filename=PINNED.get(aid,slug(name)+".glb")
+  filename=PINNED.get(aid,slug(name).replace("_imperial_china_palace_and_garden","")+".glb")
   folder=category(name)
   target=DEST/folder/filename
   url=item.get("cdnUrl")
@@ -94,6 +94,11 @@ def main():
   ("mountain pine","pine_tree.glb","props_nature",("pine",)),
   ("garden bush","garden_bush.glb","props_nature",("bush",)),
   ("bamboo cluster","bamboo_cluster.glb","props_nature",("bamboo",)),
+  ("pond water module","pond_water_module.glb","props_nature",("pond","water")),
+  ("standing garden lantern","standing_garden_lantern.glb","props_nature",("lantern",)),
+  ("lotus cluster","lotus_cluster.glb","props_nature",("lotus",)),
+  ("rockery outcrop","rockery_outcrop.glb","props_nature",("rockery",)),
+  ("stone incense burner","stone_incense_burner.glb","props_nature",("incense","burner")),
  ]
  for query,filename,folder,required_terms in search_targets:
   query_url="https://3dassets.dev/api/v1/assets?"+urllib.parse.urlencode({"q":query,"limit":20})
