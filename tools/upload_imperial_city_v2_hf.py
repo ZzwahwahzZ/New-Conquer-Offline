@@ -24,9 +24,10 @@ def main():
  api.upload_folder(repo_id=REPO,repo_type="dataset",folder_path=str(PREFABS),path_in_repo=PREFAB_PREFIX,
                    commit_message="Upload normalized Imperial City v2 Godot prefab scenes")
  remote={}
- for item in api.list_repo_tree(repo_id=REPO,repo_type="dataset",path_in_repo=PREFIX,recursive=True,expand=True):
-  if getattr(item,"type",None)=="file" or item.__class__.__name__=="RepoFile":
-   remote[item.path]=getattr(item,"size",None)
+ for target_prefix in (PREFIX,PREFAB_PREFIX):
+  for item in api.list_repo_tree(repo_id=REPO,repo_type="dataset",path_in_repo=target_prefix,recursive=True,expand=True):
+   if getattr(item,"type",None)=="file" or item.__class__.__name__=="RepoFile":
+    remote[item.path]=getattr(item,"size",None)
  missing=sorted(set(expected)-set(remote))
  mismatched=[(k,v,remote.get(k)) for k,v in expected.items() if k in remote and remote[k] is not None and remote[k]!=v]
  if missing or mismatched: raise SystemExit(f"HF verification failed missing={missing[:10]} size_mismatch={mismatched[:10]}")
