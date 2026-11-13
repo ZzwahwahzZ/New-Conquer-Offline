@@ -44,7 +44,7 @@ static func _replace_city_gates(parent: Node3D) -> void:
   for child in gate.get_children():
    if child.name in ["KenneyGateModel","GatehouseTower","GateTowerCrenellation","GateArchLintel","ArchColumn"]:
     child.visible=false
-  _add_model(gate,"gate_tower.glb","TwinCity_ChineseGateTower_"+direction,Vector3(0.0,0.0,-148.0),Vector3.ONE*1.8,true)
+  _add_model(gate,"gate_tower.glb","TwinCity_ChineseGateTower_"+direction,Vector3(0.0,0.0,-88.0),Vector3.ONE*1.8,true)
 static func _add_model_collisions(root: Node,all_meshes: bool) -> void:
  for node in _all_nodes(root):
   if not node is MeshInstance3D: continue
