@@ -647,12 +647,11 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 heightmap_ground=1 height_aligned_routes=4 horizon_ridge=44 kenney_nature=1" % city)
 
 static func _build_horizon_ridge(parent: Node3D, city: String, p: Dictionary) -> void:
- var ridge_mesh := CylinderMesh.new()
- ridge_mesh.top_radius = 0.0
- ridge_mesh.bottom_radius = 46.0
- ridge_mesh.height = 112.0
- ridge_mesh.radial_segments = 7
- ridge_mesh.rings = 3
+ var ridge_mesh := SphereMesh.new()
+ ridge_mesh.radius = 48.0
+ ridge_mesh.height = 76.0
+ ridge_mesh.radial_segments = 12
+ ridge_mesh.rings = 8
  var ridge_mm := MultiMesh.new()
  ridge_mm.transform_format = MultiMesh.TRANSFORM_3D
  ridge_mm.mesh = ridge_mesh
@@ -660,10 +659,10 @@ static func _build_horizon_ridge(parent: Node3D, city: String, p: Dictionary) ->
  for i in range(44):
   var angle := TAU * float(i) / 44.0
   var radius := 354.0 + float((i * 17) % 38)
-  var height_scale := 0.72 + float((i * 13) % 65) / 100.0
-  var scale := Vector3(0.78 + float(i % 4) * 0.12, height_scale, 0.78 + float(i % 5) * 0.10)
+  var height_scale := 0.68 + float((i * 13) % 42) / 100.0
+  var scale := Vector3(1.05 + float(i % 4) * 0.10, height_scale, 1.2 + float(i % 5) * 0.08)
   var basis := Basis(Vector3.UP, angle * 0.12).scaled(scale)
-  var position := Vector3(cos(angle) * radius, 38.0, sin(angle) * radius)
+  var position := Vector3(cos(angle) * radius, 8.0, sin(angle) * radius)
   ridge_mm.set_instance_transform(i, Transform3D(basis, position))
  var ridge := MultiMeshInstance3D.new()
  ridge.name = city + "_DistantHorizonMountainRidge"
@@ -767,6 +766,15 @@ static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary, direct
  helmet.position.y = 2.31
  guard.add_child(helmet)
  helmet.material_override = trim
+ var steel := _material(p.stone,0.48)
+ var red_accent := _material(p.accent,0.42)
+ _box(guard,"ArmoredBreastplate",Vector3(0.0,1.32,0.36),Vector3(0.86,0.72,0.24),steel,1.0)
+ _box(guard,"GoldBreastplateEmblem",Vector3(0.0,1.42,0.5),Vector3(0.28,0.34,0.06),trim,1.0)
+ for arm_side in [-1.0,1.0]:
+  _box(guard,"ArmoredShoulderPauldron",Vector3(arm_side*0.48,1.72,0.02),Vector3(0.5,0.34,0.48),trim,1.0)
+  _box(guard,"ArmoredForearmBracer",Vector3(arm_side*0.55,1.12,0.16),Vector3(0.24,0.5,0.34),steel,1.0)
+  _box(guard,"ArmoredShinGreave",Vector3(arm_side*0.22,0.48,0.18),Vector3(0.25,0.72,0.34),steel,1.0)
+ _box(guard,"CrimsonBackCape",Vector3(0.0,1.22,-0.32),Vector3(0.72,1.1,0.12),red_accent,1.0)
  var spear := MeshInstance3D.new()
  var spear_mesh := CylinderMesh.new()
  spear_mesh.top_radius = 0.035
@@ -776,6 +784,16 @@ static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary, direct
  spear.position = Vector3(side*-0.58,1.35,0.0)
  guard.add_child(spear)
  spear.material_override = trim
+ var spear_tip := MeshInstance3D.new()
+ spear_tip.name = "PolishedSpearHead"
+ var spear_tip_mesh := CylinderMesh.new()
+ spear_tip_mesh.top_radius = 0.0
+ spear_tip_mesh.bottom_radius = 0.12
+ spear_tip_mesh.height = 0.42
+ spear_tip.mesh = spear_tip_mesh
+ spear_tip.position = Vector3(side*-0.58,2.82,0.0)
+ guard.add_child(spear_tip)
+ spear_tip.material_override = trim
 
 static func _make_building(city: String, p: Dictionary, index: int, s: float) -> Node3D:
  var root := Node3D.new()
