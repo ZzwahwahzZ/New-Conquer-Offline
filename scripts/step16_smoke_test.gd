@@ -13,6 +13,12 @@ func _require(condition: bool, message: String) -> bool:
 	quit(1)
 	return false
 
+func _collect_unique_building_sources(node: Node, output: Dictionary) -> void:
+	if node.is_in_group("city_building") and node.has_meta("source_asset_path"):
+		output[str(node.get_meta("source_asset_path"))] = true
+	for child in node.get_children():
+		_collect_unique_building_sources(child, output)
+
 func _count_group_recursive(node: Node, group_name: String) -> int:
 	var total := 1 if node.is_in_group(group_name) else 0
 	for child in node.get_children():
@@ -102,6 +108,9 @@ func _run() -> void:
 		await process_frame
 		var building_count := _count_group_recursive(city, "city_building")
 		var imported_building_count := _count_group_recursive(city, "imported_city_building")
+		var unique_building_sources: Dictionary = {}
+		_collect_unique_building_sources(city, unique_building_sources)
+		var unique_building_source_count := unique_building_sources.size()
 		var gate_count := _count_group_recursive(city, "cardinal_gates")
 		var guardian_count := _count_group_recursive(city, "city_guardians")
 		var outside_core_count := _count_city_buildings_outside_core(city)
@@ -121,7 +130,7 @@ func _run() -> void:
 		var pond_edge_count := _count_group_recursive(city, "imperial_plaza_pond_edges")
 		var incense_burner_count := _count_group_recursive(city, "imperial_plaza_incense_burners")
 		var rockery_count := _count_group_recursive(city, "imperial_plaza_rockery")
-		if not _require(building_count >= 85 and building_count <= 100 and imported_building_count >= 85 and imported_building_count <= 100 and outside_core_count == 0, "%s generated %d buildings (%d imported); outside 170m core=%d; expected 85-100 entirely inside +/-85m" % [city_id, building_count, imported_building_count, outside_core_count]):
+		if not _require(building_count >= 85 and building_count <= 100 and imported_building_count >= 85 and imported_building_count <= 100 and unique_building_source_count >= 5 and outside_core_count == 0, "%s generated %d buildings (%d imported, %d unique models); outside 170m core=%d; expected 85-100 and at least five unique models" % [city_id, building_count, imported_building_count, unique_building_source_count, outside_core_count]):
 			return
 		if not _require(tree_instance_count == 60, "%s generated %d/60 real tree instances in MultiMesh batches" % [city_id, tree_instance_count]):
 			return
