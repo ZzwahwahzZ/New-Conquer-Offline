@@ -11,6 +11,8 @@ UA="New-Conquer-Offline-Wuxia-Imperial-Pack/3.0"
 PINNED={
  "36222":"imperial_china_palace_and_garden.glb",
  "36211":"guardian_lion_pair.glb",
+ "36188":"hanging_silk_lantern.glb",
+ "36179":"dragon_roof_finial.glb",
  "36163":"ceremonial_hall.glb",
  "36164":"gate_tower.glb",
  "36161":"palace_wall_straight.glb",
@@ -38,7 +40,7 @@ def download(url,dest,expected):
  digest=hashlib.sha256(data).hexdigest(); tmp.replace(dest); return digest,len(data)
 def category(name):
  n=name.lower()
- if any(k in n for k in ("hall","palace","pavilion","gate tower","tower","wall","bridge","walkway","roof","house","temple","balustrade","screen door","courtyard","arch")): return "architecture"
+ if any(k in n for k in ("hall","palace","pavilion","gate tower","tower","wall","bridge","walkway","roof","house","temple","pagoda","stall","balustrade","screen door","courtyard","arch")): return "architecture"
  if any(k in n for k in ("tile","paving","floor","stone slab","stair","step")): return "paving"
  return "props_nature"
 def slug(value):
