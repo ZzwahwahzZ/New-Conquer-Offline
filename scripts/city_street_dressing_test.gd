@@ -210,7 +210,7 @@ func _run() -> void:
 			var world_bounds := _renderable_world_bounds(imported_root)
 			print("CITY_BUILDING_WORLD_BOUNDS: " + city_name + " name=" + str(imported_root.name) + " position=" + str(imported_root.global_position) + " size=" + str(world_bounds.size))
 			if not _check(world_bounds.size.x >= 3.0 and world_bounds.size.y >= 6.5 and world_bounds.size.z >= 3.0, city_name + " imported house/tower is undersized: " + str(world_bounds.size)):
-				return false
+				return
 		if not _check(renderable_imports == imported_buildings.size(), city_name + " has imported buildings without renderable mesh geometry"):
 			return
 		print("CITY_BUILDING_SOURCE_AUDIT: " + city_name + " detailed=" + str(detailed_buildings) + " imported=" + str(imported_buildings.size()) + " renderable_imports=" + str(renderable_imports))
