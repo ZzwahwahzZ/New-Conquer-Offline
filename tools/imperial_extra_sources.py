@@ -4,7 +4,7 @@ import re
 from urllib.parse import urlparse
 
 ASSET3D_TERMS = {
-    "architecture": ["imperial chinese palace", "chinese palace", "ceremonial hall", "gate tower", "moon gate", "palace wall", "covered walkway", "water pavilion", "arched stone bridge", "roof cassette", "roof ridge", "bracket set", "lattice screen", "pagoda", "chinese temple", "asian house", "chinese gate", "stone bridge", "watchtower", "stone wall", "pavilion"],
+    "architecture": ["imperial chinese palace", "chinese palace", "ceremonial hall", "gate tower", "moon gate", "palace wall", "covered walkway", "water pavilion", "arched stone bridge", "roof cassette", "roof ridge", "bracket set", "lattice screen", "pagoda", "chinese temple", "asian house", "chinese house", "japanese house", "wooden house", "market stall", "shop", "pagoda", "temple", "shrine", "arch bridge", "stone bridge", "watchtower", "stone wall", "pavilion"],
     "ornaments": ["guardian lion", "dragon roof finial", "garden lantern", "silk lantern", "bronze tripod cauldron", "stone incense burner", "bronze bell", "ceremonial drum", "dragon statue", "lion statue", "stone lantern", "chinese lantern", "fountain", "torch", "pillar"],
     "nature": ["bamboo clump", "plum tree blossom", "bonsai pine", "lotus cluster", "rockery outcrop", "peony planter", "willow tree", "pine tree", "bamboo", "cherry blossom", "rock", "bush", "grass"],
 }
