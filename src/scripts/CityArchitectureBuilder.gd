@@ -140,7 +140,7 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
      var twin_chinese_palace := city == "TwinCity" and ((anchor_row == 0 and anchor_column == 0) or (anchor_row == 0 and anchor_column == 10) or (anchor_row == 10 and anchor_column == 0))
      if not twin_chinese_palace:
       var palace_center := Vector3((float(coordinates[anchor_column]) + float(coordinates[anchor_column+1])) * 0.5,0.0,(float(coordinates[anchor_row]) + float(coordinates[anchor_row+1])) * 0.5)
-      var palace := _instantiate_quaternius_building(slot,city,index,palace_center,height_image,true)
+      var palace := _instantiate_quaternius_building(slot,city,index,palace_center,height_image,true,p)
       if palace == null:
        push_error("CITY_IMPORTED_PALACE_MISSING: %s index=%d" % [city,index])
       else:
@@ -151,7 +151,7 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
    if absf(x) < 8.0 or absf(z) < 8.0:
     index += 1
     continue
-   var building := _instantiate_quaternius_building(slot,city,index,Vector3(x,0.0,z),height_image,false)
+   var building := _instantiate_quaternius_building(slot,city,index,Vector3(x,0.0,z),height_image,false,p)
    if building == null:
     push_error("CITY_IMPORTED_BUILDING_MISSING: %s index=%d; refusing primitive placeholder geometry" % [city,index])
    else:
@@ -305,7 +305,7 @@ static func _first_mesh_node(root: Node) -> MeshInstance3D:
    return current as MeshInstance3D
  return null
 
-static func _instantiate_quaternius_building(parent: Node3D, city: String, index: int, at: Vector3, height_image: Image, grand_building: bool = false) -> Node3D:
+static func _instantiate_quaternius_building(parent: Node3D, city: String, index: int, at: Vector3, height_image: Image, grand_building: bool, p: Dictionary) -> Node3D:
  var candidates: Array[String] = []
  var all_models: Array[String] = []
  _collect_quaternius_models("res://assets/environment/quaternius/ultimate_fantasy_rts", all_models)
@@ -332,42 +332,90 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  instance.position = at
  instance.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
  instance.rotation.y = atan2(-at.x,-at.z)
- # Imported models were previously normalized to only 3m wide, making the
- # city read as empty. Fit each real model to a deliberate architectural class.
+ # Fit every imported GLB to a measured residential, commercial or palace class.
  instance.scale = Vector3(3.0, 2.0, 3.0)
  parent.add_child(instance)
+ var is_grand_building := grand_building
+ var target_width := 22.0 if is_grand_building else (14.0 if posmod(index, 3) == 0 else 10.0)
+ var target_depth := 18.0 if is_grand_building else (12.0 if posmod(index, 3) == 0 else 10.0)
+ var target_height := 15.0 if is_grand_building else (10.0 if posmod(index, 3) == 0 else 7.0)
  var source_bounds := _renderable_world_bounds(instance)
  if source_bounds.size.length_squared() > 0.0001:
-  var is_grand_building := grand_building
-  var target_width := 22.0 if is_grand_building else (14.0 if posmod(index, 3) == 0 else 10.0)
-  var target_depth := 18.0 if is_grand_building else (12.0 if posmod(index, 3) == 0 else 10.0)
-  var target_height := 15.0 if is_grand_building else (10.0 if posmod(index, 3) == 0 else 7.0)
   var fit_x := target_width / maxf(source_bounds.size.x, 0.001)
   var fit_y := target_height / maxf(source_bounds.size.y, 0.001)
   var fit_z := target_depth / maxf(source_bounds.size.z, 0.001)
   instance.scale *= Vector3(fit_x, fit_y, fit_z)
   print("CITY_QUATERNIUS_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " target=" + str(Vector3(target_width,target_height,target_depth)) + " final_scale=" + str(instance.scale))
+ var target_center_global := parent.to_global(at)
+ var sampled_ground := WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
+ var clearance := 0.45 if city in ["DesertLand","VolcanoLand"] else (0.6 if city == "Waterlands" else 0.0)
+ var target_base_global := parent.to_global(Vector3(at.x, sampled_ground + clearance, at.z))
  var fitted_bounds := _renderable_world_bounds(instance)
  if fitted_bounds.size.length_squared() > 0.0001:
-  # GLB pivots are not guaranteed to sit at the footprint center or ground.
-  # Center the measured mesh bounds on its assigned block before street QA.
-  var target_center_global := parent.to_global(at)
+  # Center the actual imported mesh footprint and seat its lowest vertex on terrain.
   var current_global := instance.global_position
   current_global.x += target_center_global.x - fitted_bounds.get_center().x
   current_global.z += target_center_global.z - fitted_bounds.get_center().z
   instance.global_position = current_global
   var centered_bounds := _renderable_world_bounds(instance)
-  var sampled_ground := WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
-  var clearance := 0.45 if city in ["DesertLand","VolcanoLand"] else (0.6 if city == "Waterlands" else 0.0)
-  var target_base_global := parent.to_global(Vector3(at.x, sampled_ground + clearance, at.z))
   current_global = instance.global_position
   current_global.y += target_base_global.y - centered_bounds.position.y
   instance.global_position = current_global
   print("CITY_BUILDING_PLACEMENT_PASS: %s index=%d center=%s base_y=%.3f" % [city,index,str(instance.global_position),target_base_global.y])
+  var details := Node3D.new()
+  details.name = city + "_ChineseArchitectureDetails_%02d" % index
+  parent.add_child(details)
+  details.global_position = Vector3(target_center_global.x,target_base_global.y,target_center_global.z)
+  details.global_rotation = instance.global_rotation
+  _add_chinese_building_details(details,p,target_width,target_depth,target_height)
+  details.add_to_group("distance_cull_world")
+  _set_visibility_range(details,360.0,35.0)
  _add_static_mesh_collisions(instance)
  instance.add_to_group("distance_cull_world")
  _set_visibility_range(instance, 360.0, 35.0)
  return instance
+
+static func _add_chinese_building_details(root: Node3D, p: Dictionary, width: float, depth: float, height: float) -> void:
+	var roof_material := _material(p.roof,0.66)
+	var gold_material := _material(p.gold,0.4)
+	var timber_material := _material(p.wood,0.62)
+	var door_material := _material(Color("#8f2630"),0.46)
+	var lantern_material := _material(Color("#a52b35"),0.34)
+	lantern_material.emission_enabled = true
+	lantern_material.emission = Color("#ff3842")
+	lantern_material.emission_energy_multiplier = 1.25
+	var roof_root := Node3D.new()
+	roof_root.name = "ChineseTwoTierTiledPagodaRoof"
+	roof_root.position.y = height - 0.25
+	root.add_child(roof_root)
+	for tier in range(2):
+		var tier_width := (width + 1.2) * (1.0 if tier == 0 else 0.76)
+		var tier_depth := (depth + 1.2) * (1.0 if tier == 0 else 0.76)
+		var tier_y := 0.16 + float(tier) * 0.78
+		for side in [-1.0,1.0]:
+			var panel := _box(roof_root,"ChineseSlopedRoofPanel_%d" % tier,Vector3(side*tier_width*0.22,tier_y,0.0),Vector3(tier_width*0.56,0.42,tier_depth),roof_material,1.0)
+			panel.rotation.z = side*0.22
+			for rib in range(5):
+				var rib_x := side*(tier_width*0.22 + float(rib)*tier_width*0.06)
+				var rib_node := _box(roof_root,"ChineseRaisedTileRib_%d" % tier,Vector3(rib_x,tier_y+0.22,0.0),Vector3(0.13,0.12,tier_depth*0.94),gold_material if rib in [0,4] else roof_material,1.0)
+				rib_node.rotation.z = side*0.22
+			var eave := _box(roof_root,"ChineseUpturnedEave_%d" % tier,Vector3(side*tier_width*0.49,tier_y+0.1,0.0),Vector3(1.25,0.24,0.72),gold_material,1.0)
+			eave.rotation.z = -side*0.28
+		_box(roof_root,"ChineseGoldenRoofRidge_%d" % tier,Vector3(0.0,tier_y+0.32,0.0),Vector3(tier_width*0.72,0.18,0.42),gold_material,1.0)
+	for side in [-1.0,1.0]:
+		_box(root,"ChineseFacadeTimberColumn",Vector3(side*width*0.36,height*0.45,depth*0.5+0.14),Vector3(0.42,height*0.9,0.42),timber_material,1.0)
+	_box(root,"ChineseRedTimberDoor",Vector3(0.0,1.7,depth*0.5+0.22),Vector3(2.1,3.4,0.22),door_material,1.0)
+	_box(root,"ChineseGoldenDoorFrame",Vector3(0.0,3.52,depth*0.5+0.28),Vector3(2.65,0.18,0.12),gold_material,1.0)
+	for side in [-1.0,1.0]:
+		var lantern := MeshInstance3D.new()
+		lantern.name = "ChineseFacadeRedLantern"
+		var lantern_mesh := SphereMesh.new()
+		lantern_mesh.radius = 0.24
+		lantern_mesh.height = 0.5
+		lantern.mesh = lantern_mesh
+		lantern.position = Vector3(side*width*0.43,height*0.72,depth*0.5+0.32)
+		root.add_child(lantern)
+		lantern.material_override = lantern_material
 
 static func _renderable_world_bounds(root_node: Node) -> AABB:
  var combined := AABB()
