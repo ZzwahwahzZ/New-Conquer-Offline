@@ -128,3 +128,5 @@ jobs:
           git add -f prototypes/twin_city/captures/twin_city_aerial.png prototypes/twin_city/captures/twin_city_street.png prototypes/twin_city/reports/twin_city_build_report.json prototypes/twin_city/reports/twin_city_asset_restore.json
           git diff --cached --quiet || git commit -m "Add Twin City Godot 4.3 visual proof"
           git push origin "HEAD:$GITHUB_REF_NAME"
+
+# No-op comment: trigger a fresh validation run from this isolated branch.
