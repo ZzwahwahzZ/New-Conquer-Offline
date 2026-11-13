@@ -159,7 +159,7 @@ func _run() -> void:
 			for building_index in range(3):
 				if not _check(city.find_child("TwinCity_ChineseImperialBuilding_%02d" % building_index, true, false) != null, "TwinCity Chinese imperial building GLB missing: " + str(building_index)):
 					return
-			var expected_chinese_positions := [Vector3(-76.0,0.0,-30.0), Vector3(-96.0,0.0,30.0), Vector3(-76.0,0.0,30.0)]
+			var expected_chinese_positions := [Vector3(-68.0,0.0,-30.0), Vector3(-48.0,0.0,30.0), Vector3(-28.0,0.0,30.0)]
 			var expected_chinese_sizes := [Vector3(14.50758,6.5,14.7486), Vector3(12.57405,6.5,13.47742), Vector3(10.5768,6.5,11.38082)]
 			for building_index in range(3):
 				var chinese_building := city.find_child("TwinCity_ChineseImperialBuilding_%02d" % building_index, true, false) as Node3D
