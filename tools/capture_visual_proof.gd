@@ -33,6 +33,12 @@ func _has_renderable_mesh(root_node: Node) -> bool:
 				return true
 	return false
 
+func _count_group_recursive(node: Node, group_name: String) -> int:
+	var total := 1 if node.is_in_group(group_name) else 0
+	for child in node.get_children():
+		total += _count_group_recursive(child, group_name)
+	return total
+
 func _save_frame(file_name: String) -> bool:
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
@@ -150,6 +156,12 @@ func _capture() -> void:
 				_fail("settlement failed to load for visual proof: " + city_id)
 				return
 		var loaded_world := world_manager.get("current_world") as Node3D
+		var building_count := _count_group_recursive(loaded_world, "city_building")
+		var gate_count := _count_group_recursive(loaded_world, "cardinal_gates")
+		var guardian_count := _count_group_recursive(loaded_world, "city_guardians")
+		if building_count < 70 or gate_count != 4 or guardian_count != 8:
+			_fail("%s visual proof refused: buildings=%d gates=%d guardians=%d" % [city_id, building_count, gate_count, guardian_count])
+			return
 		var first_building := loaded_world.find_child(city_id + "_ChineseImperialBuilding_00", true, false)
 		if first_building == null:
 			first_building = loaded_world.find_child(city_id + "_KenneyBuilding_00", true, false)
