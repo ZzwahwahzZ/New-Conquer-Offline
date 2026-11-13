@@ -1,0 +1,17 @@
+name: Wuxia Imperial Pull Request Validation
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  validate-wuxia:
+    uses: ZzwahwahzZ/New-Conquer-Offline/.github/workflows/godot_ci_cd.yml@imperial-city-v2-official-packs
+    with:
+      head_branch: ${{ github.event.pull_request.head.ref }}
+    secrets: inherit
