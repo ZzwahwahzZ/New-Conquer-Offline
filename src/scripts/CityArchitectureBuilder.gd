@@ -22,7 +22,7 @@ static func build(parent: Node3D, city: String, size: float) -> void:
  ChineseImperialBuilder.build(parent, city, size)
  _build_kenney_city_modules(parent, city, palette, height_image)
  _build_outer_biome(parent, city, palette, size, height_image)
- print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=24 walls=4 gates=4 open_plaza=80x80 outer_world=800x800" % city)
+ print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=64 walls=4 gates=4 open_plaza=80x80 outer_world=800x800" % city)
 
 static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
  var plaza := Node3D.new()
@@ -79,26 +79,158 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary) -> vo
 
 static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var slot := Node3D.new()
- slot.name = city + "_24BuildingUrbanFabric"
+ slot.name = city + "_64BuildingUrbanDistrict"
  parent.add_child(slot)
- var coordinates := PackedFloat32Array([-112.0,-96.0,-76.0,76.0,96.0,112.0]) if city == "TwinCity" else PackedFloat32Array([-112.0,-92.0,-56.0,56.0,92.0,112.0])
+ # Eight rows by eight columns form continuous residential/commercial blocks around
+ # the preserved central square, with the two cardinal avenues and gate approaches left open.
+ var coordinates := [-132.0,-108.0,-84.0,-60.0,60.0,84.0,108.0,132.0]
  var index := 0
- for value in coordinates:
-  for side in [-1.0,1.0]:
-   for axis in [0,1]:
-    var position := Vector3(value,0.0,side*30.0) if axis == 0 else Vector3(side*30.0,0.0,value)
-    if city == "TwinCity" and index in [6, 8, 10]:
-     index += 1
-     continue
-    var imported := _instantiate_quaternius_building(slot, city, index, position, height_image)
-    if imported == null:
-     var building := _make_building(city,p,index,1.0)
-     building.name = city + "_DetailedBuilding_%02d" % index
-     building.position = position
-     building.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, position.x, position.z, 800.0)
-     building.rotation.y = atan2(-position.x,-position.z)
-     slot.add_child(building)
-    index += 1
+ for z in coordinates:
+  for x in coordinates:
+   var at := Vector3(x,0.0,z)
+   var building := _make_compact_urban_building(city,p,index)
+   building.name = city + "_DetailedBuilding_%02d" % index
+   building.position = at
+   building.position.y = WorldTerrainBuilder.sample_height_image(height_image,city,x,z,800.0)
+   building.rotation.y = atan2(-x,-z)
+   slot.add_child(building)
+   index += 1
+ print("CITY_URBAN_DENSITY_PASS: %s buildings=%d grid=8x8 preserved_central_plaza=true" % [city,index])
+
+static func _make_compact_urban_building(city: String, p: Dictionary, index: int) -> Node3D:
+ var root := Node3D.new()
+ root.add_to_group("city_building")
+ var variation := 0.82 + float((index * 7) % 13) * 0.012
+ var width := 17.0 * variation
+ var depth := 13.0 * variation
+ var height := 7.0 + float(index % 4) * 0.75
+ var wall := _material(p.wall,0.9)
+ wall.normal_enabled = true
+ wall.normal_texture = _brick_normal()
+ var stone := _material(p.stone,0.86)
+ var wood := _material(p.wood,0.72)
+ var roof := _material(p.roof,0.68)
+ var trim := _material(p.gold,0.48)
+ var foundation := MeshInstance3D.new()
+ foundation.name = "RaisedStoneFoundation"
+ var foundation_mesh := BoxMesh.new()
+ foundation_mesh.size = Vector3(width,0.8,depth)
+ foundation.mesh = foundation_mesh
+ foundation.position.y = 0.42
+ foundation.material_override = stone
+ root.add_child(foundation)
+ var walls := MeshInstance3D.new()
+ walls.name = "ReliefBrickWalls"
+ var wall_mesh := BoxMesh.new()
+ wall_mesh.size = Vector3(width-1.2,height,depth-1.2)
+ walls.mesh = wall_mesh
+ walls.position.y = 0.8 + height*0.5
+ walls.material_override = wall
+ root.add_child(walls)
+ var timber := MeshInstance3D.new()
+ timber.name = "UpperTimberFrieze"
+ var timber_mesh := BoxMesh.new()
+ timber_mesh.size = Vector3(width+0.1,0.42,depth+0.1)
+ timber.mesh = timber_mesh
+ timber.position.y = 0.8 + height
+ timber.material_override = wood
+ root.add_child(timber)
+ var roof_root := Node3D.new()
+ roof_root.name = "CitySpecificRoof"
+ roof_root.position.y = 0.8 + height + 0.55
+ root.add_child(roof_root)
+ match city:
+  "DesertLand":
+   var dome := MeshInstance3D.new()
+   dome.name = "SandstoneDome"
+   var dome_mesh := SphereMesh.new()
+   dome_mesh.radius = minf(width,depth)*0.34
+   dome_mesh.height = minf(width,depth)*0.48
+   dome.mesh = dome_mesh
+   dome.position.y = 1.2
+   dome.material_override = roof
+   roof_root.add_child(dome)
+  "VolcanoLand":
+   var basalt := MeshInstance3D.new()
+   basalt.name = "BasaltBattlement"
+   var basalt_mesh := BoxMesh.new()
+   basalt_mesh.size = Vector3(width+1.0,0.85,depth+1.0)
+   basalt.mesh = basalt_mesh
+   basalt.position.y = 0.25
+   basalt.material_override = roof
+   roof_root.add_child(basalt)
+   for spire_index in range(3):
+    var spire := MeshInstance3D.new()
+    spire.name = "ObsidianSpire"
+    var spire_mesh := CylinderMesh.new()
+    spire_mesh.top_radius = 0.08
+    spire_mesh.bottom_radius = 0.52
+    spire_mesh.height = 2.6
+    spire.mesh = spire_mesh
+    spire.position = Vector3((float(spire_index)-1.0)*width*0.28,1.8,-depth*0.28)
+    spire.material_override = trim
+    roof_root.add_child(spire)
+  "IceLand":
+   var ice := MeshInstance3D.new()
+   ice.name = "SnowRoofTier"
+   var ice_mesh := BoxMesh.new()
+   ice_mesh.size = Vector3(width+1.4,0.9,depth+1.4)
+   ice.mesh = ice_mesh
+   ice.position.y = 0.2
+   ice.material_override = roof
+   roof_root.add_child(ice)
+  _:
+   for tier in range(2):
+    var tier_node := MeshInstance3D.new()
+    tier_node.name = "PagodaRoofTier_%d" % tier
+    var tier_mesh := BoxMesh.new()
+    tier_mesh.size = Vector3(width+1.8-float(tier)*3.2,0.52,depth+1.8-float(tier)*2.6)
+    tier_node.mesh = tier_mesh
+    tier_node.position.y = 0.22 + float(tier)*0.9
+    tier_node.material_override = roof
+    roof_root.add_child(tier_node)
+ # A batched window set keeps facade rhythm without spawning dozens of individual nodes.
+ var window_mesh := BoxMesh.new()
+ window_mesh.size = Vector3(1.25,1.75,0.16)
+ var windows := MultiMesh.new()
+ windows.transform_format = MultiMesh.TRANSFORM_3D
+ windows.mesh = window_mesh
+ windows.instance_count = 4
+ for wi in range(4):
+  var wx := -width*0.28 + float(wi%2)*width*0.56
+  var wy := 2.7 + float(wi/2)*2.2
+  windows.set_instance_transform(wi,Transform3D(Basis.IDENTITY,Vector3(wx,wy,depth*0.5+0.02)))
+ var window_batch := MultiMeshInstance3D.new()
+ window_batch.name = "FacadeWindows_MultiMesh"
+ window_batch.multimesh = windows
+ window_batch.material_override = wood
+ root.add_child(window_batch)
+ var door := MeshInstance3D.new()
+ door.name = "MainTimberDoor"
+ var door_mesh := BoxMesh.new()
+ door_mesh.size = Vector3(2.1,3.1,0.22)
+ door.mesh = door_mesh
+ door.position = Vector3(0.0,2.35,depth*0.5+0.12)
+ door.material_override = wood
+ root.add_child(door)
+ var lintel := MeshInstance3D.new()
+ lintel.name = "GoldenDoorLintel"
+ var lintel_mesh := BoxMesh.new()
+ lintel_mesh.size = Vector3(2.8,0.28,0.3)
+ lintel.mesh = lintel_mesh
+ lintel.position = Vector3(0.0,4.0,depth*0.5+0.14)
+ lintel.material_override = trim
+ root.add_child(lintel)
+ var collision_body := StaticBody3D.new()
+ collision_body.name = "BuildingCollision"
+ var collision := CollisionShape3D.new()
+ var collision_box := BoxShape3D.new()
+ collision_box.size = Vector3(width,height+1.0,depth)
+ collision.shape = collision_box
+ collision.position.y = (height+1.0)*0.5
+ collision_body.add_child(collision)
+ root.add_child(collision_body)
+ return root
 
 static func _first_mesh_node(root: Node) -> MeshInstance3D:
  var pending: Array[Node] = [root]
