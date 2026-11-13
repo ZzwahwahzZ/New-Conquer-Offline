@@ -7,7 +7,7 @@ const IRON := Color("#252a2d")
 const FLOWERS := [Color("#c93442"), Color("#f1c84b"), Color("#e879b5"), Color("#9865d5")]
 
 static func build(parent: Node3D, city: String, size: float) -> void:
-	var half := 110.0 if city == "TwinCity" else 80.0
+	var half := 80.0
 	var road_mat: StandardMaterial3D = PBRMaterialLibrary.build_street_material()
 	road_mat.albedo_color = _road_color(city).lightened(0.35)
 	var plaza_mat: StandardMaterial3D = PBRMaterialLibrary.build_plaza_material()
@@ -16,14 +16,11 @@ static func build(parent: Node3D, city: String, size: float) -> void:
 	# Four cardinal avenues, a perimeter loop, and cross-links between districts.
 	_add_plane(parent, "Street_NorthSouth", Vector2(10.0, half * 1.72), road_mat, Vector3(0, 0.045, 0))
 	_add_plane(parent, "Street_EastWest", Vector2(half * 1.72, 10.0), road_mat, Vector3(0, 0.047, 0))
-	for offset in [-65.45,-39.25,-13.05,13.05,39.25,65.45]:
+	for offset in [-9.0,9.0]:
 		_add_plane(parent, "DistrictLane_NS_" + str(int(offset)), Vector2(5.0, half * 1.48), road_mat, Vector3(offset, 0.052, 0))
 		_add_plane(parent, "DistrictLane_EW_" + str(int(offset)), Vector2(half * 1.48, 5.0), road_mat, Vector3(0, 0.054, offset))
 	_add_plane(parent, "CentralDarkSquare", Vector2(24.0, 24.0), plaza_mat, Vector3(0, 0.062, 0))
-	# Four broad paved approaches link the square to the city gates.
-	for side in [-1.0, 1.0]:
-		_add_plane(parent, "GateApproach_X_" + str(side), Vector2(7.0, half * 0.82), road_mat, Vector3(side * half * 0.48, 0.058, 0))
-		_add_plane(parent, "GateApproach_Z_" + str(side), Vector2(half * 0.82, 7.0), road_mat, Vector3(0, 0.059, side * half * 0.48))
+	# The two 10m arterial streets run directly to all four perimeter gates.
 	# Decorative raised stone beds beside avenues and building frontages.
 	var bed_positions: Array[Vector3] = []
 	for axis in [-1.0, 1.0]:
@@ -168,7 +165,8 @@ static func _waterways(parent: Node3D, half: float) -> void:
 	water.metallic = 0.12
 	var wood := _mat(Color("#795338"), 0.72)
 	var harbor := MeshInstance3D.new()
-	harbor.name = "Waterlands_ReflectiveInnerHarbor_160m"
+	harbor.name = "Waterlands_ArchipelagoWaterSurface"
+	harbor.set_meta("waterfront_design", "Waterlands_ReflectiveInnerHarbor_160m")
 	var harbor_mesh := PlaneMesh.new()
 	harbor_mesh.size = Vector2(160.0, 160.0)
 	harbor.mesh = harbor_mesh
