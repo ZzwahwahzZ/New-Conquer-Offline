@@ -62,8 +62,8 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, heigh
  var roads := Node3D.new()
  roads.name = "StoneRoadNetwork"
  parent.add_child(roads)
- var half := 110.0 if city == "TwinCity" else 80.0
- var road_length := half * 1.72
+ var half := 80.0
+ var road_length := 160.0
  # Raise the two arterial routes above the highest sampled terrain along their
  # full extent so desert, volcanic and archipelago ground cannot swallow them.
  var road_clearance_height := 0.0
@@ -90,8 +90,8 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, heigh
 
 static func _build_urban_alley_multimeshes(parent: Node3D, city: String, material: Material) -> void:
  var terrain_image := WorldTerrainBuilder.load_height_image(city)
- var alley_lines := [-120.0,-96.0,-72.0,-48.0,48.0,72.0,96.0,120.0]
- var segment_centers := [-132.0,-108.0,-84.0,-60.0,-36.0,-12.0,12.0,36.0,60.0,84.0,108.0,132.0]
+ var alley_lines := [-46.5, -23.25, 23.25, 46.5]
+ var segment_centers := [-72.0,-108.0,-84.0,-60.0,-36.0,-12.0,12.0,36.0,60.0,84.0,108.0,132.0]
  var alley_mesh := BoxMesh.new()
  alley_mesh.size = Vector3(4.0,0.14,22.0)
  for axis in range(2):
@@ -122,22 +122,17 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
  var slot := Node3D.new()
  slot.name = city + "_80BuildingUrbanDistrict"
  parent.add_child(slot)
- # Ten columns by eight rows create 80 detailed buildings while preserving the
- # central square, cardinal avenues, secondary streets and gate approaches.
- var x_coordinates := [-168.0,-144.0,-120.0,-96.0,-72.0,72.0,96.0,120.0,144.0,168.0]
- var z_coordinates := [-144.0,-120.0,-96.0,-72.0,72.0,96.0,120.0,144.0]
+ # Ten-by-ten compact blocks fit inside the 160m x 160m urban core.
+ # The central 10m north/south and east/west avenues stay open; 81 real
+ # imported buildings occupy the remaining cells with 1.5m block-to-block gaps.
+ var coordinates := [-69.75,-54.25,-38.75,-23.25,-7.75,7.75,23.25,38.75,54.25,69.75]
  var index := 0
  var built_count := 0
- for z in z_coordinates:
-  for x in x_coordinates:
-   if city == "TwinCity":
-    var reserved := false
-    for landmark in [Vector2(-76.0,-30.0),Vector2(-96.0,30.0),Vector2(-76.0,30.0)]:
-     if Vector2(x,z).distance_to(landmark) < 15.0:
-      reserved = true
-    if reserved:
-     index += 1
-     continue
+ for z in coordinates:
+  for x in coordinates:
+   if absf(x) < 8.0 or absf(z) < 8.0:
+    index += 1
+    continue
    var building := _instantiate_quaternius_building(slot,city,index,Vector3(x,0.0,z),height_image)
    if building == null:
     push_error("CITY_IMPORTED_BUILDING_MISSING: %s index=%d; refusing primitive placeholder geometry" % [city,index])
@@ -146,7 +141,7 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
    building.add_to_group("city_building")
    index += 1
    built_count += 1
- print("CITY_URBAN_DENSITY_PASS: %s buildings=%d grid=10x8 reserved_landmarks=true" % [city,built_count])
+ print("CITY_URBAN_DENSITY_PASS: %s buildings=%d footprint=-80..80 grid=10x10" % [city,built_count])
 
 static func _make_compact_urban_building(city: String, p: Dictionary, index: int) -> Node3D:
  var root := Node3D.new()
@@ -320,15 +315,23 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  instance.position = at
  instance.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
  instance.rotation.y = atan2(-at.x,-at.z)
- # Normalize compact Quaternius source units to readable city-building proportions.
+ # Imported models were previously normalized to only 3m wide, making the
+ # city read as empty. Fit each real model to a deliberate architectural class.
  instance.scale = Vector3(3.0, 2.0, 3.0)
  parent.add_child(instance)
  var source_bounds := _renderable_world_bounds(instance)
  if source_bounds.size.length_squared() > 0.0001:
-  # Preserve the original horizontal footprint; apply the safety margin only on Y so buildings cannot grow into roads.
-  var fit_factor := maxf(3.0 / maxf(source_bounds.size.x, 0.001), maxf(6.5 / maxf(source_bounds.size.y, 0.001), 3.0 / maxf(source_bounds.size.z, 0.001)))
-  instance.scale *= Vector3(fit_factor, fit_factor * 1.04, fit_factor)
-  print("CITY_QUATERNIUS_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " source_size=" + str(source_bounds.size) + " fit_factor=" + str(fit_factor) + " final_scale=" + str(instance.scale))
+  var grand_building := posmod(index, 17) == 0
+  var target_width := 22.0 if grand_building else (14.0 if posmod(index, 3) == 0 else 10.0)
+  var target_depth := 18.0 if grand_building else (12.0 if posmod(index, 3) == 0 else 10.0)
+  var target_height := 15.0 if grand_building else (10.0 if posmod(index, 3) == 0 else 7.0)
+  var fit_x := target_width / maxf(source_bounds.size.x, 0.001)
+  var fit_y := target_height / maxf(source_bounds.size.y, 0.001)
+  var fit_z := target_depth / maxf(source_bounds.size.z, 0.001)
+  instance.scale *= Vector3(fit_x, fit_y, fit_z)
+  print("CITY_QUATERNIUS_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " target=" + str(Vector3(target_width,target_height,target_depth)) + " final_scale=" + str(instance.scale))
+ var sampled_ground := WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
+ instance.position.y = sampled_ground + (0.45 if city in ["DesertLand","VolcanoLand"] else (0.6 if city == "Waterlands" else 0.0))
  _add_static_mesh_collisions(instance)
  instance.add_to_group("distance_cull_world")
  _set_visibility_range(instance, 360.0, 35.0)
@@ -403,8 +406,8 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
  var wall_material := _material(p.stone.darkened(0.12),0.9)
  var tower_material := _material(p.wall,0.86)
  var gate_material := _material(p.gold,0.72)
- var half := 148.0
- var gap := 15.0
+ var half := 88.0
+ var gap := 7.0
  var kenney_walls := _build_kenney_perimeter_walls(fortification, city, half, gap, height_image)
  for side in [-1.0,1.0]:
   for segment in [-1.0,1.0]:
@@ -425,20 +428,20 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
   gate.set_meta("cardinal_direction",direction_name)
   gate.rotation_degrees.y = direction*90.0
   fortification.add_child(gate)
-  var kenney_gate := _add_kenney_asset(gate, city, height_image, "castle-kit", "gate.glb", "KenneyGateModel", Vector3(0.0, 0.0, -148.0), 0.0, 2.2)
+  var kenney_gate := _add_kenney_asset(gate, city, height_image, "castle-kit", "gate.glb", "KenneyGateModel", Vector3(0.0, 0.0, -88.0), 0.0, 2.2)
   for side in [-1.0,1.0]:
    var tower_side_name := "Left" if side < 0.0 else "Right"
-   var kenney_tower := _add_kenney_asset(gate, city, height_image, "castle-kit", "tower-square.glb", "KenneyTowerModel_" + tower_side_name, Vector3(side*17.0, 0.0, -148.0), 0.0, 1.8)
-   var tower_block := _box(gate,"GatehouseTower",Vector3(side*17.0,9.0,-148.0),Vector3(11.0,18.0,13.0),tower_material,1.0)
+   var kenney_tower := _add_kenney_asset(gate, city, height_image, "castle-kit", "tower-square.glb", "KenneyTowerModel_" + tower_side_name, Vector3(side*17.0, 0.0, -88.0), 0.0, 1.8)
+   var tower_block := _box(gate,"GatehouseTower",Vector3(side*17.0,9.0,-88.0),Vector3(11.0,18.0,13.0),tower_material,1.0)
    tower_block.visible = kenney_tower == null
-   var tower_cap := _box(gate,"GateTowerCrenellation",Vector3(side*17.0,18.5,-148.0),Vector3(13.0,1.0,15.0),gate_material,1.0)
+   var tower_cap := _box(gate,"GateTowerCrenellation",Vector3(side*17.0,18.5,-88.0),Vector3(13.0,1.0,15.0),gate_material,1.0)
    tower_cap.visible = kenney_tower == null
-   _box(gate,"GateGuardianStand",Vector3(side*9.0,0.15,-132.0),Vector3(1.6,0.3,1.6),wall_material,1.0)
+   _box(gate,"GateGuardianStand",Vector3(side*9.0,0.15,-72.0),Vector3(1.6,0.3,1.6),wall_material,1.0)
    _build_gate_guard(gate,side,p,direction_name)
-  var lintel := _box(gate,"GateArchLintel",Vector3(0,17.2,-148.0),Vector3(24.0,3.0,9.0),gate_material,1.0)
+  var lintel := _box(gate,"GateArchLintel",Vector3(0,17.2,-88.0),Vector3(24.0,3.0,9.0),gate_material,1.0)
   lintel.visible = kenney_gate == null
   for x in [-8.0,8.0]:
-   var column := _box(gate,"ArchColumn",Vector3(x,7.0,-148.0),Vector3(2.0,14.0,7.0),gate_material,1.0)
+   var column := _box(gate,"ArchColumn",Vector3(x,7.0,-88.0),Vector3(2.0,14.0,7.0),gate_material,1.0)
    column.visible = kenney_gate == null
 
 static func _load_kenney_scene(kit: String, file_name: String) -> PackedScene:
@@ -656,7 +659,7 @@ static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary, direct
  guard.name = "CityGuardian_" + direction_name + "_" + ("Left" if side < 0.0 else "Right")
  guard.add_to_group("city_guardians")
  guard.set_meta("gate_direction",direction_name)
- guard.position = Vector3(side*9.0,0.0,-132.0)
+ guard.position = Vector3(side*9.0,0.0,-72.0)
  parent.add_child(guard)
  var armor := _material(p.wood,0.62)
  var trim := _material(p.gold,0.5)
