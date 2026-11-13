@@ -132,7 +132,7 @@ BLACKLIST = re.compile(
 LION = re.compile(r"\blions?\b", re.I)
 CATEGORY_RULES = {
  "palaces_and_temples": r"\b(?:pagoda|chinese temple|asian temple|japanese temple|korean temple|chinese palace|imperial palace|water pavilion|lotus pond pavilion|ceremonial hall)\b",
- "houses_and_shops": r"\b(?:(?:chinese|asian|japanese|traditional|wooden|hanok)\s+){1,2}(?:town|village|street\s+)?house\b|\b(?:market stall|teahouse|tea house|inn|asian shop|chinese shop)\b",
+ "houses_and_shops": r"\b(?:(?:chinese|asian|japanese|traditional|wooden|timber|hanok|east asian)\s+){1,2}(?:town|village|street\s+|courtyard\s+)?(?:house|shop|shopfront|storefront|inn|building)\b|\b(?:market stall|teahouse|tea house|inn|asian shop|chinese shop|wooden shopfront)\b",
  "gates_walls_bridges": r"\b(?:moon gate|chinese gate|palace gate|gate tower|watchtower|city wall|palace wall|stone wall|fort wall|arched stone bridge|arch bridge|stone bridge|courtyard entry arch)\b",
  "statues_and_props": r"\b(?:dragon|stone lion|guardian lion|lantern|incense burner|cauldron|brazier|bronze bell|ceremonial drum|altar|throne|folding screen|scroll rack|hanging scroll|floor cushion|inkstone|water dropper|tea set|tea table|guqin|calligraphy|parasol|banner|pennant|weapon rack|training dummy|fountain|komainu|onigawara|statue|ornament|storage chest|writing desk)\b",
  "nature": r"\b(?:bamboo|plum tree|willow tree|pine tree|cherry blossom|cherry tree|bonsai|lotus|peony|rockery|shrub|tree clump|blossom|reed clump|bluebell|fern clump|tussock grass|spinifex|grass clump|orchard tree|cattail|tall grass)\b",
@@ -152,11 +152,15 @@ def record_text(record):
          "api_metadata","pack","category","filename")
  return re.sub(r"[_-]+", " ", " ".join(_flatten_text(record.get(k, "")) for k in fields)).lower()
 def identity_text(record, filename=""):
- # Search terms in the matches field are excluded: a broad query must never turn
- # an unrelated object into a temple, lion statue, house, or bridge.
- fields=("id","name","title","source_url","api_metadata","pack")
+ # Include model identity and API taxonomy, but not broad search-query matches.
+ fields=("id","name","title","source_url","api_metadata","pack","category","tags","description")
  text=" ".join(_flatten_text(record.get(k, "")) for k in fields)
  return re.sub(r"[_-]+", " ", text + " " + str(filename)).lower()
+
+def is_architecture_candidate(record, filename=""):
+ text=identity_text(record,filename)
+ return bool(re.search(r"\b(?:house|homes?|shop|shopfront|storefront|market stall|teahouse|tea house|inn|pavilion|village building|building)\b",text,re.I))
+
 def rejected_asset(record):
  text=record_text(record)
  if BLACKLIST.search(text): return True
@@ -169,16 +173,16 @@ def asset_category(record, filename=""):
  if not primary.strip(): primary=str(filename or "")
  primary=re.sub(r"[_-]+", " ", primary).lower()
  context=record_text(record)
- asian_context=bool(re.search(r"\b(?:chinese|asian|japanese|korean|hanok|wuxia|imperial china)\b",context,re.I))
- # Object identity comes from the model title; pack context is used only to
- # establish Asian provenance, never to misclassify every object in that pack.
+ asian_context=bool(re.search(r"\b(?:chinese|asian|japanese|korean|hanok|wuxia|imperial|east asian)\b",context,re.I))
  if asian_context and re.search(CATEGORY_RULES["statues_and_props"],primary,re.I): return "statues_and_props"
  if asian_context and re.search(CATEGORY_RULES["gates_walls_bridges"],primary,re.I): return "gates_walls_bridges"
  if asian_context and re.search(CATEGORY_RULES["houses_and_shops"],primary,re.I): return "houses_and_shops"
  if asian_context and re.search(r"\b(?:palace|temple|shrine|pavilion|ceremonial hall)\b",primary,re.I): return "palaces_and_temples"
  if re.search(CATEGORY_RULES["palaces_and_temples"],primary,re.I): return "palaces_and_temples"
  if re.search(CATEGORY_RULES["nature"],primary,re.I): return "nature"
+ if record.get("candidate_only") and is_architecture_candidate(record,filename): return "houses_and_shops"
  return None
+
 def strict_filter_self_test():
  cases=[
   ({"id":"motor-cruiser","name":"Motor cruiser with flybridge (Marina and Yacht Club)"},True,None),
@@ -196,6 +200,14 @@ def strict_filter_self_test():
   ({"id":"palace-gate","name":"Palace Wall Moon Gate (Imperial China Palace and Garden)"},False,"gates_walls_bridges"),
   ({"id":"bamboo","name":"Bamboo Clump (Imperial China Palace and Garden)"},False,"nature"),
   ({"id":"asian-house","name":"Traditional Asian House"},False,"houses_and_shops"),
+  ({"id":"wooden-village-house","name":"Wooden Village House","source":"3DAssets.dev","api_metadata":{"tags":"traditional east asian"}},False,"houses_and_shops"),
+  ({"id":"wooden-shopfront","name":"Wooden Shopfront","source":"3DAssets.dev","api_metadata":{"tags":"chinese traditional"}},False,"houses_and_shops"),
+  ({"id":"generic-house","name":"Wooden House","candidate_only":True},False,"houses_and_shops"),
+  ({"id":"simple-building","name":"Simple Building","candidate_only":True},False,"houses_and_shops"),
+  ({"id":"viking-longhouse","name":"Viking Longhouse"},True,None),
+  ({"id":"western-medieval","name":"Western Medieval House"},True,None),
+  ({"id":"modern-apartment","name":"Modern Apartment Building"},True,None),
+  ({"id":"church","name":"Church Building"},True,None),
   ({"id":"western-dragon","name":"Western Dragon With Wings Spread (Dragons and Wyverns)"},True,None),
   ({"id":"generic-temple","name":"Modular Temple Model"},False,None),
   ({"id":"medieval-temple","name":"Medieval Stone Temple"},True,None),
@@ -214,8 +226,8 @@ def filter_candidates():
  global DISC, DOWN
  accepted=[]
  for record in DOWN:
-  if rejected_asset(record) or not asset_category(record):
-   ERR.append({"asset":record.get("id"),"stage":"strict_identity_filter","reason":"Rejected by strict Wuxia blacklist/whitelist"})
+  if rejected_asset(record) or (not asset_category(record) and not (record.get("candidate_only") and is_architecture_candidate(record))):
+   ERR.append({"asset":record.get("id"),"stage":"strict_identity_filter","reason":"Rejected by blacklist/identity filter"})
   else: accepted.append(record)
  DOWN[:] = accepted
  accepted_ids={x.get("id") for x in accepted}
@@ -225,7 +237,7 @@ def process():
  for r in DOWN:
   try:
    p=Path(r["raw"]); fs=[]
-   if p.suffix.lower()==".zip":
+   if p.suffix.lower()==".zip" or zipfile.is_zipfile(p):
     d=RAW/"unpacked"/safe(r["id"]); d.mkdir(parents=True,exist_ok=True)
     with zipfile.ZipFile(p) as z:
      for n in z.namelist():
@@ -261,10 +273,12 @@ def process():
    priority={".glb":0,".gltf":1,".blend":2,".fbx":3,".obj":4,".dae":5,".stl":6,".ply":7}
    models.sort(key=lambda x:(priority.get(x.suffix.lower(),99),str(x).lower()))
    if r.get("source") == "Quaternius":
-    models=[x for x in models if asset_category({"id":x.name,"name":x.name},x.name)=="houses_and_shops" and not rejected_asset({"id":r.get("id",""),"name":x.name})]
+    models=[x for x in models if is_architecture_candidate({"id":x.name,"name":x.name},x.name)
+            and not rejected_asset({"id":r.get("id",""),"name":x.name,"source":r.get("source"),"source_url":r.get("source_url"),"pack":r.get("pack","")})]
    if models:
     for i,src in enumerate(models[:80]):
-     dst=OUT/"models"/(safe(r["id"])+(("_"+str(i)) if i else "")+".glb"); dst.parent.mkdir(parents=True,exist_ok=True)
+     base_dir=OUT/"candidates"/"models" if r.get("candidate_only") else OUT/"models"
+     dst=base_dir/(safe(r["id"])+(("_"+str(i)) if i else "")+".glb"); dst.parent.mkdir(parents=True,exist_ok=True)
      m=blender(src,dst); OK.append({**r,"kind":"model","file":str(dst),"dimensions_m":m["dimensions_m"],"validation":m})
     for c,t in r["matches"]:
      if t not in COVERED.setdefault(c,[]): COVERED[c].append(t)
@@ -286,17 +300,27 @@ def process():
   except Exception as e: ERR.append({"asset":r["id"],"stage":"normalize","reason":str(e)})
 def builddocs(blenderver):
  OUT.mkdir(parents=True,exist_ok=True); entries=[]; grouped={k:[] for k in CATEGORY_RULES}
+ supplemental=[]
+ candidate_paths=set()
  for r in OK:
-  if r.get("candidate_only"):
-   continue
   paths=r.get("files") or [r["file"]]
+  if r.get("candidate_only"):
+   for f in paths:
+    p=Path(f)
+    if not p.exists(): continue
+    candidate_paths.add(p.relative_to(OUT).as_posix())
+    supplemental.append({"asset_id":r.get("id"),"name":r.get("name"),"candidate_category":asset_category(r,p.name),
+      "file":p.relative_to(OUT).as_posix(),"source":r.get("source"),"source_url":r.get("source_url"),
+      "license":r.get("license"),"bytes":p.stat().st_size,"sha256":sha(p),
+      "dimensions_m":r.get("dimensions_m"),"validation":r.get("validation")})
+   continue
   for f in paths:
    p=Path(f); category=asset_category(r,p.name)
    if not category or rejected_asset({"id":r.get("id"),"name":r.get("name"),"source":r.get("source"),"source_url":r.get("source_url"),"matches":r.get("matches"),"tags":p.name}):
     continue
    item={"asset_id":r["id"],"name":r["name"],"category":category,"file":p.relative_to(OUT).as_posix(),"source":r["source"],"source_url":r["source_url"],"direct_download_url":r.get("download_url"),"license":r["license"],"authors":r["authors"],"dimensions_m":r.get("dimensions_m"),"bytes":p.stat().st_size,"sha256":sha(p),"validation":r["validation"]}
    entries.append(item); grouped[category].append(item)
- approved_paths={x["file"] for x in entries}
+ approved_paths={x["file"] for x in entries} | candidate_paths
  for stale in list(OUT.rglob("*")):
   if stale.is_file() and stale.relative_to(OUT).as_posix() not in approved_paths:
    stale.unlink()
@@ -308,7 +332,9 @@ def builddocs(blenderver):
  lines=["# Wuxia Imperial Asset Audit","","- Blender: "+blenderver,"- Discovered: "+str(len(DISC)),"- Downloaded: "+str(len(DOWN)),"- Validated source assets: "+str(len(OK)),"- Approved file entries: "+str(len(entries)),"- Category counts: "+json.dumps(counts,ensure_ascii=False),"- Errors: "+str(len(ERR)),"","## Approved files"]
  lines += ["- "+x["category"]+" | "+x["file"]+" | "+x["license"]+" | "+x["source"]+" | "+str(x["dimensions_m"] or "PBR texture set") for x in entries]
  lines += ["","## Errors"]+["- "+x["asset"]+" ("+x["stage"]+"): "+x["reason"] for x in ERR] if ERR else ["","## Errors","- None"]
- lines += ["","## Approval rules","- Strict blacklist and Wuxia/classical Asian/nature/PBR whitelist applied.","- Generic Quaternius buildings are considered only when individual filenames identify houses or shops; visual style inspection remains required before city placement."]
+ lines += ["","## Supplemental architecture candidates","- Downloaded and normalized, but not approved for city placement until visual style review."]
+ lines += ["- "+str(x["candidate_category"])+" | "+x["file"]+" | "+str(x["name"])+" | "+str(x["source"]) for x in supplemental]
+ lines += ["","## Approval rules","- Core architecture requires clear classical East Asian identity for automatic approval.","- Generic wooden/village buildings are retained as visual-review candidates rather than discarded.","- Nature and environmental dressing are accepted by visual/object suitability, independent of source-pack theme.","- Explicit modern, western-medieval, Viking, vehicle, sci-fi and unrelated wildlife assets remain excluded."]
  (OUT/"ASSET_AUDIT_REPORT.md").write_text("\n".join(lines)+"\n")
  credits=["# Third-party asset credits","","Only files listed in imperial_approved_assets.json are credited."]
  for x in entries:
