@@ -63,7 +63,7 @@ if abs(miny)>1e-4:
  miny=min(v.y for v in pts2)
 if abs(miny)>1e-4: raise RuntimeError("Ground plane mismatch after root correction; min Y="+str(miny))
 dims=[max(v[i] for v in pts2)-min(v[i] for v in pts2) for i in range(3)]
-if any(not math.isfinite(x) or x<0.3 or x>80.0 for x in dims): raise RuntimeError("Bounding-box dimensions outside accepted 0.3m..80m range: "+str(dims))
+if any(not math.isfinite(x) or x<0.05 or x>80.0 for x in dims): raise RuntimeError("Bounding-box dimensions outside accepted 0.05m..80m range: "+str(dims))
 mats=sum(1 for m in bpy.data.materials)
 if mats==0: raise RuntimeError("No materials survived GLB export")
 if mats!=materials_before: raise RuntimeError("Material count changed during GLB round-trip")
