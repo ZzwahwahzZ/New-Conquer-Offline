@@ -12,6 +12,10 @@ PACKS={
 "ultimate_nature":("https://quaternius.com/packs/ultimatenature.html","https://drive.google.com/drive/folders/1-Kl0L_Jg8awbh0S5T-z3zxh4mVlnxTpa?usp=sharing"),
 "modular_platformer":("https://quaternius.com/packs/modularplatformer.html","https://drive.google.com/drive/folders/1ku_XmbHOZ5ypgKCAjpzX6hlXaOJT7Uoq?usp=sharing"),
 "modular_streets":("https://quaternius.com/packs/modularstreets.html","https://drive.google.com/drive/folders/1-YvMpLDYBIy-0Ms7ZlFmUpChTbHku8IJ?usp=sharing"),
+"ultimate_fantasy_rts":("https://quaternius.com/packs/ultimatefantasyrts.html","https://drive.google.com/drive/folders/1h7sztlZyavWla-JDk3jp6KiWDdMh08yd?usp=sharing"),
+"medieval_village":("https://quaternius.com/packs/medievalvillage.html","https://drive.google.com/drive/folders/18T92VcNldHG0ugWo1u0hSJGDLua-n7o5?usp=sharing"),
+"ultimate_rpg_props":("https://quaternius.com/packs/ultimaterpg.html","https://drive.google.com/drive/folders/1IhdL3W5XdJrjf_axqAnKvEybMaC3FwF-?usp=sharing"),
+"ultimate_platformer":("https://quaternius.com/packs/ultimateplatformer.html","https://drive.google.com/drive/folders/1NDZn_aGnn0vfFV3M22Y8GPcDjO8BVcLs?usp=sharing"),
 }
 EXTS={".fbx",".obj",".glb",".gltf"}
 def safe_extract(z,p):
