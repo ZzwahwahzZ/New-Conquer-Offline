@@ -131,11 +131,11 @@ BLACKLIST = re.compile(
  r"mythic underworld|olympus|griffin airmail)\b", re.I)
 LION = re.compile(r"\blions?\b", re.I)
 CATEGORY_RULES = {
- "palaces_and_temples": r"\b(?:imperial|chinese|asian|japanese|korean)\b.{0,45}\b(?:palace|temple|pagoda|shrine|pavilion|hall|gate|wall|tower)\b|\b(?:palace|temple|pagoda|shrine|water pavilion|lotus pond pavilion|ceremonial hall|moon gate)\b",
+ "palaces_and_temples": r"\b(?:pagoda|chinese temple|asian temple|japanese temple|korean temple|chinese palace|imperial palace|water pavilion|lotus pond pavilion|ceremonial hall)\b",
  "houses_and_shops": r"\b(?:(?:chinese|asian|japanese|traditional|wooden|hanok)\s+){1,2}(?:town|village|street\s+)?house\b|\b(?:market stall|teahouse|tea house|inn|asian shop|chinese shop)\b",
- "gates_walls_bridges": r"\b(?:moon gate|chinese gate|palace gate|gate tower|watchtower|city wall|palace wall|stone wall|fort wall|arched stone bridge|arch bridge|stone bridge)\b",
- "statues_and_props": r"\b(?:dragon|stone lion|guardian lion|lantern|incense burner|cauldron|bronze bell|ceremonial drum|altar|throne|folding screen|scroll rack|tea set|guqin|calligraphy|parasol|banner|statue)\b",
- "nature": r"\b(?:bamboo|plum tree|willow tree|pine tree|cherry blossom|cherry tree|bonsai|lotus|peony|rockery|shrub|tree clump|blossom|reed clump|bluebell|fern clump|tussock grass|spinifex|grass clump)\b",
+ "gates_walls_bridges": r"\b(?:moon gate|chinese gate|palace gate|gate tower|watchtower|city wall|palace wall|stone wall|fort wall|arched stone bridge|arch bridge|stone bridge|courtyard entry arch)\b",
+ "statues_and_props": r"\b(?:dragon|stone lion|guardian lion|lantern|incense burner|cauldron|brazier|bronze bell|ceremonial drum|altar|throne|folding screen|scroll rack|tea set|tea table|guqin|calligraphy|parasol|banner|pennant|weapon rack|training dummy|fountain|komainu|onigawara|statue|ornament|storage chest|writing desk)\b",
+ "nature": r"\b(?:bamboo|plum tree|willow tree|pine tree|cherry blossom|cherry tree|bonsai|lotus|peony|rockery|shrub|tree clump|blossom|reed clump|bluebell|fern clump|tussock grass|spinifex|grass clump|orchard tree|cattail|tall grass)\b",
  "pbr_materials": r"\b(?:marble|stone|tile|roof tile|wood|timber|pbr|texture)\b",
 }
 def _flatten_text(value):
@@ -163,10 +163,20 @@ def rejected_asset(record):
  if LION.search(text) and not re.search(r"\b(?:stone|guardian)\s+lions?\b", text): return True
  return False
 def asset_category(record, filename=""):
- text=identity_text(record, filename)
  if record.get("kind") == "pbr" or record.get("source") == "ambientCG": return "pbr_materials"
- for category in ("palaces_and_temples","houses_and_shops","gates_walls_bridges","statues_and_props","nature"):
-  if re.search(CATEGORY_RULES[category], text, re.I): return category
+ raw_name=_flatten_text(record.get("name") or record.get("title") or "")
+ primary=re.sub(r"\\s*\\([^)]*\\)", " ", raw_name)
+ if not primary.strip(): primary=str(filename or "")
+ primary=re.sub(r"[_-]+", " ", primary).lower()
+ context=record_text(record)
+ asian_context=bool(re.search(r"\\b(?:chinese|asian|japanese|korean|hanok|wuxia|imperial china)\\b",context,re.I))
+ # Object identity comes from the model title; pack context is used only to
+ # establish Asian provenance, never to misclassify every object in that pack.
+ if re.search(CATEGORY_RULES["nature"],primary,re.I): return "nature"
+ if asian_context and re.search(CATEGORY_RULES["statues_and_props"],primary,re.I): return "statues_and_props"
+ if asian_context and re.search(CATEGORY_RULES["gates_walls_bridges"],primary,re.I): return "gates_walls_bridges"
+ if asian_context and re.search(CATEGORY_RULES["houses_and_shops"],primary,re.I): return "houses_and_shops"
+ if re.search(CATEGORY_RULES["palaces_and_temples"],primary,re.I): return "palaces_and_temples"
  return None
 def strict_filter_self_test():
  cases=[
@@ -177,15 +187,21 @@ def strict_filter_self_test():
   ({"id":"boundary-tree","name":"Boundary Tree Clump (Caravan Park and Campsite)"},True,None),
   ({"id":"dandelion","name":"Dandelion clump (Lawn Mowing Simulator Kit)"},True,None),
   ({"id":"dandelion-safe","name":"Dandelion flower"},False,None),
-  ({"id":"guardian-lion","name":"Guardian lion pair"},False,"statues_and_props"),
-  ({"id":"imperial-temple","name":"Imperial China Palace and Garden - Chinese Temple"},False,"palaces_and_temples"),
+  ({"id":"guardian-lion","name":"Guardian Lion Pair (Imperial China Palace and Garden)"},False,"statues_and_props"),
+  ({"id":"imperial-courtyard","name":"Walled palace courtyard and lotus garden (Imperial China Palace and Garden)"},False,"palaces_and_temples"),
+  ({"id":"palace-gate","name":"Palace Wall Moon Gate (Imperial China Palace and Garden)"},False,"gates_walls_bridges"),
+  ({"id":"bamboo","name":"Bamboo Clump (Imperial China Palace and Garden)"},False,"nature"),
   ({"id":"asian-house","name":"Traditional Asian House"},False,"houses_and_shops"),
+  ({"id":"western-dragon","name":"Western Dragon With Wings Spread (Dragons and Wyverns)"},True,None),
+  ({"id":"generic-temple","name":"Modular Temple Model"},False,None),
+  ({"id":"medieval-temple","name":"Medieval Stone Temple"},True,None),
+  ({"id":"western-court","name":"Palace Audience House (Royal Court and Throne Palace)"},False,None),
  ]
  failures=[]
  for rec,should_reject,should_category in cases:
   actual_reject=rejected_asset(rec)
   actual_category=asset_category(rec)
-  if actual_reject!=should_reject or (should_category and actual_category!=should_category):
+  if actual_reject!=should_reject or actual_category!=should_category:
    failures.append({"record":rec,"rejected":actual_reject,"category":actual_category,
                     "expected_rejected":should_reject,"expected_category":should_category})
  if failures: raise RuntimeError("Strict asset filter self-test failed: "+json.dumps(failures,ensure_ascii=False))
