@@ -103,6 +103,21 @@ jobs:
           set -euo pipefail
           godot --headless --audio-driver Dummy --path . --script res://tools/diagnose_scripts_materials.gd
 
+      - name: Godot 4.3 --check-only for PBR and city architecture scripts
+        shell: bash
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          for script in \
+            res://src/scripts/PBRMaterialLibrary.gd \
+            res://src/scripts/CityArchitectureBuilder.gd \
+            res://src/scripts/CityStreetDressing.gd \
+            res://src/scripts/WorldTerrainBuilder.gd; do
+            echo "GODOT_CHECK_ONLY: $script"
+            godot --headless --audio-driver Dummy --path . --check-only --script "$script"
+          done
+          echo "FOUR_CITY_SCRIPT_CHECK_ONLY_PASS"
+
       - name: Step 2 - Import Scripts, Materials & Build
         shell: bash
         timeout-minutes: 5
@@ -194,30 +209,25 @@ jobs:
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/city_street_dressing_test.gd 420s display
 
-      - name: Capture thirty close and six high-angle classic-Conquer proof frames across all six cities
+      - name: Capture twelve clear oblique panoramic proof frames across all six cities
         id: capture_visual_proof
-        timeout-minutes: 15
+        timeout-minutes: 12
         shell: bash
         run: |
           set -Eeuo pipefail
           mkdir -p reports/visual-proof
-          timeout 600s xvfb-run -a godot --path . --script res://tools/capture_visual_proof.gd 2>&1 | tee reports/visual-proof/capture.log
+          timeout 480s xvfb-run -a godot --path . --script res://tools/capture_visual_proof.gd 2>&1 | tee reports/visual-proof/capture.log
           cities=(twincity desertland volcanoland iceland waterlands darkforest)
           city_index=1
           for city in "${cities[@]}"; do
-            for sample in 01_plaza_close 02_shop_street_close 03_main_gate_horizon 04_outer_world; do
+            for sample in 01_aerial_overview 02_inner_street; do
               test -s "reports/visual-proof/city_${city_index}_${city}_${sample}.png"
             done
-            test -s "reports/visual-proof/city_${city_index}_${city}_05_aerial_oblique.png"
             city_index=$((city_index+1))
           done
-          for city_index in "${!cities[@]}"; do
-            city="${cities[$city_index]}"
-            test -s "reports/visual-proof/phase3a_panorama_$((city_index + 1))_${city}.png"
-          done
           file reports/visual-proof/*.png
-          test "$(find reports/visual-proof -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 36
-          echo "THIRTY_CITY_ARCHITECTURE_FRAMES_AND_SIX_PHASE3A_PANORAMAS_PASS"
+          test "$(find reports/visual-proof -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 12
+          echo "TWELVE_CITY_PANORAMIC_PROOF_FRAMES_PASS"
 
       - name: Upload Visual Screenshot Proof
         if: always() && steps.capture_visual_proof.outcome == 'success'
