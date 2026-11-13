@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Restore official Kenney CC0 environment packs directly into the Godot project.
 
-Only each pack's GLTF-format directory and its license notice are copied.
+Only the exact selected GLB models, their referenced resources, and each pack's license notice are copied.
 Archives are hash-pinned, path traversal is rejected, and every model is inventoried.
 """
 from __future__ import annotations
