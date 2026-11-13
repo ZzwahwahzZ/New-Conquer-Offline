@@ -4,9 +4,9 @@ import re
 from urllib.parse import urlparse
 
 ASSET3D_TERMS = {
-    "architecture": ["pagoda", "chinese temple", "asian house", "chinese gate", "stone bridge", "watchtower", "stone wall", "pavilion"],
-    "ornaments": ["dragon statue", "lion statue", "stone lantern", "chinese lantern", "fountain", "torch", "pillar"],
-    "nature": ["willow tree", "pine tree", "bamboo", "cherry blossom", "rock", "bush", "grass"],
+    "architecture": ["imperial chinese palace", "chinese palace", "ceremonial hall", "gate tower", "moon gate", "palace wall", "covered walkway", "water pavilion", "arched stone bridge", "roof cassette", "roof ridge", "bracket set", "lattice screen", "pagoda", "chinese temple", "asian house", "chinese gate", "stone bridge", "watchtower", "stone wall", "pavilion"],
+    "ornaments": ["guardian lion", "dragon roof finial", "garden lantern", "silk lantern", "bronze tripod cauldron", "stone incense burner", "bronze bell", "ceremonial drum", "dragon statue", "lion statue", "stone lantern", "chinese lantern", "fountain", "torch", "pillar"],
+    "nature": ["bamboo clump", "plum tree blossom", "bonsai pine", "lotus cluster", "rockery outcrop", "peony planter", "willow tree", "pine tree", "bamboo", "cherry blossom", "rock", "bush", "grass"],
 }
 
 def _asset_rows(payload):
@@ -29,7 +29,7 @@ def discover_3dassets(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR):
     accepted_by_category = {"architecture": 0, "ornaments": 0, "nature": 0}
     for category, terms in ASSET3D_TERMS.items():
         for term in terms:
-            if accepted_by_category[category] >= 20:
+            if accepted_by_category[category] >= 40:
                 break
             try:
                 payload = getj("https://3dassets.dev/api/v1/assets", {"q": term, "limit": 30, "sort": "relevance"})
@@ -63,7 +63,7 @@ def discover_3dassets(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                         path=fetch(cdn,RAW/"3dassets"/(safe(slug)+".glb"))
                         DOWN.append({**rec,"raw":str(path),"download_sha256":sha(path)})
                         accepted_by_category[category]+=1
-                        if accepted_by_category[category]>=20: break
+                        if accepted_by_category[category]>=40: break
                     except Exception as exc:
                         ERR.append({"asset":"3DAssets.dev:"+str(slug),"stage":"detail/download","reason":str(exc)})
             except Exception as exc:
