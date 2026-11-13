@@ -324,7 +324,7 @@ def upload(entries):
  remote_paths=set(api.list_repo_files(repo_id=HF_REPO,repo_type="dataset"))
  stale_paths=sorted(p for p in remote_paths if p.startswith(PREFIX+"/") and p not in expected_paths)
  if stale_paths:
-  api.delete_files(stale_paths,repo_id=HF_REPO,repo_type="dataset",
+  api.delete_files(HF_REPO,stale_paths,repo_type="dataset",
                    commit_message="Remove stale files from synchronized Wuxia imperial asset pack")
  remaining_paths=set(api.list_repo_files(repo_id=HF_REPO,repo_type="dataset"))
  leftovers=sorted(p for p in remaining_paths if p.startswith(PREFIX+"/") and p not in expected_paths)
