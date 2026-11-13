@@ -1,5 +1,5 @@
 extends SceneTree
-const SOURCE_ROOT := "res://assets/imperial_city_kit_v2/quaternius"
+const SOURCE_ROOT := "res://assets/wuxia_imperial_pack"
 const PREFAB_ROOT := "res://assets/prefabs/city"
 var generated := 0
 var failed := 0
