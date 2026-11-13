@@ -262,14 +262,14 @@ static func _first_mesh_node(root: Node) -> MeshInstance3D:
 			pending.append(child)
 		if current is MeshInstance3D:
 			var mesh_instance := current as MeshInstance3D
-			if mesh_instance.mesh != null and mesh_instance.mesh.get_surface_count() > 0:
+			if mesh_instance.mesh != null:
 				return mesh_instance
 	return null
 
 static func _sanitize_imported_mesh_nodes(root: Node) -> void:
-	# Hidden MeshInstance3D nodes still reach RenderingServer and can emit
-	# mesh_get_surface_count(null). Remove invalid nodes from the detached GLB
-	# scene before it is attached to the live city tree.
+	# Remove null-mesh helper nodes from detached GLB scenes before attachment.
+	# Avoid surface-count queries: the headless dummy renderer can receive
+	# a null RID for imported helper meshes even when the resource exists.
 	var pending: Array[Node] = [root]
 	var removed_empty := 0
 	var retained_meshes := 0
@@ -279,8 +279,6 @@ static func _sanitize_imported_mesh_nodes(root: Node) -> void:
 			if child is MeshInstance3D:
 				var mesh_instance := child as MeshInstance3D
 				var invalid_mesh := mesh_instance.mesh == null
-				if not invalid_mesh:
-					invalid_mesh = mesh_instance.mesh.get_surface_count() == 0
 				if invalid_mesh:
 					current.remove_child(child)
 					child.queue_free()
