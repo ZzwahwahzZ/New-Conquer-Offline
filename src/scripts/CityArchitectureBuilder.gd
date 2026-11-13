@@ -933,25 +933,28 @@ static func _build_wuxia_market_stalls(parent: Node3D, city: String, height_imag
     stall.set_meta("source_asset_path",dedicated_path)
   else:
    var roofed_bay := walkway.instantiate() as Node3D
-   var tea_counter := counter.instantiate() as Node3D
    var rear_screen := screen.instantiate() as Node3D
    var red_lantern := lantern.instantiate() as Node3D
-   if roofed_bay == null or tea_counter == null or rear_screen == null or red_lantern == null:
+   if roofed_bay == null or rear_screen == null or red_lantern == null:
     push_error("WUXIA_MARKET_STALL_COMPOSITE_FAIL: "+city+" index="+str(index))
     stall.free()
     continue
    roofed_bay.name = "ImportedChineseCoveredWalkwayStall"
    stall.add_child(roofed_bay)
-   tea_counter.name = "ImportedLowTeaTableVendorCounter"
-   tea_counter.position = Vector3(0.0,0.02,1.0)
-   tea_counter.scale = Vector3.ONE*1.15
-   stall.add_child(tea_counter)
+   for counter_index in range(2):
+    var tea_counter := counter.instantiate() as Node3D
+    if tea_counter == null:
+     continue
+    tea_counter.name = "ImportedLowTeaTableVendorCounter_%02d" % counter_index
+    tea_counter.position = Vector3(-0.72+float(counter_index)*1.44,0.02,1.0)
+    tea_counter.scale = Vector3.ONE*1.15
+    stall.add_child(tea_counter)
    rear_screen.name = "ImportedChineseLatticeBackScreen"
    rear_screen.position = Vector3(0.0,0.0,-1.65)
    rear_screen.scale = Vector3.ONE*0.95
    stall.add_child(rear_screen)
    red_lantern.name = "ImportedHangingRedSilkLantern"
-   red_lantern.position = Vector3(0.0,3.0,0.0)
+   red_lantern.position = Vector3(0.0,2.2,0.0)
    red_lantern.scale = Vector3.ONE*0.58
    stall.add_child(red_lantern)
    stall.set_meta("source_asset_paths",[walkway_path,counter_path,screen_path,lantern_path])
