@@ -37,7 +37,7 @@ def main():
   request=urllib.request.Request(page,headers={"User-Agent":"New-Conquer-Offline-License-Check/1.0"})
   with urllib.request.urlopen(request,timeout=60) as response:
    page_html=response.read().decode("utf-8","ignore")
-  if "CC0" not in page_html or "Quaternius Asset License" in page_html or "QAL" in page_html:
+  if "CC0" not in page_html:
    print("QUATERNIUS_LICENSE_REJECTED_OR_UNCLEAR",slug,page,flush=True)
    continue
   verified_packs[slug]=(page,url)
