@@ -34,6 +34,8 @@ def discover_opengameart(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
     seen=set()
     supported={".zip",".blend",".glb",".gltf",".fbx",".obj",".dae",".stl",".ply",".7z"}
     for src in SOURCES:
+        if src.get("slug") == "free-bamboo-v1":
+            continue
         try:
             response=session.get(src["page"],timeout=(20,60),headers={"User-Agent":"NewConquerOffline-AssetFetcher/1.0"})
             response.raise_for_status()
@@ -71,6 +73,8 @@ def discover_quaternius(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
         {"slug":"stylized-nature-megakit-official","page":"https://quaternius.com/packs/stylizednaturemegakit.html","creator":"Quaternius"},
     ]
     for pack in packs:
+        if pack["slug"] in {"simple-buildings-pack","buildings-pack","ultimate-nature-pack","stylized-nature-megakit-official"}:
+            continue
         try:
             response=session.get(pack["page"],timeout=(20,60),headers={"User-Agent":"NewConquerOffline-AssetFetcher/1.0"})
             response.raise_for_status()
