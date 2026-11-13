@@ -2,7 +2,7 @@ name: Godot 4.3 CI and Web
 
 on:
   push:
-    branches: [main, phase3a-terrain-architecture]
+    branches: [main, phase3a-terrain-architecture, imperial-city-v2-official-packs]
   workflow_dispatch:
 
 permissions:
@@ -36,6 +36,15 @@ jobs:
           sudo install -m 0755 /tmp/godot-bin/Godot_v${GODOT_VERSION}-stable_linux.x86_64 /usr/local/bin/godot
           godot --version
 
+      - name: Install Blender and public Quaternius ZIP downloader
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y blender
+          python3 -m pip install --disable-pip-version-check --upgrade gdown
+          blender --version
+
       - name: Restore PBR terrain packages and heightmaps from Hugging Face
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
@@ -46,7 +55,8 @@ jobs:
           python3 tools/restore_kenney_environment_assets.py
           python3 tools/restore_chinese_imperial_assets.py
           python3 tools/restore_polyhaven_pbr_textures.py
-          python3 -m py_compile tools/restore_kenney_environment_assets.py tools/restore_chinese_imperial_assets.py tools/restore_polyhaven_pbr_textures.py tools/kenney_asset_preflight.py tools/fetch_quaternius_assets.py
+          python3 tools/restore_imperial_city_pbr_v2.py
+          python3 -m py_compile tools/restore_kenney_environment_assets.py tools/restore_chinese_imperial_assets.py tools/restore_polyhaven_pbr_textures.py tools/restore_imperial_city_pbr_v2.py tools/fetch_quaternius_official_packs.py tools/upload_imperial_city_v2_hf.py tools/kenney_asset_preflight.py
           bash -n tools/run_godot_smoke_test.sh
           npm install --global @gltf-transform/cli@4.5.1
           while IFS= read -r -d '' asset; do
@@ -60,13 +70,14 @@ jobs:
       - name: Cache official Quaternius downloads
         uses: actions/cache@v4
         with:
-          path: ~/.cache/quaternius
-          key: ${{ runner.os }}-quaternius-github-cc0-0128ca510d653bb0-v3
+          path: ~/.cache/quaternius-official
+          key: ${{ runner.os }}-quaternius-official-cc0-v2
           restore-keys: |
-            ${{ runner.os }}-quaternius-github-cc0-
+            ${{ runner.os }}-quaternius-official-cc0-
 
-      - name: Download pinned Quaternius CC0 GLB models from public GitHub
-        run: python3 tools/fetch_quaternius_assets.py
+      - name: Download official Quaternius CC0 ZIP packs and normalize models to GLB
+        timeout-minutes: 35
+        run: python3 tools/fetch_quaternius_official_packs.py
 
       - name: Cache Godot imported assets
         uses: actions/cache@v4
@@ -97,6 +108,16 @@ jobs:
           timeout 180s xvfb-run -a godot --headless --audio-driver Dummy --path . --import --quit 2>&1 | tee reports/godot_import_guard.log
           test -d .godot
           echo "GODOT_FULL_IMPORT_AND_UID_CACHE_PASS"
+
+      - name: Generate and verify TSCN prefabs for imported Imperial City v2 models
+        timeout-minutes: 8
+        run: timeout 420s xvfb-run -a godot --headless --audio-driver Dummy --path . --script res://tools/generate_imperial_city_v2_prefabs.gd
+
+      - name: Upload and verify Imperial City v2 kit on Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python3 tools/upload_imperial_city_v2_hf.py
+
 
       - name: Step 1 - Initialize Editor Classes
         shell: bash
