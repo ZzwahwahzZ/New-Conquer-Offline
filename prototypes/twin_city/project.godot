@@ -1,0 +1,16 @@
+; Twin City isolated Godot 4.3 project
+config_version=5
+[application]
+config/name="Twin City Imperial Visual Prototype"
+run/main_scene="res://TwinCity.tscn"
+config/features=PackedStringArray("4.3")
+[display]
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/window_width_override=1920
+window/size/window_height_override=1080
+window/stretch/mode="disabled"
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.55, 0.72, 0.9, 1)
