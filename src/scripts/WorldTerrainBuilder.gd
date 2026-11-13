@@ -183,11 +183,11 @@ static func _add_scene_mesh_collisions(root: Node) -> void:
 static func _build_imperial_tree_multimesh(parent: Node3D, city: String, size: float) -> void:
  var height_image: Image = load_height_image(city)
  var candidates: Array[String] = []
- _collect_kenney_nature_models("res://assets/imperial_city_kit_v2/quaternius/ultimate_nature", candidates)
+ _collect_kenney_nature_models("res://assets/wuxia_imperial_pack/quaternius/ultimate_nature", candidates)
  var tree_candidates: Array[String] = []
  for path in candidates:
   var label := path.get_file().to_lower()
-  if (label.contains("tree") or label.contains("pine") or label.contains("willow") or label.contains("palm") or label.contains("bamboo")) and not (label.contains("stump") or label.contains("log") or label.contains("trunk")):
+  if (label.contains("tree") or label.contains("pine") or label.contains("willow") or label.contains("palm") or label.contains("bamboo") or label.contains("bush")) and not (label.contains("stump") or label.contains("log") or label.contains("trunk")):
    tree_candidates.append(path)
  if tree_candidates.is_empty():
   push_error("IMPERIAL_CITY_TREE_FAIL: no real tree GLB models found for " + city)
@@ -209,7 +209,7 @@ static func _build_imperial_tree_multimesh(parent: Node3D, city: String, size: f
  if species.is_empty():
   push_error("IMPERIAL_CITY_TREE_FAIL: tree models could not be imported for " + city)
   return
- const TREES_PER_CITY := 50
+ const TREES_PER_CITY := 60
  var city_index := maxi(0, ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"].find(city))
  var base_count := int(TREES_PER_CITY / species.size())
  var remainder := posmod(TREES_PER_CITY, species.size())
