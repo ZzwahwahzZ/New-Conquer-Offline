@@ -112,6 +112,9 @@ func _run() -> void:
 		var chinese_wall_count := _count_group_recursive(city, "city_chinese_perimeter_wall")
 		var watchtower_count := _count_group_recursive(city, "imperial_watchtowers")
 		var market_stall_count := _count_group_recursive(city, "city_market_stall")
+		var market_lantern_light_count := _count_group_recursive(city, "imperial_market_lantern_lights")
+		var stair_brazier_count := _count_group_recursive(city, "imperial_stair_braziers")
+		var stair_brazier_light_count := _count_group_recursive(city, "imperial_stair_brazier_lights")
 		var garden_lantern_count := _count_group_recursive(city, "imperial_plaza_garden_lanterns")
 		var garden_light_count := _count_group_recursive(city, "imperial_plaza_garden_lights")
 		var lotus_pond_count := _count_group_recursive(city, "imperial_plaza_lotus_pond")
@@ -129,6 +132,8 @@ func _run() -> void:
 		if not _require(watchtower_count == 4, "%s generated %d/4 Chinese corner watchtowers" % [city_id, watchtower_count]):
 			return
 		if not _require(market_stall_count == 4, "%s generated %d/4 imported Asian market stalls" % [city_id, market_stall_count]):
+			return
+		if not _require(market_lantern_light_count == 4 and stair_brazier_count == 2 and stair_brazier_light_count == 2, "%s market/brazier lighting incomplete: market=%d braziers=%d brazier_lights=%d" % [city_id, market_lantern_light_count, stair_brazier_count, stair_brazier_light_count]):
 			return
 		if not _require(garden_lantern_count == 4 and garden_light_count == 4 and lotus_pond_count == 1 and pond_edge_count == 8 and incense_burner_count == 2 and rockery_count == 1, "%s imperial garden props incomplete: lanterns=%d lights=%d ponds=%d pond_edges=%d burners=%d rockery=%d" % [city_id, garden_lantern_count, garden_light_count, lotus_pond_count, pond_edge_count, incense_burner_count, rockery_count]):
 			return
