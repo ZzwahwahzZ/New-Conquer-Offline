@@ -79,7 +79,7 @@ def main():
   digest,nbytes=download(url,target,size)
   author=str(item.get("author") or item.get("creator") or data.get("author") or "3DAssets.dev")
   page=str(item.get("url") or f"https://3dassets.dev/assets/{slug(name)}")
-  entry={"id":aid,"name":name,"file":str(target.relative_to(ROOT)),"category":folder,"source":page,"cdn_url":url,"author":author,"license":"CC0-1.0" if license_slug=="cc0-1.0" else "CC-BY-4.0","attribution_required":license_slug!="cc0-1.0","attribution_text":str(lic.get("attributionText") or ""),"bytes":nbytes,"sha256":digest,"normalization_pending":True}
+  entry={"id":aid,"name":name,"file":str(target.relative_to(ROOT)),"category":folder,"source":page,"cdn_url":url,"author":author,"license":"CC0-1.0" if license_slug=="cc0-1.0" else "CC-BY","license_url":str(lic.get("url") or ("https://creativecommons.org/publicdomain/zero/1.0/" if license_slug=="cc0-1.0" else "https://creativecommons.org/licenses/by/4.0/")),"attribution_required":license_slug!="cc0-1.0","attribution_text":str(lic.get("attributionText") or ""),"bytes":nbytes,"sha256":digest,"normalization_pending":True}
   manifest["assets"].append(entry)
   print(f"WUXIA_IMPERIAL_SOURCE_GLB: id={aid} category={folder} file={target.name} bytes={nbytes} sha256={digest}",flush=True)
  # Search the public 3DAssets catalogue for specific Chinese architecture and ceremonial props.
@@ -110,7 +110,7 @@ def main():
    if query in ("Chinese pagoda","dragon statue","Asian market stall","Chinese town house") and not any(tag in text_blob for tag in ("chinese","asian","japanese","hanok","imperial")): continue
    lic=candidate.get("license",{})
    lic_slug=str(lic.get("slug","")).lower()
-   if lic_slug not in ("cc0-1.0","cc-by-4.0","cc-by"): continue
+   if lic_slug not in ("cc0-1.0","cc-by-4.0") and not (lic_slug=="cc-by" and lic.get("url")): continue
    eligible.append(candidate)
   if not eligible:
    manifest["discovery"].append({"query":query,"status":"no_verified_match"})
