@@ -64,22 +64,14 @@ func _renderable_world_bounds(root_node: Node) -> AABB:
 				found = true
 	return combined if found else AABB()
 
-func _building_overlaps_street(bounds: AABB, city_name: String) -> bool:
-	var half := 110.0 if city_name == "TwinCity" else 80.0
+func _building_overlaps_street(bounds: AABB, _city_name: String) -> bool:
 	var corridors: Array[Rect2] = [
-		Rect2(Vector2(-7.0, -150.0), Vector2(14.0, 300.0)),
-		Rect2(Vector2(-150.0, -7.0), Vector2(300.0, 14.0)),
-		Rect2(Vector2(-5.0, -half * 0.86), Vector2(10.0, half * 1.72)),
-		Rect2(Vector2(-half * 0.86, -5.0), Vector2(half * 1.72, 10.0))
+		Rect2(Vector2(-5.0, -80.0), Vector2(10.0, 160.0)),
+		Rect2(Vector2(-80.0, -5.0), Vector2(160.0, 10.0))
 	]
-	for offset in [-42.0, 42.0]:
-		corridors.append(Rect2(Vector2(offset - 2.5, -half * 0.74), Vector2(5.0, half * 1.48)))
-		corridors.append(Rect2(Vector2(-half * 0.74, offset - 2.5), Vector2(half * 1.48, 5.0)))
-	for side in [-1.0, 1.0]:
-		var approach: float = float(side) * half * 0.48
-		var approach_length := half * 0.82
-		corridors.append(Rect2(Vector2(approach - 3.5, -approach_length * 0.5), Vector2(7.0, approach_length)))
-		corridors.append(Rect2(Vector2(-approach_length * 0.5, approach - 3.5), Vector2(approach_length, 7.0)))
+	for offset in [-9.0, 9.0]:
+		corridors.append(Rect2(Vector2(offset - 2.5, -80.0), Vector2(5.0, 160.0)))
+		corridors.append(Rect2(Vector2(-80.0, offset - 2.5), Vector2(160.0, 5.0)))
 	var bounds_min := Vector2(bounds.position.x, bounds.position.z)
 	var bounds_max := bounds_min + Vector2(bounds.size.x, bounds.size.z)
 	for corridor in corridors:
@@ -317,7 +309,7 @@ func _run() -> void:
 		var kenney_stall_count := 0
 		var kenney_fountain_found := false
 		var kenney_wall_multi := city.find_child(city_name + "_KenneyCastlePerimeterWalls_MultiMesh", true, false) as MultiMeshInstance3D
-		var open_plaza_found := city.find_child("OpenCentralPlaza_80x80", true, false) != null
+		var open_plaza_found := city.find_child("OpenCentralPlaza_24x24", true, false) != null
 		var outer_world_found := city.find_child(city_name + "_OpenWorld_800x800", true, false) != null
 		var pending_fortifications: Array[Node] = [architecture_slot]
 		while not pending_fortifications.is_empty():
@@ -387,7 +379,7 @@ func _run() -> void:
 		if not _check(railings >= 4, city_name + " ornamental railings incomplete"):
 			return
 		var env_node := city.get_node_or_null("SettlementEnvironment") as WorldEnvironment
-		if not _check(env_node != null and env_node.environment.tonemap_mode == Environment.TONE_MAPPER_ACES and env_node.environment.ssao_enabled and not env_node.environment.glow_enabled and not env_node.environment.fog_enabled, city_name + " ACES/SSAO environment missing"):
+		if not _check(env_node != null and env_node.environment.tonemap_mode == Environment.TONE_MAPPER_ACES and env_node.environment.ssao_enabled and not env_node.environment.glow_enabled and (env_node.environment.fog_enabled == (city_name == "DarkForest")), city_name + " ACES/SSAO/fog environment mismatch"):
 			return
 		var expected_sun_energy := 0.92 if city_name == "DarkForest" else 0.78
 		var expected_ambient_energy := 0.68 if city_name == "DarkForest" else 0.42
