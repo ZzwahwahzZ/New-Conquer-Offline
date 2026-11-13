@@ -39,29 +39,6 @@ static func _build_open_plaza(parent: Node3D, city: String, p: Dictionary, heigh
   for x in range(-3,4):
    var tile := _box(plaza, "DiamondStonePaver_%02d_%02d" % [x+3,z+3], Vector3(float(x)*7.0,0.055,float(z)*7.0), Vector3(6.85,0.11,6.85), stone, 1.0)
    tile.rotation_degrees.y = 45.0
- var medallion := MeshInstance3D.new()
- medallion.name = "CentralEngravedStoneMedallion"
- var disk := CylinderMesh.new()
- disk.top_radius = 9.0
- disk.bottom_radius = 9.0
- disk.height = 0.32
- disk.radial_segments = 64
- medallion.mesh = disk
- medallion.position.y = 0.20
- plaza.add_child(medallion)
- medallion.material_override = _material(p.gold,0.72)
- for radius in [7.8,6.2,4.6]:
-  var ring := MeshInstance3D.new()
-  ring.name = "MedallionEngravedRing"
-  var torus := TorusMesh.new()
-  torus.inner_radius = radius
-  torus.outer_radius = radius + 0.16
-  torus.rings = 48
-  torus.ring_segments = 8
-  ring.mesh = torus
-  ring.position.y = 0.39
-  plaza.add_child(ring)
-  ring.material_override = _material(p.accent,0.66)
  _add_plaza_statue(plaza)
 
 static func _add_plaza_statue(parent: Node3D) -> void:
@@ -72,7 +49,7 @@ static func _add_plaza_statue(parent: Node3D) -> void:
    var fountain := fountain_pack.instantiate() as Node3D
    if fountain != null:
     fountain.name = "ImperialPlazaStoneFountain"
-    fountain.position = Vector3(0.0,0.12,-16.0)
+    fountain.position = Vector3(0.0,0.12,-18.0)
     fountain.scale = Vector3.ONE * 1.15
     fountain.add_to_group("imperial_plaza_fountains")
     fountain.set_meta("source_asset_path",fountain_path)
@@ -103,7 +80,7 @@ static func _add_plaza_statue(parent: Node3D) -> void:
  var model_height := maxf(mesh_node.mesh.get_aabb().size.y, 0.01)
  statue.name = "ImperialPlazaStoneStatue"
  statue.scale = Vector3.ONE * (4.8 / model_height)
- statue.position = Vector3(0.0,0.12,16.0)
+ statue.position = Vector3(0.0,0.12,23.0)
  statue.set_meta("source_asset_path", candidates[0])
  statue.add_to_group("imperial_plaza_statue")
  parent.add_child(statue)
@@ -138,16 +115,16 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
   return
  var pond := pond_scene.instantiate() as Node3D
  pond.name = "ImperialLotusPond"
- pond.position = Vector3(-16.0,0.13,-16.0)
+ pond.position = Vector3(-19.0,0.13,-19.0)
  pond.scale = Vector3.ONE*2.2
  pond.add_to_group("imperial_plaza_lotus_pond")
  pond.set_meta("source_asset_path",base+"pond_water_module.glb")
  parent.add_child(pond)
  var pond_edges := [
-  {"at":Vector3(-16.0,0.12,-19.3),"rotation":0.0},
-  {"at":Vector3(-16.0,0.12,-12.7),"rotation":PI},
-  {"at":Vector3(-19.3,0.12,-16.0),"rotation":PI*0.5},
-  {"at":Vector3(-12.7,0.12,-16.0),"rotation":PI*1.5}
+  {"at":Vector3(-19.0,0.12,-22.3),"rotation":0.0},
+  {"at":Vector3(-19.0,0.12,-15.7),"rotation":PI},
+  {"at":Vector3(-22.3,0.12,-19.0),"rotation":PI*0.5},
+  {"at":Vector3(-15.7,0.12,-19.0),"rotation":PI*1.5}
  ]
  for edge_index in range(pond_edges.size()):
   var edge_data: Dictionary = pond_edges[edge_index]
@@ -160,10 +137,10 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
   edge.set_meta("source_asset_path",base+"lotus_pond_edge_straight.glb")
   parent.add_child(edge)
  var pond_corners := [
-  {"at":Vector3(-19.3,0.12,-19.3),"rotation":0.0},
-  {"at":Vector3(-12.7,0.12,-19.3),"rotation":PI*0.5},
-  {"at":Vector3(-12.7,0.12,-12.7),"rotation":PI},
-  {"at":Vector3(-19.3,0.12,-12.7),"rotation":PI*1.5}
+  {"at":Vector3(-22.3,0.12,-22.3),"rotation":0.0},
+  {"at":Vector3(-15.7,0.12,-22.3),"rotation":PI*0.5},
+  {"at":Vector3(-15.7,0.12,-15.7),"rotation":PI},
+  {"at":Vector3(-22.3,0.12,-15.7),"rotation":PI*1.5}
  ]
  for corner_index in range(pond_corners.size()):
   var corner_data: Dictionary = pond_corners[corner_index]
@@ -178,14 +155,14 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
   _add_static_mesh_collisions(pond_corner)
  var lotus := lotus_scene.instantiate() as Node3D
  lotus.name = "ImperialLotusPondFlowerCluster"
- lotus.position = Vector3(-16.0,0.2,-16.0)
+ lotus.position = Vector3(-19.0,0.2,-19.0)
  lotus.scale = Vector3.ONE*1.15
  lotus.add_to_group("imperial_plaza_garden_props")
  lotus.set_meta("source_asset_path",base+"lotus_cluster.glb")
  parent.add_child(lotus)
  var rockery := rockery_scene.instantiate() as Node3D
  rockery.name = "ImperialPlazaRockeryOutcrop"
- rockery.position = Vector3(16.0,0.12,0.0)
+ rockery.position = Vector3(19.0,0.12,0.0)
  rockery.scale = Vector3.ONE*1.05
  rockery.add_to_group("imperial_plaza_rockery")
  rockery.set_meta("source_asset_path",base+"rockery_outcrop.glb")
@@ -194,13 +171,13 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
  for index in range(2):
   var burner := burner_scene.instantiate() as Node3D
   burner.name = "ImperialPlazaStoneIncenseBurner_%02d" % index
-  burner.position = Vector3(-15.0 if index == 0 else 15.0,0.12,15.0)
+  burner.position = Vector3(-17.0 if index == 0 else 17.0,0.12,18.0)
   burner.scale = Vector3.ONE*0.9
   burner.add_to_group("imperial_plaza_incense_burners")
   burner.set_meta("source_asset_path",base+"stone_incense_burner.glb")
   parent.add_child(burner)
   _add_static_mesh_collisions(burner)
- var lantern_positions := [Vector3(-21.0,0.12,-21.0),Vector3(21.0,0.12,-21.0),Vector3(-21.0,0.12,21.0),Vector3(21.0,0.12,21.0)]
+ var lantern_positions := [Vector3(-23.0,0.12,-23.0),Vector3(23.0,0.12,-23.0),Vector3(-23.0,0.12,23.0),Vector3(23.0,0.12,23.0)]
  for index in range(lantern_positions.size()):
   var lantern := lantern_scene.instantiate() as Node3D
   lantern.name = "ImperialPlazaStandingGardenLantern_%02d" % index
