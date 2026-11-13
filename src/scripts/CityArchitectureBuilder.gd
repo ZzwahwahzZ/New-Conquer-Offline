@@ -128,11 +128,14 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
     if reserved:
      index += 1
      continue
-   var building := _make_compact_urban_building(city,p,index)
-   building.name = city + "_DetailedBuilding_%02d" % index
-   building.position = Vector3(x,WorldTerrainBuilder.sample_height_image(height_image,city,x,z,800.0),z)
-   building.rotation.y = atan2(-x,-z)
-   slot.add_child(building)
+   var building := _instantiate_quaternius_building(slot,city,index,Vector3(x,0.0,z),height_image)
+   if building == null:
+    building = _make_compact_urban_building(city,p,index)
+    building.name = city + "_DetailedBuilding_%02d" % index
+    building.position = Vector3(x,WorldTerrainBuilder.sample_height_image(height_image,city,x,z,800.0),z)
+    building.rotation.y = atan2(-x,-z)
+    slot.add_child(building)
+   building.add_to_group("city_building")
    index += 1
    built_count += 1
  print("CITY_URBAN_DENSITY_PASS: %s buildings=%d grid=10x8 reserved_landmarks=true" % [city,built_count])
@@ -304,6 +307,7 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  if instance == null:
   return null
  instance.name = city + "_QuaterniusBuilding_%02d" % index
+ instance.add_to_group("city_building")
  instance.position = at
  instance.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
  instance.rotation.y = atan2(-at.x,-at.z)
@@ -406,7 +410,10 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
    vertical_wall.visible = not kenney_walls
  for direction in range(4):
   var gate := Node3D.new()
-  gate.name = ["North","East","South","West"][direction] + "_GrandCityGate"
+  var direction_name: String = ["North","East","South","West"][direction]
+  gate.name = direction_name + "_GrandCityGate"
+  gate.add_to_group("cardinal_gates")
+  gate.set_meta("cardinal_direction",direction_name)
   gate.rotation_degrees.y = direction*90.0
   fortification.add_child(gate)
   var kenney_gate := _add_kenney_asset(gate, city, height_image, "castle-kit", "gate.glb", "KenneyGateModel", Vector3(0.0, 0.0, -148.0), 0.0, 2.2)
@@ -418,7 +425,7 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
    var tower_cap := _box(gate,"GateTowerCrenellation",Vector3(side*17.0,18.5,-148.0),Vector3(13.0,1.0,15.0),gate_material,1.0)
    tower_cap.visible = kenney_tower == null
    _box(gate,"GateGuardianStand",Vector3(side*9.0,0.15,-132.0),Vector3(1.6,0.3,1.6),wall_material,1.0)
-   _build_gate_guard(gate,side,p)
+   _build_gate_guard(gate,side,p,direction_name)
   var lintel := _box(gate,"GateArchLintel",Vector3(0,17.2,-148.0),Vector3(24.0,3.0,9.0),gate_material,1.0)
   lintel.visible = kenney_gate == null
   for x in [-8.0,8.0]:
@@ -635,9 +642,11 @@ static func _build_walkable_outer_routes(parent: Node3D, city: String, p: Dictio
   _set_visibility_range(body, 520.0, 40.0)
   route_root.add_child(body)
 
-static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary) -> void:
+static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary, direction_name: String) -> void:
  var guard := Node3D.new()
- guard.name = "GateGuardian_" + ("Left" if side < 0.0 else "Right")
+ guard.name = "CityGuardian_" + direction_name + "_" + ("Left" if side < 0.0 else "Right")
+ guard.add_to_group("city_guardians")
+ guard.set_meta("gate_direction",direction_name)
  guard.position = Vector3(side*9.0,0.0,-132.0)
  parent.add_child(guard)
  var armor := _material(p.wood,0.62)
