@@ -90,7 +90,7 @@ def main():
   ("Asian market stall","asian_market_stall.glb","architecture",("stall",)),
   ("Chinese town house","chinese_town_house.glb","architecture",("house",)),
   ("stone brazier","stone_brazier.glb","props_nature",("stone","brazier")),
-  ("weeping willow","willow_tree.glb","props_nature",("willow",)),
+  ("willow tree","willow_tree.glb","props_nature",("willow",)),
   ("mountain pine","pine_tree.glb","props_nature",("pine",)),
   ("garden bush","garden_bush.glb","props_nature",("bush",)),
   ("bamboo cluster","bamboo_cluster.glb","props_nature",("bamboo",)),
