@@ -6,11 +6,12 @@ from urllib.parse import urlparse,urljoin,unquote
 import requests
 from huggingface_hub import HfApi,hf_hub_download
 from imperial_extra_sources import discover_3dassets
+from opengameart_sources import discover_opengameart, discover_quaternius
 ROOT=Path.cwd(); OUT=ROOT/"assets/wuxia_imperial_pack"; RAW=ROOT/".asset_work/raw"
 HF_REPO=os.getenv("HF_REPO_ID","ZzwahwahzZ/clash-of-legends-terrain-assets"); PREFIX="assets/wuxia_imperial_pack"
 S=requests.Session(); S.headers.update({"User-Agent":"NewConquerOffline-AssetPipeline/1.0 (GitHub Actions; asset audit)"})
 TERMS={"architecture":["chinese temple","imperial palace","asian house","asian shop","chinese gate","watchtower","stone bridge","pagoda","asian architecture","stone wall","fort wall","city wall"],"ornaments":["dragon statue","guardian lion","stone fountain","chinese lantern","torch"],"nature":["willow tree","pine tree","bamboo","bush","shrub"],"pbr":["ornamental paving","paving stones","stone","marble","red roof tile","wood"]}
-MISSING={k:list(v) for k,v in TERMS.items()}; DISC=[]; DOWN=[]; OK=[]; ERR=[]; VERIFIED=[]
+MISSING={k:list(v) for k,v in TERMS.items()}; COVERED={k:[] for k in TERMS}; DISC=[]; DOWN=[]; OK=[]; ERR=[]; VERIFIED=[]
 def sha(p):
  h=hashlib.sha256()
  with open(p,"rb") as f:
@@ -43,7 +44,7 @@ def leaves(x):
 def polyhaven():
  assets=getj("https://api.polyhaven.com/assets",{"type":"models"})
  for aid,m in assets.items():
-  hay=" ".join([aid,str(m.get("name","")),str(m.get("category",""))," ".join(m.get("tags",[]) if isinstance(m.get("tags"),list) else [])]).lower()
+  hay=" ".join([aid,str(m.get("name","")),str(m.get("category",""))," ".join(m.get("categories",[]) if isinstance(m.get("categories"),list) else []),str(m.get("description",""))," ".join(m.get("tags",[]) if isinstance(m.get("tags"),list) else [])]).lower()
   hay=re.sub(r"[_-]+"," ",hay)
   matches=[(c,t) for c,ts in TERMS.items() if c!="pbr" for t in ts if re.search(r"(?<![a-z0-9])"+re.escape(t)+r"(?![a-z0-9])",hay)]
   if not matches: continue
@@ -74,23 +75,41 @@ def polyhaven():
    DOWN.append({**rec,"download_url":u,"raw":str(p),"download_sha256":sha(p)})
   except Exception as e: ERR.append({"asset":aid,"stage":"download","reason":str(e)})
 def ambientcg():
- for term in TERMS["pbr"]:
+ # ambientCG v3 returns {assets:[...]}; request download metadata explicitly.
+ # The named roof-tile asset is queried by exact ID so it is not lost to keyword ranking.
+ queries=[("RoofingTiles013A","red roof tile"),("PavingStones036","paving stones"),("Marble012","marble"),("Wood096","wood")]
+ def download_urls(node):
+  found=[]
+  if isinstance(node,dict):
+   for k,v in node.items():
+    if k.lower() in ("url","downloadlink","downloadurl","rawlink") and isinstance(v,str) and v.startswith("https://"):
+     found.append(v)
+    else: found.extend(download_urls(v))
+  elif isinstance(node,list):
+   for v in node: found.extend(download_urls(v))
+  return found
+ for aid,term in queries:
   try:
-   data=getj("https://ambientCG.com/api/v3/assets",{"type":"material","q":term,"limit":6,"include":"downloads,maps,tags,title,url"})
-   items=data.get("assets",data if isinstance(data,list) else [])
-   if isinstance(items,dict): items=list(items.values())
+   data=getj("https://ambientcg.com/api/v3/assets",{"type":"material","id":aid,"limit":5,"include":"downloads,maps,title,url,tags"})
+   items=data.get("assets",[]) if isinstance(data,dict) else []
+   if not items:
+    ERR.append({"asset":"ambientCG:"+aid,"stage":"discover","reason":"v3 API returned no matching material asset"})
+    continue
    for it in items:
-    aid=it.get("id") or it.get("assetId")
-    if not aid: continue
-    urls=[]
-    for v in leaves(it.get("downloads",{})):
-     u=v.get("downloadLink") or v.get("rawLink") or v.get("url")
-     if u: urls.append(u)
-    if not urls: continue
-    u=urls[0]; rec={"id":aid,"name":it.get("title",aid),"source":"ambientCG","source_url":"https://ambientcg.com/a/"+aid,"license":"CC0 1.0","authors":{"ambientCG":"ambientCG"},"matches":[("pbr",term)],"download_url":u}
-    DISC.append(rec); p=fetch(u,RAW/"ambientcg"/(safe(aid)+".zip"))
+    asset_id=it.get("id")
+    if not asset_id: continue
+    urls=download_urls(it.get("downloads",{}))
+    # Only download complete archives; the archive retains all source maps and metadata.
+    urls=[u for u in urls if urlparse(u).path.lower().endswith(".zip")]
+    if not urls:
+     raise ValueError("No direct ZIP URL found in v3 downloads metadata")
+    u=urls[0]
+    rec={"id":asset_id,"name":it.get("title") or asset_id,"source":"ambientCG","source_url":"https://ambientcg.com/a/"+asset_id,"license":"CC0 1.0","authors":{"ambientCG":"ambientCG"},"matches":[("pbr",term)],"download_url":u}
+    DISC.append(rec)
+    p=fetch(u,RAW/"ambientcg"/(safe(asset_id)+".zip"))
     DOWN.append({**rec,"raw":str(p),"download_sha256":sha(p)})
-  except Exception as e: ERR.append({"asset":"ambientCG:"+term,"stage":"discover","reason":str(e)})
+  except Exception as e:
+   ERR.append({"asset":"ambientCG:"+aid,"stage":"discover/download","reason":str(e)})
 def blender(src,dst):
  cmd=[os.getenv("BLENDER_BIN","blender"),"-b","--python",str(ROOT/"tools/normalize_asset_blender.py"),"--","--input",str(src),"--output",str(dst)]
  x=subprocess.run(cmd,text=True,capture_output=True,timeout=900)
@@ -112,6 +131,11 @@ def process():
       q=Path(n)
       if not q.is_absolute() and ".." not in q.parts: z.extract(n,d)
     fs=list(d.rglob("*"))
+   elif p.suffix.lower()==".7z":
+    import py7zr
+    d=RAW/"unpacked"/safe(r["id"]); d.mkdir(parents=True,exist_ok=True)
+    with py7zr.SevenZipFile(p,mode="r") as z: z.extractall(path=d)
+    fs=list(d.rglob("*"))
    else: fs=[p]
    models=[x for x in fs if x.is_file() and x.suffix.lower() in (".blend",".glb",".gltf",".fbx",".obj",".dae",".stl",".ply")]
    if models:
@@ -119,7 +143,7 @@ def process():
      dst=OUT/"models"/(safe(r["id"])+(("_"+str(i)) if i else "")+".glb"); dst.parent.mkdir(parents=True,exist_ok=True)
      m=blender(src,dst); OK.append({**r,"kind":"model","file":str(dst),"dimensions_m":m["dimensions_m"],"validation":m})
     for c,t in r["matches"]:
-     if t in MISSING.get(c,[]): MISSING[c].remove(t)
+     if t not in COVERED.setdefault(c,[]): COVERED[c].append(t)
    elif r["source"]=="ambientCG":
     dest=OUT/"textures"/safe(r["id"]); dest.mkdir(parents=True,exist_ok=True); copied=[]
     for src in fs:
@@ -134,10 +158,11 @@ def process():
      raise ValueError("Incomplete PBR set; required Albedo/Color, Normal and Roughness maps")
     OK.append({**r,"kind":"pbr","files":copied,"dimensions_m":None,"validation":{"maps":[Path(x).name for x in copied]}})
     for c,t in r["matches"]:
-     if t in MISSING.get(c,[]): MISSING[c].remove(t)
+     if t not in COVERED.setdefault(c,[]): COVERED[c].append(t)
   except Exception as e: ERR.append({"asset":r["id"],"stage":"normalize","reason":str(e)})
 def builddocs(blenderver):
  OUT.mkdir(parents=True,exist_ok=True); entries=[]
+ for category,terms in TERMS.items(): MISSING[category]=[t for t in terms if t not in COVERED.get(category,[])]
  for r in OK:
   paths=r.get("files") or [r["file"]]
   for f in paths:
@@ -178,8 +203,10 @@ def upload(entries):
 def main():
  if not shutil.which(os.getenv("BLENDER_BIN","blender")): raise RuntimeError("Blender executable missing")
  ver=subprocess.check_output([os.getenv("BLENDER_BIN","blender"),"--version"],text=True).splitlines()[0]
- discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); process(); entries=builddocs(ver)
- if not entries: raise RuntimeError("No assets passed license and validation checks; no empty upload performed.")
+ discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); process(); entries=builddocs(ver)
+ if not entries:
+  print(json.dumps({"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
+  raise RuntimeError("No assets passed license and validation checks; see printed per-source diagnostics. No empty upload performed.")
  upload(entries)
  print(json.dumps({"blender":ver,"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"verified_remote":VERIFIED,"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
 if __name__=="__main__": main()
