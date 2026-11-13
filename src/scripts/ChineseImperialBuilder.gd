@@ -146,7 +146,9 @@ static func _add_stair_guardian_lions(parent: Node3D, platform_depth: float) -> 
     dragon.set_meta("source_asset_path",dragon_path)
     parent.add_child(dragon)
  var brazier_path := "res://assets/wuxia_imperial_pack/props_nature/stone_brazier.glb"
- if ResourceLoader.exists(brazier_path):
+ if not ResourceLoader.exists(brazier_path):
+  push_error("WUXIA_STAIR_BRAZIER_MISSING: "+brazier_path)
+ else:
   var brazier_pack := load(brazier_path) as PackedScene
   if brazier_pack != null:
    for side in [-1.0,1.0]:
