@@ -187,7 +187,7 @@ func _capture() -> void:
 		if loaded_world.find_child(city_id + "_PerimeterFortifications", true, false) == null:
 			_fail("perimeter walls and gates missing from rendered city: " + city_id)
 			return
-		if loaded_world.find_child("OpenCentralPlaza_80x80", true, false) == null:
+		if loaded_world.find_child("OpenCentralPlaza_24x24", true, false) == null:
 			_fail("open central plaza missing from rendered city: " + city_id)
 			return
 		var city_environment := loaded_world.find_child("SettlementEnvironment", true, false) as WorldEnvironment
