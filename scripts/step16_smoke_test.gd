@@ -103,11 +103,14 @@ func _run() -> void:
 		var tree_instance_count := _count_multimesh_instances_recursive(city, "imperial_city_tree_multimesh")
 		var lantern_light_count := _count_group_recursive(city, "imperial_city_lantern_lights")
 		var plaza_statue_count := _count_group_recursive(city, "imperial_plaza_statue")
+		var chinese_bridge_count := _count_group_recursive(city, "imperial_chinese_arch_bridge")
 		if not _require(building_count >= 85 and building_count <= 100 and imported_building_count >= 85 and imported_building_count <= 100 and outside_core_count == 0, "%s generated %d buildings (%d imported); outside 170m core=%d; expected 85-100 entirely inside +/-85m" % [city_id, building_count, imported_building_count, outside_core_count]):
 			return
 		if not _require(tree_instance_count == 60, "%s generated %d/60 real tree instances in MultiMesh batches" % [city_id, tree_instance_count]):
 			return
 		if not _require(lantern_light_count == 8, "%s generated %d/8 OmniLight3D lanterns" % [city_id, lantern_light_count]):
+			return
+		if city_id in ["TwinCity","Waterlands"] and not _require(chinese_bridge_count >= 6, "%s generated %d/6 authentic arched Chinese bridges" % [city_id, chinese_bridge_count]):
 			return
 		if not _require(plaza_statue_count == 1, "%s generated %d/1 imported plaza statue" % [city_id, plaza_statue_count]):
 			return
