@@ -173,7 +173,12 @@ func _run() -> void:
 					architecture_road_count += 1
 				elif road_node.name.begins_with("RaisedStoneCurb"):
 					architecture_curb_count += 1
-		if not _check(architecture_road_count == 2 and architecture_curb_count == 4, city_name + " architecture road/curb meshes are duplicated or incomplete"):
+	var road_child_names := PackedStringArray()
+	if architecture_roads != null:
+		for road_node in architecture_roads.get_children():
+			road_child_names.append(str(road_node.name))
+	print("CITY_ROAD_CURB_COUNT_DEBUG: " + city_name + " roads=" + str(architecture_road_count) + " curbs=" + str(architecture_curb_count) + " parent=" + str(architecture_roads) + " children=" + str(road_child_names))
+		if not _check(architecture_road_count == 2 and architecture_curb_count == 4, city_name + " architecture road/curb meshes are duplicated or incomplete; roads=" + str(architecture_road_count) + " curbs=" + str(architecture_curb_count) + " children=" + str(road_child_names)):
 			return
 		var terrain_body := city.find_child("TerrainCollision", true, false) as StaticBody3D
 		var terrain_collider := city.find_child("TerrainSurfaceCollision", true, false) as CollisionShape3D
