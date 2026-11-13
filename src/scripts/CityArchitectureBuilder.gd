@@ -108,6 +108,76 @@ static func _add_plaza_statue(parent: Node3D) -> void:
  parent.add_child(statue)
  _add_static_mesh_collisions(statue)
  print("IMPERIAL_PLAZA_STATUE_PASS: " + candidates[0])
+ _add_imperial_plaza_garden_props(parent)
+
+static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
+ var base := "res://assets/wuxia_imperial_pack/props_nature/"
+ var required := [
+  "standing_garden_lantern.glb",
+  "pond_water_module.glb",
+  "lotus_cluster.glb",
+  "rockery_outcrop.glb",
+  "stone_incense_burner.glb"
+ ]
+ for filename in required:
+  if not ResourceLoader.exists(base+filename):
+   push_error("WUXIA_IMPERIAL_GARDEN_PROP_MISSING: "+base+filename)
+   return
+ var lantern_scene := ResourceLoader.load(base+"standing_garden_lantern.glb") as PackedScene
+ var pond_scene := ResourceLoader.load(base+"pond_water_module.glb") as PackedScene
+ var lotus_scene := ResourceLoader.load(base+"lotus_cluster.glb") as PackedScene
+ var rockery_scene := ResourceLoader.load(base+"rockery_outcrop.glb") as PackedScene
+ var burner_scene := ResourceLoader.load(base+"stone_incense_burner.glb") as PackedScene
+ if lantern_scene == null or pond_scene == null or lotus_scene == null or rockery_scene == null or burner_scene == null:
+  push_error("WUXIA_IMPERIAL_GARDEN_IMPORT_FAIL: one or more garden GLBs did not import")
+  return
+ var pond := pond_scene.instantiate() as Node3D
+ pond.name = "ImperialLotusPond"
+ pond.position = Vector3(-16.0,0.13,-16.0)
+ pond.scale = Vector3.ONE*2.2
+ pond.add_to_group("imperial_plaza_lotus_pond")
+ pond.set_meta("source_asset_path",base+"pond_water_module.glb")
+ parent.add_child(pond)
+ var lotus := lotus_scene.instantiate() as Node3D
+ lotus.name = "ImperialLotusPondFlowerCluster"
+ lotus.position = Vector3(-16.0,0.2,-16.0)
+ lotus.scale = Vector3.ONE*1.15
+ lotus.add_to_group("imperial_plaza_garden_props")
+ lotus.set_meta("source_asset_path",base+"lotus_cluster.glb")
+ parent.add_child(lotus)
+ var rockery := rockery_scene.instantiate() as Node3D
+ rockery.name = "ImperialPlazaRockeryOutcrop"
+ rockery.position = Vector3(16.0,0.12,0.0)
+ rockery.scale = Vector3.ONE*1.05
+ rockery.add_to_group("imperial_plaza_rockery")
+ rockery.set_meta("source_asset_path",base+"rockery_outcrop.glb")
+ parent.add_child(rockery)
+ for index in range(2):
+  var burner := burner_scene.instantiate() as Node3D
+  burner.name = "ImperialPlazaStoneIncenseBurner_%02d" % index
+  burner.position = Vector3(-15.0 if index == 0 else 15.0,0.12,15.0)
+  burner.scale = Vector3.ONE*0.9
+  burner.add_to_group("imperial_plaza_incense_burners")
+  burner.set_meta("source_asset_path",base+"stone_incense_burner.glb")
+  parent.add_child(burner)
+ var lantern_positions := [Vector3(-21.0,0.12,-21.0),Vector3(21.0,0.12,-21.0),Vector3(-21.0,0.12,21.0),Vector3(21.0,0.12,21.0)]
+ for index in range(lantern_positions.size()):
+  var lantern := lantern_scene.instantiate() as Node3D
+  lantern.name = "ImperialPlazaStandingGardenLantern_%02d" % index
+  lantern.position = lantern_positions[index]
+  lantern.scale = Vector3.ONE*1.15
+  lantern.add_to_group("imperial_plaza_garden_lanterns")
+  lantern.set_meta("source_asset_path",base+"standing_garden_lantern.glb")
+  parent.add_child(lantern)
+  var light := OmniLight3D.new()
+  light.name = "ImperialPlazaGardenLanternLight_%02d" % index
+  light.position = lantern.position+Vector3(0.0,1.8,0.0)
+  light.light_color = Color("#ffd49a")
+  light.light_energy = 0.42
+  light.omni_range = 6.0
+  light.add_to_group("imperial_plaza_garden_lights")
+  parent.add_child(light)
+ print("WUXIA_IMPERIAL_GARDEN_PASS: lotus_pond=1 lotus_cluster=1 rockery=1 incense_burners=2 standing_lanterns=4")
 
 static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var roads := Node3D.new()
