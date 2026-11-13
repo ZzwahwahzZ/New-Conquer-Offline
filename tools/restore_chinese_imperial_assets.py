@@ -24,14 +24,15 @@ def download(url,dest,expected):
  if version!=2 or declared!=len(data): temp.unlink(missing_ok=True); raise RuntimeError(f"Invalid GLB v2 header {dest.name}")
  digest=hashlib.sha256(data).hexdigest(); temp.replace(dest); return digest
 def main():
- manifest=get_json(MANIFEST_URL)["data"]; lic=manifest.get("license",{})
- if lic.get("slug")!="cc0-1.0" or lic.get("attributionRequired",True): raise RuntimeError("Pack license is not confirmed CC0 1.0")
+ manifest=get_json(MANIFEST_URL)["data"]
+ license_label=str(manifest.get("licenseLabel",""))
+ if "CC0 1.0" not in license_label: raise RuntimeError("Pack license label is not confirmed CC0 1.0")
  entries={str(manifest.get("starterScene",{}).get("id")):manifest.get("starterScene",{})}
  entries.update({str(a.get("id")):a for a in manifest.get("assets",[])})
  for asset_id,name in ASSETS.items():
   item=entries.get(asset_id)
   if not item: raise RuntimeError(f"Missing pinned asset ID {asset_id}")
-  item_lic=item.get("license",lic)
+  item_lic=item.get("license",{})
   if item_lic.get("slug")!="cc0-1.0" or item_lic.get("attributionRequired",False): raise RuntimeError(f"Asset {asset_id} is not CC0")
   size=int(item.get("stats",{}).get("fileSize",0)); url=item.get("cdnUrl")
   if not url or size<=20: raise RuntimeError(f"Invalid manifest entry for {asset_id}")
