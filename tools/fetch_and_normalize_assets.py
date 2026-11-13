@@ -5,7 +5,7 @@ from datetime import datetime,timezone
 from urllib.parse import urlparse,urljoin,unquote
 import requests
 from huggingface_hub import HfApi,hf_hub_download
-from imperial_extra_sources import discover_3dassets, discover_hanok_pack
+from imperial_extra_sources import discover_3dassets, discover_hanok_pack, discover_imperial_china_pack
 from opengameart_sources import discover_opengameart, discover_quaternius
 ROOT=Path.cwd(); OUT=ROOT/"assets/wuxia_imperial_pack"; RAW=ROOT/".asset_work/raw"
 HF_REPO=os.getenv("HF_REPO_ID","ZzwahwahzZ/clash-of-legends-terrain-assets"); PREFIX="assets/wuxia_imperial_pack"
@@ -181,6 +181,11 @@ def asset_category(record, filename=""):
   if re.search(r"\b(?:persimmon|pine tree|bamboo|pond|stepping stones|garden tree)\b",primary,re.I): return "nature"
   if re.search(r"\b(?:house|outbuilding|market stall|shop|room module|post and beam|roof|roof tile|plinth|maru floor|floor module|frame|eave|rafter|door|window|chimney|flue|hearth|courtyard|street|lane|ground module)\b",primary,re.I): return "houses_and_shops"
   return "statues_and_props"
+ if record.get("pack") == "imperial-china-palace-and-garden":
+  if re.search(r"\b(?:ceremonial hall|water pavilion|lotus pond pavilion|walled palace courtyard|palace courtyard)\b",primary,re.I): return "palaces_and_temples"
+  if re.search(r"\b(?:gate tower|palace wall|moon gate|covered walkway|arched stone bridge|terrace step|balustrade|column|bracket|roof cassette|roof ridge|courtyard paving|terrace platform|screen door)\b",primary,re.I): return "gates_walls_bridges"
+  if re.search(r"\b(?:rockery|lotus|bamboo|plum tree|bonsai|peony|pond|stepping stone|garden stone bench)\b",primary,re.I): return "nature"
+  return "statues_and_props"
  if asian_context and re.search(CATEGORY_RULES["statues_and_props"],primary,re.I): return "statues_and_props"
  if asian_context and re.search(CATEGORY_RULES["gates_walls_bridges"],primary,re.I): return "gates_walls_bridges"
  if asian_context and re.search(CATEGORY_RULES["houses_and_shops"],primary,re.I): return "houses_and_shops"
@@ -214,6 +219,12 @@ def strict_filter_self_test():
   ({"id":"hanok-gate","name":"Village Gate House","source":"3DAssets.dev","pack":"korean-hanok-village-and-street"},False,"gates_walls_bridges"),
   ({"id":"hanok-bamboo","name":"Bamboo Clump","source":"3DAssets.dev","pack":"korean-hanok-village-and-street"},False,"nature"),
   ({"id":"hanok-lantern","name":"Hanging Lantern","source":"3DAssets.dev","pack":"korean-hanok-village-and-street"},False,"statues_and_props"),
+  ({"id":"imperial-hall","name":"Ceremonial Hall","source":"3DAssets.dev","pack":"imperial-china-palace-and-garden"},False,"palaces_and_temples"),
+  ({"id":"imperial-gate","name":"Gate Tower","source":"3DAssets.dev","pack":"imperial-china-palace-and-garden"},False,"gates_walls_bridges"),
+  ({"id":"imperial-bridge","name":"Arched Stone Bridge","source":"3DAssets.dev","pack":"imperial-china-palace-and-garden"},False,"gates_walls_bridges"),
+  ({"id":"imperial-roof","name":"Roof Cassette Hip","source":"3DAssets.dev","pack":"imperial-china-palace-and-garden"},False,"gates_walls_bridges"),
+  ({"id":"imperial-lotus","name":"Lotus Cluster","source":"3DAssets.dev","pack":"imperial-china-palace-and-garden"},False,"nature"),
+  ({"id":"imperial-lantern","name":"Hanging Silk Lantern","source":"3DAssets.dev","pack":"imperial-china-palace-and-garden"},False,"statues_and_props"),
   ({"id":"generic-house","name":"Wooden House","candidate_only":True},False,"houses_and_shops"),
   ({"id":"simple-building","name":"Simple Building","candidate_only":True},False,"houses_and_shops"),
   ({"id":"oga-pbr","name":"PBR Marble and Tile Texture Set","source":"OpenGameArt","matches":[("pbr","marble and tile")]},False,"pbr_materials"),
@@ -387,7 +398,7 @@ def upload(entries):
 def main():
  if not shutil.which(os.getenv("BLENDER_BIN","blender")): raise RuntimeError("Blender executable missing")
  ver=subprocess.check_output([os.getenv("BLENDER_BIN","blender"),"--version"],text=True).splitlines()[0]
- strict_filter_self_test(); discover_hanok_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
+ strict_filter_self_test(); discover_imperial_china_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_hanok_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
  if not entries:
   print(json.dumps({"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
   raise RuntimeError("No assets passed license and validation checks; see printed per-source diagnostics. No empty upload performed.")
