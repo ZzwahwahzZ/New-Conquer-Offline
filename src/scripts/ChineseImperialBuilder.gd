@@ -45,9 +45,9 @@ static func _replace_city_gates(parent: Node3D) -> void:
    push_error("TwinCity gate anchor missing: "+direction)
    continue
   for child in gate.get_children():
-   if child.name in ["KenneyGateModel","GatehouseTower","GateTowerCrenellation","GateArchLintel","ArchColumn"]:
+   if child.name in ["KenneyGateModel","KenneyTowerModel_Left","KenneyTowerModel_Right"]:
     child.visible=false
-  _add_model(gate,"gate_tower.glb","TwinCity_ChineseGateTower_"+direction,Vector3(0.0,0.0,-85.0),Vector3.ONE*1.8,true)
+  # Keep the shared 14m Chinese gate assembly and its armored guardians visible.
 static func _add_model_collisions(root: Node,all_meshes: bool) -> void:
  for node in _all_nodes(root):
   if not node is MeshInstance3D: continue
