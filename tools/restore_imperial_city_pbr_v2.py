@@ -33,7 +33,7 @@ def main():
  for aid in ASSETS:
   info=get(f"{API}/info/{aid}"); tree=get(f"{API}/files/{aid}")
   if not info.get("name"): raise RuntimeError("Poly Haven asset metadata missing: "+aid)
-  entry={"name":info["name"],"source":f"https://polyhaven.com/a/{aid}","maps":{}}
+  entry={"name":info["name"],"author":str(info.get("author") or "Poly Haven contributor"),"license":"CC0-1.0","source":f"https://polyhaven.com/a/{aid}","maps":{}}
   folder=DEST/aid; folder.mkdir(parents=True,exist_ok=True)
   for kind in MAPS:
    meta=choose(tree,kind); url=meta["url"]; expected=meta["md5"].lower(); size=int(meta["size"])
