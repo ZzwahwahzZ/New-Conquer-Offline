@@ -43,8 +43,22 @@ if len(objects_after)!=len(objects_before) or hierarchy_after!=hierarchy_before:
  raise RuntimeError("Object hierarchy changed during GLB round-trip")
 pts2=[o.matrix_world @ Vector(c) for o in meshes2 for c in o.bound_box]
 if not pts2: raise RuntimeError("Empty GLB geometry")
-miny=min(v.y for v in pts2); dims=[max(v[i] for v in pts2)-min(v[i] for v in pts2) for i in range(3)]
-if abs(miny)>1e-4: raise RuntimeError("Ground plane mismatch; min Y="+str(miny))
+miny=min(v.y for v in pts2)
+# Correct the exported glTF Y-up ground offset after round-trip. This is a rigid
+# scene-root translation; it preserves mesh geometry, scale, and parent hierarchy.
+if abs(miny)>1e-4:
+ for root in [o for o in objects_after if o.parent is None]:
+  root.location.y-=miny
+ bpy.context.view_layer.update()
+ bpy.ops.export_scene.gltf(filepath=str(dst),export_format="GLB",export_yup=True,export_apply=False,export_materials="EXPORT",export_cameras=False,export_lights=False)
+ bpy.ops.wm.read_factory_settings(use_empty=True); bpy.ops.import_scene.gltf(filepath=str(dst))
+ objects_after=list(bpy.context.scene.objects)
+ meshes2=[o for o in objects_after if o.type=="MESH"]
+ hierarchy_after=sum(1 for o in objects_after if o.parent is not None)
+ pts2=[o.matrix_world @ Vector(c) for o in meshes2 for c in o.bound_box]
+ miny=min(v.y for v in pts2)
+if abs(miny)>1e-4: raise RuntimeError("Ground plane mismatch after root correction; min Y="+str(miny))
+dims=[max(v[i] for v in pts2)-min(v[i] for v in pts2) for i in range(3)]
 if any(not math.isfinite(x) or x<=1e-6 for x in dims): raise RuntimeError("Invalid dimensions")
 mats=sum(1 for m in bpy.data.materials)
 if mats==0: raise RuntimeError("No materials survived GLB export")
