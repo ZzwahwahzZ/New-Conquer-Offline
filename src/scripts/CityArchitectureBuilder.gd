@@ -77,6 +77,7 @@ static func _add_plaza_statue(parent: Node3D) -> void:
     fountain.add_to_group("imperial_plaza_fountains")
     fountain.set_meta("source_asset_path",fountain_path)
     parent.add_child(fountain)
+    _add_static_mesh_collisions(fountain)
  var candidates: Array[String] = []
  var lion_path := "res://assets/wuxia_imperial_pack/props_nature/guardian_lion_pair.glb"
  if ResourceLoader.exists(lion_path):
@@ -174,6 +175,7 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
   pond_corner.add_to_group("imperial_plaza_pond_edges")
   pond_corner.set_meta("source_asset_path",base+"lotus_pond_edge_corner.glb")
   parent.add_child(pond_corner)
+  _add_static_mesh_collisions(pond_corner)
  var lotus := lotus_scene.instantiate() as Node3D
  lotus.name = "ImperialLotusPondFlowerCluster"
  lotus.position = Vector3(-16.0,0.2,-16.0)
@@ -188,6 +190,7 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
  rockery.add_to_group("imperial_plaza_rockery")
  rockery.set_meta("source_asset_path",base+"rockery_outcrop.glb")
  parent.add_child(rockery)
+ _add_static_mesh_collisions(rockery)
  for index in range(2):
   var burner := burner_scene.instantiate() as Node3D
   burner.name = "ImperialPlazaStoneIncenseBurner_%02d" % index
@@ -196,6 +199,7 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
   burner.add_to_group("imperial_plaza_incense_burners")
   burner.set_meta("source_asset_path",base+"stone_incense_burner.glb")
   parent.add_child(burner)
+  _add_static_mesh_collisions(burner)
  var lantern_positions := [Vector3(-21.0,0.12,-21.0),Vector3(21.0,0.12,-21.0),Vector3(-21.0,0.12,21.0),Vector3(21.0,0.12,21.0)]
  for index in range(lantern_positions.size()):
   var lantern := lantern_scene.instantiate() as Node3D
@@ -205,6 +209,7 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
   lantern.add_to_group("imperial_plaza_garden_lanterns")
   lantern.set_meta("source_asset_path",base+"standing_garden_lantern.glb")
   parent.add_child(lantern)
+  _add_static_mesh_collisions(lantern)
   var light := OmniLight3D.new()
   light.name = "ImperialPlazaGardenLanternLight_%02d" % index
   light.position = lantern.position+Vector3(0.0,1.8,0.0)
