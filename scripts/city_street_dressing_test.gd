@@ -152,9 +152,10 @@ func _run() -> void:
 				return
 			var chinese_gate_count := 0
 			for gate_direction in ["North", "East", "South", "West"]:
-				if city.find_child("TwinCity_ChineseGateTower_" + gate_direction, true, false) != null:
+				var chinese_gate := city.find_child(gate_direction + "_GrandCityGate", true, false)
+				if chinese_gate != null and chinese_gate.find_child("GateArchLintel", true, false) != null and chinese_gate.find_child("ChineseGateRoofLower", true, false) != null and chinese_gate.find_child("ChineseGateWarmLantern", true, false) != null:
 					chinese_gate_count += 1
-			if not _check(chinese_gate_count == 4, "TwinCity requires four imported Chinese gate towers"):
+			if not _check(chinese_gate_count == 4, "TwinCity requires four detailed Chinese 14m gate assemblies"):
 				return
 			for building_index in range(3):
 				if not _check(city.find_child("TwinCity_ChineseImperialBuilding_%02d" % building_index, true, false) != null, "TwinCity Chinese imperial building GLB missing: " + str(building_index)):
