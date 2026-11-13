@@ -4,7 +4,7 @@ from __future__ import annotations
 import hashlib,json,shutil,urllib.request
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-DEST=ROOT/"assets"/"imperial_city_kit_v2"/"pbr"
+DEST=ROOT/"assets"/"wuxia_imperial_pack"/"paving"/"polyhaven_pbr"
 API="https://api.polyhaven.com"
 ASSETS=("stone_tiles_02","cobblestone_floor_04","marble_01")
 MAPS=("albedo","normal","roughness")
