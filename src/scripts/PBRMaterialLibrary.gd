@@ -63,8 +63,41 @@ static func build_plaza_material() -> StandardMaterial3D:
 static func build_imperial_paving_material() -> StandardMaterial3D:
     return _build_polyhaven_material("stone_tiles_02", "PolyHaven_StoneTiles02_ImperialPaving")
 
+static func build_chinese_roof_material() -> StandardMaterial3D:
+    return _build_wuxia_ambientcg_material("GlazedTerracotta001", "AmbientCG_GlazedTerracotta_Roof")
+
+static func build_chinese_red_wood_material() -> StandardMaterial3D:
+    return _build_wuxia_ambientcg_material("PaintedWood003", "AmbientCG_RedPaintedWood")
+
+static func _build_wuxia_ambientcg_material(asset_id: String, display_name: String) -> StandardMaterial3D:
+    var root := "res://assets/wuxia_imperial_pack/paving/ambientcg/" + asset_id + "/"
+    var albedo_path := root + "albedo.jpg"
+    var normal_path := root + "normal.jpg"
+    var roughness_path := root + "roughness.jpg"
+    if not FileAccess.file_exists(albedo_path) or not FileAccess.file_exists(normal_path) or not FileAccess.file_exists(roughness_path):
+        push_error("Missing verified AmbientCG PBR maps for " + asset_id)
+        var fallback := StandardMaterial3D.new()
+        fallback.albedo_color = Color("#9c3028") if asset_id == "GlazedTerracotta001" else Color("#71372b")
+        fallback.roughness = 0.78
+        return fallback
+    var material := StandardMaterial3D.new()
+    material.resource_name = display_name
+    material.albedo_texture = load(albedo_path) as Texture2D
+    material.normal_enabled = true
+    material.normal_texture = load(normal_path) as Texture2D
+    material.normal_scale = 0.85
+    material.roughness_texture = load(roughness_path) as Texture2D
+    material.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_GRAYSCALE
+    material.roughness = 0.72
+    material.metallic = 0.0
+    material.uv1_triplanar = true
+    material.uv1_triplanar_sharpness = 4.0
+    material.uv1_scale = Vector3(0.42,0.42,0.42)
+    material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+    return material
+
 static func _build_polyhaven_material(asset_id: String, display_name: String) -> StandardMaterial3D:
-    var root := "res://assets/imperial_city_kit_v2/pbr/" + asset_id + "/"
+    var root := "res://assets/wuxia_imperial_pack/paving/polyhaven_pbr/" + asset_id + "/"
     var albedo_path := root + "albedo.jpg"
     var normal_path := root + "normal.jpg"
     var roughness_path := root + "roughness.jpg"
