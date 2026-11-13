@@ -133,6 +133,8 @@ func _capture() -> void:
 		_fail("isometric Camera3D is not current")
 		return
 	_hide_visual_instances(player)
+	player.set_physics_process(false)
+	player.set_process(false)
 	camera.fov = CLASSIC_FOV
 	camera.far = CLASSIC_FAR
 	var hud := main.get_node_or_null("HUD") as CanvasLayer
