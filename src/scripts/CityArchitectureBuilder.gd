@@ -344,25 +344,27 @@ static func _first_mesh_node(root: Node) -> MeshInstance3D:
    return current as MeshInstance3D
  return null
 
-static func _instantiate_quaternius_building(parent: Node3D, city: String, index: int, at: Vector3, height_image: Image, grand_building: bool, p: Dictionary) -> Node3D:
+static func _instantiate_wuxia_building(parent: Node3D, city: String, index: int, at: Vector3, height_image: Image, grand_building: bool, p: Dictionary) -> Node3D:
  var candidates: Array[String] = []
  var all_models: Array[String] = []
- _collect_quaternius_models("res://assets/imperial_city_kit_v2/quaternius", all_models)
+ _collect_quaternius_models("res://assets/wuxia_imperial_pack/architecture", all_models)
  for path in all_models:
   var file_name := path.get_file().to_lower()
-  var is_house := file_name.contains("house") or file_name.contains("building") or file_name.contains("hall") or file_name.contains("temple") or file_name.contains("pavilion")
-  var is_tower := file_name.contains("tower") and not file_name.contains("wall")
-  if is_house or is_tower:
+  var is_chinese_building := file_name.contains("ceremonial_hall") or file_name.contains("water_pavilion") or file_name.contains("gate_tower")
+  if is_chinese_building:
    candidates.append(path)
  if candidates.is_empty():
+  push_error("WUXIA_CHINESE_BUILDING_ASSETS_MISSING: no palace/hall/pavilion/gate GLBs found")
   return null
  candidates.sort()
  var selected := candidates[index % candidates.size()]
- var packed := load(selected) as PackedScene
+ var packed := ResourceLoader.load(selected) as PackedScene
  if packed == null:
+  push_error("WUXIA_CHINESE_BUILDING_IMPORT_FAIL: " + selected)
   return null
  var instance := packed.instantiate() as Node3D
  if instance == null:
+  push_error("WUXIA_CHINESE_BUILDING_ROOT_FAIL: " + selected)
   return null
  instance.name = city + "_WuxiaChineseBuilding_%02d" % index
  instance.set_meta("source_asset_path", selected)
@@ -371,27 +373,21 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  instance.position = at
  instance.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
  instance.rotation.y = atan2(-at.x,-at.z)
- # Fit every imported GLB to a measured residential, commercial or palace class.
- instance.scale = Vector3(3.0, 2.0, 3.0)
  parent.add_child(instance)
- var is_grand_building := grand_building
- var target_width := 22.0 if is_grand_building else (14.0 if posmod(index, 3) == 0 else 10.0)
- var target_depth := 18.0 if is_grand_building else (12.0 if posmod(index, 3) == 0 else 10.0)
- var target_height := 15.0 if is_grand_building else (10.0 if posmod(index, 3) == 0 else 7.0)
+ var target_width := 22.0 if grand_building else (14.0 if posmod(index, 3) == 0 else 10.0)
+ var target_depth := 18.0 if grand_building else (12.0 if posmod(index, 3) == 0 else 10.0)
+ var target_height := 15.0 if grand_building else (10.0 if posmod(index, 3) == 0 else 7.0)
  var source_bounds := _renderable_world_bounds(instance)
  if source_bounds.size.length_squared() > 0.0001:
-  var fit_x := target_width / maxf(source_bounds.size.x, 0.001)
-  var fit_y := target_height / maxf(source_bounds.size.y, 0.001)
-  var fit_z := target_depth / maxf(source_bounds.size.z, 0.001)
-  instance.scale *= Vector3(fit_x, fit_y, fit_z)
-  print("CITY_QUATERNIUS_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " target=" + str(Vector3(target_width,target_height,target_depth)) + " final_scale=" + str(instance.scale))
+  var uniform_fit := minf(target_width/maxf(source_bounds.size.x,0.001),minf(target_height/maxf(source_bounds.size.y,0.001),target_depth/maxf(source_bounds.size.z,0.001)))
+  instance.scale = Vector3.ONE * uniform_fit
+  print("CITY_WUXIA_CHINESE_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " target=" + str(Vector3(target_width,target_height,target_depth)) + " scale=" + str(uniform_fit))
  var target_center_global := parent.to_global(at)
  var sampled_ground := WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
  var clearance := 0.85
- var target_base_global := parent.to_global(Vector3(at.x, sampled_ground + clearance + (3.5 if grand_building else 0.0), at.z))
+ var target_base_global := parent.to_global(Vector3(at.x, sampled_ground + clearance + (4.0 if grand_building else 0.0), at.z))
  var fitted_bounds := _renderable_world_bounds(instance)
  if fitted_bounds.size.length_squared() > 0.0001:
-  # Center the actual imported mesh footprint and seat its lowest vertex on terrain.
   var current_global := instance.global_position
   current_global.x += target_center_global.x - fitted_bounds.get_center().x
   current_global.z += target_center_global.z - fitted_bounds.get_center().z
@@ -400,20 +396,19 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
   current_global = instance.global_position
   current_global.y += target_base_global.y - centered_bounds.position.y
   instance.global_position = current_global
-  print("CITY_BUILDING_PLACEMENT_PASS: %s index=%d center=%s base_y=%.3f" % [city,index,str(instance.global_position),target_base_global.y])
-  var details := Node3D.new()
-  details.name = city + "_ChineseArchitectureDetails_%02d" % index
-  parent.add_child(details)
-  details.global_position = Vector3(target_center_global.x,target_base_global.y,target_center_global.z)
-  details.global_rotation = instance.global_rotation
+  print("CITY_WUXIA_BUILDING_PLACEMENT_PASS: %s index=%d base_y=%.3f" % [city,index,target_base_global.y])
   if grand_building:
+   var details := Node3D.new()
+   details.name = city + "_ImperialPalacePlinth_%02d" % index
+   parent.add_child(details)
+   details.global_position = Vector3(target_center_global.x,target_base_global.y,target_center_global.z)
+   details.global_rotation = instance.global_rotation
    _add_palace_platform_and_stairs(details,target_width,target_depth)
-  _add_chinese_building_details(details,p,target_width,target_depth,target_height)
-  details.add_to_group("distance_cull_world")
-  _set_visibility_range(details,360.0,35.0)
+   details.add_to_group("distance_cull_world")
+   _set_visibility_range(details,360.0,35.0)
  _add_static_mesh_collisions(instance)
  instance.add_to_group("distance_cull_world")
- _set_visibility_range(instance, 360.0, 35.0)
+ _set_visibility_range(instance,360.0,35.0)
  return instance
 
 static func _add_palace_platform_and_stairs(root: Node3D, width: float, depth: float) -> void:
