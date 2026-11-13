@@ -42,6 +42,28 @@ func _has_invalid_mesh(root_node: Node) -> bool:
 				return true
 	return false
 
+func _renderable_world_bounds(root_node: Node) -> AABB:
+	var combined := AABB()
+	var found := false
+	var pending: Array[Node] = [root_node]
+	while not pending.is_empty():
+		var current: Node = pending.pop_back()
+		for child in current.get_children():
+			pending.append(child)
+		if current is MeshInstance3D:
+			var mesh_node := current as MeshInstance3D
+			if mesh_node.mesh != null:
+				var world_bounds: AABB = mesh_node.global_transform * mesh_node.get_aabb()
+				combined = world_bounds if not found else combined.merge(world_bounds)
+				found = true
+		elif current is MultiMeshInstance3D:
+			var multi_node := current as MultiMeshInstance3D
+			if multi_node.multimesh != null and multi_node.multimesh.mesh != null:
+				var multi_bounds: AABB = multi_node.global_transform * multi_node.get_aabb()
+				combined = multi_bounds if not found else combined.merge(multi_bounds)
+				found = true
+	return combined if found else AABB()
+
 func _run() -> void:
 	for city_name in CITIES:
 		var path: String = "res://src/scenes/world/" + str(city_name) + ".tscn"
@@ -185,6 +207,8 @@ func _run() -> void:
 		for imported_root in imported_buildings:
 			if _has_renderable_mesh(imported_root):
 				renderable_imports += 1
+			var world_bounds := _renderable_world_bounds(imported_root)
+			print("CITY_BUILDING_WORLD_BOUNDS: " + city_name + " name=" + str(imported_root.name) + " position=" + str(imported_root.global_position) + " size=" + str(world_bounds.size))
 		if not _check(renderable_imports == imported_buildings.size(), city_name + " has imported buildings without renderable mesh geometry"):
 			return
 		print("CITY_BUILDING_SOURCE_AUDIT: " + city_name + " detailed=" + str(detailed_buildings) + " imported=" + str(imported_buildings.size()) + " renderable_imports=" + str(renderable_imports))
