@@ -153,7 +153,7 @@ def process():
      raise ValueError("Incomplete PBR set; required Albedo/Color, Normal and Roughness maps")
     OK.append({**r,"kind":"pbr","files":copied,"dimensions_m":None,"validation":{"maps":[Path(x).name for x in copied]}})
     for c,t in r["matches"]:
-     if t in MISSING.get(c,[]): MISSING[c].remove(t)
+     if t not in COVERED.setdefault(c,[]): COVERED[c].append(t)
   except Exception as e: ERR.append({"asset":r["id"],"stage":"normalize","reason":str(e)})
 def builddocs(blenderver):
  OUT.mkdir(parents=True,exist_ok=True); entries=[]
