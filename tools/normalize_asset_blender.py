@@ -13,6 +13,16 @@ elif ext==".dae": bpy.ops.wm.collada_import(filepath=str(src))
 elif ext==".stl": bpy.ops.wm.stl_import(filepath=str(src))
 elif ext==".ply": bpy.ops.wm.ply_import(filepath=str(src))
 else: raise RuntimeError("Unsupported input format "+ext)
+# glTF defines linear dimensions in meters. Native Blender files must explicitly declare Metric units.
+if ext in (".glb",".gltf"): unit_factor=1.0
+elif ext==".blend" and bpy.context.scene.unit_settings.system=="METRIC":
+ unit_factor=float(bpy.context.scene.unit_settings.scale_length)
+ if not math.isfinite(unit_factor) or unit_factor<=0: raise RuntimeError("Invalid Blender metric scale_length")
+else: raise RuntimeError("Source unit system is unknown; refusing to guess meter scale")
+for obj in bpy.context.scene.objects:
+ if obj.type=="MESH":
+  for vert in obj.data.vertices: vert.co*=unit_factor
+ obj.location*=unit_factor
 meshes=[o for o in bpy.context.scene.objects if o.type=="MESH"]
 if not meshes: raise RuntimeError("No mesh objects")
 bpy.context.view_layer.update()
