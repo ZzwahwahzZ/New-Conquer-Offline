@@ -30,7 +30,7 @@ def download(url,dest,expected):
   if response.status!=200: raise RuntimeError(f"HTTP {response.status} downloading {url}")
   shutil.copyfileobj(response,output)
  data=tmp.read_bytes()
- if len(data)!=expected or len(data)<20 or data[:4]!=b"glTF":
+ if (expected and len(data)!=expected) or len(data)<20 or data[:4]!=b"glTF":
   tmp.unlink(missing_ok=True); raise RuntimeError(f"Invalid GLB payload {dest.name}: bytes={len(data)} expected={expected}")
  version,declared=struct.unpack_from("<II",data,4)
  if version!=2 or declared!=len(data):
@@ -77,6 +77,25 @@ def main():
   entry={"id":aid,"name":name,"file":str(target.relative_to(ROOT)),"category":folder,"source":page,"cdn_url":url,"author":author,"license":"CC0-1.0" if license_slug=="cc0-1.0" else "CC-BY-4.0","attribution_required":license_slug!="cc0-1.0","bytes":nbytes,"sha256":digest,"normalization_pending":True}
   manifest["assets"].append(entry)
   print(f"WUXIA_IMPERIAL_SOURCE_GLB: id={aid} category={folder} file={target.name} bytes={nbytes} sha256={digest}",flush=True)
+ # Additional botanical CC0 GLBs from public 3DAssets.dev asset endpoints.
+ for asset_slug,filename in [
+  ("medieval-mmo-starter-realm-willow-tree-e1efef2c","willow_tree.glb"),
+  ("medieval-mmo-starter-realm-pine-tree-76a5817f","pine_tree.glb"),
+  ("medieval-mmo-starter-realm-bush-a8f78fd2","garden_bush.glb"),
+ ]:
+  item=get_json("https://3dassets.dev/api/v1/assets/"+asset_slug).get("data",{})
+  lic=item.get("license",{})
+  license_slug=str(lic.get("slug","")).lower()
+  if license_slug not in ("cc0-1.0","cc-by-4.0","cc-by"):
+   raise RuntimeError("Botanical asset license not approved: "+asset_slug+" "+license_slug)
+  url=item.get("cdnUrl")
+  size=int(item.get("stats",{}).get("fileSize",0)) or None
+  if not url: raise RuntimeError("Missing botanical asset CDN URL: "+asset_slug)
+  target=DEST/"props_nature"/filename
+  digest,nbytes=download(url,target,size)
+  entry={"id":str(item.get("id","")),"name":str(item.get("name",filename)),"file":str(target.relative_to(ROOT)),"category":"props_nature","source":"https://3dassets.dev/assets/"+asset_slug,"cdn_url":url,"author":str(item.get("author") or "3DAssets.dev"),"license":"CC0-1.0" if license_slug=="cc0-1.0" else "CC-BY-4.0","attribution_required":license_slug!="cc0-1.0","bytes":nbytes,"sha256":digest,"normalization_pending":True}
+  manifest["assets"].append(entry)
+  print(f"WUXIA_BOTANICAL_GLB: {filename} bytes={nbytes} sha256={digest}",flush=True)
  if len(manifest["assets"])<60: raise RuntimeError(f"Only {len(manifest['assets'])} license-approved GLBs were downloaded")
  blender=shutil.which("blender")
  if not blender: raise RuntimeError("Blender is required for measured GLB bottom-origin normalization")
