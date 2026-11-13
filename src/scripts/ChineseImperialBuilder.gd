@@ -105,7 +105,7 @@ static func _add_model(parent: Node3D,city: String,filename: String,node_name: S
   stair_collision.position = step_center
   collision_body.add_child(stair_collision)
  platform_root.add_child(collision_body)
- _add_stair_guardian_lions(platform_root,platform_depth)
+ _add_stair_dragon_and_braziers(platform_root,platform_depth)
  instance.name=node_name
  instance.add_to_group("city_building")
  instance.add_to_group("imported_city_building")
@@ -119,21 +119,7 @@ static func _add_model(parent: Node3D,city: String,filename: String,node_name: S
  _add_model_collisions(instance,collision_all)
  print("CHINESE_IMPERIAL_RAISED_PLATFORM_PASS: %s height=4.0m stairs=8" % filename)
  return instance
-static func _add_stair_guardian_lions(parent: Node3D, platform_depth: float) -> void:
- var lion_path := "res://assets/wuxia_imperial_pack/props_nature/guardian_lion_pair.glb"
- if not ResourceLoader.exists(lion_path):
-  push_error("WUXIA_STAIR_GUARDIANS_MISSING: "+lion_path)
-  return
- var packed := load(lion_path) as PackedScene
- if packed == null: return
- var lions := packed.instantiate() as Node3D
- if lions == null: return
- lions.name = "ChineseImperialStairGuardianLionPair"
- lions.position = Vector3(0.0,0.0,platform_depth*0.5+10.0)
- lions.scale = Vector3.ONE * 0.82
- lions.add_to_group("imperial_stair_guardians")
- lions.set_meta("source_asset_path",lion_path)
- parent.add_child(lions)
+static func _add_stair_dragon_and_braziers(parent: Node3D, platform_depth: float) -> void:
  var dragon_path := "res://assets/wuxia_imperial_pack/props_nature/chinese_dragon_statue.glb"
  if ResourceLoader.exists(dragon_path):
   var dragon_pack := load(dragon_path) as PackedScene
