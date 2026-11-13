@@ -169,7 +169,7 @@ def rejected_asset(record):
  if LION.search(text) and not re.search(r"\b(?:stone|guardian)\s+lions?\b", text): return True
  return False
 def asset_category(record, filename=""):
- if record.get("kind") == "pbr" or record.get("source") == "ambientCG": return "pbr_materials"
+ if record.get("kind") == "pbr" or record.get("source") == "ambientCG" or any(c=="pbr" for c,t in record.get("matches",[])): return "pbr_materials"
  raw_name=_flatten_text(record.get("name") or record.get("title") or "")
  primary=re.sub(r"\s*\([^)]*\)", " ", raw_name)
  if not primary.strip(): primary=str(filename or "")
@@ -206,6 +206,7 @@ def strict_filter_self_test():
   ({"id":"wooden-shopfront","name":"Wooden Shopfront","source":"3DAssets.dev","api_metadata":{"tags":"chinese traditional"}},False,"houses_and_shops"),
   ({"id":"generic-house","name":"Wooden House","candidate_only":True},False,"houses_and_shops"),
   ({"id":"simple-building","name":"Simple Building","candidate_only":True},False,"houses_and_shops"),
+  ({"id":"oga-pbr","name":"PBR Marble and Tile Texture Set","source":"OpenGameArt","matches":[("pbr","marble and tile")]},False,"pbr_materials"),
   ({"id":"viking-longhouse","name":"Viking Longhouse"},True,None),
   ({"id":"western-medieval","name":"Western Medieval House"},True,None),
   ({"id":"modern-apartment","name":"Modern Apartment Building"},True,None),
