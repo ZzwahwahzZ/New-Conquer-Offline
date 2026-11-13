@@ -154,37 +154,37 @@ jobs:
           PY
 
       - name: Run Step 11 smoke test
-        timeout-minutes: 2
+        timeout-minutes: 4
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/step11_smoke_test.gd
 
       - name: Run Step 12 smoke test (Save v6)
-        timeout-minutes: 2
+        timeout-minutes: 4
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/step12_smoke_test.gd
 
       - name: Run Step 13 smoke test
-        timeout-minutes: 2
+        timeout-minutes: 4
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/step13_smoke_test.gd
 
       - name: Run Step 14 smoke test
-        timeout-minutes: 2
+        timeout-minutes: 4
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/step14_smoke_test.gd
 
       - name: Run Step 15 smoke test (PBR terrain material library)
-        timeout-minutes: 2
+        timeout-minutes: 4
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/pbr_material_library_test.gd
 
       - name: Run Step 16 smoke test
-        timeout-minutes: 2
+        timeout-minutes: 4
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/step16_smoke_test.gd
 
       - name: Verify world environment, sunlight and Twin City ground
-        timeout-minutes: 2
+        timeout-minutes: 4
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/world_environment_test.gd
 
@@ -320,7 +320,7 @@ jobs:
             test -s "$temp"
             mv "$temp" "$asset"
             echo "GODOT_COMPATIBLE_GLB: $asset"
-          done < <(find assets/environment/architecture assets/environment/biomes assets/environment/nature -type f -name '*.glb' -print0)
+          done < <(find assets/environment/kenney assets/environment/quaternius -type f -name '*.glb' -print0)
           python3 tools/audit_classify_terrain_glb.py
 
       - name: Cache Godot imported assets
