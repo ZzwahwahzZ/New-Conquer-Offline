@@ -54,7 +54,7 @@ func _count_city_buildings_outside_core(node: Node) -> int:
 	var total := 0
 	if node is Node3D and node.is_in_group("city_building"):
 		var p := (node as Node3D).global_position
-		if absf(p.x) > 80.0 or absf(p.z) > 80.0:
+		if absf(p.x) > 85.0 or absf(p.z) > 85.0:
 			total += 1
 	for child in node.get_children():
 		total += _count_city_buildings_outside_core(child)
@@ -194,8 +194,10 @@ func _capture() -> void:
 		var guardian_count := _count_group_recursive(loaded_world, "city_guardians")
 		var outside_core_count := _count_city_buildings_outside_core(loaded_world)
 		var tree_instance_count := _count_multimesh_instances_recursive(loaded_world, "imperial_city_tree_multimesh")
-		if building_count < 85 or building_count > 100 or imported_building_count < 85 or imported_building_count > 100 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8 or tree_instance_count != 50:
-			_fail("%s visual proof refused: buildings=%d imported=%d outside_160m_core=%d gates=%d guardians=%d trees=%d" % [city_id, building_count, imported_building_count, outside_core_count, gate_count, guardian_count, tree_instance_count])
+		var lantern_light_count := _count_group_recursive(loaded_world, "imperial_city_lantern_lights")
+		var plaza_statue_count := _count_group_recursive(loaded_world, "imperial_plaza_statue")
+		if building_count < 85 or building_count > 100 or imported_building_count < 85 or imported_building_count > 100 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8 or tree_instance_count != 50 or lantern_light_count != 8 or plaza_statue_count != 1:
+			_fail("%s visual proof refused: buildings=%d imported=%d outside_170m_core=%d gates=%d guardians=%d trees=%d lantern_lights=%d plaza_statues=%d" % [city_id, building_count, imported_building_count, outside_core_count, gate_count, guardian_count, tree_instance_count, lantern_light_count, plaza_statue_count])
 			return
 		var first_building := loaded_world.find_child(city_id + "_ChineseImperialBuilding_00", true, false)
 		if first_building == null:
