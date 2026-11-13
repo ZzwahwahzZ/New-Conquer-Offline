@@ -416,7 +416,7 @@ static func _add_chinese_building_details(root: Node3D, p: Dictionary, width: fl
         var rib_index := 0
         for side in [-1.0,1.0]:
             for rib in range(5):
-                var rib_x := side*(tier_width*0.22 + float(rib)*tier_width*0.06)
+                var rib_x: float = float(side)*(tier_width*0.22 + float(rib)*tier_width*0.06)
                 ribs.set_instance_transform(rib_index,Transform3D(Basis(Vector3(0,0,1),side*0.22),Vector3(rib_x,tier_y+0.22,0.0)))
                 rib_index += 1
         var rib_batch := MultiMeshInstance3D.new()
