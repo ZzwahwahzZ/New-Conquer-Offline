@@ -62,11 +62,13 @@ static func _build_open_plaza(parent: Node3D, city: String, p: Dictionary, heigh
 
 static func _add_plaza_statue(parent: Node3D) -> void:
  var candidates: Array[String] = []
- _collect_quaternius_models("res://assets/imperial_city_kit_v2/quaternius/ultimate_fantasy_rts", candidates)
+ var lion_path := "res://assets/wuxia_imperial_pack/props_nature/guardian_lion_pair.glb"
+ if ResourceLoader.exists(lion_path):
+  candidates.append(lion_path)
  candidates = candidates.filter(func(path: String) -> bool: return path.get_file().to_lower().contains("statue"))
  candidates.sort()
  if candidates.is_empty():
-  push_error("IMPERIAL_PLAZA_STATUE_MISSING: no real CC0 statue model found in Ultimate Fantasy RTS")
+  push_error("IMPERIAL_PLAZA_STATUE_MISSING: verified Chinese guardian lion pair is absent from Wuxia Imperial pack")
   return
  var packed := ResourceLoader.load(candidates[0]) as PackedScene
  if packed == null:
@@ -104,7 +106,7 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, heigh
   var along := lerpf(-road_length * 0.5, road_length * 0.5, float(sample_index) / 64.0)
   road_clearance_height = maxf(road_clearance_height, WorldTerrainBuilder.sample_height_image(height_image,city,0.0,along,800.0))
   road_clearance_height = maxf(road_clearance_height, WorldTerrainBuilder.sample_height_image(height_image,city,along,0.0,800.0))
- road_clearance_height += 0.45 if city in ["DesertLand","VolcanoLand"] else 0.36
+ road_clearance_height += 0.85
  var road_material: StandardMaterial3D = PBRMaterialLibrary.build_street_material()
  var curb_material := _material(p.gold,0.76)
  for direction in range(2):
@@ -139,7 +141,7 @@ static func _build_urban_alley_multimeshes(parent: Node3D, city: String, materia
     var z: float = float(along) if axis == 0 else float(line)
     var ground_y := WorldTerrainBuilder.sample_height_image(terrain_image,city,x,z,800.0)
     var basis := Basis(Vector3.UP,PI*0.5) if axis == 1 else Basis.IDENTITY
-    multi.set_instance_transform(index,Transform3D(basis,Vector3(x,ground_y+(0.45 if city in ["DesertLand","VolcanoLand"] else 0.36),z)))
+    multi.set_instance_transform(index,Transform3D(basis,Vector3(x,ground_y+0.85,z)))
     index += 1
   var alley := MultiMeshInstance3D.new()
   alley.name = city + ("_UrbanAlleys_NorthSouth_MultiMesh" if axis == 0 else "_UrbanAlleys_EastWest_MultiMesh")
@@ -173,7 +175,7 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
      var twin_chinese_palace := city == "TwinCity" and ((anchor_row == 0 and anchor_column == 0) or (anchor_row == 0 and anchor_column == 10) or (anchor_row == 10 and anchor_column == 0))
      if not twin_chinese_palace:
       var palace_center := Vector3((float(coordinates[anchor_column]) + float(coordinates[anchor_column+1])) * 0.5,0.0,(float(coordinates[anchor_row]) + float(coordinates[anchor_row+1])) * 0.5)
-      var palace := _instantiate_quaternius_building(slot,city,index,palace_center,height_image,true,p)
+      var palace := _instantiate_wuxia_building(slot,city,index,palace_center,height_image,true,p)
       if palace == null:
        push_error("CITY_IMPORTED_PALACE_MISSING: %s index=%d" % [city,index])
       else:
@@ -358,7 +360,7 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  var instance := packed.instantiate() as Node3D
  if instance == null:
   return null
- instance.name = city + "_QuaterniusBuilding_%02d" % index
+ instance.name = city + "_WuxiaChineseBuilding_%02d" % index
  instance.set_meta("source_asset_path", selected)
  instance.add_to_group("city_building")
  instance.add_to_group("imported_city_building")
@@ -381,7 +383,7 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
   print("CITY_QUATERNIUS_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " target=" + str(Vector3(target_width,target_height,target_depth)) + " final_scale=" + str(instance.scale))
  var target_center_global := parent.to_global(at)
  var sampled_ground := WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
- var clearance := 0.45 if city in ["DesertLand","VolcanoLand"] else (0.6 if city == "Waterlands" else 0.0)
+ var clearance := 0.85
  var target_base_global := parent.to_global(Vector3(at.x, sampled_ground + clearance + (3.5 if grand_building else 0.0), at.z))
  var fitted_bounds := _renderable_world_bounds(instance)
  if fitted_bounds.size.length_squared() > 0.0001:
@@ -624,7 +626,7 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
   gate.rotation_degrees.y = direction*90.0
   fortification.add_child(gate)
   var gate_world_point := gate.to_global(Vector3(0.0,0.0,-85.0))
-  var gate_clearance := 0.45 if city in ["DesertLand","VolcanoLand"] else (0.6 if city == "Waterlands" else 0.0)
+  var gate_clearance := 0.85
   gate.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, gate_world_point.x, gate_world_point.z, 800.0) + gate_clearance - fortification.global_position.y
   var kenney_gate := _add_kenney_asset(gate, city, height_image, "castle-kit", "gate.glb", "KenneyGateModel", Vector3(0.0, 0.0, -85.0), 0.0, 2.2)
   if kenney_gate != null:
@@ -648,9 +650,9 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
   _build_chinese_gate_details(gate,p,city)
 
 static func _build_chinese_gate_details(gate: Node3D, p: Dictionary, city: String) -> void:
-    var roof := _material(p.roof,0.66)
+    var roof := PBRMaterialLibrary.build_chinese_roof_material()
     var gold := _material(p.gold,0.42)
-    var wood := _material(p.wood,0.68)
+    var wood := PBRMaterialLibrary.build_chinese_red_wood_material()
     var door_material := _material(Color("#8f2630"),0.48)
     # Fourteen-metre clear arch, paired timber leaves, and a two-tier tiled roof.
     for side in [-1.0,1.0]:
