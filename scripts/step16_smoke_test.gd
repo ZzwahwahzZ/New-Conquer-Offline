@@ -89,7 +89,7 @@ func _run() -> void:
 		var gate_count := _count_group_recursive(city, "cardinal_gates")
 		var guardian_count := _count_group_recursive(city, "city_guardians")
 		var outside_core_count := _count_city_buildings_outside_core(city)
-		if not _require(building_count >= 80 and building_count <= 100 and imported_building_count >= 80 and imported_building_count <= 100 and outside_core_count == 0, "%s generated %d buildings (%d imported); outside 160m core=%d; expected 80-100 entirely inside +/-80m" % [city_id, building_count, imported_building_count, outside_core_count]):
+		if not _require(building_count >= 85 and building_count <= 100 and imported_building_count >= 85 and imported_building_count <= 100 and outside_core_count == 0, "%s generated %d buildings (%d imported); outside 160m core=%d; expected 85-100 entirely inside +/-80m" % [city_id, building_count, imported_building_count, outside_core_count]):
 			return
 		if not _require(gate_count == 4 and _count_named_gates(city) == 4, "%s has %d/4 cardinal gates" % [city_id, gate_count]):
 			return
