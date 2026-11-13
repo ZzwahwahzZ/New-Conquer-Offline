@@ -308,11 +308,12 @@ static func _first_mesh_node(root: Node) -> MeshInstance3D:
 static func _instantiate_quaternius_building(parent: Node3D, city: String, index: int, at: Vector3, height_image: Image, grand_building: bool, p: Dictionary) -> Node3D:
  var candidates: Array[String] = []
  var all_models: Array[String] = []
+ _collect_quaternius_models("res://assets/imperial_city_kit_v2/quaternius", all_models)
  _collect_quaternius_models("res://assets/environment/quaternius/ultimate_fantasy_rts", all_models)
  _collect_quaternius_models("res://assets/environment/quaternius/modular_medieval_buildings", all_models)
  for path in all_models:
   var file_name := path.get_file().to_lower()
-  var is_house := file_name.contains("house")
+  var is_house := file_name.contains("house") or file_name.contains("building") or file_name.contains("hall") or file_name.contains("temple") or file_name.contains("pavilion")
   var is_tower := file_name.contains("tower") and not file_name.contains("wall")
   if is_house or is_tower:
    candidates.append(path)
