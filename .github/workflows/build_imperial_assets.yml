@@ -2,7 +2,7 @@ name: Build Imperial Assets
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, fix/asset-pbr-and-ground-validation]
     paths:
       - '.github/workflows/build_imperial_assets.yml'
       - 'tools/fetch_and_normalize_assets.py'
@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.ref }}
           fetch-depth: 0
       - name: Install pinned Blender 4.3.2
         shell: bash
@@ -54,6 +54,7 @@ jobs:
           BLENDER_BIN: blender
         run: python tools/fetch_and_normalize_assets.py
       - name: Commit audit docs to main
+        if: github.ref == 'refs/heads/main'
         shell: bash
         run: |
           set -euo pipefail
