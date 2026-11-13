@@ -99,8 +99,9 @@ func _run() -> void:
 				return
 		var terrain_body := city.find_child("TerrainCollision", true, false) as StaticBody3D
 		var terrain_collider := city.find_child("TerrainSurfaceCollision", true, false) as CollisionShape3D
-		if not _check(terrain_body != null and terrain_collider != null and terrain_collider.shape is ConcavePolygonShape3D, city_name + " full heightfield terrain collision is missing"):
+		if not _check(terrain_body != null and terrain_collider != null and terrain_collider.shape is HeightMapShape3D and (terrain_collider.shape as HeightMapShape3D).map_width == 129 and (terrain_collider.shape as HeightMapShape3D).map_depth == 129, city_name + " full heightfield terrain collision is missing"):
 			return
+		await physics_frame
 		await physics_frame
 		var terrain_visual := city.find_child("TerrainSurface", true, false) as MeshInstance3D
 		if not _check(terrain_visual != null and terrain_visual.mesh is ArrayMesh, city_name + " heightfield render mesh is missing"):
