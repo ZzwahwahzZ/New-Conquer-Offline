@@ -21,7 +21,7 @@ PACKS = {
         "title": "Kenney Nature Kit",
         "url": "https://kenney.nl/media/pages/assets/nature-kit/37ac38a37b-1677698939/kenney_nature-kit.zip",
         "source": "https://kenney.nl/assets/nature-kit",
-        "sha256": "903d408acfb26af320be31aba77d4872077d58c73aff8e98a52605354c5bdce2",
+        "sha256": "fa7974a0d342bfe63c38664ba9f8ec1a4aab8ea25f099bdc56870e33588c4d9d",
         "minimum_models": 250,
     },
     "fantasy-town-kit": {
