@@ -21,7 +21,7 @@ def _asset_rows(payload):
                 return [dict(v, slug=k) if isinstance(v, dict) else {} for k, v in value.items()]
     return []
 
-def discover_3dassets():
+def discover_3dassets(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR):
     seen = set()
     accepted_by_category = {"architecture": 0, "ornaments": 0, "nature": 0}
     for category, terms in ASSET3D_TERMS.items():
