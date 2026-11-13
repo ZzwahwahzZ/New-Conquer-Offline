@@ -56,9 +56,9 @@ def main():
     for category in approved["categories"].values():
         for item in category.get("assets", []):
             file_path = str(item.get("file", ""))
-            if item.get("style_group") == "imperial_chinese" and file_path.endswith(".glb"):
+            if item.get("style_group") in ("imperial_chinese", "korean_hanok") and file_path.endswith(".glb"):
                 selected.append(item); seen.add(item["name"])
-            elif item.get("style_group") == "environmental" and item.get("name") in MODELS:
+            elif item.get("style_group") in ("environmental", "korean_hanok") and (item.get("style_group") == "korean_hanok" or item.get("name") in MODELS):
                 selected.append(item); seen.add(item["name"])
             elif item.get("style_group") == "pbr_materials" and file_path in TEXTURES:
                 selected.append(item); seen.add(file_path)
