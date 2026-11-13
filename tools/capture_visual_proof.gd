@@ -1,5 +1,5 @@
 extends SceneTree
-## Captures five close, classic-Conquer camera views in each of the six settlements.
+## Captures two clear oblique panoramic proof views in each of the six settlements.
 const MAIN_SCENE := "res://scenes/main.tscn"
 const OUTPUT_DIR := "res://reports/visual-proof"
 const CLASSIC_DISTANCE := 20.0
@@ -8,11 +8,8 @@ const CLASSIC_FOV := 45.0
 const CLASSIC_FAR := 600.0
 const CITY_IDS := ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"]
 const SHOTS := [
-	{"suffix":"01_plaza_close","position":Vector3(0.0,0.775,0.0),"yaw":0.0},
-	{"suffix":"02_shop_street_close","position":Vector3(0.0,0.775,-70.0),"yaw":0.0},
-	{"suffix":"03_main_gate_horizon","position":Vector3(0.0,0.775,-140.0),"yaw":0.0,"distance":24.0,"pitch":38.0,"fov":55.0},
-	{"suffix":"04_outer_world","position":Vector3(0.0,0.775,-230.0),"yaw":0.0,"distance":45.0,"pitch":32.0,"fov":55.0},
-	{"suffix":"05_aerial_oblique","position":Vector3(0.0,0.775,0.0),"yaw":PI * 0.5,"distance":190.0,"pitch":55.0,"fov":60.0}
+	{"suffix":"01_aerial_overview","position":Vector3(0.0,0.775,0.0),"yaw":PI * 0.25,"distance":230.0,"pitch":62.0,"fov":62.0},
+	{"suffix":"02_inner_street","position":Vector3(0.0,0.775,-72.0),"yaw":0.0,"distance":48.0,"pitch":48.0,"fov":58.0}
 ]
 
 func _initialize() -> void:
@@ -193,20 +190,6 @@ func _capture() -> void:
 			if not await _save_frame(file_name):
 				quit(1)
 				return
-		# Dedicated wide panorama: show the new architecture together with the surrounding 800x800 landform.
-		camera.fov = 60.0
-		camera_rig.set("orbit_distance", 210.0)
-		camera_rig.set("pitch_degrees", 65.0)
-		camera_rig.set("_target_distance", 210.0)
-		camera_rig.set("_current_distance", 210.0)
-		camera_rig.call("_apply_orbit")
-		await process_frame
-		await process_frame
-		var panorama_name := "phase3a_panorama_%d_%s.png" % [city_index + 1, city_id.to_lower()]
-		if not await _save_frame(panorama_name):
-			quit(1)
-			return
-		camera.fov = CLASSIC_FOV
-		print("CITY_5_VIEW_AND_PHASE3A_PANORAMA_PASS: " + city_id + " panorama=1")
-	print("VISUAL_PROOF_PASS: 30 real runtime frames + six panoramas; four close Conquer-isometric views plus one aerial oblique per city; six high-angle panoramas; HUD visible in all 36 frames.")
+		print("CITY_TWO_PANORAMIC_VIEWS_PASS: " + city_id + " aerial_overview=1 inner_street=1")
+	print("VISUAL_PROOF_PASS: 12 real runtime panoramas; one elevated aerial overview and one inner-street view per city; classic HUD visible in all 12 frames.")
 	quit(0)
