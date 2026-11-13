@@ -66,7 +66,7 @@ func _run() -> void:
 	var street_source := FileAccess.get_file_as_string("res://src/scripts/CityStreetDressing.gd")
 	if not _require(settlement_source.contains("CityArchitectureBuilder.build(get_node(\"ArchitectureAssetSlot\"), settlement_id"), "SettlementWorld does not invoke build_city before validation"):
 		return
-	if not _require(builder_source.contains("_instantiate_wuxia_building(slot") and builder_source.contains("assets/wuxia_imperial_pack/architecture") and builder_source.contains("OpenCentralPlaza_50x50") and builder_source.contains("ImperialPalaceRaisedStonePlinth_4_0m") and builder_source.contains("Vector3(12.0,0.02,road_length)") and builder_source.contains("Vector3(6.0,0.14,14.0)") and builder_source.contains("detailed_buildings=85-88"), "official v2 Quaternius buildings are not connected to the 85-100 building city builder"):
+	if not _require(builder_source.contains("_instantiate_wuxia_building(slot") and builder_source.contains("assets/wuxia_imperial_pack/architecture") and builder_source.contains("OpenCentralPlaza_50x50") and builder_source.contains("ImperialPalaceRaisedStonePlinth_4_0m") and builder_source.contains("Vector3(12.0,0.02,road_length)") and builder_source.contains("Vector3(6.0,0.14,14.0)") and builder_source.contains("detailed_buildings=85-88"), "verified Wuxia Chinese GLBs are not connected to the 85-100 building city builder"):
 		return
 	if not _require(builder_source.contains("gate.add_to_group(\"cardinal_gates\")") and builder_source.contains("guard.add_to_group(\"city_guardians\")"), "cardinal gate or guardian groups are not registered"):
 		return
@@ -77,7 +77,7 @@ func _run() -> void:
 	if not _require(street_source.contains("Waterlands_ReflectiveInnerHarbor_160m") and street_source.contains("Waterlands_RaisedTimberStreetNetwork_0_85m"), "Waterlands raised harbor and 0.85m promenade network are missing"):
 		return
 	var terrain_source := FileAccess.get_file_as_string("res://src/scripts/WorldTerrainBuilder.gd")
-	if not _require(terrain_source.contains("assets/wuxia_imperial_pack/props_nature") and terrain_source.contains("imperial_city_tree_multimesh"), "real Quaternius nature MultiMesh trees are not connected"):
+	if not _require(terrain_source.contains("assets/wuxia_imperial_pack/props_nature") and terrain_source.contains("imperial_city_tree_multimesh"), "real Wuxia willow, pine, bamboo and bush MultiMesh models are not connected"):
 		return
 	if not _require(settlement_source.contains("environment.fog_depth_begin = 125.0") and settlement_source.contains("environment.fog_depth_end = 450.0") and settlement_source.contains("environment.fog_sky_affect = 0.0"), "distant horizon-only fog settings are missing"):
 		return
@@ -103,7 +103,7 @@ func _run() -> void:
 		var tree_instance_count := _count_multimesh_instances_recursive(city, "imperial_city_tree_multimesh")
 		var lantern_light_count := _count_group_recursive(city, "imperial_city_lantern_lights")
 		var plaza_statue_count := _count_group_recursive(city, "imperial_plaza_statue")
-		if not _require(building_count >= 85 and building_count <= 100 and imported_building_count >= 85 and imported_building_count <= 100 and outside_core_count == 0, "%s generated %d buildings (%d imported); outside 160m core=%d; expected 85-100 entirely inside +/-80m" % [city_id, building_count, imported_building_count, outside_core_count]):
+		if not _require(building_count >= 85 and building_count <= 100 and imported_building_count >= 85 and imported_building_count <= 100 and outside_core_count == 0, "%s generated %d buildings (%d imported); outside 170m core=%d; expected 85-100 entirely inside +/-85m" % [city_id, building_count, imported_building_count, outside_core_count]):
 			return
 		if not _require(tree_instance_count == 60, "%s generated %d/60 real tree instances in MultiMesh batches" % [city_id, tree_instance_count]):
 			return
