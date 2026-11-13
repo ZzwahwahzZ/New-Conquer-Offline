@@ -275,6 +275,15 @@ static func _build_imperial_tree_multimesh(parent: Node3D, city: String, size: f
    parent.add_child(node)
  print("IMPERIAL_CITY_TREE_MULTIMESH_PASS: %s trees=%d species=%d source=%s" % [city, TREES_PER_CITY, species.size(), str(species.map(func(item: Dictionary) -> String: return str(item["path"]).get_file()))])
 
+static func _collect_tree_mesh_parts(node: Node, parent_transform: Transform3D, output: Array[Dictionary], is_root: bool = false) -> void:
+ var current_transform := parent_transform
+ if not is_root and node is Node3D:
+  current_transform = parent_transform * (node as Node3D).transform
+ if node is MeshInstance3D and (node as MeshInstance3D).mesh != null:
+  output.append({"mesh":(node as MeshInstance3D).mesh,"transform":current_transform})
+ for child in node.get_children():
+  _collect_tree_mesh_parts(child,current_transform,output,false)
+
 static func _collect_kenney_nature_models(path: String, output: Array[String]) -> void:
  var directory := DirAccess.open(path)
  if directory == null:
