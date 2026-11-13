@@ -71,7 +71,7 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, heigh
   var along := lerpf(-road_length * 0.5, road_length * 0.5, float(sample_index) / 64.0)
   road_clearance_height = maxf(road_clearance_height, WorldTerrainBuilder.sample_height_image(height_image,city,0.0,along,800.0))
   road_clearance_height = maxf(road_clearance_height, WorldTerrainBuilder.sample_height_image(height_image,city,along,0.0,800.0))
- road_clearance_height += 0.36
+ road_clearance_height += 0.45 if city in ["DesertLand","VolcanoLand"] else 0.36
  var road_material: StandardMaterial3D = PBRMaterialLibrary.build_street_material()
  var curb_material := _material(p.gold,0.76)
  for direction in range(2):
@@ -91,7 +91,7 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, heigh
 static func _build_urban_alley_multimeshes(parent: Node3D, city: String, material: Material) -> void:
  var terrain_image := WorldTerrainBuilder.load_height_image(city)
  var alley_lines := [-46.5, -23.25, 23.25, 46.5]
- var segment_centers := [-72.0,-108.0,-84.0,-60.0,-36.0,-12.0,12.0,36.0,60.0,84.0,108.0,132.0]
+ var segment_centers := [-80.0,-108.0,-84.0,-60.0,-36.0,-12.0,12.0,36.0,60.0,84.0,108.0,132.0]
  var alley_mesh := BoxMesh.new()
  alley_mesh.size = Vector3(4.0,0.14,22.0)
  for axis in range(2):
@@ -106,7 +106,7 @@ static func _build_urban_alley_multimeshes(parent: Node3D, city: String, materia
     var z: float = float(along) if axis == 0 else float(line)
     var ground_y := WorldTerrainBuilder.sample_height_image(terrain_image,city,x,z,800.0)
     var basis := Basis(Vector3.UP,PI*0.5) if axis == 1 else Basis.IDENTITY
-    multi.set_instance_transform(index,Transform3D(basis,Vector3(x,ground_y+0.36,z)))
+    multi.set_instance_transform(index,Transform3D(basis,Vector3(x,ground_y+(0.45 if city in ["DesertLand","VolcanoLand"] else 0.36),z)))
     index += 1
   var alley := MultiMeshInstance3D.new()
   alley.name = city + ("_UrbanAlleys_NorthSouth_MultiMesh" if axis == 0 else "_UrbanAlleys_EastWest_MultiMesh")
@@ -436,7 +436,7 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
    tower_block.visible = kenney_tower == null
    var tower_cap := _box(gate,"GateTowerCrenellation",Vector3(side*11.0,14.5,-88.0),Vector3(9.0,0.8,11.0),gate_material,1.0)
    tower_cap.visible = kenney_tower == null
-   _box(gate,"GateGuardianStand",Vector3(side*5.5,0.15,-72.0),Vector3(1.6,0.3,1.6),wall_material,1.0)
+   _box(gate,"GateGuardianStand",Vector3(side*5.5,0.15,-80.0),Vector3(1.6,0.3,1.6),wall_material,1.0)
    _build_gate_guard(gate,side,p,direction_name)
   var lintel := _box(gate,"GateArchLintel",Vector3(0,13.2,-88.0),Vector3(16.0,2.0,8.0),gate_material,1.0)
   lintel.visible = kenney_gate == null
@@ -659,7 +659,7 @@ static func _build_gate_guard(parent: Node3D, side: float, p: Dictionary, direct
  guard.name = "CityGuardian_" + direction_name + "_" + ("Left" if side < 0.0 else "Right")
  guard.add_to_group("city_guardians")
  guard.set_meta("gate_direction",direction_name)
- guard.position = Vector3(side*5.5,0.0,-72.0)
+ guard.position = Vector3(side*5.5,0.0,-80.0)
  parent.add_child(guard)
  var armor := _material(p.wood,0.62)
  var trim := _material(p.gold,0.5)
