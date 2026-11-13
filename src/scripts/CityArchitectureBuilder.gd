@@ -376,100 +376,100 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  return instance
 
 static func _add_chinese_building_details(root: Node3D, p: Dictionary, width: float, depth: float, height: float) -> void:
-	var roof_material := _material(p.roof,0.66)
-	var gold_material := _material(p.gold,0.4)
-	var timber_material := _material(p.wood,0.62)
-	var door_material := _material(Color("#8f2630"),0.46)
-	var lantern_material := _material(Color("#a52b35"),0.34)
-	lantern_material.emission_enabled = true
-	lantern_material.emission = Color("#ff3842")
-	lantern_material.emission_energy_multiplier = 1.25
-	var roof_root := Node3D.new()
-	roof_root.name = "ChineseTwoTierTiledPagodaRoof"
-	roof_root.position.y = height - 0.25
-	root.add_child(roof_root)
-	for tier in range(2):
-		var tier_width := (width + 1.2) * (1.0 if tier == 0 else 0.76)
-		var tier_depth := (depth + 1.2) * (1.0 if tier == 0 else 0.76)
-		var tier_y := 0.16 + float(tier) * 0.78
-		var panel_mesh := BoxMesh.new()
-		panel_mesh.size = Vector3(tier_width*0.56,0.42,tier_depth)
-		var panels := MultiMesh.new()
-		panels.transform_format = MultiMesh.TRANSFORM_3D
-		panels.mesh = panel_mesh
-		panels.instance_count = 2
-		var panel_index := 0
-		for side in [-1.0,1.0]:
-			panels.set_instance_transform(panel_index,Transform3D(Basis(Vector3(0,0,1),side*0.22),Vector3(side*tier_width*0.22,tier_y,0.0)))
-			panel_index += 1
-		var panel_batch := MultiMeshInstance3D.new()
-		panel_batch.name = "ChineseSlopedRoofPanels_%d" % tier
-		panel_batch.multimesh = panels
-		panel_batch.material_override = roof_material
-		roof_root.add_child(panel_batch)
-		var rib_mesh := BoxMesh.new()
-		rib_mesh.size = Vector3(0.13,0.12,tier_depth*0.94)
-		var ribs := MultiMesh.new()
-		ribs.transform_format = MultiMesh.TRANSFORM_3D
-		ribs.mesh = rib_mesh
-		ribs.instance_count = 10
-		var rib_index := 0
-		for side in [-1.0,1.0]:
-			for rib in range(5):
-				var rib_x := side*(tier_width*0.22 + float(rib)*tier_width*0.06)
-				ribs.set_instance_transform(rib_index,Transform3D(Basis(Vector3(0,0,1),side*0.22),Vector3(rib_x,tier_y+0.22,0.0)))
-				rib_index += 1
-		var rib_batch := MultiMeshInstance3D.new()
-		rib_batch.name = "ChineseRoofTileRibs_%d" % tier
-		rib_batch.multimesh = ribs
-		rib_batch.material_override = gold_material
-		roof_root.add_child(rib_batch)
-		var eave_mesh := BoxMesh.new()
-		eave_mesh.size = Vector3(1.25,0.24,0.72)
-		var eaves := MultiMesh.new()
-		eaves.transform_format = MultiMesh.TRANSFORM_3D
-		eaves.mesh = eave_mesh
-		eaves.instance_count = 4
-		var eave_index := 0
-		for side in [-1.0,1.0]:
-			for depth_side in [-1.0,1.0]:
-				eaves.set_instance_transform(eave_index,Transform3D(Basis(Vector3(0,0,1),-side*0.28),Vector3(side*tier_width*0.49,tier_y+0.1,depth_side*tier_depth*0.48)))
-				eave_index += 1
-		var eave_batch := MultiMeshInstance3D.new()
-		eave_batch.name = "ChineseUpturnedEaves_%d" % tier
-		eave_batch.multimesh = eaves
-		eave_batch.material_override = gold_material
-		roof_root.add_child(eave_batch)
-		_box(roof_root,"ChineseGoldenRoofRidge_%d" % tier,Vector3(0.0,tier_y+0.32,0.0),Vector3(tier_width*0.72,0.18,0.42),gold_material,1.0)
-	var pillar_mesh := BoxMesh.new()
-	pillar_mesh.size = Vector3(0.42,height*0.9,0.42)
-	var pillars := MultiMesh.new()
-	pillars.transform_format = MultiMesh.TRANSFORM_3D
-	pillars.mesh = pillar_mesh
-	pillars.instance_count = 2
-	pillars.set_instance_transform(0,Transform3D(Basis.IDENTITY,Vector3(-width*0.36,height*0.45,depth*0.5+0.14)))
-	pillars.set_instance_transform(1,Transform3D(Basis.IDENTITY,Vector3(width*0.36,height*0.45,depth*0.5+0.14)))
-	var pillar_batch := MultiMeshInstance3D.new()
-	pillar_batch.name = "ChineseFacadeColumns"
-	pillar_batch.multimesh = pillars
-	pillar_batch.material_override = timber_material
-	root.add_child(pillar_batch)
-	_box(root,"ChineseRedTimberDoor",Vector3(0.0,1.7,depth*0.5+0.22),Vector3(2.1,3.4,0.22),door_material,1.0)
-	_box(root,"ChineseGoldenDoorFrame",Vector3(0.0,3.52,depth*0.5+0.28),Vector3(2.65,0.18,0.12),gold_material,1.0)
-	var lantern_mesh := SphereMesh.new()
-	lantern_mesh.radius = 0.24
-	lantern_mesh.height = 0.5
-	var lanterns := MultiMesh.new()
-	lanterns.transform_format = MultiMesh.TRANSFORM_3D
-	lanterns.mesh = lantern_mesh
-	lanterns.instance_count = 2
-	lanterns.set_instance_transform(0,Transform3D(Basis.IDENTITY,Vector3(-width*0.43,height*0.72,depth*0.5+0.32)))
-	lanterns.set_instance_transform(1,Transform3D(Basis.IDENTITY,Vector3(width*0.43,height*0.72,depth*0.5+0.32)))
-	var lantern_batch := MultiMeshInstance3D.new()
-	lantern_batch.name = "ChineseFacadeRedLanterns"
-	lantern_batch.multimesh = lanterns
-	lantern_batch.material_override = lantern_material
-	root.add_child(lantern_batch)
+    var roof_material := _material(p.roof,0.66)
+    var gold_material := _material(p.gold,0.4)
+    var timber_material := _material(p.wood,0.62)
+    var door_material := _material(Color("#8f2630"),0.46)
+    var lantern_material := _material(Color("#a52b35"),0.34)
+    lantern_material.emission_enabled = true
+    lantern_material.emission = Color("#ff3842")
+    lantern_material.emission_energy_multiplier = 1.25
+    var roof_root := Node3D.new()
+    roof_root.name = "ChineseTwoTierTiledPagodaRoof"
+    roof_root.position.y = height - 0.25
+    root.add_child(roof_root)
+    for tier in range(2):
+        var tier_width := (width + 1.2) * (1.0 if tier == 0 else 0.76)
+        var tier_depth := (depth + 1.2) * (1.0 if tier == 0 else 0.76)
+        var tier_y := 0.16 + float(tier) * 0.78
+        var panel_mesh := BoxMesh.new()
+        panel_mesh.size = Vector3(tier_width*0.56,0.42,tier_depth)
+        var panels := MultiMesh.new()
+        panels.transform_format = MultiMesh.TRANSFORM_3D
+        panels.mesh = panel_mesh
+        panels.instance_count = 2
+        var panel_index := 0
+        for side in [-1.0,1.0]:
+            panels.set_instance_transform(panel_index,Transform3D(Basis(Vector3(0,0,1),side*0.22),Vector3(side*tier_width*0.22,tier_y,0.0)))
+            panel_index += 1
+        var panel_batch := MultiMeshInstance3D.new()
+        panel_batch.name = "ChineseSlopedRoofPanels_%d" % tier
+        panel_batch.multimesh = panels
+        panel_batch.material_override = roof_material
+        roof_root.add_child(panel_batch)
+        var rib_mesh := BoxMesh.new()
+        rib_mesh.size = Vector3(0.13,0.12,tier_depth*0.94)
+        var ribs := MultiMesh.new()
+        ribs.transform_format = MultiMesh.TRANSFORM_3D
+        ribs.mesh = rib_mesh
+        ribs.instance_count = 10
+        var rib_index := 0
+        for side in [-1.0,1.0]:
+            for rib in range(5):
+                var rib_x := side*(tier_width*0.22 + float(rib)*tier_width*0.06)
+                ribs.set_instance_transform(rib_index,Transform3D(Basis(Vector3(0,0,1),side*0.22),Vector3(rib_x,tier_y+0.22,0.0)))
+                rib_index += 1
+        var rib_batch := MultiMeshInstance3D.new()
+        rib_batch.name = "ChineseRoofTileRibs_%d" % tier
+        rib_batch.multimesh = ribs
+        rib_batch.material_override = gold_material
+        roof_root.add_child(rib_batch)
+        var eave_mesh := BoxMesh.new()
+        eave_mesh.size = Vector3(1.25,0.24,0.72)
+        var eaves := MultiMesh.new()
+        eaves.transform_format = MultiMesh.TRANSFORM_3D
+        eaves.mesh = eave_mesh
+        eaves.instance_count = 4
+        var eave_index := 0
+        for side in [-1.0,1.0]:
+            for depth_side in [-1.0,1.0]:
+                eaves.set_instance_transform(eave_index,Transform3D(Basis(Vector3(0,0,1),-side*0.28),Vector3(side*tier_width*0.49,tier_y+0.1,depth_side*tier_depth*0.48)))
+                eave_index += 1
+        var eave_batch := MultiMeshInstance3D.new()
+        eave_batch.name = "ChineseUpturnedEaves_%d" % tier
+        eave_batch.multimesh = eaves
+        eave_batch.material_override = gold_material
+        roof_root.add_child(eave_batch)
+        _box(roof_root,"ChineseGoldenRoofRidge_%d" % tier,Vector3(0.0,tier_y+0.32,0.0),Vector3(tier_width*0.72,0.18,0.42),gold_material,1.0)
+    var pillar_mesh := BoxMesh.new()
+    pillar_mesh.size = Vector3(0.42,height*0.9,0.42)
+    var pillars := MultiMesh.new()
+    pillars.transform_format = MultiMesh.TRANSFORM_3D
+    pillars.mesh = pillar_mesh
+    pillars.instance_count = 2
+    pillars.set_instance_transform(0,Transform3D(Basis.IDENTITY,Vector3(-width*0.36,height*0.45,depth*0.5+0.14)))
+    pillars.set_instance_transform(1,Transform3D(Basis.IDENTITY,Vector3(width*0.36,height*0.45,depth*0.5+0.14)))
+    var pillar_batch := MultiMeshInstance3D.new()
+    pillar_batch.name = "ChineseFacadeColumns"
+    pillar_batch.multimesh = pillars
+    pillar_batch.material_override = timber_material
+    root.add_child(pillar_batch)
+    _box(root,"ChineseRedTimberDoor",Vector3(0.0,1.7,depth*0.5+0.22),Vector3(2.1,3.4,0.22),door_material,1.0)
+    _box(root,"ChineseGoldenDoorFrame",Vector3(0.0,3.52,depth*0.5+0.28),Vector3(2.65,0.18,0.12),gold_material,1.0)
+    var lantern_mesh := SphereMesh.new()
+    lantern_mesh.radius = 0.24
+    lantern_mesh.height = 0.5
+    var lanterns := MultiMesh.new()
+    lanterns.transform_format = MultiMesh.TRANSFORM_3D
+    lanterns.mesh = lantern_mesh
+    lanterns.instance_count = 2
+    lanterns.set_instance_transform(0,Transform3D(Basis.IDENTITY,Vector3(-width*0.43,height*0.72,depth*0.5+0.32)))
+    lanterns.set_instance_transform(1,Transform3D(Basis.IDENTITY,Vector3(width*0.43,height*0.72,depth*0.5+0.32)))
+    var lantern_batch := MultiMeshInstance3D.new()
+    lantern_batch.name = "ChineseFacadeRedLanterns"
+    lantern_batch.multimesh = lanterns
+    lantern_batch.material_override = lantern_material
+    root.add_child(lantern_batch)
 
 static func _renderable_world_bounds(root_node: Node) -> AABB:
  var combined := AABB()
@@ -587,48 +587,48 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
   _build_chinese_gate_details(gate,p,city)
 
 static func _build_chinese_gate_details(gate: Node3D, p: Dictionary, city: String) -> void:
-	var roof := _material(p.roof,0.66)
-	var gold := _material(p.gold,0.42)
-	var wood := _material(p.wood,0.68)
-	var door_material := _material(Color("#8f2630"),0.48)
-	# Fourteen-metre clear arch, paired timber leaves, and a two-tier tiled roof.
-	for side in [-1.0,1.0]:
-		# The two leaves are swung open against the side towers so the main street remains visible.
-		_box(gate,"ChineseGateDoorLeaf",Vector3(side*6.75,4.55,-84.55),Vector3(0.28,9.1,6.1),door_material,1.0)
-		_box(gate,"ChineseGateDoorGoldBand",Vector3(side*6.55,6.1,-84.55),Vector3(0.08,0.16,6.0),gold,1.0)
-		_box(gate,"ChineseGateDoorVerticalTrim",Vector3(side*6.55,4.55,-81.55),Vector3(0.08,9.0,0.18),gold,1.0)
-	_box(gate,"ChineseGateRoofLower",Vector3(0,12.35,-85.0),Vector3(25.0,0.62,12.0),roof,1.0)
-	_box(gate,"ChineseGateRoofUpper",Vector3(0,13.18,-85.0),Vector3(21.0,0.48,9.0),roof,1.0)
-	_box(gate,"ChineseGateGoldenRidge",Vector3(0,13.58,-85.0),Vector3(18.0,0.22,0.52),gold,1.0)
-	for side in [-1.0,1.0]:
-		for depth_side in [-1.0,1.0]:
-			var eave := _box(gate,"ChineseGateUpturnedEave",Vector3(side*11.8,12.72,-85.0+depth_side*5.4),Vector3(3.0,0.28,0.72),gold,1.0)
-			eave.rotation.z = -side*0.22
-	for rib in range(13):
-		var x := -12.0 + float(rib)*2.0
-		_box(gate,"ChineseGateRoofRib",Vector3(x,12.78,-85.0),Vector3(0.12,0.12,10.5),gold if rib in [0,12] else roof,1.0)
-	for side in [-1.0,1.0]:
-		var lantern := MeshInstance3D.new()
-		lantern.name = "ChineseGateWarmLantern"
-		var lantern_mesh := SphereMesh.new()
-		lantern_mesh.radius = 0.34
-		lantern_mesh.height = 0.7
-		lantern.mesh = lantern_mesh
-		lantern.position = Vector3(side*8.3,10.2,-80.0)
-		gate.add_child(lantern)
-		var glow := _material(Color("#b62935"),0.35)
-		glow.emission_enabled = true
-		glow.emission = Color("#ff9a52")
-		glow.emission_energy_multiplier = 1.5
-		lantern.material_override = glow
-		var light := OmniLight3D.new()
-		light.name = "ChineseGateWarmLanternLight"
-		light.position = lantern.position
-		light.light_color = Color("#ffad67")
-		light.light_energy = 1.15
-		light.omni_range = 10.0
-		gate.add_child(light)
-	print("CITY_CHINESE_GATE_PASS: %s opening=14m height=14m roof=2_tiers lanterns=2" % city)
+    var roof := _material(p.roof,0.66)
+    var gold := _material(p.gold,0.42)
+    var wood := _material(p.wood,0.68)
+    var door_material := _material(Color("#8f2630"),0.48)
+    # Fourteen-metre clear arch, paired timber leaves, and a two-tier tiled roof.
+    for side in [-1.0,1.0]:
+        # The two leaves are swung open against the side towers so the main street remains visible.
+        _box(gate,"ChineseGateDoorLeaf",Vector3(side*6.75,4.55,-84.55),Vector3(0.28,9.1,6.1),door_material,1.0)
+        _box(gate,"ChineseGateDoorGoldBand",Vector3(side*6.55,6.1,-84.55),Vector3(0.08,0.16,6.0),gold,1.0)
+        _box(gate,"ChineseGateDoorVerticalTrim",Vector3(side*6.55,4.55,-81.55),Vector3(0.08,9.0,0.18),gold,1.0)
+    _box(gate,"ChineseGateRoofLower",Vector3(0,12.35,-85.0),Vector3(25.0,0.62,12.0),roof,1.0)
+    _box(gate,"ChineseGateRoofUpper",Vector3(0,13.18,-85.0),Vector3(21.0,0.48,9.0),roof,1.0)
+    _box(gate,"ChineseGateGoldenRidge",Vector3(0,13.58,-85.0),Vector3(18.0,0.22,0.52),gold,1.0)
+    for side in [-1.0,1.0]:
+        for depth_side in [-1.0,1.0]:
+            var eave := _box(gate,"ChineseGateUpturnedEave",Vector3(side*11.8,12.72,-85.0+depth_side*5.4),Vector3(3.0,0.28,0.72),gold,1.0)
+            eave.rotation.z = -side*0.22
+    for rib in range(13):
+        var x := -12.0 + float(rib)*2.0
+        _box(gate,"ChineseGateRoofRib",Vector3(x,12.78,-85.0),Vector3(0.12,0.12,10.5),gold if rib in [0,12] else roof,1.0)
+    for side in [-1.0,1.0]:
+        var lantern := MeshInstance3D.new()
+        lantern.name = "ChineseGateWarmLantern"
+        var lantern_mesh := SphereMesh.new()
+        lantern_mesh.radius = 0.34
+        lantern_mesh.height = 0.7
+        lantern.mesh = lantern_mesh
+        lantern.position = Vector3(side*8.3,10.2,-80.0)
+        gate.add_child(lantern)
+        var glow := _material(Color("#b62935"),0.35)
+        glow.emission_enabled = true
+        glow.emission = Color("#ff9a52")
+        glow.emission_energy_multiplier = 1.5
+        lantern.material_override = glow
+        var light := OmniLight3D.new()
+        light.name = "ChineseGateWarmLanternLight"
+        light.position = lantern.position
+        light.light_color = Color("#ffad67")
+        light.light_energy = 1.15
+        light.omni_range = 10.0
+        gate.add_child(light)
+    print("CITY_CHINESE_GATE_PASS: %s opening=14m height=14m roof=2_tiers lanterns=2" % city)
 
 static func _load_kenney_scene(kit: String, file_name: String) -> PackedScene:
  for format_name in ["GLB format", "GLTF format"]:
