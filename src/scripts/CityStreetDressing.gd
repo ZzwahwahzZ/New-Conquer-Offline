@@ -338,7 +338,8 @@ static func _dark_forest_tree_ring(parent: Node3D) -> void:
 	trunks.bottom_radius = 0.82
 	trunks.height = 9.0
 	trunks.radial_segments = 8
-	var crowns := ConeMesh.new()
+	var crowns := CylinderMesh.new()
+	crowns.top_radius = 0.0
 	crowns.bottom_radius = 4.8
 	crowns.height = 15.0
 	crowns.radial_segments = 7
