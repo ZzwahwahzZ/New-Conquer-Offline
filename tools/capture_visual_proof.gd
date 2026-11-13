@@ -1,6 +1,7 @@
 extends SceneTree
 ## Captures two clear oblique panoramic proof views in each of the six settlements.
 const MAIN_SCENE := "res://scenes/main.tscn"
+const WorldTerrainBuilder = preload("res://src/scripts/WorldTerrainBuilder.gd")
 const OUTPUT_DIR := "res://reports/visual-proof"
 const CLASSIC_DISTANCE := 20.0
 const CLASSIC_PITCH := 38.0 # Camera3D local rotation is -38 degrees.
@@ -182,7 +183,7 @@ func _capture() -> void:
 		var gate_count := _count_group_recursive(loaded_world, "cardinal_gates")
 		var guardian_count := _count_group_recursive(loaded_world, "city_guardians")
 		var outside_core_count := _count_city_buildings_outside_core(loaded_world)
-		if building_count < 80 or building_count > 100 or imported_building_count < 80 or imported_building_count > 100 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8:
+		if building_count < 85 or building_count > 100 or imported_building_count < 85 or imported_building_count > 100 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8:
 			_fail("%s visual proof refused: buildings=%d imported=%d outside_160m_core=%d gates=%d guardians=%d" % [city_id, building_count, imported_building_count, outside_core_count, gate_count, guardian_count])
 			return
 		var first_building := loaded_world.find_child(city_id + "_ChineseImperialBuilding_00", true, false)
@@ -226,6 +227,19 @@ func _capture() -> void:
 			camera_rig.call("_apply_orbit")
 			await process_frame
 			await process_frame
+			var terrain_image: Image = WorldTerrainBuilder.load_height_image(city_id)
+			var camera_ground_y: float = WorldTerrainBuilder.sample_height_image(terrain_image, city_id, camera.global_position.x, camera.global_position.z, 800.0)
+			var camera_clearance: float = camera.global_position.y - camera_ground_y
+			if camera_clearance < 2.5:
+				camera_rig.global_position.y += 2.5 - camera_clearance + 0.25
+				camera_rig.call("_apply_orbit")
+				await process_frame
+				camera_ground_y = WorldTerrainBuilder.sample_height_image(terrain_image, city_id, camera.global_position.x, camera.global_position.z, 800.0)
+				camera_clearance = camera.global_position.y - camera_ground_y
+			if camera_clearance < 2.5:
+				_fail("%s %s camera clearance below 2.5m: %.3fm" % [city_id, str(shot.suffix), camera_clearance])
+				return
+			print("VISUAL_PROOF_CAMERA_CLEARANCE_PASS: %s %s %.2fm" % [city_id, str(shot.suffix), camera_clearance])
 			var slug: String = city_id.to_lower()
 			var file_name := "city_%d_%s_%s.png" % [city_index + 1, slug, str(shot.suffix)]
 			if not await _save_frame(file_name):
