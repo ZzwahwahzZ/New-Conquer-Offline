@@ -78,7 +78,7 @@ func _run() -> void:
 		return
 	if not _require(street_source.contains("DarkForest_250AncientTreeTrunks_MultiMesh") and street_source.contains("DarkForest_250AncientTreeCrowns_MultiMesh"), "DarkForest 250-tree MultiMesh canopy is missing"):
 		return
-	if not _require(settlement_source.contains("environment.fog_enabled = settlement_id == \"DarkForest\""), "DarkForest atmospheric fog is not enabled"):
+	if not _require(settlement_source.contains("environment.fog_depth_begin = 125.0") and settlement_source.contains("environment.fog_depth_end = 450.0") and settlement_source.contains("environment.fog_sky_affect = 0.0"), "DarkForest atmospheric fog is not enabled"):
 		return
 
 	for city_id in CITIES:
