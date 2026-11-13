@@ -40,6 +40,9 @@ static func build(parent: Node3D, city: String, size: float) -> void:
 	_add_railing(parent, "SquareRail_W", Vector3(-19, 0, 0), 30.0, city, true)
 	if city == "Waterlands":
 		_waterways(parent, half)
+		_waterlands_promenades(parent, road_mat)
+	if city == "DarkForest":
+		_dark_forest_tree_ring(parent)
 	if city == "TwinCity":
 		_twin_city_canals(parent, half)
 	if city == "VolcanoLand":
@@ -59,7 +62,7 @@ static func _add_plane(parent: Node3D, label: String, dimensions: Vector2, mater
 	mesh.size = dimensions
 	node.mesh = mesh
 	var paved_route := label.begins_with("Street_") or label.begins_with("DistrictLane_") or label.begins_with("GateApproach_")
-	node.position = at + (Vector3.UP * 0.36 if paved_route else Vector3.ZERO)
+	node.position = at + (Vector3.UP * (0.6 if label.begins_with("Waterlands_") else 0.36) if paved_route else Vector3.ZERO)
 	parent.add_child(node)
 	var surface_material := material
 	if material is StandardMaterial3D:
@@ -191,7 +194,7 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 	var deck_mesh := PlaneMesh.new()
 	deck_mesh.size = dimensions
 	deck.mesh = deck_mesh
-	deck.position.y = 0.12
+	deck.position.y = 0.6 if city == "Waterlands" else 0.12
 	bridge.add_child(deck)
 	deck.material_override = material
 	var imported_bridge_found := false
@@ -214,7 +217,7 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 						imported_bridge.scale = Vector3.ONE * fit_scale
 						if bounds.z > bounds.x:
 							imported_bridge.rotation.y = PI * 0.5
-						imported_bridge.position.y = 0.12
+						imported_bridge.position.y = 0.6 if city == "Waterlands" else 0.12
 						bridge.add_child(imported_bridge)
 						deck.visible = false
 						imported_bridge_found = true
@@ -232,6 +235,72 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 		_add_railing(bridge, "BridgeRail_N", Vector3(0, 0, -dimensions.y * 0.5), dimensions.x, city)
 		_add_railing(bridge, "BridgeRail_S", Vector3(0, 0, dimensions.y * 0.5), dimensions.x, city)
 
+static func _waterlands_promenades(parent: Node3D, material: Material) -> void:
+	var timber := _mat(Color("#805332"), 0.62)
+	var routes := Node3D.new()
+	routes.name = "Waterlands_RaisedTimberStreetNetwork_0_6m"
+	parent.add_child(routes)
+	for lane in [-48.0, -24.0, 0.0, 24.0, 48.0]:
+		_add_plane(routes, "Waterlands_NS_Promenade_" + str(int(lane)), Vector2(5.0, 160.0), timber, Vector3(lane, 0.6, 0.0))
+		_add_plane(routes, "Waterlands_EW_Promenade_" + str(int(lane)), Vector2(160.0, 5.0), timber, Vector3(0.0, 0.6, lane))
+	for x in [-60.0, -30.0, 30.0, 60.0]:
+		var pier := MeshInstance3D.new()
+		pier.name = "Waterlands_MarketPier_" + str(int(x))
+		var deck := BoxMesh.new()
+		deck.size = Vector3(12.0, 0.42, 7.0)
+		pier.mesh = deck
+		pier.position = Vector3(x, 0.6, -61.0)
+		routes.add_child(pier)
+		pier.material_override = timber
+	print("WATERLANDS_HARBOR_PASS: raised_walkways=10 elevation=0.6m")
+ 
+static func _dark_forest_tree_ring(parent: Node3D) -> void:
+	var trunks := CylinderMesh.new()
+	trunks.top_radius = 0.48
+	trunks.bottom_radius = 0.82
+	trunks.height = 9.0
+	trunks.radial_segments = 8
+	var crowns := ConeMesh.new()
+	crowns.bottom_radius = 4.8
+	crowns.height = 15.0
+	crowns.radial_segments = 7
+	var trunk_batch := MultiMesh.new()
+	trunk_batch.transform_format = MultiMesh.TRANSFORM_3D
+	trunk_batch.mesh = trunks
+	trunk_batch.instance_count = 250
+	var crown_batch := MultiMesh.new()
+	crown_batch.transform_format = MultiMesh.TRANSFORM_3D
+	crown_batch.mesh = crowns
+	crown_batch.instance_count = 250
+	for i in range(250):
+		var angle := TAU * float(i) / 250.0
+		var radius := 104.0 + float((i * 37) % 54)
+		var x := cos(angle) * radius
+		var z := sin(angle) * radius
+		var scale := 0.82 + float(i % 7) * 0.09
+		var basis := Basis.IDENTITY.scaled(Vector3.ONE * scale)
+		trunk_batch.set_instance_transform(i, Transform3D(basis, Vector3(x, 4.5 * scale, z)))
+		crown_batch.set_instance_transform(i, Transform3D(basis, Vector3(x, 12.5 * scale, z)))
+	var bark := MultiMeshInstance3D.new()
+	bark.name = "DarkForest_250AncientTreeTrunks_MultiMesh"
+	bark.multimesh = trunk_batch
+	parent.add_child(bark)
+	bark.material_override = _mat(Color("#4a3025"), 0.96)
+	var canopy := MultiMeshInstance3D.new()
+	canopy.name = "DarkForest_250AncientTreeCrowns_MultiMesh"
+	canopy.multimesh = crown_batch
+	parent.add_child(canopy)
+	canopy.material_override = _mat(Color("#263f2c"), 0.92)
+	for i in range(8):
+		var torch := OmniLight3D.new()
+		torch.name = "DarkForest_WarmGateTorch_%02d" % i
+		torch.position = Vector3(cos(TAU * float(i) / 8.0) * 88.0, 4.0, sin(TAU * float(i) / 8.0) * 88.0)
+		torch.light_color = Color("#ff9b52")
+		torch.light_energy = 1.6
+		torch.omni_range = 16.0
+		parent.add_child(torch)
+	print("DARK_FOREST_DENSITY_PASS: ancient_trees=250 multimesh=2 warm_torches=8")
+ 
 static func _lava_channels(parent: Node3D, half: float) -> void:
 	var lava := _mat(Color("#ed4b18"), 0.3)
 	lava.emission_enabled = true
