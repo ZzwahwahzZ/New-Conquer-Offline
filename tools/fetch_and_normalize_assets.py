@@ -135,7 +135,7 @@ CATEGORY_RULES = {
  "houses_and_shops": r"\b(?:(?:chinese|asian|japanese|traditional|wooden|timber|hanok|east asian)\s+){1,2}(?:town|village|street\s+|courtyard\s+)?(?:house|shop|shopfront|storefront|inn|building)\b|\b(?:market stall|teahouse|tea house|inn|asian shop|chinese shop|wooden shopfront)\b",
  "gates_walls_bridges": r"\b(?:moon gate|chinese gate|palace gate|gate tower|watchtower|city wall|palace wall|stone wall|fort wall|arched stone bridge|arch bridge|stone bridge|courtyard entry arch)\b",
  "statues_and_props": r"\b(?:dragon|stone lion|guardian lion|lantern|incense burner|cauldron|brazier|bronze bell|ceremonial drum|altar|throne|folding screen|scroll rack|hanging scroll|floor cushion|inkstone|water dropper|tea set|tea table|guqin|calligraphy|parasol|banner|pennant|weapon rack|training dummy|fountain|komainu|onigawara|statue|ornament|storage chest|writing desk)\b",
- "nature": r"\b(?:bamboo|plum tree|willow tree|pine tree|cherry blossom|cherry tree|bonsai|lotus|peony|rockery|shrub|tree clump|blossom|reed clump|bluebell|fern clump|tussock grass|spinifex|grass clump|orchard tree|cattail|tall grass)\b",
+ "nature": r"\b(?:bamboo|plum tree|willow tree|pine tree|cherry blossom|cherry tree|bonsai|lotus|peony|rockery|shrub|tree clump|blossom|reed clump|bluebell|fern clump|tussock grass|spinifex|grass clump|orchard tree|cattail|tall grass|maple|oak|birch|cedar|spruce|fir|cypress|tree|plant|flower|grass|fern|rock|boulder|moss|mushroom|reed|water lily|vine|ivy|root|log|stump|cliff|hill|mountain)\\b",
  "pbr_materials": r"\b(?:marble|stone|tile|roof tile|wood|timber|pbr|texture)\b",
 }
 def _flatten_text(value):
@@ -158,7 +158,9 @@ def identity_text(record, filename=""):
  return re.sub(r"[_-]+", " ", text + " " + str(filename)).lower()
 
 def is_architecture_candidate(record, filename=""):
- text=identity_text(record,filename)
+ # Candidate identity comes from the asset itself, not a broad parent category tag.
+ text=" ".join(_flatten_text(record.get(k,"")) for k in ("name","title","id"))+" "+str(filename)
+ text=re.sub(r"[_-]+"," ",text).lower()
  return bool(re.search(r"\b(?:house|homes?|shops?|shopfront|storefront|market stall|teahouse|tea house|inn|pavilion|village building|buildings?)\b",text,re.I))
 
 def rejected_asset(record):

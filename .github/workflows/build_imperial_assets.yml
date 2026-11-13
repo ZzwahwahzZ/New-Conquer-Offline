@@ -40,7 +40,7 @@ jobs:
       - name: Compile-check pipeline scripts
         run: python -m py_compile tools/fetch_and_normalize_assets.py tools/imperial_extra_sources.py tools/opengameart_sources.py tools/normalize_asset_blender.py
       - name: Run strict asset filter tests
-        run: python -c "import runpy; runpy.run_path('tools/fetch_and_normalize_assets.py')['strict_filter_self_test']()"
+        run: PYTHONPATH=tools python -c "import runpy; runpy.run_path('tools/fetch_and_normalize_assets.py')['strict_filter_self_test']()"
       - name: Check HF token
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
