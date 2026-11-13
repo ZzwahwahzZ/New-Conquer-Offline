@@ -47,21 +47,14 @@ func _scan(path: String, recurse: bool) -> void:
     dir.list_dir_end()
 
 func _check_script(path: String) -> void:
-    var file := FileAccess.open(path, FileAccess.READ)
-    if file == null:
-        script_fail += 1
-        failures.append(path + " (cannot read; open_error=%d)" % FileAccess.get_open_error())
-        return
-    var source := file.get_as_text()
-    file.close()
-    var parsed := GDScript.new()
-    parsed.source_code = source
-    var error := parsed.reload()
-    if error == OK:
+    # Load through the project ResourceLoader so project Autoload singletons,
+    # global classes and resource paths are resolved in their real context.
+    var parsed := ResourceLoader.load(path, "GDScript", ResourceLoader.CACHE_MODE_IGNORE) as GDScript
+    if parsed != null:
         script_ok += 1
     else:
         script_fail += 1
-        failures.append(path + " (GDScript.reload error=%d)" % error)
+        failures.append(path + " (ResourceLoader could not compile GDScript)")
 
 func _check_text_resource_dependencies(path: String) -> void:
     var file := FileAccess.open(path, FileAccess.READ)
