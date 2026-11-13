@@ -14,7 +14,7 @@ static func build(parent: Node3D, city: String, size: float) -> void:
  var palette: Dictionary = CITY_PALETTES.get(city, CITY_PALETTES["TwinCity"])
  var height_image: Image = WorldTerrainBuilder.load_height_image(city)
  _build_open_plaza(parent, palette)
- _build_city_roads(parent, palette)
+ _build_city_roads(parent, city, palette)
  _build_city_buildings(parent, city, palette, height_image)
  _build_city_walls_and_gates(parent, city, palette, height_image)
  _build_kenney_city_modules(parent, city, palette, height_image)
@@ -54,17 +54,19 @@ static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
   plaza.add_child(ring)
   ring.material_override = _material(p.accent,0.66)
 
-static func _build_city_roads(parent: Node3D, p: Dictionary) -> void:
+static func _build_city_roads(parent: Node3D, city: String, p: Dictionary) -> void:
  var roads := Node3D.new()
  roads.name = "StoneRoadNetwork"
  parent.add_child(roads)
- var road_material := _material(p.stone.lightened(0.12),0.94)
+ var half := 110.0 if city == "TwinCity" else 80.0
+ var road_length := half * 1.72
+ var road_material := PBRMaterialLibrary.build_street_material()
  var curb_material := _material(p.gold,0.76)
  for direction in range(2):
-  var road := _box(roads,"FlagstoneRoad_%d" % direction,Vector3(0,0.10,0),Vector3(14,0.20,300),road_material,1.0)
+  var road := _box(roads,"FlagstoneRoad_%d" % direction,Vector3(0,0.055,0),Vector3(10.0,0.02,road_length),road_material,1.0)
   road.rotation_degrees.y = direction*90.0
   for side in [-1.0,1.0]:
-   var curb := _box(roads,"RaisedStoneCurb",Vector3(side*8.0,0.34,0),Vector3(0.65,0.48,300),curb_material,1.0)
+   var curb := _box(roads,"RaisedStoneCurb_%d_%d" % [direction,int(side)],Vector3(side*5.35,0.34,0),Vector3(0.65,0.48,road_length),curb_material,1.0)
    curb.rotation_degrees.y = direction*90.0
 
 static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
@@ -358,7 +360,8 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  outer.add_child(ground)
  ground.material_override = _material(Color("#343a36"), 1.0)
  _build_walkable_outer_routes(outer, city, p, height_image)
- print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 heightmap_ground=1 height_aligned_routes=4 kenney_nature=1" % city)
+ _build_horizon_ridge(outer, city, p)
+ print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 heightmap_ground=1 height_aligned_routes=4 horizon_ridge=44 kenney_nature=1" % city)
 
 static func _build_horizon_ridge(parent: Node3D, city: String, p: Dictionary) -> void:
  var ridge_mesh := CylinderMesh.new()
