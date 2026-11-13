@@ -7,19 +7,12 @@ const IRON := Color("#252a2d")
 const FLOWERS := [Color("#c93442"), Color("#f1c84b"), Color("#e879b5"), Color("#9865d5")]
 
 static func build(parent: Node3D, city: String, size: float) -> void:
-	var half := 80.0
+	var half := 85.0
 	var road_mat: StandardMaterial3D = PBRMaterialLibrary.build_street_material()
 	road_mat.albedo_color = _road_color(city).lightened(0.35)
-	var plaza_mat: StandardMaterial3D = PBRMaterialLibrary.build_plaza_material()
-	plaza_mat.albedo_color = _plaza_color(city).lightened(0.2)
 	var border_mat := _mat(_border_color(city), 0.72)
-	# Four cardinal avenues, a perimeter loop, and cross-links between districts.
-	_add_plane(parent, "Street_NorthSouth", Vector2(10.0, half * 1.72), road_mat, Vector3(0, 0.045, 0))
-	_add_plane(parent, "Street_EastWest", Vector2(half * 1.72, 10.0), road_mat, Vector3(0, 0.047, 0))
-	for offset in [-9.0,9.0]:
-		_add_plane(parent, "DistrictLane_NS_" + str(int(offset)), Vector2(5.0, half * 1.48), road_mat, Vector3(offset, 0.052, 0))
-		_add_plane(parent, "DistrictLane_EW_" + str(int(offset)), Vector2(half * 1.48, 5.0), road_mat, Vector3(0, 0.054, offset))
-	_add_plane(parent, "CentralDarkSquare", Vector2(24.0, 24.0), plaza_mat, Vector3(0, 0.062, 0))
+	# The 170m city arterial network and 50m imperial plaza are built once by CityArchitectureBuilder.
+	# This module adds only street dressing, canals, bridges and biome-specific set pieces.
 	# The two 10m arterial streets run directly to all four perimeter gates.
 	# Decorative raised stone beds beside avenues and building frontages.
 	var bed_positions: Array[Vector3] = []
@@ -38,8 +31,6 @@ static func build(parent: Node3D, city: String, size: float) -> void:
 	if city == "Waterlands":
 		_waterways(parent, half)
 		_waterlands_promenades(parent, road_mat)
-	if city == "DarkForest":
-		_dark_forest_tree_ring(parent)
 	if city == "TwinCity":
 		_twin_city_canals(parent, half)
 	if city == "VolcanoLand":
@@ -50,7 +41,7 @@ static func build(parent: Node3D, city: String, size: float) -> void:
 		_ancient_lantern_beds(parent)
 	if city == "TwinCity":
 		_add_plane(parent, "TwinCityTrainingGround", Vector2(28, 20), _mat(Color("#8d795c"), 0.92), Vector3(-34, 0.052, 36))
-	print("CITY_STREET_DRESSING_PASS: %s roads=%d planters=%d railings=4" % [city, 13, bed_positions.size()])
+	print("CITY_STREET_DRESSING_PASS: %s shared_roads=12m_and_6m planters=%d railings=4" % [city, bed_positions.size()])
 
 static func _add_plane(parent: Node3D, label: String, dimensions: Vector2, material: Material, at: Vector3) -> void:
 	var node := MeshInstance3D.new()
@@ -297,8 +288,8 @@ static func _waterlands_promenades(parent: Node3D, material: Material) -> void:
 	routes.name = "Waterlands_RaisedTimberStreetNetwork_0_6m"
 	parent.add_child(routes)
 	for lane in [-48.0, -24.0, 0.0, 24.0, 48.0]:
-		_add_plane(routes, "Waterlands_NS_Promenade_" + str(int(lane)), Vector2(5.0, 160.0), timber, Vector3(lane, 0.6, 0.0))
-		_add_plane(routes, "Waterlands_EW_Promenade_" + str(int(lane)), Vector2(160.0, 5.0), timber, Vector3(0.0, 0.6, lane))
+		_add_plane(routes, "Waterlands_NS_Promenade_" + str(int(lane)), Vector2(6.0, 170.0), timber, Vector3(lane, 0.6, 0.0))
+		_add_plane(routes, "Waterlands_EW_Promenade_" + str(int(lane)), Vector2(170.0, 6.0), timber, Vector3(0.0, 0.6, lane))
 	for i in range(8):
 		var lantern := MeshInstance3D.new()
 		lantern.name = "Waterlands_RedHarborLantern_%02d" % i
@@ -331,54 +322,6 @@ static func _waterlands_promenades(parent: Node3D, material: Material) -> void:
 		routes.add_child(pier)
 		pier.material_override = timber
 	print("WATERLANDS_HARBOR_PASS: raised_walkways=10 elevation=0.6m")
- 
-static func _dark_forest_tree_ring(parent: Node3D) -> void:
-	var trunks := CylinderMesh.new()
-	trunks.top_radius = 0.48
-	trunks.bottom_radius = 0.82
-	trunks.height = 9.0
-	trunks.radial_segments = 8
-	var crowns := CylinderMesh.new()
-	crowns.top_radius = 0.0
-	crowns.bottom_radius = 4.8
-	crowns.height = 15.0
-	crowns.radial_segments = 7
-	var trunk_batch := MultiMesh.new()
-	trunk_batch.transform_format = MultiMesh.TRANSFORM_3D
-	trunk_batch.mesh = trunks
-	trunk_batch.instance_count = 250
-	var crown_batch := MultiMesh.new()
-	crown_batch.transform_format = MultiMesh.TRANSFORM_3D
-	crown_batch.mesh = crowns
-	crown_batch.instance_count = 250
-	for i in range(250):
-		var angle := TAU * float(i) / 250.0
-		var radius := 104.0 + float((i * 37) % 54)
-		var x := cos(angle) * radius
-		var z := sin(angle) * radius
-		var scale := 0.82 + float(i % 7) * 0.09
-		var basis := Basis.IDENTITY.scaled(Vector3.ONE * scale)
-		trunk_batch.set_instance_transform(i, Transform3D(basis, Vector3(x, 4.5 * scale, z)))
-		crown_batch.set_instance_transform(i, Transform3D(basis, Vector3(x, 12.5 * scale, z)))
-	var bark := MultiMeshInstance3D.new()
-	bark.name = "DarkForest_250AncientTreeTrunks_MultiMesh"
-	bark.multimesh = trunk_batch
-	parent.add_child(bark)
-	bark.material_override = _mat(Color("#4a3025"), 0.96)
-	var canopy := MultiMeshInstance3D.new()
-	canopy.name = "DarkForest_250AncientTreeCrowns_MultiMesh"
-	canopy.multimesh = crown_batch
-	parent.add_child(canopy)
-	canopy.material_override = _mat(Color("#263f2c"), 0.92)
-	for i in range(8):
-		var torch := OmniLight3D.new()
-		torch.name = "DarkForest_WarmGateTorch_%02d" % i
-		torch.position = Vector3(cos(TAU * float(i) / 8.0) * 88.0, 4.0, sin(TAU * float(i) / 8.0) * 88.0)
-		torch.light_color = Color("#ff9b52")
-		torch.light_energy = 1.6
-		torch.omni_range = 16.0
-		parent.add_child(torch)
-	print("DARK_FOREST_DENSITY_PASS: ancient_trees=250 multimesh=2 warm_torches=8")
  
 static func _lava_channels(parent: Node3D, half: float) -> void:
 	var lava := _mat(Color("#ed4b18"), 0.3)
