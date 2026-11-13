@@ -27,4 +27,6 @@ The download and attribution pipeline accepts CC-BY when the source API supplies
 
 ## Automatic updates
 
+The live build gate validates source licences and model hashes before it accepts any CC0 or CC-BY asset into the library.
+
 The CI pipeline downloads and validates the assets, regenerates this file from manifests, and commits any credit changes back to the current feature branch. CC-BY attributions become included credits only after the actual files are present.
