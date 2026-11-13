@@ -22,28 +22,21 @@ PACKS = {
         "url": "https://kenney.nl/media/pages/assets/nature-kit/37ac38a37b-1677698939/kenney_nature-kit.zip",
         "source": "https://kenney.nl/assets/nature-kit",
         "sha256": "fa7974a0d342bfe63c38664ba9f8ec1a4aab8ea25f099bdc56870e33588c4d9d",
-        "minimum_models": 250,
+        "required_models": ["bridge_wood.glb", "bridge_stone.glb"],
     },
     "fantasy-town-kit": {
         "title": "Kenney Fantasy Town Kit 2.0",
         "url": "https://kenney.nl/media/pages/assets/fantasy-town-kit/efe948d309-1754222374/kenney_fantasy-town-kit_2.0.zip",
         "source": "https://kenney.nl/assets/fantasy-town-kit",
         "sha256": "1a7530c09f4d2fa2cdee259876f089334f8b1f27fa86a0c4f54ef86cdd8676ef",
-        "minimum_models": 120,
+        "required_models": ["stall-red.glb", "stall-green.glb", "fountain-square.glb", "windmill.glb", "watermill.glb"],
     },
     "castle-kit": {
         "title": "Kenney Castle Kit",
         "url": "https://kenney.nl/media/pages/assets/castle-kit/a395102d20-1711543616/kenney_castle-kit.zip",
         "source": "https://kenney.nl/assets/castle-kit",
         "sha256": "921f3f73927bb23106cae34bc21d5ab4b033a9fc120475e96f714a406e3169df",
-        "minimum_models": 55,
-    },
-    "retro-fantasy-kit": {
-        "title": "Kenney Retro Fantasy Kit",
-        "url": "https://kenney.nl/media/pages/assets/retro-fantasy-kit/cf3f41b752-1774770658/kenney_retro-fantasy-kit.zip",
-        "source": "https://kenney.nl/assets/retro-fantasy-kit",
-        "sha256": "d3462b453018d0d150406d85af3c4ae1322ceef8f1754c4eb4e6355adfeaab0f",
-        "minimum_models": 80,
+        "required_models": ["gate.glb", "tower-square.glb", "wall.glb"],
     },
 }
 LICENSE_URL = "https://creativecommons.org/publicdomain/zero/1.0/"
@@ -112,9 +105,12 @@ def restore_pack(pack_id: str, metadata: dict) -> dict:
             relative = safe_member(item.filename)
             normalized = relative.as_posix()
             lower = normalized.lower()
-            is_gltf_asset = ("/models/gltf format/" in ("/" + lower) or "/models/glb format/" in ("/" + lower)) and lower.endswith((".glb", ".gltf", ".bin", ".png", ".jpg", ".jpeg"))
+            is_model_directory = "/models/gltf format/" in ("/" + lower) or "/models/glb format/" in ("/" + lower)
+            is_required_model = is_model_directory and relative.name in set(metadata["required_models"]) and lower.endswith(".glb")
             is_license = relative.name.lower() in {"license.txt", "license"}
-            if not (is_gltf_asset or is_license):
+            # Keep only explicitly referenced, self-contained GLB models.
+            # Unused models, loose textures and the unused Retro Fantasy pack are not imported.
+            if not (is_required_model or is_license):
                 continue
             destination = target.joinpath(*relative.parts)
             destination.parent.mkdir(parents=True, exist_ok=True)
@@ -125,8 +121,13 @@ def restore_pack(pack_id: str, metadata: dict) -> dict:
             if is_license:
                 license_found = True
 
-    if len(model_paths) < metadata["minimum_models"]:
-        raise RuntimeError(f"{pack_id} contains only {len(model_paths)} GLTF models; expected at least {metadata['minimum_models']}")
+    expected_models = set(metadata["required_models"])
+    extracted_names = {Path(model).name for model in model_paths}
+    missing_models = sorted(expected_models - extracted_names)
+    if missing_models:
+        raise RuntimeError(f"{pack_id} is missing required models: {missing_models}")
+    if extracted_names != expected_models:
+        raise RuntimeError(f"{pack_id} extracted unexpected models: {sorted(extracted_names - expected_models)}")
     if not license_found:
         raise RuntimeError(f"{pack_id} archive did not include its License.txt")
 
