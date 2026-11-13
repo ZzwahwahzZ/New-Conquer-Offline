@@ -128,7 +128,7 @@ BLACKLIST = re.compile(
  r"viking|longship|caravan|campsite|lawn|mowing|simulator|ocean|sea|"
  r"jellyfish|wildlife|outback|polar|lighthouse|golf course|"
  r"park and playground|christmas|halloween|radio telescope|"
- r"mythic underworld|olympus|griffin airmail)\b", re.I)
+ r"mythic underworld|olympus|griffin airmail|medieval|western|fantasy mmo)\b", re.I)
 LION = re.compile(r"\blions?\b", re.I)
 CATEGORY_RULES = {
  "palaces_and_temples": r"\b(?:pagoda|chinese temple|asian temple|japanese temple|korean temple|chinese palace|imperial palace|water pavilion|lotus pond pavilion|ceremonial hall)\b",
@@ -165,11 +165,11 @@ def rejected_asset(record):
 def asset_category(record, filename=""):
  if record.get("kind") == "pbr" or record.get("source") == "ambientCG": return "pbr_materials"
  raw_name=_flatten_text(record.get("name") or record.get("title") or "")
- primary=re.sub(r"\\s*\\([^)]*\\)", " ", raw_name)
+ primary=re.sub(r"\s*\([^)]*\)", " ", raw_name)
  if not primary.strip(): primary=str(filename or "")
  primary=re.sub(r"[_-]+", " ", primary).lower()
  context=record_text(record)
- asian_context=bool(re.search(r"\\b(?:chinese|asian|japanese|korean|hanok|wuxia|imperial china)\\b",context,re.I))
+ asian_context=bool(re.search(r"\b(?:chinese|asian|japanese|korean|hanok|wuxia|imperial china)\b",context,re.I))
  # Object identity comes from the model title; pack context is used only to
  # establish Asian provenance, never to misclassify every object in that pack.
  if re.search(CATEGORY_RULES["nature"],primary,re.I): return "nature"
