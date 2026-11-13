@@ -32,7 +32,9 @@ def main():
      with z.open(info) as src,target.open("wb") as dst: shutil.copyfileobj(src,dst)
      key="albedo" if "_color." in name.lower() else ("normal" if "_normalgl." in name.lower() else "roughness")
      data=target.read_bytes()
-     maps[key]={"file":str(target.relative_to(ROOT)),"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest()}
+     standard=folder/({"albedo":"albedo.jpg","normal":"normal.jpg","roughness":"roughness.jpg"}[key])
+     shutil.copy2(target,standard)
+     maps[key]={"file":str(standard.relative_to(ROOT)),"source_file":str(target.relative_to(ROOT)),"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest()}
   missing={"albedo","normal","roughness"}-set(maps)
   if missing: raise RuntimeError(f"ambientCG {asset} missing maps: {sorted(missing)}")
   manifest["assets"][asset]={"source":"https://ambientcg.com/view?id="+asset,"download":url,"author":"ambientCG","license":"CC0-1.0","maps":maps}
