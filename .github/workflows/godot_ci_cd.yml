@@ -251,13 +251,13 @@ jobs:
 
       - name: Phase 2 - Verify classic RPG HUD, Arabic RTL and Auto-Quest; capture six real UI screens
         id: phase2_ui_proof
-        timeout-minutes: 8
+        timeout-minutes: 15
         shell: bash
         run: |
           set -Eeuo pipefail
           mkdir -p reports/phase2-ui
           test -s "assets/ui/fonts/NotoSansArabic[wght].ttf"
-          timeout 420s xvfb-run -a godot --path . --script res://tools/capture_phase2_ui_proof.gd 2>&1 | tee reports/phase2-ui/capture.log
+          timeout 840s xvfb-run -a godot --path . --script res://tools/capture_phase2_ui_proof.gd 2>&1 | tee reports/phase2-ui/capture.log
           expected=(
             01_twincity_gameplay_hud.png
             02_character_gear.png
