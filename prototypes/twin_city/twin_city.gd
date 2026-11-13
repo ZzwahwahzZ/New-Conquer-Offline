@@ -14,7 +14,7 @@ var fit_cache: Dictionary = {}
 var materials: Dictionary = {}
 var stats := {"buildings": 0, "wall_segments": 0, "directional_gates": 0, "bridges": 0,
 	"gate_guardian_pairs": 0, "gate_guardian_statues": 0, "tree_instances": 0,
-	"multimesh_batches": 0, "box_mesh_count": 0, "city_core_m": 170, "world_m": 800,
+	"multimesh_batches": 0, "box_mesh_count": 0, "city_core_m": 170, "world_m": 800, "building_types": 3,
 	"architecture_style": "imperial_chinese"}
 
 func _ready() -> void:
@@ -40,7 +40,8 @@ func _load_manifest() -> bool:
 	for category in data.categories:
 		for item in data.categories[category].get("assets", []):
 			if item.get("style_group", "") in ["imperial_chinese", "environmental", "pbr_materials"]:
-				entries[str(item.get("name", ""))] = item
+				var entry_key := str(item.get("file", "")) if item.get("style_group", "") == "pbr_materials" else str(item.get("name", ""))
+				entries[entry_key] = item
 	print("TWIN_CITY_APPROVED_MANIFEST_PASS: " + str(data.get("total_approved_files", 0)))
 	return true
 
@@ -161,9 +162,9 @@ func _build_environment() -> void:
 	env.tonemap_mode = Environment.TONE_MAPPER_ACES
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	env.ambient_light_energy = 0.32
-	env.glow_enabled = true
-	env.glow_intensity = 0.35
-	env.glow_strength = 0.55
+	env.glow_enabled = false
+	env.glow_intensity = 0.08
+	env.glow_strength = 0.15
 	env.fog_enabled = true
 	env.fog_mode = Environment.FOG_MODE_DEPTH
 	env.fog_light_color = Color("#c7dceb")
@@ -294,20 +295,20 @@ func _build_districts() -> void:
 	var district := Node3D.new()
 	district.name = "ImperialNeighborhoods_92GLBBuildings"
 	add_child(district)
-	var coords := [38.0,50.0,62.0,74.0,80.0]
+	var coords := [34.0,55.0,76.0]
 	var index := 0
 	for sx in [-1.0,1.0]:
 		for sz in [-1.0,1.0]:
-			for x in range(5):
-				for z in range(5):
+			for x in range(3):
+				for z in range(3):
 					if (x==0 and z==0) or (x==1 and z==0): continue
 					var pos := Vector3(sx*coords[x],0,sz*coords[z])
 					var asset: String = BUILDINGS[index % 3]
 					var yaw: float = [0.0, PI / 2.0, PI, -PI / 2.0][(index + x + z) % 4]
-					_place_fit(asset, pos, yaw, Vector3(8.5,8,7.5), district, "ChineseBuilding_%03d_%s" % [index+1,["Residence","Shop","Pavilion"][index%3]])
+					_place_fit(asset, pos, yaw, Vector3(16,14,16), district, "ChineseBuilding_%03d_%s" % [index+1,["Residence","Shop","Pavilion"][index%3]])
 					index += 1
 	stats.buildings = index
-	if index < 85 or index > 100: push_error("Expected 85–100 real approved GLB buildings; got " + str(index))
+	if index < 24 or index > 32: push_error("Expected 24–32 properly scaled approved Chinese building placements; got " + str(index))
 
 func _build_trees() -> void:
 	var rng := RandomNumberGenerator.new()
@@ -360,8 +361,8 @@ func _build_cameras() -> void:
 	var aerial := Camera3D.new()
 	aerial.name = "AerialCamera"
 	aerial.projection = Camera3D.PROJECTION_ORTHOGONAL
-	aerial.size = 250
-	aerial.position = Vector3(190,270,230)
+	aerial.size = 220
+	aerial.position = Vector3(155,220,185)
 	root.add_child(aerial)
 	aerial.look_at(Vector3.ZERO,Vector3.UP)
 	var street := Camera3D.new()
@@ -379,7 +380,7 @@ func _audit() -> void:
 		if node is MeshInstance3D and (node as MeshInstance3D).mesh is BoxMesh:
 			stats.box_mesh_count += 1
 	if stats.box_mesh_count != 0: push_error("BoxMesh architecture forbidden.")
-	if stats.buildings < 85 or stats.buildings > 100: push_error("Building count out of range.")
+	if stats.buildings < 24 or stats.buildings > 32: push_error("Building count out of range.")
 	if stats.tree_instances < 300 or stats.tree_instances > 400: push_error("Tree count out of range.")
 	if stats.directional_gates != 4 or stats.bridges != 4 or stats.gate_guardian_statues != 8: push_error("Gate/bridge/guardian audit failed.")
 	if stats.box_mesh_count == 0: print("TWIN_CITY_NO_BOX_ARCHITECTURE_PASS")
