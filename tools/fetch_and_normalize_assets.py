@@ -35,7 +35,7 @@ def fetch(u,p,limit=500*1024*1024):
 def leaves(x):
  if isinstance(x,dict):
   for k,v in x.items():
-   if isinstance(v,dict) and isinstance(v.get("url"),str): yield v
+   if isinstance(v,dict) and any(isinstance(v.get(k),str) for k in ("url","downloadLink","rawLink")): yield v
    else: yield from leaves(v)
  elif isinstance(x,list):
   for v in x: yield from leaves(v)
