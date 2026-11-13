@@ -198,7 +198,7 @@ static func _add_bridge(parent: Node3D, prefix: String, at: Vector3, dimensions:
 						imported_bridge.scale = Vector3.ONE * fit_scale
 						if bounds.z > bounds.x:
 							imported_bridge.rotation.y = PI * 0.5
-					imported_bridge.position.y = 0.12
+						imported_bridge.position.y = 0.12
 						bridge.add_child(imported_bridge)
 						deck.visible = false
 						imported_bridge_found = true
