@@ -1,0 +1,129 @@
+name: Twin City Godot 4.3 Visual Validation
+
+on:
+  push:
+    branches:
+      - twin-city/imperial-visual-prototype
+    paths-ignore:
+      - 'prototypes/twin_city/captures/**'
+      - 'prototypes/twin_city/reports/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: twin-city-visual-\${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-capture:
+    name: Restore approved assets, build Twin City and capture Godot proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GODOT_VERSION: 4.3
+      GODOT_RELEASE: 4.3-stable
+      HF_TOKEN: \${{ secrets.HF_TOKEN }}
+      GODOT_SILENCE_ROOT_WARNING: '1'
+    steps:
+      - name: Checkout isolated prototype branch
+        uses: actions/checkout@v4
+
+      - name: Restore only approved Imperial China, nature and PBR files from Hugging Face
+        run: |
+          python3 -m pip install --disable-pip-version-check huggingface_hub
+          python3 prototypes/twin_city/prepare_assets.py
+
+      - name: Install Godot 4.3 and Xvfb
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y xvfb xz-utils libgl1-mesa-dri libglx-mesa0 mesa-utils
+          curl --connect-timeout 20 --max-time 240 --retry 3 --retry-delay 5 -fL "https://github.com/godotengine/godot/releases/download/$GODOT_RELEASE/Godot_v$GODOT_VERSION-stable_linux.x86_64.zip" -o /tmp/godot.zip
+          mkdir -p /tmp/godot-bin
+          unzip -q /tmp/godot.zip -d /tmp/godot-bin
+          sudo install -m 0755 "/tmp/godot-bin/Godot_v$GODOT_VERSION-stable_linux.x86_64" /usr/local/bin/godot
+          godot --version
+          test "$(godot --version)" = "4.3.stable.official.77dcf97d8"
+
+      - name: Import approved GLB models and PBR textures in Godot 4.3
+        shell: bash
+        timeout-minutes: 12
+        run: |
+          set -Eeuo pipefail
+          mkdir -p prototypes/twin_city/reports
+          timeout 600s godot --headless --path prototypes/twin_city --editor --import --quit 2>&1 | tee prototypes/twin_city/reports/godot_import.log
+          if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load|ERROR: Failed loading resource|GLTF:.*(failed|error)' prototypes/twin_city/reports/godot_import.log; then
+            echo "::error::Godot 4.3 import reported a missing or invalid resource."
+            exit 1
+          fi
+          echo "TWIN_CITY_GODOT_43_IMPORT_PASS"
+
+      - name: Render and capture both 1920x1080 views inside Godot 4.3
+        shell: bash
+        timeout-minutes: 15
+        run: |
+          set -Eeuo pipefail
+          mkdir -p prototypes/twin_city/captures
+          export LIBGL_ALWAYS_SOFTWARE=1
+          timeout 900s xvfb-run -a -s "-screen 0 1920x1080x24" godot --path prototypes/twin_city --rendering-method gl_compatibility --rendering-driver opengl3 --script res://capture.gd 2>&1 | tee prototypes/twin_city/reports/godot_capture.log
+          test -s prototypes/twin_city/captures/twin_city_aerial.png
+          test -s prototypes/twin_city/captures/twin_city_street.png
+          python3 -m pip install --disable-pip-version-check Pillow
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          root = Path("prototypes/twin_city/captures")
+          for name in ("twin_city_aerial.png", "twin_city_street.png"):
+              path = root / name
+              with Image.open(path) as image:
+                  if image.size != (1920, 1080):
+                      raise SystemExit(f"{name}: expected 1920x1080, got {image.size}")
+                  if image.getbbox() is None:
+                      raise SystemExit(f"{name}: image is empty")
+                  print(f"TWIN_CITY_IMAGE_VERIFIED: {name} {image.size} {path.stat().st_size} bytes")
+          PY
+          if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load|ERROR: Failed loading resource|TWIN_CITY_CAPTURE_FAIL' prototypes/twin_city/reports/godot_capture.log; then
+            echo "::error::Godot visual capture emitted an engine/resource error."
+            exit 1
+          fi
+
+      - name: Verify structural counts and zero BoxMesh architecture
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("prototypes/twin_city/reports/twin_city_build_report.json").read_text())
+          expected = {"buildings": (85, 100), "tree_instances": (300, 400), "directional_gates": (4, 4), "bridges": (4, 4), "gate_guardian_statues": (8, 8), "box_mesh_count": (0, 0), "city_core_m": (170, 170), "world_m": (800, 800)}
+          for key, (minimum, maximum) in expected.items():
+              value = report.get(key)
+              if not isinstance(value, (int, float)) or not minimum <= value <= maximum:
+                  raise SystemExit(f"{key}: expected {minimum}..{maximum}, got {value}")
+          if report.get("screenshot_width") != 1920 or report.get("screenshot_height") != 1080:
+              raise SystemExit("Screenshot dimensions not recorded correctly.")
+          print("TWIN_CITY_STRUCTURAL_VALIDATION_PASS: " + json.dumps(report, sort_keys=True))
+          PY
+
+      - name: Upload original Godot screenshots and logs as workflow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TwinCity-Godot43-Visual-Proof
+          path: |
+            prototypes/twin_city/captures/
+            prototypes/twin_city/reports/
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Commit only Twin City screenshots and report to this PR branch
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add prototypes/twin_city/captures/twin_city_aerial.png prototypes/twin_city/captures/twin_city_street.png prototypes/twin_city/reports/twin_city_build_report.json prototypes/twin_city/reports/twin_city_asset_restore.json
+          git diff --cached --quiet || git commit -m "Add Twin City Godot 4.3 visual proof"
+          git push origin "HEAD:$GITHUB_REF_NAME"
