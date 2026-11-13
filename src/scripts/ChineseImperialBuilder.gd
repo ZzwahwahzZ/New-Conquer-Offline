@@ -1,6 +1,7 @@
 extends RefCounted
 ## Imports original CC0 Chinese palace courtyard, ceremonial hall, pavilion and gate towers.
 const ROOT := "res://assets/environment/architecture/"
+const PBRMaterialLibrary = preload("res://src/scripts/PBRMaterialLibrary.gd")
 static func build(parent: Node3D, city: String, _size: float) -> void:
  if city != "TwinCity": return
  var root := Node3D.new()
@@ -23,16 +24,61 @@ static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vec
  if instance == null:
   push_error("Chinese architecture GLB root is not Node3D: "+path)
   return null
+ var platform_root := Node3D.new()
+ platform_root.name = node_name + "_RaisedImperialPlinth"
+ platform_root.position = at
+ platform_root.rotation.y = atan2(-at.x,-at.z)
+ parent.add_child(platform_root)
+ var platform_width := 34.0 if filename.contains("palace") else 28.0
+ var platform_depth := 32.0 if filename.contains("palace") else 25.0
+ var platform_size := Vector3(platform_width,3.5,platform_depth)
+ var paving := PBRMaterialLibrary.build_imperial_paving_material()
+ var plinth := MeshInstance3D.new()
+ plinth.name = "ChineseImperialRaisedStonePlinth_3_5m"
+ var plinth_mesh := BoxMesh.new()
+ plinth_mesh.size = platform_size
+ plinth.mesh = plinth_mesh
+ plinth.position.y = 1.75
+ plinth.material_override = paving
+ platform_root.add_child(plinth)
+ var collision_body := StaticBody3D.new()
+ collision_body.name = "ChineseImperialPlinthAndStairCollision"
+ var plinth_collision := CollisionShape3D.new()
+ var plinth_shape := BoxShape3D.new()
+ plinth_shape.size = platform_size
+ plinth_collision.shape = plinth_shape
+ plinth_collision.position.y = 1.75
+ collision_body.add_child(plinth_collision)
+ for step in range(7):
+  var step_center := Vector3(0.0,3.25-float(step)*0.5,platform_depth*0.5+0.55+float(step)*1.05)
+  var step_size := Vector3(8.5,0.5,1.1)
+  var stair := MeshInstance3D.new()
+  stair.name = "ChineseImperialMarbleStair_%02d" % step
+  var stair_mesh := BoxMesh.new()
+  stair_mesh.size = step_size
+  stair.mesh = stair_mesh
+  stair.position = step_center
+  stair.material_override = paving
+  platform_root.add_child(stair)
+  var stair_collision := CollisionShape3D.new()
+  var stair_shape := BoxShape3D.new()
+  stair_shape.size = step_size
+  stair_collision.shape = stair_shape
+  stair_collision.position = step_center
+  collision_body.add_child(stair_collision)
+ platform_root.add_child(collision_body)
  instance.name=node_name
  if node_name.begins_with("TwinCity_ChineseImperialBuilding_"):
   instance.add_to_group("city_building")
   instance.add_to_group("imported_city_building")
- instance.position=at
+ instance.position=Vector3(0.0,3.5,0.0)
  instance.scale=model_scale
- parent.add_child(instance)
+ platform_root.add_child(instance)
  instance.add_to_group("distance_cull_world")
- _apply_visibility_range(instance,420.0,40.0)
+ platform_root.add_to_group("distance_cull_world")
+ _apply_visibility_range(platform_root,420.0,40.0)
  _add_model_collisions(instance,collision_all)
+ print("CHINESE_IMPERIAL_RAISED_PLATFORM_PASS: %s height=3.5m stairs=7" % filename)
  return instance
 static func _replace_city_gates(parent: Node3D) -> void:
  var fortification := parent.get_node_or_null("TwinCity_PerimeterFortifications") as Node3D
