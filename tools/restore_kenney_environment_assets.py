@@ -57,9 +57,16 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def download(url: str, target: Path) -> None:
+def download(url: str, target: Path, referer: str) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
-    request = urllib.request.Request(url, headers={"User-Agent": "New-Conquer-Offline-KenneySync/1.0"})
+    request = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (compatible; New-Conquer-Offline-KenneySync/1.0)",
+            "Referer": referer,
+            "Accept": "application/zip, application/octet-stream;q=0.9, */*;q=0.8",
+        },
+    )
     with urllib.request.urlopen(request, timeout=120) as response, target.open("wb") as output:
         if response.status != 200:
             raise RuntimeError(f"HTTP {response.status} while downloading {url}")
@@ -76,7 +83,7 @@ def safe_member(name: str) -> PurePosixPath:
 def restore_pack(pack_id: str, metadata: dict) -> dict:
     archive = Path("/tmp") / "kenney-environment-downloads" / f"{pack_id}.zip"
     print(f"KENNEY_PACK_DOWNLOAD_START: {pack_id} url={metadata['url']}", flush=True)
-    download(metadata["url"], archive)
+    download(metadata["url"], archive, metadata["source"])
     archive_size = archive.stat().st_size
     with archive.open("rb") as stream:
         archive_magic = stream.read(16)
