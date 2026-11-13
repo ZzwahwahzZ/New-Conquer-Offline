@@ -29,7 +29,7 @@ def main():
  "",
  "AI provenance reported by the source pack: " + str(china.get("ai_assisted","not supplied by source")),
  "",
- "| Asset / pack | Creator | License | Required attribution | Source |",
+ "| Asset / pack | Creator | License | License URL | Required attribution | Source |",
  "|---|---|---|---|"
  ]
  for item in china.get("assets",[]):
@@ -38,16 +38,17 @@ def main():
   license=str(item.get("license","unverified"))
   source=str(item.get("source","")).replace("|","%7C")
   attribution=str(item.get("attribution_text","")).replace("|","/")
-  lines.append(f"| {name} | {author} | {license} | {attribution} | {source} |")
+  license_url=str(item.get("license_url",""))
+  lines.append(f"| {name} | {author} | {license} | {license_url} | {attribution} | {source} |")
  for slug,meta in quaternius.get("packs",{}).items():
-  lines.append(f"| Quaternius {slug.replace('_',' ').title()} | Quaternius | {meta.get('license','CC0-1.0')} | — | {meta.get('page','https://quaternius.com/')} |")
+  lines.append(f"| Quaternius {slug.replace('_',' ').title()} | Quaternius | {meta.get('license','CC0-1.0')} | https://creativecommons.org/publicdomain/zero/1.0/ | — | {meta.get('page','https://quaternius.com/')} |")
  for aid,meta in poly.get("assets",{}).items():
   author=str(meta.get("author","Poly Haven contributor"))
-  lines.append(f"| Poly Haven — {meta.get('name',aid)} | {author} | CC0-1.0 | — | {meta.get('source','https://polyhaven.com/a/'+aid)} |")
+  lines.append(f"| Poly Haven — {meta.get('name',aid)} | {author} | CC0-1.0 | https://creativecommons.org/publicdomain/zero/1.0/ | — | {meta.get('source','https://polyhaven.com/a/'+aid)} |")
  for aid,meta in ambient.get("assets",{}).items():
-  lines.append(f"| ambientCG — {aid} | {meta.get('author','ambientCG contributors')} | {meta.get('license','CC0-1.0')} | — | {meta.get('source','https://ambientcg.com/')} |")
+  lines.append(f"| ambientCG — {aid} | {meta.get('author','ambientCG contributors')} | {meta.get('license','CC0-1.0')} | https://creativecommons.org/publicdomain/zero/1.0/ | — | {meta.get('source','https://ambientcg.com/')} |")
  for model in opengameart.get("models",[]):
-  lines.append(f"| OpenGameArt — {model.get('name','Modular Temple part')} | {opengameart.get('creator','Unknown creator')} | {opengameart.get('license','CC0-1.0')} | — | {opengameart.get('source','https://opengameart.org/')} |")
+  lines.append(f"| OpenGameArt — {model.get('name','Modular Temple part')} | {opengameart.get('creator','Unknown creator')} | {opengameart.get('license','CC0-1.0')} | {opengameart.get('license_url','https://creativecommons.org/publicdomain/zero/1.0/')} | — | {opengameart.get('source','https://opengameart.org/')} |")
  lines += [
  "",
  "## CC-BY source handling",
