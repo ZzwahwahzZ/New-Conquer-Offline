@@ -81,7 +81,8 @@ func _run() -> void:
 			lowest_y = minf(lowest_y, vertex.y)
 		if city_name != "TwinCity" and not _check(highest.y - lowest_y >= 6.0, city_name + " heightmap does not produce meaningful hills/slopes"):
 			return
-		var ray := PhysicsRayQueryParameters3D.create(Vector3(highest.x, highest.y + 80.0, highest.z), Vector3(highest.x, highest.y - 80.0, highest.z))
+		# Probe a stable interior point instead of a heightfield boundary vertex; edge rays can miss concave terrain triangles, and TwinCity has a separate plaza collider.
+		var ray := PhysicsRayQueryParameters3D.create(Vector3(137.0, 160.0, 173.0), Vector3(137.0, -160.0, 173.0))
 		ray.collision_mask = 1
 		var ground_hit := city.get_world_3d().direct_space_state.intersect_ray(ray)
 		if not _check(not ground_hit.is_empty() and ground_hit.collider == terrain_body, city_name + " terrain collision did not match the heightfield surface"):
