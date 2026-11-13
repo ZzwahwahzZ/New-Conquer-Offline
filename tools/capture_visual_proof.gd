@@ -195,7 +195,7 @@ func _capture() -> void:
 		var outside_core_count := _count_city_buildings_outside_core(loaded_world)
 		var tree_instance_count := _count_multimesh_instances_recursive(loaded_world, "imperial_city_tree_multimesh")
 		if building_count < 85 or building_count > 100 or imported_building_count < 85 or imported_building_count > 100 or outside_core_count != 0 or gate_count != 4 or guardian_count != 8 or tree_instance_count != 50:
-			_fail("%s visual proof refused: buildings=%d imported=%d outside_160m_core=%d gates=%d guardians=%d" % [city_id, building_count, imported_building_count, outside_core_count, gate_count, guardian_count])
+			_fail("%s visual proof refused: buildings=%d imported=%d outside_160m_core=%d gates=%d guardians=%d trees=%d" % [city_id, building_count, imported_building_count, outside_core_count, gate_count, guardian_count, tree_instance_count])
 			return
 		var first_building := loaded_world.find_child(city_id + "_ChineseImperialBuilding_00", true, false)
 		if first_building == null:
