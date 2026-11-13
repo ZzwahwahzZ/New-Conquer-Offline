@@ -278,7 +278,7 @@ static func _arched_wooden_bridge_mesh(dimensions: Vector2) -> ArrayMesh:
 		var b := a + 1
 		var c := a + 2
 		var d := a + 3
-		indices.append_array(PackedInt32Array([a, b, c, b, d, c]))
+		indices.append_array(PackedInt32Array([a, c, b, b, c, d]))
 	var arrays := []
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX] = vertices
