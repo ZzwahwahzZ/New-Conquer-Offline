@@ -178,8 +178,8 @@ func _run() -> void:
 		for road_node in architecture_roads.get_children():
 			road_child_names.append(str(road_node.name))
 	print("CITY_ROAD_CURB_COUNT_DEBUG: " + city_name + " roads=" + str(architecture_road_count) + " curbs=" + str(architecture_curb_count) + " parent=" + str(architecture_roads) + " children=" + str(road_child_names))
-		if not _check(architecture_road_count == 2 and architecture_curb_count == 4, city_name + " architecture road/curb meshes are duplicated or incomplete; roads=" + str(architecture_road_count) + " curbs=" + str(architecture_curb_count) + " children=" + str(road_child_names)):
-			return
+	if not _check(architecture_road_count == 2 and architecture_curb_count == 4, city_name + " architecture road/curb meshes are duplicated or incomplete; roads=" + str(architecture_road_count) + " curbs=" + str(architecture_curb_count) + " children=" + str(road_child_names)):
+		return
 		var terrain_body := city.find_child("TerrainCollision", true, false) as StaticBody3D
 		var terrain_collider := city.find_child("TerrainSurfaceCollision", true, false) as CollisionShape3D
 		if not _check(terrain_body != null and terrain_collider != null and terrain_collider.shape is HeightMapShape3D and (terrain_collider.shape as HeightMapShape3D).map_width == 129 and (terrain_collider.shape as HeightMapShape3D).map_depth == 129, city_name + " full heightfield terrain collision is missing"):
