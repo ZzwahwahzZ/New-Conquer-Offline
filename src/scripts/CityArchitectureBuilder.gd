@@ -135,10 +135,13 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  parent.add_child(instance)
  var source_bounds := _renderable_world_bounds(instance)
  if source_bounds.size.length_squared() > 0.0001:
-  # Preserve the original horizontal footprint; apply the safety margin only on Y so buildings cannot grow into roads.
-  var fit_factor := maxf(3.0 / maxf(source_bounds.size.x, 0.001), maxf(6.5 / maxf(source_bounds.size.y, 0.001), 3.0 / maxf(source_bounds.size.z, 0.001)))
-  instance.scale *= Vector3(fit_factor, fit_factor * 1.04, fit_factor)
-  print("CITY_QUATERNIUS_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " source_size=" + str(source_bounds.size) + " fit_factor=" + str(fit_factor) + " final_scale=" + str(instance.scale))
+  # Fit the horizontal footprint independently from height: stretching a short house uniformly
+  # makes it spill into nearby avenues. Keep X/Z close to source proportions while ensuring
+  # a readable 3-unit footprint and a 6.76-unit facade height with a small vertical safety margin.
+  var horizontal_fit := maxf(3.0 / maxf(source_bounds.size.x, 0.001), 3.0 / maxf(source_bounds.size.z, 0.001))
+  var vertical_fit := 6.76 / maxf(source_bounds.size.y, 0.001)
+  instance.scale *= Vector3(horizontal_fit, vertical_fit, horizontal_fit)
+  print("CITY_QUATERNIUS_BUILDING_FIT: " + city + " asset=" + selected.get_file() + " source_size=" + str(source_bounds.size) + " horizontal_fit=" + str(horizontal_fit) + " vertical_fit=" + str(vertical_fit) + " final_scale=" + str(instance.scale))
  _add_static_mesh_collisions(instance)
  instance.add_to_group("distance_cull_world")
  _set_visibility_range(instance, 360.0, 35.0)
