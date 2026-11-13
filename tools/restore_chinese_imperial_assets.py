@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Fetch the complete public Imperial China GLB pack, normalize every model and record per-asset provenance."""
 from __future__ import annotations
-import hashlib,json,shutil,subprocess
+import hashlib,json,shutil,struct,subprocess
 from pathlib import Path
 import urllib.request
 ROOT=Path(__file__).resolve().parents[1]
