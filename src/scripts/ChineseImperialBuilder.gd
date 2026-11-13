@@ -10,10 +10,45 @@ static func build(parent: Node3D, city: String, _size: float) -> void:
  parent.add_child(root)
  var central_palace_file := "chinese_pagoda.glb" if ResourceLoader.exists(ROOT+"chinese_pagoda.glb") else "ceremonial_hall.glb"
  _add_model(root,city,central_palace_file,city+"_ChineseImperialBuilding_00",Vector3(0.0,0.0,-55.0),Vector3.ONE,true)
+ _add_watchtowers(root,city)
  if city == "TwinCity":
   _add_model(root,city,"gate_tower.glb",city+"_ChineseImperialBuilding_01",Vector3(65.45,0.0,-65.45),Vector3.ONE,true)
   _add_model(root,city,"water_pavilion.glb",city+"_ChineseImperialBuilding_02",Vector3(-65.45,0.0,65.45),Vector3.ONE,true)
   _replace_city_gates(parent)
+static func _add_watchtowers(parent: Node3D, city: String) -> void:
+ var path := ROOT+"gate_tower.glb"
+ if not ResourceLoader.exists(path):
+  push_error("WUXIA_CHINESE_WATCHTOWER_MISSING: "+path)
+  return
+ var packed := ResourceLoader.load(path) as PackedScene
+ if packed == null:
+  push_error("WUXIA_CHINESE_WATCHTOWER_IMPORT_FAIL: "+path)
+  return
+ var positions := [
+  {"at":Vector3(-82.0,0.0,-82.0),"rotation":0.0},
+  {"at":Vector3(82.0,0.0,-82.0),"rotation":PI*0.5},
+  {"at":Vector3(82.0,0.0,82.0),"rotation":PI},
+  {"at":Vector3(-82.0,0.0,82.0),"rotation":PI*1.5}
+ ]
+ for index in range(positions.size()):
+  var data: Dictionary = positions[index]
+  var at: Vector3 = data["at"]
+  var tower := packed.instantiate() as Node3D
+  if tower == null:
+   push_error("WUXIA_CHINESE_WATCHTOWER_ROOT_FAIL: "+path)
+   continue
+  tower.name = city+"_ChineseImperialWatchtower_%02d" % index
+  tower.position = Vector3(at.x,WorldTerrainBuilder.height_at(city,at.x,at.z)+0.85,at.z)
+  tower.rotation.y = float(data["rotation"])
+  tower.scale = Vector3.ONE*1.8
+  tower.add_to_group("imperial_watchtowers")
+  tower.set_meta("source_asset_path",path)
+  tower.add_to_group("distance_cull_world")
+  parent.add_child(tower)
+  _add_model_collisions(tower,false)
+  _apply_visibility_range(tower,440.0,36.0)
+ print("WUXIA_CHINESE_WATCHTOWER_PASS: %s count=%d source=%s" % [city,positions.size(),path])
+
 static func _add_model(parent: Node3D,city: String,filename: String,node_name: String,at: Vector3,model_scale: Vector3,collision_all: bool) -> Node3D:
  var path := ROOT+filename
  if not ResourceLoader.exists(path):
