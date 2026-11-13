@@ -208,25 +208,20 @@ static func _build_imperial_tree_multimesh(parent: Node3D, city: String, size: f
    push_error("IMPERIAL_CITY_TREE_IMPORT_FAIL: " + selected_path)
    return
   var instance := packed.instantiate()
-  var mesh: Mesh = _first_renderable_mesh(instance)
+  var parts: Array[Dictionary] = []
+  _collect_tree_mesh_parts(instance,Transform3D.IDENTITY,parts,true)
   instance.free()
-  if mesh == null:
+  if parts.is_empty():
    push_error("IMPERIAL_CITY_TREE_MESH_FAIL: " + selected_path)
    return
-  species.append({"path":selected_path,"mesh":mesh})
+  species.append({"path":selected_path,"parts":parts})
  const TREES_PER_CITY := 60
  var city_index := maxi(0, ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"].find(city))
  var base_count := int(TREES_PER_CITY / species.size())
  var remainder := posmod(TREES_PER_CITY, species.size())
  var global_index := 0
  for species_index in range(species.size()):
-  var mesh := species[species_index]["mesh"] as Mesh
-  var count := base_count + (1 if species_index < remainder else 0)
-  var multi := MultiMesh.new()
-  multi.transform_format = MultiMesh.TRANSFORM_3D
-  multi.mesh = mesh
-  multi.instance_count = count
-  var model_height := maxf(mesh.get_aabb().size.y, 0.01)
+  var parts := species[species_index]["parts"] as Array
   var species_name := str(species[species_index]["path"]).get_file().to_lower()
   var species_height := 5.0
   if species_name.contains("pine"): species_height = 8.0
@@ -234,25 +229,49 @@ static func _build_imperial_tree_multimesh(parent: Node3D, city: String, size: f
   elif species_name.contains("bamboo"): species_height = 4.0
   elif species_name.contains("bush"): species_height = 1.8
   elif species_name.contains("plum"): species_height = 3.6
+  var bounds_min := Vector3(INF,INF,INF)
+  var bounds_max := Vector3(-INF,-INF,-INF)
+  for part in parts:
+   var part_mesh := part["mesh"] as Mesh
+   var part_transform := part["transform"] as Transform3D
+   for corner in part_mesh.get_aabb().get_corners():
+    var point: Vector3 = part_transform * corner
+    bounds_min = bounds_min.min(point)
+    bounds_max = bounds_max.max(point)
+  var model_height := maxf(bounds_max.y-bounds_min.y,0.01)
+  var count := base_count + (1 if species_index < remainder else 0)
+  var instance_transforms: Array[Transform3D] = []
   for index in range(count):
    var angle := float(global_index) * 2.399963 + float(city_index) * 0.47
    var radius := 96.0 + float((global_index * 37 + species_index * 19 + city_index * 11) % 58)
    var target_height := species_height * (0.88 + float((global_index * 13 + species_index * 7) % 25) * 0.01)
    var scale_factor := target_height / model_height
-   var basis := Basis(Vector3.UP, angle).scaled(Vector3.ONE * scale_factor)
-   var position := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-   position.y = sample_height_image(height_image, city, position.x, position.z, size)
-   multi.set_instance_transform(index, Transform3D(basis, position))
+   var basis := Basis(Vector3.UP,angle).scaled(Vector3.ONE*scale_factor)
+   var position := Vector3(cos(angle)*radius,0.0,sin(angle)*radius)
+   position.y = sample_height_image(height_image,city,position.x,position.z,size) - bounds_min.y*scale_factor
+   instance_transforms.append(Transform3D(basis,position))
    global_index += 1
-  var node := MultiMeshInstance3D.new()
-  node.name = city + "_ImperialTree_" + str(species_index) + "_MultiMesh"
-  node.multimesh = multi
-  node.set_meta("source_asset_path", str(species[species_index]["path"]))
-  node.add_to_group("imperial_city_tree_multimesh")
-  node.add_to_group("distance_cull_world")
-  node.visibility_range_end = 440.0
-  node.visibility_range_end_margin = 36.0
-  parent.add_child(node)
+  for part_index in range(parts.size()):
+   var part := parts[part_index]
+   var multi := MultiMesh.new()
+   multi.transform_format = MultiMesh.TRANSFORM_3D
+   multi.mesh = part["mesh"] as Mesh
+   multi.instance_count = count
+   var part_transform := part["transform"] as Transform3D
+   for index in range(count):
+    multi.set_instance_transform(index,instance_transforms[index]*part_transform)
+   var node := MultiMeshInstance3D.new()
+   node.name = city + "_ImperialTree_" + str(species_index) + "_Part_" + str(part_index) + "_MultiMesh"
+   node.multimesh = multi
+   node.set_meta("source_asset_path",str(species[species_index]["path"]))
+   if part_index == 0:
+    node.add_to_group("imperial_city_tree_multimesh")
+   else:
+    node.add_to_group("imperial_city_tree_render_mesh")
+   node.add_to_group("distance_cull_world")
+   node.visibility_range_end = 440.0
+   node.visibility_range_end_margin = 36.0
+   parent.add_child(node)
  print("IMPERIAL_CITY_TREE_MULTIMESH_PASS: %s trees=%d species=%d source=%s" % [city, TREES_PER_CITY, species.size(), str(species.map(func(item: Dictionary) -> String: return str(item["path"]).get_file()))])
 
 static func _collect_kenney_nature_models(path: String, output: Array[String]) -> void:
