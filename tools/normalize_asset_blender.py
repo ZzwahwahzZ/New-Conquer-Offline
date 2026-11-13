@@ -23,8 +23,10 @@ for obj in bpy.context.scene.objects:
  if obj.type=="MESH":
   for vert in obj.data.vertices: vert.co*=unit_factor
  obj.location*=unit_factor
-meshes=[o for o in bpy.context.scene.objects if o.type=="MESH"]
+objects_before=list(bpy.context.scene.objects)
+meshes=[o for o in objects_before if o.type=="MESH"]
 if not meshes: raise RuntimeError("No mesh objects")
+hierarchy_before=sum(1 for o in objects_before if o.parent is not None)
 bpy.context.view_layer.update()
 pts=[o.matrix_world @ Vector(c) for o in meshes for c in o.bound_box]
 minz=min(v.z for v in pts)
@@ -32,8 +34,12 @@ for o in [x for x in bpy.context.scene.objects if x.parent is None]: o.location.
 bpy.context.view_layer.update()
 bpy.ops.export_scene.gltf(filepath=str(dst),export_format="GLB",export_yup=True,export_apply=False,export_materials="EXPORT",export_cameras=False,export_lights=False)
 bpy.ops.wm.read_factory_settings(use_empty=True); bpy.ops.import_scene.gltf(filepath=str(dst))
-meshes2=[o for o in bpy.context.scene.objects if o.type=="MESH"]
+objects_after=list(bpy.context.scene.objects)
+meshes2=[o for o in objects_after if o.type=="MESH"]
+hierarchy_after=sum(1 for o in objects_after if o.parent is not None)
 if len(meshes2)!=len(meshes): raise RuntimeError("Mesh count mismatch after GLB round-trip")
+if len(objects_after)!=len(objects_before) or hierarchy_after!=hierarchy_before:
+ raise RuntimeError("Object hierarchy changed during GLB round-trip")
 pts2=[o.matrix_world @ Vector(c) for o in meshes2 for c in o.bound_box]
 if not pts2: raise RuntimeError("Empty GLB geometry")
 miny=min(v.y for v in pts2); dims=[max(v[i] for v in pts2)-min(v[i] for v in pts2) for i in range(3)]
@@ -42,4 +48,4 @@ if any(not math.isfinite(x) or x<=1e-6 for x in dims): raise RuntimeError("Inval
 mats=sum(1 for m in bpy.data.materials)
 if mats==0: raise RuntimeError("No materials survived GLB export")
 if dst.stat().st_size<1024: raise RuntimeError("GLB unexpectedly small")
-(dst.with_suffix(".json")).write_text(json.dumps({"mesh_count":len(meshes2),"object_count":len(bpy.context.scene.objects),"material_count":mats,"dimensions_m":dims,"min_y":miny,"validated":True},indent=2))
+(dst.with_suffix(".json")).write_text(json.dumps({"mesh_count":len(meshes2),"object_count":len(objects_after),"hierarchy_parent_links":hierarchy_after,"material_count":mats,"dimensions_m":dims,"min_y":miny,"validated":True},indent=2))
