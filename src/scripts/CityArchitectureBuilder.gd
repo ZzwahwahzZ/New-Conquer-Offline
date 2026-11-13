@@ -412,6 +412,7 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
 
 static func _add_palace_platform_and_stairs(root: Node3D, width: float, depth: float) -> void:
  var paving := PBRMaterialLibrary.build_imperial_paving_material()
+ var marble := PBRMaterialLibrary.build_plaza_material()
  var platform_size := Vector3(width+5.0,3.5,depth+5.0)
  _box(root,"ImperialPalaceRaisedStonePlinth_3_5m",Vector3(0.0,-1.75,0.0),platform_size,paving,1.0)
  var collision_body := StaticBody3D.new()
@@ -426,7 +427,7 @@ static func _add_palace_platform_and_stairs(root: Node3D, width: float, depth: f
  for step in range(7):
   var step_center := Vector3(0.0,-0.25-float(step)*0.5,depth*0.5+3.0+float(step)*1.05)
   var step_size := Vector3(8.5,0.5,1.1)
-  _box(root,"ImperialMarbleStair_%02d" % step,step_center,step_size,paving,1.0)
+  _box(root,"ImperialMarbleStair_%02d" % step,step_center,step_size,marble,1.0)
   var stair_collision := CollisionShape3D.new()
   var stair_shape := BoxShape3D.new()
   stair_shape.size = step_size
