@@ -8,12 +8,12 @@ static func build(parent: Node3D, city: String, _size: float) -> void:
  var root := Node3D.new()
  root.name = city + "_ChineseImperialArchitecture"
  parent.add_child(root)
- _add_model(root,"ceremonial_hall.glb",city+"_ChineseImperialBuilding_00",Vector3(0.0,0.0,-55.0),Vector3.ONE,true)
+ _add_model(root,city,"ceremonial_hall.glb",city+"_ChineseImperialBuilding_00",Vector3(0.0,0.0,-55.0),Vector3.ONE,true)
  if city == "TwinCity":
-  _add_model(root,"gate_tower.glb",city+"_ChineseImperialBuilding_01",Vector3(65.45,0.0,-65.45),Vector3.ONE,true)
-  _add_model(root,"water_pavilion.glb",city+"_ChineseImperialBuilding_02",Vector3(-65.45,0.0,65.45),Vector3.ONE,true)
+  _add_model(root,city,"gate_tower.glb",city+"_ChineseImperialBuilding_01",Vector3(65.45,0.0,-65.45),Vector3.ONE,true)
+  _add_model(root,city,"water_pavilion.glb",city+"_ChineseImperialBuilding_02",Vector3(-65.45,0.0,65.45),Vector3.ONE,true)
   _replace_city_gates(parent)
-static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vector3,model_scale: Vector3,collision_all: bool) -> Node3D:
+static func _add_model(parent: Node3D,city: String,filename: String,node_name: String,at: Vector3,model_scale: Vector3,collision_all: bool) -> Node3D:
  var path := ROOT+filename
  if not ResourceLoader.exists(path):
   push_error("Missing required CC0 Chinese architecture GLB: "+path)
@@ -28,7 +28,7 @@ static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vec
   return null
  var platform_root := Node3D.new()
  platform_root.name = node_name + "_RaisedImperialPlinth"
- platform_root.position = Vector3(at.x, WorldTerrainBuilder.height_at("TwinCity",at.x,at.z) + 0.85, at.z)
+ platform_root.position = Vector3(at.x, WorldTerrainBuilder.height_at(city,at.x,at.z) + 0.85, at.z)
  platform_root.rotation.y = atan2(-at.x,-at.z)
  parent.add_child(platform_root)
  var platform_width := 34.0 if filename.contains("palace") else 28.0
@@ -73,7 +73,7 @@ static func _add_model(parent: Node3D,filename: String,node_name: String,at: Vec
  instance.name=node_name
  instance.add_to_group("city_building")
  instance.add_to_group("imported_city_building")
- instance.position=Vector3(0.0,3.5,0.0)
+ instance.position=Vector3(0.0,4.0,0.0)
  instance.scale=model_scale
  platform_root.add_child(instance)
  instance.add_to_group("distance_cull_world")
