@@ -37,7 +37,8 @@ func _create_prefab(glb_path: String) -> void:
 		push_error("IMPERIAL_V2_GLB_NOT_PACKED_SCENE: " + glb_path)
 		failed += 1
 		return
-	var safe_name := glb_path.get_file().get_basename().validate_filename()
+	var relative_name := glb_path.trim_prefix(SOURCE_ROOT + "/").replace("/", "_")
+	var safe_name := relative_name.get_basename().validate_filename()
 	var prefab_path := PREFAB_ROOT.path_join(safe_name + ".tscn")
 	var text := "[gd_scene load_steps=2 format=3]\n\n[ext_resource type=\"PackedScene\" path=\"" + glb_path + "\" id=\"1\"]\n\n[node name=\"" + safe_name + "\" instance=ExtResource(\"1\")]\n"
 	var file := FileAccess.open(prefab_path, FileAccess.WRITE)
