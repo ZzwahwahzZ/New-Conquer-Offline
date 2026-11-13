@@ -60,7 +60,7 @@ static func _build_city_roads(parent: Node3D, p: Dictionary) -> void:
  parent.add_child(roads)
  var road_material := _material(p.stone.lightened(0.12),0.94)
  var curb_material := _material(p.gold,0.76)
- for direction in range(4):
+ for direction in range(2):
   var road := _box(roads,"FlagstoneRoad_%d" % direction,Vector3(0,0.10,0),Vector3(14,0.20,300),road_material,1.0)
   road.rotation_degrees.y = direction*90.0
   for side in [-1.0,1.0]:
@@ -71,12 +71,12 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
  var slot := Node3D.new()
  slot.name = city + "_24BuildingUrbanFabric"
  parent.add_child(slot)
- var coordinates := [-128.0,-92.0,-56.0,56.0,92.0,128.0]
+ var coordinates: Array[float] = [-112.0,-96.0,-76.0,76.0,96.0,112.0] if city == "TwinCity" else [-112.0,-92.0,-56.0,56.0,92.0,112.0]
  var index := 0
  for value in coordinates:
   for side in [-1.0,1.0]:
    for axis in [0,1]:
-    var position := Vector3(value,0.0,side*12.0) if axis == 0 else Vector3(side*12.0,0.0,value)
+    var position := Vector3(value,0.0,side*30.0) if axis == 0 else Vector3(side*30.0,0.0,value)
     var imported := _instantiate_quaternius_building(slot, city, index, position, height_image)
     if imported == null:
      var building := _make_building(city,p,index,1.0)
