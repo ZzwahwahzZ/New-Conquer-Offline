@@ -97,6 +97,8 @@ def main():
   ("pond water module","pond_water_module.glb","props_nature",("pond","water")),
   ("standing garden lantern","standing_garden_lantern.glb","props_nature",("lantern",)),
   ("lotus cluster","lotus_cluster.glb","props_nature",("lotus",)),
+  ("lotus pond edge straight","lotus_pond_edge_straight.glb","props_nature",("pond","edge","straight")),
+  ("lotus pond edge corner","lotus_pond_edge_corner.glb","props_nature",("pond","edge","corner")),
   ("rockery outcrop","rockery_outcrop.glb","props_nature",("rockery",)),
   ("stone incense burner","stone_incense_burner.glb","props_nature",("incense","burner")),
  ]
