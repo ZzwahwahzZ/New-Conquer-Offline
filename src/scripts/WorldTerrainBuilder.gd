@@ -232,10 +232,10 @@ static func _build_imperial_tree_multimesh(parent: Node3D, city: String, size: f
   var bounds_min := Vector3(INF,INF,INF)
   var bounds_max := Vector3(-INF,-INF,-INF)
   for part in parts:
-   var part_mesh: Mesh = part["mesh"]
-   var part_transform: Transform3D = part["transform"]
-   for corner in part_mesh.get_aabb().get_corners():
-    var point: Vector3 = part_transform * corner
+   var bounds_mesh: Mesh = part["mesh"]
+   var bounds_transform: Transform3D = part["transform"]
+   for corner in bounds_mesh.get_aabb().get_corners():
+    var point: Vector3 = bounds_transform * corner
     bounds_min = bounds_min.min(point)
     bounds_max = bounds_max.max(point)
   var model_height := maxf(bounds_max.y-bounds_min.y,0.01)
@@ -255,12 +255,12 @@ static func _build_imperial_tree_multimesh(parent: Node3D, city: String, size: f
    var part := parts[part_index]
    var multi := MultiMesh.new()
    multi.transform_format = MultiMesh.TRANSFORM_3D
-   var part_mesh: Mesh = part["mesh"]
-   multi.mesh = part_mesh
+   var render_mesh: Mesh = part["mesh"]
+   multi.mesh = render_mesh
    multi.instance_count = count
-   var part_transform: Transform3D = part["transform"]
+   var render_transform: Transform3D = part["transform"]
    for index in range(count):
-    multi.set_instance_transform(index,instance_transforms[index]*part_transform)
+    multi.set_instance_transform(index,instance_transforms[index]*render_transform)
    var node := MultiMeshInstance3D.new()
    node.name = city + "_ImperialTree_" + str(species_index) + "_Part_" + str(part_index) + "_MultiMesh"
    node.multimesh = multi
