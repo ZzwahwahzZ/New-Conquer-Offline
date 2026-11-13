@@ -70,7 +70,7 @@ func _run() -> void:
 		return
 	if not _require(builder_source.contains("gate.add_to_group(\"cardinal_gates\")") and builder_source.contains("guard.add_to_group(\"city_guardians\")"), "cardinal gate or guardian groups are not registered"):
 		return
-	if not _require(builder_source.contains("_build_chinese_perimeter_walls") and builder_source.contains("palace_wall_straight.glb") and builder_source.contains("palace_wall_corner.glb") and builder_source.contains("asian_market_stall.glb"), "authentic Chinese palace ramparts or market stalls are not connected"):
+	if not _require(builder_source.contains("_build_chinese_perimeter_walls") and builder_source.contains("palace_wall_straight.glb") and builder_source.contains("palace_wall_corner.glb") and builder_source.contains("covered_walkway_bay.glb") and builder_source.contains("low_tea_table.glb") and builder_source.contains("latticed_screen_door_set.glb"), "authentic Chinese palace ramparts or market stalls are not connected"):
 		return
 	var chinese_builder_source := FileAccess.get_file_as_string("res://src/scripts/ChineseImperialBuilder.gd")
 	if not _require(chinese_builder_source.contains("_add_watchtowers") and chinese_builder_source.contains("imperial_watchtowers"), "Chinese imperial watchtowers are not connected"):
