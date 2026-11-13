@@ -117,14 +117,14 @@ func _capture() -> void:
 	if hud == null:
 		_fail("HUD root is missing")
 		return
+	var classic_hud := main.get_node_or_null("HUD/ClassicHUD") as Control
+	if classic_hud == null or classic_hud.get_node_or_null("ClassicConquerBottomBar/MainRow/SplitCrystalOrb") == null:
+		_fail("classic gold HUD validation failed")
+		return
 	hud.visible = true
 	classic_hud.visible = true
 	if not hud.visible or not classic_hud.visible:
 		_fail("classic gold HUD must remain visible in every Phase 3A proof frame")
-		return
-	var classic_hud := main.get_node_or_null("HUD/ClassicHUD") as Control
-	if classic_hud == null or classic_hud.get_node_or_null("ClassicConquerBottomBar/MainRow/SplitCrystalOrb") == null:
-		_fail("classic gold HUD validation failed")
 		return
 	if not FileAccess.file_exists("res://assets/ui/manifest.json"):
 		_fail("restored Kenney RPG UI manifest is missing")
