@@ -149,6 +149,9 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
    if absf(x) < 8.0 or absf(z) < 8.0:
     index += 1
     continue
+   if city == "TwinCity" and Vector2(x,z) in [Vector2(-72.0,-32.7),Vector2(-45.8,32.7),Vector2(-32.7,32.7)]:
+    index += 1
+    continue
    var building := _instantiate_quaternius_building(slot,city,index,Vector3(x,0.0,z),height_image,false)
    if building == null:
     push_error("CITY_IMPORTED_BUILDING_MISSING: %s index=%d; refusing primitive placeholder geometry" % [city,index])
