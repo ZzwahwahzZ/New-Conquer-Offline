@@ -196,7 +196,7 @@ static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Diction
   var kenney_gate := _add_kenney_asset(gate, city, height_image, "castle-kit", "gate.glb", "KenneyGateModel", Vector3(0.0, 0.0, -148.0), 0.0, 2.2)
   for side in [-1.0,1.0]:
    var tower_side_name := "Left" if side < 0.0 else "Right"
-    var kenney_tower := _add_kenney_asset(gate, city, height_image, "castle-kit", "tower-square.glb", "KenneyTowerModel_" + tower_side_name, Vector3(side*17.0, 0.0, -148.0), 0.0, 1.8)
+   var kenney_tower := _add_kenney_asset(gate, city, height_image, "castle-kit", "tower-square.glb", "KenneyTowerModel_" + tower_side_name, Vector3(side*17.0, 0.0, -148.0), 0.0, 1.8)
    var tower_block := _box(gate,"GatehouseTower",Vector3(side*17.0,9.0,-148.0),Vector3(11.0,18.0,13.0),tower_material,1.0)
    tower_block.visible = kenney_tower == null
    var tower_cap := _box(gate,"GateTowerCrenellation",Vector3(side*17.0,18.5,-148.0),Vector3(13.0,1.0,15.0),gate_material,1.0)
