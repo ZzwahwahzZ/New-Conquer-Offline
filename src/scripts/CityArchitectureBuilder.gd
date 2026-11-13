@@ -115,16 +115,16 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
   return
  var pond := pond_scene.instantiate() as Node3D
  pond.name = "ImperialLotusPond"
- pond.position = Vector3(-19.0,0.13,-19.0)
+ pond.position = Vector3(-18.0,0.13,-18.0)
  pond.scale = Vector3.ONE*2.2
  pond.add_to_group("imperial_plaza_lotus_pond")
  pond.set_meta("source_asset_path",base+"pond_water_module.glb")
  parent.add_child(pond)
  var pond_edges := [
-  {"at":Vector3(-19.0,0.12,-22.3),"rotation":0.0},
-  {"at":Vector3(-19.0,0.12,-15.7),"rotation":PI},
-  {"at":Vector3(-22.3,0.12,-19.0),"rotation":PI*0.5},
-  {"at":Vector3(-15.7,0.12,-19.0),"rotation":PI*1.5}
+  {"at":Vector3(-18.0,0.12,-21.3),"rotation":0.0},
+  {"at":Vector3(-18.0,0.12,-14.7),"rotation":PI},
+  {"at":Vector3(-21.3,0.12,-18.0),"rotation":PI*0.5},
+  {"at":Vector3(-14.7,0.12,-18.0),"rotation":PI*1.5}
  ]
  for edge_index in range(pond_edges.size()):
   var edge_data: Dictionary = pond_edges[edge_index]
@@ -137,10 +137,10 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
   edge.set_meta("source_asset_path",base+"lotus_pond_edge_straight.glb")
   parent.add_child(edge)
  var pond_corners := [
-  {"at":Vector3(-22.3,0.12,-22.3),"rotation":0.0},
-  {"at":Vector3(-15.7,0.12,-22.3),"rotation":PI*0.5},
-  {"at":Vector3(-15.7,0.12,-15.7),"rotation":PI},
-  {"at":Vector3(-22.3,0.12,-15.7),"rotation":PI*1.5}
+  {"at":Vector3(-21.3,0.12,-21.3),"rotation":0.0},
+  {"at":Vector3(-14.7,0.12,-21.3),"rotation":PI*0.5},
+  {"at":Vector3(-14.7,0.12,-14.7),"rotation":PI},
+  {"at":Vector3(-21.3,0.12,-14.7),"rotation":PI*1.5}
  ]
  for corner_index in range(pond_corners.size()):
   var corner_data: Dictionary = pond_corners[corner_index]
@@ -155,7 +155,7 @@ static func _add_imperial_plaza_garden_props(parent: Node3D) -> void:
   _add_static_mesh_collisions(pond_corner)
  var lotus := lotus_scene.instantiate() as Node3D
  lotus.name = "ImperialLotusPondFlowerCluster"
- lotus.position = Vector3(-19.0,0.2,-19.0)
+ lotus.position = Vector3(-18.0,0.2,-18.0)
  lotus.scale = Vector3.ONE*1.15
  lotus.add_to_group("imperial_plaza_garden_props")
  lotus.set_meta("source_asset_path",base+"lotus_cluster.glb")
