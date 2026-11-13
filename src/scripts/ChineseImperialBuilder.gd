@@ -160,6 +160,7 @@ static func _add_stair_guardian_lions(parent: Node3D, platform_depth: float) -> 
     brazier.add_to_group("imperial_stair_braziers")
     brazier.set_meta("source_asset_path",brazier_path)
     parent.add_child(brazier)
+    _add_model_collisions(brazier,true)
     var brazier_light := OmniLight3D.new()
     brazier_light.name = "ChineseImperialStoneBrazierLight"
     brazier_light.position = brazier.position+Vector3(0.0,1.6,0.0)
