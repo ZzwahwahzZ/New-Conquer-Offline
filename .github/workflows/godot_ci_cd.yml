@@ -88,6 +88,16 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb xorg xz-utils
+      - name: Step 0 - Import project resources and build Godot UID cache
+        shell: bash
+        timeout-minutes: 5
+        run: |
+          set -Eeuo pipefail
+          mkdir -p reports
+          timeout 180s xvfb-run -a godot --headless --audio-driver Dummy --path . --import --quit 2>&1 | tee reports/godot_import_guard.log
+          test -d .godot
+          echo "GODOT_FULL_IMPORT_AND_UID_CACHE_PASS"
+
       - name: Step 1 - Initialize Editor Classes
         shell: bash
         timeout-minutes: 15
@@ -101,7 +111,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          godot --headless --audio-driver Dummy --path . --script res://tools/diagnose_scripts_materials.gd
+          xvfb-run -a godot --headless --audio-driver Dummy --path . --script res://tools/diagnose_scripts_materials.gd
 
       - name: Godot 4.3 --check-only for PBR and city architecture scripts
         shell: bash
@@ -124,7 +134,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           mkdir -p reports
-          timeout 120s godot --headless --path . --import 2>&1 | tee reports/godot_import_guard.log
+          timeout 120s xvfb-run -a godot --headless --audio-driver Dummy --path . --import 2>&1 | tee -a reports/godot_import_guard.log
           if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load script|ERROR: Failed loading resource' reports/godot_import_guard.log; then
             echo "::error::Godot import emitted parser or resource-load errors."
             exit 1
