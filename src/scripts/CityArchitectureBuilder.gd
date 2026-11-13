@@ -15,24 +15,25 @@ const CITY_PALETTES := {
 static func build(parent: Node3D, city: String, size: float) -> void:
  var palette: Dictionary = CITY_PALETTES.get(city, CITY_PALETTES["TwinCity"])
  var height_image: Image = WorldTerrainBuilder.load_height_image(city)
- _build_open_plaza(parent, palette)
+ _build_open_plaza(parent, city, palette, height_image)
  _build_city_roads(parent, city, palette, height_image)
  _build_city_buildings(parent, city, palette, height_image)
  _build_city_walls_and_gates(parent, city, palette, height_image)
  ChineseImperialBuilder.build(parent, city, size)
  _build_kenney_city_modules(parent, city, palette, height_image)
  _build_outer_biome(parent, city, palette, size, height_image)
- print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=88 walls=4 gates=4 open_plaza=24x24 outer_world=800x800" % city)
+ print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=85-88 walls=4 gates=4 open_plaza=50x50 city_core=170x170 outer_world=800x800" % city)
 
-static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
+static func _build_open_plaza(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var plaza := Node3D.new()
- plaza.name = "OpenCentralPlaza_24x24"
+ plaza.name = "OpenCentralPlaza_50x50"
+ plaza.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, 0.0, 0.0, 800.0)
  parent.add_child(plaza)
  var stone: StandardMaterial3D = PBRMaterialLibrary.build_imperial_paving_material()
  stone.uv1_scale = Vector3(3.9,3.9,1.0)
- for z in range(-1,2):
-  for x in range(-1,2):
-   var tile := _box(plaza, "DiamondStonePaver_%02d_%02d" % [x+1,z+1], Vector3(float(x)*8.0,0.055,float(z)*8.0), Vector3(7.75,0.11,7.75), stone, 1.0)
+ for z in range(-3,4):
+  for x in range(-3,4):
+   var tile := _box(plaza, "DiamondStonePaver_%02d_%02d" % [x+3,z+3], Vector3(float(x)*7.0,0.055,float(z)*7.0), Vector3(6.85,0.11,6.85), stone, 1.0)
    tile.rotation_degrees.y = 45.0
  var medallion := MeshInstance3D.new()
  medallion.name = "CentralEngravedStoneMedallion"
@@ -57,12 +58,44 @@ static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
   ring.position.y = 0.39
   plaza.add_child(ring)
   ring.material_override = _material(p.accent,0.66)
+ _add_plaza_statue(plaza)
+
+static func _add_plaza_statue(parent: Node3D) -> void:
+ var candidates: Array[String] = []
+ _collect_quaternius_models("res://assets/imperial_city_kit_v2/quaternius/ultimate_fantasy_rts", candidates)
+ candidates = candidates.filter(func(path: String) -> bool: return path.get_file().to_lower().contains("statue"))
+ candidates.sort()
+ if candidates.is_empty():
+  push_error("IMPERIAL_PLAZA_STATUE_MISSING: no real CC0 statue model found in Ultimate Fantasy RTS")
+  return
+ var packed := ResourceLoader.load(candidates[0]) as PackedScene
+ if packed == null:
+  push_error("IMPERIAL_PLAZA_STATUE_IMPORT_FAIL: " + candidates[0])
+  return
+ var statue := packed.instantiate() as Node3D
+ if statue == null:
+  push_error("IMPERIAL_PLAZA_STATUE_ROOT_FAIL: " + candidates[0])
+  return
+ var mesh_node := _first_mesh_node(statue)
+ if mesh_node == null or mesh_node.mesh == null:
+  statue.free()
+  push_error("IMPERIAL_PLAZA_STATUE_MESH_FAIL: " + candidates[0])
+  return
+ var model_height := maxf(mesh_node.mesh.get_aabb().size.y, 0.01)
+ statue.name = "ImperialPlazaStoneStatue"
+ statue.scale = Vector3.ONE * (4.8 / model_height)
+ statue.position = Vector3(0.0,0.12,16.0)
+ statue.set_meta("source_asset_path", candidates[0])
+ statue.add_to_group("imperial_plaza_statue")
+ parent.add_child(statue)
+ _add_static_mesh_collisions(statue)
+ print("IMPERIAL_PLAZA_STATUE_PASS: " + candidates[0])
 
 static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var roads := Node3D.new()
  roads.name = "StoneRoadNetwork"
  parent.add_child(roads)
- var half := 80.0
+ var half := 85.0
  var road_length := 170.0
  # Raise the two arterial routes above the highest sampled terrain along their
  # full extent so desert, volcanic and archipelago ground cannot swallow them.
@@ -75,7 +108,7 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, heigh
  var road_material: StandardMaterial3D = PBRMaterialLibrary.build_street_material()
  var curb_material := _material(p.gold,0.76)
  for direction in range(2):
-  var road := _box(roads,"FlagstoneRoad_%d" % direction,Vector3(0,0.055,0),Vector3(10.0,0.02,road_length),road_material,1.0)
+  var road := _box(roads,"FlagstoneRoad_%d" % direction,Vector3(0,0.055,0),Vector3(12.0,0.02,road_length),road_material,1.0)
   var road_surface_material := road_material.duplicate() as StandardMaterial3D
   road_surface_material.albedo_color = Color("#e0ddd3")
   road_surface_material.uv1_scale = Vector3(10.0/3.4,road_length/3.4,1.0)
@@ -84,16 +117,16 @@ static func _build_city_roads(parent: Node3D, city: String, p: Dictionary, heigh
   road.position.y = road_clearance_height
   road_surface_material.uv1_triplanar = true
   for side in [-1.0,1.0]:
-   var curb := _box(roads,"RaisedStoneCurb_%d_%d" % [direction,int(side)],Vector3(side*5.35,0.34,0),Vector3(0.65,0.48,road_length),curb_material,1.0)
+   var curb := _box(roads,"RaisedStoneCurb_%d_%d" % [direction,int(side)],Vector3(side*6.35,0.34,0),Vector3(0.65,0.48,road_length),curb_material,1.0)
    curb.rotation_degrees.y = direction*90.0
  _build_urban_alley_multimeshes(roads,city,road_material)
 
 static func _build_urban_alley_multimeshes(parent: Node3D, city: String, material: Material) -> void:
  var terrain_image := WorldTerrainBuilder.load_height_image(city)
- var alley_lines := [-9.0,9.0]
- var segment_centers := [-72.0,-58.9,-45.8,-32.7,-19.6,-6.5,6.5,19.6,32.7,45.8,58.9,72.0]
+ var alley_lines := [-10.0,10.0]
+ var segment_centers := [-77.0,-63.0,-49.0,-35.0,-21.0,-7.0,7.0,21.0,35.0,49.0,63.0,77.0]
  var alley_mesh := BoxMesh.new()
- alley_mesh.size = Vector3(5.0,0.14,22.0)
+ alley_mesh.size = Vector3(6.0,0.14,14.0)
  for axis in range(2):
   var multi := MultiMesh.new()
   multi.transform_format = MultiMesh.TRANSFORM_3D
@@ -122,10 +155,10 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
  var slot := Node3D.new()
  slot.name = city + "_88BuildingUrbanDistrict"
  parent.add_child(slot)
- # Ten-by-ten compact blocks fit inside the 160m x 160m urban core.
- # The central 10m north/south and east/west avenues stay open; 81 real
- # imported buildings occupy the remaining cells with 1.5m block-to-block gaps.
- var coordinates := [-72.0,-58.9,-45.8,-32.7,-19.6,-6.5,6.5,19.6,32.7,45.8,58.9,72.0]
+ # Twelve-by-twelve compact blocks fit inside the 170m x 170m imperial city core.
+ # The central 12m arterial roads and 6m secondary lanes stay open; 85-88 real
+ # imported buildings occupy the remaining cells with compact block-to-block spacing.
+ var coordinates := [-77.0,-63.0,-49.0,-35.0,-21.0,-7.0,7.0,21.0,35.0,49.0,63.0,77.0]
  var index := 0
  var built_count := 0
  for row in range(coordinates.size()):
@@ -158,7 +191,7 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
     building.add_to_group("city_building")
     built_count += 1
    index += 1
- print("CITY_URBAN_DENSITY_PASS: %s buildings=%d footprint=-80..80 grid=12x12 four_palaces=true" % [city,built_count])
+ print("CITY_URBAN_DENSITY_PASS: %s buildings=%d footprint=-85..85 grid=12x12 four_palaces=true" % [city,built_count])
 
 static func _make_compact_urban_building(city: String, p: Dictionary, index: int) -> Node3D:
  var root := Node3D.new()
@@ -349,7 +382,7 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  var target_center_global := parent.to_global(at)
  var sampled_ground := WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
  var clearance := 0.45 if city in ["DesertLand","VolcanoLand"] else (0.6 if city == "Waterlands" else 0.0)
- var target_base_global := parent.to_global(Vector3(at.x, sampled_ground + clearance, at.z))
+ var target_base_global := parent.to_global(Vector3(at.x, sampled_ground + clearance + (3.5 if grand_building else 0.0), at.z))
  var fitted_bounds := _renderable_world_bounds(instance)
  if fitted_bounds.size.length_squared() > 0.0001:
   # Center the actual imported mesh footprint and seat its lowest vertex on terrain.
@@ -367,6 +400,8 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
   parent.add_child(details)
   details.global_position = Vector3(target_center_global.x,target_base_global.y,target_center_global.z)
   details.global_rotation = instance.global_rotation
+  if grand_building:
+   _add_palace_platform_and_stairs(details,target_width,target_depth)
   _add_chinese_building_details(details,p,target_width,target_depth,target_height)
   details.add_to_group("distance_cull_world")
   _set_visibility_range(details,360.0,35.0)
@@ -374,6 +409,31 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
  instance.add_to_group("distance_cull_world")
  _set_visibility_range(instance, 360.0, 35.0)
  return instance
+
+static func _add_palace_platform_and_stairs(root: Node3D, width: float, depth: float) -> void:
+ var paving := PBRMaterialLibrary.build_imperial_paving_material()
+ var platform_size := Vector3(width+5.0,3.5,depth+5.0)
+ _box(root,"ImperialPalaceRaisedStonePlinth_3_5m",Vector3(0.0,-1.75,0.0),platform_size,paving,1.0)
+ var collision_body := StaticBody3D.new()
+ collision_body.name = "ImperialPalacePlinthAndStairCollision"
+ var platform_collision := CollisionShape3D.new()
+ var platform_shape := BoxShape3D.new()
+ platform_shape.size = platform_size
+ platform_collision.shape = platform_shape
+ platform_collision.position = Vector3(0.0,-1.75,0.0)
+ collision_body.add_child(platform_collision)
+ root.add_child(collision_body)
+ for step in range(7):
+  var step_center := Vector3(0.0,-0.25-float(step)*0.5,depth*0.5+3.0+float(step)*1.05)
+  var step_size := Vector3(8.5,0.5,1.1)
+  _box(root,"ImperialMarbleStair_%02d" % step,step_center,step_size,paving,1.0)
+  var stair_collision := CollisionShape3D.new()
+  var stair_shape := BoxShape3D.new()
+  stair_shape.size = step_size
+  stair_collision.shape = stair_shape
+  stair_collision.position = step_center
+  collision_body.add_child(stair_collision)
+ print("IMPERIAL_PALACE_PLATFORM_PASS: height=3.5m marble_stairs=7 width=8.5m")
 
 static func _add_chinese_building_details(root: Node3D, p: Dictionary, width: float, depth: float, height: float) -> void:
     var roof_material := _material(p.roof,0.66)
