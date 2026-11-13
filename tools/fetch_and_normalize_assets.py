@@ -176,6 +176,7 @@ def asset_category(record, filename=""):
  if asian_context and re.search(CATEGORY_RULES["statues_and_props"],primary,re.I): return "statues_and_props"
  if asian_context and re.search(CATEGORY_RULES["gates_walls_bridges"],primary,re.I): return "gates_walls_bridges"
  if asian_context and re.search(CATEGORY_RULES["houses_and_shops"],primary,re.I): return "houses_and_shops"
+ if asian_context and re.search(r"\b(?:palace|temple|shrine|pavilion|ceremonial hall)\b",primary,re.I): return "palaces_and_temples"
  if re.search(CATEGORY_RULES["palaces_and_temples"],primary,re.I): return "palaces_and_temples"
  return None
 def strict_filter_self_test():
