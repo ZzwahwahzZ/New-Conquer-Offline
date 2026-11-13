@@ -195,7 +195,7 @@ static func _build_kenney_nature_scatter(parent: Node3D, city: String, size: flo
  for root_path in root_paths:
   _collect_kenney_nature_models(root_path, candidates)
  if candidates.is_empty():
-  push_warning("Kenney Nature Kit is not installed; curated CC0 biome dressing remains active.")
+  push_error("Required Kenney Nature Kit models are unavailable; no secondary nature fallback is enabled.")
   return
  var preferred_models: Array[String] = []
  match city:
