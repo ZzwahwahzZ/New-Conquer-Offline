@@ -67,7 +67,7 @@ def main():
   seen.add(aid)
   lic=item.get("license",{})
   license_slug=str(lic.get("slug","")).lower()
-  if license_slug not in ("cc0-1.0","cc-by-4.0","cc-by"):
+  if license_slug not in ("cc0-1.0","cc-by-4.0") and not (license_slug=="cc-by" and lic.get("url")):
    print("WUXIA_ASSET_LICENSE_SKIP",aid,license_slug,flush=True); continue
   name=str(item.get("name") or item.get("title") or f"imperial_asset_{aid}")
   filename=PINNED.get(aid,slug(name).replace("_imperial_china_palace_and_garden","")+".glb")
