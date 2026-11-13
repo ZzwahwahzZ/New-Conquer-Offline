@@ -220,6 +220,8 @@ def process():
 def builddocs(blenderver):
  OUT.mkdir(parents=True,exist_ok=True); entries=[]; grouped={k:[] for k in CATEGORY_RULES}
  for r in OK:
+  if r.get("candidate_only"):
+   continue
   paths=r.get("files") or [r["file"]]
   for f in paths:
    p=Path(f); category=asset_category(r,p.name)
