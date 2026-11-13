@@ -22,7 +22,7 @@ static func build(parent: Node3D, city: String, size: float) -> void:
  ChineseImperialBuilder.build(parent, city, size)
  _build_kenney_city_modules(parent, city, palette, height_image)
  _build_outer_biome(parent, city, palette, size, height_image)
- print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=64 walls=4 gates=4 open_plaza=80x80 outer_world=800x800" % city)
+ print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=80 walls=4 gates=4 open_plaza=80x80 outer_world=800x800" % city)
 
 static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
  var plaza := Node3D.new()
@@ -110,15 +110,16 @@ static func _build_urban_alley_multimeshes(parent: Node3D, city: String, materia
 
 static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  var slot := Node3D.new()
- slot.name = city + "_64BuildingUrbanDistrict"
+ slot.name = city + "_80BuildingUrbanDistrict"
  parent.add_child(slot)
- # Eight rows by eight columns form continuous residential/commercial blocks around
- # the preserved central square, with the two cardinal avenues and gate approaches left open.
- var coordinates := [-132.0,-108.0,-84.0,-60.0,60.0,84.0,108.0,132.0]
+ # Ten columns by eight rows create 80 detailed buildings while preserving the
+ # central square, cardinal avenues, secondary streets and gate approaches.
+ var x_coordinates := [-168.0,-144.0,-120.0,-96.0,-72.0,72.0,96.0,120.0,144.0,168.0]
+ var z_coordinates := [-144.0,-120.0,-96.0,-72.0,72.0,96.0,120.0,144.0]
  var index := 0
  var built_count := 0
- for z in coordinates:
-  for x in coordinates:
+ for z in z_coordinates:
+  for x in x_coordinates:
    if city == "TwinCity":
     var reserved := false
     for landmark in [Vector2(-76.0,-30.0),Vector2(-96.0,30.0),Vector2(-76.0,30.0)]:
@@ -134,7 +135,7 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
    slot.add_child(building)
    index += 1
    built_count += 1
- print("CITY_URBAN_DENSITY_PASS: %s buildings=%d grid=8x8 reserved_landmarks=true" % [city,built_count])
+ print("CITY_URBAN_DENSITY_PASS: %s buildings=%d grid=10x8 reserved_landmarks=true" % [city,built_count])
 
 static func _make_compact_urban_building(city: String, p: Dictionary, index: int) -> Node3D:
  var root := Node3D.new()
