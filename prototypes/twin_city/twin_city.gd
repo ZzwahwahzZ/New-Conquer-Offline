@@ -12,7 +12,7 @@ var entries: Dictionary = {}
 var scenes: Dictionary = {}
 var fit_cache: Dictionary = {}
 var materials: Dictionary = {}
-var stats := {"buildings": 0, "wall_segments": 0, "directional_gates": 0, "bridges": 0,
+var stats := {"buildings": 0, "district_buildings": 0, "wall_segments": 0, "directional_gates": 0, "bridges": 0,
 	"gate_guardian_pairs": 0, "gate_guardian_statues": 0, "tree_instances": 0,
 	"multimesh_batches": 0, "box_mesh_count": 0, "city_core_m": 170, "world_m": 800, "building_types": 3,
 	"architecture_style": "imperial_chinese"}
@@ -239,7 +239,7 @@ func _build_walls_and_gates() -> void:
 		root.position = gate[1]
 		root.rotation.y = gate[2]
 		walls.add_child(root)
-		_place_fit("Gate Tower (Imperial China Palace and Garden)", Vector3.ZERO, 0, Vector3(15,12,12), root, "GateTower")
+		if _place_fit("Gate Tower (Imperial China Palace and Garden)", Vector3.ZERO, 0, Vector3(15,12,12), root, "GateTower") != null: stats.buildings += 1
 		_place_fit("Palace Wall Moon Gate (Imperial China Palace and Garden)", Vector3(0,0,1), 0, Vector3(9,6,3), root, "MoonGate")
 		_place_fit("Guardian Lion Pair (Imperial China Palace and Garden)", Vector3(0,0,7), 0, Vector3(7,4.5,4.5), root, "GuardianLionPair")
 		stats.directional_gates += 1
@@ -258,7 +258,7 @@ func _build_palace_and_plaza() -> void:
 				var pos := Vector3(-10.5 + float(x)*7, float(layer)*2, -38.5 + float(z)*7)
 				_place_fit(platform, pos, 0, Vector3(7.1,2,7.1), palace, "RaisedTerrace_%d_%d_%d" % [layer,x,z])
 	_place_fit("Terrace Step Flight (Imperial China Palace and Garden)", Vector3(0,0,-9), 0, Vector3(17,4,9), palace, "BroadEngravedStairs")
-	_place_fit("Ceremonial Hall (Imperial China Palace and Garden)", Vector3(0,4,-28), 0, Vector3(30,18,23), palace, "CentralImperialPalace")
+	if _place_fit("Ceremonial Hall (Imperial China Palace and Garden)", Vector3(0,4,-28), 0, Vector3(30,18,23), palace, "CentralImperialPalace") != null: stats.buildings += 1
 	_place_fit("Imperial Throne Chair (Imperial China Palace and Garden)", Vector3(0,4.2,-20), PI, Vector3(2.8,3,2.8), palace, "EmperorThrone")
 	for i in range(4):
 		_place_fit("Dragon Roof Finial (Imperial China Palace and Garden)", Vector3(-8 + float(i)*5.3,17,-28), 0, Vector3(2.2,2.2,2.2), palace, "DragonFinial_%02d" % i)
@@ -270,8 +270,8 @@ func _build_palace_and_plaza() -> void:
 	_place_fit("Pond Water Module (Imperial China Palace and Garden)", Vector3(25,0.02,24), 0, Vector3(17,1,13), garden, "LotusPondWater")
 	_place_fit("Lotus Cluster (Imperial China Palace and Garden)", Vector3(22,0.1,21), 0, Vector3(4,1.2,4), garden, "LotusClusterWest")
 	_place_fit("Lotus Cluster (Imperial China Palace and Garden)", Vector3(28,0.1,26), 1.1, Vector3(4,1.2,4), garden, "LotusClusterEast")
-	_place_fit("Lotus pond pavilion (Imperial China Palace and Garden)", Vector3(24,0,25), 0, Vector3(15,8,13), garden, "LotusWaterPavilion")
-	_place_fit("Water Pavilion (Imperial China Palace and Garden)", Vector3(-20,0,24), 0, Vector3(13,9,12), garden, "WestWaterPavilion")
+	if _place_fit("Lotus pond pavilion (Imperial China Palace and Garden)", Vector3(24,0,25), 0, Vector3(15,8,13), garden, "LotusWaterPavilion") != null: stats.buildings += 1
+	if _place_fit("Water Pavilion (Imperial China Palace and Garden)", Vector3(-20,0,24), 0, Vector3(13,9,12), garden, "WestWaterPavilion") != null: stats.buildings += 1
 	for i in range(12):
 		var angle := TAU * float(i)/12
 		var pos := Vector3(cos(angle)*24,0,24+sin(angle)*17)
@@ -293,22 +293,23 @@ func _lantern_light(parent: Node3D, pos: Vector3, label: String) -> void:
 
 func _build_districts() -> void:
 	var district := Node3D.new()
-	district.name = "ImperialNeighborhoods_92GLBBuildings"
+	district.name = "ImperialNeighborhoods_64GLBBuildingsPlus7Landmarks"
 	add_child(district)
-	var coords := [34.0,55.0,76.0]
+	var coords := [16.0,40.0,60.0,78.0]
 	var index := 0
 	for sx in [-1.0,1.0]:
 		for sz in [-1.0,1.0]:
-			for x in range(3):
-				for z in range(3):
+			for x in range(4):
+				for z in range(4):
 					if (x==0 and z==0) or (x==1 and z==0): continue
 					var pos := Vector3(sx*coords[x],0,sz*coords[z])
 					var asset: String = BUILDINGS[index % 3]
 					var yaw: float = [0.0, PI / 2.0, PI, -PI / 2.0][(index + x + z) % 4]
-					_place_fit(asset, pos, yaw, Vector3(16,14,16), district, "ChineseBuilding_%03d_%s" % [index+1,["Residence","Shop","Pavilion"][index%3]])
+					_place_fit(asset, pos, yaw, Vector3(14,13,14), district, "ChineseBuilding_%03d_%s" % [index+1,["Residence","Shop","Pavilion"][index%3]])
 					index += 1
-	stats.buildings = index
-	if index < 24 or index > 32: push_error("Expected 24–32 properly scaled approved Chinese building placements; got " + str(index))
+	stats.district_buildings = index
+	stats.buildings += index
+	if stats.buildings < 70 or stats.buildings > 100: push_error("Expected 70–100 total buildings including palace, gates and pavilions; got " + str(stats.buildings))
 
 func _build_trees() -> void:
 	var rng := RandomNumberGenerator.new()
@@ -380,7 +381,7 @@ func _audit() -> void:
 		if node is MeshInstance3D and (node as MeshInstance3D).mesh is BoxMesh:
 			stats.box_mesh_count += 1
 	if stats.box_mesh_count != 0: push_error("BoxMesh architecture forbidden.")
-	if stats.buildings < 24 or stats.buildings > 32: push_error("Building count out of range.")
+	if stats.buildings < 70 or stats.buildings > 100: push_error("Total building count including landmarks out of range.")
 	if stats.tree_instances < 300 or stats.tree_instances > 400: push_error("Tree count out of range.")
 	if stats.directional_gates != 4 or stats.bridges != 4 or stats.gate_guardian_statues != 8: push_error("Gate/bridge/guardian audit failed.")
 	if stats.box_mesh_count == 0: print("TWIN_CITY_NO_BOX_ARCHITECTURE_PASS")
