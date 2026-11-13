@@ -829,13 +829,18 @@ static func _build_chinese_perimeter_walls(parent: Node3D, city: String, half: f
  return true
 
 static func _build_wuxia_market_stalls(parent: Node3D, city: String, height_image: Image) -> void:
- var path := "res://assets/wuxia_imperial_pack/architecture/asian_market_stall.glb"
- if not ResourceLoader.exists(path):
-  push_error("WUXIA_ASIAN_MARKET_STALL_MISSING: "+path)
-  return
- var packed := ResourceLoader.load(path) as PackedScene
- if packed == null:
-  push_error("WUXIA_ASIAN_MARKET_STALL_IMPORT_FAIL: "+path)
+ var dedicated_path := "res://assets/wuxia_imperial_pack/architecture/asian_market_stall.glb"
+ var walkway_path := "res://assets/wuxia_imperial_pack/architecture/covered_walkway_bay.glb"
+ var counter_path := "res://assets/wuxia_imperial_pack/props_nature/low_tea_table.glb"
+ var screen_path := "res://assets/wuxia_imperial_pack/architecture/latticed_screen_door_set.glb"
+ var lantern_path := "res://assets/wuxia_imperial_pack/props_nature/hanging_silk_lantern.glb"
+ var dedicated: PackedScene = ResourceLoader.load(dedicated_path) as PackedScene if ResourceLoader.exists(dedicated_path) else null
+ var walkway: PackedScene = ResourceLoader.load(walkway_path) as PackedScene if ResourceLoader.exists(walkway_path) else null
+ var counter: PackedScene = ResourceLoader.load(counter_path) as PackedScene if ResourceLoader.exists(counter_path) else null
+ var screen: PackedScene = ResourceLoader.load(screen_path) as PackedScene if ResourceLoader.exists(screen_path) else null
+ var lantern: PackedScene = ResourceLoader.load(lantern_path) as PackedScene if ResourceLoader.exists(lantern_path) else null
+ if dedicated == null and (walkway == null or counter == null or screen == null or lantern == null):
+  push_error("WUXIA_MARKET_STALL_COMPONENTS_MISSING: require a dedicated stall or covered walkway, tea counter, lattice screen and red lantern GLBs")
   return
  var stalls := [
   {"at":Vector3(-30.0,0.0,-54.0),"rotation":0.0},
@@ -846,19 +851,44 @@ static func _build_wuxia_market_stalls(parent: Node3D, city: String, height_imag
  for index in range(stalls.size()):
   var data: Dictionary = stalls[index]
   var at: Vector3 = data["at"]
-  var stall := packed.instantiate() as Node3D
-  if stall == null:
-   push_error("WUXIA_ASIAN_MARKET_STALL_ROOT_FAIL: "+path)
-   continue
+  var stall := Node3D.new()
   stall.name = city+"_ChineseMarketStall_%02d" % index
   stall.position = Vector3(at.x,WorldTerrainBuilder.sample_height_image(height_image,city,at.x,at.z,800.0)+0.85,at.z)
   stall.rotation.y = float(data["rotation"])
-  stall.scale = Vector3.ONE*1.15
+  if dedicated != null:
+   var dedicated_instance := dedicated.instantiate() as Node3D
+   if dedicated_instance != null:
+    dedicated_instance.scale = Vector3.ONE*1.15
+    stall.add_child(dedicated_instance)
+    stall.set_meta("source_asset_path",dedicated_path)
+  else:
+   var roofed_bay := walkway.instantiate() as Node3D
+   var tea_counter := counter.instantiate() as Node3D
+   var rear_screen := screen.instantiate() as Node3D
+   var red_lantern := lantern.instantiate() as Node3D
+   if roofed_bay == null or tea_counter == null or rear_screen == null or red_lantern == null:
+    push_error("WUXIA_MARKET_STALL_COMPOSITE_FAIL: "+city+" index="+str(index))
+    stall.free()
+    continue
+   roofed_bay.name = "ImportedChineseCoveredWalkwayStall"
+   stall.add_child(roofed_bay)
+   tea_counter.name = "ImportedLowTeaTableVendorCounter"
+   tea_counter.position = Vector3(0.0,0.02,1.0)
+   tea_counter.scale = Vector3.ONE*1.15
+   stall.add_child(tea_counter)
+   rear_screen.name = "ImportedChineseLatticeBackScreen"
+   rear_screen.position = Vector3(0.0,0.0,-1.65)
+   rear_screen.scale = Vector3.ONE*0.95
+   stall.add_child(rear_screen)
+   red_lantern.name = "ImportedHangingRedSilkLantern"
+   red_lantern.position = Vector3(0.0,3.0,0.0)
+   red_lantern.scale = Vector3.ONE*0.58
+   stall.add_child(red_lantern)
+   stall.set_meta("source_asset_paths",[walkway_path,counter_path,screen_path,lantern_path])
   stall.add_to_group("city_market_stall")
-  stall.set_meta("source_asset_path",path)
   parent.add_child(stall)
   _add_static_mesh_collisions(stall)
- print("WUXIA_ASIAN_MARKET_STALL_PASS: %s stalls=%d source=%s" % [city,stalls.size(),path])
+ print("WUXIA_ASIAN_MARKET_STALL_PASS: %s stalls=%d composite=%s" % [city,stalls.size(),str(dedicated==null)])
 
 static func _build_kenney_city_modules(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
  _build_wuxia_market_stalls(parent,city,height_image)
