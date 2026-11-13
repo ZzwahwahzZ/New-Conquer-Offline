@@ -289,7 +289,7 @@ func _run() -> void:
 			if arch_node.name in ["PagodaRoofTier_0", "SandstoneDome", "BasaltBattlement", "SnowRoofTier"]:
 				roof_detail_found = true
 		var total_buildings := detailed_buildings + imported_buildings.size()
-		if not _check(total_buildings >= 60 and total_buildings <= 100, city_name + " must contain 60-100 buildings (detailed=%d imported=%d total=%d)" % [detailed_buildings, imported_buildings.size(), total_buildings]):
+		if not _check(total_buildings >= 70 and total_buildings <= 100, city_name + " must contain 70-100 buildings (detailed=%d imported=%d total=%d)" % [detailed_buildings, imported_buildings.size(), total_buildings]):
 			return
 		if detailed_buildings > 0 and not _check(brick_normal_found and roof_detail_found, city_name + " fallback facades must retain brick normal and city-specific roof details"):
 			return
