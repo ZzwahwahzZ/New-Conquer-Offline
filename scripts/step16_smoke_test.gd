@@ -112,9 +112,9 @@ func _run() -> void:
 			var gate := city.find_child(direction + "_GrandCityGate", true, false)
 			if not _require(gate != null and gate.is_in_group("cardinal_gates"), "%s %s gate missing its group" % [city_id, direction]):
 				return
-		print("STEP16_CITY_PASS: %s buildings=%d imported_models=%d cardinal_gates=%d city_guardians=%d" % [city_id, building_count, imported_building_count, gate_count, guardian_count])
+		print("STEP16_CITY_PASS: %s buildings=%d imported_models=%d cardinal_gates=%d city_guardians=%d trees=%d" % [city_id, building_count, imported_building_count, gate_count, guardian_count, tree_instance_count])
 		city.queue_free()
 		await process_frame
 
-	print("STEP16_PHASE3A_CITY_CONTRACT_PASS: six cities; 80-100 buildings inside each 160m core, 4 cardinal gates and 8 guardians per city; runtime build_city invocation verified; Mobile renderer and Autoload order preserved.")
+	print("STEP16_PHASE3A_CITY_CONTRACT_PASS: six cities; 85-100 imported buildings inside each 160m core; 50 trees per city (300 total), 4 cardinal gates and 8 guardians per city; runtime build_city invocation verified; Mobile renderer and Autoload order preserved.")
 	quit(0)
