@@ -450,7 +450,7 @@ static func _instantiate_wuxia_building(parent: Node3D, city: String, index: int
  _collect_quaternius_models("res://assets/wuxia_imperial_pack/architecture", all_models)
  for path in all_models:
   var file_name := path.get_file().to_lower()
-  var is_chinese_building := file_name.contains("ceremonial_hall") or file_name.contains("water_pavilion") or file_name.contains("gate_tower") or file_name.contains("chinese_pagoda") or file_name.contains("imperial_temple") or file_name.contains("asian_palace") or file_name.contains("chinese_town_house") or file_name.contains("chinese_courtyard_house") or file_name.contains("asian_wooden_house") or file_name.contains("chinese_merchant_house") or file_name.contains("chinese_tea_house") or file_name.contains("chinese_shop_house")
+  var is_chinese_building := file_name.contains("ceremonial_hall") or file_name.contains("water_pavilion") or file_name.contains("gate_tower") or file_name.contains("chinese_pagoda") or file_name.contains("imperial_temple") or file_name.contains("asian_palace") or file_name.contains("chinese_town_house") or file_name.contains("chinese_courtyard_house") or file_name.contains("asian_wooden_house") or file_name.contains("chinese_merchant_house") or file_name.contains("chinese_tea_house") or file_name.contains("chinese_shop_house") or file_name.contains("chinese_ancestral_hall") or file_name.contains("chinese_courtyard_residence") or file_name.contains("traditional_chinese_pavilion") or file_name.contains("asian_townhouse") or file_name.contains("chinese_merchant_compound")
   if is_chinese_building:
    candidates.append(path)
  if candidates.is_empty():
