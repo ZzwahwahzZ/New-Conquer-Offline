@@ -57,7 +57,7 @@ def discover_3dassets(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                     if isinstance(creator, dict):
                         creator = creator.get("name") or creator.get("username") or creator.get("displayName") or "Not credited in API metadata"
                     title = detail.get("title") or detail.get("name") or item.get("title") or item.get("name") or str(slug)
-                    rec = {"id":"3dassets-"+safe(slug),"name":title,"source":"3DAssets.dev","source_url":detail.get("url") or "https://3dassets.dev/assets/"+str(slug),"license":license_info.get("name", "CC0 1.0 Universal") if isinstance(license_info, dict) else "CC0 1.0 Universal","authors":{"creator":str(creator)},"matches":[(category,term)],"download_url":cdn,"api_metadata":{"status":detail.get("status"),"license_slug":license_id,"cdn_url":cdn,"size_m":(detail.get("stats") or {}).get("sizeMeters)}}
+                    rec = {"id":"3dassets-"+safe(slug),"name":title,"source":"3DAssets.dev","source_url":detail.get("url") or "https://3dassets.dev/assets/"+str(slug),"license":license_info.get("name", "CC0 1.0 Universal") if isinstance(license_info, dict) else "CC0 1.0 Universal","authors":{"creator":str(creator)},"matches":[(category,term)],"download_url":cdn,"api_metadata":{"status":detail.get("status"),"license_slug":license_id,"cdn_url":cdn,"size_m":(detail.get("stats") or {}).get("sizeMeters")}}
                     DISC.append(rec)
                     path = fetch(cdn, RAW/"3dassets"/(safe(slug)+".glb"))
                     DOWN.append({**rec,"raw":str(path),"download_sha256":sha(path)})
