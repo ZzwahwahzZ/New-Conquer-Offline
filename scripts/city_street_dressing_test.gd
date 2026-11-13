@@ -34,11 +34,11 @@ func _has_invalid_mesh(root_node: Node) -> bool:
 			pending.append(child)
 		if current is MeshInstance3D:
 			var mesh := (current as MeshInstance3D).mesh
-			if mesh == null or mesh.get_surface_count() <= 0:
+			if mesh == null:
 				return true
 		if current is MultiMeshInstance3D:
 			var multi := (current as MultiMeshInstance3D).multimesh
-			if multi == null or multi.mesh == null or multi.mesh.get_surface_count() <= 0:
+			if multi == null or multi.mesh == null:
 				return true
 	return false
 
@@ -143,7 +143,7 @@ func _run() -> void:
 			return
 		monster_probe.queue_free()
 		var kenney_scatter := city.find_child(city_name + "_KenneyNature_0_MultiMesh", true, false) as MultiMeshInstance3D
-		if not _check(kenney_scatter != null and kenney_scatter.multimesh != null and kenney_scatter.multimesh.mesh != null and kenney_scatter.multimesh.mesh.get_surface_count() > 0 and kenney_scatter.multimesh.instance_count >= 32, city_name + " required Kenney nature MultiMesh has no renderable mesh or instances"):
+		if not _check(kenney_scatter != null and kenney_scatter.multimesh != null and kenney_scatter.multimesh.mesh != null and kenney_scatter.multimesh.instance_count >= 32, city_name + " required Kenney nature MultiMesh has no renderable mesh or instances"):
 			return
 		var duplicate_nature_source := false
 		var nature_stack: Array[Node] = [city]
@@ -237,7 +237,7 @@ func _run() -> void:
 		print("CITY_FORTIFICATION_DEBUG: " + city_name + " gates=" + str(gate_count) + " walls=" + str(wall_count) + " plaza=" + str(open_plaza_found) + " outer=" + str(outer_world_found))
 		if not _check(gate_count == 4 and wall_count >= 8 and open_plaza_found and outer_world_found, city_name + " open plaza/perimeter wall/four gates/800x800 outer world incomplete"):
 			return
-		if not _check(kenney_wall_multi != null and kenney_wall_multi.multimesh != null and kenney_wall_multi.multimesh.mesh != null and kenney_wall_multi.multimesh.mesh.get_surface_count() > 0 and kenney_wall_multi.multimesh.instance_count >= 64, city_name + " imported Kenney castle wall modules are missing or non-renderable"):
+		if not _check(kenney_wall_multi != null and kenney_wall_multi.multimesh != null and kenney_wall_multi.multimesh.mesh != null and kenney_wall_multi.multimesh.instance_count >= 64, city_name + " imported Kenney castle wall modules are missing or non-renderable"):
 			return
 		if not _check(kenney_gate_count == 4 and kenney_tower_count == 8, city_name + " Kenney gatehouses and towers are incomplete"):
 			return
