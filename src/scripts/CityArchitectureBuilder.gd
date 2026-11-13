@@ -845,6 +845,9 @@ static func _build_chinese_perimeter_walls(parent: Node3D, city: String, half: f
  multi.instance_count = piece_count
  var index := 0
  var local_center := bounds.position + bounds.size*0.5
+ var long_axis_is_x := bounds.size.x >= bounds.size.z
+ var wall_body := StaticBody3D.new()
+ wall_body.name = city+"_ChineseImperialRampartCollision"
  for segment in segment_data:
   var side := float(segment["side"])
   var horizontal := bool(segment["horizontal"])
@@ -855,8 +858,10 @@ static func _build_chinese_perimeter_walls(parent: Node3D, city: String, half: f
   var scale_long := spacing/long_extent
   var scale_height := 10.0/bounds.size.y
   var scale_depth := 4.0/depth_extent
-  var rotation := 0.0 if horizontal else PI*0.5
-  var basis := Basis(Vector3.UP,rotation).scaled(Vector3(scale_long,scale_height,scale_depth))
+  var scale_vector := Vector3(scale_long,scale_height,scale_depth) if long_axis_is_x else Vector3(scale_depth,scale_height,scale_long)
+  var base_rotation := 0.0 if long_axis_is_x else PI*0.5
+  var rotation := base_rotation + (0.0 if horizontal else PI*0.5)
+  var basis := Basis(Vector3.UP,rotation).scaled(scale_vector)
   for piece in range(count):
    var along := start+(float(piece)+0.5)*spacing
    var x := along if horizontal else side*half
@@ -864,6 +869,13 @@ static func _build_chinese_perimeter_walls(parent: Node3D, city: String, half: f
    var ground_y := WorldTerrainBuilder.sample_height_image(height_image,city,x,z,800.0)
    var center := Vector3(x,ground_y+5.85,z)
    multi.set_instance_transform(index,Transform3D(basis,center-basis*local_center))
+   var wall_collision := CollisionShape3D.new()
+   var wall_shape := BoxShape3D.new()
+   wall_shape.size = Vector3(bounds.size.x*scale_vector.x,bounds.size.y*scale_vector.y,bounds.size.z*scale_vector.z)
+   wall_collision.shape = wall_shape
+   wall_collision.position = center
+   wall_collision.rotation.y = rotation
+   wall_body.add_child(wall_collision)
    index += 1
  var visual := MultiMeshInstance3D.new()
  visual.name = city+"_ChineseImperialPalaceWall_MultiMesh"
@@ -875,6 +887,7 @@ static func _build_chinese_perimeter_walls(parent: Node3D, city: String, half: f
  visual.visibility_range_end = 520.0
  visual.visibility_range_end_margin = 42.0
  parent.add_child(visual)
+ parent.add_child(wall_body)
  var corner_packed := ResourceLoader.load(corner_path) as PackedScene
  if corner_packed == null:
   push_error("WUXIA_CHINESE_RAMPART_CORNER_IMPORT_FAIL: "+corner_path)
@@ -913,10 +926,10 @@ static func _build_wuxia_market_stalls(parent: Node3D, city: String, height_imag
   push_error("WUXIA_MARKET_STALL_COMPONENTS_MISSING: require a dedicated stall or covered walkway, tea counter, lattice screen and red lantern GLBs")
   return
  var stalls := [
-  {"at":Vector3(-30.0,0.0,-54.0),"rotation":0.0},
-  {"at":Vector3(30.0,0.0,-54.0),"rotation":PI},
-  {"at":Vector3(-30.0,0.0,54.0),"rotation":0.0},
-  {"at":Vector3(30.0,0.0,54.0),"rotation":PI}
+  {"at":Vector3(-12.0,0.0,-54.0),"rotation":PI*0.5},
+  {"at":Vector3(12.0,0.0,-54.0),"rotation":PI*1.5},
+  {"at":Vector3(-12.0,0.0,54.0),"rotation":PI*0.5},
+  {"at":Vector3(12.0,0.0,54.0),"rotation":PI*1.5}
  ]
  for index in range(stalls.size()):
   var data: Dictionary = stalls[index]
