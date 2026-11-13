@@ -117,7 +117,7 @@ func upgrade_item_anima(item_instance_id: String) -> bool:
 func add_item(item_id: String, quantity: int = 1) -> bool:
 	if quantity <= 0:
 		return false
-	var blueprint := GearDatabase.get_blueprint(item_id)
+	var blueprint: Dictionary = GearDatabase.get_blueprint(item_id)
 	if blueprint.is_empty():
 		return false
 	for entry in inventory:
@@ -374,7 +374,7 @@ func upgrade_item_level_by_id(instance_id: String) -> bool:
 		return false
 	var item: Dictionary = record["item"]
 	var current_level := int(item.get("required_level", 15))
-	var tier_index := GearDatabase.LEVEL_TIERS.find(current_level)
+	var tier_index: int = GearDatabase.LEVEL_TIERS.find(current_level)
 	if tier_index < 0 or tier_index >= GearDatabase.LEVEL_TIERS.size() - 1:
 		return false
 	var cost := int(LEVEL_UPGRADE_COSTS.get(current_level, 0))
@@ -400,7 +400,7 @@ func upgrade_quality_by_id(instance_id: String) -> bool:
 	if record.is_empty():
 		return false
 	var item: Dictionary = record["item"]
-	var next := GearDatabase.get_quality_upgrade(str(item.get("quality", "Normal")))
+	var next: Dictionary = GearDatabase.get_quality_upgrade(str(item.get("quality", "Normal")))
 	if next.is_empty():
 		return false
 	if not GlobalEconomy.remove_gold(int(next["cost"])):
@@ -470,7 +470,7 @@ func get_equipment_bonus() -> Dictionary:
 	for slot in equipment:
 		var item: Dictionary = equipment[slot]
 		for gem_id in item.get("sockets", []):
-			var gem := GearDatabase.get_gem(str(gem_id))
+			var gem: Dictionary = GearDatabase.get_gem(str(gem_id))
 			var stat := str(gem.get("stat", ""))
 			if result.has(stat):
 				result[stat] = float(result[stat]) + float(gem.get("percent", 0.0))
@@ -484,7 +484,7 @@ func get_item_final_stats(item: Dictionary) -> Dictionary:
 	for stat in stats:
 		stats[stat] = int(round(float(stats[stat]) * (1.0 + plus * 0.05) * multiplier))
 	for gem_id in item.get("sockets", []):
-		var gem := GearDatabase.get_gem(str(gem_id))
+		var gem: Dictionary = GearDatabase.get_gem(str(gem_id))
 		if gem.is_empty():
 			continue
 		var stat := str(gem["stat"])
