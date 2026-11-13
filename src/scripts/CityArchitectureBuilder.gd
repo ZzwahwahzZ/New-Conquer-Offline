@@ -164,7 +164,7 @@ static func _add_static_mesh_collisions(root: Node3D) -> void:
    pending.append(child)
   if current is MeshInstance3D:
    var mesh_node := current as MeshInstance3D
-   if mesh_node.mesh != null and mesh_node.mesh.get_surface_count() > 0:
+   if mesh_node.mesh != null and mesh_node.mesh.get_rid().is_valid():
     mesh_node.create_trimesh_collision()
 
 static func _build_city_walls_and_gates(parent: Node3D, city: String, p: Dictionary, height_image: Image) -> void:
