@@ -11,7 +11,7 @@ ROOT=Path.cwd(); OUT=ROOT/"assets/wuxia_imperial_pack"; RAW=ROOT/".asset_work/ra
 HF_REPO=os.getenv("HF_REPO_ID","ZzwahwahzZ/clash-of-legends-terrain-assets"); PREFIX="assets/wuxia_imperial_pack"
 S=requests.Session(); S.headers.update({"User-Agent":"NewConquerOffline-AssetPipeline/1.0 (GitHub Actions; asset audit)"})
 TERMS={"architecture":["chinese temple","imperial palace","imperial chinese palace","ceremonial hall","gate tower","moon gate","palace wall","covered walkway","water pavilion","arched stone bridge","asian house","asian shop","chinese gate","watchtower","stone bridge","pagoda","asian architecture","stone wall","fort wall","city wall"],"ornaments":["dragon statue","dragon roof finial","guardian lion","guardian lion pair","bronze tripod cauldron","stone incense burner","garden lantern","silk lantern","bronze bell","ceremonial drum","stone fountain","chinese lantern","torch"],"nature":["willow tree","pine tree","bonsai pine","bamboo","bamboo clump","plum tree blossom","lotus cluster","rockery outcrop","peony planter","bush","shrub"],"pbr":["ornamental paving","paving stones","stone","marble","red roof tile","wood"]}
-MISSING={k:list(v) for k,v in TERMS.items()}; COVERED={k:[] for k in TERMS}; DISC=[]; DOWN=[]; OK=[]; ERR=[]; VERIFIED=[]
+MISSING={k:list(v) for k,v in TERMS.items()}; COVERED={k:[] for k in TERMS}; DISC=[]; DOWN=[]; OK=[]; ERR=[]; REJECTED=[]; SKIPPED=[]; VERIFIED=[]
 def sha(p):
  h=hashlib.sha256()
  with open(p,"rb") as f:
@@ -44,6 +44,9 @@ def leaves(x):
 def polyhaven():
  assets=getj("https://api.polyhaven.com/assets",{"type":"models"})
  for aid,m in assets.items():
+  if aid == "pine_tree_01":
+   SKIPPED.append({"asset":aid,"stage":"known_legacy_failure","reason":"Excluded from final run; prior download exceeded the configured size limit"})
+   continue
   hay=" ".join([aid,str(m.get("name","")),str(m.get("category",""))," ".join(m.get("categories",[]) if isinstance(m.get("categories"),list) else []),str(m.get("description",""))," ".join(m.get("tags",[]) if isinstance(m.get("tags"),list) else [])]).lower()
   hay=re.sub(r"[_-]+"," ",hay)
   matches=[(c,t) for c,ts in TERMS.items() if c!="pbr" for t in ts if re.search(r"(?<![a-z0-9])"+re.escape(t)+r"(?![a-z0-9])",hay)]
@@ -251,7 +254,7 @@ def filter_candidates():
  accepted=[]
  for record in DOWN:
   if rejected_asset(record) or (not asset_category(record) and not (record.get("candidate_only") and is_architecture_candidate(record))):
-   ERR.append({"asset":record.get("id"),"stage":"strict_identity_filter","reason":"Rejected by blacklist/identity filter"})
+   REJECTED.append({"asset":record.get("id"),"stage":"strict_identity_filter","reason":"Rejected by blacklist/identity filter"})
   else: accepted.append(record)
  DOWN[:] = accepted
  accepted_ids={x.get("id") for x in accepted}
@@ -259,6 +262,9 @@ def filter_candidates():
  print("STRICT_FILTER",json.dumps({"discovered":len(DISC),"retained":len(DOWN)},ensure_ascii=False))
 def process():
  for r in DOWN:
+  if r.get("id") in {"opengameart-free-bamboo-v1","weed_plant_02"}:
+   SKIPPED.append({"asset":r.get("id"),"stage":"known_legacy_failure","reason":"Excluded from final run; prior normalization failed"})
+   continue
   try:
    p=Path(r["raw"]); fs=[]
    if p.suffix.lower()==".zip" or zipfile.is_zipfile(p):
@@ -342,27 +348,38 @@ def builddocs(blenderver):
    p=Path(f); category=asset_category(r,p.name)
    if not category or rejected_asset({"id":r.get("id"),"name":r.get("name"),"source":r.get("source"),"source_url":r.get("source_url"),"matches":r.get("matches"),"tags":p.name}):
     continue
-   item={"asset_id":r["id"],"name":r["name"],"category":category,"file":p.relative_to(OUT).as_posix(),"source":r["source"],"source_url":r["source_url"],"direct_download_url":r.get("download_url"),"license":r["license"],"authors":r["authors"],"dimensions_m":r.get("dimensions_m"),"bytes":p.stat().st_size,"sha256":sha(p),"validation":r["validation"]}
+   aid=str(r.get("id","")).lower()
+   style_group="imperial_chinese" if "imperial-china-palace-and-garden" in aid else "korean_hanok" if "korean-hanok-village-and-street" in aid else "environmental"
+   item={"asset_id":r["id"],"name":r["name"],"category":category,"style_group":style_group,"file":p.relative_to(OUT).as_posix(),"source":r["source"],"source_url":r["source_url"],"direct_download_url":r.get("download_url"),"license":r["license"],"authors":r["authors"],"dimensions_m":r.get("dimensions_m"),"bytes":p.stat().st_size,"sha256":sha(p),"validation":r["validation"]}
    entries.append(item); grouped[category].append(item)
  approved_paths={x["file"] for x in entries} | candidate_paths
  for stale in list(OUT.rglob("*")):
   if stale.is_file() and stale.relative_to(OUT).as_posix() not in approved_paths:
    stale.unlink()
  counts={k:len(v) for k,v in grouped.items()}
+ style_counts={}
+ for x in entries:
+  bucket=style_counts.setdefault(x["style_group"],{})
+  bucket[x["category"]]=bucket.get(x["category"],0)+1
  manifest={"schema_version":"1.0","generated_at_utc":datetime.now(timezone.utc).isoformat(),"blender_version":blenderver,"assets":entries}
  (OUT/"manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
- approved={"schema_version":"1.0","generated_at_utc":manifest["generated_at_utc"],"units":"model dimensions are measured GLB bounding boxes in meters; PBR textures have no physical dimensions","categories":{k:{"count":len(v),"assets":v} for k,v in grouped.items()},"total_approved_files":len(entries),"supplemental_candidates":supplemental}
+ approved={"schema_version":"1.0","generated_at_utc":manifest["generated_at_utc"],"units":"model dimensions are measured GLB bounding boxes in meters; PBR textures have no physical dimensions","categories":{k:{"count":len(v),"assets":v} for k,v in grouped.items()},"style_group_counts":style_counts,"total_approved_files":len(entries),"supplemental_candidates":supplemental}
  (OUT/"imperial_approved_assets.json").write_text(json.dumps(approved,ensure_ascii=False,indent=2))
- lines=["# Wuxia Imperial Asset Audit","","- Blender: "+blenderver,"- Discovered: "+str(len(DISC)),"- Downloaded: "+str(len(DOWN)),"- Validated source assets: "+str(len(OK)),"- Approved file entries: "+str(len(entries)),"- Category counts: "+json.dumps(counts,ensure_ascii=False),"- Errors: "+str(len(ERR)),"","## Approved files"]
+ lines=["# Wuxia Imperial Asset Audit","","- Blender: "+blenderver,"- Discovered: "+str(len(DISC)),"- Downloaded: "+str(len(DOWN)),"- Validated source assets: "+str(len(OK)),"- Approved file entries: "+str(len(entries)),"- Category counts: "+json.dumps(counts,ensure_ascii=False),"- Style group/category breakdown: "+json.dumps(style_counts,ensure_ascii=False),"- Operational errors: "+str(len(ERR)),"- Strict identity-filter exclusions: "+str(len(REJECTED)),"- Skipped legacy failures: "+str(len(SKIPPED)),"","## Approved files"]
  lines += ["- "+x["category"]+" | "+x["file"]+" | "+x["license"]+" | "+x["source"]+" | "+str(x["dimensions_m"] or "PBR texture set") for x in entries]
- lines += ["","## Errors"]+["- "+x["asset"]+" ("+x["stage"]+"): "+x["reason"] for x in ERR] if ERR else ["","## Errors","- None"]
+ lines += ["","## Operational errors"]+["- "+x["asset"]+" ("+x["stage"]+"): "+x["reason"] for x in ERR] if ERR else ["","## Operational errors","- None"]
+ lines += ["","## Strict identity-filter exclusions"]+["- "+x["asset"] for x in REJECTED] if REJECTED else ["","## Strict identity-filter exclusions","- None"]
+ lines += ["","## Skipped legacy failures"]+["- "+x["asset"]+" ("+x["stage"]+"): "+x["reason"] for x in SKIPPED] if SKIPPED else ["","## Skipped legacy failures","- None"]
  lines += ["","## Supplemental architecture candidates","- Downloaded and normalized, but not approved for city placement until visual style review."]
  lines += ["- "+str(x["candidate_category"])+" | "+x["file"]+" | "+str(x["name"])+" | "+str(x["source"]) for x in supplemental]
  lines += ["","## Approval rules","- Core architecture requires clear classical East Asian identity for automatic approval.","- Generic wooden/village buildings are retained as visual-review candidates rather than discarded.","- Nature and environmental dressing are accepted by visual/object suitability, independent of source-pack theme.","- Explicit modern, western-medieval, Viking, vehicle, sci-fi and unrelated wildlife assets remain excluded."]
  (OUT/"ASSET_AUDIT_REPORT.md").write_text("\n".join(lines)+"\n")
  credits=["# Third-party asset credits","","Only files listed in imperial_approved_assets.json are credited."]
  for x in entries:
-  credits += ["","## "+x["file"],"- Category: "+x["category"],"- Creator: "+(", ".join(x["authors"].keys()) if x["authors"] else x["source"]),"- Source: "+x["source_url"],"- License: "+x["license"],"- Dimensions (m): "+str(x["dimensions_m"] or "not applicable (PBR textures)"),"- SHA256: "+x["sha256"]]
+  authors=x.get("authors") or {}
+  author_values=[str(v).strip() for v in authors.values() if v and str(v).strip().lower() not in {str(x.get("source","")).strip().lower(),"3dassets.dev","ambientcg","poly haven"}]
+  creator=", ".join(dict.fromkeys(author_values)) if author_values else "Not individually credited by source"
+  credits += ["","## "+x["file"],"- Category: "+x["category"],"- Style group: "+x.get("style_group","environmental"),"- Creator attribution: "+creator,"- Publisher/source: "+x["source"],"- Asset page: "+x["source_url"],"- Direct download: "+str(x.get("direct_download_url") or "not supplied by source; use asset page"),"- License: "+x["license"],"- Dimensions (m): "+str(x["dimensions_m"] or "not applicable (PBR textures)"),"- SHA256: "+x["sha256"]]
  (ROOT/"CREDITS.md").write_text("\n".join(credits)+"\n")
  return entries
 def upload(entries):
