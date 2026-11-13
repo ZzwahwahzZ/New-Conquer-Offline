@@ -1,0 +1,5219 @@
+{
+  "schema_version": "1.0",
+  "generated_at_utc": "2026-11-13T19:41:26.785146+00:00",
+  "blender_version": "Blender 4.3.2",
+  "assets": [
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-walled--b51639b8-starter-scene",
+      "name": "Walled palace courtyard and lotus garden (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-walled--b51639b8-starter-scene.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-walled--b51639b8-starter-scene",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36222/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        32.0,
+        32.600258111953735,
+        13.109964370727539
+      ],
+      "bytes": 4266212,
+      "sha256": "a8dd1f1be87a140e7c1416d05ba35cf29a4407d4bc52904a5e8478a01a600f7e",
+      "validation": {
+        "mesh_count": 491,
+        "object_count": 676,
+        "hierarchy_parent_links": 675,
+        "material_count": 12,
+        "dimensions_m": [
+          32.0,
+          32.600258111953735,
+          13.109964370727539
+        ],
+        "min_y": -2.384185791015625e-07,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-imperial-throne-chair-ddfa68c5",
+      "name": "Imperial Throne Chair (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-imperial-throne-chair-ddfa68c5.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-imperial-throne-chair-ddfa68c5",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36199/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.299999952316284,
+        1.89990234375,
+        1.8399419784545898
+      ],
+      "bytes": 108444,
+      "sha256": "72f967ed7134128dae93df55a622b85756f7297f63bc0c520488899c68c968b8",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          2.299999952316284,
+          1.89990234375,
+          1.8399419784545898
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-palace-wall-moon-gate-a6732c7f",
+      "name": "Palace Wall Moon Gate (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-palace-wall-moon-gate-a6732c7f.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-palace-wall-moon-gate-a6732c7f",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36166/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        4.099999904632568,
+        1.5339495693333447,
+        3.579904317855835
+      ],
+      "bytes": 84524,
+      "sha256": "afa16579d3ad6ee41a22b17b2e19143f7bdffc274542f2bfa3d1a5e23f4dacf9",
+      "validation": {
+        "mesh_count": 6,
+        "object_count": 8,
+        "hierarchy_parent_links": 7,
+        "material_count": 6,
+        "dimensions_m": [
+          4.099999904632568,
+          1.5339495693333447,
+          3.579904317855835
+        ],
+        "min_y": -7.497146725654602e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-palace-wall-end-pier-21da0954",
+      "name": "Palace Wall End Pier (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-palace-wall-end-pier-21da0954.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-palace-wall-end-pier-21da0954",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36165/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.549989342689514,
+        1.2799005508422852,
+        3.7800018787384033
+      ],
+      "bytes": 31188,
+      "sha256": "69d1a316ac9ed6bad1d5c954f1a7173918fa914b413656b7d4521cf372e781b9",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          2.549989342689514,
+          1.2799005508422852,
+          3.7800018787384033
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-palace-wall-corner-92015453",
+      "name": "Palace Wall Corner (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-palace-wall-corner-92015453.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-palace-wall-corner-92015453",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36162/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.609999895095825,
+        2.609999895095825,
+        3.209937334060669
+      ],
+      "bytes": 40884,
+      "sha256": "b35a5a8b734bbb59bf41194613a577e533203e2281f63f36fdc9bc436d8a3481",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 4,
+        "hierarchy_parent_links": 3,
+        "material_count": 3,
+        "dimensions_m": [
+          2.609999895095825,
+          2.609999895095825,
+          3.209937334060669
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-palace-wall-straight-02b9fb76",
+      "name": "Palace Wall Straight (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-palace-wall-straight-02b9fb76.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-palace-wall-straight-02b9fb76",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36161/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        4.099999904632568,
+        0.6601641774177551,
+        2.7799336910247803
+      ],
+      "bytes": 17412,
+      "sha256": "901fb692b9fe351398d14ed7856ba8ceba66a4eb81249bbde3fbeb418339dfd4",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 4,
+        "hierarchy_parent_links": 3,
+        "material_count": 3,
+        "dimensions_m": [
+          4.099999904632568,
+          0.6601641774177551,
+          2.7799336910247803
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-lotus-pond-pavilion-f0b2d3d6",
+      "name": "Lotus pond pavilion (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-lotus-pond-pavilion-f0b2d3d6.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-lotus-pond-pavilion-f0b2d3d6",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36223/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        20.0,
+        17.00994497537613,
+        7.950078010559082
+      ],
+      "bytes": 912956,
+      "sha256": "70616742cf9fe139d4b3eed706d10cbd688ab8f5a2e65e502d409b2923cede75",
+      "validation": {
+        "mesh_count": 91,
+        "object_count": 135,
+        "hierarchy_parent_links": 134,
+        "material_count": 10,
+        "dimensions_m": [
+          20.0,
+          17.00994497537613,
+          7.950078010559082
+        ],
+        "min_y": -5.960464477539063e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-ceremonial-parasol-cea9c970",
+      "name": "Ceremonial Parasol (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-ceremonial-parasol-cea9c970.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-ceremonial-parasol-cea9c970",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36221/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.812147617340088,
+        1.840000033378601,
+        3.2600178718566895
+      ],
+      "bytes": 38588,
+      "sha256": "3aac603b04de7575b0ca07f1f5b916fe889956f205e7b1d209f1283cf8b27a0a",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          1.812147617340088,
+          1.840000033378601,
+          3.2600178718566895
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-bronze-brazier-stand-b637e423",
+      "name": "Bronze Brazier Stand (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-bronze-brazier-stand-b637e423.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-bronze-brazier-stand-b637e423",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36220/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.0499999523162842,
+        1.0499999523162842,
+        0.9879619181156158
+      ],
+      "bytes": 88048,
+      "sha256": "fb832b149e859bf2e7955b0583a554c87bc062273699f1eec86688f7279fd55d",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          1.0499999523162842,
+          1.0499999523162842,
+          0.9879619181156158
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-ancestral-altar-table-d4f28bab",
+      "name": "Ancestral Altar Table (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-ancestral-altar-table-d4f28bab.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-ancestral-altar-table-d4f28bab",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36219/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.205381393432617,
+        0.519863486289978,
+        1.5100218057632446
+      ],
+      "bytes": 58672,
+      "sha256": "a652004a33debe828c4f1ba258faba0eeb3e3958c1c3acdd9b8f731245be2e39",
+      "validation": {
+        "mesh_count": 6,
+        "object_count": 7,
+        "hierarchy_parent_links": 6,
+        "material_count": 6,
+        "dimensions_m": [
+          2.205381393432617,
+          0.519863486289978,
+          1.5100218057632446
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-scholars-writing-desk-6b32813c",
+      "name": "Scholars Writing Desk (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-scholars-writing-desk-6b32813c.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-scholars-writing-desk-6b32813c",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36217/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.440000057220459,
+        0.7201098799705505,
+        0.8099368810653687
+      ],
+      "bytes": 35012,
+      "sha256": "a47e86757569e9da7c6a200b03be503fb8d89bba57ce8e325e997c9b3a53d998",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          1.440000057220459,
+          0.7201098799705505,
+          0.8099368810653687
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-bronze-bell-on-frame-7d2d169b",
+      "name": "Bronze Bell On Frame (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-bronze-bell-on-frame-7d2d169b.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-bronze-bell-on-frame-7d2d169b",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36215/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.550053358078003,
+        1.2401195764541626,
+        3.0
+      ],
+      "bytes": 61848,
+      "sha256": "4e031a9cd0a80f1d95c45de6147c19b3fb8ca2503df455fe29d2f777a146b73a",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 3,
+        "dimensions_m": [
+          2.550053358078003,
+          1.2401195764541626,
+          3.0
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-lacquer-storage-chest-d4266bd5",
+      "name": "Lacquer Storage Chest (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-lacquer-storage-chest-d4266bd5.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-lacquer-storage-chest-d4266bd5",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36216/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.4199999570846558,
+        0.8251582384109497,
+        1.6539809703826904
+      ],
+      "bytes": 51568,
+      "sha256": "c9045cce470cc31de58b5081d763b665b2d7842cb8044d2acc58453431721045",
+      "validation": {
+        "mesh_count": 5,
+        "object_count": 7,
+        "hierarchy_parent_links": 6,
+        "material_count": 3,
+        "dimensions_m": [
+          1.4199999570846558,
+          0.8251582384109497,
+          1.6539809703826904
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-ceremonial-drum-on-st-66581778",
+      "name": "Ceremonial Drum On Stand (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-ceremonial-drum-on-st-66581778.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-ceremonial-drum-on-st-66581778",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36214/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.7400000095367432,
+        1.2523271767422557,
+        1.896229863166809
+      ],
+      "bytes": 47792,
+      "sha256": "b7137b74bfa0ad03a8a2f5b9c558647df22c74a34f3689e5053cb9a25e5cf7d0",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 6,
+        "hierarchy_parent_links": 5,
+        "material_count": 4,
+        "dimensions_m": [
+          1.7400000095367432,
+          1.2523271767422557,
+          1.896229863166809
+        ],
+        "min_y": 2.7008354663848877e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-polearm-weapon-rack-b76c138a",
+      "name": "Polearm Weapon Rack (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-polearm-weapon-rack-b76c138a.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-polearm-weapon-rack-b76c138a",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36213/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.200000047683716,
+        0.39989012479782104,
+        3.0001094341278076
+      ],
+      "bytes": 85576,
+      "sha256": "1b19831d553eca292c58054f996929028d70b299c91b8a44ef15c413b249a964",
+      "validation": {
+        "mesh_count": 5,
+        "object_count": 6,
+        "hierarchy_parent_links": 5,
+        "material_count": 5,
+        "dimensions_m": [
+          2.200000047683716,
+          0.39989012479782104,
+          3.0001094341278076
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-training-dummy-6fdfc7e8",
+      "name": "Training Dummy (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-training-dummy-6fdfc7e8.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-training-dummy-6fdfc7e8",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36212/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.100000023841858,
+        1.100000023841858,
+        1.9439254999160767
+      ],
+      "bytes": 35140,
+      "sha256": "138dc2db191c7d9c26c0d38d2f42e8e1ba3ea8f83f013632553d75802c307031",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 6,
+        "hierarchy_parent_links": 5,
+        "material_count": 3,
+        "dimensions_m": [
+          1.100000023841858,
+          1.100000023841858,
+          1.9439254999160767
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-guardian-lion-pair-58194b81",
+      "name": "Guardian Lion Pair (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-guardian-lion-pair-58194b81.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-guardian-lion-pair-58194b81",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36211/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.700000047683716,
+        1.4599628448486328,
+        2.0500290393829346
+      ],
+      "bytes": 136548,
+      "sha256": "b0e8a705f792c4f81370ce0bc4e5e9db3da0836de1b84f0352f029b12780b3ac",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          2.700000047683716,
+          1.4599628448486328,
+          2.0500290393829346
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-pennant-pair-on-poles-2d4a0f4c",
+      "name": "Pennant Pair On Poles (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-pennant-pair-on-poles-2d4a0f4c.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-pennant-pair-on-poles-2d4a0f4c",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36210/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.5300000309944153,
+        0.40005797147750854,
+        2.9299683570861816
+      ],
+      "bytes": 25268,
+      "sha256": "7269ef6464df08e5f3235793e6c60833054a52f2e33d22f67fbf4a41a8071d48",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          1.5300000309944153,
+          0.40005797147750854,
+          2.9299683570861816
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-ceremonial-banner-pol-5795ed1a",
+      "name": "Ceremonial Banner Pole (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-ceremonial-banner-pol-5795ed1a.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-ceremonial-banner-pol-5795ed1a",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36209/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.0399198830127716,
+        0.699999988079071,
+        4.440019607543945
+      ],
+      "bytes": 21236,
+      "sha256": "0ac32b8cbdca1cba7555f745b5dafdd1bcb1d57d985c56e7ed9f2a210905c6e1",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          1.0399198830127716,
+          0.699999988079071,
+          4.440019607543945
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-folding-screen-5a8651b3",
+      "name": "Folding Screen (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-folding-screen-5a8651b3.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-folding-screen-5a8651b3",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36207/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.1090638637542725,
+        0.802658174186945,
+        1.9599937219172716
+      ],
+      "bytes": 104772,
+      "sha256": "c2e1fb0460c5775c7ed346c8c00722e40b8bd451b882d66a44f7d04b91508ebe",
+      "validation": {
+        "mesh_count": 12,
+        "object_count": 15,
+        "hierarchy_parent_links": 14,
+        "material_count": 6,
+        "dimensions_m": [
+          2.1090638637542725,
+          0.802658174186945,
+          1.9599937219172716
+        ],
+        "min_y": 2.60770320892334e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-scroll-rack-f7fd0af5",
+      "name": "Scroll Rack (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-scroll-rack-f7fd0af5.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-scroll-rack-f7fd0af5",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36206/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.2400281429290771,
+        0.42506177723407745,
+        1.600000023841858
+      ],
+      "bytes": 102648,
+      "sha256": "20620cb5b4757a28aa229fb92af8ad5fa0b5fd6e7c614f53bc0c183fae9c99bf",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 4,
+        "hierarchy_parent_links": 3,
+        "material_count": 3,
+        "dimensions_m": [
+          1.2400281429290771,
+          0.42506177723407745,
+          1.600000023841858
+        ],
+        "min_y": -1.4901161193847656e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-guqin-on-stand-ba936ac2",
+      "name": "Guqin On Stand (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-guqin-on-stand-ba936ac2.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-guqin-on-stand-ba936ac2",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36203/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.2767153978347778,
+        0.43994981050491333,
+        0.6599417328834534
+      ],
+      "bytes": 55852,
+      "sha256": "393912f2e2139c162592c5353d7ac847dc733163617cd80b85b26b0e2969418a",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 4,
+        "hierarchy_parent_links": 3,
+        "material_count": 3,
+        "dimensions_m": [
+          1.2767153978347778,
+          0.43994981050491333,
+          0.6599417328834534
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-low-tea-table-44124ae8",
+      "name": "Low Tea Table (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-low-tea-table-44124ae8.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-low-tea-table-44124ae8",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36201/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.1399999856948853,
+        0.6599871516227722,
+        0.42003294825553894
+      ],
+      "bytes": 35112,
+      "sha256": "f33639e1f7f42e4d816b51a7a321870327d2608a8796995f7c23f08335b644e7",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          1.1399999856948853,
+          0.6599871516227722,
+          0.42003294825553894
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-throne-footstool-b00e5767",
+      "name": "Throne Footstool (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-throne-footstool-b00e5767.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-throne-footstool-b00e5767",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36200/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.8799999952316284,
+        0.5599536299705505,
+        0.3219665288925171
+      ],
+      "bytes": 36572,
+      "sha256": "cf3f042d40afdaceabc250033d693d02403c7869a976ba2d3f0c4de932e04b34",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          0.8799999952316284,
+          0.5599536299705505,
+          0.3219665288925171
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-peony-planter-f6018406",
+      "name": "Peony Planter (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-peony-planter-f6018406.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-peony-planter-f6018406",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36198/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.0364954471588135,
+        0.8843671083450317,
+        1.2800124511122704
+      ],
+      "bytes": 77376,
+      "sha256": "daf10d7d049e3a374826c76ef3ba943f255c10e1f4d61cab44aefe72f91ded93",
+      "validation": {
+        "mesh_count": 5,
+        "object_count": 6,
+        "hierarchy_parent_links": 5,
+        "material_count": 5,
+        "dimensions_m": [
+          1.0364954471588135,
+          0.8843671083450317,
+          1.2800124511122704
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-royal-court-and-throne-palace-palace-audience-house-55f0cb24",
+      "name": "Palace Audience House (Royal Court and Throne Palace)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-royal-court-and-throne-palace-palace-audience-house-55f0cb24.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/royal-court-and-throne-palace-palace-audience-house-55f0cb24",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/29378/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        8.399999618530273,
+        4.520572662353516,
+        5.150219917297363
+      ],
+      "bytes": 1055596,
+      "sha256": "ef490acb5230009be64a448daa3fc94b640aec99a613419b3bb9741ce7be82a8",
+      "validation": {
+        "mesh_count": 6,
+        "object_count": 7,
+        "hierarchy_parent_links": 6,
+        "material_count": 6,
+        "dimensions_m": [
+          8.399999618530273,
+          4.520572662353516,
+          5.150219917297363
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-royal-court-and-throne-palace-palace-lantern-post-6a52be2f",
+      "name": "Palace Lantern Post (Royal Court and Throne Palace)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-royal-court-and-throne-palace-palace-lantern-post-6a52be2f.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/royal-court-and-throne-palace-palace-lantern-post-6a52be2f",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/29419/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.3398524224758148,
+        0.3398524224758148,
+        2.7149999141693115
+      ],
+      "bytes": 88828,
+      "sha256": "763aabf8c6c32703b299f565e15a30c6a2d09256380b6485b8bd61442ad8abdb",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 4,
+        "hierarchy_parent_links": 3,
+        "material_count": 3,
+        "dimensions_m": [
+          0.3398524224758148,
+          0.3398524224758148,
+          2.7149999141693115
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-marina-and-yacht-club-marina-and-yacht-club-motor-crui-f2c8eeb9",
+      "name": "Motor cruiser with flybridge, 11.5 m (Marina and Yacht Club)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-marina-and-yacht-club-marina-and-yacht-club-motor-crui-f2c8eeb9.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/marina-and-yacht-club-marina-and-yacht-club-motor-crui-f2c8eeb9",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/38307/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        3.3125205039978027,
+        11.850000381469727,
+        4.959477424621582
+      ],
+      "bytes": 109412,
+      "sha256": "a8c4a28abdbbfbbcf0a67cc34539edd6018b79d3fc6629d80a6b14ce1e47abd8",
+      "validation": {
+        "mesh_count": 6,
+        "object_count": 7,
+        "hierarchy_parent_links": 6,
+        "material_count": 6,
+        "dimensions_m": [
+          3.3125205039978027,
+          11.850000381469727,
+          4.959477424621582
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-royal-court-and-throne-palace-royal-cour-dab6f27e-starter-scene",
+      "name": "Royal Courtyard Audience (Royal Court and Throne Palace)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-royal-court-and-throne-palace-royal-cour-dab6f27e-starter-scene.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/royal-court-and-throne-palace-royal-cour-dab6f27e-starter-scene",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/29432/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        16.0,
+        16.0,
+        5.250321865081787
+      ],
+      "bytes": 6414972,
+      "sha256": "9d668ea0cbf187b04c16772018a560089b58e4ac1f8d51cab2b3874d73c0f549",
+      "validation": {
+        "mesh_count": 248,
+        "object_count": 344,
+        "hierarchy_parent_links": 343,
+        "material_count": 11,
+        "dimensions_m": [
+          16.0,
+          16.0,
+          5.250321865081787
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-royal-court-and-throne-palace-court-harp-526a088b",
+      "name": "Court Harp (Royal Court and Throne Palace)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-royal-court-and-throne-palace-court-harp-526a088b.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/royal-court-and-throne-palace-court-harp-526a088b",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/29428/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.9684708714485168,
+        0.40003132820129395,
+        1.6609004735946655
+      ],
+      "bytes": 99224,
+      "sha256": "e270a5718d7e7551cff890c6811404624d3b0755794a99840aa95a48008fe45b",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 4,
+        "hierarchy_parent_links": 3,
+        "material_count": 3,
+        "dimensions_m": [
+          0.9684708714485168,
+          0.40003132820129395,
+          1.6609004735946655
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-royal-court-and-throne-palace-ceremonial-drum-fbf99710",
+      "name": "Ceremonial Drum (Royal Court and Throne Palace)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-royal-court-and-throne-palace-ceremonial-drum-fbf99710.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/royal-court-and-throne-palace-ceremonial-drum-fbf99710",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/29427/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.5799999833106995,
+        0.5799999833106995,
+        0.4319848120212555
+      ],
+      "bytes": 45508,
+      "sha256": "309ee3c531dd32d3f770dd62d685c04aace309ee193c596fc561775c05527dc7",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          0.5799999833106995,
+          0.5799999833106995,
+          0.4319848120212555
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-royal-court-and-throne-palace-courtyard-entry-arch-c5cc904e",
+      "name": "Courtyard Entry Arch (Royal Court and Throne Palace)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-royal-court-and-throne-palace-courtyard-entry-arch-c5cc904e.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/royal-court-and-throne-palace-courtyard-entry-arch-c5cc904e",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/29425/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        3.740000009536743,
+        0.6909026801586151,
+        3.3589437007904053
+      ],
+      "bytes": 198868,
+      "sha256": "7558ff36c65d44c121adb3d12961a2573b77bffd10b7689d5510fd103b120704",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          3.740000009536743,
+          0.6909026801586151,
+          3.3589437007904053
+        ],
+        "min_y": 2.9802322387695312e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-open-ocean-and-deep-sea-life-california-sea-lion-58ed43ba",
+      "name": "california sea lion (Ocean Animals: Whales, Sharks and Fish)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-open-ocean-and-deep-sea-life-california-sea-lion-58ed43ba.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/open-ocean-and-deep-sea-life-california-sea-lion-58ed43ba",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/5894/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.4971657991409302,
+        2.0000062584877014,
+        1.0598276853561401
+      ],
+      "bytes": 191344,
+      "sha256": "4dc82219ce52fc1ea7c3e88049d840fb06a1f8c7074f77149624b995bb2608bc",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          1.4971657991409302,
+          2.0000062584877014,
+          1.0598276853561401
+        ],
+        "min_y": -5.960464477539063e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-feudal-japan-castle-town-komainu-guardian-pair-aedbfa41",
+      "name": "Komainu Guardian Pair (Feudal Japan Castle Town)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-feudal-japan-castle-town-komainu-guardian-pair-aedbfa41.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/feudal-japan-castle-town-komainu-guardian-pair-aedbfa41",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/26381/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.0,
+        1.059968888759613,
+        1.2499160766601562
+      ],
+      "bytes": 54232,
+      "sha256": "d4bfb9c4342630ae471791d8c035a5a1d476a4efbf87a7865ec70d91a5a01699",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          2.0,
+          1.059968888759613,
+          1.2499160766601562
+        ],
+        "min_y": 5.960464477539063e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-ocean-giants-kit-lions-mane-jellyfish-71cdb2df",
+      "name": "lions mane jellyfish (Ocean Giants: Whales, Dolphins, Sharks and Reef Life)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-ocean-giants-kit-lions-mane-jellyfish-71cdb2df.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/ocean-giants-kit-lions-mane-jellyfish-71cdb2df",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/39355/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.000849962234497,
+        1.0,
+        1.286697268486023
+      ],
+      "bytes": 256588,
+      "sha256": "ff35be816966082a0d21c3bf3ca145eb40c744520b5e52d88a69eadd45e78c06",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          1.000849962234497,
+          1.0,
+          1.286697268486023
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-griffin-airmail-roost-and-posthouse-folded-wing-griffi-5fc428be",
+      "name": "Folded Wing Griffin (Griffin Airmail Roost and Posthouse)",
+      "category": "houses_and_shops",
+      "file": "models/3dassets-griffin-airmail-roost-and-posthouse-folded-wing-griffi-5fc428be.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/griffin-airmail-roost-and-posthouse-folded-wing-griffi-5fc428be",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/30503/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.4055946469306946,
+        3.1150569319725037,
+        2.016200304031372
+      ],
+      "bytes": 1566296,
+      "sha256": "925de0f7b3e2fd01a09b0679dd2d7d3ff2bc8306d91ccfe891200d8eac595dc5",
+      "validation": {
+        "mesh_count": 8,
+        "object_count": 9,
+        "hierarchy_parent_links": 8,
+        "material_count": 8,
+        "dimensions_m": [
+          1.4055946469306946,
+          3.1150569319725037,
+          2.016200304031372
+        ],
+        "min_y": 5.960464477539063e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-moonsteel-convergence-jade-prowler-efa4200b",
+      "name": "Jade prowler — jungle beast (Moonsteel Convergence: MOBA Champions and Arena)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-moonsteel-convergence-jade-prowler-efa4200b.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/moonsteel-convergence-jade-prowler-efa4200b",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/18180/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.030070424079895,
+        3.118924379348755,
+        2.1679182052612305
+      ],
+      "bytes": 178664,
+      "sha256": "59cf1a7e6b8cf1361365db5cdc47d1a92f9c11738797a5c5724848d9988e0913",
+      "validation": {
+        "mesh_count": 5,
+        "object_count": 6,
+        "hierarchy_parent_links": 5,
+        "material_count": 5,
+        "dimensions_m": [
+          1.030070424079895,
+          3.118924379348755,
+          2.1679182052612305
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-feudal-japan-castle-town-ridge-ornament-onigawara-39f11cb3",
+      "name": "Ridge Ornament Onigawara (Feudal Japan Castle Town)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-feudal-japan-castle-town-ridge-ornament-onigawara-39f11cb3.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/feudal-japan-castle-town-ridge-ornament-onigawara-39f11cb3",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/26606/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.7000335454940796,
+        0.600054919719696,
+        1.0
+      ],
+      "bytes": 38028,
+      "sha256": "6e8f7a3182a1651c6b07a8ff92a017d10a2b65e9ab12dc3b32d4f34a6571f786",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          0.7000335454940796,
+          0.600054919719696,
+          1.0
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-moonsteel-convergence-obsidian-boss-pit-522724e0",
+      "name": "Obsidian boss pit (Moonsteel Convergence: MOBA Champions and Arena)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-moonsteel-convergence-obsidian-boss-pit-522724e0.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/moonsteel-convergence-obsidian-boss-pit-522724e0",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/18221/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        8.457567691802979,
+        7.110903680324554,
+        5.283881187438965
+      ],
+      "bytes": 1141296,
+      "sha256": "3e137f742e26f28d55ecc787647fc1dc799c067a4bd317101ed042298a84f6f3",
+      "validation": {
+        "mesh_count": 36,
+        "object_count": 47,
+        "hierarchy_parent_links": 46,
+        "material_count": 8,
+        "dimensions_m": [
+          8.457567691802979,
+          7.110903680324554,
+          5.283881187438965
+        ],
+        "min_y": 5.960464477539063e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-sunfall-rift-moba-rift-colossus-6e8b2338",
+      "name": "Rift Colossus — jungle boss (Sunfall Rift: MOBA Heroes and Arena)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-sunfall-rift-moba-rift-colossus-6e8b2338.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/sunfall-rift-moba-rift-colossus-6e8b2338",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/21993/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.6981494426727295,
+        1.5679734945297241,
+        2.74029541015625
+      ],
+      "bytes": 299708,
+      "sha256": "12308e9557d43dd746e28ca727af28e7216f4497f0a69e9c5bc2b85cdf34ddc5",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          2.6981494426727295,
+          1.5679734945297241,
+          2.74029541015625
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-mythic-underworld-and-olympus-griffin-statue-fd1dd14b",
+      "name": "Griffin Statue (Greek Mythology: Underworld and Olympus)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-mythic-underworld-and-olympus-griffin-statue-fd1dd14b.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/mythic-underworld-and-olympus-griffin-statue-fd1dd14b",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/21456/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        3.879185914993286,
+        2.688456028699875,
+        2.203181505203247
+      ],
+      "bytes": 197140,
+      "sha256": "014b49a3854695b4a088842f593e606f16d8399bcdcd6277c64398f5d10777f6",
+      "validation": {
+        "mesh_count": 5,
+        "object_count": 6,
+        "hierarchy_parent_links": 5,
+        "material_count": 5,
+        "dimensions_m": [
+          3.879185914993286,
+          2.688456028699875,
+          2.203181505203247
+        ],
+        "min_y": 2.9802322387695312e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-mythic-underworld-and-olympus-chimera-statue-aea02300",
+      "name": "Chimera Statue (Greek Mythology: Underworld and Olympus)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-mythic-underworld-and-olympus-chimera-statue-aea02300.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/mythic-underworld-and-olympus-chimera-statue-aea02300",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/21443/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.4000000953674316,
+        2.8432669639587402,
+        2.891721248626709
+      ],
+      "bytes": 228992,
+      "sha256": "5e7d90f5a2784483d62cc09ea3193e26b9d0ffe5f2c4bfee651147608e0f2d82",
+      "validation": {
+        "mesh_count": 5,
+        "object_count": 6,
+        "hierarchy_parent_links": 5,
+        "material_count": 5,
+        "dimensions_m": [
+          2.4000000953674316,
+          2.8432669639587402,
+          2.891721248626709
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-exotic-wildlife-hd-savanna-waterhole-f5860bf0-starter-scene",
+      "name": "Savanna waterhole at dawn (Realistic Wild Animals HD)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-exotic-wildlife-hd-savanna-waterhole-f5860bf0-starter-scene.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/exotic-wildlife-hd-savanna-waterhole-f5860bf0-starter-scene",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/30236/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        28.887348175048828,
+        27.828615307807922,
+        7.763274669647217
+      ],
+      "bytes": 7664952,
+      "sha256": "12d8bdd04a6e9c97aa441f51b550d62804376f0683e19d67a6ba81937cc56bd4",
+      "validation": {
+        "mesh_count": 152,
+        "object_count": 211,
+        "hierarchy_parent_links": 210,
+        "material_count": 15,
+        "dimensions_m": [
+          28.887348175048828,
+          27.828615307807922,
+          7.763274669647217
+        ],
+        "min_y": -1.1920928955078125e-07,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-mythic-underworld-and-olympus-sphinx-statue-b0d55c32",
+      "name": "Sphinx Statue (Greek Mythology: Underworld and Olympus)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-mythic-underworld-and-olympus-sphinx-statue-b0d55c32.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/mythic-underworld-and-olympus-sphinx-statue-b0d55c32",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/21441/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        3.0,
+        3.0138771533966064,
+        2.549983024597168
+      ],
+      "bytes": 89924,
+      "sha256": "2980e44762d36d5b91ca998d30f854e737590785854dd38c21fa6883f7e529b2",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          3.0,
+          3.0138771533966064,
+          2.549983024597168
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-mythic-underworld-and-olympus-tripod-cauldron-b86c0ae9",
+      "name": "Tripod Cauldron (Greek Mythology: Underworld and Olympus)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-mythic-underworld-and-olympus-tripod-cauldron-b86c0ae9.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/mythic-underworld-and-olympus-tripod-cauldron-b86c0ae9",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/21406/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.3413045406341553,
+        1.3810169696807861,
+        1.6513441801071167
+      ],
+      "bytes": 61748,
+      "sha256": "a970b761adc88041aeb3ab575ae3056aaac562f9bee3d6ef3a413dc1baa0f96d",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          1.3413045406341553,
+          1.3810169696807861,
+          1.6513441801071167
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-mythic-underworld-and-olympus-cerberus-statue-266c7c3a",
+      "name": "Cerberus Statue (Greek Mythology: Underworld and Olympus)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-mythic-underworld-and-olympus-cerberus-statue-266c7c3a.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/mythic-underworld-and-olympus-cerberus-statue-266c7c3a",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/21357/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.200000047683716,
+        3.673280045390129,
+        2.7940473556518555
+      ],
+      "bytes": 198680,
+      "sha256": "aa1ec937e26eef2edf32bcdf27e4692f917e365d79ca03e8efd25dcff9a82961",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          2.200000047683716,
+          3.673280045390129,
+          2.7940473556518555
+        ],
+        "min_y": -4.470348358154297e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-dragon-roof-finial-7dd7653a",
+      "name": "Dragon Roof Finial (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-dragon-roof-finial-7dd7653a.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-dragon-roof-finial-7dd7653a",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36179/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.7581887543201447,
+        1.301856517791748,
+        0.9803181886672974
+      ],
+      "bytes": 44704,
+      "sha256": "d669b0fceb234687163e5cac4361a28d408884e8c26193f339e542cd3382b068",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          0.7581887543201447,
+          1.301856517791748,
+          0.9803181886672974
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-distillery-and-bonded-warehouse-pagoda-roof-vent-a6001cc0",
+      "name": "Pagoda Roof Kiln Vent (Distillery and Bonded Warehouse)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-distillery-and-bonded-warehouse-pagoda-roof-vent-a6001cc0.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/distillery-and-bonded-warehouse-pagoda-roof-vent-a6001cc0",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/38710/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        3.5999999046325684,
+        3.5999999046325684,
+        3.8399391174316406
+      ],
+      "bytes": 63268,
+      "sha256": "dee5018dfc57111c7f2068be9e924201e48d7a575446656d6d9257866c1ba7f3",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 4,
+        "hierarchy_parent_links": 3,
+        "material_count": 3,
+        "dimensions_m": [
+          3.5999999046325684,
+          3.5999999046325684,
+          3.8399391174316406
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-lighthouse-and-rocky-coast-lighthouse-dome-and-vane-d40efb1a",
+      "name": "Lighthouse Dome and Vane (Lighthouse and Rocky Coast)",
+      "category": "houses_and_shops",
+      "file": "models/3dassets-lighthouse-and-rocky-coast-lighthouse-dome-and-vane-d40efb1a.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/lighthouse-and-rocky-coast-lighthouse-dome-and-vane-d40efb1a",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36590/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        3.559999942779541,
+        3.3857319355010986,
+        3.819976329803467
+      ],
+      "bytes": 41048,
+      "sha256": "0bc2dfa713fae1c2aa680eb842f051a2cf30c836b56a51fb2d8835db41322467",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 7,
+        "hierarchy_parent_links": 6,
+        "material_count": 2,
+        "dimensions_m": [
+          3.559999942779541,
+          3.3857319355010986,
+          3.819976329803467
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-desert-mosque-and-madrasa-courtyard-plaster-dome-on-dr-13f97c36",
+      "name": "Plaster Dome On Drum Small (Desert Mosque and Madrasa Courtyard)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-desert-mosque-and-madrasa-courtyard-plaster-dome-on-dr-13f97c36.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/desert-mosque-and-madrasa-courtyard-plaster-dome-on-dr-13f97c36",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/38111/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.9600000381469727,
+        2.9600000381469727,
+        3.13993239402771
+      ],
+      "bytes": 111656,
+      "sha256": "003f01a67ae63cc8f061d0f12fdd77b6aeb8a787f1bfbfc46a6ab3558ce60040",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          2.9600000381469727,
+          2.9600000381469727,
+          3.13993239402771
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-medieval-mmo-starter-realm-wizard-tower-top-ef55c481",
+      "name": "Wizard Tower Top Stage (Medieval MMO Starter Realm)",
+      "category": "gates_walls_bridges",
+      "file": "models/3dassets-medieval-mmo-starter-realm-wizard-tower-top-ef55c481.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/medieval-mmo-starter-realm-wizard-tower-top-ef55c481",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/28755/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        4.8495025634765625,
+        4.924038887023926,
+        7.999980449676514
+      ],
+      "bytes": 85060,
+      "sha256": "0c8fedc3d9ab216ed31de8762474321fd6e50112f52f65d150b392b81a2e091a",
+      "validation": {
+        "mesh_count": 5,
+        "object_count": 7,
+        "hierarchy_parent_links": 6,
+        "material_count": 5,
+        "dimensions_m": [
+          4.8495025634765625,
+          4.924038887023926,
+          7.999980449676514
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-water-pavilion-477e41ba",
+      "name": "Water Pavilion (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-water-pavilion-477e41ba.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-water-pavilion-477e41ba",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36170/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        6.599999904632568,
+        6.599999904632568,
+        7.700037002563477
+      ],
+      "bytes": 182840,
+      "sha256": "bab023dbb43ed24d45cc1f445519afe55c9b7e549ebabfa5936b1d60b5163ddd",
+      "validation": {
+        "mesh_count": 6,
+        "object_count": 7,
+        "hierarchy_parent_links": 6,
+        "material_count": 6,
+        "dimensions_m": [
+          6.599999904632568,
+          6.599999904632568,
+          7.700037002563477
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-desert-mosque-and-madrasa-courtyard-glazed-dome-on-dru-634d2284",
+      "name": "Glazed Dome On Drum Large (Desert Mosque and Madrasa Courtyard)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-desert-mosque-and-madrasa-courtyard-glazed-dome-on-dru-634d2284.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/desert-mosque-and-madrasa-courtyard-glazed-dome-on-dru-634d2284",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/38110/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        4.9120001792907715,
+        4.9120001792907715,
+        5.159882545471191
+      ],
+      "bytes": 242416,
+      "sha256": "fbe0baf08f2bf140342de03150746acaa7e64553b042e5e6d959794984d067fe",
+      "validation": {
+        "mesh_count": 6,
+        "object_count": 7,
+        "hierarchy_parent_links": 6,
+        "material_count": 6,
+        "dimensions_m": [
+          4.9120001792907715,
+          4.9120001792907715,
+          5.159882545471191
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-dragons-and-wyverns-cave-mouth-arch-4db4a056",
+      "name": "Cave Mouth Arch (Dragons and Wyverns)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-dragons-and-wyverns-cave-mouth-arch-4db4a056.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/dragons-and-wyverns-cave-mouth-arch-4db4a056",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36749/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        13.060056686401367,
+        6.002914905548096,
+        6.744659900665283
+      ],
+      "bytes": 40736,
+      "sha256": "6322b794053d28cccc1201c9638df15df0de8bb8e793abad0c0cd1fd3e2ec9bc",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          13.060056686401367,
+          6.002914905548096,
+          6.744659900665283
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-korean-hanok-village-and-street-stone-pagoda-ornament-5acf5291",
+      "name": "Stone Pagoda Ornament (Korean Hanok Village and Street)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-korean-hanok-village-and-street-stone-pagoda-ornament-5acf5291.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/korean-hanok-village-and-street-stone-pagoda-ornament-5acf5291",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/38084/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.5001013278961182,
+        1.5001013278961182,
+        2.569999933242798
+      ],
+      "bytes": 34372,
+      "sha256": "972178d4ab73638dc2cd6bc315ff7019ccdbd11692db1d6a8213cd325be6a2a3",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          1.5001013278961182,
+          1.5001013278961182,
+          2.569999933242798
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-wipe-day-survival-island-lighthouse-lantern-room-bc3fcae1",
+      "name": "Lighthouse Lantern Room (Wipe Day Survival Island)",
+      "category": "houses_and_shops",
+      "file": "models/3dassets-wipe-day-survival-island-lighthouse-lantern-room-bc3fcae1.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/wipe-day-survival-island-lighthouse-lantern-room-bc3fcae1",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/27504/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.9600000381469727,
+        2.9600000381469727,
+        3.1500000953674316
+      ],
+      "bytes": 41224,
+      "sha256": "bfab452966984be3fc114236961082b8d05121d09b75c5c800b440b8b492ce44",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 4,
+        "hierarchy_parent_links": 3,
+        "material_count": 3,
+        "dimensions_m": [
+          2.9600000381469727,
+          2.9600000381469727,
+          3.1500000953674316
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-city-park-and-playground-park-bandstand-9f4cd475",
+      "name": "Hexagonal Park Bandstand (City Park and Playground)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-city-park-and-playground-park-bandstand-9f4cd475.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/city-park-and-playground-park-bandstand-9f4cd475",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/33686/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        5.800000190734863,
+        6.550000190734863,
+        5.681891441345215
+      ],
+      "bytes": 102364,
+      "sha256": "9f63d73fd2a2e259322f71c23fdc941f431cad5637f7118634b90dd60b72fa7d",
+      "validation": {
+        "mesh_count": 5,
+        "object_count": 6,
+        "hierarchy_parent_links": 5,
+        "material_count": 5,
+        "dimensions_m": [
+          5.800000190734863,
+          6.550000190734863,
+          5.681891441345215
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-christmas-storybook-winter-gazebo-ffe82bca",
+      "name": "Winter bandstand (Christmas Storybook)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-christmas-storybook-winter-gazebo-ffe82bca.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/christmas-storybook-winter-gazebo-ffe82bca",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/18689/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        3.359858989715576,
+        3.359858989715576,
+        3.916970729827881
+      ],
+      "bytes": 147632,
+      "sha256": "0730ccd3d33ab747357de4e3701bd1bbe3e24e566aeb2c3cd06ded3e87463112",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          3.359858989715576,
+          3.359858989715576,
+          3.916970729827881
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-fantasy-mmo-city-and-townsfolk-wall-gate-tower-1cf4e6ef",
+      "name": "City Wall Round Tower (Fantasy MMO City And Townsfolk)",
+      "category": "gates_walls_bridges",
+      "file": "models/3dassets-fantasy-mmo-city-and-townsfolk-wall-gate-tower-1cf4e6ef.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/fantasy-mmo-city-and-townsfolk-wall-gate-tower-1cf4e6ef",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/32718/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        4.666500091552734,
+        4.666500091552734,
+        10.600000381469727
+      ],
+      "bytes": 775612,
+      "sha256": "3e929f8d8a2672050113ed7e9a748f7131a7306fb059d7078b17927fbc417cf5",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          4.666500091552734,
+          4.666500091552734,
+          10.600000381469727
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-viking-age-longhouse-and-longship-longhouse-gable-end-27117688",
+      "name": "Longhouse Gable End (Viking Age Longhouse and Longship)",
+      "category": "houses_and_shops",
+      "file": "models/3dassets-viking-age-longhouse-and-longship-longhouse-gable-end-27117688.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/viking-age-longhouse-and-longship-longhouse-gable-end-27117688",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/30167/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        5.590000152587891,
+        0.38009342551231384,
+        4.941726207733154
+      ],
+      "bytes": 217664,
+      "sha256": "7a37b271e7ffdd99802d41466d9d29b155bc0c52be8637e67db636b1f40bbe73",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          5.590000152587891,
+          0.38009342551231384,
+          4.941726207733154
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-fantasy-mmo-city-and-townsfolk-pennant-pole-27a7745f",
+      "name": "City Pennant Pole (Fantasy MMO City And Townsfolk)",
+      "category": "statues_and_props",
+      "file": "models/3dassets-fantasy-mmo-city-and-townsfolk-pennant-pole-27a7745f.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/fantasy-mmo-city-and-townsfolk-pennant-pole-27a7745f",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/32781/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        3.32296621799469,
+        1.2400000095367432,
+        6.840009689331055
+      ],
+      "bytes": 141408,
+      "sha256": "9713a89927894786eca386866fd55e6a45d549a9a4601cfadfe6bac39743a190",
+      "validation": {
+        "mesh_count": 8,
+        "object_count": 10,
+        "hierarchy_parent_links": 9,
+        "material_count": 6,
+        "dimensions_m": [
+          3.32296621799469,
+          1.2400000095367432,
+          6.840009689331055
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-korean-hanok-village-and-street-bamboo-clump-01131093",
+      "name": "Bamboo Clump (Korean Hanok Village and Street)",
+      "category": "nature",
+      "file": "models/3dassets-korean-hanok-village-and-street-bamboo-clump-01131093.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/korean-hanok-village-and-street-bamboo-clump-01131093",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/38087/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.8385021686553955,
+        2.270370602607727,
+        4.409794330596924
+      ],
+      "bytes": 146872,
+      "sha256": "13ee5a65ba949aa601eed8ecc92e1a643f30a2cc7442d228c92a778e537ef915",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          1.8385021686553955,
+          2.270370602607727,
+          4.409794330596924
+        ],
+        "min_y": -1.1920928955078125e-07,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-bamboo-clump-66640906",
+      "name": "Bamboo Clump (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-bamboo-clump-66640906.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-bamboo-clump-66640906",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36194/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.7347018718719482,
+        2.0981807708740234,
+        4.321521759033203
+      ],
+      "bytes": 125716,
+      "sha256": "13822c4b7a95dde6eb9d27d966c843144e447dcbba7cc49417e05145390efbbf",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          1.7347018718719482,
+          2.0981807708740234,
+          4.321521759033203
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-botanical-glasshouse-and-palm-house-botanical-glasshou-5298b114",
+      "name": "Bamboo clump, 3.4 m (Botanical Glasshouse and Palm House)",
+      "category": "houses_and_shops",
+      "file": "models/3dassets-botanical-glasshouse-and-palm-house-botanical-glasshou-5298b114.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/botanical-glasshouse-and-palm-house-botanical-glasshou-5298b114",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/38590/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.1915661096572876,
+        1.1797420382499695,
+        3.3039307594299316
+      ],
+      "bytes": 489420,
+      "sha256": "41eb5505b1107f0365bdab7d6fb19d6d8352f3d00ce42c9b61ec2ba3ed1cd230",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 4,
+        "hierarchy_parent_links": 3,
+        "material_count": 3,
+        "dimensions_m": [
+          1.1915661096572876,
+          1.1797420382499695,
+          3.3039307594299316
+        ],
+        "min_y": 5.960464477539063e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-polar-tundra-and-alpine-fauna-bamboo-clump-0fce79a9",
+      "name": "bamboo clump (Arctic and Polar Animals)",
+      "category": "nature",
+      "file": "models/3dassets-polar-tundra-and-alpine-fauna-bamboo-clump-0fce79a9.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/polar-tundra-and-alpine-fauna-bamboo-clump-0fce79a9",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/6088/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.3732539415359497,
+        0.8212249875068665,
+        2.5174553394317627
+      ],
+      "bytes": 211892,
+      "sha256": "050f66f7dd2b32408b31419c33777a83a43949997e12faf8b10fe2083ac62029",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          1.3732539415359497,
+          0.8212249875068665,
+          2.5174553394317627
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-halloween-slasher-street-cornstalk-clump-cc4c9832",
+      "name": "Cornstalk Clump (Halloween Slasher Street)",
+      "category": "nature",
+      "file": "models/3dassets-halloween-slasher-street-cornstalk-clump-cc4c9832.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/halloween-slasher-street-cornstalk-clump-cc4c9832",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/27291/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.99375981092453,
+        1.1722676753997803,
+        2.4501941204071045
+      ],
+      "bytes": 32384,
+      "sha256": "28c76288c041f8aefe47c1ccb2739e972f91ec519a655c655cc62850dce6c7d4",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          1.99375981092453,
+          1.1722676753997803,
+          2.4501941204071045
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-wipe-day-survival-island-tall-grass-clump-99fa2311",
+      "name": "Tall Grass Clump (Wipe Day Survival Island)",
+      "category": "nature",
+      "file": "models/3dassets-wipe-day-survival-island-tall-grass-clump-99fa2311.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/wipe-day-survival-island-tall-grass-clump-99fa2311",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/27439/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.2573845386505127,
+        1.0190083980560303,
+        1.1279890537261963
+      ],
+      "bytes": 18156,
+      "sha256": "3c4d4186d50de3b74093ffba8a0608c10da3768cd7223293c8dc13bfe1e6c1d0",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          1.2573845386505127,
+          1.0190083980560303,
+          1.1279890537261963
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-exotic-wildlife-hd-green-grass-clump-ea7fae55",
+      "name": "Green grass clump (Realistic Wild Animals HD)",
+      "category": "nature",
+      "file": "models/3dassets-exotic-wildlife-hd-green-grass-clump-ea7fae55.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/exotic-wildlife-hd-green-grass-clump-ea7fae55",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/30224/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.2009114027023315,
+        1.3023420572280884,
+        0.8822714686393738
+      ],
+      "bytes": 171948,
+      "sha256": "74472b338367a5f8f7810ae17990f43f419921aa7debb843750306f3a592eb3d",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          1.2009114027023315,
+          1.3023420572280884,
+          0.8822714686393738
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-fps-survival-forest-outpost-undergrowth-clump-d68b2daa",
+      "name": "Forest Undergrowth Clump 2 m (FPS Survival Forest Outpost)",
+      "category": "nature",
+      "file": "models/3dassets-fps-survival-forest-outpost-undergrowth-clump-d68b2daa.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/fps-survival-forest-outpost-undergrowth-clump-d68b2daa",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/32689/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.9400969743728638,
+        1.788755178451538,
+        0.7621957659721375
+      ],
+      "bytes": 26204,
+      "sha256": "6c1c50675044a482c2e38d25bcb4b4a63d118f323887d44babcea6cc14e01701",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          1.9400969743728638,
+          1.788755178451538,
+          0.7621957659721375
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-stylized-trees-and-rocks-kit-fern-clump-52137440",
+      "name": "Stylized Fern Clump (Stylized Trees and Rocks Kit)",
+      "category": "nature",
+      "file": "models/3dassets-stylized-trees-and-rocks-kit-fern-clump-52137440.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/stylized-trees-and-rocks-kit-fern-clump-52137440",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/38747/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.6539055109024048,
+        0.7506752014160156,
+        0.5654749274253845
+      ],
+      "bytes": 49276,
+      "sha256": "7120c7b516fb2cfe1c05490c29f7c3bfecb05d2c013cf16818195b952dcbd6db",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          0.6539055109024048,
+          0.7506752014160156,
+          0.5654749274253845
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-quiet-lake-fishing-reed-clump-d86f7970",
+      "name": "Cattail Reed Clump (Quiet Lake Fishing)",
+      "category": "nature",
+      "file": "models/3dassets-quiet-lake-fishing-reed-clump-d86f7970.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/quiet-lake-fishing-reed-clump-d86f7970",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/22417/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.8716316819190979,
+        0.6000507473945618,
+        1.2649999856948853
+      ],
+      "bytes": 48940,
+      "sha256": "e483599972317079652f5066d93add8ef3f455eb8b8e3432dfce1f91b8fb7037",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          0.8716316819190979,
+          0.6000507473945618,
+          1.2649999856948853
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-radio-telescope-array-and-field-station-scrub-clump-280b15bf",
+      "name": "Scrub Clump (Radio Telescope Array and Field Station)",
+      "category": "nature",
+      "file": "models/3dassets-radio-telescope-array-and-field-station-scrub-clump-280b15bf.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/radio-telescope-array-and-field-station-scrub-clump-280b15bf",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/37658/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.5870652198791504,
+        1.5972039699554443,
+        0.7325778603553772
+      ],
+      "bytes": 39956,
+      "sha256": "d058053bb0418d710b237787d576911608beda1a16497d65981b67b2e1220f82",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          1.5870652198791504,
+          1.5972039699554443,
+          0.7325778603553772
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-exotic-wildlife-hd-savanna-grass-clump-390b90a6",
+      "name": "Savanna grass clump (Realistic Wild Animals HD)",
+      "category": "nature",
+      "file": "models/3dassets-exotic-wildlife-hd-savanna-grass-clump-390b90a6.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/exotic-wildlife-hd-savanna-grass-clump-390b90a6",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/30223/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.3553589582443237,
+        1.4088457822799683,
+        0.9119424223899841
+      ],
+      "bytes": 173012,
+      "sha256": "30171f5741380e59d9d6a5d21a0e88c23c609a5a6e00b02c721974a7962f1afe",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          1.3553589582443237,
+          1.4088457822799683,
+          0.9119424223899841
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-dense-temperate-forest-flora-reed-clump-467f08af",
+      "name": "Reed Clump (Dense Temperate Forest Flora)",
+      "category": "nature",
+      "file": "models/3dassets-dense-temperate-forest-flora-reed-clump-467f08af.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/dense-temperate-forest-flora-reed-clump-467f08af",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/28403/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.6644526124000549,
+        0.6300249695777893,
+        1.6503551006317139
+      ],
+      "bytes": 26360,
+      "sha256": "aa00124b5102ed6550d27e194a508588c5da97d588eebe308175f2f55d15870c",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          0.6644526124000549,
+          0.6300249695777893,
+          1.6503551006317139
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-botanical-glasshouse-and-palm-house-botanical-glasshou-9c6e83f9",
+      "name": "Fern bed clump, 1.2 m (Botanical Glasshouse and Palm House)",
+      "category": "houses_and_shops",
+      "file": "models/3dassets-botanical-glasshouse-and-palm-house-botanical-glasshou-9c6e83f9.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/botanical-glasshouse-and-palm-house-botanical-glasshou-9c6e83f9",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/38588/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.8225460052490234,
+        1.6454474925994873,
+        0.5958719253540039
+      ],
+      "bytes": 335748,
+      "sha256": "dfd830b2736347f27b63c9dd4097da072b70056895359fa3eb5ff69e89da1019",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          1.8225460052490234,
+          1.6454474925994873,
+          0.5958719253540039
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-hot-air-balloon-festival-field-tree-clump-a4c9bb07",
+      "name": "Field Tree Clump (Hot Air Balloon Festival)",
+      "category": "nature",
+      "file": "models/3dassets-hot-air-balloon-festival-field-tree-clump-a4c9bb07.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/hot-air-balloon-festival-field-tree-clump-a4c9bb07",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/38495/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        4.3351569175720215,
+        3.566527843475342,
+        5.118000030517578
+      ],
+      "bytes": 30964,
+      "sha256": "bb9c6835658b09828ddcdca89720df088c4134b7d913db95c3a64f0225f39349",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          4.3351569175720215,
+          3.566527843475342,
+          5.118000030517578
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-medieval-mmo-starter-realm-fern-clump-7ebeffc4",
+      "name": "Fern Clump (Medieval MMO Starter Realm)",
+      "category": "nature",
+      "file": "models/3dassets-medieval-mmo-starter-realm-fern-clump-7ebeffc4.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/medieval-mmo-starter-realm-fern-clump-7ebeffc4",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/28792/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.0351886749267578,
+        0.9209504723548889,
+        0.9650534987449646
+      ],
+      "bytes": 26436,
+      "sha256": "34728c588635bc4818905a4a02dbfb54cad5354377d09ebdc2c181b2f3c5caab",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          1.0351886749267578,
+          0.9209504723548889,
+          0.9650534987449646
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-birds-and-reptiles-hd-reed-clump-ec55c985",
+      "name": "Reed clump (Birds and Reptiles HD)",
+      "category": "nature",
+      "file": "models/3dassets-birds-and-reptiles-hd-reed-clump-ec55c985.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/birds-and-reptiles-hd-reed-clump-ec55c985",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/28118/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.7601621747016907,
+        0.9309440851211548,
+        1.5172479152679443
+      ],
+      "bytes": 152940,
+      "sha256": "be838c949529e166f9824901affdf2a0870641567198e8c9491a3885c7d5f21d",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          0.7601621747016907,
+          0.9309440851211548,
+          1.5172479152679443
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-temperate-forest-ecology-wood-sedge-clump-9f0b2abd",
+      "name": "Wood sedge clump (Forest Trees and Woodland Plants)",
+      "category": "nature",
+      "file": "models/3dassets-temperate-forest-ecology-wood-sedge-clump-9f0b2abd.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/temperate-forest-ecology-wood-sedge-clump-9f0b2abd",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/3848/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.9038898348808289,
+        1.2682092189788818,
+        0.5583031177520752
+      ],
+      "bytes": 38720,
+      "sha256": "95d953cef1e1f9fea510db42fad19af929811cef36a88392652f6eda95c440cd",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          0.9038898348808289,
+          1.2682092189788818,
+          0.5583031177520752
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-andean-terraces-and-stone-village-tussock-grass-clump-49aaee8d",
+      "name": "Tussock Grass Clump (Andean Terraces and Stone Village)",
+      "category": "nature",
+      "file": "models/3dassets-andean-terraces-and-stone-village-tussock-grass-clump-49aaee8d.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/andean-terraces-and-stone-village-tussock-grass-clump-49aaee8d",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/38232/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.7888302803039551,
+        0.7435713112354279,
+        0.60230553150177
+      ],
+      "bytes": 33016,
+      "sha256": "fe8ddabab93379a17cad45ff67c25fc4ff8df5ef7fde7bb7a2ec102f6a72a289",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          0.7888302803039551,
+          0.7435713112354279,
+          0.60230553150177
+        ],
+        "min_y": -2.9802322387695312e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-caravan-park-and-campsite-tree-clump-dbb974b7",
+      "name": "Boundary Tree Clump (Caravan Park and Campsite)",
+      "category": "nature",
+      "file": "models/3dassets-caravan-park-and-campsite-tree-clump-dbb974b7.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/caravan-park-and-campsite-tree-clump-dbb974b7",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/35383/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        4.8583984375,
+        2.8002476692199707,
+        3.5186378955841064
+      ],
+      "bytes": 45708,
+      "sha256": "af54ea39a9762eacc40b0ae8cc5df2ca501d8a57581d98ddc400f58644238284",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          4.8583984375,
+          2.8002476692199707,
+          3.5186378955841064
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-city-park-and-playground-shrub-clump-6f521139",
+      "name": "Shrub Clump (City Park and Playground)",
+      "category": "nature",
+      "file": "models/3dassets-city-park-and-playground-shrub-clump-6f521139.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/city-park-and-playground-shrub-clump-6f521139",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/33685/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.6430517435073853,
+        1.3309587240219116,
+        0.9729677438735962
+      ],
+      "bytes": 17940,
+      "sha256": "965a25db7eda13e6307bc1d79f64e9f623a211f82099c6e1f4ce70c77c087267",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          1.6430517435073853,
+          1.3309587240219116,
+          0.9729677438735962
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-lawn-mowing-simulator-kit-dandelion-clump-8d61d1ae",
+      "name": "Dandelion clump (Lawn Mowing Simulator Kit)",
+      "category": "nature",
+      "file": "models/3dassets-lawn-mowing-simulator-kit-dandelion-clump-8d61d1ae.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/lawn-mowing-simulator-kit-dandelion-clump-8d61d1ae",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/27417/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.5600000023841858,
+        0.5325870513916016,
+        0.33249789476394653
+      ],
+      "bytes": 37680,
+      "sha256": "a0d80310f1cb5ced307538f7337589235ed8454f5ccb999577c88e1b9b76c3b9",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          0.5600000023841858,
+          0.5325870513916016,
+          0.33249789476394653
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-outback-and-australian-wildlife-spinifex-clump-9db0e241",
+      "name": "spinifex clump (Australian Outback Animals)",
+      "category": "nature",
+      "file": "models/3dassets-outback-and-australian-wildlife-spinifex-clump-9db0e241.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/outback-and-australian-wildlife-spinifex-clump-9db0e241",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/5934/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.8433182835578918,
+        0.8420829176902771,
+        0.353340744972229
+      ],
+      "bytes": 151036,
+      "sha256": "451cf05c99d9d74f3f48aafccae3eac1d5a9d24db0863731f1f14d3d6da47295",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          0.8433182835578918,
+          0.8420829176902771,
+          0.353340744972229
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-golf-course-and-clubhouse-shrub-clump-23c1fb07",
+      "name": "Shrub Clump (Golf Course and Clubhouse)",
+      "category": "houses_and_shops",
+      "file": "models/3dassets-golf-course-and-clubhouse-shrub-clump-23c1fb07.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/golf-course-and-clubhouse-shrub-clump-23c1fb07",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/33507/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.9759507179260254,
+        1.648866891860962,
+        0.9670803546905518
+      ],
+      "bytes": 21228,
+      "sha256": "5c564146a05ac5cb9a7b8fbc18b7bc8237d7b861b08f0a2f6abaf90ad9135f18",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 2,
+        "hierarchy_parent_links": 1,
+        "material_count": 1,
+        "dimensions_m": [
+          1.9759507179260254,
+          1.648866891860962,
+          0.9670803546905518
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-temperate-forest-ecology-heather-clump-d5cb5570",
+      "name": "Heather clump (Forest Trees and Woodland Plants)",
+      "category": "nature",
+      "file": "models/3dassets-temperate-forest-ecology-heather-clump-d5cb5570.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/temperate-forest-ecology-heather-clump-d5cb5570",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/3842/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.048410415649414,
+        1.1956863403320312,
+        0.5119858384132385
+      ],
+      "bytes": 120144,
+      "sha256": "ee2ddd75750b5edd28c03abab42d7930ad0db8dac100103f383003e10a89ec04",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 4,
+        "hierarchy_parent_links": 3,
+        "material_count": 3,
+        "dimensions_m": [
+          1.048410415649414,
+          1.1956863403320312,
+          0.5119858384132385
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-almanac-gardens-bluebell-clump-12b29f1a",
+      "name": "Nodding bluebell clump (Almanac Gardens: Country Garden Seasons)",
+      "category": "nature",
+      "file": "models/3dassets-almanac-gardens-bluebell-clump-12b29f1a.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/almanac-gardens-bluebell-clump-12b29f1a",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/22037/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        0.5550598502159119,
+        0.5394894480705261,
+        0.5805000066757202
+      ],
+      "bytes": 254376,
+      "sha256": "d1b1ceb0e8c87d7fed4bca304efe4e138f09a6de24e42e29773efec44c7a48ad",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          0.5550598502159119,
+          0.5394894480705261,
+          0.5805000066757202
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-underwater-reef-worlds-sea-lettuce-9e95e4af",
+      "name": "Sea lettuce clump (Coral Reef and Underwater Scenery)",
+      "category": "nature",
+      "file": "models/3dassets-underwater-reef-worlds-sea-lettuce-9e95e4af.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/underwater-reef-worlds-sea-lettuce-9e95e4af",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/7040/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.069099485874176,
+        0.8587946891784668,
+        0.7603754997253418
+      ],
+      "bytes": 74552,
+      "sha256": "5542f1242a8b4ceed8280cdc64f25551a8e52e0e19ecfc982029d48290b1dffc",
+      "validation": {
+        "mesh_count": 6,
+        "object_count": 7,
+        "hierarchy_parent_links": 6,
+        "material_count": 1,
+        "dimensions_m": [
+          1.069099485874176,
+          0.8587946891784668,
+          0.7603754997253418
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-imperial-china-palace-and-garden-plum-tree-in-blossom-b09709bd",
+      "name": "Plum Tree In Blossom (Imperial China Palace and Garden)",
+      "category": "palaces_and_temples",
+      "file": "models/3dassets-imperial-china-palace-and-garden-plum-tree-in-blossom-b09709bd.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/imperial-china-palace-and-garden-plum-tree-in-blossom-b09709bd",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/36195/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        3.9689583778381348,
+        3.2557644844055176,
+        3.9669275283813477
+      ],
+      "bytes": 100220,
+      "sha256": "c8fa457292863c3ff5874ca81d44b0c20271b779392d796b324a6238cac97272",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          3.9689583778381348,
+          3.2557644844055176,
+          3.9669275283813477
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-japanese-school-and-city-street-cherry-tree-blossom-618a9f6d",
+      "name": "Cherry Tree in Blossom (Japanese School and City Street)",
+      "category": "nature",
+      "file": "models/3dassets-japanese-school-and-city-street-cherry-tree-blossom-618a9f6d.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/japanese-school-and-city-street-cherry-tree-blossom-618a9f6d",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/30082/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        4.0909184217453,
+        4.088421821594238,
+        4.560077667236328
+      ],
+      "bytes": 200364,
+      "sha256": "eebd9251202197d89b0daf9f46f922bf329bd1b51f79e527789fd365669ba5a4",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 4,
+        "hierarchy_parent_links": 3,
+        "material_count": 3,
+        "dimensions_m": [
+          4.0909184217453,
+          4.088421821594238,
+          4.560077667236328
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-almanac-gardens-blossom-orchard-tree-40e484ef",
+      "name": "Blossoming orchard tree (Almanac Gardens: Country Garden Seasons)",
+      "category": "nature",
+      "file": "models/3dassets-almanac-gardens-blossom-orchard-tree-40e484ef.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/almanac-gardens-blossom-orchard-tree-40e484ef",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/22032/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.8052310943603516,
+        2.623551845550537,
+        3.566063165664673
+      ],
+      "bytes": 747140,
+      "sha256": "56425d2a2648199e74e47a2d5f27d10bbb324fa20635496ad686b762950cf520",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          2.8052310943603516,
+          2.623551845550537,
+          3.566063165664673
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-theme-park-rides-and-coasters-theme-park-rides-and-coa-0a2475e3",
+      "name": "Flowering Park Tree (Theme Park Rides and Coasters)",
+      "category": "nature",
+      "file": "models/3dassets-theme-park-rides-and-coasters-theme-park-rides-and-coa-0a2475e3.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/theme-park-rides-and-coasters-theme-park-rides-and-coa-0a2475e3",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/28703/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        3.799999952316284,
+        3.445643901824951,
+        5.050091743469238
+      ],
+      "bytes": 99440,
+      "sha256": "e0842295fa0c5cd7e0013689ad943450d0592bc030de2b4436e3adc353ae61c1",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 5,
+        "hierarchy_parent_links": 4,
+        "material_count": 4,
+        "dimensions_m": [
+          3.799999952316284,
+          3.445643901824951,
+          5.050091743469238
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-japanese-school-and-city-street-cherry-tree-bare-b1e462cf",
+      "name": "Cherry Tree, Bare (Japanese School and City Street)",
+      "category": "nature",
+      "file": "models/3dassets-japanese-school-and-city-street-cherry-tree-bare-b1e462cf.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/japanese-school-and-city-street-cherry-tree-bare-b1e462cf",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/30079/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        2.440551280975342,
+        2.381378173828125,
+        3.644587516784668
+      ],
+      "bytes": 107328,
+      "sha256": "0710e8e15c555ec66e143733c3bcdaea8b5bb147d5598dee82311ef1231ccbaf",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          2.440551280975342,
+          2.381378173828125,
+          3.644587516784668
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-temperate-forest-ecology-wild-cherry-in-blossom-983af861",
+      "name": "Wild cherry in blossom (Forest Trees and Woodland Plants)",
+      "category": "nature",
+      "file": "models/3dassets-temperate-forest-ecology-wild-cherry-in-blossom-983af861.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/temperate-forest-ecology-wild-cherry-in-blossom-983af861",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/3783/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        6.655344009399414,
+        6.459383010864258,
+        15.78445053100586
+      ],
+      "bytes": 235364,
+      "sha256": "8132890e63b1bea55f6f30b896d62f0f3fc89ee2852baec00c232eb22edb282e",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 4,
+        "hierarchy_parent_links": 3,
+        "material_count": 3,
+        "dimensions_m": [
+          6.655344009399414,
+          6.459383010864258,
+          15.78445053100586
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-temperate-forest-ecology-blackthorn-in-blossom-a30caea4",
+      "name": "Blackthorn in blossom (Forest Trees and Woodland Plants)",
+      "category": "nature",
+      "file": "models/3dassets-temperate-forest-ecology-blackthorn-in-blossom-a30caea4.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/temperate-forest-ecology-blackthorn-in-blossom-a30caea4",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/3835/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        4.114948272705078,
+        3.8452844619750977,
+        3.0275700092315674
+      ],
+      "bytes": 201148,
+      "sha256": "bee48c0bde0b62af16b9a946b1778e4fca161164551cbdd921ef738a53d8fed0",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          4.114948272705078,
+          3.8452844619750977,
+          3.0275700092315674
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-dense-temperate-forest-flora-cherry-blossom-12744dc9",
+      "name": "Wild Cherry In Blossom (Dense Temperate Forest Flora)",
+      "category": "nature",
+      "file": "models/3dassets-dense-temperate-forest-flora-cherry-blossom-12744dc9.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/dense-temperate-forest-flora-cherry-blossom-12744dc9",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/28343/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        9.50271987915039,
+        8.812499046325684,
+        14.19395637512207
+      ],
+      "bytes": 102828,
+      "sha256": "ee7fedac34fd1f3b06b78d6f2df991532123f21fd42c314b5aea5b804d9e4260",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          9.50271987915039,
+          8.812499046325684,
+          14.19395637512207
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-stylized-trees-and-rocks-kit-flower-white-patch-9ead5ba8",
+      "name": "Stylized White Flower Patch (Stylized Trees and Rocks Kit)",
+      "category": "nature",
+      "file": "models/3dassets-stylized-trees-and-rocks-kit-flower-white-patch-9ead5ba8.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/stylized-trees-and-rocks-kit-flower-white-patch-9ead5ba8",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/38750/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.6200000047683716,
+        1.6200000047683716,
+        0.34229162335395813
+      ],
+      "bytes": 29932,
+      "sha256": "72dd34cc8c5b9c06c0d1ce9312b39b816491501d7a675bc000fee9666b534e31",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 4,
+        "hierarchy_parent_links": 3,
+        "material_count": 3,
+        "dimensions_m": [
+          1.6200000047683716,
+          1.6200000047683716,
+          0.34229162335395813
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "3dassets-stylized-trees-and-rocks-kit-bush-flowering-6e410c7f",
+      "name": "Stylized Flowering Bush (Stylized Trees and Rocks Kit)",
+      "category": "nature",
+      "file": "models/3dassets-stylized-trees-and-rocks-kit-bush-flowering-6e410c7f.glb",
+      "source": "3DAssets.dev",
+      "source_url": "https://3dassets.dev/assets/stylized-trees-and-rocks-kit-bush-flowering-6e410c7f",
+      "direct_download_url": "https://cdn.3dassets.dev/assets/38739/v1/model.glb",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "3D Assets"
+      },
+      "dimensions_m": [
+        1.3286502361297607,
+        1.335119605064392,
+        0.8555815815925598
+      ],
+      "bytes": 19504,
+      "sha256": "1f7b2c296fd1d0de88dabc407b6617d44d0a4e0245feaf07fe77db281e7af9b6",
+      "validation": {
+        "mesh_count": 2,
+        "object_count": 3,
+        "hierarchy_parent_links": 2,
+        "material_count": 2,
+        "dimensions_m": [
+          1.3286502361297607,
+          1.335119605064392,
+          0.8555815815925598
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "opengameart-modular-temple-3d-models",
+      "name": "temple_collection.zip",
+      "category": "palaces_and_temples",
+      "file": "models/opengameart-modular-temple-3d-models.glb",
+      "source": "OpenGameArt",
+      "source_url": "https://opengameart.org/content/modular-temple-3d-models",
+      "direct_download_url": "https://opengameart.org/sites/default/files/temple_collection.zip",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "Keith at Fertile Soil Productions"
+      },
+      "dimensions_m": [
+        1.100000023841858,
+        1.0999999965010545,
+        0.5000003009770495
+      ],
+      "bytes": 22560,
+      "sha256": "41bf73ace2ce69f47019a4915978a1c86df8acc7053b55224a36e3643250ab42",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 3,
+        "hierarchy_parent_links": 0,
+        "material_count": 2,
+        "dimensions_m": [
+          1.100000023841858,
+          1.0999999965010545,
+          0.5000003009770495
+        ],
+        "min_y": 2.7340803399056313e-08,
+        "assumed_meter_scale": true,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "opengameart-modular-temple-3d-models",
+      "name": "temple_collection.zip",
+      "category": "palaces_and_temples",
+      "file": "models/opengameart-modular-temple-3d-models_1.glb",
+      "source": "OpenGameArt",
+      "source_url": "https://opengameart.org/content/modular-temple-3d-models",
+      "direct_download_url": "https://opengameart.org/sites/default/files/temple_collection.zip",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "Keith at Fertile Soil Productions"
+      },
+      "dimensions_m": [
+        2.100000023841858,
+        2.1000000561056993,
+        0.5000006039232971
+      ],
+      "bytes": 37484,
+      "sha256": "4bb05899f9bb1c5345998fd5de125c0053a23f25bf1fb353481d463076c24215",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 1,
+        "hierarchy_parent_links": 0,
+        "material_count": 2,
+        "dimensions_m": [
+          2.100000023841858,
+          2.1000000561056993,
+          0.5000006039232971
+        ],
+        "min_y": 3.2536402727600944e-07,
+        "assumed_meter_scale": true,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "opengameart-modular-temple-3d-models",
+      "name": "temple_collection.zip",
+      "category": "palaces_and_temples",
+      "file": "models/opengameart-modular-temple-3d-models_2.glb",
+      "source": "OpenGameArt",
+      "source_url": "https://opengameart.org/content/modular-temple-3d-models",
+      "direct_download_url": "https://opengameart.org/sites/default/files/temple_collection.zip",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "Keith at Fertile Soil Productions"
+      },
+      "dimensions_m": [
+        1.100000023841858,
+        1.100000115710344,
+        0.5000003009770495
+      ],
+      "bytes": 26580,
+      "sha256": "16e6c67595a72ae1a209b91e011961039252c2edb89ab9958e20875a3ba237ab",
+      "validation": {
+        "mesh_count": 1,
+        "object_count": 1,
+        "hierarchy_parent_links": 0,
+        "material_count": 2,
+        "dimensions_m": [
+          1.100000023841858,
+          1.100000115710344,
+          0.5000003009770495
+        ],
+        "min_y": 2.7340803399056313e-08,
+        "assumed_meter_scale": true,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "opengameart-medieval-stone-temple",
+      "name": "medievalstonetemple.blend",
+      "category": "palaces_and_temples",
+      "file": "models/opengameart-medieval-stone-temple.glb",
+      "source": "OpenGameArt",
+      "source_url": "https://opengameart.org/content/medieval-stone-temple",
+      "direct_download_url": "https://opengameart.org/sites/default/files/medievalstonetemple.blend",
+      "license": "CC0 1.0 Universal",
+      "authors": {
+        "creator": "AnyRPG"
+      },
+      "dimensions_m": [
+        20.0,
+        20.0,
+        9.276777759194374
+      ],
+      "bytes": 783708,
+      "sha256": "15b3b3d2f58bdc27e01e913a8e7fbf77a7dfb3e69ee78b6a3a4ec9c5e3e031b3",
+      "validation": {
+        "mesh_count": 53,
+        "object_count": 53,
+        "hierarchy_parent_links": 0,
+        "material_count": 1,
+        "dimensions_m": [
+          20.0,
+          20.0,
+          9.276777759194374
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": true,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "anthurium_botany_01",
+      "name": "Anthurium Botany 01",
+      "category": "nature",
+      "file": "models/anthurium_botany_01.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/anthurium_botany_01",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/4k/anthurium_botany_01/anthurium_botany_01_4k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rob Tuytel": "scanning",
+        "Rico Cilliers": "modeling"
+      },
+      "dimensions_m": [
+        2.80620014667511,
+        1.8011698722839355,
+        0.5019393255934119
+      ],
+      "bytes": 121540,
+      "sha256": "8277dd5414a90f69f0da89653c9aee89f1c613f7c88239f435d54144ac47d3bd",
+      "validation": {
+        "mesh_count": 6,
+        "object_count": 6,
+        "hierarchy_parent_links": 0,
+        "material_count": 1,
+        "dimensions_m": [
+          2.80620014667511,
+          1.8011698722839355,
+          0.5019393255934119
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "calathea_orbifolia_01",
+      "name": "Calathea Orbifolia 01",
+      "category": "nature",
+      "file": "models/calathea_orbifolia_01.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/calathea_orbifolia_01",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/calathea_orbifolia_01/calathea_orbifolia_01_1k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rob Tuytel": "scanning",
+        "Rico Cilliers": "modeling"
+      },
+      "dimensions_m": [
+        2.491507411003113,
+        1.1935921981930733,
+        0.42429426312446594
+      ],
+      "bytes": 413448,
+      "sha256": "1101951b93ff8276b3276fc05246c887fb853a5cb13744f43bc657ec87b9fdc5",
+      "validation": {
+        "mesh_count": 5,
+        "object_count": 5,
+        "hierarchy_parent_links": 0,
+        "material_count": 1,
+        "dimensions_m": [
+          2.491507411003113,
+          1.1935921981930733,
+          0.42429426312446594
+        ],
+        "min_y": -7.450580596923828e-09,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "celandine_01",
+      "name": "Celandine 01",
+      "category": "nature",
+      "file": "models/celandine_01.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/celandine_01",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/celandine_01/celandine_01_1k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rob Tuytel": "Photography",
+        "Rico Cilliers": "modeling"
+      },
+      "dimensions_m": [
+        3.373276114463806,
+        0.699999988079071,
+        0.7000000178813934
+      ],
+      "bytes": 876960,
+      "sha256": "965913976a10ec08295b3a945c723c964885e881863091f0262f8fd25d7c70f8",
+      "validation": {
+        "mesh_count": 31,
+        "object_count": 31,
+        "hierarchy_parent_links": 0,
+        "material_count": 2,
+        "dimensions_m": [
+          3.373276114463806,
+          0.699999988079071,
+          0.7000000178813934
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "didelta_spinosa",
+      "name": "Didelta Spinosa",
+      "category": "nature",
+      "file": "models/didelta_spinosa.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/didelta_spinosa",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/8k/didelta_spinosa/didelta_spinosa_8k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Jenelle van Heerden": "All"
+      },
+      "dimensions_m": [
+        2.1299427151679993,
+        4.584163665771484,
+        2.088827133178711
+      ],
+      "bytes": 22601776,
+      "sha256": "955ff86dd518268a46c628cffabd9df58a451833f204277c3405ee531d2cddd4",
+      "validation": {
+        "mesh_count": 9,
+        "object_count": 9,
+        "hierarchy_parent_links": 0,
+        "material_count": 1,
+        "dimensions_m": [
+          2.1299427151679993,
+          4.584163665771484,
+          2.088827133178711
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "dry_branches_medium_01",
+      "name": "Dry Branches Medium 01",
+      "category": "nature",
+      "file": "models/dry_branches_medium_01.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/dry_branches_medium_01",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/8k/dry_branches_medium_01/dry_branches_medium_01_8k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rico Cilliers": "All"
+      },
+      "dimensions_m": [
+        1.059486210346222,
+        1.2991528511047363,
+        0.3409852981567383
+      ],
+      "bytes": 473788,
+      "sha256": "1f5f96999896e6db95874c0e9322e4d5e3061ae87ce4626ebcf329118d3cd95e",
+      "validation": {
+        "mesh_count": 3,
+        "object_count": 3,
+        "hierarchy_parent_links": 0,
+        "material_count": 1,
+        "dimensions_m": [
+          1.059486210346222,
+          1.2991528511047363,
+          0.3409852981567383
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "fern_02",
+      "name": "Fern 02",
+      "category": "nature",
+      "file": "models/fern_02.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/fern_02",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/2k/fern_02/fern_02_2k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rob Tuytel": "scanning",
+        "Rico Cilliers": "modeling"
+      },
+      "dimensions_m": [
+        1.9725297689437866,
+        1.7240276634693146,
+        0.427694708108902
+      ],
+      "bytes": 181172,
+      "sha256": "7ba4867e72ab398034b1177152087af978a67548d1ef4710f58f11dd1ff51b3a",
+      "validation": {
+        "mesh_count": 4,
+        "object_count": 4,
+        "hierarchy_parent_links": 0,
+        "material_count": 1,
+        "dimensions_m": [
+          1.9725297689437866,
+          1.7240276634693146,
+          0.427694708108902
+        ],
+        "min_y": -2.9802322387695312e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "grass_bermuda_01",
+      "name": "Grass Bermuda 01",
+      "category": "nature",
+      "file": "models/grass_bermuda_01.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/grass_bermuda_01",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/grass_bermuda_01/grass_bermuda_01_1k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rico Cilliers": "All"
+      },
+      "dimensions_m": [
+        2.976682126522064,
+        0.7404540777206421,
+        0.740454763174057
+      ],
+      "bytes": 119776,
+      "sha256": "030443b9eab433d46307f91f96780e7d30881a5dbfc1039174a4041d920576ab",
+      "validation": {
+        "mesh_count": 43,
+        "object_count": 43,
+        "hierarchy_parent_links": 0,
+        "material_count": 2,
+        "dimensions_m": [
+          2.976682126522064,
+          0.7404540777206421,
+          0.740454763174057
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "grass_medium_01",
+      "name": "Grass Medium 01",
+      "category": "nature",
+      "file": "models/grass_medium_01.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/grass_medium_01",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/4k/grass_medium_01/grass_medium_01_4k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rob Tuytel": "Photography",
+        "Rico Cilliers": "Modeling"
+      },
+      "dimensions_m": [
+        6.999597787857056,
+        0.699999988079071,
+        0.7000000178813934
+      ],
+      "bytes": 3328104,
+      "sha256": "52dda2f58ff2dacfe163cd51bfedd02384b68208eb5089049231f0b6f1ee4c78",
+      "validation": {
+        "mesh_count": 103,
+        "object_count": 103,
+        "hierarchy_parent_links": 0,
+        "material_count": 2,
+        "dimensions_m": [
+          6.999597787857056,
+          0.699999988079071,
+          0.7000000178813934
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "grass_medium_02",
+      "name": "Grass Medium 02",
+      "category": "nature",
+      "file": "models/grass_medium_02.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/grass_medium_02",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/4k/grass_medium_02/grass_medium_02_4k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rico Cilliers": "All"
+      },
+      "dimensions_m": [
+        3.193347956985235,
+        0.7175963521003723,
+        0.7534119486808777
+      ],
+      "bytes": 531540,
+      "sha256": "229c5b6886203717f69ee3d3f2473c8353d3b0613c80564622aa36f950d16ca3",
+      "validation": {
+        "mesh_count": 11,
+        "object_count": 11,
+        "hierarchy_parent_links": 0,
+        "material_count": 2,
+        "dimensions_m": [
+          3.193347956985235,
+          0.7175963521003723,
+          0.7534119486808777
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "island_tree_01",
+      "name": "Island Tree 01",
+      "category": "nature",
+      "file": "models/island_tree_01.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/island_tree_01",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/4k/island_tree_01/island_tree_01_4k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rob Tuytel": "scanning, processing",
+        "Rico Cilliers": "cleanup, processing"
+      },
+      "dimensions_m": [
+        11.547818422317505,
+        4.818506717681885,
+        5.027446746826172
+      ],
+      "bytes": 86675080,
+      "sha256": "93d5a4b947c916409c8021637bf7de11a9ea1907ef774571bcdc30befceef7ef",
+      "validation": {
+        "mesh_count": 17,
+        "object_count": 17,
+        "hierarchy_parent_links": 0,
+        "material_count": 3,
+        "dimensions_m": [
+          11.547818422317505,
+          4.818506717681885,
+          5.027446746826172
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "island_tree_02",
+      "name": "Island Tree 02",
+      "category": "nature",
+      "file": "models/island_tree_02.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/island_tree_02",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/2k/island_tree_02/island_tree_02_2k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rob Tuytel": "scanning, processing",
+        "Rico Cilliers": "cleanup, processing"
+      },
+      "dimensions_m": [
+        8.48551321029663,
+        4.078615665435791,
+        3.5301053524017334
+      ],
+      "bytes": 56989756,
+      "sha256": "0b448b4d46b81a25941148f676ce1b29705e798a8c72e1d5d82cad751e6ddb53",
+      "validation": {
+        "mesh_count": 17,
+        "object_count": 17,
+        "hierarchy_parent_links": 0,
+        "material_count": 3,
+        "dimensions_m": [
+          8.48551321029663,
+          4.078615665435791,
+          3.5301053524017334
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "island_tree_03",
+      "name": "Island Tree 03",
+      "category": "nature",
+      "file": "models/island_tree_03.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/island_tree_03",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/8k/island_tree_03/island_tree_03_8k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rob Tuytel": "scanning, processing",
+        "Rico Cilliers": "cleanup, processing"
+      },
+      "dimensions_m": [
+        8.48988127708435,
+        2.9132323265075684,
+        2.615518093109131
+      ],
+      "bytes": 109531556,
+      "sha256": "506ab82cebe27636f95cb899ead4a2e4b4ee3bcceecb16d958ca0fba26b6254d",
+      "validation": {
+        "mesh_count": 17,
+        "object_count": 17,
+        "hierarchy_parent_links": 0,
+        "material_count": 3,
+        "dimensions_m": [
+          8.48988127708435,
+          2.9132323265075684,
+          2.615518093109131
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "othonna_cerarioides",
+      "name": "Othonna Cerarioides",
+      "category": "nature",
+      "file": "models/othonna_cerarioides.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/othonna_cerarioides",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/8k/othonna_cerarioides/othonna_cerarioides_8k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "James Ray Cock": "modeling",
+        "Jenelle van Heerden": "Photography"
+      },
+      "dimensions_m": [
+        3.970029592514038,
+        1.798905849456787,
+        1.9695868492126465
+      ],
+      "bytes": 29624996,
+      "sha256": "654e60e03445855eeec06b923deeeb13432e817d061e69fee783d5d7cc646084",
+      "validation": {
+        "mesh_count": 28,
+        "object_count": 28,
+        "hierarchy_parent_links": 0,
+        "material_count": 2,
+        "dimensions_m": [
+          3.970029592514038,
+          1.798905849456787,
+          1.9695868492126465
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "pachira_aquatica_01",
+      "name": "Pachira Aquatica 01",
+      "category": "nature",
+      "file": "models/pachira_aquatica_01.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/pachira_aquatica_01",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/pachira_aquatica_01/pachira_aquatica_01_1k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rob Tuytel": "scanning",
+        "Rico Cilliers": "modeling"
+      },
+      "dimensions_m": [
+        6.869021415710449,
+        0.9970420598983765,
+        1.9040734767913818
+      ],
+      "bytes": 2045180,
+      "sha256": "f29cde2beec45fa7b36110c1266417183acc94806ef377a0e8c954480ecf3dbb",
+      "validation": {
+        "mesh_count": 8,
+        "object_count": 8,
+        "hierarchy_parent_links": 0,
+        "material_count": 2,
+        "dimensions_m": [
+          6.869021415710449,
+          0.9970420598983765,
+          1.9040734767913818
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "periwinkle_plant",
+      "name": "Periwinkle Plant",
+      "category": "nature",
+      "file": "models/periwinkle_plant.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/periwinkle_plant",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/4k/periwinkle_plant/periwinkle_plant_4k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Amal Kumar": "All"
+      },
+      "dimensions_m": [
+        1.2353671789169312,
+        0.33493995666503906,
+        0.4110017012571916
+      ],
+      "bytes": 4021780,
+      "sha256": "f5adedbb32c59b92850ebe78c8721e4b65a8787e2fd6b03b6496733d3953caf0",
+      "validation": {
+        "mesh_count": 42,
+        "object_count": 42,
+        "hierarchy_parent_links": 0,
+        "material_count": 1,
+        "dimensions_m": [
+          1.2353671789169312,
+          0.33493995666503906,
+          0.4110017012571916
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "pine_sapling_medium",
+      "name": "Pine Sapling Medium",
+      "category": "nature",
+      "file": "models/pine_sapling_medium.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/pine_sapling_medium",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/2k/pine_sapling_medium/pine_sapling_medium_2k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rob Tuytel": "photography",
+        "Rico Cilliers": "modeling"
+      },
+      "dimensions_m": [
+        22.79324197769165,
+        5.46229362487793,
+        11.735193714499474
+      ],
+      "bytes": 297930000,
+      "sha256": "8ee070938282fac66032070075bb5ab364b377fb9fd1abc4a35f81b8491f1774",
+      "validation": {
+        "mesh_count": 51,
+        "object_count": 59,
+        "hierarchy_parent_links": 0,
+        "material_count": 3,
+        "dimensions_m": [
+          22.79324197769165,
+          5.46229362487793,
+          11.735193714499474
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "searsia_burchellii",
+      "name": "Searsia Burchellii",
+      "category": "nature",
+      "file": "models/searsia_burchellii.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/searsia_burchellii",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/2k/searsia_burchellii/searsia_burchellii_2k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "James Ray Cock": "modeling",
+        "Jenelle van Heerden": "photography"
+      },
+      "dimensions_m": [
+        8.35636568069458,
+        5.062767505645752,
+        3.246978521347046
+      ],
+      "bytes": 73890008,
+      "sha256": "28dec1592ff9f220a7b75f4bc7e4f75a9a16e1a7af33ddd0668d3177326ace61",
+      "validation": {
+        "mesh_count": 9,
+        "object_count": 9,
+        "hierarchy_parent_links": 0,
+        "material_count": 3,
+        "dimensions_m": [
+          8.35636568069458,
+          5.062767505645752,
+          3.246978521347046
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "searsia_lucida",
+      "name": "Searsia Lucida",
+      "category": "nature",
+      "file": "models/searsia_lucida.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/searsia_lucida",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/4k/searsia_lucida/searsia_lucida_4k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "James Ray Cock": "modeling",
+        "Jenelle van Heerden": "Photography"
+      },
+      "dimensions_m": [
+        4.7773168087005615,
+        2.8379560112953186,
+        2.3636259119957685
+      ],
+      "bytes": 41561344,
+      "sha256": "bac3fcf1d67bc127eb98f31247e3e102812a280e002a860de1bb7b7c6dd68d78",
+      "validation": {
+        "mesh_count": 21,
+        "object_count": 21,
+        "hierarchy_parent_links": 0,
+        "material_count": 3,
+        "dimensions_m": [
+          4.7773168087005615,
+          2.8379560112953186,
+          2.3636259119957685
+        ],
+        "min_y": -5.960464477539063e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "shrub_02",
+      "name": "Shrub 02",
+      "category": "nature",
+      "file": "models/shrub_02.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/shrub_02",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/2k/shrub_02/shrub_02_2k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "Rico Cilliers": "All"
+      },
+      "dimensions_m": [
+        5.340904474258423,
+        2.089372180402279,
+        2.3099996894598007
+      ],
+      "bytes": 1526268,
+      "sha256": "3f94b09e69630d4264a0e8a0c6be54c26df9169bc403548ce9d41b148edb01d5",
+      "validation": {
+        "mesh_count": 12,
+        "object_count": 12,
+        "hierarchy_parent_links": 0,
+        "material_count": 1,
+        "dimensions_m": [
+          5.340904474258423,
+          2.089372180402279,
+          2.3099996894598007
+        ],
+        "min_y": -2.2351741790771484e-08,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "wild_rooibos_bush",
+      "name": "Wild Rooibos Bush",
+      "category": "nature",
+      "file": "models/wild_rooibos_bush.glb",
+      "source": "Poly Haven",
+      "source_url": "https://polyhaven.com/a/wild_rooibos_bush",
+      "direct_download_url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/2k/wild_rooibos_bush/wild_rooibos_bush_2k.blend",
+      "license": "CC0 1.0",
+      "authors": {
+        "James Ray Cock": "modeling",
+        "Jenelle van Heerden": "photography"
+      },
+      "dimensions_m": [
+        2.278936505317688,
+        0.8541040420532227,
+        0.5436552884057164
+      ],
+      "bytes": 3585556,
+      "sha256": "299a2832a8518ef2b7e5e760675fcc72ed4aacfd479a7fbdb72f0ebce84bcb8f",
+      "validation": {
+        "mesh_count": 20,
+        "object_count": 20,
+        "hierarchy_parent_links": 0,
+        "material_count": 3,
+        "dimensions_m": [
+          2.278936505317688,
+          0.8541040420532227,
+          0.5436552884057164
+        ],
+        "min_y": 0.0,
+        "assumed_meter_scale": false,
+        "unit_scale_m_per_blender_unit": 1.0,
+        "axis_conversion": "Blender Z-up to glTF Y-up via glTF exporter",
+        "validated": true
+      }
+    },
+    {
+      "asset_id": "RoofingTiles013A",
+      "name": "Roofing Tiles 013 A",
+      "category": "pbr_materials",
+      "file": "textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_NormalGL.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/RoofingTiles013A",
+      "direct_download_url": "https://ambientcg.com/get?file=RoofingTiles013A_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 718594,
+      "sha256": "08d9718bd62c5de5c4cc886a68cf3dbad5996136f52f16249b07a896e0c29005",
+      "validation": {
+        "maps": [
+          "RoofingTiles013A_1K-JPG_NormalGL.jpg",
+          "RoofingTiles013A.png",
+          "RoofingTiles013A_1K-JPG_NormalDX.jpg",
+          "RoofingTiles013A_1K-JPG_Roughness.jpg",
+          "RoofingTiles013A_1K-JPG_AmbientOcclusion.jpg",
+          "RoofingTiles013A_1K-JPG_Displacement.jpg",
+          "RoofingTiles013A_1K-JPG_Color.jpg",
+          "RoofingTiles013A_1K-JPG_Opacity.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "RoofingTiles013A",
+      "name": "Roofing Tiles 013 A",
+      "category": "pbr_materials",
+      "file": "textures/RoofingTiles013A/RoofingTiles013A.png",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/RoofingTiles013A",
+      "direct_download_url": "https://ambientcg.com/get?file=RoofingTiles013A_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 248179,
+      "sha256": "bcd87159c38126e15ab5d403e5e85f52d55c938662af3b625cf9e2578c578414",
+      "validation": {
+        "maps": [
+          "RoofingTiles013A_1K-JPG_NormalGL.jpg",
+          "RoofingTiles013A.png",
+          "RoofingTiles013A_1K-JPG_NormalDX.jpg",
+          "RoofingTiles013A_1K-JPG_Roughness.jpg",
+          "RoofingTiles013A_1K-JPG_AmbientOcclusion.jpg",
+          "RoofingTiles013A_1K-JPG_Displacement.jpg",
+          "RoofingTiles013A_1K-JPG_Color.jpg",
+          "RoofingTiles013A_1K-JPG_Opacity.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "RoofingTiles013A",
+      "name": "Roofing Tiles 013 A",
+      "category": "pbr_materials",
+      "file": "textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_NormalDX.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/RoofingTiles013A",
+      "direct_download_url": "https://ambientcg.com/get?file=RoofingTiles013A_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 747868,
+      "sha256": "69957877f348d1e9e934a8ac6dbdbe01ae14f66656b7ac96f2521ee592381c7e",
+      "validation": {
+        "maps": [
+          "RoofingTiles013A_1K-JPG_NormalGL.jpg",
+          "RoofingTiles013A.png",
+          "RoofingTiles013A_1K-JPG_NormalDX.jpg",
+          "RoofingTiles013A_1K-JPG_Roughness.jpg",
+          "RoofingTiles013A_1K-JPG_AmbientOcclusion.jpg",
+          "RoofingTiles013A_1K-JPG_Displacement.jpg",
+          "RoofingTiles013A_1K-JPG_Color.jpg",
+          "RoofingTiles013A_1K-JPG_Opacity.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "RoofingTiles013A",
+      "name": "Roofing Tiles 013 A",
+      "category": "pbr_materials",
+      "file": "textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_Roughness.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/RoofingTiles013A",
+      "direct_download_url": "https://ambientcg.com/get?file=RoofingTiles013A_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 564671,
+      "sha256": "4cb93f5e8d84b97f3247aad4051c3805ea51f88a05a6c703abe32ab0bcec65c6",
+      "validation": {
+        "maps": [
+          "RoofingTiles013A_1K-JPG_NormalGL.jpg",
+          "RoofingTiles013A.png",
+          "RoofingTiles013A_1K-JPG_NormalDX.jpg",
+          "RoofingTiles013A_1K-JPG_Roughness.jpg",
+          "RoofingTiles013A_1K-JPG_AmbientOcclusion.jpg",
+          "RoofingTiles013A_1K-JPG_Displacement.jpg",
+          "RoofingTiles013A_1K-JPG_Color.jpg",
+          "RoofingTiles013A_1K-JPG_Opacity.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "RoofingTiles013A",
+      "name": "Roofing Tiles 013 A",
+      "category": "pbr_materials",
+      "file": "textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_AmbientOcclusion.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/RoofingTiles013A",
+      "direct_download_url": "https://ambientcg.com/get?file=RoofingTiles013A_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 310035,
+      "sha256": "6d57e59e22d0aa1d05123ec5cba1f5ce3973698151021fef3f35a5df961eb9cc",
+      "validation": {
+        "maps": [
+          "RoofingTiles013A_1K-JPG_NormalGL.jpg",
+          "RoofingTiles013A.png",
+          "RoofingTiles013A_1K-JPG_NormalDX.jpg",
+          "RoofingTiles013A_1K-JPG_Roughness.jpg",
+          "RoofingTiles013A_1K-JPG_AmbientOcclusion.jpg",
+          "RoofingTiles013A_1K-JPG_Displacement.jpg",
+          "RoofingTiles013A_1K-JPG_Color.jpg",
+          "RoofingTiles013A_1K-JPG_Opacity.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "RoofingTiles013A",
+      "name": "Roofing Tiles 013 A",
+      "category": "pbr_materials",
+      "file": "textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_Displacement.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/RoofingTiles013A",
+      "direct_download_url": "https://ambientcg.com/get?file=RoofingTiles013A_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 220471,
+      "sha256": "0be3de6e781717477dd3ffbf8165dfd5b5c73fa6bc2476fd4b3d542005455c47",
+      "validation": {
+        "maps": [
+          "RoofingTiles013A_1K-JPG_NormalGL.jpg",
+          "RoofingTiles013A.png",
+          "RoofingTiles013A_1K-JPG_NormalDX.jpg",
+          "RoofingTiles013A_1K-JPG_Roughness.jpg",
+          "RoofingTiles013A_1K-JPG_AmbientOcclusion.jpg",
+          "RoofingTiles013A_1K-JPG_Displacement.jpg",
+          "RoofingTiles013A_1K-JPG_Color.jpg",
+          "RoofingTiles013A_1K-JPG_Opacity.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "RoofingTiles013A",
+      "name": "Roofing Tiles 013 A",
+      "category": "pbr_materials",
+      "file": "textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_Color.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/RoofingTiles013A",
+      "direct_download_url": "https://ambientcg.com/get?file=RoofingTiles013A_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 403258,
+      "sha256": "13779a23d342e1f80001d380889744eb6795460e8b8b993f7b9bb89da78089d4",
+      "validation": {
+        "maps": [
+          "RoofingTiles013A_1K-JPG_NormalGL.jpg",
+          "RoofingTiles013A.png",
+          "RoofingTiles013A_1K-JPG_NormalDX.jpg",
+          "RoofingTiles013A_1K-JPG_Roughness.jpg",
+          "RoofingTiles013A_1K-JPG_AmbientOcclusion.jpg",
+          "RoofingTiles013A_1K-JPG_Displacement.jpg",
+          "RoofingTiles013A_1K-JPG_Color.jpg",
+          "RoofingTiles013A_1K-JPG_Opacity.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "RoofingTiles013A",
+      "name": "Roofing Tiles 013 A",
+      "category": "pbr_materials",
+      "file": "textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_Opacity.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/RoofingTiles013A",
+      "direct_download_url": "https://ambientcg.com/get?file=RoofingTiles013A_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 5263,
+      "sha256": "216f868089be5f9bed8cb856d230b529ab35bc0c1887b02224bf6c7fab8e096b",
+      "validation": {
+        "maps": [
+          "RoofingTiles013A_1K-JPG_NormalGL.jpg",
+          "RoofingTiles013A.png",
+          "RoofingTiles013A_1K-JPG_NormalDX.jpg",
+          "RoofingTiles013A_1K-JPG_Roughness.jpg",
+          "RoofingTiles013A_1K-JPG_AmbientOcclusion.jpg",
+          "RoofingTiles013A_1K-JPG_Displacement.jpg",
+          "RoofingTiles013A_1K-JPG_Color.jpg",
+          "RoofingTiles013A_1K-JPG_Opacity.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "PavingStones036",
+      "name": "Paving Stones 036",
+      "category": "pbr_materials",
+      "file": "textures/PavingStones036/PavingStones036_1K-JPG_NormalDX.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/PavingStones036",
+      "direct_download_url": "https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 2139800,
+      "sha256": "ddf37a6582df1adf8fea15f4793c09a74320eff5c18ade9d72522ee2f5ff26c2",
+      "validation": {
+        "maps": [
+          "PavingStones036_1K-JPG_NormalDX.jpg",
+          "PavingStones036.png",
+          "PavingStones036_1K-JPG_Color.jpg",
+          "PavingStones036_1K-JPG_Displacement.jpg",
+          "PavingStones036_1K-JPG_Roughness.jpg",
+          "PavingStones036_1K-JPG_AmbientOcclusion.jpg",
+          "PavingStones036_1K-JPG_NormalGL.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "PavingStones036",
+      "name": "Paving Stones 036",
+      "category": "pbr_materials",
+      "file": "textures/PavingStones036/PavingStones036.png",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/PavingStones036",
+      "direct_download_url": "https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 455524,
+      "sha256": "a409a96e2029e93e458ba4ae63d0829c381cb402b1a3b69b77e512a130526347",
+      "validation": {
+        "maps": [
+          "PavingStones036_1K-JPG_NormalDX.jpg",
+          "PavingStones036.png",
+          "PavingStones036_1K-JPG_Color.jpg",
+          "PavingStones036_1K-JPG_Displacement.jpg",
+          "PavingStones036_1K-JPG_Roughness.jpg",
+          "PavingStones036_1K-JPG_AmbientOcclusion.jpg",
+          "PavingStones036_1K-JPG_NormalGL.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "PavingStones036",
+      "name": "Paving Stones 036",
+      "category": "pbr_materials",
+      "file": "textures/PavingStones036/PavingStones036_1K-JPG_Color.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/PavingStones036",
+      "direct_download_url": "https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 1796007,
+      "sha256": "065dad4ad95ee74992a6d3cbeb0efb107d3b18a0a3425487bf41452dce12c533",
+      "validation": {
+        "maps": [
+          "PavingStones036_1K-JPG_NormalDX.jpg",
+          "PavingStones036.png",
+          "PavingStones036_1K-JPG_Color.jpg",
+          "PavingStones036_1K-JPG_Displacement.jpg",
+          "PavingStones036_1K-JPG_Roughness.jpg",
+          "PavingStones036_1K-JPG_AmbientOcclusion.jpg",
+          "PavingStones036_1K-JPG_NormalGL.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "PavingStones036",
+      "name": "Paving Stones 036",
+      "category": "pbr_materials",
+      "file": "textures/PavingStones036/PavingStones036_1K-JPG_Displacement.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/PavingStones036",
+      "direct_download_url": "https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 517415,
+      "sha256": "fdda2fdd3b690c26e3b2de8a779b316fe02e8ccdcd81748758495a88dc8efd5f",
+      "validation": {
+        "maps": [
+          "PavingStones036_1K-JPG_NormalDX.jpg",
+          "PavingStones036.png",
+          "PavingStones036_1K-JPG_Color.jpg",
+          "PavingStones036_1K-JPG_Displacement.jpg",
+          "PavingStones036_1K-JPG_Roughness.jpg",
+          "PavingStones036_1K-JPG_AmbientOcclusion.jpg",
+          "PavingStones036_1K-JPG_NormalGL.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "PavingStones036",
+      "name": "Paving Stones 036",
+      "category": "pbr_materials",
+      "file": "textures/PavingStones036/PavingStones036_1K-JPG_Roughness.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/PavingStones036",
+      "direct_download_url": "https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 688711,
+      "sha256": "d97ddc1b344edf9e799d5a63b497c5bafabf3afe189bca565bbd155c79f269a1",
+      "validation": {
+        "maps": [
+          "PavingStones036_1K-JPG_NormalDX.jpg",
+          "PavingStones036.png",
+          "PavingStones036_1K-JPG_Color.jpg",
+          "PavingStones036_1K-JPG_Displacement.jpg",
+          "PavingStones036_1K-JPG_Roughness.jpg",
+          "PavingStones036_1K-JPG_AmbientOcclusion.jpg",
+          "PavingStones036_1K-JPG_NormalGL.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "PavingStones036",
+      "name": "Paving Stones 036",
+      "category": "pbr_materials",
+      "file": "textures/PavingStones036/PavingStones036_1K-JPG_AmbientOcclusion.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/PavingStones036",
+      "direct_download_url": "https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 499312,
+      "sha256": "a30168f74c40a7debfbb0b4038f438679f89067451e790d679d448e69c52db2b",
+      "validation": {
+        "maps": [
+          "PavingStones036_1K-JPG_NormalDX.jpg",
+          "PavingStones036.png",
+          "PavingStones036_1K-JPG_Color.jpg",
+          "PavingStones036_1K-JPG_Displacement.jpg",
+          "PavingStones036_1K-JPG_Roughness.jpg",
+          "PavingStones036_1K-JPG_AmbientOcclusion.jpg",
+          "PavingStones036_1K-JPG_NormalGL.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "PavingStones036",
+      "name": "Paving Stones 036",
+      "category": "pbr_materials",
+      "file": "textures/PavingStones036/PavingStones036_1K-JPG_NormalGL.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/PavingStones036",
+      "direct_download_url": "https://ambientcg.com/get?file=PavingStones036_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 2139484,
+      "sha256": "7e86034b299d5628bb072c74ed30364dbab5da21f55e17c675ccbef15b209543",
+      "validation": {
+        "maps": [
+          "PavingStones036_1K-JPG_NormalDX.jpg",
+          "PavingStones036.png",
+          "PavingStones036_1K-JPG_Color.jpg",
+          "PavingStones036_1K-JPG_Displacement.jpg",
+          "PavingStones036_1K-JPG_Roughness.jpg",
+          "PavingStones036_1K-JPG_AmbientOcclusion.jpg",
+          "PavingStones036_1K-JPG_NormalGL.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "Marble012",
+      "name": "Marble 012",
+      "category": "pbr_materials",
+      "file": "textures/Marble012/Marble012.png",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/Marble012",
+      "direct_download_url": "https://ambientcg.com/get?file=Marble012_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 332034,
+      "sha256": "1786e5bf4904c009001d8f58627e3463b14c6bdf63b8e924c03259207d702bd2",
+      "validation": {
+        "maps": [
+          "Marble012.png",
+          "Marble012_1K-JPG_Displacement.jpg",
+          "Marble012_1K-JPG_NormalDX.jpg",
+          "Marble012_1K-JPG_Color.jpg",
+          "Marble012_1K-JPG_Roughness.jpg",
+          "Marble012_1K-JPG_NormalGL.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "Marble012",
+      "name": "Marble 012",
+      "category": "pbr_materials",
+      "file": "textures/Marble012/Marble012_1K-JPG_Displacement.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/Marble012",
+      "direct_download_url": "https://ambientcg.com/get?file=Marble012_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 790392,
+      "sha256": "c074259c93ed0f9964a2eedb38f3c78321a7c46f5650832bbb7a8e4120dec0fa",
+      "validation": {
+        "maps": [
+          "Marble012.png",
+          "Marble012_1K-JPG_Displacement.jpg",
+          "Marble012_1K-JPG_NormalDX.jpg",
+          "Marble012_1K-JPG_Color.jpg",
+          "Marble012_1K-JPG_Roughness.jpg",
+          "Marble012_1K-JPG_NormalGL.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "Marble012",
+      "name": "Marble 012",
+      "category": "pbr_materials",
+      "file": "textures/Marble012/Marble012_1K-JPG_NormalDX.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/Marble012",
+      "direct_download_url": "https://ambientcg.com/get?file=Marble012_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 343770,
+      "sha256": "1b0a67a97bf6a8f9fb4a39b53c77196f22a288ecbe224b481f4cb915f4515354",
+      "validation": {
+        "maps": [
+          "Marble012.png",
+          "Marble012_1K-JPG_Displacement.jpg",
+          "Marble012_1K-JPG_NormalDX.jpg",
+          "Marble012_1K-JPG_Color.jpg",
+          "Marble012_1K-JPG_Roughness.jpg",
+          "Marble012_1K-JPG_NormalGL.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "Marble012",
+      "name": "Marble 012",
+      "category": "pbr_materials",
+      "file": "textures/Marble012/Marble012_1K-JPG_Color.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/Marble012",
+      "direct_download_url": "https://ambientcg.com/get?file=Marble012_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 1220876,
+      "sha256": "a34b55c889c6b3819d2c351b6409bfd0baf0a0a55b073441850627dfebcdcd1e",
+      "validation": {
+        "maps": [
+          "Marble012.png",
+          "Marble012_1K-JPG_Displacement.jpg",
+          "Marble012_1K-JPG_NormalDX.jpg",
+          "Marble012_1K-JPG_Color.jpg",
+          "Marble012_1K-JPG_Roughness.jpg",
+          "Marble012_1K-JPG_NormalGL.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "Marble012",
+      "name": "Marble 012",
+      "category": "pbr_materials",
+      "file": "textures/Marble012/Marble012_1K-JPG_Roughness.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/Marble012",
+      "direct_download_url": "https://ambientcg.com/get?file=Marble012_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 535814,
+      "sha256": "f7afd636d6cca0b470549959c514976186df58ac1013016b6c3919910a6d3a04",
+      "validation": {
+        "maps": [
+          "Marble012.png",
+          "Marble012_1K-JPG_Displacement.jpg",
+          "Marble012_1K-JPG_NormalDX.jpg",
+          "Marble012_1K-JPG_Color.jpg",
+          "Marble012_1K-JPG_Roughness.jpg",
+          "Marble012_1K-JPG_NormalGL.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "Marble012",
+      "name": "Marble 012",
+      "category": "pbr_materials",
+      "file": "textures/Marble012/Marble012_1K-JPG_NormalGL.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/Marble012",
+      "direct_download_url": "https://ambientcg.com/get?file=Marble012_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 342955,
+      "sha256": "2e9a56525ffbb7e80854b19985a5c921f91192698ea337f4834192479ba0063b",
+      "validation": {
+        "maps": [
+          "Marble012.png",
+          "Marble012_1K-JPG_Displacement.jpg",
+          "Marble012_1K-JPG_NormalDX.jpg",
+          "Marble012_1K-JPG_Color.jpg",
+          "Marble012_1K-JPG_Roughness.jpg",
+          "Marble012_1K-JPG_NormalGL.jpg"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "Wood096",
+      "name": "Wood 096",
+      "category": "pbr_materials",
+      "file": "textures/Wood096/Wood096_1K-JPG_NormalDX.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/Wood096",
+      "direct_download_url": "https://ambientcg.com/get?file=Wood096_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 863598,
+      "sha256": "01ba482e08b2eb0bdf5b546048f8ad84e1136cf278b1d8a99d052f1572f4ddc3",
+      "validation": {
+        "maps": [
+          "Wood096_1K-JPG_NormalDX.jpg",
+          "Wood096_1K-JPG_Roughness.jpg",
+          "Wood096_1K-JPG_Displacement.jpg",
+          "Wood096_1K-JPG_NormalGL.jpg",
+          "Wood096_1K-JPG_Color.jpg",
+          "Wood096.png"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "Wood096",
+      "name": "Wood 096",
+      "category": "pbr_materials",
+      "file": "textures/Wood096/Wood096_1K-JPG_Roughness.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/Wood096",
+      "direct_download_url": "https://ambientcg.com/get?file=Wood096_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 629325,
+      "sha256": "faed70389894632f5a9a62c0942cd3f8e677d6e2a1bf36d91e7ae5952631fa6e",
+      "validation": {
+        "maps": [
+          "Wood096_1K-JPG_NormalDX.jpg",
+          "Wood096_1K-JPG_Roughness.jpg",
+          "Wood096_1K-JPG_Displacement.jpg",
+          "Wood096_1K-JPG_NormalGL.jpg",
+          "Wood096_1K-JPG_Color.jpg",
+          "Wood096.png"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "Wood096",
+      "name": "Wood 096",
+      "category": "pbr_materials",
+      "file": "textures/Wood096/Wood096_1K-JPG_Displacement.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/Wood096",
+      "direct_download_url": "https://ambientcg.com/get?file=Wood096_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 537330,
+      "sha256": "5b0256ba67ae24f7023a46ff1ed0cab331b6378cf017227ae90de4f7cdf0b20c",
+      "validation": {
+        "maps": [
+          "Wood096_1K-JPG_NormalDX.jpg",
+          "Wood096_1K-JPG_Roughness.jpg",
+          "Wood096_1K-JPG_Displacement.jpg",
+          "Wood096_1K-JPG_NormalGL.jpg",
+          "Wood096_1K-JPG_Color.jpg",
+          "Wood096.png"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "Wood096",
+      "name": "Wood 096",
+      "category": "pbr_materials",
+      "file": "textures/Wood096/Wood096_1K-JPG_NormalGL.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/Wood096",
+      "direct_download_url": "https://ambientcg.com/get?file=Wood096_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 864486,
+      "sha256": "30e56cd5c8e7ec19545a0fe8b339f7311534071a3a9076d034d210ca8dad46f3",
+      "validation": {
+        "maps": [
+          "Wood096_1K-JPG_NormalDX.jpg",
+          "Wood096_1K-JPG_Roughness.jpg",
+          "Wood096_1K-JPG_Displacement.jpg",
+          "Wood096_1K-JPG_NormalGL.jpg",
+          "Wood096_1K-JPG_Color.jpg",
+          "Wood096.png"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "Wood096",
+      "name": "Wood 096",
+      "category": "pbr_materials",
+      "file": "textures/Wood096/Wood096_1K-JPG_Color.jpg",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/Wood096",
+      "direct_download_url": "https://ambientcg.com/get?file=Wood096_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 914353,
+      "sha256": "fa6b603dda286865a82a93a483c341a975a7d3062dd0f291b57800f7ac4d1b66",
+      "validation": {
+        "maps": [
+          "Wood096_1K-JPG_NormalDX.jpg",
+          "Wood096_1K-JPG_Roughness.jpg",
+          "Wood096_1K-JPG_Displacement.jpg",
+          "Wood096_1K-JPG_NormalGL.jpg",
+          "Wood096_1K-JPG_Color.jpg",
+          "Wood096.png"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    },
+    {
+      "asset_id": "Wood096",
+      "name": "Wood 096",
+      "category": "pbr_materials",
+      "file": "textures/Wood096/Wood096.png",
+      "source": "ambientCG",
+      "source_url": "https://ambientcg.com/a/Wood096",
+      "direct_download_url": "https://ambientcg.com/get?file=Wood096_1K-JPG.zip",
+      "license": "CC0 1.0",
+      "authors": {
+        "ambientCG": "ambientCG"
+      },
+      "dimensions_m": null,
+      "bytes": 227580,
+      "sha256": "67bf7b142ba191f5caa9279d6d8f2ce600a7280d6199b5f0f1384c8197af2a14",
+      "validation": {
+        "maps": [
+          "Wood096_1K-JPG_NormalDX.jpg",
+          "Wood096_1K-JPG_Roughness.jpg",
+          "Wood096_1K-JPG_Displacement.jpg",
+          "Wood096_1K-JPG_NormalGL.jpg",
+          "Wood096_1K-JPG_Color.jpg",
+          "Wood096.png"
+        ],
+        "color": true,
+        "normal": true,
+        "roughness": true
+      }
+    }
+  ]
+}
