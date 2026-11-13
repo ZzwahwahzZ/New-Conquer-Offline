@@ -204,10 +204,10 @@ jobs:
         shell: bash
         run: bash tools/run_godot_smoke_test.sh scripts/pbr_material_library_test.gd
 
-      - name: Run Step 16 smoke test
-        timeout-minutes: 4
+      - name: Run Step 16 smoke test (live six-city architecture validation)
+        timeout-minutes: 12
         shell: bash
-        run: bash tools/run_godot_smoke_test.sh scripts/step16_smoke_test.gd
+        run: bash tools/run_godot_smoke_test.sh scripts/step16_smoke_test.gd 600s display
 
       - name: Verify world environment, sunlight and Twin City ground
         timeout-minutes: 4
