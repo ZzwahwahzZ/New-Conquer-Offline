@@ -87,68 +87,6 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
      slot.add_child(building)
     index += 1
 
-static func _instantiate_kenney_building(parent: Node3D, city: String, index: int, at: Vector3, height_image: Image) -> Node3D:
- var candidates: Array[String] = []
- for model_dir in [
-  "res://assets/environment/kenney/fantasy-town-kit/Models/GLTF format",
-  "res://assets/environment/kenney/fantasy-town-kit/Models/GLB format",
-  "res://assets/environment/kenney/castle-kit/Models/GLTF format",
-  "res://assets/environment/kenney/castle-kit/Models/GLB format",
-  "res://assets/environment/kenney/retro-fantasy-kit/Models/GLTF format",
-  "res://assets/environment/kenney/retro-fantasy-kit/Models/GLB format"
- ]:
-  _collect_kenney_models(model_dir, candidates)
- var filtered: Array[String] = []
- var structure_words := ["building", "house", "shop", "market", "tower", "castle", "gate", "church", "temple", "keep", "hall", "inn", "mill", "stable", "forge", "blacksmith"]
- for path in candidates:
-  var file_name := path.get_file().to_lower()
-  if structure_words.any(func(word: String) -> bool: return file_name.contains(word)):
-   filtered.append(path)
- if filtered.is_empty():
-  return null
- filtered.sort()
- var selected := filtered[index % filtered.size()]
- var packed := load(selected) as PackedScene
- if packed == null:
-  push_warning("Kenney architecture model could not be imported: " + selected)
-  return null
- var instance := packed.instantiate() as Node3D
- if instance == null:
-  return null
- instance.name = city + "_KenneyBuilding_%02d" % index
- instance.position = at
- instance.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
- instance.rotation.y = atan2(-at.x,-at.z)
- var first_mesh := _first_mesh_node(instance)
- if first_mesh != null and first_mesh.mesh != null:
-  var dimensions := first_mesh.mesh.get_aabb().size
-  var extent := maxf(dimensions.x, maxf(dimensions.y, dimensions.z))
-  if extent > 0.01:
-   instance.scale = Vector3.ONE * clampf(12.0 / extent, 0.85, 3.5)
- parent.add_child(instance)
- _add_static_mesh_collisions(instance)
- instance.add_to_group("distance_cull_world")
- _set_visibility_range(instance, 360.0, 35.0)
- return instance
-
-static func _collect_kenney_models(path: String, output: Array[String]) -> void:
- var directory := DirAccess.open(path)
- if directory == null:
-  return
- directory.list_dir_begin()
- var entry := directory.get_next()
- while entry != "":
-  if entry.begins_with("."):
-   entry = directory.get_next()
-   continue
-  var child := path.path_join(entry)
-  if directory.current_is_dir():
-   _collect_kenney_models(child, output)
-  elif entry.get_extension().to_lower() in ["glb", "gltf"]:
-   output.append(child)
-  entry = directory.get_next()
- directory.list_dir_end()
-
 static func _first_mesh_node(root: Node) -> MeshInstance3D:
  var pending: Array[Node] = [root]
  while not pending.is_empty():
@@ -389,53 +327,7 @@ static func _build_outer_biome(parent: Node3D, city: String, p: Dictionary, size
  outer.add_child(ground)
  ground.material_override = _material(Color("#343a36"), 1.0)
  _build_walkable_outer_routes(outer, city, p, height_image)
- _place_quaternius_nature(outer, city, height_image)
- print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 heightmap_ground=1 height_aligned_routes=4 imported_nature=1" % city)
-
-static func _place_quaternius_nature(parent: Node3D, city: String, height_image: Image) -> void:
- var keywords: Array[String] = []
- match city:
-  "TwinCity": keywords = ["tree","oak","bush","rock"]
-  "DesertLand": keywords = ["palm","cactus","desert","rock"]
-  "VolcanoLand": keywords = ["rock","basalt","volcano","lava"]
-  "IceLand": keywords = ["pine","spruce","snow","ice","rock"]
-  "Waterlands": keywords = ["willow","palm","tree","rock"]
-  "DarkForest": keywords = ["ancient","tree","log","stump","rock","oak"]
- var candidates: Array[String] = []
- _collect_quaternius_models("res://assets/environment/quaternius/ultimate_stylized_nature", candidates)
- candidates.sort()
- var selected: Array[String] = []
- for path in candidates:
-  var file_name := path.get_file().to_lower()
-  for keyword in keywords:
-   if file_name.contains(keyword):
-    selected.append(path)
-    break
- if selected.is_empty():
-  push_warning("Quaternius biome models not found by semantic filename for " + city)
-  return
- var placed := 0
- for i in range(mini(18, selected.size() * 3)):
-  var path := selected[i % selected.size()]
-  var packed := load(path) as PackedScene
-  if packed == null:
-   continue
-  var prop := packed.instantiate() as Node3D
-  if prop == null:
-   continue
-  var angle := float(i) * 2.399963
-  var radius := 238.0 + float((i * 31) % 82)
-  prop.name = city + "_QuaterniusBiomeProp_%02d" % i
-  prop.position = Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-  prop.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, prop.position.x, prop.position.z, 800.0)
-  prop.rotation.y = angle
-  var scale_factor := 0.9 + float(i % 5) * 0.18
-  prop.scale = Vector3.ONE * scale_factor
-  parent.add_child(prop)
-  prop.add_to_group("distance_cull_world")
-  _set_visibility_range(prop, 320.0, 32.0)
-  placed += 1
- print("QUATERNIUS_BIOME_PROPS_PASS: %s placed=%d" % [city, placed])
+ print("OPEN_WORLD_BIOME_PASS: %s extent=800x800 heightmap_ground=1 height_aligned_routes=4 kenney_nature=1" % city)
 
 static func _build_horizon_ridge(parent: Node3D, city: String, p: Dictionary) -> void:
  var ridge_mesh := CylinderMesh.new()
