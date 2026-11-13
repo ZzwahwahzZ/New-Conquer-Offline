@@ -33,6 +33,7 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
  var terrain_resolution := 129
  height_shape.map_width = terrain_resolution
  height_shape.map_depth = terrain_resolution
+ height_shape.cell_size = Vector3(size / float(terrain_resolution - 1), 1.0, size / float(terrain_resolution - 1))
  var height_samples := PackedFloat32Array()
  height_samples.resize(terrain_resolution * terrain_resolution)
  for sample_index in range(mini(height_samples.size(), terrain_vertices.size())):
