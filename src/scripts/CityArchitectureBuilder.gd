@@ -140,11 +140,9 @@ static func _build_city_buildings(parent: Node3D, city: String, p: Dictionary, h
      continue
    var building := _instantiate_quaternius_building(slot,city,index,Vector3(x,0.0,z),height_image)
    if building == null:
-    building = _make_compact_urban_building(city,p,index)
-    building.name = city + "_DetailedBuilding_%02d" % index
-    building.position = Vector3(x,WorldTerrainBuilder.sample_height_image(height_image,city,x,z,800.0),z)
-    building.rotation.y = atan2(-x,-z)
-    slot.add_child(building)
+    push_error("CITY_IMPORTED_BUILDING_MISSING: %s index=%d; refusing primitive placeholder geometry" % [city,index])
+    index += 1
+    continue
    building.add_to_group("city_building")
    index += 1
    built_count += 1
@@ -318,6 +316,7 @@ static func _instantiate_quaternius_building(parent: Node3D, city: String, index
   return null
  instance.name = city + "_QuaterniusBuilding_%02d" % index
  instance.add_to_group("city_building")
+ instance.add_to_group("imported_city_building")
  instance.position = at
  instance.position.y = WorldTerrainBuilder.sample_height_image(height_image, city, at.x, at.z, 800.0)
  instance.rotation.y = atan2(-at.x,-at.z)
