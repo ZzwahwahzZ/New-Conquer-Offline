@@ -1007,6 +1007,14 @@ static func _build_wuxia_market_stalls(parent: Node3D, city: String, height_imag
    red_lantern.scale = Vector3.ONE*0.58
    stall.add_child(red_lantern)
    stall.set_meta("source_asset_paths",[walkway_path,counter_path,screen_path,lantern_path])
+  var stall_light := OmniLight3D.new()
+  stall_light.name = "ChineseMarketStallWarmLanternLight"
+  stall_light.position = Vector3(0.0,2.8,0.0)
+  stall_light.light_color = Color("#ffad67")
+  stall_light.light_energy = 0.38
+  stall_light.omni_range = 5.0
+  stall_light.add_to_group("imperial_market_lantern_lights")
+  stall.add_child(stall_light)
   stall.add_to_group("city_market_stall")
   parent.add_child(stall)
   _add_static_mesh_collisions(stall)
