@@ -109,6 +109,7 @@ static func _add_model(parent: Node3D,city: String,filename: String,node_name: S
  instance.name=node_name
  instance.add_to_group("city_building")
  instance.add_to_group("imported_city_building")
+ instance.set_meta("source_asset_path",path)
  instance.position=Vector3(0.0,4.0,0.0)
  instance.scale=model_scale
  platform_root.add_child(instance)
