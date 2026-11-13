@@ -194,21 +194,26 @@ static func _build_imperial_tree_multimesh(parent: Node3D, city: String, size: f
   return
  tree_candidates.sort()
  var species: Array[Dictionary] = []
- for model_path in tree_candidates:
-  var packed := ResourceLoader.load(model_path) as PackedScene
+ for required_species in ["willow","pine","bamboo","plum","bush"]:
+  var selected_path := ""
+  for candidate_path in tree_candidates:
+   if candidate_path.get_file().to_lower().contains(required_species):
+    selected_path = candidate_path
+    break
+  if selected_path.is_empty():
+   push_error("IMPERIAL_CITY_TREE_SPECIES_MISSING: " + city + " requires " + required_species + " GLB")
+   return
+  var packed := ResourceLoader.load(selected_path) as PackedScene
   if packed == null:
-   continue
+   push_error("IMPERIAL_CITY_TREE_IMPORT_FAIL: " + selected_path)
+   return
   var instance := packed.instantiate()
   var mesh: Mesh = _first_renderable_mesh(instance)
   instance.free()
   if mesh == null:
-   continue
-  species.append({"path":model_path,"mesh":mesh})
-  if species.size() >= 5:
-   break
- if species.is_empty():
-  push_error("IMPERIAL_CITY_TREE_FAIL: tree models could not be imported for " + city)
-  return
+   push_error("IMPERIAL_CITY_TREE_MESH_FAIL: " + selected_path)
+   return
+  species.append({"path":selected_path,"mesh":mesh})
  const TREES_PER_CITY := 60
  var city_index := maxi(0, ["TwinCity","DesertLand","VolcanoLand","IceLand","Waterlands","DarkForest"].find(city))
  var base_count := int(TREES_PER_CITY / species.size())
