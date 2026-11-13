@@ -22,7 +22,7 @@ PACKS = {
         "url": "https://kenney.nl/media/pages/assets/nature-kit/37ac38a37b-1677698939/kenney_nature-kit.zip",
         "source": "https://kenney.nl/assets/nature-kit",
         "sha256": "fa7974a0d342bfe63c38664ba9f8ec1a4aab8ea25f099bdc56870e33588c4d9d",
-        "required_models": ["bridge_wood.glb", "bridge_stone.glb"],
+        "required_models": ["bridge_wood.glb","bridge_stone.glb","cactus_short.glb","cactus_tall.glb","tree_palm.glb","tree_default.glb","tree_oak.glb","tree_pineDefaultA.glb","tree_pineDefaultB.glb","tree_default_dark.glb","tree_oak_dark.glb","tree_oak_fall.glb","plant_bush.glb","plant_bushLarge.glb","plant_flatTall.glb","grass.glb","grass_large.glb","flower_redA.glb","rock_largeA.glb","rock_smallA.glb","rock_smallB.glb","stone_largeB.glb","stone_largeD.glb","mushroom_redGroup.glb","log_large.glb","stump_round.glb"],
     },
     "fantasy-town-kit": {
         "title": "Kenney Fantasy Town Kit 2.0",
