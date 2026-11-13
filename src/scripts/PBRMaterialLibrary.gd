@@ -64,7 +64,7 @@ static func build_imperial_paving_material() -> StandardMaterial3D:
     return _build_polyhaven_material("stone_tiles_02", "PolyHaven_StoneTiles02_ImperialPaving")
 
 static func _build_polyhaven_material(asset_id: String, display_name: String) -> StandardMaterial3D:
-    var root := "res://assets/environment/materials/polyhaven/" + asset_id + "/"
+    var root := "res://assets/imperial_city_kit_v2/pbr/" + asset_id + "/"
     var albedo_path := root + "albedo.jpg"
     var normal_path := root + "normal.jpg"
     var roughness_path := root + "roughness.jpg"
