@@ -5,13 +5,11 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/build_imperial_assets.yml'
-      - 'tools/fetch_and_normalize_assets.py'
-      - 'tools/normalize_asset_blender.py'
 permissions:
   contents: write
 concurrency:
   group: imperial-assets-main
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-24.04
