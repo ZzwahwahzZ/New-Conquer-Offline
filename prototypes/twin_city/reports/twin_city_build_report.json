@@ -1,23 +1,24 @@
 {
 	"architecture_style": "imperial_chinese",
+	"blueprint": "GODOT_MASTER_ARCHITECTURAL_BLUEPRINT; four-pass CAD grid; AABB ground snap; warm imperial palette",
 	"building_categories": {
-		"commercial": 42,
-		"defensive": 20,
-		"landmark": 11,
-		"palace_annex": 8,
+		"commercial": 48,
+		"landmark": 16,
+		"pagoda": 1,
+		"palace": 3,
 		"residential": 120,
-		"service": 22
+		"service": 56
 	},
-	"buildings": 224,
-	"capture_elapsed_seconds": 20.271,
+	"buildings": 244,
+	"capture_elapsed_seconds": 117.877,
 	"city_core_m": 360,
 	"fps_measurement_note": "GitHub capture uses Lavapipe software Vulkan; this is not a physical Android GPU benchmark.",
 	"fps_target_30_pass": false,
 	"godot_version": "4.3-stable (official)",
-	"measured_capture_fps_average": 5.06666666666667,
+	"measured_capture_fps_average": 1.03333333333333,
 	"palace_dimensions_m": "85x75",
-	"perimeter_diameter_m": 440,
-	"plaza_diameter_m": 60,
+	"perimeter_diameter_m": 380,
+	"plaza_diameter_m": 56,
 	"renderer_backend": "Mobile Vulkan",
 	"renderer_icd": "/usr/share/vulkan/icd.d/lvp_icd.json",
 	"required_screenshots": [
@@ -31,7 +32,7 @@
 	"screenshot_height": 720,
 	"screenshot_width": 1280,
 	"screenshots_created": 6,
-	"street_camera_clearance_required_m": 8,
+	"street_camera_clearance_m": 6,
 	"street_camera_height_m": 1.8,
 	"target_device_fps_verified": false,
 	"world_m": 800

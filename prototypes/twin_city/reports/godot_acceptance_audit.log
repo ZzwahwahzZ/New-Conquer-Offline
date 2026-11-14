@@ -1,12 +1,11 @@
 Godot Engine v4.3.stable.official.77dcf97d8 - https://godotengine.org
 
-TWIN_CITY_GLB_PAVING_PASS: original_059_module_instances=5329 full_city_coverage=1
-TWIN_CITY_GLB_BUILDING_CENSUS: { "residential": 120, "commercial": 42, "service": 22, "landmark": 12, "defensive": 20, "palace_annex": 8 } total=224
-TWIN_CITY_GLB_BUILD_PASS: total=224 categories={ "residential": 120, "commercial": 42, "service": 22, "landmark": 12, "defensive": 20, "palace_annex": 8 } procedural_box_meshes=0 source=GLB
-TWIN_CITY_ACCEPTANCE_AUDIT total=224 categories={ "residential": 120, "commercial": 42, "service": 22, "landmark": 12, "defensive": 20, "palace_annex": 8 } glb_backed=224 null_meshes=0 procedural_box_meshes=0 mesh_surfaces=5153 paving_instances=5329 plaza=true palace=true moat=true pagoda=true
-TWIN_CITY_AUDIT_PASS: 224 genuine GLB-backed structures; 0 procedural BoxMesh; 0 null meshes; full-city imported paving
-ERROR: Parameter "m" is null.
-   at: mesh_get_surface_count (servers/rendering/dummy/storage/mesh_storage.h:120)
+TWIN_CITY_GLB_PAVING_PASS: blocks=10080 roads=4044 plaza=276 curbs=2816; 4-pass CAD grid=360m
+TWIN_CITY_IMPERIAL_PALACE_PASS: 85x75m terrace + 27m GLB ceremonial hall + 2 normalized wings + 18m stair; gold roof palette
+TWIN_CITY_GLB_BUILDING_CENSUS: { "commercial": 48, "residential": 120, "service": 56, "landmark": 16 } total=240; 48 shops, 120 houses, 56 services, 16 halls; 12 open courtyard blocks; GLB assemblies only
+TWIN_CITY_GLB_BUILD_PASS: total=240 categories={ "commercial": 48, "residential": 120, "service": 56, "landmark": 16 } procedural_box_meshes=0 source=GLB
+TWIN_CITY_ACCEPTANCE_AUDIT total=244 categories={ "residential": 120, "commercial": 48, "service": 56, "landmark": 16, "palace": 3, "pagoda": 1 } normalized=244 null_meshes=0 procedural_building_primitives=0 surfaces=10448 paving_instances=17216 plaza=true palace=true moat=true pagoda=true
+TWIN_CITY_AUDIT_PASS: 240 district GLB-assembled structures + 3 palace GLB buildings + 1 central GLB pagoda; 0 procedural primitives in buildings; 0 null meshes; AABB normalized
 ERROR: Parameter "m" is null.
    at: mesh_get_surface_count (servers/rendering/dummy/storage/mesh_storage.h:120)
 ERROR: Parameter "m" is null.

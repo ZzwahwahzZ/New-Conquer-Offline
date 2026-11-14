@@ -1,12 +1,14 @@
 {
   "dataset": "ZzwahwahzZ/clash-of-legends-terrain-assets",
   "original_models_folder_glb_count": 99,
-  "selected_architecture_kit_component_count": 99,
-  "active_godot_glb_count": 99,
-  "restored_glb_models": 99,
-  "restored_files": 99,
+  "nature_and_street_candidate_glb_count": 311,
+  "curated_nature_glb_count": 4,
+  "restored_glb_asset_count": 414,
+  "active_godot_glb_count": 414,
+  "restored_glb_models": 414,
+  "restored_files": 414,
   "restored_pbr_textures": 0,
-  "verified_twin_city_architectural_assets": 46,
+  "verified_imperial_chinese_style_assets": 46,
   "files": [
     {
       "name": "Windswept Mountain Pine (Alpine Snow Village)",
@@ -1194,6 +1196,3786 @@
         0.21061305701732635,
         0.2108980417251587,
         0.4244125187397003
+      ]
+    },
+    {
+      "name": "3dassets-alpine-snow-village-cedar-sauna-house-b3b0d5b4",
+      "style_group": "source_candidate",
+      "file": "candidates/models/3dassets-alpine-snow-village-cedar-sauna-house-b3b0d5b4.glb",
+      "sha256": "6ce1434eed5efe01745ae59d3e1b455825bdd809de0c8e68ae8373cfbe413518",
+      "bytes": 370368,
+      "dimensions_m": [
+        4.0102881583212024,
+        3.967436128880891,
+        4.651557207107544
+      ]
+    },
+    {
+      "name": "3dassets-feudal-japan-castle-town-bath-house-f3524f03",
+      "style_group": "source_candidate",
+      "file": "candidates/models/3dassets-feudal-japan-castle-town-bath-house-f3524f03.glb",
+      "sha256": "650cdc4462e26b34b4f0c24f50c338a83d298b45f48329b13ccd64353079c044",
+      "bytes": 219168,
+      "dimensions_m": [
+        7.199999809265137,
+        5.0002137422561646,
+        7.0
+      ]
+    },
+    {
+      "name": "3dassets-feudal-japan-castle-town-tea-house-a168f962",
+      "style_group": "source_candidate",
+      "file": "candidates/models/3dassets-feudal-japan-castle-town-tea-house-a168f962.glb",
+      "sha256": "5848f907672d5c6c216d2f024aebc826f715e58635080eef042ff90c27477442",
+      "bytes": 295568,
+      "dimensions_m": [
+        6.199999809265137,
+        4.910291522632733,
+        5.550036093743898
+      ]
+    },
+    {
+      "name": "3dassets-roman-bathhouse-and-palaestra-bath-house-c0db5458-starter-scene",
+      "style_group": "source_candidate",
+      "file": "candidates/models/3dassets-roman-bathhouse-and-palaestra-bath-house-c0db5458-starter-scene.glb",
+      "sha256": "9bf480769f65ddeef5b180ff25820124a5efb34ea2bf2b4c0e6eb1bbd9f103b3",
+      "bytes": 3077004,
+      "dimensions_m": [
+        41.750016860722155,
+        8.005609484794974,
+        20.10003862380836
+      ]
+    },
+    {
+      "name": "3dassets-royal-court-and-throne-palace-palace-audience-house-55f0cb24",
+      "style_group": "source_candidate",
+      "file": "candidates/models/3dassets-royal-court-and-throne-palace-palace-audience-house-55f0cb24.glb",
+      "sha256": "ef490acb5230009be64a448daa3fc94b640aec99a613419b3bb9741ce7be82a8",
+      "bytes": 1055596,
+      "dimensions_m": [
+        8.399999618530273,
+        5.150220121917357,
+        4.520572552427893
+      ]
+    },
+    {
+      "name": "3dassets-runestone-conservatory-open-ribbed-growing-house",
+      "style_group": "source_candidate",
+      "file": "candidates/models/3dassets-runestone-conservatory-open-ribbed-growing-house.glb",
+      "sha256": "02d6b96f2a8845613c45988ea71d10c50d3db492e78bf0e403a481ed782ac194",
+      "bytes": 57404,
+      "dimensions_m": [
+        2.1424038410186768,
+        3.049999952316284,
+        4.0
+      ]
+    },
+    {
+      "name": "github-rei-kurzweil-mittens-assets_models_sakura-machine-pistol.glb",
+      "style_group": "source_candidate",
+      "file": "candidates/models/github-rei-kurzweil-mittens-assets_models_sakura-machine-pistol.glb.glb",
+      "sha256": "50a147b39b032271fb018e3bd5dc0847402f8db0910aaa18ee62772082966ce6",
+      "bytes": 893388,
+      "dimensions_m": [
+        0.6185063719749451,
+        2.1919121742248535,
+        6.593454360961914
+      ]
+    },
+    {
+      "name": "grab3d-allen-key",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-allen-key.glb",
+      "sha256": "ceb8267585fe628d43d33bb5e5ab7946f9b14ff1f4242ef438ca9449fcc89872",
+      "bytes": 874572,
+      "dimensions_m": [
+        0.1498750001192093,
+        0.2332264913787867,
+        0.06642649509012699
+      ]
+    },
+    {
+      "name": "grab3d-alternator",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-alternator.glb",
+      "sha256": "931615eb58615b4d6e9619d9d944a1389b7d4f0828247ab1186c124a341f71a6",
+      "bytes": 852464,
+      "dimensions_m": [
+        0.22200000286102295,
+        0.19300000369548798,
+        0.13899999856948853
+      ]
+    },
+    {
+      "name": "grab3d-baby-dragon",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-baby-dragon.glb",
+      "sha256": "12ced8b4bcd34e2a7076ee9f354b3613c8d859f1d75b48b63232dab1028799ec",
+      "bytes": 12731552,
+      "dimensions_m": [
+        0.5499439537525177,
+        0.4656302844414313,
+        0.41785120964050293
+      ]
+    },
+    {
+      "name": "grab3d-cobweb",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-cobweb.glb",
+      "sha256": "a45d8cd73bccae743e16075c8c8b448f871085fcc5c8f9991c220e3c50518cd9",
+      "bytes": 411680,
+      "dimensions_m": [
+        0.9543392590712756,
+        0.9526864290237427,
+        0.9391118492931128
+      ]
+    },
+    {
+      "name": "grab3d-crystal-dragon",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-crystal-dragon.glb",
+      "sha256": "3a1f11f59563fc19265b2d8f63d6802171bf3057977778e61cf4dacfa6d7a6b1",
+      "bytes": 13240820,
+      "dimensions_m": [
+        4.817025184631348,
+        4.946433094795793,
+        5.998712539672852
+      ]
+    },
+    {
+      "name": "grab3d-differential",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-differential.glb",
+      "sha256": "9c80d079005bea84e2ffc9b38e7afb901807b2f8260f5d0690ab52bec0462fb1",
+      "bytes": 2872848,
+      "dimensions_m": [
+        0.503000020980835,
+        0.23849999904632568,
+        0.32600000500679016
+      ]
+    },
+    {
+      "name": "grab3d-escalator",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-escalator.glb",
+      "sha256": "28c934c20e321c2eae7afed5f323643ce99cc5d8f7a28f012c45fa83061aff50",
+      "bytes": 1250872,
+      "dimensions_m": [
+        1.6100000143051147,
+        4.091395854949951,
+        8.0
+      ]
+    },
+    {
+      "name": "grab3d-glasses",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-glasses.glb",
+      "sha256": "6b5d0d7ed71b2d434c2d8945d66741810f33912ea664876254981de65d83752c",
+      "bytes": 1078724,
+      "dimensions_m": [
+        0.13645608723163605,
+        0.05008210744563257,
+        0.13977260538376868
+      ]
+    },
+    {
+      "name": "grab3d-goblin",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-goblin.glb",
+      "sha256": "46625c8fd7b7c7f9ca16efea92f7a36c40e611b87e787796b002d8132dc745d4",
+      "bytes": 12628636,
+      "dimensions_m": [
+        0.7750863432884216,
+        1.099868919562141,
+        0.27159491181373596
+      ]
+    },
+    {
+      "name": "grab3d-hydra",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-hydra.glb",
+      "sha256": "e64ee2e2ee3c7f8e556f1f4d48c7d76107c0b1268dd310a1103ed2bde2ffba1c",
+      "bytes": 13068216,
+      "dimensions_m": [
+        3.174683690071106,
+        3.7767750783241354,
+        4.999172687530518
+      ]
+    },
+    {
+      "name": "grab3d-kraken",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-kraken.glb",
+      "sha256": "ac8055a523533bbb04a401881acc6a602081cd85b0b436e9ce939b0754940a50",
+      "bytes": 12710448,
+      "dimensions_m": [
+        2.178104043006897,
+        2.7454716676147655,
+        2.999678373336792
+      ]
+    },
+    {
+      "name": "grab3d-ladder",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-ladder.glb",
+      "sha256": "b969d75a8f78c4b920a78d7b4ea1290fd30e22c002e8d96c037a79ca6760ef85",
+      "bytes": 940484,
+      "dimensions_m": [
+        0.4519999921321869,
+        2.745999976992607,
+        0.19900000095367432
+      ]
+    },
+    {
+      "name": "grab3d-monster-truck",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-monster-truck.glb",
+      "sha256": "19808912350b62a48cf38774d71c8696dbabe47e8daf0cd5c388f9a78ca8966d",
+      "bytes": 1292604,
+      "dimensions_m": [
+        2.9196547865867615,
+        2.634999990463257,
+        4.579945147037506
+      ]
+    },
+    {
+      "name": "grab3d-orc",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-orc.glb",
+      "sha256": "8dbf6b7fcaab34e9fa1be47735f3658b6fc755acbf91c8bf0a0b2b89b05cce96",
+      "bytes": 12046968,
+      "dimensions_m": [
+        1.1502512693405151,
+        1.9497459225094644,
+        0.49693673849105835
+      ]
+    },
+    {
+      "name": "grab3d-phoenix",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-phoenix.glb",
+      "sha256": "3a0dd0ae045803f8e5ef606e6297888465cc15eca05fade0b2a84d72aee32e35",
+      "bytes": 13212364,
+      "dimensions_m": [
+        2.499443531036377,
+        2.471603341313312,
+        1.6850377321243286
+      ]
+    },
+    {
+      "name": "grab3d-sabertooth-tiger",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-sabertooth-tiger.glb",
+      "sha256": "a9abff3be33592aef24896681056a43d785745bb5ddb350add95a057fe3be10c",
+      "bytes": 10811392,
+      "dimensions_m": [
+        0.6396777033805847,
+        1.0023547410964966,
+        2.0698364973068237
+      ]
+    },
+    {
+      "name": "grab3d-sunglasses",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-sunglasses.glb",
+      "sha256": "d293a4da4c675c0517464adbf350913b795ca59e0ba6be5dd28eedbfb8068bc0",
+      "bytes": 954952,
+      "dimensions_m": [
+        0.15903769433498383,
+        0.053419362753629684,
+        0.13852856680750847
+      ]
+    },
+    {
+      "name": "grab3d-wyvern",
+      "style_group": "source_candidate",
+      "file": "candidates/models/grab3d-wyvern.glb",
+      "sha256": "d373ff2d83e6ce41ab4f154fdf0fcc0bf79db5597b90ce13744f88b883cd1155",
+      "bytes": 12974968,
+      "dimensions_m": [
+        5.35698938369751,
+        5.4910001780081075,
+        5.9989707469940186
+      ]
+    },
+    {
+      "name": "opengameart-3d-walls-props",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-3d-walls-props.glb",
+      "sha256": "7253f5fa5452901fe4987483e8e11ee990310bdb407217cd68e54d8f92bfad02",
+      "bytes": 1900624,
+      "dimensions_m": [
+        33.08921611337091,
+        6.140325108753585,
+        18.287521236406683
+      ]
+    },
+    {
+      "name": "opengameart-basic-wooden-fence",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-basic-wooden-fence.glb",
+      "sha256": "31afddd8d196eddcc9e7287f9b12a88728bac18a2d6438e6dbf6fb8d2a6cf207",
+      "bytes": 28396,
+      "dimensions_m": [
+        6.901357501745224,
+        2.128223243135892,
+        0.3282230794429779
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit.glb",
+      "sha256": "f2d1fd67032cf9f63294ab36f3049b1045e45b9e6a9d1e34f774bd46d7f76c71",
+      "bytes": 15604,
+      "dimensions_m": [
+        0.07500000298023224,
+        1.460181325674057,
+        1.255796730518341
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_1",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_1.glb",
+      "sha256": "6fbb9c3a7d2d3f6e5c8d3a3b271a0e0f427c1abd0fe59aca802ea7be621492ff",
+      "bytes": 18680,
+      "dimensions_m": [
+        0.07500000298023224,
+        1.5834610760211945,
+        1.2555456161499023
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_10",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_10.glb",
+      "sha256": "451270abfbd1ba06440895d9cd70d46b9a58100536e757891a8e75cb358076f0",
+      "bytes": 13632,
+      "dimensions_m": [
+        2.200000047683716,
+        0.5,
+        2.200000047683716
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_11",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_11.glb",
+      "sha256": "c32610808acd7994f21646c7dba0a87930168a17089f04ce0dc67bc3458c826d",
+      "bytes": 20352,
+      "dimensions_m": [
+        2.200000047683716,
+        0.5000000015367736,
+        2.200000047683716
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_12",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_12.glb",
+      "sha256": "8f34c2ca99074bc0d048ed356ad49ddf44c6772d4487c8521d987fc97f68855c",
+      "bytes": 13688,
+      "dimensions_m": [
+        1.2000000476837158,
+        0.5,
+        1.2000000476837158
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_13",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_13.glb",
+      "sha256": "1043864a8417100a6b81eac20c1c5fdae91e340c0d027585117a1fdba196bde9",
+      "bytes": 13676,
+      "dimensions_m": [
+        2.200000047683716,
+        0.5,
+        2.200000047683716
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_14",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_14.glb",
+      "sha256": "e0dac6a1dc234db95451f7818e4f260b5bfe75f842e9d705b2dd7b7f149728ae",
+      "bytes": 12284,
+      "dimensions_m": [
+        0.19999998807907104,
+        0.5,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_15",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_15.glb",
+      "sha256": "4b9561e8d7b38cd68cfb8dda75cd7be476e0ce3cd502c116278915f96da0273a",
+      "bytes": 12288,
+      "dimensions_m": [
+        0.19999998807907104,
+        0.30000001192092896,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_16",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_16.glb",
+      "sha256": "455ade6ab37177d6485aa3d96815b808105a910b4a3549c21746b09738ebaab5",
+      "bytes": 13140,
+      "dimensions_m": [
+        0.4000000059604645,
+        2.4000000953674316,
+        0.4000000059604645
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_17",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_17.glb",
+      "sha256": "efbd239d606404b6997356031d1fbd479135c00dad6b98130e845614c12955a7",
+      "bytes": 13136,
+      "dimensions_m": [
+        0.699999988079071,
+        2.4000000953674316,
+        0.699999988079071
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_18",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_18.glb",
+      "sha256": "5079613f636758cc5d5de18d3f8146c913bfb016a756d8bbe15bd5559d611fc7",
+      "bytes": 13056,
+      "dimensions_m": [
+        0.5,
+        2.4000000953674316,
+        0.5
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_19",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_19.glb",
+      "sha256": "6f25cb548eb8aab1c3023165b4cfcf1e50d6ba5254be6db1ee51fef9b529d153",
+      "bytes": 15032,
+      "dimensions_m": [
+        0.4341599643230438,
+        0.42767998576164246,
+        0.4341599643230438
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_2",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_2.glb",
+      "sha256": "df62bdfde300221b071c18652381f794590d9671a269301a70c0d260f32adb10",
+      "bytes": 19660,
+      "dimensions_m": [
+        0.10000000149011612,
+        1.7471979856491089,
+        1.2555456161499023
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_20",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_20.glb",
+      "sha256": "efe39c9dc3a43345b35b97c15d9150b9675ad2067d73b7c835aa1a06a7f8e213",
+      "bytes": 27240,
+      "dimensions_m": [
+        0.9283119234495657,
+        2.0999999046325684,
+        0.32719763580358924
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_21",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_21.glb",
+      "sha256": "8b60e73e2e7dd0fe2943de952b0e5e2687f11d57fe9c4de9360251f8a3e2bf7e",
+      "bytes": 33932,
+      "dimensions_m": [
+        0.9283119234495657,
+        2.0999999046325684,
+        0.32719763580358924
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_22",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_22.glb",
+      "sha256": "6ceb790c47cdad2f4987b30a3f33915950ac8808f78547955a3cf3e60d933041",
+      "bytes": 38636,
+      "dimensions_m": [
+        0.9283119234495657,
+        2.0999999046325684,
+        0.32719763580358924
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_23",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_23.glb",
+      "sha256": "a8713ed3d50dc2d02ddd235d12952df3fee700f1ab0c1374bb32bca45da8dee9",
+      "bytes": 40516,
+      "dimensions_m": [
+        0.9283119234495657,
+        2.0999999046325684,
+        0.32719763580358924
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_24",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_24.glb",
+      "sha256": "95885e05597262089d6bf6997c9df5fa471aec93e4019cd0dd4d54fe8da80188",
+      "bytes": 28556,
+      "dimensions_m": [
+        0.9283119234495657,
+        2.0999999046325684,
+        0.32719765650405974
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_25",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_25.glb",
+      "sha256": "73c8655a3cbe6b66230befb39dd5f61b9db72658ec8f80104194f3c48c7e2442",
+      "bytes": 28164,
+      "dimensions_m": [
+        0.9283119234495657,
+        2.0999999046325684,
+        0.32719765650405974
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_26",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_26.glb",
+      "sha256": "3f215e2029c18b0bde1b66be7e2d016ef183745c25bdb4bd7a86f9b863711ece",
+      "bytes": 31044,
+      "dimensions_m": [
+        0.9283119234495657,
+        2.0999999046325684,
+        0.32719765650405974
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_27",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_27.glb",
+      "sha256": "e44ff5765f67990acc9e29ee831c7c0beba6c68413aa7e159bae018890c81aad",
+      "bytes": 32512,
+      "dimensions_m": [
+        0.9283119234495657,
+        2.0999999046325684,
+        0.32719765650405974
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_28",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_28.glb",
+      "sha256": "d3f0011836dd0cbb982ca55d941e8f24c72481d24d3981c2c8dfd94c907742a6",
+      "bytes": 12068,
+      "dimensions_m": [
+        2.0,
+        0.10000000149011612,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_29",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_29.glb",
+      "sha256": "50da5a127238ce149f68f9e997b05da3c41f70fe2e8cd7d7052723d4a40ca1e3",
+      "bytes": 14012,
+      "dimensions_m": [
+        2.0,
+        0.10000000149011612,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_3",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_3.glb",
+      "sha256": "58147f17a9996b455bf6cd97847330e900674e8b0af898d54474841bd58f241a",
+      "bytes": 15600,
+      "dimensions_m": [
+        0.07500000298023224,
+        0.9601813182234764,
+        1.255796730518341
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_30",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_30.glb",
+      "sha256": "85a158a1327e4942c5c3845d771a8b48fd65061d6da0aba1412253fdace01913",
+      "bytes": 11832,
+      "dimensions_m": [
+        1.0,
+        0.10000000149011612,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_31",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_31.glb",
+      "sha256": "42525b99ac018e2bfaed81b3dd2a52a4797d7ded773c9193ea7eb914bfdaeacf",
+      "bytes": 11816,
+      "dimensions_m": [
+        1.0,
+        0.10000000149011612,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_32",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_32.glb",
+      "sha256": "aa7fc657b0d580074af3608d68276f0f571c034a0bc23e73f2b5049c67b163c3",
+      "bytes": 11820,
+      "dimensions_m": [
+        2.0,
+        0.10000000149011612,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_33",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_33.glb",
+      "sha256": "4d48cb115e9a46d9260413c3448abddfbcd73e508dd63f35f8f84351d7d504e9",
+      "bytes": 16044,
+      "dimensions_m": [
+        0.20000000298023224,
+        0.30000001192092896,
+        0.30000001192092896
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_34",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_34.glb",
+      "sha256": "1064590e1715939a734e5a92b7eff2bd49500f3bb62fe01ac72c83081966006b",
+      "bytes": 14488,
+      "dimensions_m": [
+        0.308239221572876,
+        1.0,
+        0.308239221572876
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_35",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_35.glb",
+      "sha256": "d134e80b2423feb21cb67983bd9f658eec0bf593aa6967781a4da0b5f8d6363d",
+      "bytes": 16020,
+      "dimensions_m": [
+        0.20000000298023224,
+        0.30000001192092896,
+        0.30000001192092896
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_36",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_36.glb",
+      "sha256": "a9365ce904210662782fb70eac7efb3cc21de757350a83144891e356af576f05",
+      "bytes": 16212,
+      "dimensions_m": [
+        0.308239221572876,
+        2.4000000953674316,
+        0.308239221572876
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_37",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_37.glb",
+      "sha256": "548f0b6c1480ec01137052816e86e32ad3abaf4c64e5a8554ef8450c9fa475e0",
+      "bytes": 16184,
+      "dimensions_m": [
+        0.308239221572876,
+        2.0,
+        0.308239221572876
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_38",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_38.glb",
+      "sha256": "afcf95a725747fb6b5a210db9674abd605c7636300f7c37b837590df90e3edd3",
+      "bytes": 21596,
+      "dimensions_m": [
+        0.1250000298023224,
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_39",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_39.glb",
+      "sha256": "702d38959a9bf054552a4ba8c11a828a13af052e3c6bbe8784cc82e152009d0b",
+      "bytes": 21584,
+      "dimensions_m": [
+        0.1250000298023224,
+        1.0,
+        1.0000000000000029
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_4",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_4.glb",
+      "sha256": "238cba74e6b6c6577f164fd1a0651ab903bf45cb75d42b59ea6dcb3e5b0e35cc",
+      "bytes": 18684,
+      "dimensions_m": [
+        0.07500000298023224,
+        1.083461057394743,
+        1.2555456161499023
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_40",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_40.glb",
+      "sha256": "e0b3adb1742aff2438a44f7b9e021b61fdd5d9794c69be1c3b752305614c973a",
+      "bytes": 18776,
+      "dimensions_m": [
+        0.10000002384185791,
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_41",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_41.glb",
+      "sha256": "3e1513c6533949c75a72268a276652af7874d1212af0fbd92303768274651596",
+      "bytes": 18764,
+      "dimensions_m": [
+        0.10000002384185791,
+        1.0,
+        1.0000000000000029
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_42",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_42.glb",
+      "sha256": "88e14c2bcb8ce1dcce66692b430d2cfbce193a93c3b91053b724057d36485623",
+      "bytes": 11840,
+      "dimensions_m": [
+        2.0,
+        0.10000000149011612,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_43",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_43.glb",
+      "sha256": "b8d464d47ba26d4559f5ddf3f59f4ddec33ef5b951c9991add5ffee15908b150",
+      "bytes": 14172,
+      "dimensions_m": [
+        2.1999999284744263,
+        0.5,
+        2.1999999284744263
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_44",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_44.glb",
+      "sha256": "44993d1290dea06066364674140c34400f5f420ba33b4c059f9bd5027b19d37f",
+      "bytes": 14924,
+      "dimensions_m": [
+        2.200000047683716,
+        0.4000000059604672,
+        2.200000047683716
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_45",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_45.glb",
+      "sha256": "509b9abb0f8566d0bb14ebee190f49f59d197547c5fdddd13526a8aec9020fa0",
+      "bytes": 13664,
+      "dimensions_m": [
+        1.600000023841858,
+        0.05000000074505806,
+        1.600000023841858
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_46",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_46.glb",
+      "sha256": "d90a442a0ef5ab8fad12ed0863466de04fd59fca977be56ce5c29ea7b2a9fa18",
+      "bytes": 13652,
+      "dimensions_m": [
+        1.100000023841858,
+        0.05000000074505806,
+        1.100000023841858
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_47",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_47.glb",
+      "sha256": "f3380a68a9dde483f0c7b937fbae5683d28c439404440ab1b8bcaf9d61c65324",
+      "bytes": 13852,
+      "dimensions_m": [
+        2.1999999284744263,
+        0.4000000059604645,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_48",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_48.glb",
+      "sha256": "f654d37e37655e2c516bcd2decb5ce478a79f9be0bb6ef1928bf829e801c5678",
+      "bytes": 15936,
+      "dimensions_m": [
+        2.3945152759552,
+        0.4000000059604645,
+        2.3945152759552
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_49",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_49.glb",
+      "sha256": "9992c8271d5f13ea5c0f0bbaa55edc687d77e9e2c05c45f46ff102228953e20a",
+      "bytes": 15540,
+      "dimensions_m": [
+        1.2999999523162842,
+        1.3000000715255735,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_5",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_5.glb",
+      "sha256": "e2fb8f06f2754929089217ff44604ebcc4ea7c0c30648fd1a0cb0078c3239fd0",
+      "bytes": 19660,
+      "dimensions_m": [
+        0.10000000149011612,
+        1.3559346050024033,
+        1.2555456161499023
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_50",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_50.glb",
+      "sha256": "deaba328dbe7705d653d12134dfda80b70af3dbbd059c013b41d5537c6f6e26b",
+      "bytes": 18896,
+      "dimensions_m": [
+        1.2999999523162842,
+        2.4999999999999996,
+        4.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_51",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_51.glb",
+      "sha256": "c67a06a3ab4cd3a20d81a71e21a03b6d2fd829fac05b80897d5134b5fdea252e",
+      "bytes": 16008,
+      "dimensions_m": [
+        1.2999999523162842,
+        1.3000000715255735,
+        2.000000014901161
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_52",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_52.glb",
+      "sha256": "a38e7153cda2d2da53e4f832a7be2bfb95dc9734f37ce19c85064a0fdee2a3a2",
+      "bytes": 20508,
+      "dimensions_m": [
+        1.2999999523162842,
+        2.4999999999999996,
+        4.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_53",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_53.glb",
+      "sha256": "2e79675521468e8395c45d49ab0d92ac7a417adc443b0a4d502d0f232e15fc69",
+      "bytes": 16648,
+      "dimensions_m": [
+        1.2999999523162842,
+        1.3000000715255737,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_54",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_54.glb",
+      "sha256": "25c8c0f751c4813d203075ae2c731aaabce748d8aacd0b2fc95a9817e241c61d",
+      "bytes": 20004,
+      "dimensions_m": [
+        1.2999999523162842,
+        2.5,
+        4.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_55",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_55.glb",
+      "sha256": "61375a715e226a7075f0c256c6810e4c05208840848ea46f6f3548eeeecc7594",
+      "bytes": 19032,
+      "dimensions_m": [
+        1.4999999776482582,
+        1.3499999046325684,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_56",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_56.glb",
+      "sha256": "8bce1174636a2e2ca478f76428690f661d54e6158101ec064fbe0f6ec932124b",
+      "bytes": 22388,
+      "dimensions_m": [
+        1.4999999776482582,
+        2.549999952316284,
+        4.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_57",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_57.glb",
+      "sha256": "eaf274ca0b6255d864f94a4b74f2bdca4131447eb62a9c7d329d6206f4e0cee7",
+      "bytes": 14276,
+      "dimensions_m": [
+        2.125,
+        2.4000000953674316,
+        2.125
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_58",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_58.glb",
+      "sha256": "8d2668af704b657ede50ffe3e9fe982a5132fd6b0e2abdc375036831d9bfbad6",
+      "bytes": 14328,
+      "dimensions_m": [
+        1.1249999999999978,
+        2.4000000953674316,
+        1.1250000000000087
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_59",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_59.glb",
+      "sha256": "caa70c6fc8366fc4783a68b961a1ea59f37f6df910102c3eca8f035d7d3094fb",
+      "bytes": 13156,
+      "dimensions_m": [
+        1.074999928474424,
+        2.4000000953674316,
+        1.0777423381805507
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_6",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_6.glb",
+      "sha256": "4c67fd6102be93d431c7a1f0d159526ee59a699714adcc40dc682d5423cb26a6",
+      "bytes": 13656,
+      "dimensions_m": [
+        2.200000047683716,
+        0.30000001192092896,
+        2.200000047683716
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_60",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_60.glb",
+      "sha256": "8134362cf7fbe21728b1e4697c354f793a8a6874b1a4b22633411ac756197c9c",
+      "bytes": 13108,
+      "dimensions_m": [
+        2.0749999284744263,
+        2.4000000953674316,
+        2.0749999284744263
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_61",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_61.glb",
+      "sha256": "ee85e45b067e403bd40296d5f02c55f3315bcb0e2d9fad7dc69dc8f0ea30360f",
+      "bytes": 12424,
+      "dimensions_m": [
+        2.0,
+        2.4000000953674316,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_62",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_62.glb",
+      "sha256": "d27860c9c47bbfd5bd964d12ec00f98eb777033d7efc3589b4ef483a5c539218",
+      "bytes": 15628,
+      "dimensions_m": [
+        2.0,
+        2.4000000953674316,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_63",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_63.glb",
+      "sha256": "fa1e29111ea91c391974fcc51ece64c25bb6bc95fd3770cf7ffa91f0a3f35fea",
+      "bytes": 12048,
+      "dimensions_m": [
+        2.0,
+        2.4000000953674316,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_64",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_64.glb",
+      "sha256": "f356863240bcfc203ea0e5ea89b804591652d59a23de781e8055781dfbf98f53",
+      "bytes": 18116,
+      "dimensions_m": [
+        0.20000000298023224,
+        2.4000000953674316,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_65",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_65.glb",
+      "sha256": "ebbb56e804ab466da7329b16d24fa1ef77c7a13d73745083922b042394e78918",
+      "bytes": 14320,
+      "dimensions_m": [
+        0.20000016689300537,
+        2.4000000953674387,
+        2.000000238418579
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_66",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_66.glb",
+      "sha256": "d39dda9a6524d77438cd56ce4222fb9baf9b51e85f26f256e1f96db44f478325",
+      "bytes": 18584,
+      "dimensions_m": [
+        0.20000000298023224,
+        2.4000000953674316,
+        4.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_67",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_67.glb",
+      "sha256": "89293d643c24824fda16a30423069a6461a4c571464da0c564b86937e5e5e47d",
+      "bytes": 14328,
+      "dimensions_m": [
+        0.20000040531158447,
+        2.4000000953674383,
+        4.000000476837158
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_68",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_68.glb",
+      "sha256": "7e387665bf830ac461b4a5687072b0f10aaf5c411673634716c65e432201b3e8",
+      "bytes": 11728,
+      "dimensions_m": [
+        0.1000000387430191,
+        2.4000000953674316,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_69",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_69.glb",
+      "sha256": "001e787d2f332ec25f648980bedd32c116b5bb288568e97c6738ab990f729278",
+      "bytes": 11720,
+      "dimensions_m": [
+        0.10000002011656761,
+        1.2000000476837158,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_7",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_7.glb",
+      "sha256": "cda63c838a2b502537293495739284d58ed3dd7137b399260385af52ebe1f71c",
+      "bytes": 20452,
+      "dimensions_m": [
+        2.200000047683716,
+        0.30000001345770255,
+        2.200000047683716
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_70",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_70.glb",
+      "sha256": "f45f81c105d6b5d5273d99d525818aa5b0043aa1942ea35550dd0c19f604c831",
+      "bytes": 24136,
+      "dimensions_m": [
+        0.20000000298023224,
+        2.4000000953674316,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_71",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_71.glb",
+      "sha256": "62401e244849476f5b3f2b3a1337731614464cf3bdf46c761231de15be2f2dfc",
+      "bytes": 20924,
+      "dimensions_m": [
+        0.20000000298023224,
+        2.4000000953674316,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_72",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_72.glb",
+      "sha256": "21f7f6db2a0006f77d110ea1ff8d45fe0c00480d33237ef7794ac9c1aa046015",
+      "bytes": 18156,
+      "dimensions_m": [
+        0.20000000298023224,
+        2.4000000953674316,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_73",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_73.glb",
+      "sha256": "902ec965a78c783faabcba0b2b1bf8c75b07e067eb44e0110973b2ba7c70eea4",
+      "bytes": 16408,
+      "dimensions_m": [
+        0.20000000298023224,
+        2.4000000953674316,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_74",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_74.glb",
+      "sha256": "544d381963f6b83d7bf3cbe47940ac60df82ea0b59d4301fabe5c03c98d3edf1",
+      "bytes": 26432,
+      "dimensions_m": [
+        0.19999999552965164,
+        2.4000000953674316,
+        4.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_75",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_75.glb",
+      "sha256": "7796428093af53e43769f84423002817bd7cb85d2e9d38fd81c5f4a0c89d838f",
+      "bytes": 21308,
+      "dimensions_m": [
+        0.19999999552965164,
+        2.4000000953674316,
+        4.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_76",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_76.glb",
+      "sha256": "6ad44f382e28d35d7e10e04617948f0bf7f1cf1f5b0cb751676c970ed470aa95",
+      "bytes": 19848,
+      "dimensions_m": [
+        0.20000000298023224,
+        2.4000000953674316,
+        4.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_77",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_77.glb",
+      "sha256": "9820bdbc759bb353b5654434a9361025090c80361dfe5650115f5bd99fd31f30",
+      "bytes": 16436,
+      "dimensions_m": [
+        0.20000000298023224,
+        2.4000000953674316,
+        4.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_78",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_78.glb",
+      "sha256": "aae41d9e58c601f2af47c04278ff9f8fbfb3323dc8e54e12e28f461952867584",
+      "bytes": 11712,
+      "dimensions_m": [
+        0.1000000387430191,
+        2.4000000953674316,
+        2.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_79",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_79.glb",
+      "sha256": "8983c58d853c5c11c3a2e995bec1084d1e8ad929ddec901891ed7e9e6cd5168d",
+      "bytes": 14720,
+      "dimensions_m": [
+        0.07500000309199084,
+        1.4601814538777862,
+        1.2557968500637666
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_8",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_8.glb",
+      "sha256": "7247223cb0933d64cd952198d2b2030e9449f4d285b7d745e906bc9f8fb1e363",
+      "bytes": 13692,
+      "dimensions_m": [
+        1.2000000476837158,
+        0.30000001192092896,
+        1.2000000476837158
+      ]
+    },
+    {
+      "name": "opengameart-kenney-building-kit_9",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-building-kit_9.glb",
+      "sha256": "a98efdaf7b0ba6e53ebe9aa601bfbed98aadef3c5a2f1869a466fda448b0931d",
+      "bytes": 13684,
+      "dimensions_m": [
+        2.200000047683716,
+        0.30000001192092896,
+        2.200000047683716
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings.glb",
+      "sha256": "1dcc829d421c4a7bcfaa0e2473f50fcbc0fcb9bb8dc5e6e680731b99f882a2b6",
+      "bytes": 9664,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_1",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_1.glb",
+      "sha256": "f99b7d705c0badc61e2e8e9c1924f4602cf92cd6e6a74bc5be2af4b2244af56c",
+      "bytes": 10804,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_10",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_10.glb",
+      "sha256": "9847c11f8043c3de134e2c27a56b1596aa50137009d95fcdae4d18ec8a64f14e",
+      "bytes": 11424,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_11",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_11.glb",
+      "sha256": "64d76ff423aeac7fc6af0f0c0fe9c1dde42761d76eba50361c67d77af397bfbb",
+      "bytes": 11408,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_12",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_12.glb",
+      "sha256": "2c4f31049bbf186ddf2d3a9cf2506a23658bbc0f611558e649365eb42427d4d4",
+      "bytes": 10528,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_13",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_13.glb",
+      "sha256": "d0fc7778e7947622829670e98597964867ea75d18cb00c91b5faba7b79029988",
+      "bytes": 10976,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_14",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_14.glb",
+      "sha256": "a9f58623afc6afec8cd3f96e174a3bd601ee55896f2b44940ad73a7d1a17e5a9",
+      "bytes": 27168,
+      "dimensions_m": [
+        1.0956428050994873,
+        1.1437499523162842,
+        2.0000001192092896
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_15",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_15.glb",
+      "sha256": "13b0b25898f927d5679f7644c72030d892af6246f059aeda07523747801334a6",
+      "bytes": 31028,
+      "dimensions_m": [
+        1.0912854671478271,
+        1.9812500476837158,
+        2.200000047683716
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_16",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_16.glb",
+      "sha256": "d40dd931491adaccba9280002890ad13b80ccf3f1e97f167a752537f4aa3bc0a",
+      "bytes": 29436,
+      "dimensions_m": [
+        2.000000238418579,
+        1.9812500476837158,
+        2.200000047683716
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_17",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_17.glb",
+      "sha256": "a8809d2210828f5df1fc0545a1e90957ae195bc583521deee638b7d2eb291db3",
+      "bytes": 32244,
+      "dimensions_m": [
+        1.100000023841858,
+        2.5,
+        1.2500000596046448
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_18",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_18.glb",
+      "sha256": "da83f392993bd34f7e9bc0bf6fa8f11ce7db04ac184e9b8e2c5abe2ead0414d1",
+      "bytes": 27688,
+      "dimensions_m": [
+        1.100000023841858,
+        1.8875000476837158,
+        1.2500000596046448
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_19",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_19.glb",
+      "sha256": "c58710f820ba6fcdc1ec033e3f417c35e2083bb2bebb8641c57be592941c1a2c",
+      "bytes": 31108,
+      "dimensions_m": [
+        1.100000023841858,
+        3.1375000476837194,
+        1.275000274181366
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_2",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_2.glb",
+      "sha256": "873840cd9dc9f1c67de196f205b290e16cd676c63262db0498e4807e65238416",
+      "bytes": 9812,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_20",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_20.glb",
+      "sha256": "f5e26fde242bfcc238c5a7512223875d83c5eafed8cae42ac977645cedb2e5a7",
+      "bytes": 38708,
+      "dimensions_m": [
+        1.100000023841858,
+        3.762500047683716,
+        1.100000023841858
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_21",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_21.glb",
+      "sha256": "646e94b1862c9df5679642472b184890bf22602e212a9fd46ab3ab3e0237172a",
+      "bytes": 16392,
+      "dimensions_m": [
+        1.0,
+        0.8374999761581421,
+        1.2000000476837158
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_22",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_22.glb",
+      "sha256": "17aedf8bc9e25ab59a0fcbe6225c7afcb5cce392080ee136a311a0bb76058ccd",
+      "bytes": 15048,
+      "dimensions_m": [
+        1.0,
+        0.8374999761581421,
+        1.2000000476837158
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_23",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_23.glb",
+      "sha256": "c2582e704243b7d025061ae22ca57c5b3531cce3f9b92a060ffdb1d01c412651",
+      "bytes": 13304,
+      "dimensions_m": [
+        1.0,
+        0.8374999761581421,
+        1.2000000476837158
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_24",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_24.glb",
+      "sha256": "d295f04e4bfa5940319a4b03652eaa0b51e6e7498c5fc21cf634e16dba0017d7",
+      "bytes": 13748,
+      "dimensions_m": [
+        1.0,
+        0.8374999761581421,
+        1.2000000476837158
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_25",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_25.glb",
+      "sha256": "6f8a20678780e22b5ad0b1630278c6b0f46ea98319b44b62eee78291c642d764",
+      "bytes": 15612,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.128250002861023
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_26",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_26.glb",
+      "sha256": "17cb1c88cd14575607d5d64a6e364fc0907c9b0cfb6b7e1bed1b7812db6c8158",
+      "bytes": 13040,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.149999976158142
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_27",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_27.glb",
+      "sha256": "d8e0daa2ced24da09c53ae0fdcb1a17aeb83e59a1e8d215f981cb369ef86beeb",
+      "bytes": 13604,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_28",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_28.glb",
+      "sha256": "3a00aa4bb08be8f3a08ab94e31d2637d193f8938f060ca06c2f30fe494b8c480",
+      "bytes": 12292,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_29",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_29.glb",
+      "sha256": "beb8be14426653c1678f944d9dec24e127085df611ede8fd8648294cf9f4dd49",
+      "bytes": 10340,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_3",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_3.glb",
+      "sha256": "7e5f7fa66eb07d6ca5d31927c997c6df072edd4f8546666107b9b2f93db60fad",
+      "bytes": 10776,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_30",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_30.glb",
+      "sha256": "471ca78c81332b3406f0c42e3e2c593e96ef9d6a06ee86acccbc89f309309785",
+      "bytes": 10128,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_31",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_31.glb",
+      "sha256": "d92610fa068fafe2d26d0ac697bef8544d8117c1764f77104c4872d19e2d40cf",
+      "bytes": 10340,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_32",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_32.glb",
+      "sha256": "ee800e00afc9cf9505c8001ec141dc3fb1b684aa7ce9a658d7c45c4f200fc558",
+      "bytes": 10544,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_33",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_33.glb",
+      "sha256": "2d029a712ef790505b421f1ed5dd170d944ec60642ed1f780c3044ff5b54f068",
+      "bytes": 11296,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.050000011920929
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_34",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_34.glb",
+      "sha256": "873cdf8237ae84258a877b6d42b14696cd760cf88a4cb7486e6049d173fe65d5",
+      "bytes": 10544,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_35",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_35.glb",
+      "sha256": "3b42df85f26e968cb1d9bd866c0843bc45eb7f94facd0687eeaf798019984146",
+      "bytes": 13136,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.050000011920929
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_36",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_36.glb",
+      "sha256": "00d7e885b1143f9777bc32559d858ae56ffdef0350842aeefb7089201519fa6e",
+      "bytes": 10544,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_37",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_37.glb",
+      "sha256": "3c6cad0801807fd88e8fb88a7ce46f275cdec4c9393290bf7ea7248c12bc8c66",
+      "bytes": 11284,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.050000011920929
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_38",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_38.glb",
+      "sha256": "e3a50a1247bed7756fe70553671a303c58f0017b5eb642785bf2ca6b66a593af",
+      "bytes": 11312,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0499999523162842
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_39",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_39.glb",
+      "sha256": "99a468825aa72739f4d9c68ce52693ade176349c0bd8bfaf3346fac3150063ab",
+      "bytes": 10544,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_4",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_4.glb",
+      "sha256": "f35b198d1f89e0d10ccb6c2886077aa6d8d06345d550d2a23308210f30a8bb44",
+      "bytes": 10776,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_40",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_40.glb",
+      "sha256": "6fdf3917827b9a0d0fcc065ad10d958b81e6785fc79686bb2dbc594c25030504",
+      "bytes": 10532,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_41",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_41.glb",
+      "sha256": "b68d0000b87db6a9f6dd815645c980f399814617d7c49ab746acba019da8f13f",
+      "bytes": 11500,
+      "dimensions_m": [
+        1.000000238418579,
+        0.625,
+        1.000000238418579
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_42",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_42.glb",
+      "sha256": "1d583c06b5d25aa6a970f1dcf0b6ef3a9dcc022f19c770d24edd58628eac51be",
+      "bytes": 12732,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_43",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_43.glb",
+      "sha256": "1a4799a77abd3ab84d74ff6d1d99f4a4132961ccb8c5e7eef2b000ec8f93df71",
+      "bytes": 11432,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_44",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_44.glb",
+      "sha256": "fab6d3fb32b0d25bde0e7dbac1017de6d3e39f4f0775a57db7c869e9064e591b",
+      "bytes": 12716,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_45",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_45.glb",
+      "sha256": "cada0a5f0d748ab35aa4e3ede3b9d7734a2c15bef57601567847d3d901c9d6c4",
+      "bytes": 14196,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0499999523162842
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_46",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_46.glb",
+      "sha256": "a9534ad53a8c7f818f4a8b58a9cb8a999cf041fab146f1783c42983f6991395f",
+      "bytes": 12872,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.050000011920929
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_47",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_47.glb",
+      "sha256": "95afbb4fce4f36b2e35166f7a433af23f362ae03e543580b0d3473516a8c99f7",
+      "bytes": 11400,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_48",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_48.glb",
+      "sha256": "9ae6ed36df46ecda7c27e8841bf08b7fc4a4764300e6b8484ff2de27370ee7ca",
+      "bytes": 12352,
+      "dimensions_m": [
+        0.24000000953674316,
+        0.10624999552965164,
+        0.24000000953674316
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_49",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_49.glb",
+      "sha256": "e8e821e1961bae6cd373ffa3d542a8f44a4cf18dee332858025dab57be51e5c4",
+      "bytes": 14072,
+      "dimensions_m": [
+        0.3100000023841858,
+        0.22500000335276127,
+        0.1250000037252903
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_5",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_5.glb",
+      "sha256": "d9ea64864ff7071a98d502a58d527469451e0a9154ea30276c7433d9805743de",
+      "bytes": 13392,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_50",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_50.glb",
+      "sha256": "382f1832963d8b11bd17d141c1d23491928c9b92c200de9cce6cad85bd637bf5",
+      "bytes": 10568,
+      "dimensions_m": [
+        0.25,
+        0.5,
+        0.05000000074505806
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_51",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_51.glb",
+      "sha256": "d0992749c234422082b969cc5653f3cbeb3fcc92c79a9a40e9d520b841c83722",
+      "bytes": 10568,
+      "dimensions_m": [
+        0.25,
+        0.5,
+        0.05000000074505806
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_52",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_52.glb",
+      "sha256": "b6674d88009cdcd0ba89f946104c508c52e001e66dbc08f8eea11cc5bfae0e26",
+      "bytes": 10572,
+      "dimensions_m": [
+        0.25,
+        0.5,
+        0.05000000074505806
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_53",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_53.glb",
+      "sha256": "cbc404d36f3aa1609a49ee97b3b1a7fe913b4e5d4391fe23152655ac12b7ee6a",
+      "bytes": 10584,
+      "dimensions_m": [
+        0.25,
+        0.5,
+        0.05000000074505806
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_54",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_54.glb",
+      "sha256": "0004087fff781e1ba8a25c3e5ba51bc19e6eac18bc9579694aa10099047d3838",
+      "bytes": 10588,
+      "dimensions_m": [
+        0.25,
+        0.5,
+        0.05000000074505806
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_55",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_55.glb",
+      "sha256": "71fc43a7771b26178dbdd6823fb6f607507db89dd9f7eda2d180c74edee8a9c1",
+      "bytes": 10556,
+      "dimensions_m": [
+        0.25,
+        0.5,
+        0.05000000074505806
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_56",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_56.glb",
+      "sha256": "10b5a18291e5be9ec50aaa5bd416800ccfcc26af0357cf0ba029e0f633e43166",
+      "bytes": 10756,
+      "dimensions_m": [
+        1.000000238418579,
+        0.21249999105930328,
+        1.110000193119049
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_57",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_57.glb",
+      "sha256": "408661e7b7a73d794a8a26c15e404e1374beb976b8c808b3dc1938b0ddd9d169",
+      "bytes": 10324,
+      "dimensions_m": [
+        1.000000238418579,
+        0.21249999105930328,
+        1.2250002026557922
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_58",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_58.glb",
+      "sha256": "3dc886b83e104263710d4df970c8effac3187f08c52325f24545b9000c1cd167",
+      "bytes": 12596,
+      "dimensions_m": [
+        1.000000238418579,
+        0.21249999105930328,
+        1.2250001430511475
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_59",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_59.glb",
+      "sha256": "796677e7081566f1501afe2d5ac354beeb1fb4dfd1a0190afdba500fb0da75c5",
+      "bytes": 11012,
+      "dimensions_m": [
+        1.0,
+        0.21249999105930328,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_6",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_6.glb",
+      "sha256": "d4670d7fc6beaab86c71087103bc69eebccf7eeefed8d4a3cc0b1442b474c807",
+      "bytes": 11432,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_60",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_60.glb",
+      "sha256": "c48b89aaa16d591263744427f5a76c1bfad218869e47a08ed9a83147948eb590",
+      "bytes": 10564,
+      "dimensions_m": [
+        1.0,
+        0.21249999105930328,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_61",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_61.glb",
+      "sha256": "a9a25178b8947c4d1265689a4ca65f16f575c0394285b69f13d6e7947db8b003",
+      "bytes": 11460,
+      "dimensions_m": [
+        1.0,
+        0.21249999105930328,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_62",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_62.glb",
+      "sha256": "85e8902fb1edf3e976e218eacd66afce060946efa8d91ac5f7dca46fa65f5ee2",
+      "bytes": 10796,
+      "dimensions_m": [
+        1.0,
+        0.21249999105930328,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_63",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_63.glb",
+      "sha256": "947363fbc29e62d920176c25c18972eaad1bfeaab9d72ce9457041776cf5b7c6",
+      "bytes": 10348,
+      "dimensions_m": [
+        1.0,
+        0.21249999105930328,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_64",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_64.glb",
+      "sha256": "db3a521e8c8ebf35230bba90a4672f3562558a82e6fdc122dde8023f74df7393",
+      "bytes": 10556,
+      "dimensions_m": [
+        1.0,
+        0.21249999105930328,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_65",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_65.glb",
+      "sha256": "b7c14d267f552f0da81edb2f28b99a9e3e644de10af0317f9a19149b466eb6e3",
+      "bytes": 10128,
+      "dimensions_m": [
+        1.0,
+        0.21249999105930328,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_66",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_66.glb",
+      "sha256": "92c5340dcc56d9172bdcfa9e028ae9af987acf9986511d0ff3e043d33404508d",
+      "bytes": 10568,
+      "dimensions_m": [
+        1.0,
+        0.21249999105930328,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_67",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_67.glb",
+      "sha256": "d86493a302bf7a3f2a4e67a154971be78845523614dca8d9c1a02f237fdefc33",
+      "bytes": 9680,
+      "dimensions_m": [
+        1.0,
+        0.10624999552965164,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_68",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_68.glb",
+      "sha256": "fb5627e26b9a093ce6cb9af384fc460852c12ed62372ed165297174f3c610816",
+      "bytes": 9908,
+      "dimensions_m": [
+        1.0,
+        0.21249999105930328,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_69",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_69.glb",
+      "sha256": "738bfbf0b1a0502309ce4a8d414906ef2135e64a4771ddf5db6d4a7c27d285f6",
+      "bytes": 9900,
+      "dimensions_m": [
+        1.0,
+        0.10624999552965164,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_7",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_7.glb",
+      "sha256": "03c2b25cbdf5afd55e13967244c027b0934a366c8e124ed4e3346a0603133474",
+      "bytes": 10784,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_70",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_70.glb",
+      "sha256": "b5f8abba7f66c2245cc80ce00cafce0215b8c37e0362df45eb4b824916732b89",
+      "bytes": 11972,
+      "dimensions_m": [
+        1.0,
+        0.21249999105930328,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_71",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_71.glb",
+      "sha256": "a4b966ba9f7b5ee266c5ce4126a1361b3375c87795d7841850a2326493c86e8b",
+      "bytes": 11700,
+      "dimensions_m": [
+        1.0,
+        0.21249999105930328,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_72",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_72.glb",
+      "sha256": "fd09b78fca75b502cd746a3c2a228009d30f6e35e76fee36738cf71fc2142e09",
+      "bytes": 11232,
+      "dimensions_m": [
+        1.0,
+        0.21249999105930328,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_73",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_73.glb",
+      "sha256": "54ff5bd886437fec83c79dbced951dfb105b7128676d15fe0d58bf2d869da827",
+      "bytes": 11676,
+      "dimensions_m": [
+        1.0,
+        0.21249999105930328,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_74",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_74.glb",
+      "sha256": "7f84d9acf1545e7063062d8691804a02086e1dabd5fc11e203e946c811b26e12",
+      "bytes": 10612,
+      "dimensions_m": [
+        1.100000023841858,
+        0.21249999105930328,
+        1.100000023841858
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_75",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_75.glb",
+      "sha256": "70111ed78d0bf89c36d6fcdd195489fcd6ef98f2897867182c037d606a7fa7a0",
+      "bytes": 10148,
+      "dimensions_m": [
+        1.0456427335739136,
+        0.518750011920929,
+        1.0456427335739136
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_76",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_76.glb",
+      "sha256": "f6bd4a2df26d87278c1af225e85d65b0065b8b5461198125d68b5829bd6f9725",
+      "bytes": 10072,
+      "dimensions_m": [
+        1.0912854671478271,
+        0.518750011920929,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_77",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_77.glb",
+      "sha256": "0164a8c54e1d92e6a78558d19d45af9844cb1063e6fc8080bf1a4559c4cc1f49",
+      "bytes": 10196,
+      "dimensions_m": [
+        1.0912854671478271,
+        0.518750011920929,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_78",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_78.glb",
+      "sha256": "a3cfd742abd189686837543823b666ced498938a0888f4f4e6759e1c94d35c50",
+      "bytes": 10980,
+      "dimensions_m": [
+        1.139176607131958,
+        0.7820395417511463,
+        1.139176607131958
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_79",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_79.glb",
+      "sha256": "0c8169e9fa26f597e09b920af9e5362ae79202805781c4dae7333531555fda5a",
+      "bytes": 10688,
+      "dimensions_m": [
+        1.139176607131958,
+        0.7820395417511463,
+        1.139176607131958
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_8",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_8.glb",
+      "sha256": "47f9658114cfea35ff67790cbb5076776e89cb2f04adedd9f72128aa6ee4d9d1",
+      "bytes": 10764,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-kenney-modular-buildings_9",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-kenney-modular-buildings_9.glb",
+      "sha256": "ba77e4ea90fe9f18a48fe0cb61d701fc34d1095eada7625e0e74ee06d4caca37",
+      "bytes": 9884,
+      "dimensions_m": [
+        1.0,
+        0.625,
+        1.0
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2.glb",
+      "sha256": "2d43e1860ff62e55e2058da4325fe0863c55733d5d373e9dd204ef9032177f96",
+      "bytes": 14356,
+      "dimensions_m": [
+        3.1999999284744263,
+        1.350000004295329,
+        0.2000004140617362
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_1",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_1.glb",
+      "sha256": "e490d87ab4e07493e21c7956eddd8043b0328e9578e0a631cac2f8e7e31d746f",
+      "bytes": 9040,
+      "dimensions_m": [
+        2.200000047683716,
+        0.3500006711943932,
+        2.200000106689167
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_10",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_10.glb",
+      "sha256": "3feaf8317d35f39a5e834d5d55a352f6bb190ef668a0ff1641a1b5c0f19e4b9b",
+      "bytes": 26292,
+      "dimensions_m": [
+        2.200000047683716,
+        0.5000007249257904,
+        2.2000000476835906
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_11",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_11.glb",
+      "sha256": "a4e3cd92b64f77ab0f7ff749fae7eef7e11ce8f1267da1da1935175c7485111d",
+      "bytes": 5812,
+      "dimensions_m": [
+        3.0,
+        1.200000340154958,
+        1.0000004046096969
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_12",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_12.glb",
+      "sha256": "84e006b342ea4c5e2d5065d96caf539d47254dba377e9e3e8a4af64e95fa2986",
+      "bytes": 3920,
+      "dimensions_m": [
+        2.0,
+        0.20000067732980858,
+        2.000000067434846
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_13",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_13.glb",
+      "sha256": "a5cb101425ec799cd30914ca12011d3260eaa5c8d81100e19338db746536115f",
+      "bytes": 2896,
+      "dimensions_m": [
+        1.1715728640556335,
+        0.20000039800505978,
+        1.1715729314905265
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_14",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_14.glb",
+      "sha256": "b0f0ad08cf982ffb2f13f6f907ab18309bb8d8c83881379109c1a684ed627269",
+      "bytes": 3272,
+      "dimensions_m": [
+        1.0,
+        0.20000034015501472,
+        1.000000067434903
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_15",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_15.glb",
+      "sha256": "de264cdff53b20427d398a3cbfca53ed2edc764a065756de5088cb6f5eecba5c",
+      "bytes": 2896,
+      "dimensions_m": [
+        0.5857864394783974,
+        0.20000020049264283,
+        0.5857865069133239
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_16",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_16.glb",
+      "sha256": "b34c19652d4676cbd488631d4fe8a48ede77a74672b76b8966bd04fd56ba2390",
+      "bytes": 3048,
+      "dimensions_m": [
+        1.0,
+        0.20000034015501472,
+        1.000000067434903
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_17",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_17.glb",
+      "sha256": "2a15efd2d4f0c3afb400c52d5e3b6f17332ed1730a52e079d64cfd29b1685bfc",
+      "bytes": 18784,
+      "dimensions_m": [
+        1.0,
+        0.20000034015501472,
+        1.000000067434903
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_18",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_18.glb",
+      "sha256": "6154523cad0552a32ca21b10d772a044826aed15faf121cdd12d7d3ac340d1a5",
+      "bytes": 14080,
+      "dimensions_m": [
+        1.0,
+        0.20000034015501472,
+        1.000000067434903
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_19",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_19.glb",
+      "sha256": "94ec07e6a07a80c352f600c00ff9741e5eefbac6d76aaee40f624bbaf766480f",
+      "bytes": 12068,
+      "dimensions_m": [
+        0.5500000007450581,
+        0.20000019685572834,
+        0.6000000604956699
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_2",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_2.glb",
+      "sha256": "fc666e7f2129d2ef737db1daa1975828e9ed731e91f2d54a035826ae82d775f1",
+      "bytes": 9028,
+      "dimensions_m": [
+        1.2000000476837158,
+        0.35000031911843815,
+        1.200000106689224
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_20",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_20.glb",
+      "sha256": "011be609106d0b8a21eef927c3c2248243b86674dcb794437601fe4ebbebd896",
+      "bytes": 11916,
+      "dimensions_m": [
+        0.5500000007450581,
+        0.20000017999698777,
+        0.5500000597506147
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_21",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_21.glb",
+      "sha256": "7457c0999185ec2d32bc0d2bb45524051ef42b2789d3c67f8726b7a0baa19468",
+      "bytes": 17356,
+      "dimensions_m": [
+        1.0155577063560486,
+        0.20000021371446702,
+        0.6500000649660154
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_22",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_22.glb",
+      "sha256": "3ec37ef955fa9c105aec2ebe498d869ced159537b451de22e98685c68a4839ca",
+      "bytes": 12544,
+      "dimensions_m": [
+        1.0,
+        0.20000019685572834,
+        0.6000000604956699
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_23",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_23.glb",
+      "sha256": "21db14c18f99298f1bfdc3094ce669a95134546abab5cde15b1759cefd6a33ef",
+      "bytes": 3916,
+      "dimensions_m": [
+        2.0,
+        0.20000067732980858,
+        2.000000067434846
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_24",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_24.glb",
+      "sha256": "4bb784f35dd77a9bf2f715d3f315fbfdab572d5955caf79c56aa9797355f5bc7",
+      "bytes": 13036,
+      "dimensions_m": [
+        1.300000011920929,
+        1.3000001546210895,
+        0.6000004472678785
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_25",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_25.glb",
+      "sha256": "0c44fab578a018d23b2eb703dc623887e37a8349d6c5b1dce01f6047d4bc1876",
+      "bytes": 16680,
+      "dimensions_m": [
+        1.5,
+        1.1500002290391758,
+        1.0000000337174304
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_27",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_27.glb",
+      "sha256": "b2c1e87ac9263c0fe0a81b955d94f238aa711e6c45f1c914ca80113b7e1b1086",
+      "bytes": 6576,
+      "dimensions_m": [
+        1.0,
+        0.6000001665420583,
+        0.6000002112455268
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_28",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_28.glb",
+      "sha256": "c640243180dbb2b6b65dda7a8b2369c020ea4b4a4f3fbb169a935de849a5b0db",
+      "bytes": 5288,
+      "dimensions_m": [
+        1.0,
+        0.3500001328245902,
+        0.6000000595168937
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_3",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_3.glb",
+      "sha256": "b918974d5ae0fcce8a1adb20ce1577c815885a3f4ac00bf74ab067babe471ac4",
+      "bytes": 6500,
+      "dimensions_m": [
+        1.2000000476837158,
+        0.3499999819436443,
+        0.20000007688695864
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_34",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_34.glb",
+      "sha256": "f166aece13dd48921a6b7ce65598ef174a1f356d949dda2dcd49f75aebc9d7f3",
+      "bytes": 16152,
+      "dimensions_m": [
+        0.5400000214576721,
+        0.909000012332847,
+        0.09900031037144968
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_37",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_37.glb",
+      "sha256": "488b3bc593a48e93ac3f6d30e881a9efbb42cb84a4db3116ff6e4ff31e5dde90",
+      "bytes": 22500,
+      "dimensions_m": [
+        0.5400000214576721,
+        0.9790000361627248,
+        0.09900033397369284
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_38",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_38.glb",
+      "sha256": "8ec10c71fdf546af92df2942db77f1ddcf1ebbe11f248e1a4ce5917a44f729ef",
+      "bytes": 19704,
+      "dimensions_m": [
+        0.5400000214576721,
+        0.9790000361627248,
+        0.09900033397369284
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_4",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_4.glb",
+      "sha256": "052edc02f8444ecde6fe05f06a318651a5ade5b4fdf0487c7b68c58fc15541cb",
+      "bytes": 9040,
+      "dimensions_m": [
+        2.200000047683716,
+        0.3500006860955544,
+        2.200000106689167
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_5",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_5.glb",
+      "sha256": "a7fa44fbc68e2cf2a336c7d946ed7ff3297213d3feb1c05a8f4086a0494154c0",
+      "bytes": 28824,
+      "dimensions_m": [
+        3.1999999284744263,
+        1.4507527696881273,
+        0.20000048527631048
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_6",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_6.glb",
+      "sha256": "b63d198a0edb9d13888ea99c5c6fe84b01e6411f32634c6cd8839c43f6d23dc4",
+      "bytes": 19024,
+      "dimensions_m": [
+        2.200000047683716,
+        0.5000007249257904,
+        2.2000000476835906
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_7",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_7.glb",
+      "sha256": "0f4ed9741f2079bd420b4997cf15cec2921d5624d43a7742995e0f99896e342c",
+      "bytes": 18960,
+      "dimensions_m": [
+        1.2000000476837158,
+        0.5000003877509965,
+        1.2000000476836474
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_8",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_8.glb",
+      "sha256": "76f4064a903b4e2e06a1b7dec476b1caa946b549fd145a3de5d49cf3b4e355fe",
+      "bytes": 15796,
+      "dimensions_m": [
+        0.700000025331974,
+        0.7500000505761885,
+        0.20000025390373366
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models-2_9",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models-2_9.glb",
+      "sha256": "db133f7f26d77a1dda2387cd293ea5d4514cdec79e260f925109524feb267a26",
+      "bytes": 11296,
+      "dimensions_m": [
+        1.2000000476837158,
+        0.5000000505762027,
+        0.2000001696100352
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models.glb",
+      "sha256": "41bf73ace2ce69f47019a4915978a1c86df8acc7053b55224a36e3643250ab42",
+      "bytes": 22560,
+      "dimensions_m": [
+        1.100000023841858,
+        0.5000003708922529,
+        1.1000000407005288
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_1",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_1.glb",
+      "sha256": "4bb05899f9bb1c5345998fd5de125c0053a23f25bf1fb353481d463076c24215",
+      "bytes": 37484,
+      "dimensions_m": [
+        2.100000023841858,
+        0.5000007080670468,
+        2.100000040700472
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_10",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_10.glb",
+      "sha256": "4bb0131b521aa444982c0a587ee641eaf0020e522c3208c801685db9b3b0d1e0",
+      "bytes": 10324,
+      "dimensions_m": [
+        1.0,
+        1.0000002697397772,
+        0.999999999999943
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_11",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_11.glb",
+      "sha256": "889cfa98f355512e63e13650b168dde8208f72fb0cf13928cb3032f0c1a3b05f",
+      "bytes": 5284,
+      "dimensions_m": [
+        1.0,
+        0.3500001328245902,
+        0.6000000595168937
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_12",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_12.glb",
+      "sha256": "217d6f3d504648819b03df06d7bc1d2e01b690aa6dd0035b61e0c6d786d82a4d",
+      "bytes": 16680,
+      "dimensions_m": [
+        1.5,
+        1.1500002290391758,
+        1.0000000337174304
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_13",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_13.glb",
+      "sha256": "deebde5c30264ebff8feeb2dff11c4e8519b521d507ac7541d645a919d0236d6",
+      "bytes": 6552,
+      "dimensions_m": [
+        0.6000000089406967,
+        1.0000002023048224,
+        0.6000003461154564
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_14",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_14.glb",
+      "sha256": "aa39ba47096c143a1d36bdc236b58b34f64bf4893753a58d4857f759d963a41e",
+      "bytes": 11460,
+      "dimensions_m": [
+        1.0,
+        1.1500002290391758,
+        1.0000000337174304
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_15",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_15.glb",
+      "sha256": "ad655910d0883c8e4ad687a70201f8263a1fb03aef9063ec951e8bbcbb10b5c5",
+      "bytes": 4096,
+      "dimensions_m": [
+        0.5,
+        1.0000001348698626,
+        0.49999999999997147
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_16",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_16.glb",
+      "sha256": "0767b5117b61197413f69a94fea711ccf85845ccb9989cf3b9560a12145e7fac",
+      "bytes": 2212,
+      "dimensions_m": [
+        0.30000001192092896,
+        1.0000001011523751,
+        0.3000003192933834
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_17",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_17.glb",
+      "sha256": "c9e5d962e7c85e2ae89e71f751c88ad1faa3dc993c71cca63601e0ffde873f33",
+      "bytes": 5232,
+      "dimensions_m": [
+        0.5,
+        1.1500000941692423,
+        0.5000000337174589
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_18",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_18.glb",
+      "sha256": "b65e68b30d01ccf49939ee188c0d8091092d555cd84080dc921735a23eda2812",
+      "bytes": 16604,
+      "dimensions_m": [
+        0.5400000214576721,
+        0.9089999974316859,
+        0.09900031037144463
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_19",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_19.glb",
+      "sha256": "68b47342ecbd3914292ab29a2dda80461cd8e70f08f54ad481ffccf49e3d2f7e",
+      "bytes": 23140,
+      "dimensions_m": [
+        0.5400000214576721,
+        1.0079999699335394,
+        0.09900034375175393
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_2",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_2.glb",
+      "sha256": "16e6c67595a72ae1a209b91e011961039252c2edb89ab9958e20875a3ba237ab",
+      "bytes": 26580,
+      "dimensions_m": [
+        1.100000023841858,
+        0.5000003708922529,
+        1.1000000407005288
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_20",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_20.glb",
+      "sha256": "0d40358ac3b9be83758666f76c819efb2c5ee1d1b8426ec77cee57dafc819d0c",
+      "bytes": 23628,
+      "dimensions_m": [
+        0.5400000214576721,
+        1.6290000111407132,
+        0.09900055313728079
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_3",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_3.glb",
+      "sha256": "ca03177072c6e4cf03abbd58bd4140984b9e425c10eae8baf1ee752398d78a7e",
+      "bytes": 16548,
+      "dimensions_m": [
+        0.6000000014901161,
+        0.7500000505761885,
+        0.20000025390373366
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_4",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_4.glb",
+      "sha256": "03b9b8050f46594b045c857986873cb039116dfe52c929cce343c1cd95643a61",
+      "bytes": 11880,
+      "dimensions_m": [
+        1.0,
+        0.5000000505762027,
+        0.2000001696100352
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_5",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_5.glb",
+      "sha256": "c86eda0d44b4c764d3b4504759b42ad1f00aeddc16bd7d22e2b5470d7a4835dc",
+      "bytes": 3056,
+      "dimensions_m": [
+        2.0,
+        0.20000067732980858,
+        2.000000067434846
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_6",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_6.glb",
+      "sha256": "61ae94768821dd7940713f6a904cd4dace974776ac4530dbbfdd2ccafc76ddb1",
+      "bytes": 2004,
+      "dimensions_m": [
+        1.1715728640556335,
+        0.20000039800505978,
+        1.1715729314905265
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_7",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_7.glb",
+      "sha256": "5e561ab7c19c4d7c47f5667779f39d218fa70e03b9276830ab8c873050ae588b",
+      "bytes": 2408,
+      "dimensions_m": [
+        1.0,
+        0.20000034015501472,
+        1.000000067434903
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_8",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_8.glb",
+      "sha256": "48f57184b280431965961e1ad5b2b7afe34236324c66e5dfadafe67f6c65262d",
+      "bytes": 2004,
+      "dimensions_m": [
+        0.5857864394783974,
+        0.20000020049264283,
+        0.5857865069133239
+      ]
+    },
+    {
+      "name": "opengameart-modular-temple-3d-models_9",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-modular-temple-3d-models_9.glb",
+      "sha256": "b5fc9514c4a203ce8ae1ad16e2ef571491374683450f035b9e22f2813f48f67c",
+      "bytes": 2188,
+      "dimensions_m": [
+        1.0,
+        0.20000034015501472,
+        1.000000067434903
+      ]
+    },
+    {
+      "name": "opengameart-stone-bridge-0",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stone-bridge-0.glb",
+      "sha256": "44efbec7c7faacaba8328d713b9a22b7c7be98811a94a6a0f81e388b22bf7a64",
+      "bytes": 13004,
+      "dimensions_m": [
+        1.7645161151885986,
+        2.595787861575836,
+        2.768337734608664
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit.glb",
+      "sha256": "4deb6215dc2db52d2a38b670ff4e5272bd241963131e90d7cf69caa99504c9f5",
+      "bytes": 149424,
+      "dimensions_m": [
+        1.9148447513580322,
+        1.5817856639623642,
+        1.9651408791542053
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_1",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_1.glb",
+      "sha256": "cf08b3959c63a705df27a640fdb1bb9e36caf75f03e864dfdf0136c4c615b8be",
+      "bytes": 719524,
+      "dimensions_m": [
+        1.9148447513580322,
+        1.5817856639623642,
+        1.9651408791542053
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_10",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_10.glb",
+      "sha256": "4bc202ed9974a8ab2e2f6c7d7d5c643d1403cc07f5a3550d63de7095b9fc6d8e",
+      "bytes": 10435900,
+      "dimensions_m": [
+        6.7296178340911865,
+        11.488231182098389,
+        6.378535985946655
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_11",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_11.glb",
+      "sha256": "a0ed5df599b4c45ef2f8c1e0da95b4a46e67e1d11825c8b08431e55c9c8adf4a",
+      "bytes": 10385344,
+      "dimensions_m": [
+        6.387573719024658,
+        13.280385494232178,
+        6.430059194564819
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_12",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_12.glb",
+      "sha256": "d00fa5208a637f6458182f3f556bb0a2c1a582e88ff62570d84a02a183fcc75a",
+      "bytes": 10371896,
+      "dimensions_m": [
+        7.960942029953003,
+        12.77097749710083,
+        7.732445240020752
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_13",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_13.glb",
+      "sha256": "b33f30f9c7b69dfcd57ffa74d523bb3e322f496e89f0a9b94dd42a9e596f8f90",
+      "bytes": 10367128,
+      "dimensions_m": [
+        8.356394290924072,
+        16.437382221221924,
+        8.413267612457275
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_14",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_14.glb",
+      "sha256": "ef55941067059e48ab0a2354a6f8358570049ef1224d4fc85c5878a1cdbd7aa5",
+      "bytes": 2599504,
+      "dimensions_m": [
+        2.8269338607788086,
+        0.8402432501316071,
+        2.65231990814209
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_15",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_15.glb",
+      "sha256": "13ef947f8e8dc7eb2011ca73f000eed99f245ccf1adc7c981f7c0bb85c3f131a",
+      "bytes": 3062048,
+      "dimensions_m": [
+        1.488476574420929,
+        2.0548351034522057,
+        1.5911270380020142
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_16",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_16.glb",
+      "sha256": "0f2af60fbad34487ab4ad28305b482f739df8798984833a4394589cdf8455631",
+      "bytes": 3044872,
+      "dimensions_m": [
+        0.9066098928451538,
+        2.068193631246686,
+        0.8775360584259033
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_17",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_17.glb",
+      "sha256": "0ad76fecb6f18a24b859569883cbf465864d1528a8fda21b10b4ef9d784353ed",
+      "bytes": 3096116,
+      "dimensions_m": [
+        1.7805257439613342,
+        2.4867683202028275,
+        1.3675287365913391
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_18",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_18.glb",
+      "sha256": "91089d81dffa5d93a0f9770e79d8e141ae55687c4632753c5a3ffb42ddba6ce4",
+      "bytes": 3057696,
+      "dimensions_m": [
+        1.0722883939743042,
+        2.4191591013222933,
+        0.7728647589683533
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_19",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_19.glb",
+      "sha256": "477e5b0a5d430309b6e423f695c809164e3a376b5ede44a151795affa4651741",
+      "bytes": 42840,
+      "dimensions_m": [
+        0.6388704776763916,
+        1.3341034408658743,
+        0.7372654974460602
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_2",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_2.glb",
+      "sha256": "97e65eb619c8d59486c5a616576c3c17d106d95ba2404985b23f71e5e5376339",
+      "bytes": 2601028,
+      "dimensions_m": [
+        0.796289324760437,
+        1.1447324370965362,
+        0.7638857662677765
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_20",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_20.glb",
+      "sha256": "d956c9112f4233607109788fe6402d33ce8993322bf9756e6284dfadf11c4c57",
+      "bytes": 50464,
+      "dimensions_m": [
+        0.8950892686843872,
+        1.8726952821016312,
+        0.9931118488311768
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_21",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_21.glb",
+      "sha256": "869e4e68802316bcec1b1f96eb17ca071c38b7a034a00600859a05d1a403d093",
+      "bytes": 63220,
+      "dimensions_m": [
+        1.32218599319458,
+        1.0718468874692917,
+        1.2097443342208862
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_22",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_22.glb",
+      "sha256": "98d082fd197e923a49c292233c31a97be2ea592724e0ea0cb9f8c6a8ce7cb5d6",
+      "bytes": 68212,
+      "dimensions_m": [
+        1.5400726795196533,
+        1.6718023493885994,
+        1.5937159657478333
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_23",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_23.glb",
+      "sha256": "b00ef2e8d8c0edfe7bddaf3fba318aa005610cce97365488dddb329182c5672d",
+      "bytes": 1233140,
+      "dimensions_m": [
+        0.5637008845806122,
+        0.4634807240217924,
+        0.779112696647644
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_24",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_24.glb",
+      "sha256": "946244e3c7f7b3b140b3edc2814a360836ad449cd911ec2ba6cf4c0984aae2f7",
+      "bytes": 1287196,
+      "dimensions_m": [
+        1.3660326600074768,
+        0.7669583261013031,
+        1.1031825244426727
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_25",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_25.glb",
+      "sha256": "f48946849f11171e29731bc5a82cf846c07eda7492db276632e3238a96432db6",
+      "bytes": 823420,
+      "dimensions_m": [
+        0.500038743019104,
+        0.09547655284404755,
+        0.367022842168808
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_26",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_26.glb",
+      "sha256": "dbff0d73914de4acf4b8c885b5c09c3ec2f085ac65e258dd4896e6cbfb1c2f53",
+      "bytes": 820660,
+      "dimensions_m": [
+        0.4494768977165222,
+        0.09422973287291825,
+        0.4110587388277054
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_27",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_27.glb",
+      "sha256": "d7905b3941d117e25416b26a14632aa9e712e22708a081a751cca8e7c2b9bba8",
+      "bytes": 821832,
+      "dimensions_m": [
+        0.4496912956237793,
+        0.09862238075584173,
+        0.4848102927207947
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_28",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_28.glb",
+      "sha256": "cbc4ef55b2d82a118cbd5a53c8af650f54a995f5ceb809de1f2294377e326a4d",
+      "bytes": 822516,
+      "dimensions_m": [
+        0.40628112852573395,
+        0.09939864045009017,
+        0.4523976892232895
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_29",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_29.glb",
+      "sha256": "fbc3707679eb8c115c726003bc38e8a4a7d5b64cefdaefb21c52dd17a218dc25",
+      "bytes": 822188,
+      "dimensions_m": [
+        0.4185932129621506,
+        0.10082686180248857,
+        0.3462583124637604
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_3",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_3.glb",
+      "sha256": "cd9fdb7c3cbea343cea64295e4eeb96712b137c350c2277a616f6af8d1bfc5eb",
+      "bytes": 2609092,
+      "dimensions_m": [
+        0.8511282801628113,
+        1.2637853054329753,
+        0.8366343677043915
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_30",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_30.glb",
+      "sha256": "4dbaec1a07cc8f6b5cbb3d92b0162a1c12faa79f6060c157367857d4231cd5ed",
+      "bytes": 820984,
+      "dimensions_m": [
+        0.43463730812072754,
+        0.12993089412339032,
+        0.4396430104970932
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_31",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_31.glb",
+      "sha256": "7ffb3f5518fbd565309977e3cb5d41f71808c3d9ea3e3e6131a1dd63eb2e9700",
+      "bytes": 818904,
+      "dimensions_m": [
+        0.39109599590301514,
+        0.1404439229518175,
+        0.2802542448043823
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_32",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_32.glb",
+      "sha256": "7fa3c6104d1f29f8c07fcde82f2bae45451f42ca5d00a636b9e260f563ef5acd",
+      "bytes": 817084,
+      "dimensions_m": [
+        0.37333619594573975,
+        0.15893334429711103,
+        0.31874918937683105
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_33",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_33.glb",
+      "sha256": "b58c657de19a6e8ef20a931e4e48a07548cf35e33ee9f357fce957f51e38c054",
+      "bytes": 816680,
+      "dimensions_m": [
+        0.33994340896606445,
+        0.16829113056883216,
+        0.29082560539245605
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_34",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_34.glb",
+      "sha256": "55d599f12cadcbd48318403dfb9702f2da0824fcd81460957e9d2fce8c959437",
+      "bytes": 818680,
+      "dimensions_m": [
+        0.3520317077636719,
+        0.15215961635112762,
+        0.45043955743312836
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_35",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_35.glb",
+      "sha256": "2af3480be97df44b903acffda8b258a7d6051bb5f7813645984903116e9f828a",
+      "bytes": 818096,
+      "dimensions_m": [
+        0.4620286226272583,
+        0.13777477573603392,
+        0.26292208582162857
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_36",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_36.glb",
+      "sha256": "2511c6aaf5ac1187c5652482641c2882fa42dcae241455f23daf567ceb84ad68",
+      "bytes": 446588,
+      "dimensions_m": [
+        0.46023906767368317,
+        0.2436732572538176,
+        0.4549616575241089
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_37",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_37.glb",
+      "sha256": "60c6224bf1978dd53d63e7b812c6e27d552d0c2ad5582d57938e4aafbbc59a43",
+      "bytes": 446644,
+      "dimensions_m": [
+        0.6732153296470642,
+        0.23606069386005402,
+        0.6310947239398956
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_38",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_38.glb",
+      "sha256": "03690aba845e51f0d19b35697b9b0c164d9e0f0c9489dd9da88dff5a383a5668",
+      "bytes": 446664,
+      "dimensions_m": [
+        0.6194837689399719,
+        0.18948498461540453,
+        0.6063659191131592
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_39",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_39.glb",
+      "sha256": "9dc835b26f7bb76656337f7c14345c15983c12fbe0e583f5ab0820421adda92e",
+      "bytes": 447040,
+      "dimensions_m": [
+        0.3290932923555374,
+        0.25205631886133517,
+        0.24445198476314545
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_4",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_4.glb",
+      "sha256": "e742a76c6e90e359cd1849bbf274dabe40ed22187cb039f478699270164fde11",
+      "bytes": 8891236,
+      "dimensions_m": [
+        4.311422824859619,
+        7.264785200357437,
+        4.577713966369629
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_40",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_40.glb",
+      "sha256": "4b806ad7ff253c0647c24758cf9be5093ca0d99d407d857477adae4c6f744db2",
+      "bytes": 446680,
+      "dimensions_m": [
+        0.833962619304657,
+        0.2887718271231279,
+        0.7952134907245636
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_41",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_41.glb",
+      "sha256": "e3667ff882e830d0d872100d5bdd73a30dc21c287402591b187b3b6b2c8a4616",
+      "bytes": 8613844,
+      "dimensions_m": [
+        4.944698095321655,
+        7.316917672753334,
+        4.538403272628784
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_42",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_42.glb",
+      "sha256": "30e526eff14fc61c5a938ab3b9a35498c1932be35d86b09e117b77f536df9265",
+      "bytes": 8597648,
+      "dimensions_m": [
+        5.7280848026275635,
+        7.376238122582436,
+        5.221206903457642
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_43",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_43.glb",
+      "sha256": "6005b01a55c73ffeb2401df910136f69611c22e1f9c76c77836e914e272b1a5e",
+      "bytes": 8681220,
+      "dimensions_m": [
+        3.6113946437835693,
+        7.392198815941811,
+        3.9958035945892334
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_44",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_44.glb",
+      "sha256": "71ab0a7e8e6907aadabfb7a76f476b867a742a84e18379904f9bb51551334547",
+      "bytes": 8588460,
+      "dimensions_m": [
+        5.8020243644714355,
+        10.236431390047073,
+        5.370845556259155
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_45",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_45.glb",
+      "sha256": "53ccfe809caf4f5b3a0619978d61f56ed087ad68377c109029d32f4fb2cc7790",
+      "bytes": 8462704,
+      "dimensions_m": [
+        6.420140743255615,
+        8.723807603120804,
+        6.222001314163208
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_46",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_46.glb",
+      "sha256": "151cd4a2b5d8c0882b23654c3ad84df8c2f1720ad4f2474013ef971b5f5cbc45",
+      "bytes": 2593776,
+      "dimensions_m": [
+        1.2733909487724304,
+        1.0135701447725296,
+        1.386027455329895
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_47",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_47.glb",
+      "sha256": "58f2da4f056d52337630875468c3d087ae72439b4d0e333aea8fdb0611a2c1f0",
+      "bytes": 2605024,
+      "dimensions_m": [
+        1.8065367341041565,
+        2.3477659970521927,
+        1.9540292024612427
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_48",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_48.glb",
+      "sha256": "c42e88bbf3860835e7dd9de3f8d2a350e562487fbe0ad1e51117e8eaad697cb1",
+      "bytes": 2589916,
+      "dimensions_m": [
+        1.0478354692459106,
+        0.24951478838920593,
+        0.9621210098266602
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_49",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_49.glb",
+      "sha256": "66d5d092fa80b06337cbd4c20dc737037eba4f2a4bed5d2acf8fc3de36cca563",
+      "bytes": 2592612,
+      "dimensions_m": [
+        1.3108200430870056,
+        0.2534325495362282,
+        1.3621740341186523
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_5",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_5.glb",
+      "sha256": "0a9c49178adb9d4370d544175266fccaf26b99f7f25d114fe5a4261fbcf33a7a",
+      "bytes": 8833212,
+      "dimensions_m": [
+        4.464301586151123,
+        7.642995744943619,
+        4.27585244178772
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_50",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_50.glb",
+      "sha256": "23254b6f25507da6fa10d455bab9ecaa2a30fb9cd88f1d6ffdae7f6ffdc3283c",
+      "bytes": 2532132,
+      "dimensions_m": [
+        3.2251484394073486,
+        2.2597965598106384,
+        2.9891364574432373
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_51",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_51.glb",
+      "sha256": "0b083d48443171fc287c21556f5b8b544eec61c5ac910a0c40a1a8fde501ec9c",
+      "bytes": 2528272,
+      "dimensions_m": [
+        3.048760414123535,
+        1.8989749141037464,
+        2.479071617126465
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_52",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_52.glb",
+      "sha256": "6d1ad38e59c1c0475f9e82ed71eef411ab9c7a5afa8decde926be795a7ad6bda",
+      "bytes": 2538972,
+      "dimensions_m": [
+        3.4200847148895264,
+        2.3162826597690582,
+        3.476110100746155
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_53",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_53.glb",
+      "sha256": "50dbe2462b68503ad522ac5bac5ed6629ff944555de1d782ac89f38ce869aefd",
+      "bytes": 884984,
+      "dimensions_m": [
+        1.0565139055252075,
+        0.11283181235194206,
+        1.4763587713241577
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_54",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_54.glb",
+      "sha256": "5ff2d08abbae591bf31863af283e3cea28e2ba3994e5360747dfb4102546482b",
+      "bytes": 892796,
+      "dimensions_m": [
+        1.1395195126533508,
+        0.10466732829809189,
+        1.3542838096618652
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_55",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_55.glb",
+      "sha256": "325586f74449c877669c75b6f3dc3298fdb27622318f0e988bcdbc6705c623c5",
+      "bytes": 884500,
+      "dimensions_m": [
+        1.1790300011634827,
+        0.10927321389317513,
+        1.289994716644287
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_56",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_56.glb",
+      "sha256": "3a58538cf4c2271eb006ec1065800934bc924fdb8cc9519019d0cf22c8d3f49e",
+      "bytes": 973736,
+      "dimensions_m": [
+        1.4573510885238647,
+        0.11033729463815689,
+        2.0892062187194824
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_57",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_57.glb",
+      "sha256": "f32e193fd75d8373769c80db1e2a2e50d7adc9b0d0ecf47b1024732d99ae13c6",
+      "bytes": 1062620,
+      "dimensions_m": [
+        2.1106141805648804,
+        0.11283182352781296,
+        2.129036545753479
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_58",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_58.glb",
+      "sha256": "628ac949eb9e1ec67bb3bb8f6364846c2c3855b313c34c56b28e5a4158710831",
+      "bytes": 870868,
+      "dimensions_m": [
+        1.018884301185608,
+        0.1498702121898532,
+        0.9738519787788391
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_59",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_59.glb",
+      "sha256": "85640dd3f79a923a5fcfb05646a514280912008ccebfd08014024fe778022324",
+      "bytes": 854356,
+      "dimensions_m": [
+        0.9927218556404114,
+        0.14933522511273623,
+        0.9660682082176208
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_6",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_6.glb",
+      "sha256": "cebcdd40f0c8dda2a02ff57a707d590694969170e1497c13fe3f857f0ba42bdb",
+      "bytes": 8706072,
+      "dimensions_m": [
+        4.0628461837768555,
+        9.425189882516861,
+        4.241076946258545
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_60",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_60.glb",
+      "sha256": "8d9ce1d59b86b4fe518148ec1ebe6d2b49972d8d02cd80a24bf4ce00096fda7a",
+      "bytes": 855076,
+      "dimensions_m": [
+        0.8358605802059174,
+        0.17363302689045668,
+        1.0762888193130493
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_61",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_61.glb",
+      "sha256": "7602974ee1b3dd668c784938e2d1ef3fc41df2f065a15b7e8520d068f8092420",
+      "bytes": 945344,
+      "dimensions_m": [
+        1.559880554676056,
+        0.17634792253375053,
+        1.9869367480278015
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_62",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_62.glb",
+      "sha256": "754e37ca25464a9d557ebc974429e23944e4feec0d35161aba0fa22face3db7f",
+      "bytes": 979896,
+      "dimensions_m": [
+        2.051580786705017,
+        0.17634792160242796,
+        1.9869367480278015
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_63",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_63.glb",
+      "sha256": "aef4a69c4ed72cc4223f299dbe843581abb37f1de7ed57535a87d58d23d8fca4",
+      "bytes": 11174576,
+      "dimensions_m": [
+        13.515754699707031,
+        16.725495845079422,
+        11.549364566802979
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_64",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_64.glb",
+      "sha256": "a01e4bc3be34c63545090175fcbb583d3e88dd570cd5b80561a82fb064e1d622",
+      "bytes": 11140048,
+      "dimensions_m": [
+        10.562872409820557,
+        18.94920302927494,
+        9.202587842941284
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_65",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_65.glb",
+      "sha256": "065673ef02a9ee735188faaba4b4d8cddb85a8e7e04de60c310f2892473b35b6",
+      "bytes": 11210024,
+      "dimensions_m": [
+        11.357495784759521,
+        16.072540774941444,
+        11.505619049072266
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_66",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_66.glb",
+      "sha256": "08348a2650c3c2b72f867caa6d1f6e57f9b4790899990756174fdecd33c24444",
+      "bytes": 11190984,
+      "dimensions_m": [
+        10.38081169128418,
+        18.738235011696815,
+        11.293086051940918
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_67",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_67.glb",
+      "sha256": "31ad0c73e0a380b1ba17c5cd650ce5cff8059cb0da40a56bee83ec143f2cf1f0",
+      "bytes": 11241488,
+      "dimensions_m": [
+        9.494712114334106,
+        15.662175670266151,
+        9.387028455734253
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_7",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_7.glb",
+      "sha256": "a449dbc159be5ca86ffff74cf116c76674bf3db506016ac06ef4dcf41c21f1f1",
+      "bytes": 8727356,
+      "dimensions_m": [
+        3.8255257606506348,
+        9.438381105661392,
+        3.755373477935791
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_8",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_8.glb",
+      "sha256": "699e9346d613f1f08a786078ddc7a2315a3ba7d2cf7d21ea968a2c215dddd97d",
+      "bytes": 8669328,
+      "dimensions_m": [
+        3.671165347099304,
+        7.006239801645279,
+        4.219650030136108
+      ]
+    },
+    {
+      "name": "opengameart-stylized-nature-megakit_9",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-stylized-nature-megakit_9.glb",
+      "sha256": "51e64427406c6dbe6d9ebb5b3b0a7171be7f0e0d5b7870628db13d20bcd16f7a",
+      "bytes": 10404924,
+      "dimensions_m": [
+        6.148936033248901,
+        9.495477199554443,
+        5.74866795539856
+      ]
+    },
+    {
+      "name": "opengameart-treasure-chest-mimic",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-treasure-chest-mimic.glb",
+      "sha256": "5ba178c7db34fe99aae2c3d820931d63958d1a8dc4d3c898eb586b1a1a012a77",
+      "bytes": 258932,
+      "dimensions_m": [
+        1.5381948092636615,
+        1.5143180974363382,
+        1.1977985005185001
+      ]
+    },
+    {
+      "name": "opengameart-treasure-chest-mimic_1",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-treasure-chest-mimic_1.glb",
+      "sha256": "1df014d16aa9ad25ca459bed3e62ea43294c749d3159352ab76fed5c208c95bf",
+      "bytes": 260656,
+      "dimensions_m": [
+        1.5381948092636615,
+        1.5143180946423704,
+        1.2800611953541783
+      ]
+    },
+    {
+      "name": "opengameart-wooden-bridge-0",
+      "style_group": "source_candidate",
+      "file": "candidates/models/opengameart-wooden-bridge-0.glb",
+      "sha256": "65db4ffdedcc0fbc18f11e109dabda947632bd5846576fff1f1131f56dc8ac01",
+      "bytes": 33812,
+      "dimensions_m": [
+        2.218778967857361,
+        1.796186686496327,
+        8.643157394730622
+      ]
+    },
+    {
+      "name": "alpine_and_arctic_biomes",
+      "style_group": "source_candidate",
+      "file": "external/nature/alpine_and_arctic_biomes.glb",
+      "sha256": "0a5d1724fb502685dc8fc806eb2b8d671308c2b79a39ba5181a90587b3c39df1",
+      "bytes": 639228,
+      "dimensions_m": [
+        131068.0,
+        243786.48187494278,
+        131068.0
+      ]
+    },
+    {
+      "name": "date_palm",
+      "style_group": "source_candidate",
+      "file": "external/nature/date_palm.glb",
+      "sha256": "77c75120a4994fab1342e9047599a43d0ce0541025258fc6acb2719728d7a64a",
+      "bytes": 504364,
+      "dimensions_m": [
+        143569.50128531456,
+        173665.10624980927,
+        142097.3081510067
+      ]
+    },
+    {
+      "name": "stylized_trees_and_rocks",
+      "style_group": "source_candidate",
+      "file": "external/nature/stylized_trees_and_rocks.glb",
+      "sha256": "56a38ba6300a5696b94e3955bcdb6c00d23f61eb9f1606560e7fc4e3c458871c",
+      "bytes": 1031880,
+      "dimensions_m": [
+        437451.67259488965,
+        196856.57035589218,
+        442002.64980487945
+      ]
+    },
+    {
+      "name": "willow_tree",
+      "style_group": "source_candidate",
+      "file": "external/nature/willow_tree.glb",
+      "sha256": "807f92cce54039cf89d8be08a4d0a47858cd9e14a124bd166dc66ef6b9b648c2",
+      "bytes": 44808,
+      "dimensions_m": [
+        165698.471003294,
+        131080.26974844933,
+        168099.37767004967
       ]
     }
   ]

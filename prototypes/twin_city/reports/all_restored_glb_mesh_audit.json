@@ -1,0 +1,2079 @@
+{
+	"assets": [
+		{
+			"file": "models/3dassets-alpine-snow-village-windswept-mountain-pine-e7302601.glb",
+			"mesh_nodes": 3,
+			"surfaces": 3
+		},
+		{
+			"file": "models/grab3d-baobab-tree.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/grab3d-birch-grove.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "models/grab3d-bracket-fungus.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/grab3d-cherry-bowl.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/grab3d-crab.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/grab3d-cricket-bat.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/grab3d-desert-rock-arch.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/grab3d-dirt-road.glb",
+			"mesh_nodes": 5,
+			"surfaces": 5
+		},
+		{
+			"file": "models/grab3d-fantasy-mushroom-house.glb",
+			"mesh_nodes": 4,
+			"surfaces": 9
+		},
+		{
+			"file": "models/grab3d-garden-gnome.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/grab3d-glowing-mushroom-log.glb",
+			"mesh_nodes": 2,
+			"surfaces": 3
+		},
+		{
+			"file": "models/grab3d-highway-segment.glb",
+			"mesh_nodes": 5,
+			"surfaces": 5
+		},
+		{
+			"file": "models/grab3d-jungle-tree.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/grab3d-mangrove-tree.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "models/grab3d-mushroom-food.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/grab3d-pinball-machine.glb",
+			"mesh_nodes": 7,
+			"surfaces": 15
+		},
+		{
+			"file": "models/grab3d-pine-cone.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/grab3d-pirate-hideout.glb",
+			"mesh_nodes": 4,
+			"surfaces": 5
+		},
+		{
+			"file": "models/grab3d-stone-wall.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/grab3d-tunnel-portal.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb",
+			"mesh_nodes": 13,
+			"surfaces": 19
+		},
+		{
+			"file": "models/innerscene-japanese-maple-tree-565c1604.glb",
+			"mesh_nodes": 87,
+			"surfaces": 87
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-001.glb",
+			"mesh_nodes": 1,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-002.glb",
+			"mesh_nodes": 1,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-003.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-004.glb",
+			"mesh_nodes": 1,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-005.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-006.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-008.glb",
+			"mesh_nodes": 1,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-009.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-010.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-011.glb",
+			"mesh_nodes": 1,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-012.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-013.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-014.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-015.glb",
+			"mesh_nodes": 1,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-016.glb",
+			"mesh_nodes": 1,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-017.glb",
+			"mesh_nodes": 1,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-018.glb",
+			"mesh_nodes": 1,
+			"surfaces": 4
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-023.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-024.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-025.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-026.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-027.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-028.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-029.glb",
+			"mesh_nodes": 1,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-030.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-031.glb",
+			"mesh_nodes": 1,
+			"surfaces": 4
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-032.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-037.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-038.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-039.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-040.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-041.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-042.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-043.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-044.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-045.glb",
+			"mesh_nodes": 1,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-046.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-048.glb",
+			"mesh_nodes": 1,
+			"surfaces": 4
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-049.glb",
+			"mesh_nodes": 1,
+			"surfaces": 5
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-051.glb",
+			"mesh_nodes": 1,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-lunar-year-052.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-momuspark-002.glb",
+			"mesh_nodes": 2,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-momuspark-003.glb",
+			"mesh_nodes": 2,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-momuspark-004.glb",
+			"mesh_nodes": 2,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-momuspark-005.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "models/polygonalmind-momuspark-014.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-momuspark-015.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-momuspark-016.glb",
+			"mesh_nodes": 2,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-momuspark-017.glb",
+			"mesh_nodes": 2,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-momuspark-018.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-momuspark-019.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-momuspark-023.glb",
+			"mesh_nodes": 2,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-momuspark-024.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-momuspark-027.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "models/polygonalmind-momuspark-028.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "models/polygonalmind-momuspark-035.glb",
+			"mesh_nodes": 2,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-momuspark-036.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-momuspark-037.glb",
+			"mesh_nodes": 2,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-momuspark-038.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-momuspark-039.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-momuspark-040.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-momuspark-041.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "models/polygonalmind-momuspark-055.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "models/polygonalmind-momuspark-056.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "models/polygonalmind-momuspark-057.glb",
+			"mesh_nodes": 2,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-momuspark-058.glb",
+			"mesh_nodes": 2,
+			"surfaces": 3
+		},
+		{
+			"file": "models/polygonalmind-momuspark-059.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "models/polygonalmind-momuspark-060.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "models/polygonalmind-momuspark-061.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "models/polygonalmind-momuspark-063.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-momuspark-064.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/polygonalmind-momuspark-065.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/smithsonian-Baluster_vase_from_a_five-piece_garniture_F1980.190-.194_.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/smithsonian-Baluster_vase_one_of_three_in_a_five-piece_garniture_F1980.190--194_.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture_F1980.190-.194_.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/3dassets-alpine-snow-village-cedar-sauna-house-b3b0d5b4.glb",
+			"mesh_nodes": 8,
+			"surfaces": 8
+		},
+		{
+			"file": "candidates/models/3dassets-feudal-japan-castle-town-bath-house-f3524f03.glb",
+			"mesh_nodes": 7,
+			"surfaces": 7
+		},
+		{
+			"file": "candidates/models/3dassets-feudal-japan-castle-town-tea-house-a168f962.glb",
+			"mesh_nodes": 6,
+			"surfaces": 6
+		},
+		{
+			"file": "candidates/models/3dassets-roman-bathhouse-and-palaestra-bath-house-c0db5458-starter-scene.glb",
+			"mesh_nodes": 1024,
+			"surfaces": 1024
+		},
+		{
+			"file": "candidates/models/3dassets-royal-court-and-throne-palace-palace-audience-house-55f0cb24.glb",
+			"mesh_nodes": 6,
+			"surfaces": 6
+		},
+		{
+			"file": "candidates/models/3dassets-runestone-conservatory-open-ribbed-growing-house.glb",
+			"mesh_nodes": 5,
+			"surfaces": 5
+		},
+		{
+			"file": "candidates/models/github-rei-kurzweil-mittens-assets_models_sakura-machine-pistol.glb.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/grab3d-allen-key.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/grab3d-alternator.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/grab3d-baby-dragon.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/grab3d-cobweb.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/grab3d-crystal-dragon.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/grab3d-differential.glb",
+			"mesh_nodes": 3,
+			"surfaces": 3
+		},
+		{
+			"file": "candidates/models/grab3d-escalator.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/grab3d-glasses.glb",
+			"mesh_nodes": 5,
+			"surfaces": 5
+		},
+		{
+			"file": "candidates/models/grab3d-goblin.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/grab3d-hydra.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/grab3d-kraken.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/grab3d-ladder.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/grab3d-monster-truck.glb",
+			"mesh_nodes": 6,
+			"surfaces": 18
+		},
+		{
+			"file": "candidates/models/grab3d-orc.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/grab3d-phoenix.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/grab3d-sabertooth-tiger.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/grab3d-sunglasses.glb",
+			"mesh_nodes": 5,
+			"surfaces": 5
+		},
+		{
+			"file": "candidates/models/grab3d-wyvern.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-3d-walls-props.glb",
+			"mesh_nodes": 47,
+			"surfaces": 47
+		},
+		{
+			"file": "candidates/models/opengameart-basic-wooden-fence.glb",
+			"mesh_nodes": 7,
+			"surfaces": 7
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_1.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_10.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_11.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_12.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_13.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_14.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_15.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_16.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_17.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_18.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_19.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_2.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_20.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_21.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_22.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_23.glb",
+			"mesh_nodes": 3,
+			"surfaces": 3
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_24.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_25.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_26.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_27.glb",
+			"mesh_nodes": 3,
+			"surfaces": 3
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_28.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_29.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_3.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_30.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_31.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_32.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_33.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_34.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_35.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_36.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_37.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_38.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_39.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_4.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_40.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_41.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_42.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_43.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_44.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_45.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_46.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_47.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_48.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_49.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_5.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_50.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_51.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_52.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_53.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_54.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_55.glb",
+			"mesh_nodes": 3,
+			"surfaces": 3
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_56.glb",
+			"mesh_nodes": 3,
+			"surfaces": 3
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_57.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_58.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_59.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_6.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_60.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_61.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_62.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_63.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_64.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_65.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_66.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_67.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_68.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_69.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_7.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_70.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_71.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_72.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_73.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_74.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_75.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_76.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_77.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_78.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_79.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_8.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-building-kit_9.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_1.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_10.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_11.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_12.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_13.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_14.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_15.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_16.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_17.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_18.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_19.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_2.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_20.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_21.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_22.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_23.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_24.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_25.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_26.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_27.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_28.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_29.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_3.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_30.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_31.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_32.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_33.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_34.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_35.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_36.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_37.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_38.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_39.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_4.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_40.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_41.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_42.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_43.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_44.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_45.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_46.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_47.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_48.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_49.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_5.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_50.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_51.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_52.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_53.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_54.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_55.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_56.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_57.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_58.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_59.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_6.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_60.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_61.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_62.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_63.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_64.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_65.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_66.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_67.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_68.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_69.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_7.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_70.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_71.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_72.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_73.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_74.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_75.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_76.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_77.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_78.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_79.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_8.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-kenney-modular-buildings_9.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_1.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_10.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_11.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_12.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_13.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_14.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_15.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_16.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_17.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_18.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_19.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_2.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_20.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_21.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_22.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_23.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_24.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_25.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_27.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_28.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_3.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_34.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_37.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_38.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_4.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_5.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_6.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_7.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_8.glb",
+			"mesh_nodes": 1,
+			"surfaces": 3
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models-2_9.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models.glb",
+			"mesh_nodes": 3,
+			"surfaces": 5
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_1.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_10.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_11.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_12.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_13.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_14.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_15.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_16.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_17.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_18.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_19.glb",
+			"mesh_nodes": 3,
+			"surfaces": 5
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_2.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_20.glb",
+			"mesh_nodes": 2,
+			"surfaces": 4
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_3.glb",
+			"mesh_nodes": 1,
+			"surfaces": 3
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_4.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_5.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_6.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_7.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_8.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-modular-temple-3d-models_9.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stone-bridge-0.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_1.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_10.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_11.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_12.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_13.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_14.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_15.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_16.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_17.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_18.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_19.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_2.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_20.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_21.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_22.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_23.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_24.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_25.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_26.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_27.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_28.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_29.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_3.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_30.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_31.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_32.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_33.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_34.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_35.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_36.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_37.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_38.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_39.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_4.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_40.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_41.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_42.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_43.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_44.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_45.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_46.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_47.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_48.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_49.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_5.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_50.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_51.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_52.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_53.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_54.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_55.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_56.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_57.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_58.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_59.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_6.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_60.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_61.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_62.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_63.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_64.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_65.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_66.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_67.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_7.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_8.glb",
+			"mesh_nodes": 1,
+			"surfaces": 2
+		},
+		{
+			"file": "candidates/models/opengameart-stylized-nature-megakit_9.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "candidates/models/opengameart-treasure-chest-mimic.glb",
+			"mesh_nodes": 4,
+			"surfaces": 4
+		},
+		{
+			"file": "candidates/models/opengameart-treasure-chest-mimic_1.glb",
+			"mesh_nodes": 5,
+			"surfaces": 6
+		},
+		{
+			"file": "candidates/models/opengameart-wooden-bridge-0.glb",
+			"mesh_nodes": 1,
+			"surfaces": 1
+		},
+		{
+			"file": "external/nature/alpine_and_arctic_biomes.glb",
+			"mesh_nodes": 115,
+			"surfaces": 115
+		},
+		{
+			"file": "external/nature/date_palm.glb",
+			"mesh_nodes": 3,
+			"surfaces": 3
+		},
+		{
+			"file": "external/nature/stylized_trees_and_rocks.glb",
+			"mesh_nodes": 145,
+			"surfaces": 145
+		},
+		{
+			"file": "external/nature/willow_tree.glb",
+			"mesh_nodes": 2,
+			"surfaces": 2
+		}
+	],
+	"discovered_glb_count": 414,
+	"expected_glb_count": 414,
+	"null_mesh_nodes": 0,
+	"valid_glb_count": 414,
+	"zero_surface_meshes": 0
+}
