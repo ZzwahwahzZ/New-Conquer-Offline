@@ -8,6 +8,7 @@ from huggingface_hub import HfApi,hf_hub_download
 from imperial_extra_sources import discover_3dassets, discover_hanok_pack, discover_imperial_china_pack
 from opengameart_sources import discover_opengameart, discover_quaternius, _license_from_page
 from new_asset_sources import discover_smithsonian, discover_kenney_nature, discover_sketchfab, discover_polygonal_mind, discover_innerscene_curated, discover_github_open_assets, discover_poly_pizza
+from grab3d_sources import discover_grab3d
 ROOT=Path.cwd(); OUT=ROOT/"assets/wuxia_imperial_pack"; RAW=ROOT/".asset_work/raw"
 HF_REPO=os.getenv("HF_REPO_ID","ZzwahwahzZ/clash-of-legends-terrain-assets"); PREFIX="assets/wuxia_imperial_pack"
 S=requests.Session(); S.headers.update({"User-Agent":"NewConquerOffline-AssetPipeline/1.0 (GitHub Actions; asset audit)"})
@@ -140,6 +141,7 @@ CATEGORY_RULES = {
  "statues_and_props": r"\b(?:dragon|stone lion|guardian lion|lantern|incense burner|cauldron|brazier|bronze bell|ceremonial drum|altar|throne|folding screen|scroll rack|hanging scroll|floor cushion|inkstone|water dropper|tea set|tea table|guqin|calligraphy|parasol|banner|pennant|weapon rack|training dummy|fountain|komainu|onigawara|statue|ornament|storage chest|writing desk)\b",
  "nature": r"\b(?:bamboo|plum tree|willow tree|pine tree|cherry blossom|cherry tree|bonsai|lotus|peony|rockery|shrub|tree clump|blossom|reed clump|bluebell|fern clump|tussock grass|spinifex|grass clump|orchard tree|cattail|tall grass|maple|oak|birch|cedar|spruce|fir|cypress|tree|plant|flower|grass|fern|rock|boulder|moss|mushroom|reed|water lily|vine|ivy|root|log|stump|cliff|hill|mountain)\b",
  "pbr_materials": r"\b(?:marble|stone|tile|roof tile|wood|timber|pbr|texture)\b",
+ "creatures_and_wildlife": r"\b(?:dragon|wyvern|goblin|orc|wolf|tiger|boar|bear|fox|deer|spider|snake|skeleton|monster|phoenix|griffin)\b",
 }
 def _flatten_text(value):
  if isinstance(value, dict):
@@ -520,7 +522,7 @@ def main():
   {"asset":"pine_tree_01","stage":"known_legacy_failure","reason":"Skipped before discovery; prior download exceeded the configured size limit"},
   {"asset":"weed_plant_02","stage":"known_legacy_failure","reason":"Skipped before discovery; prior normalization failed"},
  ])
- strict_filter_self_test(); discover_polygonal_mind(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_innerscene_curated(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_smithsonian(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_kenney_nature(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_sketchfab(S,getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_poly_pizza(S,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_github_open_assets(S,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_imperial_china_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_hanok_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
+ strict_filter_self_test(); discover_polygonal_mind(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_innerscene_curated(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_smithsonian(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_kenney_nature(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_sketchfab(S,getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_poly_pizza(S,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_github_open_assets(S,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_grab3d(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_imperial_china_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_hanok_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
  if not entries:
   print(json.dumps({"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
   raise RuntimeError("No assets passed license and validation checks; see printed per-source diagnostics. No empty upload performed.")
