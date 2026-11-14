@@ -157,9 +157,9 @@ jobs:
           approved["twin_city_selected_asset_count"] = len(selected_records)
           approved["twin_city_architecture_kit"] = selected_records
           approved["twin_city_selected_assets"] = selected_records
-          (root / "twin_city_selected_17_assets.json").write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","selected_count":len(selected_records),"verified_source_glb_count":len(refreshed),"assets":selected_records}, ensure_ascii=False, indent=2) + "\\n")
+          (root / "twin_city_selected_17_assets.json").write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","selected_count":len(selected_records),"verified_source_glb_count":len(refreshed),"assets":selected_records}, ensure_ascii=False, indent=2) + "\n")
           audit_path = Path("prototypes/twin_city/reports/glb_geometry_audit.json")
-          audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","original_models_folder_glb_count":len(selected),"supplemental_approved_glb_count":len(supplemental_records),"total_geometry_verified_glb_count":len(geometry_audit),"assets":geometry_audit,"architectural_candidate_count":sum(x["architectural_candidate"] for x in geometry_audit)}, ensure_ascii=False, indent=2) + "\n")
+          audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","original_models_folder_glb_count":len(selected),"selected_architecture_kit_component_count":len(selected_records),"total_geometry_verified_glb_count":len(geometry_audit),"assets":geometry_audit,"architectural_candidate_count":sum(x["architectural_candidate"] for x in geometry_audit)}, ensure_ascii=False, indent=2) + "\n")
           (root / "manifest.json").write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2) + "\n")
           (root / "imperial_approved_assets.json").write_text(json.dumps(approved, ensure_ascii=False, indent=2) + "\n")
           restore_report = {
@@ -198,8 +198,17 @@ jobs:
               repo_id="ZzwahwahzZ/clash-of-legends-terrain-assets",
               repo_type="dataset",
               token=os.environ["HF_TOKEN"],
-              commit_message="Verify 63 Twin City architectural assets with current SHA-256 and GLB dimensions"
+              commit_message="Verify 46 Imperial Chinese GLBs and 17 selected building-kit components with current SHA-256 and dimensions"
           )
+          for filename in ("manifest.json", "twin_city_selected_17_assets.json"):
+              HfApi().upload_file(
+                  path_or_fileobj="assets/wuxia_imperial_pack/" + filename,
+                  path_in_repo="assets/wuxia_imperial_pack/" + filename,
+                  repo_id="ZzwahwahzZ/clash-of-legends-terrain-assets",
+                  repo_type="dataset",
+                  token=os.environ["HF_TOKEN"],
+                  commit_message="Publish geometry-verified Twin City GLB inventory"
+              )
           print("HF_APPROVED_MANIFEST_UPLOAD_PASS")
           PY
 
