@@ -9,13 +9,19 @@ on:
       - ".github/workflows/collect-twin-city-houses-shops.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   collect:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
       - name: Prepare original asset library
         run: |
           mkdir -p collection/chinese-historical-houses collection/chinese-historical-shops
@@ -82,6 +88,21 @@ jobs:
           (root / "manifest.json").write_text(json.dumps(entries, indent=2) + "\n")
           print(json.dumps(entries, indent=2))
           PY
+
+      - name: Commit original assets into the project branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add collection/
+          if git diff --cached --quiet; then
+            echo "Original asset collection already up to date."
+          else
+            git commit -m "Add original Chinese courtyard residence and Han market stall"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
 
       - name: Package original assets
         run: |
