@@ -839,6 +839,15 @@ static func _twin_pagoda(parent: Node3D,roof: Material,timber: Material,gold: Ma
  _twin_cylinder(root,"PagodaFinial",Vector3(0,19.0,0),0.32,2.0,gold)
 
 static func _twin_palace(parent: Node3D,pale: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
+ const MERGED_KIT_PATH := "res://assets/environment/architecture/imperial_china_palace_and_garden_merged.scn"
+ if ResourceLoader.exists(MERGED_KIT_PATH):
+  var merged_pack := load(MERGED_KIT_PATH) as PackedScene
+  if merged_pack != null:
+   var merged_kit := merged_pack.instantiate() as Node3D
+   if merged_kit != null:
+    merged_kit.position = Vector3(0,0,-103.0)
+    parent.add_child(merged_kit)
+    return
  if _twin_import_imperial_palace_kit(parent):
   return
  _twin_palace_procedural_fallback(parent,pale,stone,timber,roof,gold)
@@ -918,6 +927,12 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
    active_tool.append_from(mesh_node.mesh,surface,local_transform)
    merged_source_count += 1
   mesh_node.visible = false
+ # Keep the eight structural source models; all other source groups are represented
+ # by the material-batched ArrayMeshes below and can be released.
+ for child in container.get_children():
+  if child is Node3D and not selected_roots.has(child):
+   container.remove_child(child)
+   child.queue_free()
  var merged_surfaces := 0
  for key in tools.keys():
   var merged_mesh := (tools[key] as SurfaceTool).commit()
