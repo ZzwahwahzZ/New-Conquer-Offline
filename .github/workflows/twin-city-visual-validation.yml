@@ -36,7 +36,7 @@ jobs:
           python3 -m pip install --disable-pip-version-check trimesh pygltflib
           set -Eeuo pipefail
           python3 - <<'PY'
-          import hashlib, json, urllib.request
+          import hashlib, json, shutil, urllib.request
           from pathlib import Path
           base = "https://huggingface.co/datasets/ZzwahwahzZ/clash-of-legends-terrain-assets/resolve/main/assets/wuxia_imperial_pack/"
           root = Path("assets/wuxia_imperial_pack")
@@ -135,6 +135,21 @@ jobs:
                   "sha256":item.get("sha256"),
                   "role":roles[item["name"]]
               })
+          active_root = Path("assets/twin_city_selected")
+          active_models = active_root / "models"
+          active_models.mkdir(parents=True, exist_ok=True)
+          for item in selected_architecture:
+              source_path = root / item["file"]
+              destination = active_models / Path(item["file"]).name
+              shutil.copy2(source_path, destination)
+              copied_sha = hashlib.sha256(destination.read_bytes()).hexdigest()
+              if copied_sha != item["sha256"]:
+                  raise SystemExit(f"Active GLB copy SHA-256 mismatch: {destination}")
+              item["active_project_path"] = str(destination)
+          for record in selected_records:
+              record["active_project_path"] = str(active_models / Path(record["file"]).name)
+          (active_root / "selection_manifest.json").write_text(json.dumps({"selected_count":len(selected_records),"assets":selected_records}, ensure_ascii=False, indent=2) + "\\n")
+          (root / "models" / ".gdignore").write_text("# Source audit archive: the 99 original GLBs remain in Git; only the 17 verified active kit models are imported from assets/twin_city_selected/models.\\n")
           imperial_count = sum(1 for item in selected if item.get("style_group") == "imperial_chinese")
           if imperial_count != 46:
               raise SystemExit(f"Expected 46 original imperial_chinese GLBs, found {imperial_count}")
@@ -167,6 +182,7 @@ jobs:
               "dataset":"ZzwahwahzZ/clash-of-legends-terrain-assets",
               "original_models_folder_glb_count":len(refreshed),
               "selected_architecture_kit_component_count":len(selected_records),
+              "active_godot_glb_count":len(selected_records),
               "restored_glb_models":len(geometry_audit),
               "restored_files":len(geometry_audit),
               "restored_pbr_textures":0,
@@ -356,6 +372,7 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add -f "$asset"
             if [ -d assets/wuxia_imperial_pack/models ]; then git add -f assets/wuxia_imperial_pack/models/; fi
+            if [ -d assets/twin_city_selected ]; then git add -f assets/twin_city_selected/; fi
             if [ -f assets/wuxia_imperial_pack/manifest.json ]; then git add -f assets/wuxia_imperial_pack/manifest.json; fi
             if [ -f assets/wuxia_imperial_pack/imperial_approved_assets.json ]; then git add -f assets/wuxia_imperial_pack/imperial_approved_assets.json; fi
             if [ -f assets/wuxia_imperial_pack/twin_city_selected_17_assets.json ]; then git add -f assets/wuxia_imperial_pack/twin_city_selected_17_assets.json; fi
