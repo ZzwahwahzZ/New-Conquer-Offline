@@ -69,14 +69,16 @@ jobs:
           mkdir -p prototypes/twin_city/captures
           export LIBGL_ALWAYS_SOFTWARE=1
           timeout 900s xvfb-run -a -s "-screen 0 1920x1080x24" godot --path prototypes/twin_city --rendering-method gl_compatibility --rendering-driver opengl3 --script res://capture.gd 2>&1 | tee prototypes/twin_city/reports/godot_capture.log
-          test -s prototypes/twin_city/captures/twin_city_aerial.png
-          test -s prototypes/twin_city/captures/twin_city_street.png
+          for image in 01_aerial_full.png 02_aerial_oblique.png 03_street_scale.png 04_central_plaza.png 05_imperial_palace.png 06_district_density.png; do
+            test -s "prototypes/twin_city/captures/$image"
+          done
           python3 -m pip install --disable-pip-version-check Pillow
           python3 - <<'PY'
           from pathlib import Path
           from PIL import Image
           root = Path("prototypes/twin_city/captures")
-          for name in ("twin_city_aerial.png", "twin_city_street.png"):
+          required = ("01_aerial_full.png", "02_aerial_oblique.png", "03_street_scale.png", "04_central_plaza.png", "05_imperial_palace.png", "06_district_density.png")
+          for name in required:
               path = root / name
               with Image.open(path) as image:
                   if image.size != (1920, 1080):
@@ -104,6 +106,14 @@ jobs:
                   raise SystemExit(f"{key}: expected {minimum}..{maximum}, got {value}")
           if report.get("screenshot_width") != 1920 or report.get("screenshot_height") != 1080:
               raise SystemExit("Screenshot dimensions not recorded correctly.")
+          if report.get("screenshots_created") != 6:
+              raise SystemExit(f"Expected six genuine Godot screenshots, got {report.get('screenshots_created')}")
+          if not report.get("fps_target_30_pass", False):
+              raise SystemExit(f"Measured render performance below 30 FPS: {report.get('measured_capture_fps_average')}")
+          if not 150 <= report.get("buildings", 0) <= 180:
+              raise SystemExit(f"Expected 150–180 distinct building/place instances, got {report.get('buildings')}")
+          if not 340 <= report.get("city_core_m", 0) <= 380:
+              raise SystemExit(f"Urban core diameter out of range: {report.get('city_core_m')}")
           print("TWIN_CITY_STRUCTURAL_VALIDATION_PASS: " + json.dumps(report, sort_keys=True))
           PY
 
@@ -125,7 +135,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f prototypes/twin_city/captures/twin_city_aerial.png prototypes/twin_city/captures/twin_city_street.png prototypes/twin_city/reports/twin_city_build_report.json prototypes/twin_city/reports/twin_city_asset_restore.json
+          git add -f prototypes/twin_city/captures/*.png prototypes/twin_city/reports/twin_city_build_report.json prototypes/twin_city/reports/twin_city_asset_restore.json
           git diff --cached --quiet || git commit -m "Add Twin City Godot 4.3 visual proof"
           git push origin "HEAD:$GITHUB_REF_NAME"
 
