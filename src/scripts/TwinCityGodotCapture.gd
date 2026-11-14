@@ -117,4 +117,10 @@ func _capture() -> void:
  if avg_fps<30.0:
   print("TWIN_CITY_PERFORMANCE_WARNING: Lavapipe software Vulkan averaged "+str(avg_fps)+" FPS; physical Android GPU verification remains pending.")
  print("TWIN_CITY_SIX_VIEW_CAPTURE_PASS")
+ city.queue_free()
+ await process_frame
+ for holder in get_nodes_in_group("twin_city_source_template_lifetime_holder"):
+  holder.queue_free()
+ await process_frame
+ print("TWIN_CITY_CAPTURE_CLEANUP_COMPLETE: city and shared source resources freed in dependency order")
  quit(0)
