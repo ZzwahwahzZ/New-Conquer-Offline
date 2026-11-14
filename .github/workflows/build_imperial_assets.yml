@@ -54,6 +54,7 @@ jobs:
           BLENDER_BIN: blender
           SKETCHFAB_TOKEN: ${{ secrets.SKETCHFAB_TOKEN }}
           POLY_PIZZA_KEY: ${{ secrets.POLY_PIZZA_KEY }}
+          POLY_PIZZA_ENABLE: ${{ vars.POLY_PIZZA_ENABLE }}
           GITHUB_TOKEN: ${{ github.token }}
         run: python tools/fetch_and_normalize_assets.py
       - name: Commit audit docs to PR branch
