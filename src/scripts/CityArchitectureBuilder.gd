@@ -996,11 +996,11 @@ static func _twin_place_district_buildings(parent: Node3D, counts: Dictionary, w
  # a central landmark; two extra houses fill the strongest residential blocks.
  for block in range(10):
   var angle := TAU*float(block)/10.0
-  var radius := 88.0+float(block%3)*13.0
+  var radius := 68.0+float(block%5)*18.0
   var center := Vector3(cos(angle)*radius,0,sin(angle)*radius)
   if absf(center.x)<58.0 and center.z < -48.0:
    center.x += 72.0 if center.x >= 0.0 else -72.0
-  var rotation := -angle+PI*0.5
+  var rotation := -angle-PI*0.5
   var house_offsets := [
    Vector3(-12,0,-12),Vector3(0,0,-12),Vector3(12,0,-12),
    Vector3(-12,0,0),Vector3(12,0,0),
@@ -1029,17 +1029,17 @@ static func _twin_place_district_buildings(parent: Node3D, counts: Dictionary, w
  for i in range(2):
   var angle := TAU*float(i)/2.0+0.4
   var pos := Vector3(cos(angle)*66.0,0,sin(angle)*66.0)
-  _twin_register_batched_building(districts,batches,"residential",serial,pos,9.0,8.0,3,wall,stone,timber,roof,gold,angle)
+  _twin_register_batched_building(districts,batches,"residential",serial,pos,9.0,8.0,3,wall,stone,timber,roof,gold,-angle-PI*0.5)
   serial += 1
  for i in range(8):
   var angle := TAU*float(i)/8.0+0.18
   var pos := Vector3(cos(angle)*54.0,0,sin(angle)*54.0)
-  _twin_register_batched_building(districts,batches,"commercial",serial,pos,6.0+float(i%3)*0.5,6.0,2,wall,stone,timber,roof,gold,angle)
+  _twin_register_batched_building(districts,batches,"commercial",serial,pos,6.0+float(i%3)*0.5,6.0,2,wall,stone,timber,roof,gold,-angle-PI*0.5)
   serial += 1
  for i in range(5):
   var angle := TAU*float(i)/5.0+0.3
   var pos := Vector3(cos(angle)*150.0,0,sin(angle)*150.0)
-  _twin_register_batched_building(districts,batches,"service",serial,pos,8.5,8.0,2,wall,stone,timber,roof,gold,angle)
+  _twin_register_batched_building(districts,batches,"service",serial,pos,8.5,8.0,2,wall,stone,timber,roof,gold,-angle-PI*0.5)
   serial += 1
  # Fourteen tall defensive structures form a secondary ring just inside the moat.
  for i in range(int(counts.defensive)):
@@ -1064,28 +1064,31 @@ static func _twin_register_batched_building(parent: Node3D,batches: Dictionary,k
  _twin_batch_add(batches,"walls",pos+Vector3(0,height*0.5+0.7,0),Vector3(width,height,depth),rotation)
  for floor_index in range(floors):
   var y := 2.0+float(floor_index)*3.2
-  var front := Vector3(0,y,depth*0.5+0.08)
-  _twin_batch_add(batches,"timber",pos+Basis(Vector3.UP,rotation)*front,Vector3(width+0.3,0.22,0.22),rotation)
-  var windows := maxi(2,int(width/2.8))
-  for window_index in range(windows):
-   var wx := -width*0.38+float(window_index)*width*0.76/float(maxi(1,windows-1))
-   var window_pos := pos+Basis(Vector3.UP,rotation)*Vector3(wx,y+1.0,depth*0.5+0.13)
-   _twin_batch_add(batches,"windows",window_pos,Vector3(0.72,1.25,0.12),rotation)
-   _twin_batch_add(batches,"gold",window_pos+Basis(Vector3.UP,rotation)*Vector3(0,0.68,0.03),Vector3(0.92,0.16,0.18),rotation)
+  for side in [-1.0,1.0]:
+   var band_pos := pos+Basis(Vector3.UP,rotation)*Vector3(0,y,side*(depth*0.5+0.08))
+   _twin_batch_add(batches,"timber",band_pos,Vector3(width+0.3,0.22,0.22),rotation)
+   var windows := maxi(2,int(width/2.8))
+   for window_index in range(windows):
+    var wx := -width*0.38+float(window_index)*width*0.76/float(maxi(1,windows-1))
+    var window_pos := pos+Basis(Vector3.UP,rotation)*Vector3(wx,y+1.0,side*(depth*0.5+0.13))
+    _twin_batch_add(batches,"windows",window_pos,Vector3(0.72,1.25,0.12),rotation)
+    _twin_batch_add(batches,"gold",window_pos+Basis(Vector3.UP,rotation)*Vector3(0,0.68,0.03),Vector3(0.92,0.16,0.18),rotation)
+   var side_windows := maxi(1,int(depth/3.2))
+   for window_index in range(side_windows):
+    var wz := -depth*0.3+float(window_index)*depth*0.6/float(maxi(1,side_windows-1))
+    var side_window_pos := pos+Basis(Vector3.UP,rotation)*Vector3(width*0.5+0.13,y+1.0,wz)
+    _twin_batch_add(batches,"windows",side_window_pos,Vector3(0.72,1.25,0.12),rotation+PI*0.5)
  var door_pos := pos+Basis(Vector3.UP,rotation)*Vector3(0,1.55,depth*0.5+0.16)
  _twin_batch_add(batches,"doors",door_pos,Vector3(1.35,2.6,0.22),rotation)
  var roof_y := height+1.05
  match index%4:
   0:
-   _twin_batch_add(batches,"roof",pos+Vector3(0,roof_y,0),Vector3(width+2.2,0.8,depth+2.2),rotation)
-   _twin_batch_add(batches,"gold",pos+Vector3(0,roof_y+0.52,0),Vector3(width*0.62,0.22,0.38),rotation)
+   _twin_add_gable_roof(batches,pos,width,depth,roof_y,rotation)
   1:
-   _twin_batch_add(batches,"roof",pos+Vector3(0,roof_y,0),Vector3(width+1.8,0.7,depth+1.8),rotation)
-   for side in [-1.0,1.0]:
-    _twin_batch_add(batches,"gold",pos+Basis(Vector3.UP,rotation)*Vector3(side*(width*0.5+0.6),roof_y+0.45,0),Vector3(0.35,0.3,depth+2.4),rotation)
+   _twin_add_hip_roof(batches,pos,width,depth,roof_y,rotation)
   2:
-   for tier in range(2):
-    _twin_batch_add(batches,"roof",pos+Vector3(0,roof_y+float(tier)*0.65,0),Vector3(width+2.5-float(tier)*2.0,0.38,depth+2.5-float(tier)*2.0),rotation)
+   _twin_add_gable_roof(batches,pos,width,depth,roof_y,rotation)
+   _twin_add_gable_roof(batches,pos,width*0.72,depth*0.72,roof_y+0.78,rotation)
   _:
    _twin_batch_add(batches,"roof",pos+Vector3(0,roof_y,0),Vector3(width+1.5,0.9,depth+1.5),rotation)
  for sx in [-1.0,1.0]:
@@ -1100,12 +1103,30 @@ static func _twin_register_batched_building(parent: Node3D,batches: Dictionary,k
  if kind == "defensive":
   _twin_batch_add(batches,"gold",pos+Vector3(0,height+0.9,0),Vector3(width+2.5,0.4,depth+2.5),rotation)
 
+static func _twin_add_gable_roof(batches: Dictionary,pos: Vector3,width: float,depth: float,roof_y: float,rotation: float) -> void:
+ for side in [-1.0,1.0]:
+  var panel_pos := pos+Basis(Vector3.UP,rotation)*Vector3(0,roof_y+0.55,side*depth*0.25)
+  _twin_batch_add_tilted(batches,"roof_slopes",panel_pos,Vector3(width+2.6,0.46,depth*0.5+1.5),rotation,side*0.38)
+  var eave_pos := pos+Basis(Vector3.UP,rotation)*Vector3(0,roof_y+0.1,side*(depth*0.5+0.65))
+  _twin_batch_add(batches,"gold",eave_pos,Vector3(width+2.8,0.16,0.22),rotation)
+ _twin_batch_add(batches,"ridge",pos+Basis(Vector3.UP,rotation)*Vector3(0,roof_y+1.0,0),Vector3(width*0.82,0.34,0.48),rotation)
+
+static func _twin_add_hip_roof(batches: Dictionary,pos: Vector3,width: float,depth: float,roof_y: float,rotation: float) -> void:
+ _twin_add_gable_roof(batches,pos,width,depth,roof_y,rotation)
+ for side in [-1.0,1.0]:
+  var panel_pos := pos+Basis(Vector3.UP,rotation)*Vector3(side*width*0.25,roof_y+0.55,0)
+  _twin_batch_add_tilted(batches,"roof_slopes",panel_pos,Vector3(depth+2.6,0.46,width*0.5+1.5),rotation+PI*0.5,side*0.38)
+
+static func _twin_batch_add_tilted(batches: Dictionary,key: String,pos: Vector3,size: Vector3,rotation: float,tilt: float) -> void:
+ var basis := (Basis(Vector3.UP,rotation)*Basis(Vector3.RIGHT,tilt)).scaled(size)
+ batches[key].append(Transform3D(basis,pos))
+
 static func _twin_batch_add(batches: Dictionary,key: String,pos: Vector3,size: Vector3,rotation: float) -> void:
  var basis := Basis(Vector3.UP,rotation).scaled(size)
  batches[key].append(Transform3D(basis,pos))
 
 static func _twin_flush_building_batches(parent: Node3D,batches: Dictionary,wall: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
- var materials := {"foundation":stone,"walls":wall,"roof":roof,"timber":timber,"windows":timber,"gold":gold,"doors":timber,"shop":timber,"posts":timber}
+ var materials := {"foundation":stone,"walls":wall,"roof":roof,"roof_slopes":roof,"ridge":gold,"timber":timber,"windows":timber,"gold":gold,"doors":timber,"shop":timber,"posts":timber}
  for key in batches.keys():
   var transforms: Array = batches[key]
   if transforms.is_empty():
@@ -1131,16 +1152,19 @@ static func _twin_outer_biome(parent: Node3D,stone: Material,water: Material,pin
  # Batched rolling hills beyond the moat.
  var hill_multi := MultiMesh.new()
  hill_multi.transform_format = MultiMesh.TRANSFORM_3D
- var hill_mesh := BoxMesh.new()
- hill_mesh.size = Vector3.ONE
+ var hill_mesh := SphereMesh.new()
+ hill_mesh.radius = 1.0
+ hill_mesh.height = 2.0
+ hill_mesh.radial_segments = 12
+ hill_mesh.rings = 6
  hill_multi.mesh = hill_mesh
  hill_multi.instance_count = 120
  for i in range(120):
   var angle := TAU*float(i)/120.0
   var radius := 258.0+float((i*37)%112)
   var size := Vector3(22.0+float(i%5)*4.0,7.0+float(i%4)*2.0,24.0+float(i%3)*3.0)
-  var basis := Basis(Vector3.UP,angle).scaled(size)
-  var pos := Vector3(cos(angle)*radius,-2.0,sin(angle)*radius)
+  var basis := Basis(Vector3.UP,angle).scaled(Vector3(size.x*0.5,size.y*0.5,size.z*0.5))
+  var pos := Vector3(cos(angle)*radius,-2.0+size.y*0.5,sin(angle)*radius)
   hill_multi.set_instance_transform(i,Transform3D(basis,pos))
  var hills := MultiMeshInstance3D.new()
  hills.name = "OuterRollingHills_MultiMesh"
