@@ -48,7 +48,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "shopfront_arch_and_signage",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-001.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-002",
@@ -183,7 +184,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "ceremonial_bell_structure",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-004.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-005",
@@ -230,7 +232,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "building_foundation",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-005.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-006",
@@ -321,7 +324,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "structural_column",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-008.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-009",
@@ -368,7 +372,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "column_foundation",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-009.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-010",
@@ -459,7 +464,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "main_entrance",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-011.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-012",
@@ -594,7 +600,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "building_entrance_stairs",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-014.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-015",
@@ -641,7 +648,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "courtyard_fence_segment",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-015.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-016",
@@ -688,7 +696,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "courtyard_fence_enclosure",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-016.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-017",
@@ -735,7 +744,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "building_shell_variant_01",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-017.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-018",
@@ -782,7 +792,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "building_shell_variant_02",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-018.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-023",
@@ -1489,7 +1500,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "room_door_module",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-042.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-043",
@@ -1536,7 +1548,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "room_floor_module",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-043.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-044",
@@ -1583,7 +1596,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "room_roof_module",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-044.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-045",
@@ -1630,7 +1644,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "roof_beam_structure",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-045.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-046",
@@ -1677,7 +1692,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "room_wall_module",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-046.glb"
     },
     {
       "asset_id": "polygonalmind-lunar-year-048",
@@ -3264,7 +3280,8 @@
       },
       "twin_city_approved": true,
       "twin_city_role": "complete_pagoda_landmark",
-      "twin_city_geometry_verified": true
+      "twin_city_geometry_verified": true,
+      "active_project_path": "assets/twin_city_selected/models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb"
     },
     {
       "asset_id": "innerscene-japanese-maple-tree-565c1604",

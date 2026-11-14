@@ -17,7 +17,8 @@
       "geometry_count": 3,
       "bytes": 780132,
       "sha256": "56b99fcb9a10d23dcf47e06b4b3f9f1709d31f170fd07309f5d4898abe868608",
-      "role": "shopfront_arch_and_signage"
+      "role": "shopfront_arch_and_signage",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-001.glb"
     },
     {
       "name": "BellStructure",
@@ -33,7 +34,8 @@
       "geometry_count": 3,
       "bytes": 1238108,
       "sha256": "2c48d62d47d9bcb886cea4792e216366c7e0528232b4b3d9b5fcbd23ec984f8d",
-      "role": "ceremonial_bell_structure"
+      "role": "ceremonial_bell_structure",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-004.glb"
     },
     {
       "name": "BuildingBase",
@@ -49,7 +51,8 @@
       "geometry_count": 2,
       "bytes": 736976,
       "sha256": "857f588be1dec6194d2859bee6ea03bf0c3533da1dabaffd7368f6ebf21cd739",
-      "role": "building_foundation"
+      "role": "building_foundation",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-005.glb"
     },
     {
       "name": "Column",
@@ -65,7 +68,8 @@
       "geometry_count": 3,
       "bytes": 1149684,
       "sha256": "005cf8ef86ac974b97cb8069536eef7eabb6965ffa5f7fb9e37497d2ad5af7b7",
-      "role": "structural_column"
+      "role": "structural_column",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-008.glb"
     },
     {
       "name": "ColumnBase",
@@ -81,7 +85,8 @@
       "geometry_count": 1,
       "bytes": 349528,
       "sha256": "bc4010cbb679df0228408a0798e66e8aef9c40a5506219f3b39cb7853cc7b4eb",
-      "role": "column_foundation"
+      "role": "column_foundation",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-009.glb"
     },
     {
       "name": "Door",
@@ -97,7 +102,8 @@
       "geometry_count": 3,
       "bytes": 1156376,
       "sha256": "43b5eecf3c92d6599828b20a0d7a25afc6619b9c5c19a78f2b015794fbc41d3b",
-      "role": "main_entrance"
+      "role": "main_entrance",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-011.glb"
     },
     {
       "name": "EntranceStairs",
@@ -113,7 +119,8 @@
       "geometry_count": 2,
       "bytes": 729036,
       "sha256": "2b87098c1f33d1370017cb303cab2e84a588e1892a4df4da66143de6db9dcfdb",
-      "role": "building_entrance_stairs"
+      "role": "building_entrance_stairs",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-014.glb"
     },
     {
       "name": "Fence01",
@@ -129,7 +136,8 @@
       "geometry_count": 3,
       "bytes": 1149124,
       "sha256": "97981bc60dee871640b0e922693a7c486db1a30001f03373f99bb98ddc61fb70",
-      "role": "courtyard_fence_segment"
+      "role": "courtyard_fence_segment",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-015.glb"
     },
     {
       "name": "Fence02",
@@ -145,7 +153,8 @@
       "geometry_count": 3,
       "bytes": 1167808,
       "sha256": "dc198c0484b0f5f444768b1f429a769143e5adb7de839da3a0a50b5aa1059cb2",
-      "role": "courtyard_fence_enclosure"
+      "role": "courtyard_fence_enclosure",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-016.glb"
     },
     {
       "name": "Floor01",
@@ -161,7 +170,8 @@
       "geometry_count": 3,
       "bytes": 1220216,
       "sha256": "ee637d69980d4d4f9fd4c09d83a836e70df7a6a05c9dda11e74a8f9090dbe037",
-      "role": "building_shell_variant_01"
+      "role": "building_shell_variant_01",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-017.glb"
     },
     {
       "name": "Floor02",
@@ -177,7 +187,8 @@
       "geometry_count": 4,
       "bytes": 1552084,
       "sha256": "aef04c2299a4fcb6baf66ef543b74aea2d180f77a6326f8c94f212ee13b59687",
-      "role": "building_shell_variant_02"
+      "role": "building_shell_variant_02",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-018.glb"
     },
     {
       "name": "RoomDoor",
@@ -193,7 +204,8 @@
       "geometry_count": 2,
       "bytes": 726336,
       "sha256": "0a964863229c31d5304b97cc9236aef68eedc55c49293ea834c3f43198fe5c48",
-      "role": "room_door_module"
+      "role": "room_door_module",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-042.glb"
     },
     {
       "name": "RoomFloor",
@@ -209,7 +221,8 @@
       "geometry_count": 1,
       "bytes": 351792,
       "sha256": "623625d569da9136800426bc3dbf662c221d448c34c4a7ac9bfd310e3c9e9815",
-      "role": "room_floor_module"
+      "role": "room_floor_module",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-043.glb"
     },
     {
       "name": "RoomRoof",
@@ -225,7 +238,8 @@
       "geometry_count": 2,
       "bytes": 799664,
       "sha256": "2da77e87ba590697de0e860b9a304f13a5afd1ffeaac4dda9b8d1755001ac63a",
-      "role": "room_roof_module"
+      "role": "room_roof_module",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-044.glb"
     },
     {
       "name": "RoomRoofBeam",
@@ -241,7 +255,8 @@
       "geometry_count": 3,
       "bytes": 1161396,
       "sha256": "9d418f9c66580909129de1fec150d0ad2b3e65d3b6dc05712ebbb43973ddb57e",
-      "role": "roof_beam_structure"
+      "role": "roof_beam_structure",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-045.glb"
     },
     {
       "name": "RoomWall01",
@@ -257,7 +272,8 @@
       "geometry_count": 2,
       "bytes": 723140,
       "sha256": "c10cad25c956e339f1ddf9d80126e57144c82bf71e413d398a70a7e4d5632b11",
-      "role": "room_wall_module"
+      "role": "room_wall_module",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-046.glb"
     },
     {
       "name": "Buddhist Temple Pagoda",
@@ -273,7 +289,8 @@
       "geometry_count": 19,
       "bytes": 18840512,
       "sha256": "2653c57850f3d0401a1c21177a3a7f50dfa48711c49078979f25bbf0fed2363e",
-      "role": "complete_pagoda_landmark"
+      "role": "complete_pagoda_landmark",
+      "active_project_path": "assets/twin_city_selected/models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb"
     }
   ]
 }
