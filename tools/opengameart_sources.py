@@ -113,6 +113,22 @@ def _asset_files(page, html):
             found.append((absolute, label, ext))
     return found
 
+def _target_category(category, term):
+    text = (str(category) + " " + str(term)).lower()
+    if category == "nature":
+        return "nature"
+    if category == "ornaments":
+        return "statues_and_props"
+    if category == "pbr":
+        return "pbr_materials"
+    if re.search(r"bridge|gate|wall|watchtower|tower", text):
+        return "gates_walls_bridges"
+    if re.search(r"palace|temple|pagoda|shrine", text):
+        return "palaces_and_temples"
+    if re.search(r"shop|stall|house|market|teahouse|tea house", text):
+        return "houses_and_shops"
+    return None
+
 def _download_page_asset(session, fetch, sha, RAW, DISC, DOWN, ERR, page, slug, creator, category, term):
     if any(str(x.get("source_url", "")) == page for x in DISC):
         return False
@@ -136,7 +152,7 @@ def _download_page_asset(session, fetch, sha, RAW, DISC, DOWN, ERR, page, slug, 
             "id": aid, "name": label or slug, "source": "OpenGameArt",
             "source_url": page, "download_url": url, "license": license_name,
             "license_url": license_url, "authors": {"creator": author},
-            "matches": [(category, term)], "api_metadata": {"license_verified_from_live_page": True},
+            "matches": [(category, term)], "target_category": _target_category(category, term), "api_metadata": {"license_verified_from_live_page": True},
         }
         raw = fetch(url, RAW / "opengameart" / (aid + ext))
         DISC.append(rec)
@@ -238,7 +254,7 @@ def discover_quaternius(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                     "authors":{"creator":"Quaternius"},
                     "matches":[(pack["category"], pack["term"])],
                     "pack":pack["slug"],
-                    "candidate_only": True,
+                    "candidate_only": True, "target_category": "nature" if pack["category"] == "nature" else None,
                 }
                 ext = Path(urlparse(url).path).suffix.lower() or (".zip" if "drive.google.com" in url else ".zip")
                 raw = fetch(url, RAW / "quaternius" / (safe(aid) + ext))
