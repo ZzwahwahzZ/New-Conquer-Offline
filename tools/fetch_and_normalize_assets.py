@@ -44,7 +44,7 @@ def leaves(x):
 def polyhaven():
  assets=getj("https://api.polyhaven.com/assets",{"type":"models"})
  for aid,m in assets.items():
-  if aid in {"pine_tree_01","weed_plant_02"}: continue
+  if aid in {"pine_tree_01","weed_plant_02"} or aid in {x.get("id") for x in DISC}: continue
   hay=" ".join([aid,str(m.get("name","")),str(m.get("category",""))," ".join(m.get("categories",[]) if isinstance(m.get("categories"),list) else []),str(m.get("description",""))," ".join(m.get("tags",[]) if isinstance(m.get("tags"),list) else [])]).lower()
   hay=re.sub(r"[_-]+"," ",hay)
   matches=[(c,t) for c,ts in TERMS.items() if c!="pbr" for t in ts if re.search(r"(?<![a-z0-9])"+re.escape(t)+r"(?![a-z0-9])",hay)]
@@ -98,6 +98,7 @@ def ambientcg():
     continue
    for it in items:
     asset_id=it.get("id")
+    if asset_id and asset_id in {x.get("id") for x in DISC}: continue
     if not asset_id: continue
     urls=download_urls(it.get("downloads",{}))
     # Only download complete archives; the archive retains all source maps and metadata.
@@ -327,6 +328,20 @@ def process():
 def builddocs(blenderver):
  OUT.mkdir(parents=True,exist_ok=True); entries=[]; grouped={k:[] for k in CATEGORY_RULES}
  supplemental=[]
+ # Preserve already-approved local assets; this run is additive, not a replacement.
+ old_manifest_path=OUT/"manifest.json"
+ if old_manifest_path.exists():
+  try:
+   old_assets=json.loads(old_manifest_path.read_text(encoding="utf-8")).get("assets",[])
+   existing_paths=set()
+   for old in old_assets:
+    rel=old.get("file","")
+    if not rel or not (OUT/rel).is_file() or rel in existing_paths: continue
+    category=old.get("category")
+    if category not in grouped: continue
+    entries.append(old); grouped[category].append(old); existing_paths.add(rel)
+  except Exception as exc:
+   raise RuntimeError("Existing asset manifest is unreadable; refusing destructive rebuild: "+str(exc))
  candidate_paths=set()
  for r in OK:
   paths=r.get("files") or [r["file"]]
@@ -410,6 +425,17 @@ def upload(entries):
   raise RuntimeError("Final audit report failed remote SHA256/size verification")
 def main():
  if not shutil.which(os.getenv("BLENDER_BIN","blender")): raise RuntimeError("Blender executable missing")
+ # Seed discovery with the existing manifest so source adapters can skip known asset IDs
+ # before downloading them. Existing approved files are preserved by builddocs().
+ existing_manifest=OUT/"manifest.json"
+ if existing_manifest.exists():
+  try:
+   prior=json.loads(existing_manifest.read_text(encoding="utf-8"))
+   existing_assets=prior.get("assets",[])
+   DISC.extend(x for x in existing_assets if isinstance(x,dict) and x.get("id"))
+   print("EXISTING_ASSET_IDS_LOADED",len(existing_assets))
+  except Exception as exc:
+   raise RuntimeError("Cannot safely deduplicate against existing manifest: "+str(exc))
  ver=subprocess.check_output([os.getenv("BLENDER_BIN","blender"),"--version"],text=True).splitlines()[0]
  SKIPPED.extend([
   {"asset":"pine_tree_01","stage":"known_legacy_failure","reason":"Skipped before discovery; prior download exceeded the configured size limit"},
