@@ -77,8 +77,13 @@ def discover_3dassets(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                         license_slug = str(license_info.get("slug", "") if isinstance(license_info, dict) else license_info).lower()
                         if license_slug not in ("cc0-1.0", "cc0", "cc0-1.0-universal",
                                                  "cc-by-4.0", "cc-by-3.0", "cc-by-2.0",
-                                                 "cc-by-2.5", "cc-by-1.0"):
-                            raise ValueError("Asset license is not CC0 or CC BY: " + license_slug)
+                                                 "cc-by-2.5", "cc-by-1.0",
+                                                 "cc-by-sa-4.0", "cc-by-sa-3.0",
+                                                 "oga-by-4.0", "oga-by-3.0",
+                                                 "mit", "bsd-2-clause", "bsd-3-clause",
+                                                 "zlib", "wtfpl", "unlicense",
+                                                 "gpl-2.0", "gpl-3.0"):
+                            raise ValueError("Asset license is not in the expanded explicit allow-list: " + license_slug)
                         if detail.get("status") != "published":
                             raise ValueError("Asset is not published: " + str(detail.get("status")))
                         cdn = detail.get("cdnUrl")
