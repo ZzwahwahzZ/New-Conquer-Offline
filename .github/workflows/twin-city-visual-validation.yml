@@ -30,9 +30,10 @@ jobs:
       - name: Checkout isolated prototype branch
         uses: actions/checkout@v4
 
-      - name: Restore and fingerprint 63 approved Imperial China GLB assets from Hugging Face
+      - name: Restore and geometry-audit all 99 GLB assets from Hugging Face
         shell: bash
         run: |
+          python3 -m pip install --disable-pip-version-check trimesh pygltflib
           set -Eeuo pipefail
           python3 - <<'PY'
           import hashlib, json, urllib.request
@@ -40,15 +41,18 @@ jobs:
           base = "https://huggingface.co/datasets/ZzwahwahzZ/clash-of-legends-terrain-assets/resolve/main/assets/wuxia_imperial_pack/"
           root = Path("assets/wuxia_imperial_pack")
           root.mkdir(parents=True, exist_ok=True)
+          Path("prototypes/twin_city/reports").mkdir(parents=True, exist_ok=True)
           def fetch(url):
               request = urllib.request.Request(url + ("&" if "?" in url else "?") + "download=true", headers={"User-Agent":"TwinCity-HF-Asset-Restore/1.0"})
               with urllib.request.urlopen(request, timeout=180) as response:
                   return response.read()
           source_manifest = json.loads(fetch(base + "manifest.json"))
           approved = json.loads(fetch(base + "imperial_approved_assets.json"))
-          selected = [item for item in source_manifest.get("assets", []) if item.get("style_group") == "imperial_chinese" and item.get("file", "").lower().endswith(".glb")]
-          if len(selected) != 63:
-              raise SystemExit(f"Expected 63 imperial_chinese GLB assets in Hugging Face manifest, found {len(selected)}")
+          selected = [item for item in source_manifest.get("assets", []) if item.get("file", "").lower().endswith(".glb")]
+          if len(selected) != 99:
+              raise SystemExit(f"Expected all 99 GLB files in Hugging Face models folder, found {len(selected)}")
+          print(f"HF_MODELS_FOLDER_INVENTORY: {len(selected)} GLB files; no style_group filename filter")
+          geometry_audit = []
           refreshed = {}
           for index, item in enumerate(selected, 1):
               relative = item["file"]
@@ -61,10 +65,32 @@ jobs:
                   raise SystemExit(f"Invalid GLB header/size: {relative}, bytes={len(payload)}")
               digest = hashlib.sha256(payload).hexdigest()
               target.write_bytes(payload)
+              import trimesh
+              try:
+                  scene = trimesh.load(target, force="scene", process=False)
+                  bounds = scene.bounds
+                  if bounds is None:
+                      raise ValueError("GLB contains no measurable geometry bounds")
+                  dimensions = (bounds[1] - bounds[0]).tolist()
+                  geometry_count = len(scene.geometry)
+              except Exception as exc:
+                  raise SystemExit(f"GLB geometry/bounds inspection failed: {relative}: {exc}")
+              item["dimensions_m"] = dimensions
+              item["validation"] = item.get("validation", {})
+              item["validation"]["dimensions_m"] = dimensions
+              item["validation"]["geometry_count"] = geometry_count
+              item["validation"]["bounds_source"] = "trimesh GLB scene geometry"
               item["bytes"] = len(payload)
               item["sha256"] = digest
               refreshed[item.get("asset_id", relative)] = (len(payload), digest)
-              print(f"HF_GLB_VERIFIED {index}/63 {relative} bytes={len(payload)} sha256={digest}")
+              name = str(item.get("name", Path(relative).stem))
+              category = str(item.get("category", "uncategorized"))
+              semantic = (name + " " + relative).lower()
+              architectural = any(word in semantic for word in ("house","building","shop","market","pagoda","temple","palace","wuxia","inn","village","hall","pavilion","gatehouse")) and min(dimensions[0], dimensions[2]) >= 2.0 and dimensions[1] >= 2.5
+              geometry_audit.append({"asset_id":item.get("asset_id"),"name":name,"file":relative,"category":category,"style_group":item.get("style_group"),"dimensions_m":dimensions,"geometry_count":geometry_count,"bytes":len(payload),"sha256":digest,"architectural_candidate":architectural})
+              print(f"HF_GLB_VERIFIED {index}/99 {relative} dimensions_m={dimensions} geometry={geometry_count} sha256={digest}")
+          audit_path = Path("prototypes/twin_city/reports/glb_geometry_audit.json")
+          audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","models_folder_glb_count":len(geometry_audit),"assets":geometry_audit,"architectural_candidate_count":sum(x["architectural_candidate"] for x in geometry_audit)}, ensure_ascii=False, indent=2) + "\\n")
           for category in approved.get("categories", {}).values():
               for item in category.get("assets", []):
                   key = item.get("asset_id", item.get("file"))
@@ -75,7 +101,7 @@ jobs:
           approved["verified_glb_count"] = len(refreshed)
           (root / "manifest.json").write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2) + "\\n")
           (root / "imperial_approved_assets.json").write_text(json.dumps(approved, ensure_ascii=False, indent=2) + "\\n")
-          print("HF_IMPERIAL_GLB_RESTORE_PASS: 63 source GLBs validated; sizes and SHA-256 fingerprints refreshed")
+          print(f"HF_ALL_99_GLB_RESTORE_PASS: {len(refreshed)} GLBs geometry-inspected; architectural_candidates={sum(x["architectural_candidate"] for x in geometry_audit)}; sizes and SHA-256 fingerprints refreshed")
           PY
 
       - name: Install Godot 4.3 and Xvfb
