@@ -56,9 +56,10 @@ func _build_environment() -> void:
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	environment.ambient_light_color = sky_color.lightened(0.25)
 	environment.ambient_light_energy = 0.32 if settlement_id == "TwinCity" else 0.42
-	environment.fog_enabled = false
-	environment.fog_light_color = fog_color
-	environment.fog_density = fog_density
+	if settlement_id != "TwinCity":
+		environment.fog_enabled = false
+		environment.fog_light_color = fog_color
+		environment.fog_density = fog_density
 	environment.glow_enabled = false
 	environment.glow_intensity = 0.0
 	environment.glow_strength = 0.0
