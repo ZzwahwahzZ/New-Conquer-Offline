@@ -712,40 +712,44 @@ static func _twin_roads(parent: Node3D, stone: Material, curb: Material) -> void
  var road_root := Node3D.new()
  road_root.name = "OrganicConnectedFlagstoneRoadNetwork"
  parent.add_child(road_root)
- # Curved radial avenues from each gate to the central square; each segment
- # overlaps its neighbor to guarantee walkable, continuous connections.
+ var transforms: Array[Transform3D] = []
  for arm in range(4):
   var angle := float(arm)*PI*0.5
   var previous := Vector3(cos(angle)*216.0,0.16,sin(angle)*216.0)
   for step in range(1,9):
    var t := float(step)/8.0
    var bend := sin(t*PI)*5.0*sin(angle+0.8)
-   var next := Vector3(cos(angle)*(216.0- t*178.0)-sin(angle)*bend,0.16,sin(angle)*(216.0-t*178.0)+cos(angle)*bend)
-   _twin_road_segment(road_root, "MainAvenue_%d_%d" % [arm,step], previous, next, 13.0, stone)
-   previous = next
- # Secondary curved lanes distributed through the inhabited annulus.
+   var next := Vector3(cos(angle)*(216.0-t*178.0)-sin(angle)*bend,0.16,sin(angle)*(216.0-t*178.0)+cos(angle)*bend)
+   transforms.append(_twin_road_transform(previous,next,13.0))
+   previous=next
  for lane in range(12):
-  var angle := TAU*float(lane)/12.0 + 0.12
-  var radius := 78.0 + float(lane%3)*25.0
-  var prev := Vector3(cos(angle)*radius,0.12,sin(angle)*radius)
+  var angle := TAU*float(lane)/12.0+0.12
+  var radius := 78.0+float(lane%3)*25.0
+  var previous := Vector3(cos(angle)*radius,0.12,sin(angle)*radius)
   for part in range(1,5):
-   var next_angle := angle + float(part)*0.10
-   var next_radius := radius + sin(float(part)*1.2+angle)*4.5
+   var next_angle := angle+float(part)*0.10
+   var next_radius := radius+sin(float(part)*1.2+angle)*4.5
    var next := Vector3(cos(next_angle)*next_radius,0.12,sin(next_angle)*next_radius)
-   _twin_road_segment(road_root, "WindingLane_%d_%d" % [lane,part], prev, next, 5.2, curb)
-   prev = next
-
-static func _twin_road_segment(parent: Node3D, label: String, a: Vector3, b: Vector3, width: float, material: Material) -> void:
- var delta := b-a
+   transforms.append(_twin_road_transform(previous,next,5.2))
+   previous=next
+ var multi := MultiMesh.new()
+ multi.transform_format = MultiMesh.TRANSFORM_3D
  var mesh := BoxMesh.new()
- mesh.size = Vector3(width,0.22,delta.length()+1.0)
- var node := MeshInstance3D.new()
- node.name = label
- node.mesh = mesh
- node.position = (a+b)*0.5
- node.rotation.y = atan2(delta.x,delta.z)
- parent.add_child(node)
- node.material_override = material
+ mesh.size = Vector3.ONE
+ multi.mesh = mesh
+ multi.instance_count = transforms.size()
+ for i in range(transforms.size()):
+  multi.set_instance_transform(i,transforms[i])
+ var roads := MultiMeshInstance3D.new()
+ roads.name = "BatchedStoneAvenuesAndWindingLanes"
+ roads.multimesh = multi
+ road_root.add_child(roads)
+ roads.material_override = stone
+
+static func _twin_road_transform(a: Vector3,b: Vector3,width: float) -> Transform3D:
+ var delta := b-a
+ var basis := Basis(Vector3.UP,atan2(delta.x,delta.z)).scaled(Vector3(width,0.22,delta.length()+1.0))
+ return Transform3D(basis,(a+b)*0.5)
 
 static func _twin_plaza(parent: Node3D, stone: Material, pale: Material, gold: Material, pink: Material, roof: Material, timber: Material) -> void:
  var plaza := Node3D.new()
@@ -825,105 +829,207 @@ static func _twin_guardian(parent: Node3D, pos: Vector3, stone: Material, gold: 
 
 static func _twin_place_district_buildings(parent: Node3D, counts: Dictionary, wall: Material, stone: Material, timber: Material, roof: Material, gold: Material) -> void:
  var districts := Node3D.new()
- districts.name = "DenseMixedResidentialCommercialDistricts_149"
+ districts.name = "DenseMixedResidentialCommercialDistricts_157"
  parent.add_child(districts)
- var categories := [
-  {"key":"residential","count":int(counts.residential),"radius_min":58.0,"radius_max":165.0,"size_min":6.0,"size_max":11.0},
-  {"key":"commercial","count":int(counts.commercial),"radius_min":43.0,"radius_max":105.0,"size_min":5.0,"size_max":8.0},
-  {"key":"service","count":int(counts.service),"radius_min":78.0,"radius_max":158.0,"size_min":7.0,"size_max":10.0},
-  {"key":"landmark","count":int(counts.landmark),"radius_min":70.0,"radius_max":145.0,"size_min":10.0,"size_max":15.0},
-  {"key":"defensive","count":int(counts.defensive),"radius_min":182.0,"radius_max":202.0,"size_min":8.0,"size_max":13.0}
- ]
+ var batches := {
+  "foundation": [], "walls": [], "roof": [], "timber": [],
+  "windows": [], "gold": [], "doors": [], "shop": [], "posts": []
+ }
  var serial := 0
- for category in categories:
-  for local_index in range(int(category.count)):
-   var angle := TAU*(float(local_index)+0.31*float(serial%7))/float(category.count)+float(serial%5)*0.17
-   var radius_span := float(category.radius_max)-float(category.radius_min)
-   var radius := float(category.radius_min)+fmod(float(local_index*17+serial*11),maxf(1.0,radius_span))
-   var pos := Vector3(cos(angle)*radius,0,sin(angle)*radius)
-   # Leave the central plaza and palace footprint clear; shift colliding lots
-   # tangentially instead of stacking identical assets on top of one another.
-   if pos.length() < 42.0 or (absf(pos.x)<48.0 and pos.z < -62.0 and pos.z > -151.0):
-    pos += Vector3(-sin(angle),0,cos(angle))*18.0
-   var width := float(category.size_min)+fmod(float(serial*7),float(category.size_max-category.size_min)+1.0)
-   var depth := width*(0.72+float(serial%4)*0.09)
-   var floors := 1+(serial%3)
-   var height := 3.2*float(floors)+1.2
-   var building := _twin_building(districts, str(category.key), serial, pos, width, depth, height, floors, wall, stone, timber, roof, gold)
-   building.add_to_group("twin_city_building")
+ # Ten compact mixed-use blocks. Each block has eight perimeter houses and
+ # a central landmark; two extra houses fill the strongest residential blocks.
+ for block in range(10):
+  var angle := TAU*float(block)/10.0
+  var radius := 88.0+float(block%3)*13.0
+  var center := Vector3(cos(angle)*radius,0,sin(angle)*radius)
+  if absf(center.x)<58.0 and center.z < -48.0:
+   center.x += 72.0 if center.x >= 0.0 else -72.0
+  var rotation := -angle+PI*0.5
+  var house_offsets := [
+   Vector3(-12,0,-12),Vector3(0,0,-12),Vector3(12,0,-12),
+   Vector3(-12,0,0),Vector3(12,0,0),
+   Vector3(-12,0,12),Vector3(0,0,12),Vector3(12,0,12)
+  ]
+  for local_index in range(8):
+   var offset: Vector3 = house_offsets[local_index]
+   var pos := center + Basis(Vector3.UP,rotation)*offset
+   _twin_register_batched_building(districts,batches,"residential",serial,pos,7.5+float((serial*7)%4),7.0+float((serial*3)%3),2+(serial%2),wall,stone,timber,roof,gold,rotation)
    serial += 1
- # Palace halls and annexes are eight separately counted structures.
- for i in range(int(counts.palace)):
-  var x := -29.0+float(i%4)*19.0
-  var z := -119.0+float(int(i/4))*24.0
-  var node := _twin_building(districts, "palace_annex", serial, Vector3(x,0,z), 13.0+float(i%2)*2.0, 12.0, 8.0, 2, wall, stone, timber, gold, gold)
-  node.add_to_group("twin_city_building")
+  # Two real shopfronts per block, facing the inner pedestrian street.
+  for shop_index in range(2):
+   var offset := Vector3(-5.0+float(shop_index)*10.0,0,-25.0)
+   var pos := center + Basis(Vector3.UP,rotation)*offset
+   _twin_register_batched_building(districts,batches,"commercial",serial,pos,6.0+float(shop_index),6.5,2,wall,stone,timber,roof,gold,rotation)
+   serial += 1
+  # One inn/workshop per block, on the outer lane.
+  var service_pos := center + Basis(Vector3.UP,rotation)*Vector3(0,0,25.0)
+  _twin_register_batched_building(districts,batches,"service",serial,service_pos,9.0,8.0,2+(block%2),wall,stone,timber,roof,gold,rotation)
   serial += 1
+  # A distinctive civic/temple landmark occupies the block's open centre.
+  var landmark_pos := center + Basis(Vector3.UP,rotation)*Vector3(0,0,0)
+  _twin_register_batched_building(districts,batches,"landmark",serial,landmark_pos,13.0,12.0,3,wall,stone,timber,roof,gold,rotation)
+  serial += 1
+ # Remaining 2 houses, 8 shops and 5 service buildings fill the market ring.
+ for i in range(2):
+  var angle := TAU*float(i)/2.0+0.4
+  var pos := Vector3(cos(angle)*66.0,0,sin(angle)*66.0)
+  _twin_register_batched_building(districts,batches,"residential",serial,pos,9.0,8.0,3,wall,stone,timber,roof,gold,angle)
+  serial += 1
+ for i in range(8):
+  var angle := TAU*float(i)/8.0+0.18
+  var pos := Vector3(cos(angle)*54.0,0,sin(angle)*54.0)
+  _twin_register_batched_building(districts,batches,"commercial",serial,pos,6.0+float(i%3)*0.5,6.0,2,wall,stone,timber,roof,gold,angle)
+  serial += 1
+ for i in range(5):
+  var angle := TAU*float(i)/5.0+0.3
+  var pos := Vector3(cos(angle)*150.0,0,sin(angle)*150.0)
+  _twin_register_batched_building(districts,batches,"service",serial,pos,8.5,8.0,2,wall,stone,timber,roof,gold,angle)
+  serial += 1
+ # Fourteen tall defensive structures form a secondary ring just inside the moat.
+ for i in range(int(counts.defensive)):
+  var angle := TAU*float(i)/float(counts.defensive)
+  var pos := Vector3(cos(angle)*190.0,0,sin(angle)*190.0)
+  _twin_register_batched_building(districts,batches,"defensive",serial,pos,8.0,8.0,4,wall,stone,timber,roof,gold,angle)
+  serial += 1
+ # Eight palace annex structures sit behind and beside the imperial hall.
+ for i in range(int(counts.palace)):
+  var x := -48.0+float(i%4)*32.0
+  var z := -163.0+float(int(i/4))*20.0
+  _twin_register_batched_building(districts,batches,"palace_annex",serial,Vector3(x,0,z),13.0,11.0,2,wall,stone,timber,gold,gold,0.0)
+  serial += 1
+ _twin_flush_building_batches(districts,batches,wall,stone,timber,roof,gold)
  print("TWIN_CITY_BUILDING_CENSUS: residential=82 commercial=28 service=15 landmarks=10 defensive=14 palace=8 total=%d" % serial)
 
-static func _twin_building(parent: Node3D, kind: String, index: int, pos: Vector3, width: float, depth: float, height: float, floors: int, wall: Material, stone: Material, timber: Material, roof: Material, gold: Material) -> Node3D:
+static func _twin_register_batched_building(parent: Node3D,batches: Dictionary,kind: String,index: int,pos: Vector3,width: float,depth: float,floors: int,wall: Material,stone: Material,timber: Material,roof: Material,gold: Material,rotation: float) -> void:
  var root := Node3D.new()
  root.name = "TwinCity_%s_%03d" % [kind,index]
  root.position = pos
- root.rotation.y = float(index%8)*0.785
+ root.rotation.y = rotation
+ root.add_to_group("twin_city_building")
  parent.add_child(root)
- var foundation := _twin_box(root, "CutStoneFoundation", Vector3(0,0.35,0), Vector3(width+1.0,0.7,depth+1.0), stone)
- var body := _twin_box(root, "LimePlasterFacade", Vector3(0,height*0.5+0.7,0), Vector3(width,height,depth), wall)
+ var height := float(floors)*3.2+1.0
+ _twin_batch_add(batches,"foundation",pos+Vector3(0,0.35,0),Vector3(width+1.0,0.7,depth+1.0),rotation)
+ _twin_batch_add(batches,"walls",pos+Vector3(0,height*0.5+0.7,0),Vector3(width,height,depth),rotation)
  for floor_index in range(floors):
   var y := 2.0+float(floor_index)*3.2
-  _twin_box(root, "DarkTimberFloorBand_%d" % floor_index, Vector3(0,y,depth*0.5+0.08), Vector3(width+0.3,0.22,0.22), timber)
-  for window_index in range(maxi(2,int(width/2.8))):
-   var wx := -width*0.38+float(window_index)*width*0.76/float(maxi(1,maxi(2,int(width/2.8))-1))
-   _twin_box(root, "RecessedWindow_%d_%d" % [floor_index,window_index], Vector3(wx,y+1.0,depth*0.5+0.13), Vector3(0.72,1.25,0.12), timber)
-   _twin_box(root, "WindowLintel_%d_%d" % [floor_index,window_index], Vector3(wx,y+1.68,depth*0.5+0.16), Vector3(0.92,0.16,0.18), gold)
- _twin_box(root, "StreetDoor", Vector3(0,1.55,depth*0.5+0.16), Vector3(1.35,2.6,0.22), timber)
- # Awnings and counters remain human-scale; market stalls are not building-sized.
- if kind == "commercial":
-  var awning := _twin_box(root, "ShopAwning", Vector3(0,height*0.56,depth*0.5+1.15), Vector3(minf(width,5.8),0.28,2.2), roof)
-  _twin_box(root, "ShopCounter", Vector3(0,0.72,depth*0.5+1.8), Vector3(minf(width*0.55,2.8),1.1,0.72), timber)
-  _twin_box(root, "ShopSignboard", Vector3(0,height*0.74,depth*0.5+1.25), Vector3(minf(width,4.5),0.75,0.18), gold)
- else:
-  for balcony_side in [-1.0,1.0]:
-   if index%3 == 0:
-    _twin_box(root, "TimberBalcony", Vector3(balcony_side*width*0.28,height*0.55,depth*0.5+0.5), Vector3(width*0.34,0.25,1.0), timber)
- # Distinct roof profiles: hip, gable, pagoda eaves, stepped parapet.
+  var front := Vector3(0,y,depth*0.5+0.08)
+  _twin_batch_add(batches,"timber",pos+Basis(Vector3.UP,rotation)*front,Vector3(width+0.3,0.22,0.22),rotation)
+  var windows := maxi(2,int(width/2.8))
+  for window_index in range(windows):
+   var wx := -width*0.38+float(window_index)*width*0.76/float(maxi(1,windows-1))
+   var window_pos := pos+Basis(Vector3.UP,rotation)*Vector3(wx,y+1.0,depth*0.5+0.13)
+   _twin_batch_add(batches,"windows",window_pos,Vector3(0.72,1.25,0.12),rotation)
+   _twin_batch_add(batches,"gold",window_pos+Basis(Vector3.UP,rotation)*Vector3(0,0.68,0.03),Vector3(0.92,0.16,0.18),rotation)
+ var door_pos := pos+Basis(Vector3.UP,rotation)*Vector3(0,1.55,depth*0.5+0.16)
+ _twin_batch_add(batches,"doors",door_pos,Vector3(1.35,2.6,0.22),rotation)
  var roof_y := height+1.05
  match index%4:
   0:
-   _twin_box(root, "HipRoofMain", Vector3(0,roof_y,0), Vector3(width+2.2,0.8,depth+2.2), roof)
-   _twin_box(root, "HipRoofRidge", Vector3(0,roof_y+0.52,0), Vector3(width*0.62,0.22,0.38), gold)
+   _twin_batch_add(batches,"roof",pos+Vector3(0,roof_y,0),Vector3(width+2.2,0.8,depth+2.2),rotation)
+   _twin_batch_add(batches,"gold",pos+Vector3(0,roof_y+0.52,0),Vector3(width*0.62,0.22,0.38),rotation)
   1:
-   _twin_box(root, "GableRoof", Vector3(0,roof_y,0), Vector3(width+1.8,0.7,depth+1.8), roof)
+   _twin_batch_add(batches,"roof",pos+Vector3(0,roof_y,0),Vector3(width+1.8,0.7,depth+1.8),rotation)
    for side in [-1.0,1.0]:
-    _twin_box(root, "GableEave", Vector3(side*(width*0.5+0.6),roof_y+0.45,0), Vector3(0.35,0.3,depth+2.4), gold)
+    _twin_batch_add(batches,"gold",pos+Basis(Vector3.UP,rotation)*Vector3(side*(width*0.5+0.6),roof_y+0.45,0),Vector3(0.35,0.3,depth+2.4),rotation)
   2:
    for tier in range(2):
-    _twin_box(root, "TieredRoof_%d" % tier, Vector3(0,roof_y+float(tier)*0.65,0), Vector3(width+2.5-float(tier)*2.0,0.38,depth+2.5-float(tier)*2.0), roof)
+    _twin_batch_add(batches,"roof",pos+Vector3(0,roof_y+float(tier)*0.65,0),Vector3(width+2.5-float(tier)*2.0,0.38,depth+2.5-float(tier)*2.0),rotation)
   _:
-   _twin_box(root, "StoneParapetRoof", Vector3(0,roof_y,0), Vector3(width+1.5,0.9,depth+1.5), roof)
- # Four corner posts create a visible timber frame.
+   _twin_batch_add(batches,"roof",pos+Vector3(0,roof_y,0),Vector3(width+1.5,0.9,depth+1.5),rotation)
  for sx in [-1.0,1.0]:
   for sz in [-1.0,1.0]:
-   _twin_box(root, "FacadeTimberPost", Vector3(sx*(width*0.5-0.22),height*0.5+0.7,sz*(depth*0.5-0.22)), Vector3(0.28,height,0.28), timber)
- return root
+   var post_pos := pos+Basis(Vector3.UP,rotation)*Vector3(sx*(width*0.5-0.22),height*0.5+0.7,sz*(depth*0.5-0.22))
+   _twin_batch_add(batches,"posts",post_pos,Vector3(0.28,height,0.28),rotation)
+ if kind == "commercial":
+  var awning_pos := pos+Basis(Vector3.UP,rotation)*Vector3(0,height*0.56,depth*0.5+1.15)
+  _twin_batch_add(batches,"shop",awning_pos,Vector3(minf(width,5.8),0.28,2.2),rotation)
+  _twin_batch_add(batches,"shop",awning_pos+Basis(Vector3.UP,rotation)*Vector3(0,-height*0.42,0.65),Vector3(minf(width*0.55,2.8),1.1,0.72),rotation)
+  _twin_batch_add(batches,"gold",awning_pos+Basis(Vector3.UP,rotation)*Vector3(0,0.9,0.1),Vector3(minf(width,4.5),0.75,0.18),rotation)
+ if kind == "defensive":
+  _twin_batch_add(batches,"gold",pos+Vector3(0,height+0.9,0),Vector3(width+2.5,0.4,depth+2.5),rotation)
 
-static func _twin_outer_biome(parent: Node3D, stone: Material, water: Material, pink: Material) -> void:
+static func _twin_batch_add(batches: Dictionary,key: String,pos: Vector3,size: Vector3,rotation: float) -> void:
+ var basis := Basis(Vector3.UP,rotation).scaled(size)
+ batches[key].append(Transform3D(basis,pos))
+
+static func _twin_flush_building_batches(parent: Node3D,batches: Dictionary,wall: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
+ var materials := {"foundation":stone,"walls":wall,"roof":roof,"timber":timber,"windows":timber,"gold":gold,"doors":timber,"shop":timber,"posts":timber}
+ for key in batches.keys():
+  var transforms: Array = batches[key]
+  if transforms.is_empty():
+   continue
+  var multi := MultiMesh.new()
+  multi.transform_format = MultiMesh.TRANSFORM_3D
+  var mesh := BoxMesh.new()
+  mesh.size = Vector3.ONE
+  multi.mesh = mesh
+  multi.instance_count = transforms.size()
+  for i in range(transforms.size()):
+   multi.set_instance_transform(i,transforms[i])
+  var instance := MultiMeshInstance3D.new()
+  instance.name = "BatchedArchitecture_" + str(key)
+  instance.multimesh = multi
+  parent.add_child(instance)
+  instance.material_override = materials[key]
+
+static func _twin_outer_biome(parent: Node3D,stone: Material,water: Material,pink: Material) -> void:
  var nature := Node3D.new()
  nature.name = "TwinCity_OuterWildlands_800m"
  parent.add_child(nature)
- # A broad wilderness belt beyond the moat: woodland, rolling hills and valleys.
+ # Batched rolling hills beyond the moat.
+ var hill_multi := MultiMesh.new()
+ hill_multi.transform_format = MultiMesh.TRANSFORM_3D
+ var hill_mesh := BoxMesh.new()
+ hill_mesh.size = Vector3.ONE
+ hill_multi.mesh = hill_mesh
+ hill_multi.instance_count = 120
  for i in range(120):
   var angle := TAU*float(i)/120.0
   var radius := 258.0+float((i*37)%112)
-  var pos := Vector3(cos(angle)*radius,0,sin(angle)*radius)
-  var hill := _twin_box(nature, "OuterHill_%03d" % i, pos+Vector3(0,-2.0,0), Vector3(22.0+float(i%5)*4.0,7.0+float(i%4)*2.0,24.0+float(i%3)*3.0), _material(Color("#74845d"),1.0))
-  hill.rotation.y = angle
+  var size := Vector3(22.0+float(i%5)*4.0,7.0+float(i%4)*2.0,24.0+float(i%3)*3.0)
+  var basis := Basis(Vector3.UP,angle).scaled(size)
+  var pos := Vector3(cos(angle)*radius,-2.0,sin(angle)*radius)
+  hill_multi.set_instance_transform(i,Transform3D(basis,pos))
+ var hills := MultiMeshInstance3D.new()
+ hills.name = "OuterRollingHills_MultiMesh"
+ hills.multimesh = hill_multi
+ nature.add_child(hills)
+ hills.material_override = _material(Color("#74845d"),1.0)
+ # Trees are two batches, not 320 independent draw calls.
+ var trunk_mesh := CylinderMesh.new()
+ trunk_mesh.top_radius = 0.28
+ trunk_mesh.bottom_radius = 0.42
+ trunk_mesh.height = 5.2
+ trunk_mesh.radial_segments = 8
+ var crown_mesh := SphereMesh.new()
+ crown_mesh.radius = 3.0
+ crown_mesh.height = 4.4
+ var trunks := MultiMesh.new()
+ trunks.transform_format = MultiMesh.TRANSFORM_3D
+ trunks.mesh = trunk_mesh
+ trunks.instance_count = 160
+ var crowns := MultiMesh.new()
+ crowns.transform_format = MultiMesh.TRANSFORM_3D
+ crowns.mesh = crown_mesh
+ crowns.instance_count = 160
  for i in range(160):
   var angle := float(i)*2.399963
   var radius := 245.0+float((i*29)%145)
-  var pos := Vector3(cos(angle)*radius,0,sin(angle)*radius)
-  _twin_tree(nature, "OuterForestTree_%03d" % i, pos, _material(Color("#58744c"),0.95), _material(Color("#60422f"),0.95), 1.0+float(i%4)*0.12)
- # Outer watercourses and a small hunting meadow.
+  var scale := 0.78+float(i%4)*0.12
+  var pos := Vector3(cos(angle)*radius,2.6,sin(angle)*radius)
+  var basis := Basis(Vector3.UP,angle).scaled(Vector3.ONE*scale)
+  trunks.set_instance_transform(i,Transform3D(basis,pos))
+  crowns.set_instance_transform(i,Transform3D(basis,pos+Vector3(0,4.0,0)))
+ var trunk_node := MultiMeshInstance3D.new()
+ trunk_node.name = "OuterForestTrunks_MultiMesh"
+ trunk_node.multimesh = trunks
+ nature.add_child(trunk_node)
+ trunk_node.material_override = _material(Color("#60422f"),0.95)
+ var crown_node := MultiMeshInstance3D.new()
+ crown_node.name = "OuterForestCanopies_MultiMesh"
+ crown_node.multimesh = crowns
+ nature.add_child(crown_node)
+ crown_node.material_override = _material(Color("#58744c"),0.95)
  var stream := MeshInstance3D.new()
  stream.name = "OuterTurquoiseStream"
  var stream_mesh := PlaneMesh.new()
@@ -933,7 +1039,48 @@ static func _twin_outer_biome(parent: Node3D, stone: Material, water: Material, 
  stream.rotation_degrees.y = 28.0
  nature.add_child(stream)
  stream.material_override = water
- var meadow := _twin_box(nature, "OuterMonsterHuntingMeadow", Vector3(-280.0,-0.02,255.0), Vector3(110.0,0.12,95.0), _material(Color("#84945e"),1.0))
+ _twin_box(nature,"OuterMonsterHuntingMeadow",Vector3(-280.0,-0.02,255.0),Vector3(110.0,0.12,95.0),_material(Color("#84945e"),1.0))
+
+static func _twin_tree(parent: Node3D,label: String,pos: Vector3,foliage: Material,bark: Material,scale: float) -> void:
+ var tree := Node3D.new()
+ tree.name = label
+ tree.position = pos
+ tree.scale = Vector3.ONE*scale
+ parent.add_child(tree)
+ _twin_cylinder(tree,"CherryTreeTrunk",Vector3(0,2.6,0),0.38,5.2,bark)
+ var crown := MeshInstance3D.new()
+ var crown_mesh := SphereMesh.new()
+ crown_mesh.radius = 3.0
+ crown_mesh.height = 4.4
+ crown.mesh = crown_mesh
+ crown.position.y = 6.0
+ tree.add_child(crown)
+ crown.material_override = foliage
+
+static func _twin_box(parent: Node3D,label: String,pos: Vector3,size: Vector3,material: Material) -> MeshInstance3D:
+ var node := MeshInstance3D.new()
+ node.name = label
+ var mesh := BoxMesh.new()
+ mesh.size = size
+ node.mesh = mesh
+ node.position = pos
+ parent.add_child(node)
+ node.material_override = material
+ return node
+
+static func _twin_cylinder(parent: Node3D,label: String,pos: Vector3,radius: float,height: float,material: Material) -> MeshInstance3D:
+ var node := MeshInstance3D.new()
+ node.name = label
+ var mesh := CylinderMesh.new()
+ mesh.top_radius = radius
+ mesh.bottom_radius = radius
+ mesh.height = height
+ mesh.radial_segments = 16
+ node.mesh = mesh
+ node.position = pos
+ parent.add_child(node)
+ node.material_override = material
+ return node
 
 static func _twin_tree(parent: Node3D, label: String, pos: Vector3, foliage: Material, bark: Material, scale: float) -> void:
  var tree := Node3D.new()
