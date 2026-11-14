@@ -90,7 +90,7 @@ jobs:
                   raise SystemExit(f"Invalid GLB header/size: {relative}, bytes={len(payload)}")
               # Godot 4.3 does not implement KHR_mesh_quantization. Decode quantized
               # vertex attributes through trimesh and re-export as ordinary float GLB.
-              import struct, io
+              import trimesh, struct, io
               json_length = struct.unpack_from("<I", payload, 12)[0]
               gltf_doc = json.loads(payload[20:20+json_length].decode("utf-8").rstrip(" \\0"))
               used_ext = set(gltf_doc.get("extensionsUsed", [])) | set(gltf_doc.get("extensionsRequired", []))
