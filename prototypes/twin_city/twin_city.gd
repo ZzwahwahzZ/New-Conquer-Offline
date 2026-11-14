@@ -14,7 +14,7 @@ var fit_cache: Dictionary = {}
 var materials: Dictionary = {}
 var stats := {"buildings": 0, "district_buildings": 0, "wall_segments": 0, "directional_gates": 0, "bridges": 0,
 	"gate_guardian_pairs": 0, "gate_guardian_statues": 0, "tree_instances": 0,
-	"multimesh_batches": 0, "box_mesh_count": 0, "city_core_m": 190, "world_m": 800, "building_types": 6,
+	"multimesh_batches": 0, "box_mesh_count": 0, "city_core_m": 260, "world_m": 800, "building_types": 6,
 	"architecture_style": "imperial_chinese"}
 
 func _ready() -> void:
@@ -136,11 +136,25 @@ func _pbr(folder: String, uv: float) -> StandardMaterial3D:
 	materials[key] = mat
 	return mat
 
-func _plane(parent: Node3D, label: String, size: Vector2, pos: Vector3, mat: Material) -> void:
+func _plane(parent: Node3D, label: String, size: Vector2, pos: Vector3, mat: Material, yaw: float = 0.0) -> void:
 	var node := MeshInstance3D.new()
 	node.name = label
 	var mesh := PlaneMesh.new()
 	mesh.size = size
+	node.mesh = mesh
+	node.position = pos
+	node.rotation.y = yaw
+	node.material_override = mat
+	parent.add_child(node)
+
+func _disc(parent: Node3D, label: String, radius: float, height: float, pos: Vector3, mat: Material) -> void:
+	var node := MeshInstance3D.new()
+	node.name = label
+	var mesh := CylinderMesh.new()
+	mesh.top_radius = radius
+	mesh.bottom_radius = radius
+	mesh.height = height
+	mesh.radial_segments = 96
 	node.mesh = mesh
 	node.position = pos
 	node.material_override = mat
@@ -160,25 +174,24 @@ func _build_environment() -> void:
 	sky.sky_material = sky_mat
 	env.sky = sky
 	env.tonemap_mode = Environment.TONE_MAPPER_ACES
+	env.tonemap_exposure = 0.86
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	env.ambient_light_energy = 0.32
+	env.ambient_light_energy = 0.28
 	env.glow_enabled = false
-	env.glow_intensity = 0.08
-	env.glow_strength = 0.15
 	env.fog_enabled = true
 	env.fog_mode = Environment.FOG_MODE_DEPTH
 	env.fog_light_color = Color("#c7dceb")
-	env.fog_depth_begin = 125.0
-	env.fog_depth_end = 650.0
+	env.fog_depth_begin = 155.0
+	env.fog_depth_end = 720.0
 	world.environment = env
 	add_child(world)
 	var sun := DirectionalLight3D.new()
 	sun.name = "ImperialDaySun"
 	sun.rotation_degrees = Vector3(-48, -28, 0)
 	sun.light_color = Color("#fff1d8")
-	sun.light_energy = 0.78
+	sun.light_energy = 0.68
 	sun.shadow_enabled = true
-	sun.directional_shadow_max_distance = 260
+	sun.directional_shadow_max_distance = 300
 	add_child(sun)
 
 func _build_ground_and_roads() -> void:
@@ -187,61 +200,89 @@ func _build_ground_and_roads() -> void:
 	grass.roughness = 1.0
 	_plane(self, "WorldGround_800m", Vector2(800, 800), Vector3(0, -0.18, 0), grass)
 	var roads := Node3D.new()
-	roads.name = "ImperialStreetNetwork"
+	roads.name = "OrganicRadialImperialStreetNetwork"
 	add_child(roads)
 	var stone := _pbr("PavingStones036", 0.22)
-	_plane(roads, "MainStreetNS", Vector2(10, 190), Vector3(0, 0.015, 0), stone)
-	_plane(roads, "MainStreetEW", Vector2(190, 10), Vector3(0, 0.02, 0), stone)
-	for offset in [-30.0, 30.0]:
-		_plane(roads, "DistrictStreetNS_" + str(offset), Vector2(5, 190), Vector3(offset, 0.025, 0), stone)
-		_plane(roads, "DistrictStreetEW_" + str(offset), Vector2(190, 5), Vector3(0, 0.03, offset), stone)
-	_plane(self, "ImperialMainPlaza_PBR", Vector2(52, 34), Vector3(0, 0.055, 24), _pbr("Marble012", 0.28))
+	for ring_index in range(2):
+		var radius := 46.0 if ring_index == 0 else 101.0
+		for i in range(40):
+			var angle := TAU * float(i) / 40.0
+			var r := radius + 2.4 * sin(angle * 3.0) + 1.2 * cos(angle * 5.0)
+			var pos := Vector3(sin(angle) * r, 0.025 + float(ring_index) * 0.006, cos(angle) * r)
+			_plane(roads, "CurvedRingRoad_%d_%02d" % [ring_index, i], Vector2(8.0, 18.0), pos, stone, angle - PI / 2.0)
+	for spoke in range(10):
+		var angle := TAU * float(spoke) / 10.0
+		for segment in range(3):
+			var radius := 55.0 + float(segment) * 22.0
+			var pos := Vector3(sin(angle) * radius, 0.035, cos(angle) * radius)
+			_plane(roads, "RadialAvenue_%02d_%d" % [spoke, segment], Vector2(8.0, 25.0), pos, stone, angle)
+	var plaza := Node3D.new()
+	plaza.name = "CentralEngravedCircularPlaza"
+	add_child(plaza)
+	_disc(plaza, "OuterPavingMedallion_Marble", 31.0, 0.22, Vector3(0, 0.04, 0), _pbr("Marble012", 0.28))
+	_disc(plaza, "MiddlePavingRing_Stone", 25.0, 0.28, Vector3(0, 0.17, 0), stone)
+	_disc(plaza, "InnerPavingRing_Marble", 17.5, 0.32, Vector3(0, 0.32, 0), _pbr("Marble012", 0.28))
+	_disc(plaza, "CentralImperialStoneMedallion", 7.5, 0.36, Vector3(0, 0.49, 0), stone)
+	for i in range(16):
+		var angle := TAU * float(i) / 16.0
+		var pos := Vector3(sin(angle) * 21.0, 0.34, cos(angle) * 21.0)
+		_plane(plaza, "EngravedRadialPavingInlay_%02d" % i, Vector2(0.75, 14.0), pos, _pbr("Marble012", 0.28), angle)
 
 func _build_channels() -> void:
 	var water := StandardMaterial3D.new()
 	water.albedo_color = Color("#3f9eae")
 	water.metallic = 0.12
 	water.roughness = 0.18
-	_plane(self, "NorthCanal", Vector2(190, 12), Vector3(0, -0.02, -95), water)
-	_plane(self, "SouthCanal", Vector2(190, 12), Vector3(0, -0.02, 95), water)
-	_plane(self, "EastCanal", Vector2(12, 190), Vector3(95, -0.02, 0), water)
-	_plane(self, "WestCanal", Vector2(12, 190), Vector3(-95, -0.02, 0), water)
+	var channel := Node3D.new()
+	channel.name = "OrganicPerimeterWaterRing"
+	add_child(channel)
+	for i in range(40):
+		var angle := TAU * float(i) / 40.0
+		var radius := 115.0 + 3.0 * sin(angle * 3.0) + 1.5 * cos(angle * 5.0)
+		var pos := Vector3(sin(angle) * radius, -0.02, cos(angle) * radius)
+		_plane(channel, "PerimeterCanalSegment_%02d" % i, Vector2(8.0, 18.5), pos, water, angle - PI / 2.0)
 	var bridges := Node3D.new()
 	bridges.name = "FourApprovedArchedBridges"
 	add_child(bridges)
 	var bridge_name := "Arched Stone Bridge (Imperial China Palace and Garden)"
-	var points := [[Vector3(0,0,-95),0.0],[Vector3(0,0,95),PI],[Vector3(95,0,0),PI/2], [Vector3(-95,0,0),-PI/2]]
-	for i in range(points.size()):
-		_place_fit(bridge_name, points[i][0], points[i][1], Vector3(15,5,10), bridges, "ArchedBridge_%02d" % i)
+	for i in range(4):
+		var angle := TAU * float(i) / 4.0
+		var radius := 115.0 + 3.0 * sin(angle * 3.0) + 1.5 * cos(angle * 5.0)
+		var pos := Vector3(sin(angle) * radius, 0, cos(angle) * radius)
+		_place_fit(bridge_name, pos, PI - angle, Vector3(15, 5, 10), bridges, "ArchedBridge_%02d" % i)
 		stats.bridges += 1
 
 func _build_walls_and_gates() -> void:
 	var walls := Node3D.new()
-	walls.name = "ImperialChina_170m_Perimeter"
+	walls.name = "OrganicCircularImperialPerimeter_260m"
 	add_child(walls)
 	var wall := "Palace Wall Straight (Imperial China Palace and Garden)"
-	var corner := "Palace Wall Corner (Imperial China Palace and Garden)"
-	for side in range(4):
-		var cursor := -82.0
-		while cursor <= 82.0:
-			if absf(cursor) > 9.0:
-				var pos := Vector3(cursor,0,-85) if side == 0 else Vector3(cursor,0,85) if side == 1 else Vector3(-85,0,cursor) if side == 2 else Vector3(85,0,cursor)
-				_place_fit(wall, pos, 0.0 if side < 2 else PI/2, Vector3(4.1,3.2,1.8), walls, "Wall_%02d_%03d" % [side,stats.wall_segments])
-				stats.wall_segments += 1
-			cursor += 4.1
-	for sx in [-1.0,1.0]:
-		for sz in [-1.0,1.0]:
-			_place_fit(corner, Vector3(sx*85,0,sz*85), 0, Vector3(5,4,5), walls, "WallCorner_%s_%s" % [str(sx),str(sz)])
-	var gates := [["North",Vector3(0,0,-85),0.0],["South",Vector3(0,0,85),PI],["East",Vector3(85,0,0),PI/2],["West",Vector3(-85,0,0),-PI/2]]
-	for gate in gates:
+	for i in range(56):
+		var angle := TAU * float(i) / 56.0
+		var is_gate_sector := false
+		for gate_index in range(4):
+			var gate_angle := TAU * float(gate_index) / 4.0
+			if absf(wrapf(angle - gate_angle, -PI, PI)) < 0.105:
+				is_gate_sector = true
+		if is_gate_sector:
+			continue
+		var radius := 128.0 + 4.0 * sin(angle * 3.0) + 2.0 * cos(angle * 5.0)
+		var pos := Vector3(sin(angle) * radius, 0, cos(angle) * radius)
+		_place_fit(wall, pos, angle, Vector3(14.0, 3.2, 1.8), walls, "OrganicWall_%03d" % i)
+		stats.wall_segments += 1
+	for gate_index in range(4):
+		var angle := TAU * float(gate_index) / 4.0
+		var radius := 128.0 + 4.0 * sin(angle * 3.0) + 2.0 * cos(angle * 5.0)
+		var pos := Vector3(sin(angle) * radius, 0, cos(angle) * radius)
 		var root := Node3D.new()
-		root.name = str(gate[0]) + "ImperialGate"
-		root.position = gate[1]
-		root.rotation.y = gate[2]
+		root.name = ["South","West","North","East"][gate_index] + "ImperialGate"
+		root.position = pos
+		root.rotation.y = PI - angle
 		walls.add_child(root)
-		if _place_fit("Gate Tower (Imperial China Palace and Garden)", Vector3.ZERO, 0, Vector3(15,12,12), root, "GateTower") != null: stats.buildings += 1
-		_place_fit("Palace Wall Moon Gate (Imperial China Palace and Garden)", Vector3(0,0,1), 0, Vector3(9,6,3), root, "MoonGate")
-		_place_fit("Guardian Lion Pair (Imperial China Palace and Garden)", Vector3(0,0,7), 0, Vector3(7,4.5,4.5), root, "GuardianLionPair")
+		if _place_fit("Gate Tower (Imperial China Palace and Garden)", Vector3.ZERO, 0, Vector3(17, 14, 13), root, "GateTower") != null:
+			stats.buildings += 1
+		_place_fit("Palace Wall Moon Gate (Imperial China Palace and Garden)", Vector3(0, 0, 1), 0, Vector3(10, 7, 3), root, "MoonGate")
+		_place_fit("Guardian Lion Pair (Imperial China Palace and Garden)", Vector3(0, 0, 8), 0, Vector3(7, 4.5, 4.5), root, "GuardianLionPair")
 		stats.directional_gates += 1
 		stats.gate_guardian_pairs += 1
 		stats.gate_guardian_statues += 2
@@ -249,38 +290,38 @@ func _build_walls_and_gates() -> void:
 
 func _build_palace_and_plaza() -> void:
 	var palace := Node3D.new()
-	palace.name = "ImperialPalace_CentralRaisedCourt"
+	palace.name = "ImperialPalace_FrontingCentralPlaza"
+	palace.position = Vector3(0, 0, -76)
 	add_child(palace)
 	var platform := "Terrace Platform Module (Imperial China Palace and Garden)"
-	for layer in range(2):
+	for layer in range(3):
 		for x in range(4):
-			for z in range(4):
-				var pos := Vector3(-10.5 + float(x)*7, float(layer)*2, -38.5 + float(z)*7)
-				_place_fit(platform, pos, 0, Vector3(7.1,2,7.1), palace, "RaisedTerrace_%d_%d_%d" % [layer,x,z])
-	_place_fit("Terrace Step Flight (Imperial China Palace and Garden)", Vector3(0,0,-9), 0, Vector3(17,4,9), palace, "BroadEngravedStairs")
-	if _place_fit("Ceremonial Hall (Imperial China Palace and Garden)", Vector3(0,4,-28), 0, Vector3(30,18,23), palace, "CentralImperialPalace") != null: stats.buildings += 1
-	_place_fit("Imperial Throne Chair (Imperial China Palace and Garden)", Vector3(0,4.2,-20), PI, Vector3(2.8,3,2.8), palace, "EmperorThrone")
+			for z in range(3):
+				var pos := Vector3(-10.5 + float(x) * 7.0, float(layer) * 1.6, -8.0 + float(z) * 7.0)
+				_place_fit(platform, pos, 0, Vector3(7.1, 2.0, 7.1), palace, "RaisedTerrace_%d_%d_%d" % [layer, x, z])
+	_place_fit("Terrace Step Flight (Imperial China Palace and Garden)", Vector3(0, 0, 12), PI, Vector3(19, 5, 10), palace, "BroadImperialStairsFacingPlaza")
+	if _place_fit("Ceremonial Hall (Imperial China Palace and Garden)", Vector3(0, 4.8, -1), 0, Vector3(32, 20, 24), palace, "FrontImperialPalace") != null:
+		stats.buildings += 1
+	_place_fit("Imperial Throne Chair (Imperial China Palace and Garden)", Vector3(0, 5.0, 7), PI, Vector3(2.8, 3, 2.8), palace, "EmperorThrone")
 	for i in range(4):
-		_place_fit("Dragon Roof Finial (Imperial China Palace and Garden)", Vector3(-8 + float(i)*5.3,17,-28), 0, Vector3(2.2,2.2,2.2), palace, "DragonFinial_%02d" % i)
-	_place_fit("Guardian Lion Pair (Imperial China Palace and Garden)", Vector3(-10,0,-7), PI/2, Vector3(7,4.5,4.5), palace, "PalaceWestGuardians")
-	_place_fit("Guardian Lion Pair (Imperial China Palace and Garden)", Vector3(10,0,-7), -PI/2, Vector3(7,4.5,4.5), palace, "PalaceEastGuardians")
+		_place_fit("Dragon Roof Finial (Imperial China Palace and Garden)", Vector3(-8 + float(i) * 5.3, 18, -1), 0, Vector3(2.2, 2.2, 2.2), palace, "DragonFinial_%02d" % i)
+	_place_fit("Guardian Lion Pair (Imperial China Palace and Garden)", Vector3(-11, 0, 13), PI / 2, Vector3(7, 4.5, 4.5), palace, "PalaceWestGuardians")
+	_place_fit("Guardian Lion Pair (Imperial China Palace and Garden)", Vector3(11, 0, 13), -PI / 2, Vector3(7, 4.5, 4.5), palace, "PalaceEastGuardians")
 	var garden := Node3D.new()
-	garden.name = "ImperialPlazaAndLotusGarden"
+	garden.name = "EasternLotusGardenBesidePlaza"
 	add_child(garden)
-	_place_fit("Pond Water Module (Imperial China Palace and Garden)", Vector3(25,0.02,24), 0, Vector3(17,1,13), garden, "LotusPondWater")
-	_place_fit("Lotus Cluster (Imperial China Palace and Garden)", Vector3(22,0.1,21), 0, Vector3(4,1.2,4), garden, "LotusClusterWest")
-	_place_fit("Lotus Cluster (Imperial China Palace and Garden)", Vector3(28,0.1,26), 1.1, Vector3(4,1.2,4), garden, "LotusClusterEast")
-	if _place_fit("Lotus pond pavilion (Imperial China Palace and Garden)", Vector3(24,0,25), 0, Vector3(15,8,13), garden, "LotusWaterPavilion") != null: stats.buildings += 1
-	if _place_fit("Water Pavilion (Imperial China Palace and Garden)", Vector3(-20,0,24), 0, Vector3(13,9,12), garden, "WestWaterPavilion") != null: stats.buildings += 1
+	_place_fit("Pond Water Module (Imperial China Palace and Garden)", Vector3(43, 0.02, 3), 0, Vector3(15, 1, 12), garden, "LotusPondWater")
+	_place_fit("Lotus Cluster (Imperial China Palace and Garden)", Vector3(40, 0.1, 0), 0, Vector3(4, 1.2, 4), garden, "LotusClusterWest")
+	_place_fit("Lotus Cluster (Imperial China Palace and Garden)", Vector3(46, 0.1, 6), 1.1, Vector3(4, 1.2, 4), garden, "LotusClusterEast")
+	if _place_fit("Lotus pond pavilion (Imperial China Palace and Garden)", Vector3(43, 0, 3), 0, Vector3(15, 8, 13), garden, "LotusWaterPavilion") != null:
+		stats.buildings += 1
+	if _place_fit("Water Pavilion (Imperial China Palace and Garden)", Vector3(-43, 0, 3), 0, Vector3(13, 9, 12), garden, "WestWaterPavilion") != null:
+		stats.buildings += 1
 	for i in range(12):
-		var angle := TAU * float(i)/12
-		var pos := Vector3(cos(angle)*24,0,24+sin(angle)*17)
-		_place_fit("Standing Garden Lantern (Imperial China Palace and Garden)", pos, angle, Vector3(1.8,3,1.8), garden, "PlazaLantern_%02d" % i)
-		_lantern_light(garden, pos + Vector3(0,2.2,0), "LanternGlow_%02d" % i)
-	for i in range(16):
-		var pos := Vector3(-5.2 if i%2==0 else 5.2,5.5,-54+float(i)*7.2)
-		_place_fit("Hanging Silk Lantern (Imperial China Palace and Garden)", pos, 0, Vector3(1.3,1.8,1.3), garden, "StreetLantern_%02d" % i)
-		if i%2==0: _lantern_light(garden, pos, "StreetGlow_%02d" % i)
+		var angle := TAU * float(i) / 12.0
+		var pos := Vector3(sin(angle) * 34.0, 0, cos(angle) * 34.0)
+		_place_fit("Standing Garden Lantern (Imperial China Palace and Garden)", pos, angle, Vector3(1.8, 3, 1.8), garden, "PlazaLantern_%02d" % i)
+		_lantern_light(garden, pos + Vector3(0, 2.2, 0), "LanternGlow_%02d" % i)
 
 func _lantern_light(parent: Node3D, pos: Vector3, label: String) -> void:
 	var light := OmniLight3D.new()
@@ -292,23 +333,59 @@ func _lantern_light(parent: Node3D, pos: Vector3, label: String) -> void:
 	parent.add_child(light)
 
 func _build_districts() -> void:
-	var district := Node3D.new()
-	district.name = "MixedImperialHanokDistricts_64BuildingsPlus7Landmarks"
-	add_child(district)
-	var coords := [14.0,34.0,54.0,74.0]
+	var districts := Node3D.new()
+	districts.name = "TenDenseRadialCommercialResidentialDistricts"
+	add_child(districts)
+	var market := "Market Stall With Awning (Korean Hanok Village and Street)"
+	var residences := [
+		"Hanok Main House (Korean Hanok Village and Street)",
+		"Thatched Outbuilding (Korean Hanok Village and Street)",
+		"Ceremonial Hall (Imperial China Palace and Garden)",
+		"Water Pavilion (Imperial China Palace and Garden)"
+	]
+	var shop_local := [
+		{"x": 11.0, "z": 0.0, "yaw": 0.0, "front_x": 17.0, "front_z": 0.0},
+		{"x": -11.0, "z": 0.0, "yaw": 0.0, "front_x": -17.0, "front_z": 0.0},
+		{"x": 0.0, "z": 11.0, "yaw": 0.0, "front_x": 0.0, "front_z": 17.0},
+		{"x": 0.0, "z": -11.0, "yaw": 0.0, "front_x": 0.0, "front_z": -17.0}
+	]
 	var index := 0
-	for sx in [-1.0,1.0]:
-		for sz in [-1.0,1.0]:
-			for x in range(4):
-				for z in range(4):
-					var pos := Vector3(sx*coords[x],0,sz*coords[z])
-					var asset: String = BUILDINGS[(index * 5 + x + z * 2) % BUILDINGS.size()]
-					var yaw: float = [0.0, PI / 2.0, PI, -PI / 2.0][(index + x + z) % 4]
-					_place_fit(asset, pos, yaw, Vector3(16,12,16), district, "ChineseBuilding_%03d_%s" % [index+1,["Residence","Shop","Pavilion","CourtyardHouse","MerchantStall","ImperialAnnex"][index%6]])
-					index += 1
+	for sector in range(10):
+		var angle := TAU * float(sector) / 10.0
+		var radial := Vector3(sin(angle), 0, cos(angle))
+		var tangent := Vector3(cos(angle), 0, -sin(angle))
+		var center := radial * 72.0
+		var block := Node3D.new()
+		block.name = "RadialDistrict_%02d" % sector
+		districts.add_child(block)
+		for side in range(4):
+			var item: Dictionary = shop_local[side]
+			var local_x := float(item.x)
+			var local_z := float(item.z)
+			var pos := center + radial * local_x + tangent * local_z
+			var yaw := PI - angle if side == 0 else -angle if side == 1 else -PI / 2.0 - angle if side == 2 else PI / 2.0 - angle
+			_place_fit(market, pos, yaw, Vector3(10, 8, 8), block, "Shopfront_%02d_%02d" % [sector, side])
+			var front := center + radial * float(item.front_x) + tangent * float(item.front_z)
+			var spawn := Node3D.new()
+			spawn.name = "NPCShopkeeperSpawn_%02d_%02d" % [sector, side]
+			spawn.position = front
+			spawn.set_meta("shop_district", sector)
+			spawn.set_meta("shop_front", side)
+			block.add_child(spawn)
+			index += 1
+		for inner in range(4):
+			var local := [
+				Vector2(-5.0, -5.0), Vector2(5.0, -5.0),
+				Vector2(-5.0, 5.0), Vector2(5.0, 5.0)
+			][inner]
+			var pos := center + radial * local.x + tangent * local.y
+			var asset: String = residences[(sector + inner) % residences.size()]
+			_place_fit(asset, pos, angle + float(inner) * PI / 2.0, Vector3(11.5, 14.0, 11.5), block, "InnerResidence_%02d_%02d" % [sector, inner])
+			index += 1
 	stats.district_buildings = index
 	stats.buildings += index
-	if stats.buildings < 70 or stats.buildings > 100: push_error("Expected 70–100 total buildings including palace, gates and pavilions; got " + str(stats.buildings))
+	if stats.buildings < 70 or stats.buildings > 100:
+		push_error("Expected 70–100 total buildings including landmarks; got " + str(stats.buildings))
 
 func _build_trees() -> void:
 	var rng := RandomNumberGenerator.new()
@@ -361,16 +438,16 @@ func _build_cameras() -> void:
 	var aerial := Camera3D.new()
 	aerial.name = "AerialCamera"
 	aerial.projection = Camera3D.PROJECTION_ORTHOGONAL
-	aerial.size = 220
-	aerial.position = Vector3(155,220,185)
+	aerial.size = 320
+	aerial.position = Vector3(185, 245, 195)
 	root.add_child(aerial)
-	aerial.look_at(Vector3.ZERO,Vector3.UP)
+	aerial.look_at(Vector3(0, 0, 0), Vector3.UP)
 	var street := Camera3D.new()
 	street.name = "StreetCamera"
 	street.fov = 56
-	street.position = Vector3(0,14,55)
+	street.position = Vector3(0, 11, 43)
 	root.add_child(street)
-	street.look_at(Vector3(0,7,-25),Vector3.UP)
+	street.look_at(Vector3(0, 6, 70), Vector3.UP)
 
 func _audit() -> void:
 	var pending: Array[Node] = [self]
