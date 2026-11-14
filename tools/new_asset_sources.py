@@ -493,7 +493,7 @@ def discover_github_open_assets(session, fetch, safe, sha, RAW, DISC, DOWN, ERR,
                     "pack": full_name,
                     "api_metadata": {"spdx_id": spdx, "repository": full_name,
                                      "repository_owner": owner, "file_path": path,
-                                     "repository_license_url": license_info.get("url")},
+                                     "repository_license_url": license_info.get("url"),"license_basis":"repository-level SPDX declaration; held as candidate pending per-file license/exception review"},
                     "candidate_only": True,
                 }
                 try:
