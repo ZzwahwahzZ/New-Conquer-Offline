@@ -2,7 +2,7 @@ name: Build Imperial Assets
 on:
   workflow_dispatch:
   push:
-    branches: [main, fix/asset-pbr-and-ground-validation]
+    branches: [main, fix/asset-pbr-and-ground-validation, twin-city/imperial-visual-prototype]
     paths:
       - '.github/workflows/build_imperial_assets.yml'
       - 'tools/fetch_and_normalize_assets.py'
@@ -12,7 +12,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: imperial-assets-main
+  group: imperial-assets-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   build:
