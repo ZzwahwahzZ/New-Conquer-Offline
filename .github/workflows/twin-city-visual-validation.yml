@@ -100,8 +100,17 @@ jobs:
         timeout-minutes: 15
         run: |
           set -Eeuo pipefail
-          test -f /usr/share/vulkan/icd.d/lvp_icd.x86_64.json
-          export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.x86_64.json
+          mkdir -p prototypes/twin_city/reports prototypes/twin_city/captures
+          rm -f prototypes/twin_city/captures/01_aerial_full.png prototypes/twin_city/captures/02_aerial_oblique.png prototypes/twin_city/captures/03_street_scale.png prototypes/twin_city/captures/04_central_plaza.png prototypes/twin_city/captures/05_imperial_palace.png prototypes/twin_city/captures/06_district_density.png
+          rm -f prototypes/twin_city/reports/godot_capture.log
+          lvp_icd="$(find /usr/share/vulkan/icd.d -maxdepth 1 -type f -iname '*lvp*.json' | head -n 1)"
+          if [ -z "$lvp_icd" ]; then
+            echo "Lavapipe ICD not found; installed Vulkan ICDs:"
+            ls -la /usr/share/vulkan/icd.d
+            exit 1
+          fi
+          export VK_ICD_FILENAMES="$lvp_icd"
+          vulkaninfo --summary
           timeout 900s xvfb-run -a -s "-screen 0 1280x720x24" godot --path . --rendering-method mobile --rendering-driver vulkan --script res://src/scripts/TwinCityGodotCapture.gd 2>&1 | tee prototypes/twin_city/reports/godot_capture.log
           for image in 01_aerial_full.png 02_aerial_oblique.png 03_street_scale.png 04_central_plaza.png 05_imperial_palace.png 06_district_density.png; do
             test -s "prototypes/twin_city/captures/$image"
