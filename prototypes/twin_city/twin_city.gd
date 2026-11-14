@@ -15,7 +15,7 @@ var materials: Dictionary = {}
 var stats := {"buildings": 0, "district_buildings": 0, "wall_segments": 0, "directional_gates": 0, "bridges": 0,
 	"gate_guardian_pairs": 0, "gate_guardian_statues": 0, "tree_instances": 0,
 	"multimesh_batches": 0, "box_mesh_count": 0, "city_core_m": 260, "world_m": 800, "building_types": 6,
-	"architecture_style": "imperial_chinese"}
+	"district_blocks": 10, "shopkeeper_spawns": 0, "city_layout": "organic_radial", "architecture_style": "imperial_chinese"}
 
 func _ready() -> void:
 	if not _load_manifest(): return
@@ -275,7 +275,7 @@ func _build_walls_and_gates() -> void:
 		var radius := 128.0 + 4.0 * sin(angle * 3.0) + 2.0 * cos(angle * 5.0)
 		var pos := Vector3(sin(angle) * radius, 0, cos(angle) * radius)
 		var root := Node3D.new()
-		root.name = ["South","West","North","East"][gate_index] + "ImperialGate"
+		root.name = ["South","East","North","West"][gate_index] + "ImperialGate"
 		root.position = pos
 		root.rotation.y = PI - angle
 		walls.add_child(root)
@@ -372,6 +372,7 @@ func _build_districts() -> void:
 			spawn.set_meta("shop_district", sector)
 			spawn.set_meta("shop_front", side)
 			block.add_child(spawn)
+			stats.shopkeeper_spawns += 1
 			index += 1
 		for inner in range(4):
 			var local := [
