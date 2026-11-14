@@ -468,7 +468,8 @@ static func _create_paving_batch(parent: Node3D, node_name: String, source_mesh:
 
 static func _apply_imperial_palette(root: Node3D) -> void:
 	var root_name := root.name.to_lower()
-	if root_name.contains("tree") or root_name.contains("willow") or root_name.contains("cherry"):
+	var is_cherry := root_name.contains("cherry")
+	if (root_name.contains("tree") and not is_cherry) or root_name.contains("willow"):
 		return
 	var is_palace := root.name.contains("ImperialPalace")
 	var pending: Array[Node] = [root]
@@ -487,14 +488,14 @@ static func _apply_imperial_palette(root: Node3D) -> void:
 				continue
 			var material := (original as StandardMaterial3D).duplicate() as StandardMaterial3D
 			var semantic := mesh_node.name.to_lower() + " " + material.resource_name.to_lower()
-			var tint_color := Color("#B89F82")
-			if semantic.contains("roof") or semantic.contains("eave") or semantic.contains("tile"):
+			var tint_color := Color("#E5A4B4") if is_cherry else Color("#B89F82")
+			if not is_cherry and (semantic.contains("roof") or semantic.contains("eave") or semantic.contains("tile")):
 				tint_color = Color("#D9A136") if is_palace else Color("#2E3238")
-			elif semantic.contains("wood") or semantic.contains("timber") or semantic.contains("column") or semantic.contains("beam"):
+			elif not is_cherry and (semantic.contains("wood") or semantic.contains("timber") or semantic.contains("column") or semantic.contains("beam")):
 				tint_color = Color("#5C3A21")
-			elif semantic.contains("gold") or semantic.contains("bronze") or semantic.contains("trim"):
+			elif not is_cherry and (semantic.contains("gold") or semantic.contains("bronze") or semantic.contains("trim")):
 				tint_color = Color("#C8963E")
-			elif semantic.contains("stone") or semantic.contains("floor") or semantic.contains("base"):
+			elif not is_cherry and (semantic.contains("stone") or semantic.contains("floor") or semantic.contains("base")):
 				tint_color = Color("#857D72")
 			material.albedo_color = material.albedo_color * tint_color
 			material.roughness = maxf(material.roughness, 0.82)
