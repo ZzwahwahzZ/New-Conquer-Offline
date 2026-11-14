@@ -50,6 +50,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           python3 -m pip install --disable-pip-version-check huggingface_hub
+          npm install --global @gltf-transform/cli
           mkdir -p assets/environment/architecture prototypes/twin_city/reports
           python3 - <<'PY'
           import os, shutil
@@ -65,8 +66,24 @@ jobs:
           shutil.copy2(source, target)
           data = target.read_bytes()
           if len(data) != 2876988 or data[:4] != b"glTF":
-              raise SystemExit(f"Imperial China kit integrity/format check failed: {len(data)} bytes")
-          print(f"IMPERIAL_CHINA_KIT_RESTORED: {target} bytes={len(data)}")
+              raise SystemExit(f"Imperial China source integrity/format check failed: {len(data)} bytes")
+          print(f"IMPERIAL_CHINA_SOURCE_RESTORED: {target} bytes={len(data)}")
+          PY
+          gltf-transform dequantize assets/environment/architecture/imperial_china_palace_and_garden.glb /tmp/imperial_china_dequantized.glb
+          mv /tmp/imperial_china_dequantized.glb assets/environment/architecture/imperial_china_palace_and_garden.glb
+          python3 - <<'PY'
+          import json, struct
+          from pathlib import Path
+          path = Path("assets/environment/architecture/imperial_china_palace_and_garden.glb")
+          data = path.read_bytes()
+          if data[:4] != b"glTF":
+              raise SystemExit("Dequantized Imperial China GLB has invalid magic")
+          json_length = struct.unpack_from("<I", data, 12)[0]
+          document = json.loads(data[20:20+json_length].decode("utf-8").rstrip(" \\0"))
+          extensions = set(document.get("extensionsUsed", [])) | set(document.get("extensionsRequired", []))
+          if "KHR_mesh_quantization" in extensions:
+              raise SystemExit("KHR_mesh_quantization still present after dequantization")
+          print(f"IMPERIAL_CHINA_GODOT43_COMPATIBLE: bytes={len(data)} extensions={sorted(extensions)}")
           PY
 
       - name: Import root New-Conquer-Offline project
