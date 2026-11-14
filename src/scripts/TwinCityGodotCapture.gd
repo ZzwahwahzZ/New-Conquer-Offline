@@ -3,7 +3,7 @@ extends SceneTree
 const VIEWS := [
  {"file":"01_aerial_full.png","position":Vector3(0,520,560),"target":Vector3(0,0,0),"ortho":true,"size":660.0},
  {"file":"02_aerial_oblique.png","position":Vector3(280,300,330),"target":Vector3(0,6,0),"ortho":true,"size":440.0},
- {"file":"03_street_scale.png","position":Vector3(0,6,202),"target":Vector3(0,6,158),"ortho":false,"fov":68.0},
+ {"file":"03_street_scale.png","position":Vector3(34,1.8,190),"target":Vector3(34,2.0,112),"ortho":false,"fov":72.0},
  {"file":"04_central_plaza.png","position":Vector3(74,42,80),"target":Vector3(0,8,0),"ortho":false,"fov":55.0},
  {"file":"05_imperial_palace.png","position":Vector3(0,70,-190),"target":Vector3(0,12,-103),"ortho":false,"fov":52.0},
  {"file":"06_district_density.png","position":Vector3(198,16,18),"target":Vector3(142,7,52),"ortho":false,"fov":64.0}
@@ -95,6 +95,8 @@ func _capture() -> void:
   "target_device_fps_verified":false,
   "renderer_backend":"Mobile Vulkan",
   "renderer_icd":OS.get_environment("VK_ICD_FILENAMES"),
+  "street_camera_height_m":1.8,
+  "street_camera_clearance_required_m":8.0,
   "fps_measurement_note":"GitHub capture uses Lavapipe software Vulkan; this is not a physical Android GPU benchmark.",
   "capture_elapsed_seconds":float(Time.get_ticks_msec()-start_ms)/1000.0
  }
