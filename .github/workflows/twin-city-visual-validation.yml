@@ -1,265 +1,30 @@
-name: Twin City Godot 4.3 Visual Validation
+name: Twin City Surgical Visual Proof
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - twin-city/imperial-visual-prototype
+    paths:
+      - 'src/scripts/TwinCityGLBRebuilder.gd'
+      - 'src/scripts/TwinCityAcceptanceAudit.gd'
+      - 'src/scripts/TwinCityGodotCapture.gd'
+      - 'src/scripts/SettlementWorld.gd'
+      - '.github/workflows/twin-city-visual-validation.yml'
 
 permissions:
   contents: write
   actions: read
 
 concurrency:
-  group: twin-city-visual-v4-${{ github.ref }}
-  cancel-in-progress: false
+  group: twin-city-surgical-proof-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  assets-cleanup-cache:
-    name: "Stage 1 — Restore, clean and geometry-audit assets"
+  capture-twin-city-proof:
+    name: "Cache-only audit and independent six-view capture"
     runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - name: Checkout isolated prototype branch
-        uses: actions/checkout@v4
-      - name: Restore permanent cleaned GLB asset cache
-        id: assets_cache
-        uses: actions/cache/restore@v4
-        with:
-          path: |
-            assets/wuxia_imperial_pack
-            assets/twin_city_selected
-            prototypes/twin_city/reports/glb_geometry_audit.json
-            prototypes/twin_city/reports/twin_city_asset_restore.json
-          key: cleaned-glb-assets-v1
-      - name: Restore and geometry-audit all source, nature and street GLB assets from Hugging Face
-        shell: bash
-        run: |
-          python3 -m pip install --disable-pip-version-check trimesh pygltflib huggingface_hub
-          set -Eeuo pipefail
-          python3 - <<'PY'
-          import hashlib, json, shutil, urllib.request
-          from pathlib import Path
-          from huggingface_hub import HfApi
-          base = "https://huggingface.co/datasets/ZzwahwahzZ/clash-of-legends-terrain-assets/resolve/main/"
-          root = Path("assets/wuxia_imperial_pack")
-          root.mkdir(parents=True, exist_ok=True)
-          Path("prototypes/twin_city/reports").mkdir(parents=True, exist_ok=True)
-          def fetch(url):
-              request = urllib.request.Request(url + ("&" if "?" in url else "?") + "download=true", headers={"User-Agent":"TwinCity-HF-Asset-Restore/1.0"})
-              with urllib.request.urlopen(request, timeout=180) as response:
-                  return response.read()
-          source_manifest = json.loads(fetch(base + "assets/wuxia_imperial_pack/manifest.json"))
-          approved = json.loads(fetch(base + "assets/wuxia_imperial_pack/imperial_approved_assets.json"))
-          manifest_by_file = {item.get("file"): item for item in source_manifest.get("assets", []) if item.get("file")}
-          repo_files = HfApi().list_repo_files(repo_id="ZzwahwahzZ/clash-of-legends-terrain-assets", repo_type="dataset")
-          model_paths = sorted(path for path in repo_files if path.startswith("assets/wuxia_imperial_pack/models/") and path.lower().endswith(".glb"))
-          candidate_paths = sorted(path for path in repo_files if path.startswith("assets/wuxia_imperial_pack/candidates/models/") and path.lower().endswith(".glb"))
-          curated_nature_paths = sorted(path for path in repo_files if path.startswith("settlement-terrain-source/curated-glb/nature/") and path.lower().endswith(".glb"))
-          if len(model_paths) != 99:
-              raise SystemExit(f"Expected all 99 original Imperial China GLBs, found {len(model_paths)}")
-          selected = []
-          for repo_path in model_paths + candidate_paths + curated_nature_paths:
-              if repo_path.startswith("assets/wuxia_imperial_pack/"):
-                  relative = repo_path.split("assets/wuxia_imperial_pack/", 1)[1]
-              else:
-                  relative = "external/nature/" + Path(repo_path).name
-              item = dict(manifest_by_file.get(relative, {}))
-              item.setdefault("file", relative)
-              item.setdefault("name", Path(relative).stem)
-              item.setdefault("asset_id", Path(relative).stem)
-              item.setdefault("category", "environmental_candidate")
-              item.setdefault("style_group", "source_candidate")
-              item["source_repo_path"] = repo_path
-              selected.append(item)
-          print(f"HF_COMPLETE_INVENTORY: imperial={len(model_paths)} nature_and_street_candidates={len(candidate_paths)} curated_nature={len(curated_nature_paths)} total={len(selected)}; no name/dimension/style exclusions")
-          geometry_audit = []
-          refreshed = {}
-          for index, item in enumerate(selected, 1):
-              relative = item["file"]
-              if relative.startswith("/") or ".." in Path(relative).parts:
-                  raise SystemExit(f"Unsafe GLB path in manifest: {relative}")
-              target = root / relative
-              target.parent.mkdir(parents=True, exist_ok=True)
-              active_existing = Path("assets/twin_city_selected") / relative
-              if active_existing.is_file():
-                  payload = active_existing.read_bytes()
-              elif target.is_file():
-                  payload = target.read_bytes()
-              else:
-                  payload = fetch(base + item["source_repo_path"])
-              if len(payload) <= 1024 or payload[:4] != b"glTF":
-                  raise SystemExit(f"Invalid GLB header/size: {relative}, bytes={len(payload)}")
-              # Godot 4.3 does not implement KHR_mesh_quantization. Decode quantized
-              # vertex attributes through trimesh and re-export as ordinary float GLB.
-              import trimesh, struct, io
-              json_length = struct.unpack_from("<I", payload, 12)[0]
-              gltf_doc = json.loads(payload[20:20+json_length].decode("utf-8").rstrip(" \\0"))
-              used_ext = set(gltf_doc.get("extensionsUsed", [])) | set(gltf_doc.get("extensionsRequired", []))
-              if "KHR_mesh_quantization" in used_ext:
-                  print(f"DEQUANTIZE_START {relative} bytes={len(payload)}")
-                  decoded_scene = trimesh.load(io.BytesIO(payload), file_type="glb", force="scene", process=False)
-                  converted = trimesh.exchange.gltf.export_glb(decoded_scene)
-                  if not converted or converted[:4] != b"glTF":
-                      raise SystemExit(f"Dequantization produced invalid GLB: {relative}")
-                  converted_json_len = struct.unpack_from("<I", converted, 12)[0]
-                  converted_doc = json.loads(converted[20:20+converted_json_len].decode("utf-8").rstrip(" \\0"))
-                  converted_ext = set(converted_doc.get("extensionsUsed", [])) | set(converted_doc.get("extensionsRequired", []))
-                  if "KHR_mesh_quantization" in converted_ext:
-                      raise SystemExit(f"KHR_mesh_quantization remains after conversion: {relative}")
-                  payload = converted
-                  print(f"DEQUANTIZE_PASS {relative} bytes={len(payload)} extensions={sorted(converted_ext)}")
-              digest = hashlib.sha256(payload).hexdigest()
-              target.write_bytes(payload)
-              import trimesh
-              try:
-                  scene = trimesh.load(target, force="scene", process=False)
-                  bounds = scene.bounds
-                  if bounds is None:
-                      raise ValueError("GLB contains no measurable geometry bounds")
-                  dimensions = (bounds[1] - bounds[0]).tolist()
-                  geometry_count = len(scene.geometry)
-              except Exception as exc:
-                  raise SystemExit(f"GLB geometry/bounds inspection failed: {relative}: {exc}")
-              item["dimensions_m"] = dimensions
-              item["validation"] = item.get("validation", {})
-              item["validation"]["dimensions_m"] = dimensions
-              item["validation"]["geometry_count"] = geometry_count
-              item["validation"]["bounds_source"] = "trimesh GLB scene geometry"
-              item["bytes"] = len(payload)
-              item["sha256"] = digest
-              refreshed[item.get("asset_id", relative)] = {"bytes":len(payload),"sha256":digest,"dimensions_m":dimensions,"geometry_count":geometry_count}
-              name = str(item.get("name", Path(relative).stem))
-              category = str(item.get("category", "uncategorized"))
-              geometry_audit.append({"asset_id":item.get("asset_id"),"name":name,"file":relative,"category":category,"style_group":item.get("style_group"),"dimensions_m":dimensions,"geometry_count":geometry_count,"bytes":len(payload),"sha256":digest})
-              print(f"HF_GLB_VERIFIED {index}/{len(selected)} {relative} dimensions_m={dimensions} geometry={geometry_count} sha256={digest}")
-          active_root = Path("assets/twin_city_selected")
-          active_root.mkdir(parents=True, exist_ok=True)
-          active_assets = selected
-          selected_records = []
-          for item in active_assets:
-              role = str(item.get("category") or item.get("style_group") or "source_glb")
-              item["twin_city_approved"] = True
-              item["twin_city_role"] = role
-              item["twin_city_geometry_verified"] = True
-              source_path = root / item["file"]
-              destination = active_root / item["file"]
-              destination.parent.mkdir(parents=True, exist_ok=True)
-              if not destination.is_file() or hashlib.sha256(destination.read_bytes()).hexdigest() != item["sha256"]:
-                  if not source_path.is_file():
-                      raise SystemExit(f"Verified source GLB missing before active copy: {source_path}")
-                  shutil.copy2(source_path, destination)
-              copied_sha = hashlib.sha256(destination.read_bytes()).hexdigest()
-              if copied_sha != item["sha256"]:
-                  raise SystemExit(f"Active GLB copy SHA-256 mismatch: {destination}")
-              selected_records.append({
-                  "name":item.get("name"),
-                  "asset_id":item.get("asset_id"),
-                  "file":item.get("file"),
-                  "category":item.get("category"),
-                  "style_group":item.get("style_group"),
-                  "dimensions_m":item.get("dimensions_m"),
-                  "geometry_count":item.get("validation", {}).get("geometry_count"),
-                  "bytes":item.get("bytes"),
-                  "sha256":item.get("sha256"),
-                  "role":role,
-                  "active_project_path":str(destination)
-              })
-          (active_root / "selection_manifest.json").write_text(json.dumps({"selected_count":len(selected_records),"assets":selected_records}, ensure_ascii=False, indent=2) + "\n")
-          (root / "models" / ".gdignore").write_text("# Source archive: active assets are imported from assets/twin_city_selected.\\n")
-          (root / "candidates" / "models" / ".gdignore").write_text("# Source candidate archive: active assets are imported from assets/twin_city_selected.\\n")
-          imperial_count = sum(1 for item in selected if item.get("style_group") == "imperial_chinese")
-          if imperial_count != 46:
-              raise SystemExit(f"Expected 46 original imperial_chinese GLBs, found {imperial_count}")
-          for category in approved.get("categories", {}).values():
-              for item in category.get("assets", []):
-                  key = item.get("asset_id", item.get("file"))
-                  if key in refreshed:
-                      details = refreshed[key]
-                      item["bytes"] = details["bytes"]
-                      item["sha256"] = details["sha256"]
-                      item["dimensions_m"] = details["dimensions_m"]
-                      item["validation"] = item.get("validation", {})
-                      item["validation"]["dimensions_m"] = details["dimensions_m"]
-                      item["validation"]["geometry_count"] = details["geometry_count"]
-                      item["validation"]["bounds_source"] = "trimesh GLB scene geometry"
-          approved["source_repo"] = "ZzwahwahzZ/clash-of-legends-terrain-assets"
-          approved["source_manifest_verified_glb_count"] = len(refreshed)
-          approved["verified_glb_count"] = len(refreshed)
-          approved["verified_imperial_chinese_glb_count"] = imperial_count
-          approved["twin_city_approved_asset_count"] = len(selected_records)
-          approved["twin_city_architectural_style_asset_count"] = imperial_count
-          approved["twin_city_selected_asset_count"] = len(selected_records)
-          approved["twin_city_candidate_asset_count"] = len(candidate_paths) + len(curated_nature_paths)
-          approved["twin_city_architecture_kit"] = selected_records
-          approved["twin_city_selected_assets"] = selected_records
-          (root / "twin_city_restored_glb_assets.json").write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","selected_count":len(selected_records),"verified_source_glb_count":len(refreshed),"assets":selected_records}, ensure_ascii=False, indent=2) + "\n")
-          audit_path = Path("prototypes/twin_city/reports/glb_geometry_audit.json")
-          audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","original_models_folder_glb_count":len(model_paths),"restored_glb_asset_count":len(selected_records),"total_geometry_verified_glb_count":len(geometry_audit),"assets":geometry_audit}, ensure_ascii=False, indent=2) + "\n")
-          (root / "manifest.json").write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2) + "\n")
-          (root / "imperial_approved_assets.json").write_text(json.dumps(approved, ensure_ascii=False, indent=2) + "\n")
-          restore_report = {
-              "dataset":"ZzwahwahzZ/clash-of-legends-terrain-assets",
-              "original_models_folder_glb_count":len(model_paths),
-              "nature_and_street_candidate_glb_count":len(candidate_paths),
-              "curated_nature_glb_count":len(curated_nature_paths),
-              "restored_glb_asset_count":len(selected_records),
-              "active_godot_glb_count":len(selected_records),
-              "restored_glb_models":len(geometry_audit),
-              "restored_files":len(geometry_audit),
-              "restored_pbr_textures":0,
-              "verified_imperial_chinese_style_assets":imperial_count,
-              "files":[{"name":x.get("name"),"style_group":x.get("style_group"),"file":x.get("file"),"sha256":x.get("sha256"),"bytes":x.get("bytes"),"dimensions_m":x.get("dimensions_m")} for x in geometry_audit]
-          }
-          Path("prototypes/twin_city/reports/twin_city_asset_restore.json").write_text(json.dumps(restore_report, ensure_ascii=False, indent=2) + "\n")
-          print(f"HF_ASSET_RESTORE_PASS: original_models={len(refreshed)} restored_glb_assets={len(selected_records)} approved_imperial_chinese={imperial_count} total_geometry_verified={len(geometry_audit)} nature_and_street_candidates={len(candidate_paths)}")
-          PY
-      - name: Publish verified approval manifest to the same Hugging Face dataset
-        shell: bash
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: |
-          set -Eeuo pipefail
-          if [ -z "${HF_TOKEN:-}" ]; then
-            echo "HF_TOKEN secret unavailable; verified manifest will still be committed to the isolated GitHub branch."
-            exit 0
-          fi
-          python3 -m pip install --disable-pip-version-check huggingface_hub
-          python3 - <<'PY'
-          import os
-          from huggingface_hub import HfApi
-          HfApi().upload_file(
-              path_or_fileobj="assets/wuxia_imperial_pack/imperial_approved_assets.json",
-              path_in_repo="assets/wuxia_imperial_pack/imperial_approved_assets.json",
-              repo_id="ZzwahwahzZ/clash-of-legends-terrain-assets",
-              repo_type="dataset",
-              token=os.environ["HF_TOKEN"],
-              commit_message="Verify all restored Imperial China and environment GLBs with current SHA-256 and dimensions"
-          )
-          for filename in ("manifest.json", "twin_city_restored_glb_assets.json"):
-              HfApi().upload_file(
-                  path_or_fileobj="assets/wuxia_imperial_pack/" + filename,
-                  path_in_repo="assets/wuxia_imperial_pack/" + filename,
-                  repo_id="ZzwahwahzZ/clash-of-legends-terrain-assets",
-                  repo_type="dataset",
-                  token=os.environ["HF_TOKEN"],
-                  commit_message="Publish geometry-verified Twin City GLB inventory"
-              )
-          print("HF_APPROVED_MANIFEST_UPLOAD_PASS")
-          PY
-      - name: Save permanent cleaned GLB asset cache
-        if: success() && steps.assets_cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: |
-            assets/wuxia_imperial_pack
-            assets/twin_city_selected
-            prototypes/twin_city/reports/glb_geometry_audit.json
-            prototypes/twin_city/reports/twin_city_asset_restore.json
-          key: cleaned-glb-assets-v1
-
-  godot-import-cache:
-    name: "Stage 2 — Import project and cache Godot resources"
-    needs: [assets-cleanup-cache]
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 35
     env:
       GODOT_VERSION: 4.3
       GODOT_RELEASE: 4.3-stable
@@ -267,7 +32,10 @@ jobs:
     steps:
       - name: Checkout isolated prototype branch
         uses: actions/checkout@v4
-      - name: Restore permanent cleaned GLB asset cache
+        with:
+          ref: twin-city/imperial-visual-prototype
+
+      - name: Restore cleaned GLB asset cache (no Hugging Face access)
         id: assets_cache
         uses: actions/cache/restore@v4
         with:
@@ -277,195 +45,100 @@ jobs:
             prototypes/twin_city/reports/glb_geometry_audit.json
             prototypes/twin_city/reports/twin_city_asset_restore.json
           key: cleaned-glb-assets-v1
-      - name: Restore Godot 4.3 imported resource cache
+
+      - name: Restore Godot 4.3 imported-resource cache (no project re-import)
         id: godot_cache
         uses: actions/cache/restore@v4
         with:
           path: .godot/imported
           key: godot43-imported-cache-v1
-      - name: Install Godot 4.3 and Xvfb
-        shell: bash
-        run: |
-          set -euo pipefail
-          sudo apt-get update
-          sudo apt-get install -y xvfb xz-utils libgl1-mesa-dri libglx-mesa0 mesa-utils libvulkan1 mesa-vulkan-drivers vulkan-tools
-          curl --connect-timeout 20 --max-time 240 --retry 3 --retry-delay 5 -fL "https://github.com/godotengine/godot/releases/download/$GODOT_RELEASE/Godot_v$GODOT_VERSION-stable_linux.x86_64.zip" -o /tmp/godot.zip
-          mkdir -p /tmp/godot-bin
-          unzip -q /tmp/godot.zip -d /tmp/godot-bin
-          sudo install -m 0755 "/tmp/godot-bin/Godot_v$GODOT_VERSION-stable_linux.x86_64" /usr/local/bin/godot
-          godot --version
-          test "$(godot --version)" = "4.3.stable.official.77dcf97d8"
-      - name: Verify committed Godot 4.3-compatible Imperial China library
+
+      - name: Require both permanent caches and verify their contents
         shell: bash
         run: |
           set -Eeuo pipefail
-          asset="assets/environment/architecture/imperial_china_palace_and_garden.glb"
-          test -s "$asset"
-          python3 - <<'PY'
-          import json, struct
-          from pathlib import Path
-          path = Path("assets/environment/architecture/imperial_china_palace_and_garden.glb")
-          data = path.read_bytes()
-          if data[:4] != b"glTF":
-              raise SystemExit("Imperial China GLB magic invalid")
-          json_length = struct.unpack_from("<I", data, 12)[0]
-          document = json.loads(data[20:20+json_length].decode("utf-8").rstrip(" \\0"))
-          extensions = set(document.get("extensionsUsed", [])) | set(document.get("extensionsRequired", []))
-          if "KHR_mesh_quantization" in extensions:
-              raise SystemExit("Imperial China GLB is not dequantized for Godot 4.3")
-          print(f"IMPERIAL_CHINA_KIT_VERIFIED: bytes={len(data)} extensions={sorted(extensions)}")
-          PY
-      - name: Import root New-Conquer-Offline project
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          mkdir -p prototypes/twin_city/reports prototypes/twin_city/captures
-          echo "GODOT_IMPORT_BEGIN_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          echo "PROJECT_FILE_COUNT=$(find . -type f -not -path './.git/*' -not -path './.godot/*' | wc -l)"
-          df -h .
-          # The first clean import of the complete GLB library legitimately exceeds 10 minutes.
-          # Keep this step below the 60-minute job timeout and preserve the imported cache on success.
-          timeout --signal=INT --kill-after=30s 3000s godot --headless --verbose --path . --editor --import --quit 2>&1 | tee prototypes/twin_city/reports/godot_import.log
-          echo "GODOT_IMPORT_END_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          df -h .
-          if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load|ERROR: Failed loading resource' prototypes/twin_city/reports/godot_import.log; then
-            echo "::error::Godot import reported a script or resource error."
+          if [ "${{ steps.assets_cache.outputs.cache-hit }}" != "true" ]; then
+            echo "::error::cleaned-glb-assets-v1 cache was not restored. Refusing all Hugging Face downloads."
             exit 1
           fi
-      - name: Save Godot 4.3 imported resource cache
-        if: success() && steps.godot_cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: .godot/imported
-          key: godot43-imported-cache-v1
+          if [ "${{ steps.godot_cache.outputs.cache-hit }}" != "true" ]; then
+            echo "::error::godot43-imported-cache-v1 cache was not restored. Refusing a full project import."
+            exit 1
+          fi
+          test -s assets/wuxia_imperial_pack/imperial_approved_assets.json
+          test -s assets/twin_city_selected/selection_manifest.json
+          test -s assets/environment/architecture/imperial_china_palace_and_garden.glb
+          test -d .godot/imported
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          manifest = json.loads(Path("assets/twin_city_selected/selection_manifest.json").read_text())
+          assets = manifest.get("assets", [])
+          if not assets:
+              raise SystemExit("Cleaned GLB selection manifest is empty")
+          missing = []
+          for item in assets:
+              path = Path("assets/twin_city_selected") / item["file"]
+              if not path.is_file() or path.stat().st_size == 0:
+                  missing.append(str(path))
+          if missing:
+              raise SystemExit("Missing cached GLB assets: " + ", ".join(missing[:20]))
+          imported_count = sum(1 for path in Path(".godot/imported").rglob("*") if path.is_file())
+          if imported_count < 100:
+              raise SystemExit(f"Imported-resource cache unexpectedly small: {imported_count} files")
+          print(f"CACHE_ONLY_READY: cleaned_glb_assets={len(assets)} imported_cache_files={imported_count}")
+          print("IMPORT_POLICY: no Hugging Face downloads; no --editor --import; use restored caches directly")
+          PY
 
-  scene-validation:
-    name: "Stage 3 — Validate GLBs, build palace and audit 244-building scene"
-    needs: [godot-import-cache]
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    steps:
-      - name: Checkout isolated prototype branch
-        uses: actions/checkout@v4
-      - name: Restore permanent cleaned GLB asset cache
-        id: assets_cache
-        uses: actions/cache/restore@v4
-        with:
-          path: |
-            assets/wuxia_imperial_pack
-            assets/twin_city_selected
-            prototypes/twin_city/reports/glb_geometry_audit.json
-            prototypes/twin_city/reports/twin_city_asset_restore.json
-          key: cleaned-glb-assets-v1
-      - name: Restore Godot 4.3 imported resource cache
-        id: godot_cache
-        uses: actions/cache/restore@v4
-        with:
-          path: .godot/imported
-          key: godot43-imported-cache-v1
-      - name: Install Godot 4.3 headless runtime
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          sudo apt-get update
-          sudo apt-get install -y unzip
-          curl --connect-timeout 20 --max-time 240 --retry 3 --retry-delay 5 -fL "https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip" -o /tmp/godot.zip
-          mkdir -p /tmp/godot-bin
-          unzip -q /tmp/godot.zip -d /tmp/godot-bin
-          sudo install -m 0755 /tmp/godot-bin/Godot_v4.3-stable_linux.x86_64 /usr/local/bin/godot
-          test "$(godot --version)" = "4.3.stable.official.77dcf97d8"
-      - name: Validate every restored GLB mesh in Godot 4.3
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          godot --headless --path . --script res://src/scripts/TwinCityGLBAssetAudit.gd 2>&1 | tee prototypes/twin_city/reports/all_restored_glb_mesh_audit.log
-      - name: Prebuild material-batched Imperial China palace scene
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          godot --headless --path . --script res://src/scripts/TwinCityAssetBuild.gd 2>&1 | tee prototypes/twin_city/reports/imperial_kit_build.log
-          test -s assets/environment/architecture/imperial_china_palace_and_garden_merged.scn
-          godot --headless --path . --editor --import --quit 2>&1 | tee -a prototypes/twin_city/reports/godot_import.log
-      - name: Inspect imported Imperial China model library
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          godot --headless --path . --script res://src/scripts/TwinCityAssetInspection.gd 2>&1 | tee prototypes/twin_city/reports/imperial_china_asset_inventory.log
-      - name: Run 220-260 structure acceptance audit
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          godot --headless --path . --script res://src/scripts/TwinCityAcceptanceAudit.gd 2>&1 | tee prototypes/twin_city/reports/godot_acceptance_audit.log
-      - name: Persist validated palace kit for the capture stage
-        uses: actions/upload-artifact@v4
-        with:
-          name: TwinCity-Stage3-Palace-Kit
-          path: |
-            assets/environment/architecture/imperial_china_palace_and_garden_merged.scn
-            prototypes/twin_city/reports/
-          if-no-files-found: error
-          retention-days: 30
-
-  screenshot-capture:
-    name: "Stage 4 — Capture six real 1280x720 Godot views"
-    needs: [scene-validation]
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - name: Checkout isolated prototype branch
-        uses: actions/checkout@v4
-      - name: Restore permanent cleaned GLB asset cache
-        id: assets_cache
-        uses: actions/cache/restore@v4
-        with:
-          path: |
-            assets/wuxia_imperial_pack
-            assets/twin_city_selected
-            prototypes/twin_city/reports/glb_geometry_audit.json
-            prototypes/twin_city/reports/twin_city_asset_restore.json
-          key: cleaned-glb-assets-v1
-      - name: Restore Godot 4.3 imported resource cache
-        id: godot_cache
-        uses: actions/cache/restore@v4
-        with:
-          path: .godot/imported
-          key: godot43-imported-cache-v1
-      - name: Install Godot 4.3, Xvfb and Vulkan software renderer
+      - name: Install Godot 4.3 and capture dependencies
         shell: bash
         run: |
           set -Eeuo pipefail
           sudo apt-get update
           sudo apt-get install -y xvfb xz-utils unzip libgl1-mesa-dri libglx-mesa0 mesa-utils libvulkan1 mesa-vulkan-drivers vulkan-tools
-          curl --connect-timeout 20 --max-time 240 --retry 3 --retry-delay 5 -fL "https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip" -o /tmp/godot.zip
+          curl --connect-timeout 20 --max-time 240 --retry 3 --retry-delay 5 -fL "https://github.com/godotengine/godot/releases/download/$GODOT_RELEASE/Godot_v$GODOT_VERSION-stable_linux.x86_64.zip" -o /tmp/godot.zip
           mkdir -p /tmp/godot-bin
           unzip -q /tmp/godot.zip -d /tmp/godot-bin
-          sudo install -m 0755 /tmp/godot-bin/Godot_v4.3-stable_linux.x86_64 /usr/local/bin/godot
+          sudo install -m 0755 "/tmp/godot-bin/Godot_v$GODOT_VERSION-stable_linux.x86_64" /usr/local/bin/godot
           test "$(godot --version)" = "4.3.stable.official.77dcf97d8"
-      - name: Download verified palace kit from validation stage
-        uses: actions/download-artifact@v4
-        with:
-          name: TwinCity-Stage3-Palace-Kit
-          path: .
-      - name: Capture six real Godot 4.3 screenshots
+
+      - name: Remove legacy proof images
+        shell: bash
+        run: |
+          find . -type f \( -name 'twin_city_aerial.png' -o -name 'twin_city_street.png' \) -print -delete
+          if find . -type f \( -name 'twin_city_aerial.png' -o -name 'twin_city_street.png' \) -print -quit | grep -q .; then
+            echo "::error::Legacy Twin City proof images remain."
+            exit 1
+          fi
+
+      - name: Run 244-building and global AABB acceptance audit from cache
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p prototypes/twin_city/reports prototypes/twin_city/captures
+          godot --headless --audio-driver Dummy --path . --script res://src/scripts/TwinCityAcceptanceAudit.gd 2>&1 | tee prototypes/twin_city/reports/godot_acceptance_audit.log
+          grep -q 'TWIN_CITY_AUDIT_PASS:' prototypes/twin_city/reports/godot_acceptance_audit.log
+          if grep -E 'ERROR: Parameter "m" is null|SCRIPT ERROR:|Parse Error:|TWIN_CITY_AUDIT_FAIL:' prototypes/twin_city/reports/godot_acceptance_audit.log; then
+            echo "::error::Acceptance audit reported a mesh or script error."
+            exit 1
+          fi
+
+      - name: Capture six independent 1280x720 Godot views
         shell: bash
         timeout-minutes: 15
         run: |
           set -Eeuo pipefail
-          mkdir -p prototypes/twin_city/reports prototypes/twin_city/captures
           rm -f prototypes/twin_city/captures/01_aerial_full.png prototypes/twin_city/captures/02_aerial_oblique.png prototypes/twin_city/captures/03_street_scale.png prototypes/twin_city/captures/04_central_plaza.png prototypes/twin_city/captures/05_imperial_palace.png prototypes/twin_city/captures/06_district_density.png
           rm -f prototypes/twin_city/reports/godot_capture.log
           lvp_icd="$(find /usr/share/vulkan/icd.d -maxdepth 1 -type f -iname '*lvp*.json' | head -n 1)"
-          if [ -z "$lvp_icd" ]; then
-            echo "Lavapipe ICD not found; installed Vulkan ICDs:"
-            ls -la /usr/share/vulkan/icd.d
+          test -n "$lvp_icd"
+          export VK_ICD_FILENAMES="$lvp_icd"
+          timeout 900s xvfb-run -a -s "-screen 0 1280x720x24" godot --path . --rendering-method mobile --rendering-driver vulkan --audio-driver Dummy --script res://src/scripts/TwinCityGodotCapture.gd 2>&1 | tee prototypes/twin_city/reports/godot_capture.log
+          grep -q 'TWIN_CITY_SIX_VIEW_CAPTURE_PASS' prototypes/twin_city/reports/godot_capture.log
+          if grep -E 'ERROR: Parameter "m" is null|SCRIPT ERROR:|Parse Error:|TWIN_CITY_CAPTURE_FAIL:' prototypes/twin_city/reports/godot_capture.log; then
+            echo "::error::Capture reported a mesh or script error."
             exit 1
           fi
-          export VK_ICD_FILENAMES="$lvp_icd"
-          vulkaninfo --summary
-          timeout 900s xvfb-run -a -s "-screen 0 1280x720x24" godot --path . --rendering-method mobile --rendering-driver vulkan --script res://src/scripts/TwinCityGodotCapture.gd 2>&1 | tee prototypes/twin_city/reports/godot_capture.log
-          for image in 01_aerial_full.png 02_aerial_oblique.png 03_street_scale.png 04_central_plaza.png 05_imperial_palace.png 06_district_density.png; do
-            test -s "prototypes/twin_city/captures/$image"
-          done
           python3 -m pip install --disable-pip-version-check Pillow
           python3 - <<'PY'
           from pathlib import Path
@@ -474,117 +147,36 @@ jobs:
           names = ("01_aerial_full.png","02_aerial_oblique.png","03_street_scale.png","04_central_plaza.png","05_imperial_palace.png","06_district_density.png")
           for name in names:
               path = root / name
+              if not path.is_file() or path.stat().st_size == 0:
+                  raise SystemExit(f"Missing capture: {name}")
               with Image.open(path) as image:
                   if image.size != (1280,720) or image.getbbox() is None:
-                      raise SystemExit(f"Invalid Godot capture: {name} {image.size}")
+                      raise SystemExit(f"Invalid capture: {name} {image.size}")
                   print(f"VERIFIED {name}: {image.size}, {path.stat().st_size} bytes")
+          for legacy in ("twin_city_aerial.png","twin_city_street.png"):
+              if any(Path(".").rglob(legacy)):
+                  raise SystemExit(f"Legacy proof image remains: {legacy}")
           PY
-      - name: Persist six verified captures for final publication
-        uses: actions/upload-artifact@v4
-        with:
-          name: TwinCity-Stage4-Captures
-          path: |
-            prototypes/twin_city/captures/
-            prototypes/twin_city/reports/
-          if-no-files-found: error
-          retention-days: 30
 
-  publish-proof:
-    name: "Stage 5 — Final verification and persist proof on isolated branch"
-    needs: [screenshot-capture]
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Checkout isolated prototype branch
-        uses: actions/checkout@v4
-      - name: Restore permanent cleaned GLB asset cache
-        id: assets_cache
-        uses: actions/cache/restore@v4
-        with:
-          path: |
-            assets/wuxia_imperial_pack
-            assets/twin_city_selected
-            prototypes/twin_city/reports/glb_geometry_audit.json
-            prototypes/twin_city/reports/twin_city_asset_restore.json
-          key: cleaned-glb-assets-v1
-      - name: Restore Godot 4.3 imported resource cache
-        id: godot_cache
-        uses: actions/cache/restore@v4
-        with:
-          path: .godot/imported
-          key: godot43-imported-cache-v1
-      - name: Download verified palace kit from validation stage
-        uses: actions/download-artifact@v4
-        with:
-          name: TwinCity-Stage3-Palace-Kit
-          path: .
-      - name: Download six captures from screenshot stage
-        uses: actions/download-artifact@v4
-        with:
-          name: TwinCity-Stage4-Captures
-          path: .
-      - name: Verify 220-260 count, six images and performance telemetry
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          report = json.loads(Path("prototypes/twin_city/reports/twin_city_build_report.json").read_text())
-          count = report.get("buildings", 0)
-          categories = report.get("building_categories", {})
-          expected = {"residential":120,"commercial":48,"service":56,"landmark":16,"palace":3,"pagoda":1}
-          if count != 244 or categories != expected:
-              raise SystemExit(f"Expected exactly 244 structures with {expected}; got count={count}, categories={categories}")
-          if report.get("screenshots_created") != 6:
-              raise SystemExit("Six Godot screenshots were not captured")
-          if not report.get("fps_target_30_pass", False):
-              if "lvp" in report.get("renderer_icd","").lower():
-                  print("PERFORMANCE_NOTE: Lavapipe software Vulkan is below 30 FPS; do not treat it as a Redmi/Adreno benchmark.")
-              else:
-                  raise SystemExit(f"Hardware renderer measured FPS below 30: {report.get('measured_capture_fps_average')}")
-          if not 340 <= report.get("city_core_m",0) <= 380:
-              raise SystemExit("Urban core diameter outside 340-380m")
-          print("TWIN_CITY_FINAL_VALIDATION_PASS: "+json.dumps(report,sort_keys=True))
-          PY
-      - name: Preserve prebuilt merged palace kit on isolated branch
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          asset="assets/environment/architecture/imperial_china_palace_and_garden_merged.scn"
-          if [ -s "$asset" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -f "$asset"
-            if [ -d assets/wuxia_imperial_pack/models ]; then git add -f assets/wuxia_imperial_pack/models/; fi
-            if [ -d assets/wuxia_imperial_pack/candidates/models ]; then git add -f assets/wuxia_imperial_pack/candidates/models/; fi
-            if [ -d assets/twin_city_selected ]; then git add -f assets/twin_city_selected/; fi
-            if [ -f assets/wuxia_imperial_pack/manifest.json ]; then git add -f assets/wuxia_imperial_pack/manifest.json; fi
-            if [ -f assets/wuxia_imperial_pack/imperial_approved_assets.json ]; then git add -f assets/wuxia_imperial_pack/imperial_approved_assets.json; fi
-            if [ -f assets/wuxia_imperial_pack/twin_city_restored_glb_assets.json ]; then git add -f assets/wuxia_imperial_pack/twin_city_restored_glb_assets.json; fi
-            if ! git diff --cached --quiet; then
-              git commit -m "Add prebuilt Imperial China palace scene"
-              git push origin "HEAD:$GITHUB_REF_NAME"
-            fi
-          else
-            echo "No prebuilt merged palace scene to preserve."
-          fi
-      - name: Commit only Twin City proof outputs to this isolated branch
+      - name: Commit six captures and audit reports to isolated branch
         if: success()
         shell: bash
         run: |
-          set -euo pipefail
+          set -Eeuo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f assets/environment/architecture/imperial_china_palace_and_garden_merged.scn prototypes/twin_city/captures/*.png prototypes/twin_city/reports/*.json prototypes/twin_city/reports/*.log
-          git diff --cached --quiet || git commit -m "Add actual Twin City Godot 4.3 visual proof"
-          git push origin "HEAD:$GITHUB_REF_NAME"
-      - name: Upload complete Twin City visual proof
+          git add -A -f prototypes/twin_city/captures prototypes/twin_city/reports
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish surgical Twin City grounding and six-view proof"
+            git push origin "HEAD:twin-city/imperial-visual-prototype"
+          fi
+
+      - name: Upload Twin City visual proof artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: TwinCity-Godot43-Visual-Proof
+          name: TwinCity-Surgical-Visual-Proof
           path: |
-            assets/environment/architecture/imperial_china_palace_and_garden_merged.scn
             prototypes/twin_city/captures/
             prototypes/twin_city/reports/
           if-no-files-found: error
