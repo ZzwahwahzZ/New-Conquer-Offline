@@ -1,0 +1,97 @@
+name: Collect Twin City Chinese Houses and Shops
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "twin-city/imperial-visual-prototype"
+    paths:
+      - ".github/workflows/collect-twin-city-houses-shops.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Prepare original asset library
+        run: |
+          mkdir -p collection/chinese-historical-houses collection/chinese-historical-shops
+          cat > collection/README.md <<'EOF'
+          # Twin City — Chinese historical houses and shops
+
+          Original, unmodified downloadable GLB files collected from their publishers.
+          No geometry edits, derivations, recolors, or generated replacements are performed here.
+
+          ## Included sources
+
+          - Courtyard Residence — Han courtyard residence, 1,924 triangles, 16 × 5.79 × 16 m.
+            Original GLB: https://polyfork.dev/cdn/courtyard-residence-342ac2.glb
+            Source page: https://polyfork.dev/asset/courtyard-residence-342ac2
+            Commercial use permitted. For redistribution of the raw mesh file, CC BY 4.0 credit:
+            "Courtyard Residence" by Polyfork — https://polyfork.dev/asset/courtyard-residence-342ac2
+            License: https://creativecommons.org/licenses/by/4.0/
+
+          - Market Stall — Han-period market stall, 1,561 triangles, 4 × 3.92 × 4 m.
+            Original GLB: https://polyfork.dev/cdn/market-stall-9d0b29.glb
+            Source page: https://polyfork.dev/asset/market-stall-9d0b29
+            Commercial use permitted. For redistribution of the raw mesh file, CC BY 4.0 credit:
+            "Market Stall" by Polyfork — https://polyfork.dev/asset/market-stall-9d0b29
+            License: https://creativecommons.org/licenses/by/4.0/
+
+          ## Collection boundaries
+          This archive contains only these two original models and their provenance.
+          It does not include CGTrader downloads, paid models, or assets with unclear licensing.
+          EOF
+
+      - name: Download original GLB files
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://polyfork.dev/cdn/courtyard-residence-342ac2.glb" \
+            -o collection/chinese-historical-houses/courtyard-residence-342ac2.glb
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://polyfork.dev/cdn/market-stall-9d0b29.glb" \
+            -o collection/chinese-historical-shops/market-stall-9d0b29.glb
+
+      - name: Verify GLB files and create manifest
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, json, struct
+          root = Path("collection")
+          entries = []
+          for p in sorted(root.rglob("*.glb")):
+              data = p.read_bytes()
+              if len(data) < 20 or data[:4] != b"glTF":
+                  raise SystemExit(f"Invalid GLB signature: {p}")
+              version, declared_length = struct.unpack("<II", data[4:12])
+              if version != 2 or declared_length != len(data):
+                  raise SystemExit(f"Invalid GLB header/length: {p}")
+              entries.append({
+                  "file": str(p.relative_to(root)),
+                  "bytes": len(data),
+                  "sha256": hashlib.sha256(data).hexdigest(),
+                  "glb_version": version
+              })
+          if len(entries) != 2:
+              raise SystemExit(f"Expected exactly 2 original GLB assets, found {len(entries)}")
+          (root / "manifest.json").write_text(json.dumps(entries, indent=2) + "\n")
+          print(json.dumps(entries, indent=2))
+          PY
+
+      - name: Package original assets
+        run: |
+          cd collection
+          zip -r ../twin-city-chinese-houses-shops-originals.zip .
+
+      - name: Upload collection archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: twin-city-chinese-houses-shops-originals
+          path: twin-city-chinese-houses-shops-originals.zip
+          if-no-files-found: error
+          retention-days: 90
