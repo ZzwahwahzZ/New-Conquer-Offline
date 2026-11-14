@@ -263,7 +263,7 @@ def license_allowed(value):
 def license_class(value):
  text=str(value or "").strip().lower().replace("_","-").replace("–","-")
  if "by-sa" in text or "by sa" in text or "gpl" in text: return "reciprocal"
- if "cc0" in text or "public domain" in text or "unlicense" in text or "wtfpl" in text: return "public-domain"
+ if "cc0" in text or "public domain" in text or "public-domain" in text or "publicdomain" in text or "unlicense" in text or "wtfpl" in text: return "public-domain"
  if "mit" in text or "bsd" in text or "zlib" in text: return "permissive"
  if "oga-by" in text or "cc-by" in text or "cc by" in text: return "attribution"
  return "unclassified"
@@ -286,7 +286,7 @@ def license_url_for(value):
  if "gpl" in text:
   version="2" if re.search(r"gpl[- ]?2",text) else "3"
   return "https://www.gnu.org/licenses/old-licenses/gpl-"+version+".0.html"
- if "public domain" in text: return "https://creativecommons.org/publicdomain/mark/1.0/"
+ if "public domain" in text or "public-domain" in text or "publicdomain" in text: return "https://creativecommons.org/publicdomain/mark/1.0/"
  return ""
 def filter_candidates():
  global DISC, DOWN
