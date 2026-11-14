@@ -83,7 +83,7 @@ def _license_from_page(html):
         if "by-sa" in pattern:
             version = m.group(1)
             return "CC BY-SA " + version, "https://creativecommons.org/licenses/by-sa/" + version + "/"
-        if "creativecommons.org/licenses/by/" in pattern or pattern.startswith(r"\\bcc\\s*by"):
+        if "creativecommons.org/licenses/by/" in pattern or pattern.startswith(r"\bcc\s*by"):
             version = next((g for g in m.groups() if g), "4.0")
             return "CC BY " + version, "https://creativecommons.org/licenses/by/" + version + "/"
         if "gpl" in pattern:
