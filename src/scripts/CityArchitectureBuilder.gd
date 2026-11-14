@@ -788,38 +788,6 @@ static func _twin_plaza(parent: Node3D,stone: Material,pale: Material,gold: Mate
   paver_transforms.append(Transform3D(Basis(Vector3.UP,PI*0.5-a).scaled(Vector3(2.0,0.12,28.0)),Vector3(cos(a)*15.0,0.46,sin(a)*15.0)))
  _twin_multimesh(plaza,"RadialEngravedStonePaving",BoxMesh.new(),paver_transforms,stone)
  _twin_pagoda(plaza,roof,timber,gold)
- var trunk_mesh := CylinderMesh.new()
- trunk_mesh.top_radius = 0.38
- trunk_mesh.bottom_radius = 0.42
- trunk_mesh.height = 5.2
- trunk_mesh.radial_segments = 8
- var crown_mesh := SphereMesh.new()
- crown_mesh.radius = 3.0
- crown_mesh.height = 4.4
- var trunks := MultiMesh.new()
- trunks.transform_format = MultiMesh.TRANSFORM_3D
- trunks.mesh = trunk_mesh
- trunks.instance_count = 12
- var crowns := MultiMesh.new()
- crowns.transform_format = MultiMesh.TRANSFORM_3D
- crowns.mesh = crown_mesh
- crowns.instance_count = 12
- for i in range(12):
-  var a := TAU*float(i)/12.0
-  var pos := Vector3(cos(a)*34.0,2.6,sin(a)*34.0)
-  trunks.set_instance_transform(i,Transform3D(Basis(),pos))
-  crowns.set_instance_transform(i,Transform3D(Basis(),pos+Vector3(0,4.0,0)))
- var trunk_node := MultiMeshInstance3D.new()
- trunk_node.name = "PlazaCherryTreeTrunks"
- trunk_node.multimesh = trunks
- plaza.add_child(trunk_node)
- trunk_node.material_override = timber
- var crown_node := MultiMeshInstance3D.new()
- crown_node.name = "PlazaCherryBlossomCanopies"
- crown_node.multimesh = crowns
- plaza.add_child(crown_node)
- crown_node.material_override = pink
-
 static func _twin_pagoda(parent: Node3D,roof: Material,timber: Material,gold: Material) -> void:
  var root := Node3D.new()
  root.name = "CentralPagoda_20m"
@@ -850,9 +818,15 @@ static func _twin_palace(parent: Node3D,pale: Material,stone: Material,timber: M
    var merged_kit := merged_pack.instantiate() as Node3D
    if merged_kit != null:
     merged_kit.position = Vector3.ZERO
+    merged_kit.scale = Vector3.ONE*2.0
     palace_root.add_child(merged_kit)
+    _twin_add_palace_props(parent,merged_kit)
     return
  if _twin_import_imperial_palace_kit(palace_root):
+  var imported_kit := palace_root.get_node_or_null("TwinCity_ImperialChina_GLBKit") as Node3D
+  if imported_kit != null:
+   imported_kit.scale = Vector3.ONE*2.0
+   _twin_add_palace_props(parent,imported_kit)
   return
  _twin_box(palace_root,"FallbackImperialHall",Vector3(0,8,0),Vector3(36,16,32),pale)
  _twin_box(palace_root,"FallbackImperialGoldRoof",Vector3(0,17,0),Vector3(42,1,38),gold)
@@ -885,7 +859,12 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
   "130-ceremonial-hall","131-gate-tower","134-water-pavilion","135-arched-stone-bridge",
   "101-covered-walkway-bay","102-covered-walkway-bay","103-covered-walkway-corner","104-covered-walkway-bay"
  ]
+ var template_names := [
+  "146-plum-tree-in-blossom","147-bamboo-clump","150-peony-planter",
+  "153-garden-stone-bench","154-standing-garden-lantern","168-guardian-lion-pair"
+ ]
  var selected_roots: Array[Node3D] = []
+ var template_roots: Array[Node3D] = []
  var selected_index := 0
  for child in container.get_children():
   if child is Node3D and selected_names.has(child.name):
@@ -894,8 +873,12 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
    model.add_to_group("twin_city_building",true)
    selected_roots.append(model)
    selected_index += 1
- if selected_roots.size() != 8:
-  push_warning("Imperial China GLB expected 8 palace structures, found %d" % selected_roots.size())
+  elif child is Node3D and template_names.has(child.name):
+   var template := child as Node3D
+   template.name = "ImperialKitTemplate_"+template.name
+   template_roots.append(template)
+ if selected_roots.size() != 8 or template_roots.size() != 6:
+  push_warning("Imperial China GLB expected 8 palace structures and 6 prop templates, found %d/%d" % [selected_roots.size(),template_roots.size()])
   kit.queue_free()
   return false
  var tools: Dictionary = {}
@@ -909,7 +892,7 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
   var ancestor := mesh_node.get_parent()
   var belongs_to_selected := false
   while ancestor != null and ancestor != kit:
-   if selected_roots.has(ancestor):
+   if selected_roots.has(ancestor) or template_roots.has(ancestor):
     belongs_to_selected = true
     break
    ancestor = ancestor.get_parent()
@@ -935,7 +918,7 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
  # Keep the eight structural source models; all other source groups are represented
  # by the material-batched ArrayMeshes below and can be released.
  for child in container.get_children():
-  if child is Node3D and not selected_roots.has(child):
+  if child is Node3D and not selected_roots.has(child) and not template_roots.has(child):
    container.remove_child(child)
    child.queue_free()
  var merged_surfaces := 0
@@ -952,8 +935,45 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
   merged_node.visibility_range_end_margin = 24.0
   kit.add_child(merged_node)
   merged_surfaces += 1
- print("TWIN_CITY_IMPERIAL_KIT_PASS: palace_models=%d merged_source_surfaces=%d merged_material_surfaces=%d" % [selected_roots.size(),merged_source_count,merged_surfaces])
+ print("TWIN_CITY_IMPERIAL_KIT_PASS: palace_models=%d prop_templates=%d merged_source_surfaces=%d merged_material_surfaces=%d" % [selected_roots.size(),template_roots.size(),merged_source_count,merged_surfaces])
  return merged_surfaces > 0
+
+static func _twin_add_palace_props(parent: Node3D,kit: Node3D) -> void:
+ var plum_a := "ImperialKitTemplate_146-plum-tree-in-blossom"
+ var plum_b := "ImperialKitTemplate_146-plum-tree-in-blossom"
+ for i in range(8):
+  var angle := TAU*float(i)/8.0
+  var template_name := plum_a if i%2==0 else plum_b
+  _twin_clone_kit_prop(parent,kit,template_name,"TwinCity_PlazaPlumTree_%02d" % i,Vector3(cos(angle)*35.0,0,sin(angle)*35.0),-angle,2.0)
+ for i in range(8):
+  var angle := TAU*float(i)/8.0+PI/8.0
+  _twin_clone_kit_prop(parent,kit,"ImperialKitTemplate_154-standing-garden-lantern","TwinCity_PlazaLantern_%02d" % i,Vector3(cos(angle)*43.0,0,sin(angle)*43.0),-angle,2.0)
+ for i in range(6):
+  var angle := TAU*float(i)/6.0
+  _twin_clone_kit_prop(parent,kit,"ImperialKitTemplate_150-peony-planter","TwinCity_PlazaPeony_%02d" % i,Vector3(cos(angle)*23.0,0,sin(angle)*23.0),-angle,2.0)
+ for i in range(4):
+  var angle := TAU*float(i)/4.0+PI/4.0
+  _twin_clone_kit_prop(parent,kit,"ImperialKitTemplate_153-garden-stone-bench","TwinCity_PlazaBench_%02d" % i,Vector3(cos(angle)*27.0,0,sin(angle)*27.0),-angle,2.0)
+ for i in range(2):
+  var side := -1.0 if i==0 else 1.0
+  _twin_clone_kit_prop(parent,kit,"ImperialKitTemplate_168-guardian-lion-pair","TwinCity_PalaceGuardian_%02d" % i,Vector3(side*18.0,0,-73.0),0.0,2.0)
+ for i in range(4):
+  var angle := TAU*float(i)/4.0+0.3
+  _twin_clone_kit_prop(parent,kit,"ImperialKitTemplate_147-bamboo-clump","TwinCity_OuterBamboo_%02d" % i,Vector3(cos(angle)*164.0,0,sin(angle)*164.0),-angle,2.0)
+
+static func _twin_clone_kit_prop(parent: Node3D,kit: Node3D,template_name: String,instance_name: String,pos: Vector3,yaw: float,scale_factor: float) -> void:
+ var template := kit.find_child(template_name,true,false) as Node3D
+ if template == null:
+  push_warning("Imperial China prop template missing: "+template_name)
+  return
+ var clone := template.duplicate() as Node3D
+ if clone == null:
+  return
+ clone.name = instance_name
+ clone.position = pos
+ clone.rotation = Vector3(0,yaw,0)
+ clone.scale = template.scale*scale_factor
+ parent.add_child(clone)
 
 static func _twin_add_palace_annex_fallback(parent: Node3D,pale: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
  var batches := {"foundation":[],"walls":[],"roof":[],"timber":[],"windows":[],"gold":[],"doors":[],"shop":[],"posts":[]}
