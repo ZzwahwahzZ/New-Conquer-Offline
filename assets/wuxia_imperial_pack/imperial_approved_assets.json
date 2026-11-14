@@ -16851,8 +16851,399 @@
   "verified_glb_count": 99,
   "verified_imperial_chinese_glb_count": 46,
   "twin_city_approved_asset_count": 46,
-  "twin_city_selected_asset_count": 17,
+  "twin_city_selected_asset_count": 99,
   "twin_city_architecture_kit": [
+    {
+      "name": "Windswept Mountain Pine (Alpine Snow Village)",
+      "asset_id": "3dassets-alpine-snow-village-windswept-mountain-pine-e7302601",
+      "file": "models/3dassets-alpine-snow-village-windswept-mountain-pine-e7302601.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.2999890681556963,
+        3.9000000953674316,
+        1.3781806791782714
+      ],
+      "geometry_count": 3,
+      "bytes": 73696,
+      "sha256": "2ae5b2b2be36c624f5ad9cb9a22ae79dd86a461ace9a151c47d84a661d9444fa",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/3dassets-alpine-snow-village-windswept-mountain-pine-e7302601.glb"
+    },
+    {
+      "name": "Baobab Tree Affenbrotbaum Baobab",
+      "asset_id": "grab3d-baobab-tree",
+      "file": "models/grab3d-baobab-tree.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        6.191775321960449,
+        6.14035177230835,
+        5.689441204071045
+      ],
+      "geometry_count": 1,
+      "bytes": 1100076,
+      "sha256": "3a6b2dadd0bc90e1fc2d9545b48fd16859a590b9e90415c7ed9204e9aafc06ef",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-baobab-tree.glb"
+    },
+    {
+      "name": "Birch Grove Birkenhain Bosquecillo de abedules",
+      "asset_id": "grab3d-birch-grove",
+      "file": "models/grab3d-birch-grove.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        4.320404529571533,
+        6.727263927459717,
+        4.124755024909973
+      ],
+      "geometry_count": 2,
+      "bytes": 1465220,
+      "sha256": "62bd8988fbdce73967ed46cece1a924e8e6857c51b72379ba73a56ccc282511b",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-birch-grove.glb"
+    },
+    {
+      "name": "Bracket Fungus Baumpilz Hongo de repisa",
+      "asset_id": "grab3d-bracket-fungus",
+      "file": "models/grab3d-bracket-fungus.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.4269839823246002,
+        0.3440000116825104,
+        0.3838035613298416
+      ],
+      "geometry_count": 1,
+      "bytes": 948264,
+      "sha256": "5871f04e75e452d1ab06cf0c0f7373d646e6c300b9dbdc9b5b914507064f7e31",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-bracket-fungus.glb"
+    },
+    {
+      "name": "Bowl of Cherries Kirschschale Cuenco de cerezas",
+      "asset_id": "grab3d-cherry-bowl",
+      "file": "models/grab3d-cherry-bowl.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.13801822066307068,
+        0.124426931142807,
+        0.17457052320241928
+      ],
+      "geometry_count": 1,
+      "bytes": 1078588,
+      "sha256": "6bbd026a5a1c8a6a2e740f9e047620c06758498f38830560379a5b1369e747d7",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-cherry-bowl.glb"
+    },
+    {
+      "name": "Red Rock Crab Rote Klippenkrabbe Cangrejo rojo de roca",
+      "asset_id": "grab3d-crab",
+      "file": "models/grab3d-crab.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.1999826654791832,
+        0.0694193391391309,
+        0.13015136867761612
+      ],
+      "geometry_count": 1,
+      "bytes": 12512508,
+      "sha256": "4ac5a94f350e131f4f5951d5110e2a82d02b31493bad2de1ba4f6703f0b1ffa9",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-crab.glb"
+    },
+    {
+      "name": "Cricket Bat Cricketschläger Bate de críquet",
+      "asset_id": "grab3d-cricket-bat",
+      "file": "models/grab3d-cricket-bat.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.845106303691864,
+        0.7583504319190979,
+        0.5067492127418518
+      ],
+      "geometry_count": 1,
+      "bytes": 951380,
+      "sha256": "e48f9e60f3a083ea94507483cc3141cc62e19dfe50fbd3a67e40cc83cfde86ab",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-cricket-bat.glb"
+    },
+    {
+      "name": "Desert Rock Arch Wüsten-Felsbogen Arco de roca del desierto",
+      "asset_id": "grab3d-desert-rock-arch",
+      "file": "models/grab3d-desert-rock-arch.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        8.528597831726074,
+        5.214505195617676,
+        4.09026563167572
+      ],
+      "geometry_count": 1,
+      "bytes": 1898416,
+      "sha256": "7fcf4abeed6ffb567d26ee57df05d96b1b8720eec7d5463c27a98440a4b1837c",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-desert-rock-arch.glb"
+    },
+    {
+      "name": "Dirt Road Feldweg Camino de tierra",
+      "asset_id": "grab3d-dirt-road",
+      "file": "models/grab3d-dirt-road.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        11.800000190734863,
+        0.4151201844215393,
+        11.800000190734863
+      ],
+      "geometry_count": 5,
+      "bytes": 11069844,
+      "sha256": "07bb0985702c31d8a2abba54bdf79c81c20d8a252bf2e92940272eae2be89d7f",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-dirt-road.glb"
+    },
+    {
+      "name": "Fantasy Mushroom House Fantasy-Pilzhaus Casa de seta de fantasía",
+      "asset_id": "grab3d-fantasy-mushroom-house",
+      "file": "models/grab3d-fantasy-mushroom-house.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        6.011139392852783,
+        5.302623271942139,
+        6.491486549377441
+      ],
+      "geometry_count": 9,
+      "bytes": 1724952,
+      "sha256": "744bb8fbed22ecde546dedf878e7276b591878f04ef104ea30589d43c9347a1a",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-fantasy-mushroom-house.glb"
+    },
+    {
+      "name": "Garden Gnome Gartenzwerg Gnomo de jardín",
+      "asset_id": "grab3d-garden-gnome",
+      "file": "models/grab3d-garden-gnome.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.2267499938607216,
+        0.4268595576286316,
+        0.21849998831748962
+      ],
+      "geometry_count": 1,
+      "bytes": 939600,
+      "sha256": "294f971f372c1ca99f4a9fd75c72dbbd7bf10df87b5675b72110ed1397d9fed5",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-garden-gnome.glb"
+    },
+    {
+      "name": "Glowing Mushroom Log Leuchtpilz-Baumstamm Tronco con setas luminosas",
+      "asset_id": "grab3d-glowing-mushroom-log",
+      "file": "models/grab3d-glowing-mushroom-log.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.4016903042793274,
+        0.25144898891448975,
+        0.25084374099969864
+      ],
+      "geometry_count": 3,
+      "bytes": 1168484,
+      "sha256": "d472f71f92d5f4220a90cae537272a6ac63c24e8f4f8a04293b81702cc930c9d",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-glowing-mushroom-log.glb"
+    },
+    {
+      "name": "Highway Segment Autobahnabschnitt Tramo de autopista",
+      "asset_id": "grab3d-highway-segment",
+      "file": "models/grab3d-highway-segment.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        23.600000381469727,
+        1.1575000286102295,
+        23.600000381469727
+      ],
+      "geometry_count": 5,
+      "bytes": 14337876,
+      "sha256": "59743d4c22ca3b511001958c5a2f1e752d156adefeb2aabac1391beb3ac5ee79",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-highway-segment.glb"
+    },
+    {
+      "name": "Jungle Tree Dschungelbaum Árbol de la jungla",
+      "asset_id": "grab3d-jungle-tree",
+      "file": "models/grab3d-jungle-tree.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        7.854711532592773,
+        10.141125679016113,
+        7.150622844696045
+      ],
+      "geometry_count": 1,
+      "bytes": 1283796,
+      "sha256": "98a57fda4a60a14c95f42d10ecca6cda7f02b0889d4d956ec33ab1498b605688",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-jungle-tree.glb"
+    },
+    {
+      "name": "Mangrove Tree Mangrovenbaum Mangle",
+      "asset_id": "grab3d-mangrove-tree",
+      "file": "models/grab3d-mangrove-tree.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        4.397235155105591,
+        5.736734867095947,
+        4.282843828201294
+      ],
+      "geometry_count": 2,
+      "bytes": 1257172,
+      "sha256": "be2c0b79d1dd296bba3bd8b2942dce841c848e318b5756e19e3fbea1cf21c172",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-mangrove-tree.glb"
+    },
+    {
+      "name": "Edible Mushrooms Speisepilze Setas comestibles",
+      "asset_id": "grab3d-mushroom-food",
+      "file": "models/grab3d-mushroom-food.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.23100000619888306,
+        0.09389930963516235,
+        0.3279999941587448
+      ],
+      "geometry_count": 1,
+      "bytes": 1365724,
+      "sha256": "7848782e67ad9fc96c4fe78d5b81fbcf7b0eb376792aec2fdb235be849aed968",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-mushroom-food.glb"
+    },
+    {
+      "name": "Pinball Machine Flipperautomat Máquina de pinball",
+      "asset_id": "grab3d-pinball-machine",
+      "file": "models/grab3d-pinball-machine.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.7440000176429749,
+        1.8600000145807862,
+        1.4600000381469727
+      ],
+      "geometry_count": 15,
+      "bytes": 1729644,
+      "sha256": "40641fd235bae410c5cc5cb1649f4d03b319c7acc4a0688bf577dba07fe13515",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-pinball-machine.glb"
+    },
+    {
+      "name": "Pine Cones Kiefernzapfen Piñas de pino",
+      "asset_id": "grab3d-pine-cone",
+      "file": "models/grab3d-pine-cone.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.17784882336854935,
+        0.0729399025440216,
+        0.13483934849500656
+      ],
+      "geometry_count": 1,
+      "bytes": 866352,
+      "sha256": "158ee4149c9683e6f8489eb2129ee9c4ce21111a09bb40f2705ba1f8e31c41a7",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-pine-cone.glb"
+    },
+    {
+      "name": "Pirate Hideout Piratenversteck Escondite pirata",
+      "asset_id": "grab3d-pirate-hideout",
+      "file": "models/grab3d-pirate-hideout.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        9.483755111694336,
+        5.407090187072754,
+        6.679154872894287
+      ],
+      "geometry_count": 5,
+      "bytes": 2362620,
+      "sha256": "15548b3c753ce9882ad4aed459c8454d70b26415d41fbd4da1a5f18b28e8fb74",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-pirate-hideout.glb"
+    },
+    {
+      "name": "Dry Stone Wall Trockenmauer Muro de piedra seca",
+      "asset_id": "grab3d-stone-wall",
+      "file": "models/grab3d-stone-wall.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        3.0,
+        1.0589795112609863,
+        0.8571957945823669
+      ],
+      "geometry_count": 1,
+      "bytes": 1316288,
+      "sha256": "40578e5c10c78d053e127f5f88d0635cfdbbf21fdbe46cfc28897d9341c9a77e",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-stone-wall.glb"
+    },
+    {
+      "name": "Railway Tunnel Portal Tunnelportal Boca de túnel ferroviario",
+      "asset_id": "grab3d-tunnel-portal",
+      "file": "models/grab3d-tunnel-portal.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        10.5,
+        8.507499694824219,
+        8.0
+      ],
+      "geometry_count": 2,
+      "bytes": 2969580,
+      "sha256": "4afc9f07ad2fb82bd5252f7df849f0da09960f9230b205ca0fbbced08837cfa3",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-tunnel-portal.glb"
+    },
+    {
+      "name": "Buddhist Temple Pagoda",
+      "asset_id": "innerscene-buddhist-temple-pagoda-c5ebacdc",
+      "file": "models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb",
+      "category": "palaces_and_temples",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        14.800000190734863,
+        33.995201110839844,
+        14.800000190734863
+      ],
+      "geometry_count": 19,
+      "bytes": 18840512,
+      "sha256": "2653c57850f3d0401a1c21177a3a7f50dfa48711c49078979f25bbf0fed2363e",
+      "role": "palaces_and_temples",
+      "active_project_path": "assets/twin_city_selected/models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb"
+    },
+    {
+      "name": "Japanese Maple Tree",
+      "asset_id": "innerscene-japanese-maple-tree-565c1604",
+      "file": "models/innerscene-japanese-maple-tree-565c1604.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        8.064774863392529,
+        5.000000229252679,
+        8.02752140557405
+      ],
+      "geometry_count": 87,
+      "bytes": 4439812,
+      "sha256": "898450277a86ade0ab67d5cede566ad97012f2aa5d4b958a5b607865bfb07283",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/innerscene-japanese-maple-tree-565c1604.glb"
+    },
     {
       "name": "ArchBanner",
       "asset_id": "polygonalmind-lunar-year-001",
@@ -16867,8 +17258,42 @@
       "geometry_count": 3,
       "bytes": 780132,
       "sha256": "56b99fcb9a10d23dcf47e06b4b3f9f1709d31f170fd07309f5d4898abe868608",
-      "role": "shopfront_arch_and_signage",
+      "role": "statues_and_props",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-001.glb"
+    },
+    {
+      "name": "Banner",
+      "asset_id": "polygonalmind-lunar-year-002",
+      "file": "models/polygonalmind-lunar-year-002.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        2.086370825767517,
+        3.2720689635258764,
+        0.08423848549022542
+      ],
+      "geometry_count": 3,
+      "bytes": 1009320,
+      "sha256": "e9e1f4cc67edcf419e57cbd73ca028b62c86886ae59946048c957e163e35dade",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-002.glb"
+    },
+    {
+      "name": "Bell",
+      "asset_id": "polygonalmind-lunar-year-003",
+      "file": "models/polygonalmind-lunar-year-003.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.0486913919448853,
+        2.337199010332266,
+        1.0486913919448255
+      ],
+      "geometry_count": 2,
+      "bytes": 859056,
+      "sha256": "10fab84627cdab4300af2504522db36d421c3c3d131ce23a4e07281d62160bb4",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-003.glb"
     },
     {
       "name": "BellStructure",
@@ -16884,7 +17309,7 @@
       "geometry_count": 3,
       "bytes": 1238108,
       "sha256": "2c48d62d47d9bcb886cea4792e216366c7e0528232b4b3d9b5fcbd23ec984f8d",
-      "role": "ceremonial_bell_structure",
+      "role": "statues_and_props",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-004.glb"
     },
     {
@@ -16901,8 +17326,25 @@
       "geometry_count": 2,
       "bytes": 736976,
       "sha256": "857f588be1dec6194d2859bee6ea03bf0c3533da1dabaffd7368f6ebf21cd739",
-      "role": "building_foundation",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-005.glb"
+    },
+    {
+      "name": "Carpet01",
+      "asset_id": "polygonalmind-lunar-year-006",
+      "file": "models/polygonalmind-lunar-year-006.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        4.659999847412109,
+        0.10122886470261261,
+        12.660001277922166
+      ],
+      "geometry_count": 2,
+      "bytes": 651476,
+      "sha256": "f06bce856d1754771c1480979a5c498c80fdfb42d717cccd6cf0606507f4bb35",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-006.glb"
     },
     {
       "name": "Column",
@@ -16918,7 +17360,7 @@
       "geometry_count": 3,
       "bytes": 1149684,
       "sha256": "005cf8ef86ac974b97cb8069536eef7eabb6965ffa5f7fb9e37497d2ad5af7b7",
-      "role": "structural_column",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-008.glb"
     },
     {
@@ -16935,8 +17377,25 @@
       "geometry_count": 1,
       "bytes": 349528,
       "sha256": "bc4010cbb679df0228408a0798e66e8aef9c40a5506219f3b39cb7853cc7b4eb",
-      "role": "column_foundation",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-009.glb"
+    },
+    {
+      "name": "Cushion",
+      "asset_id": "polygonalmind-lunar-year-010",
+      "file": "models/polygonalmind-lunar-year-010.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.37562747299671173,
+        0.14810412859568256,
+        0.3756271927920056
+      ],
+      "geometry_count": 2,
+      "bytes": 773112,
+      "sha256": "4439d4b579d81a4bd8b0af51190216498a0edcc010c9186c580d6c5340ac41b8",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-010.glb"
     },
     {
       "name": "Door",
@@ -16952,8 +17411,42 @@
       "geometry_count": 3,
       "bytes": 1156376,
       "sha256": "43b5eecf3c92d6599828b20a0d7a25afc6619b9c5c19a78f2b015794fbc41d3b",
-      "role": "main_entrance",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-011.glb"
+    },
+    {
+      "name": "Dragon",
+      "asset_id": "polygonalmind-lunar-year-012",
+      "file": "models/polygonalmind-lunar-year-012.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        15.149353504180908,
+        12.52469474912204,
+        29.682745729266866
+      ],
+      "geometry_count": 2,
+      "bytes": 1294492,
+      "sha256": "ca803cd420f65838e83ae86838817594ba75f90ff98f59a3ce502148252f0868",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-012.glb"
+    },
+    {
+      "name": "Drum",
+      "asset_id": "polygonalmind-lunar-year-013",
+      "file": "models/polygonalmind-lunar-year-013.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.9359233379364014,
+        1.581752354030058,
+        2.011380970478025
+      ],
+      "geometry_count": 2,
+      "bytes": 779740,
+      "sha256": "03916422ad304861ec2a9197a2f31d2ee09c4c1fb0d2f286b9ec3d7727c7c3c4",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-013.glb"
     },
     {
       "name": "EntranceStairs",
@@ -16969,7 +17462,7 @@
       "geometry_count": 2,
       "bytes": 729036,
       "sha256": "2b87098c1f33d1370017cb303cab2e84a588e1892a4df4da66143de6db9dcfdb",
-      "role": "building_entrance_stairs",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-014.glb"
     },
     {
@@ -16986,7 +17479,7 @@
       "geometry_count": 3,
       "bytes": 1149124,
       "sha256": "97981bc60dee871640b0e922693a7c486db1a30001f03373f99bb98ddc61fb70",
-      "role": "courtyard_fence_segment",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-015.glb"
     },
     {
@@ -17003,7 +17496,7 @@
       "geometry_count": 3,
       "bytes": 1167808,
       "sha256": "dc198c0484b0f5f444768b1f429a769143e5adb7de839da3a0a50b5aa1059cb2",
-      "role": "courtyard_fence_enclosure",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-016.glb"
     },
     {
@@ -17020,7 +17513,7 @@
       "geometry_count": 3,
       "bytes": 1220216,
       "sha256": "ee637d69980d4d4f9fd4c09d83a836e70df7a6a05c9dda11e74a8f9090dbe037",
-      "role": "building_shell_variant_01",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-017.glb"
     },
     {
@@ -17037,8 +17530,263 @@
       "geometry_count": 4,
       "bytes": 1552084,
       "sha256": "aef04c2299a4fcb6baf66ef543b74aea2d180f77a6326f8c94f212ee13b59687",
-      "role": "building_shell_variant_02",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-018.glb"
+    },
+    {
+      "name": "InteriorLight05",
+      "asset_id": "polygonalmind-lunar-year-023",
+      "file": "models/polygonalmind-lunar-year-023.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.48742008209228516,
+        2.542682042708195,
+        0.6606732106186706
+      ],
+      "geometry_count": 1,
+      "bytes": 227056,
+      "sha256": "6258b74bd807323425e849e6e8daf4cdefb85552a0c3f783e26e42abc06f971d",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-023.glb"
+    },
+    {
+      "name": "InteriorLight06",
+      "asset_id": "polygonalmind-lunar-year-024",
+      "file": "models/polygonalmind-lunar-year-024.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        3.964702606201172,
+        0.38814877878223514,
+        0.2876053131032971
+      ],
+      "geometry_count": 1,
+      "bytes": 227056,
+      "sha256": "100bd1ba6e71813e9c529a3c6fc2be65310cb15991af467cfae9eec9a166d2ea",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-024.glb"
+    },
+    {
+      "name": "Lamp01",
+      "asset_id": "polygonalmind-lunar-year-025",
+      "file": "models/polygonalmind-lunar-year-025.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.2799999117851257,
+        1.8500001734252844,
+        1.0999999642371505
+      ],
+      "geometry_count": 2,
+      "bytes": 475740,
+      "sha256": "4ecfac12fbafa546b699a08bd14757b3ca517fa4ea50888e6ea5f61451a969f9",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-025.glb"
+    },
+    {
+      "name": "Lamp02",
+      "asset_id": "polygonalmind-lunar-year-026",
+      "file": "models/polygonalmind-lunar-year-026.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.2839352488517761,
+        1.8464117695524453,
+        1.0954707860945228
+      ],
+      "geometry_count": 2,
+      "bytes": 475824,
+      "sha256": "cad903f979bee4107519624e7ffe33db1250b0ef3d7fbf1aebc5776d53fab21e",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-026.glb"
+    },
+    {
+      "name": "Lamp03",
+      "asset_id": "polygonalmind-lunar-year-027",
+      "file": "models/polygonalmind-lunar-year-027.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.399999976158142,
+        1.7800000532623037,
+        1.2699999213217161
+      ],
+      "geometry_count": 2,
+      "bytes": 473340,
+      "sha256": "8f643787e46e47b488454825b96f2313b6be9629ae600500e0f2790d352a5c80",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-027.glb"
+    },
+    {
+      "name": "Lamp04",
+      "asset_id": "polygonalmind-lunar-year-028",
+      "file": "models/polygonalmind-lunar-year-028.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.3992140293121338,
+        1.7788562554710248,
+        1.2708083391188048
+      ],
+      "geometry_count": 2,
+      "bytes": 472732,
+      "sha256": "d5883e9a1d10d1e0d94565057725275ecf395d93cd3e77bd383e3c4fdb3c7672",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-028.glb"
+    },
+    {
+      "name": "LampWreath",
+      "asset_id": "polygonalmind-lunar-year-029",
+      "file": "models/polygonalmind-lunar-year-029.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        6.659115791320801,
+        2.1487885130096895,
+        0.8205642104148398
+      ],
+      "geometry_count": 3,
+      "bytes": 916328,
+      "sha256": "e645e7b12027237afce15e55ad17a01bd0ae0558916782a61cfc37251dfefac7",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-029.glb"
+    },
+    {
+      "name": "LunarYearTile",
+      "asset_id": "polygonalmind-lunar-year-030",
+      "file": "models/polygonalmind-lunar-year-030.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        2.2446391582489014,
+        2.6285212329763623,
+        0.06923109258183834
+      ],
+      "geometry_count": 1,
+      "bytes": 345456,
+      "sha256": "4b4490c110f8f397cae913ddd21c7025e325e35ff92e88684f5b161aa9dbd803",
+      "role": "gates_walls_bridges",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-030.glb"
+    },
+    {
+      "name": "MainAltar",
+      "asset_id": "polygonalmind-lunar-year-031",
+      "file": "models/polygonalmind-lunar-year-031.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        2.9242759943008423,
+        1.2423679063439834,
+        2.076997160362291
+      ],
+      "geometry_count": 4,
+      "bytes": 1574440,
+      "sha256": "9f5ecaf0134c280dda31e6a9d1df8efc0fb3b2ff6ceaad50460bd0a594ff7d35",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-031.glb"
+    },
+    {
+      "name": "OutterLamp",
+      "asset_id": "polygonalmind-lunar-year-032",
+      "file": "models/polygonalmind-lunar-year-032.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.7470312118530273,
+        2.3446640031787562,
+        1.6615260839462245
+      ],
+      "geometry_count": 2,
+      "bytes": 791124,
+      "sha256": "47bb3a7556d4ae85beef6e2230d0e1a222ee4c9f5e4afd02cdc08ac0868116eb",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-032.glb"
+    },
+    {
+      "name": "Poster01",
+      "asset_id": "polygonalmind-lunar-year-037",
+      "file": "models/polygonalmind-lunar-year-037.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        2.6641262769699097,
+        5.251427991369614,
+        0.28078711032849757
+      ],
+      "geometry_count": 2,
+      "bytes": 779892,
+      "sha256": "3341773b49c091cb3ac984c518d34df78bd15ee0093b6ca22de7ee0e676bf5ba",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-037.glb"
+    },
+    {
+      "name": "Poster02",
+      "asset_id": "polygonalmind-lunar-year-038",
+      "file": "models/polygonalmind-lunar-year-038.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.6062275171279907,
+        5.721674685110952,
+        0.28078657388685535
+      ],
+      "geometry_count": 2,
+      "bytes": 779616,
+      "sha256": "6df2def20f595380224a54a97f7ddac86a379a0fe5dc969dfc6903c90c5b3c49",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-038.glb"
+    },
+    {
+      "name": "RobeWreath",
+      "asset_id": "polygonalmind-lunar-year-039",
+      "file": "models/polygonalmind-lunar-year-039.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        6.659115791320801,
+        0.8245688886257296,
+        0.062116062991152625
+      ],
+      "geometry_count": 1,
+      "bytes": 427648,
+      "sha256": "628ac08babc0af55e0bbc8bca1d7c8d3dd2b4801796218e5f0e597a2d8106d36",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-039.glb"
+    },
+    {
+      "name": "Rock01",
+      "asset_id": "polygonalmind-lunar-year-040",
+      "file": "models/polygonalmind-lunar-year-040.glb",
+      "category": "nature",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.1598767042160034,
+        0.48106726553783563,
+        1.0825951695440987
+      ],
+      "geometry_count": 1,
+      "bytes": 373476,
+      "sha256": "3eb8635d757b502de719f33df380a9301ce457a690e88226958490e840a98d0b",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-040.glb"
+    },
+    {
+      "name": "Rock02",
+      "asset_id": "polygonalmind-lunar-year-041",
+      "file": "models/polygonalmind-lunar-year-041.glb",
+      "category": "nature",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.8099523186683655,
+        0.9207998232476339,
+        1.6757691434056337
+      ],
+      "geometry_count": 1,
+      "bytes": 375116,
+      "sha256": "18d467a7a703a164a8e302e51f666d696b2775b95cbf94c7a3fe2aca7bcec298",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-041.glb"
     },
     {
       "name": "RoomDoor",
@@ -17054,7 +17802,7 @@
       "geometry_count": 2,
       "bytes": 726336,
       "sha256": "0a964863229c31d5304b97cc9236aef68eedc55c49293ea834c3f43198fe5c48",
-      "role": "room_door_module",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-042.glb"
     },
     {
@@ -17071,7 +17819,7 @@
       "geometry_count": 1,
       "bytes": 351792,
       "sha256": "623625d569da9136800426bc3dbf662c221d448c34c4a7ac9bfd310e3c9e9815",
-      "role": "room_floor_module",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-043.glb"
     },
     {
@@ -17088,7 +17836,7 @@
       "geometry_count": 2,
       "bytes": 799664,
       "sha256": "2da77e87ba590697de0e860b9a304f13a5afd1ffeaac4dda9b8d1755001ac63a",
-      "role": "room_roof_module",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-044.glb"
     },
     {
@@ -17105,7 +17853,7 @@
       "geometry_count": 3,
       "bytes": 1161396,
       "sha256": "9d418f9c66580909129de1fec150d0ad2b3e65d3b6dc05712ebbb43973ddb57e",
-      "role": "roof_beam_structure",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-045.glb"
     },
     {
@@ -17122,29 +17870,1066 @@
       "geometry_count": 2,
       "bytes": 723140,
       "sha256": "c10cad25c956e339f1ddf9d80126e57144c82bf71e413d398a70a7e4d5632b11",
-      "role": "room_wall_module",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-046.glb"
     },
     {
-      "name": "Buddhist Temple Pagoda",
-      "asset_id": "innerscene-buddhist-temple-pagoda-c5ebacdc",
-      "file": "models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb",
-      "category": "palaces_and_temples",
+      "name": "Table01",
+      "asset_id": "polygonalmind-lunar-year-048",
+      "file": "models/polygonalmind-lunar-year-048.glb",
+      "category": "statues_and_props",
       "style_group": "imperial_chinese",
       "dimensions_m": [
-        14.800000190734863,
-        33.995201110839844,
-        14.800000190734863
+        1.9098873734474182,
+        0.7883182191721737,
+        1.060589929736791
       ],
-      "geometry_count": 19,
-      "bytes": 18840512,
-      "sha256": "2653c57850f3d0401a1c21177a3a7f50dfa48711c49078979f25bbf0fed2363e",
-      "role": "complete_pagoda_landmark",
-      "active_project_path": "assets/twin_city_selected/models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb"
+      "geometry_count": 4,
+      "bytes": 1546404,
+      "sha256": "563105d724482548a1c1bba8e417ef53ab24d8a547aea27bafcd9ee933a514bc",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-048.glb"
+    },
+    {
+      "name": "Table02",
+      "asset_id": "polygonalmind-lunar-year-049",
+      "file": "models/polygonalmind-lunar-year-049.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.913130760192871,
+        0.7883182191720399,
+        1.0612477180522766
+      ],
+      "geometry_count": 5,
+      "bytes": 1768704,
+      "sha256": "b02d435ebae66c84758763b3217cbec2f6f86202dc6987deb1063ecc87e4b221",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-049.glb"
+    },
+    {
+      "name": "TigerLogo",
+      "asset_id": "polygonalmind-lunar-year-051",
+      "file": "models/polygonalmind-lunar-year-051.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        2.2021703720092773,
+        2.202177047729491,
+        0.3238537324359456
+      ],
+      "geometry_count": 3,
+      "bytes": 835520,
+      "sha256": "401d39e2f1fdeb9f9346477e9bcde917f7867bcd3fbbe68613b577f02bb4c978",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-051.glb"
+    },
+    {
+      "name": "UpperLights02",
+      "asset_id": "polygonalmind-lunar-year-052",
+      "file": "models/polygonalmind-lunar-year-052.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.19141234457492828,
+        0.3932330635369654,
+        0.19141235202548745
+      ],
+      "geometry_count": 1,
+      "bytes": 1816,
+      "sha256": "31f4cafbc69e76cc919cf47e4e2b7bb900421dc20253b619f8af32f05934046b",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-052.glb"
+    },
+    {
+      "name": "Brick Step 01 Art",
+      "asset_id": "polygonalmind-momuspark-002",
+      "file": "models/polygonalmind-momuspark-002.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        5.818917989730835,
+        1.109170482948015,
+        1.500000456383928
+      ],
+      "geometry_count": 3,
+      "bytes": 776288,
+      "sha256": "5624fd3f85f1abe859bd25b7cd27b9eeec1f322ae3fc43df7bc6c55ebb8ce04c",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-002.glb"
+    },
+    {
+      "name": "Bush 01 Art",
+      "asset_id": "polygonalmind-momuspark-003",
+      "file": "models/polygonalmind-momuspark-003.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.3984304666519165,
+        1.3598478546920918,
+        1.5911212596656874
+      ],
+      "geometry_count": 3,
+      "bytes": 950792,
+      "sha256": "a2d33b4050c5bfa6a6ac191981a1422e15372ce37d852dac9b0723bebe51345d",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-003.glb"
+    },
+    {
+      "name": "Bush 02 Art",
+      "asset_id": "polygonalmind-momuspark-004",
+      "file": "models/polygonalmind-momuspark-004.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.852718472480774,
+        1.3562491571195714,
+        1.5737579182121832
+      ],
+      "geometry_count": 3,
+      "bytes": 956044,
+      "sha256": "a3c48d0f6f784a014bee8c1e56c830b5af443387511b92b3294ad86d42f5fd9e",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-004.glb"
+    },
+    {
+      "name": "Bush 03 art",
+      "asset_id": "polygonalmind-momuspark-005",
+      "file": "models/polygonalmind-momuspark-005.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.797047734260559,
+        1.6784930835712935,
+        1.4033808151927705
+      ],
+      "geometry_count": 4,
+      "bytes": 1323548,
+      "sha256": "a20259062346b82cf2fa6c307b3d784dcc5c0828625fccb42cf0c96b89d08f0c",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-005.glb"
+    },
+    {
+      "name": "Flower 01 a",
+      "asset_id": "polygonalmind-momuspark-014",
+      "file": "models/polygonalmind-momuspark-014.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.1457679271697998,
+        0.8120337030668329,
+        0.3499642392684837
+      ],
+      "geometry_count": 1,
+      "bytes": 401260,
+      "sha256": "70570798a4383228989328e53b56d38c56ed5be15c6da0b9f30f85d4e486222a",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-014.glb"
+    },
+    {
+      "name": "Flower 01 b",
+      "asset_id": "polygonalmind-momuspark-015",
+      "file": "models/polygonalmind-momuspark-015.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.2444702610373497,
+        1.0832902152206354,
+        0.4959200224257463
+      ],
+      "geometry_count": 1,
+      "bytes": 404244,
+      "sha256": "42628b3f385156266043875834668f1ff00bf8ecf58973c4244f77995a9b6965",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-015.glb"
+    },
+    {
+      "name": "Flower 02 a Art",
+      "asset_id": "polygonalmind-momuspark-016",
+      "file": "models/polygonalmind-momuspark-016.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.7930687665939331,
+        0.8551559602864233,
+        0.5494196539591526
+      ],
+      "geometry_count": 3,
+      "bytes": 513432,
+      "sha256": "68509b105470d87029717702f950e81580a0e8366ae1082fc8bf26433c5448a5",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-016.glb"
+    },
+    {
+      "name": "Flower 02 b Art",
+      "asset_id": "polygonalmind-momuspark-017",
+      "file": "models/polygonalmind-momuspark-017.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.5960758924484253,
+        0.784943495001505,
+        0.5960758924483511
+      ],
+      "geometry_count": 3,
+      "bytes": 508376,
+      "sha256": "f4b1b1f6a9a71620b442b090ba156dceaea2e0dfead169bcedf017ba02da1276",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-017.glb"
+    },
+    {
+      "name": "Flower 03 a",
+      "asset_id": "polygonalmind-momuspark-018",
+      "file": "models/polygonalmind-momuspark-018.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.7366082072257996,
+        0.8591410024038432,
+        0.7791742559464048
+      ],
+      "geometry_count": 1,
+      "bytes": 408824,
+      "sha256": "b2898203dd3a2f9408be6d67261e76bbd73195b7246b5199e3a017f38861f4ae",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-018.glb"
+    },
+    {
+      "name": "Flower 03 b",
+      "asset_id": "polygonalmind-momuspark-019",
+      "file": "models/polygonalmind-momuspark-019.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.9723778069019318,
+        1.0541414750670142,
+        0.9650261341226368
+      ],
+      "geometry_count": 1,
+      "bytes": 416896,
+      "sha256": "0991685f49d3f5a68e6cad3c2d69f6b27450906d2dbf58d26f3c552ddad73a3d",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-019.glb"
+    },
+    {
+      "name": "Log 01 Art",
+      "asset_id": "polygonalmind-momuspark-023",
+      "file": "models/polygonalmind-momuspark-023.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        3.272268533706665,
+        1.4789152216886987,
+        1.3389836519988991
+      ],
+      "geometry_count": 3,
+      "bytes": 929080,
+      "sha256": "1c050d696f56ee49bf6399fc2aa29c737b32afdfd1c4a2f2d2a98c56bfe0d023",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-023.glb"
+    },
+    {
+      "name": "MOMUS Logo Top",
+      "asset_id": "polygonalmind-momuspark-024",
+      "file": "models/polygonalmind-momuspark-024.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        6.0,
+        6.1499196507900775,
+        1.2500024908302148
+      ],
+      "geometry_count": 1,
+      "bytes": 48536,
+      "sha256": "e7cd9782cf4eb23bf625bcdeae14de6c06a6ee75aa57ecb0009a1b8706dfb52a",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-024.glb"
+    },
+    {
+      "name": "Mushroom 01 Art",
+      "asset_id": "polygonalmind-momuspark-027",
+      "file": "models/polygonalmind-momuspark-027.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.8176791071891785,
+        0.5612913039531896,
+        0.8481097962524982
+      ],
+      "geometry_count": 4,
+      "bytes": 1092992,
+      "sha256": "db3ef1ec8b1302f90bfed87a19753f8847697145f6e1bd04a4923695cf9e41b5",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-027.glb"
+    },
+    {
+      "name": "Mushroom 02 Art",
+      "asset_id": "polygonalmind-momuspark-028",
+      "file": "models/polygonalmind-momuspark-028.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.4279113709926605,
+        0.7604893979815517,
+        0.39082654613757467
+      ],
+      "geometry_count": 4,
+      "bytes": 1092924,
+      "sha256": "eb14f8055ca81d31d439020538a66b49696e768c247f0b7a58f3ce492b80cf29",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-028.glb"
+    },
+    {
+      "name": "Rock 01 Art",
+      "asset_id": "polygonalmind-momuspark-035",
+      "file": "models/polygonalmind-momuspark-035.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        4.242575526237488,
+        2.4714377723498586,
+        3.0336477756496905
+      ],
+      "geometry_count": 3,
+      "bytes": 860644,
+      "sha256": "9ae59be7491a9c050a7f39c79557bf9265b193f0e563e2bf0a83df18b448efed",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-035.glb"
+    },
+    {
+      "name": "Rock 02 Art",
+      "asset_id": "polygonalmind-momuspark-036",
+      "file": "models/polygonalmind-momuspark-036.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.672234892845154,
+        2.5458687536717544,
+        1.6506499750463868
+      ],
+      "geometry_count": 2,
+      "bytes": 315076,
+      "sha256": "6333edc24b3c18c448a1e00a066cf3e5036c008cafb146e57f4fd12155b2d579",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-036.glb"
+    },
+    {
+      "name": "Rock 03 Art",
+      "asset_id": "polygonalmind-momuspark-037",
+      "file": "models/polygonalmind-momuspark-037.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        6.821284770965576,
+        4.434256887888707,
+        4.9119547962865475
+      ],
+      "geometry_count": 3,
+      "bytes": 732348,
+      "sha256": "bc34537761267e8fcbe50cbac7d3640137b3a3e48af5ffc6605db48e5b38a420",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-037.glb"
+    },
+    {
+      "name": "Rock 04 Art",
+      "asset_id": "polygonalmind-momuspark-038",
+      "file": "models/polygonalmind-momuspark-038.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        3.240535259246826,
+        1.693841466073811,
+        2.7631676348963032
+      ],
+      "geometry_count": 2,
+      "bytes": 319944,
+      "sha256": "771f6fc951f8b6459833331d8da6415c7f1f11287c98b8c46e244b0511ae8fe6",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-038.glb"
+    },
+    {
+      "name": "Rock 05 Art",
+      "asset_id": "polygonalmind-momuspark-039",
+      "file": "models/polygonalmind-momuspark-039.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.7449430227279663,
+        2.605946882133323,
+        2.376461783614423
+      ],
+      "geometry_count": 2,
+      "bytes": 454176,
+      "sha256": "e61666e2a842d9bb2067ac110a1ac61aa33afea0cc6351bdb87a95c823a9173b",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-039.glb"
+    },
+    {
+      "name": "Root 01 Art",
+      "asset_id": "polygonalmind-momuspark-040",
+      "file": "models/polygonalmind-momuspark-040.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        4.550517320632935,
+        1.7181259470476022,
+        1.3460781333374507
+      ],
+      "geometry_count": 2,
+      "bytes": 463192,
+      "sha256": "a9635bf9f042fcaa100810797afdddf7f33d966509bb704f7b68f1d258441236",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-040.glb"
+    },
+    {
+      "name": "Root 02 Art",
+      "asset_id": "polygonalmind-momuspark-041",
+      "file": "models/polygonalmind-momuspark-041.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        5.03058592770408,
+        1.7059634241175319,
+        1.4296029927205796
+      ],
+      "geometry_count": 2,
+      "bytes": 460004,
+      "sha256": "8bdec99c2eb828861852b507c2d072513c8fcb3d9d04ea42cfd98bd7c0fc2a64",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-041.glb"
+    },
+    {
+      "name": "Terrain Amount 01 Art",
+      "asset_id": "polygonalmind-momuspark-055",
+      "file": "models/polygonalmind-momuspark-055.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        8.996413230895996,
+        1.5956499278142804,
+        5.020657420157819
+      ],
+      "geometry_count": 4,
+      "bytes": 1513940,
+      "sha256": "088df3427c3564d759dddf48698cd63057e7c363c3ca68c620d632dfe5466cdf",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-055.glb"
+    },
+    {
+      "name": "Terrain Amount 02 Art",
+      "asset_id": "polygonalmind-momuspark-056",
+      "file": "models/polygonalmind-momuspark-056.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        9.048834800720215,
+        2.4378013190442953,
+        5.020657300948489
+      ],
+      "geometry_count": 4,
+      "bytes": 1516604,
+      "sha256": "39085eeb19259b80dbc37f68cb54c2d408cea9ae33748692488e3ec0202aa638",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-056.glb"
+    },
+    {
+      "name": "Tree 01 Art",
+      "asset_id": "polygonalmind-momuspark-057",
+      "file": "models/polygonalmind-momuspark-057.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        15.933727264404297,
+        12.09825597976275,
+        9.754518119609639
+      ],
+      "geometry_count": 3,
+      "bytes": 1015676,
+      "sha256": "b1bd45d8985cbcb74aa525f1cf166dc04c8d7db16bf73e30748cac8aa13e2fa1",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-057.glb"
+    },
+    {
+      "name": "Tree 02 Art",
+      "asset_id": "polygonalmind-momuspark-058",
+      "file": "models/polygonalmind-momuspark-058.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        12.794250965118408,
+        11.769409595650302,
+        14.030981632943293
+      ],
+      "geometry_count": 3,
+      "bytes": 1016528,
+      "sha256": "2d4ec6645b47c86990d254a13a96c5e1dcd4bd0b70a3120772e608d9ffeff41a",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-058.glb"
+    },
+    {
+      "name": "Tree 03 Art",
+      "asset_id": "polygonalmind-momuspark-059",
+      "file": "models/polygonalmind-momuspark-059.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.523973464965821,
+        2.759540438652039,
+        2.3095782995224
+      ],
+      "geometry_count": 4,
+      "bytes": 1406868,
+      "sha256": "b1017ccc095314681323fe972b36a20063457a926a85d19339cf6ac70f280a3f",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-059.glb"
+    },
+    {
+      "name": "Tree 04 Art",
+      "asset_id": "polygonalmind-momuspark-060",
+      "file": "models/polygonalmind-momuspark-060.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        8.571818351745605,
+        14.522020816802982,
+        6.6393778324127215
+      ],
+      "geometry_count": 4,
+      "bytes": 1404208,
+      "sha256": "89a0d7c68269390cb26e2f2bbe42a02bc8514b969f983483cabc86e803068d8b",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-060.glb"
+    },
+    {
+      "name": "Tree Trunk 01 Art",
+      "asset_id": "polygonalmind-momuspark-061",
+      "file": "models/polygonalmind-momuspark-061.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        3.4175479412078857,
+        3.0210620060016358,
+        3.2556629134556014
+      ],
+      "geometry_count": 4,
+      "bytes": 1230184,
+      "sha256": "e676d0aab63f7f0d5da0361f53cea7a1d677035b885dce3f37326859deb8979e",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-061.glb"
+    },
+    {
+      "name": "Water Fall 01 Art.001",
+      "asset_id": "polygonalmind-momuspark-063",
+      "file": "models/polygonalmind-momuspark-063.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        5.117891334449181,
+        14.871271371845866,
+        2.7741088725427883
+      ],
+      "geometry_count": 1,
+      "bytes": 591016,
+      "sha256": "dee602c14735498fd446ff1aca9a8a2566e066c10ff2a7f982ee09dd7ff1587c",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-063.glb"
+    },
+    {
+      "name": "Water Fall 01 Art",
+      "asset_id": "polygonalmind-momuspark-064",
+      "file": "models/polygonalmind-momuspark-064.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        5.117891311645508,
+        14.871271006034739,
+        2.774113900936451
+      ],
+      "geometry_count": 1,
+      "bytes": 590992,
+      "sha256": "0c782e8b163fc98b105bcc75a6fda994a002e30f53e2642f8b39c3934feef6f5",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-064.glb"
+    },
+    {
+      "name": "Water Fall 02 Art",
+      "asset_id": "polygonalmind-momuspark-065",
+      "file": "models/polygonalmind-momuspark-065.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.5916810035705566,
+        14.871274617696828,
+        3.379803188123372
+      ],
+      "geometry_count": 1,
+      "bytes": 590984,
+      "sha256": "ccfd549f23bd03a3eb20414f3d1046b3bf7c5b12732028da38a652e56f513612",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-065.glb"
+    },
+    {
+      "name": "Baluster vase, from a five-piece garniture (F1980.190-.194)",
+      "asset_id": "smithsonian-Baluster_vase_from_a_five-piece_garniture_F1980.190-.194_",
+      "file": "models/smithsonian-Baluster_vase_from_a_five-piece_garniture_F1980.190-.194_.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.41053301095962524,
+        0.1708737462759018,
+        0.27804887294769287
+      ],
+      "geometry_count": 1,
+      "bytes": 557224,
+      "sha256": "9db27093998672468614d6d39f436a8a3208d2307745c861c8b3e63351cee524",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/smithsonian-Baluster_vase_from_a_five-piece_garniture_F1980.190-.194_.glb"
+    },
+    {
+      "name": "Baluster vase, one of three in a five-piece garniture (F1980.190--194)",
+      "asset_id": "smithsonian-Baluster_vase_one_of_three_in_a_five-piece_garniture_F1980.190--194_",
+      "file": "models/smithsonian-Baluster_vase_one_of_three_in_a_five-piece_garniture_F1980.190--194_.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.35690489411354065,
+        0.17215333878993988,
+        0.36401498317718506
+      ],
+      "geometry_count": 1,
+      "bytes": 551712,
+      "sha256": "92aff6e0811ae32dafff5ec95a492d3e7eefaff902c2a80f20b95c41032737c0",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/smithsonian-Baluster_vase_one_of_three_in_a_five-piece_garniture_F1980.190--194_.glb"
+    },
+    {
+      "name": "Beaker-shaped vase, from a five-piece garniture",
+      "asset_id": "smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture",
+      "file": "models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.2030993103981018,
+        0.20370832085609436,
+        0.4338168799877167
+      ],
+      "geometry_count": 1,
+      "bytes": 535208,
+      "sha256": "d7a736335096131cc814af11cb2cc6c38212551de3d0dbeb3cd46c3e438b53f6",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture.glb"
+    },
+    {
+      "name": "Beaker-shaped vase, from a five-piece garniture (F1980.190-.194)",
+      "asset_id": "smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture_F1980.190-.194_",
+      "file": "models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture_F1980.190-.194_.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.21061305701732635,
+        0.2108980417251587,
+        0.4244125187397003
+      ],
+      "geometry_count": 1,
+      "bytes": 544188,
+      "sha256": "70cae3568dfade5ca57aecf1e437f710f818f1c21d32d19a709deea75198dd90",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture_F1980.190-.194_.glb"
     }
   ],
   "twin_city_selected_assets": [
     {
+      "name": "Windswept Mountain Pine (Alpine Snow Village)",
+      "asset_id": "3dassets-alpine-snow-village-windswept-mountain-pine-e7302601",
+      "file": "models/3dassets-alpine-snow-village-windswept-mountain-pine-e7302601.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.2999890681556963,
+        3.9000000953674316,
+        1.3781806791782714
+      ],
+      "geometry_count": 3,
+      "bytes": 73696,
+      "sha256": "2ae5b2b2be36c624f5ad9cb9a22ae79dd86a461ace9a151c47d84a661d9444fa",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/3dassets-alpine-snow-village-windswept-mountain-pine-e7302601.glb"
+    },
+    {
+      "name": "Baobab Tree Affenbrotbaum Baobab",
+      "asset_id": "grab3d-baobab-tree",
+      "file": "models/grab3d-baobab-tree.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        6.191775321960449,
+        6.14035177230835,
+        5.689441204071045
+      ],
+      "geometry_count": 1,
+      "bytes": 1100076,
+      "sha256": "3a6b2dadd0bc90e1fc2d9545b48fd16859a590b9e90415c7ed9204e9aafc06ef",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-baobab-tree.glb"
+    },
+    {
+      "name": "Birch Grove Birkenhain Bosquecillo de abedules",
+      "asset_id": "grab3d-birch-grove",
+      "file": "models/grab3d-birch-grove.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        4.320404529571533,
+        6.727263927459717,
+        4.124755024909973
+      ],
+      "geometry_count": 2,
+      "bytes": 1465220,
+      "sha256": "62bd8988fbdce73967ed46cece1a924e8e6857c51b72379ba73a56ccc282511b",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-birch-grove.glb"
+    },
+    {
+      "name": "Bracket Fungus Baumpilz Hongo de repisa",
+      "asset_id": "grab3d-bracket-fungus",
+      "file": "models/grab3d-bracket-fungus.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.4269839823246002,
+        0.3440000116825104,
+        0.3838035613298416
+      ],
+      "geometry_count": 1,
+      "bytes": 948264,
+      "sha256": "5871f04e75e452d1ab06cf0c0f7373d646e6c300b9dbdc9b5b914507064f7e31",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-bracket-fungus.glb"
+    },
+    {
+      "name": "Bowl of Cherries Kirschschale Cuenco de cerezas",
+      "asset_id": "grab3d-cherry-bowl",
+      "file": "models/grab3d-cherry-bowl.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.13801822066307068,
+        0.124426931142807,
+        0.17457052320241928
+      ],
+      "geometry_count": 1,
+      "bytes": 1078588,
+      "sha256": "6bbd026a5a1c8a6a2e740f9e047620c06758498f38830560379a5b1369e747d7",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-cherry-bowl.glb"
+    },
+    {
+      "name": "Red Rock Crab Rote Klippenkrabbe Cangrejo rojo de roca",
+      "asset_id": "grab3d-crab",
+      "file": "models/grab3d-crab.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.1999826654791832,
+        0.0694193391391309,
+        0.13015136867761612
+      ],
+      "geometry_count": 1,
+      "bytes": 12512508,
+      "sha256": "4ac5a94f350e131f4f5951d5110e2a82d02b31493bad2de1ba4f6703f0b1ffa9",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-crab.glb"
+    },
+    {
+      "name": "Cricket Bat Cricketschläger Bate de críquet",
+      "asset_id": "grab3d-cricket-bat",
+      "file": "models/grab3d-cricket-bat.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.845106303691864,
+        0.7583504319190979,
+        0.5067492127418518
+      ],
+      "geometry_count": 1,
+      "bytes": 951380,
+      "sha256": "e48f9e60f3a083ea94507483cc3141cc62e19dfe50fbd3a67e40cc83cfde86ab",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-cricket-bat.glb"
+    },
+    {
+      "name": "Desert Rock Arch Wüsten-Felsbogen Arco de roca del desierto",
+      "asset_id": "grab3d-desert-rock-arch",
+      "file": "models/grab3d-desert-rock-arch.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        8.528597831726074,
+        5.214505195617676,
+        4.09026563167572
+      ],
+      "geometry_count": 1,
+      "bytes": 1898416,
+      "sha256": "7fcf4abeed6ffb567d26ee57df05d96b1b8720eec7d5463c27a98440a4b1837c",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-desert-rock-arch.glb"
+    },
+    {
+      "name": "Dirt Road Feldweg Camino de tierra",
+      "asset_id": "grab3d-dirt-road",
+      "file": "models/grab3d-dirt-road.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        11.800000190734863,
+        0.4151201844215393,
+        11.800000190734863
+      ],
+      "geometry_count": 5,
+      "bytes": 11069844,
+      "sha256": "07bb0985702c31d8a2abba54bdf79c81c20d8a252bf2e92940272eae2be89d7f",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-dirt-road.glb"
+    },
+    {
+      "name": "Fantasy Mushroom House Fantasy-Pilzhaus Casa de seta de fantasía",
+      "asset_id": "grab3d-fantasy-mushroom-house",
+      "file": "models/grab3d-fantasy-mushroom-house.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        6.011139392852783,
+        5.302623271942139,
+        6.491486549377441
+      ],
+      "geometry_count": 9,
+      "bytes": 1724952,
+      "sha256": "744bb8fbed22ecde546dedf878e7276b591878f04ef104ea30589d43c9347a1a",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-fantasy-mushroom-house.glb"
+    },
+    {
+      "name": "Garden Gnome Gartenzwerg Gnomo de jardín",
+      "asset_id": "grab3d-garden-gnome",
+      "file": "models/grab3d-garden-gnome.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.2267499938607216,
+        0.4268595576286316,
+        0.21849998831748962
+      ],
+      "geometry_count": 1,
+      "bytes": 939600,
+      "sha256": "294f971f372c1ca99f4a9fd75c72dbbd7bf10df87b5675b72110ed1397d9fed5",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-garden-gnome.glb"
+    },
+    {
+      "name": "Glowing Mushroom Log Leuchtpilz-Baumstamm Tronco con setas luminosas",
+      "asset_id": "grab3d-glowing-mushroom-log",
+      "file": "models/grab3d-glowing-mushroom-log.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.4016903042793274,
+        0.25144898891448975,
+        0.25084374099969864
+      ],
+      "geometry_count": 3,
+      "bytes": 1168484,
+      "sha256": "d472f71f92d5f4220a90cae537272a6ac63c24e8f4f8a04293b81702cc930c9d",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-glowing-mushroom-log.glb"
+    },
+    {
+      "name": "Highway Segment Autobahnabschnitt Tramo de autopista",
+      "asset_id": "grab3d-highway-segment",
+      "file": "models/grab3d-highway-segment.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        23.600000381469727,
+        1.1575000286102295,
+        23.600000381469727
+      ],
+      "geometry_count": 5,
+      "bytes": 14337876,
+      "sha256": "59743d4c22ca3b511001958c5a2f1e752d156adefeb2aabac1391beb3ac5ee79",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-highway-segment.glb"
+    },
+    {
+      "name": "Jungle Tree Dschungelbaum Árbol de la jungla",
+      "asset_id": "grab3d-jungle-tree",
+      "file": "models/grab3d-jungle-tree.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        7.854711532592773,
+        10.141125679016113,
+        7.150622844696045
+      ],
+      "geometry_count": 1,
+      "bytes": 1283796,
+      "sha256": "98a57fda4a60a14c95f42d10ecca6cda7f02b0889d4d956ec33ab1498b605688",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-jungle-tree.glb"
+    },
+    {
+      "name": "Mangrove Tree Mangrovenbaum Mangle",
+      "asset_id": "grab3d-mangrove-tree",
+      "file": "models/grab3d-mangrove-tree.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        4.397235155105591,
+        5.736734867095947,
+        4.282843828201294
+      ],
+      "geometry_count": 2,
+      "bytes": 1257172,
+      "sha256": "be2c0b79d1dd296bba3bd8b2942dce841c848e318b5756e19e3fbea1cf21c172",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-mangrove-tree.glb"
+    },
+    {
+      "name": "Edible Mushrooms Speisepilze Setas comestibles",
+      "asset_id": "grab3d-mushroom-food",
+      "file": "models/grab3d-mushroom-food.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.23100000619888306,
+        0.09389930963516235,
+        0.3279999941587448
+      ],
+      "geometry_count": 1,
+      "bytes": 1365724,
+      "sha256": "7848782e67ad9fc96c4fe78d5b81fbcf7b0eb376792aec2fdb235be849aed968",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-mushroom-food.glb"
+    },
+    {
+      "name": "Pinball Machine Flipperautomat Máquina de pinball",
+      "asset_id": "grab3d-pinball-machine",
+      "file": "models/grab3d-pinball-machine.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.7440000176429749,
+        1.8600000145807862,
+        1.4600000381469727
+      ],
+      "geometry_count": 15,
+      "bytes": 1729644,
+      "sha256": "40641fd235bae410c5cc5cb1649f4d03b319c7acc4a0688bf577dba07fe13515",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-pinball-machine.glb"
+    },
+    {
+      "name": "Pine Cones Kiefernzapfen Piñas de pino",
+      "asset_id": "grab3d-pine-cone",
+      "file": "models/grab3d-pine-cone.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.17784882336854935,
+        0.0729399025440216,
+        0.13483934849500656
+      ],
+      "geometry_count": 1,
+      "bytes": 866352,
+      "sha256": "158ee4149c9683e6f8489eb2129ee9c4ce21111a09bb40f2705ba1f8e31c41a7",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-pine-cone.glb"
+    },
+    {
+      "name": "Pirate Hideout Piratenversteck Escondite pirata",
+      "asset_id": "grab3d-pirate-hideout",
+      "file": "models/grab3d-pirate-hideout.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        9.483755111694336,
+        5.407090187072754,
+        6.679154872894287
+      ],
+      "geometry_count": 5,
+      "bytes": 2362620,
+      "sha256": "15548b3c753ce9882ad4aed459c8454d70b26415d41fbd4da1a5f18b28e8fb74",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-pirate-hideout.glb"
+    },
+    {
+      "name": "Dry Stone Wall Trockenmauer Muro de piedra seca",
+      "asset_id": "grab3d-stone-wall",
+      "file": "models/grab3d-stone-wall.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        3.0,
+        1.0589795112609863,
+        0.8571957945823669
+      ],
+      "geometry_count": 1,
+      "bytes": 1316288,
+      "sha256": "40578e5c10c78d053e127f5f88d0635cfdbbf21fdbe46cfc28897d9341c9a77e",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-stone-wall.glb"
+    },
+    {
+      "name": "Railway Tunnel Portal Tunnelportal Boca de túnel ferroviario",
+      "asset_id": "grab3d-tunnel-portal",
+      "file": "models/grab3d-tunnel-portal.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        10.5,
+        8.507499694824219,
+        8.0
+      ],
+      "geometry_count": 2,
+      "bytes": 2969580,
+      "sha256": "4afc9f07ad2fb82bd5252f7df849f0da09960f9230b205ca0fbbced08837cfa3",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/grab3d-tunnel-portal.glb"
+    },
+    {
+      "name": "Buddhist Temple Pagoda",
+      "asset_id": "innerscene-buddhist-temple-pagoda-c5ebacdc",
+      "file": "models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb",
+      "category": "palaces_and_temples",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        14.800000190734863,
+        33.995201110839844,
+        14.800000190734863
+      ],
+      "geometry_count": 19,
+      "bytes": 18840512,
+      "sha256": "2653c57850f3d0401a1c21177a3a7f50dfa48711c49078979f25bbf0fed2363e",
+      "role": "palaces_and_temples",
+      "active_project_path": "assets/twin_city_selected/models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb"
+    },
+    {
+      "name": "Japanese Maple Tree",
+      "asset_id": "innerscene-japanese-maple-tree-565c1604",
+      "file": "models/innerscene-japanese-maple-tree-565c1604.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        8.064774863392529,
+        5.000000229252679,
+        8.02752140557405
+      ],
+      "geometry_count": 87,
+      "bytes": 4439812,
+      "sha256": "898450277a86ade0ab67d5cede566ad97012f2aa5d4b958a5b607865bfb07283",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/innerscene-japanese-maple-tree-565c1604.glb"
+    },
+    {
       "name": "ArchBanner",
       "asset_id": "polygonalmind-lunar-year-001",
       "file": "models/polygonalmind-lunar-year-001.glb",
@@ -17158,8 +18943,42 @@
       "geometry_count": 3,
       "bytes": 780132,
       "sha256": "56b99fcb9a10d23dcf47e06b4b3f9f1709d31f170fd07309f5d4898abe868608",
-      "role": "shopfront_arch_and_signage",
+      "role": "statues_and_props",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-001.glb"
+    },
+    {
+      "name": "Banner",
+      "asset_id": "polygonalmind-lunar-year-002",
+      "file": "models/polygonalmind-lunar-year-002.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        2.086370825767517,
+        3.2720689635258764,
+        0.08423848549022542
+      ],
+      "geometry_count": 3,
+      "bytes": 1009320,
+      "sha256": "e9e1f4cc67edcf419e57cbd73ca028b62c86886ae59946048c957e163e35dade",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-002.glb"
+    },
+    {
+      "name": "Bell",
+      "asset_id": "polygonalmind-lunar-year-003",
+      "file": "models/polygonalmind-lunar-year-003.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.0486913919448853,
+        2.337199010332266,
+        1.0486913919448255
+      ],
+      "geometry_count": 2,
+      "bytes": 859056,
+      "sha256": "10fab84627cdab4300af2504522db36d421c3c3d131ce23a4e07281d62160bb4",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-003.glb"
     },
     {
       "name": "BellStructure",
@@ -17175,7 +18994,7 @@
       "geometry_count": 3,
       "bytes": 1238108,
       "sha256": "2c48d62d47d9bcb886cea4792e216366c7e0528232b4b3d9b5fcbd23ec984f8d",
-      "role": "ceremonial_bell_structure",
+      "role": "statues_and_props",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-004.glb"
     },
     {
@@ -17192,8 +19011,25 @@
       "geometry_count": 2,
       "bytes": 736976,
       "sha256": "857f588be1dec6194d2859bee6ea03bf0c3533da1dabaffd7368f6ebf21cd739",
-      "role": "building_foundation",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-005.glb"
+    },
+    {
+      "name": "Carpet01",
+      "asset_id": "polygonalmind-lunar-year-006",
+      "file": "models/polygonalmind-lunar-year-006.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        4.659999847412109,
+        0.10122886470261261,
+        12.660001277922166
+      ],
+      "geometry_count": 2,
+      "bytes": 651476,
+      "sha256": "f06bce856d1754771c1480979a5c498c80fdfb42d717cccd6cf0606507f4bb35",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-006.glb"
     },
     {
       "name": "Column",
@@ -17209,7 +19045,7 @@
       "geometry_count": 3,
       "bytes": 1149684,
       "sha256": "005cf8ef86ac974b97cb8069536eef7eabb6965ffa5f7fb9e37497d2ad5af7b7",
-      "role": "structural_column",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-008.glb"
     },
     {
@@ -17226,8 +19062,25 @@
       "geometry_count": 1,
       "bytes": 349528,
       "sha256": "bc4010cbb679df0228408a0798e66e8aef9c40a5506219f3b39cb7853cc7b4eb",
-      "role": "column_foundation",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-009.glb"
+    },
+    {
+      "name": "Cushion",
+      "asset_id": "polygonalmind-lunar-year-010",
+      "file": "models/polygonalmind-lunar-year-010.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.37562747299671173,
+        0.14810412859568256,
+        0.3756271927920056
+      ],
+      "geometry_count": 2,
+      "bytes": 773112,
+      "sha256": "4439d4b579d81a4bd8b0af51190216498a0edcc010c9186c580d6c5340ac41b8",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-010.glb"
     },
     {
       "name": "Door",
@@ -17243,8 +19096,42 @@
       "geometry_count": 3,
       "bytes": 1156376,
       "sha256": "43b5eecf3c92d6599828b20a0d7a25afc6619b9c5c19a78f2b015794fbc41d3b",
-      "role": "main_entrance",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-011.glb"
+    },
+    {
+      "name": "Dragon",
+      "asset_id": "polygonalmind-lunar-year-012",
+      "file": "models/polygonalmind-lunar-year-012.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        15.149353504180908,
+        12.52469474912204,
+        29.682745729266866
+      ],
+      "geometry_count": 2,
+      "bytes": 1294492,
+      "sha256": "ca803cd420f65838e83ae86838817594ba75f90ff98f59a3ce502148252f0868",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-012.glb"
+    },
+    {
+      "name": "Drum",
+      "asset_id": "polygonalmind-lunar-year-013",
+      "file": "models/polygonalmind-lunar-year-013.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.9359233379364014,
+        1.581752354030058,
+        2.011380970478025
+      ],
+      "geometry_count": 2,
+      "bytes": 779740,
+      "sha256": "03916422ad304861ec2a9197a2f31d2ee09c4c1fb0d2f286b9ec3d7727c7c3c4",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-013.glb"
     },
     {
       "name": "EntranceStairs",
@@ -17260,7 +19147,7 @@
       "geometry_count": 2,
       "bytes": 729036,
       "sha256": "2b87098c1f33d1370017cb303cab2e84a588e1892a4df4da66143de6db9dcfdb",
-      "role": "building_entrance_stairs",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-014.glb"
     },
     {
@@ -17277,7 +19164,7 @@
       "geometry_count": 3,
       "bytes": 1149124,
       "sha256": "97981bc60dee871640b0e922693a7c486db1a30001f03373f99bb98ddc61fb70",
-      "role": "courtyard_fence_segment",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-015.glb"
     },
     {
@@ -17294,7 +19181,7 @@
       "geometry_count": 3,
       "bytes": 1167808,
       "sha256": "dc198c0484b0f5f444768b1f429a769143e5adb7de839da3a0a50b5aa1059cb2",
-      "role": "courtyard_fence_enclosure",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-016.glb"
     },
     {
@@ -17311,7 +19198,7 @@
       "geometry_count": 3,
       "bytes": 1220216,
       "sha256": "ee637d69980d4d4f9fd4c09d83a836e70df7a6a05c9dda11e74a8f9090dbe037",
-      "role": "building_shell_variant_01",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-017.glb"
     },
     {
@@ -17328,8 +19215,263 @@
       "geometry_count": 4,
       "bytes": 1552084,
       "sha256": "aef04c2299a4fcb6baf66ef543b74aea2d180f77a6326f8c94f212ee13b59687",
-      "role": "building_shell_variant_02",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-018.glb"
+    },
+    {
+      "name": "InteriorLight05",
+      "asset_id": "polygonalmind-lunar-year-023",
+      "file": "models/polygonalmind-lunar-year-023.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.48742008209228516,
+        2.542682042708195,
+        0.6606732106186706
+      ],
+      "geometry_count": 1,
+      "bytes": 227056,
+      "sha256": "6258b74bd807323425e849e6e8daf4cdefb85552a0c3f783e26e42abc06f971d",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-023.glb"
+    },
+    {
+      "name": "InteriorLight06",
+      "asset_id": "polygonalmind-lunar-year-024",
+      "file": "models/polygonalmind-lunar-year-024.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        3.964702606201172,
+        0.38814877878223514,
+        0.2876053131032971
+      ],
+      "geometry_count": 1,
+      "bytes": 227056,
+      "sha256": "100bd1ba6e71813e9c529a3c6fc2be65310cb15991af467cfae9eec9a166d2ea",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-024.glb"
+    },
+    {
+      "name": "Lamp01",
+      "asset_id": "polygonalmind-lunar-year-025",
+      "file": "models/polygonalmind-lunar-year-025.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.2799999117851257,
+        1.8500001734252844,
+        1.0999999642371505
+      ],
+      "geometry_count": 2,
+      "bytes": 475740,
+      "sha256": "4ecfac12fbafa546b699a08bd14757b3ca517fa4ea50888e6ea5f61451a969f9",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-025.glb"
+    },
+    {
+      "name": "Lamp02",
+      "asset_id": "polygonalmind-lunar-year-026",
+      "file": "models/polygonalmind-lunar-year-026.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.2839352488517761,
+        1.8464117695524453,
+        1.0954707860945228
+      ],
+      "geometry_count": 2,
+      "bytes": 475824,
+      "sha256": "cad903f979bee4107519624e7ffe33db1250b0ef3d7fbf1aebc5776d53fab21e",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-026.glb"
+    },
+    {
+      "name": "Lamp03",
+      "asset_id": "polygonalmind-lunar-year-027",
+      "file": "models/polygonalmind-lunar-year-027.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.399999976158142,
+        1.7800000532623037,
+        1.2699999213217161
+      ],
+      "geometry_count": 2,
+      "bytes": 473340,
+      "sha256": "8f643787e46e47b488454825b96f2313b6be9629ae600500e0f2790d352a5c80",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-027.glb"
+    },
+    {
+      "name": "Lamp04",
+      "asset_id": "polygonalmind-lunar-year-028",
+      "file": "models/polygonalmind-lunar-year-028.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.3992140293121338,
+        1.7788562554710248,
+        1.2708083391188048
+      ],
+      "geometry_count": 2,
+      "bytes": 472732,
+      "sha256": "d5883e9a1d10d1e0d94565057725275ecf395d93cd3e77bd383e3c4fdb3c7672",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-028.glb"
+    },
+    {
+      "name": "LampWreath",
+      "asset_id": "polygonalmind-lunar-year-029",
+      "file": "models/polygonalmind-lunar-year-029.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        6.659115791320801,
+        2.1487885130096895,
+        0.8205642104148398
+      ],
+      "geometry_count": 3,
+      "bytes": 916328,
+      "sha256": "e645e7b12027237afce15e55ad17a01bd0ae0558916782a61cfc37251dfefac7",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-029.glb"
+    },
+    {
+      "name": "LunarYearTile",
+      "asset_id": "polygonalmind-lunar-year-030",
+      "file": "models/polygonalmind-lunar-year-030.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        2.2446391582489014,
+        2.6285212329763623,
+        0.06923109258183834
+      ],
+      "geometry_count": 1,
+      "bytes": 345456,
+      "sha256": "4b4490c110f8f397cae913ddd21c7025e325e35ff92e88684f5b161aa9dbd803",
+      "role": "gates_walls_bridges",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-030.glb"
+    },
+    {
+      "name": "MainAltar",
+      "asset_id": "polygonalmind-lunar-year-031",
+      "file": "models/polygonalmind-lunar-year-031.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        2.9242759943008423,
+        1.2423679063439834,
+        2.076997160362291
+      ],
+      "geometry_count": 4,
+      "bytes": 1574440,
+      "sha256": "9f5ecaf0134c280dda31e6a9d1df8efc0fb3b2ff6ceaad50460bd0a594ff7d35",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-031.glb"
+    },
+    {
+      "name": "OutterLamp",
+      "asset_id": "polygonalmind-lunar-year-032",
+      "file": "models/polygonalmind-lunar-year-032.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.7470312118530273,
+        2.3446640031787562,
+        1.6615260839462245
+      ],
+      "geometry_count": 2,
+      "bytes": 791124,
+      "sha256": "47bb3a7556d4ae85beef6e2230d0e1a222ee4c9f5e4afd02cdc08ac0868116eb",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-032.glb"
+    },
+    {
+      "name": "Poster01",
+      "asset_id": "polygonalmind-lunar-year-037",
+      "file": "models/polygonalmind-lunar-year-037.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        2.6641262769699097,
+        5.251427991369614,
+        0.28078711032849757
+      ],
+      "geometry_count": 2,
+      "bytes": 779892,
+      "sha256": "3341773b49c091cb3ac984c518d34df78bd15ee0093b6ca22de7ee0e676bf5ba",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-037.glb"
+    },
+    {
+      "name": "Poster02",
+      "asset_id": "polygonalmind-lunar-year-038",
+      "file": "models/polygonalmind-lunar-year-038.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.6062275171279907,
+        5.721674685110952,
+        0.28078657388685535
+      ],
+      "geometry_count": 2,
+      "bytes": 779616,
+      "sha256": "6df2def20f595380224a54a97f7ddac86a379a0fe5dc969dfc6903c90c5b3c49",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-038.glb"
+    },
+    {
+      "name": "RobeWreath",
+      "asset_id": "polygonalmind-lunar-year-039",
+      "file": "models/polygonalmind-lunar-year-039.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        6.659115791320801,
+        0.8245688886257296,
+        0.062116062991152625
+      ],
+      "geometry_count": 1,
+      "bytes": 427648,
+      "sha256": "628ac08babc0af55e0bbc8bca1d7c8d3dd2b4801796218e5f0e597a2d8106d36",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-039.glb"
+    },
+    {
+      "name": "Rock01",
+      "asset_id": "polygonalmind-lunar-year-040",
+      "file": "models/polygonalmind-lunar-year-040.glb",
+      "category": "nature",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.1598767042160034,
+        0.48106726553783563,
+        1.0825951695440987
+      ],
+      "geometry_count": 1,
+      "bytes": 373476,
+      "sha256": "3eb8635d757b502de719f33df380a9301ce457a690e88226958490e840a98d0b",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-040.glb"
+    },
+    {
+      "name": "Rock02",
+      "asset_id": "polygonalmind-lunar-year-041",
+      "file": "models/polygonalmind-lunar-year-041.glb",
+      "category": "nature",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.8099523186683655,
+        0.9207998232476339,
+        1.6757691434056337
+      ],
+      "geometry_count": 1,
+      "bytes": 375116,
+      "sha256": "18d467a7a703a164a8e302e51f666d696b2775b95cbf94c7a3fe2aca7bcec298",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-041.glb"
     },
     {
       "name": "RoomDoor",
@@ -17345,7 +19487,7 @@
       "geometry_count": 2,
       "bytes": 726336,
       "sha256": "0a964863229c31d5304b97cc9236aef68eedc55c49293ea834c3f43198fe5c48",
-      "role": "room_door_module",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-042.glb"
     },
     {
@@ -17362,7 +19504,7 @@
       "geometry_count": 1,
       "bytes": 351792,
       "sha256": "623625d569da9136800426bc3dbf662c221d448c34c4a7ac9bfd310e3c9e9815",
-      "role": "room_floor_module",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-043.glb"
     },
     {
@@ -17379,7 +19521,7 @@
       "geometry_count": 2,
       "bytes": 799664,
       "sha256": "2da77e87ba590697de0e860b9a304f13a5afd1ffeaac4dda9b8d1755001ac63a",
-      "role": "room_roof_module",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-044.glb"
     },
     {
@@ -17396,7 +19538,7 @@
       "geometry_count": 3,
       "bytes": 1161396,
       "sha256": "9d418f9c66580909129de1fec150d0ad2b3e65d3b6dc05712ebbb43973ddb57e",
-      "role": "roof_beam_structure",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-045.glb"
     },
     {
@@ -17413,25 +19555,671 @@
       "geometry_count": 2,
       "bytes": 723140,
       "sha256": "c10cad25c956e339f1ddf9d80126e57144c82bf71e413d398a70a7e4d5632b11",
-      "role": "room_wall_module",
+      "role": "gates_walls_bridges",
       "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-046.glb"
     },
     {
-      "name": "Buddhist Temple Pagoda",
-      "asset_id": "innerscene-buddhist-temple-pagoda-c5ebacdc",
-      "file": "models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb",
-      "category": "palaces_and_temples",
+      "name": "Table01",
+      "asset_id": "polygonalmind-lunar-year-048",
+      "file": "models/polygonalmind-lunar-year-048.glb",
+      "category": "statues_and_props",
       "style_group": "imperial_chinese",
       "dimensions_m": [
-        14.800000190734863,
-        33.995201110839844,
-        14.800000190734863
+        1.9098873734474182,
+        0.7883182191721737,
+        1.060589929736791
       ],
-      "geometry_count": 19,
-      "bytes": 18840512,
-      "sha256": "2653c57850f3d0401a1c21177a3a7f50dfa48711c49078979f25bbf0fed2363e",
-      "role": "complete_pagoda_landmark",
-      "active_project_path": "assets/twin_city_selected/models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb"
+      "geometry_count": 4,
+      "bytes": 1546404,
+      "sha256": "563105d724482548a1c1bba8e417ef53ab24d8a547aea27bafcd9ee933a514bc",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-048.glb"
+    },
+    {
+      "name": "Table02",
+      "asset_id": "polygonalmind-lunar-year-049",
+      "file": "models/polygonalmind-lunar-year-049.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.913130760192871,
+        0.7883182191720399,
+        1.0612477180522766
+      ],
+      "geometry_count": 5,
+      "bytes": 1768704,
+      "sha256": "b02d435ebae66c84758763b3217cbec2f6f86202dc6987deb1063ecc87e4b221",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-049.glb"
+    },
+    {
+      "name": "TigerLogo",
+      "asset_id": "polygonalmind-lunar-year-051",
+      "file": "models/polygonalmind-lunar-year-051.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        2.2021703720092773,
+        2.202177047729491,
+        0.3238537324359456
+      ],
+      "geometry_count": 3,
+      "bytes": 835520,
+      "sha256": "401d39e2f1fdeb9f9346477e9bcde917f7867bcd3fbbe68613b577f02bb4c978",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-051.glb"
+    },
+    {
+      "name": "UpperLights02",
+      "asset_id": "polygonalmind-lunar-year-052",
+      "file": "models/polygonalmind-lunar-year-052.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.19141234457492828,
+        0.3932330635369654,
+        0.19141235202548745
+      ],
+      "geometry_count": 1,
+      "bytes": 1816,
+      "sha256": "31f4cafbc69e76cc919cf47e4e2b7bb900421dc20253b619f8af32f05934046b",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-lunar-year-052.glb"
+    },
+    {
+      "name": "Brick Step 01 Art",
+      "asset_id": "polygonalmind-momuspark-002",
+      "file": "models/polygonalmind-momuspark-002.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        5.818917989730835,
+        1.109170482948015,
+        1.500000456383928
+      ],
+      "geometry_count": 3,
+      "bytes": 776288,
+      "sha256": "5624fd3f85f1abe859bd25b7cd27b9eeec1f322ae3fc43df7bc6c55ebb8ce04c",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-002.glb"
+    },
+    {
+      "name": "Bush 01 Art",
+      "asset_id": "polygonalmind-momuspark-003",
+      "file": "models/polygonalmind-momuspark-003.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.3984304666519165,
+        1.3598478546920918,
+        1.5911212596656874
+      ],
+      "geometry_count": 3,
+      "bytes": 950792,
+      "sha256": "a2d33b4050c5bfa6a6ac191981a1422e15372ce37d852dac9b0723bebe51345d",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-003.glb"
+    },
+    {
+      "name": "Bush 02 Art",
+      "asset_id": "polygonalmind-momuspark-004",
+      "file": "models/polygonalmind-momuspark-004.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.852718472480774,
+        1.3562491571195714,
+        1.5737579182121832
+      ],
+      "geometry_count": 3,
+      "bytes": 956044,
+      "sha256": "a3c48d0f6f784a014bee8c1e56c830b5af443387511b92b3294ad86d42f5fd9e",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-004.glb"
+    },
+    {
+      "name": "Bush 03 art",
+      "asset_id": "polygonalmind-momuspark-005",
+      "file": "models/polygonalmind-momuspark-005.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.797047734260559,
+        1.6784930835712935,
+        1.4033808151927705
+      ],
+      "geometry_count": 4,
+      "bytes": 1323548,
+      "sha256": "a20259062346b82cf2fa6c307b3d784dcc5c0828625fccb42cf0c96b89d08f0c",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-005.glb"
+    },
+    {
+      "name": "Flower 01 a",
+      "asset_id": "polygonalmind-momuspark-014",
+      "file": "models/polygonalmind-momuspark-014.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.1457679271697998,
+        0.8120337030668329,
+        0.3499642392684837
+      ],
+      "geometry_count": 1,
+      "bytes": 401260,
+      "sha256": "70570798a4383228989328e53b56d38c56ed5be15c6da0b9f30f85d4e486222a",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-014.glb"
+    },
+    {
+      "name": "Flower 01 b",
+      "asset_id": "polygonalmind-momuspark-015",
+      "file": "models/polygonalmind-momuspark-015.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.2444702610373497,
+        1.0832902152206354,
+        0.4959200224257463
+      ],
+      "geometry_count": 1,
+      "bytes": 404244,
+      "sha256": "42628b3f385156266043875834668f1ff00bf8ecf58973c4244f77995a9b6965",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-015.glb"
+    },
+    {
+      "name": "Flower 02 a Art",
+      "asset_id": "polygonalmind-momuspark-016",
+      "file": "models/polygonalmind-momuspark-016.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.7930687665939331,
+        0.8551559602864233,
+        0.5494196539591526
+      ],
+      "geometry_count": 3,
+      "bytes": 513432,
+      "sha256": "68509b105470d87029717702f950e81580a0e8366ae1082fc8bf26433c5448a5",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-016.glb"
+    },
+    {
+      "name": "Flower 02 b Art",
+      "asset_id": "polygonalmind-momuspark-017",
+      "file": "models/polygonalmind-momuspark-017.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.5960758924484253,
+        0.784943495001505,
+        0.5960758924483511
+      ],
+      "geometry_count": 3,
+      "bytes": 508376,
+      "sha256": "f4b1b1f6a9a71620b442b090ba156dceaea2e0dfead169bcedf017ba02da1276",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-017.glb"
+    },
+    {
+      "name": "Flower 03 a",
+      "asset_id": "polygonalmind-momuspark-018",
+      "file": "models/polygonalmind-momuspark-018.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.7366082072257996,
+        0.8591410024038432,
+        0.7791742559464048
+      ],
+      "geometry_count": 1,
+      "bytes": 408824,
+      "sha256": "b2898203dd3a2f9408be6d67261e76bbd73195b7246b5199e3a017f38861f4ae",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-018.glb"
+    },
+    {
+      "name": "Flower 03 b",
+      "asset_id": "polygonalmind-momuspark-019",
+      "file": "models/polygonalmind-momuspark-019.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.9723778069019318,
+        1.0541414750670142,
+        0.9650261341226368
+      ],
+      "geometry_count": 1,
+      "bytes": 416896,
+      "sha256": "0991685f49d3f5a68e6cad3c2d69f6b27450906d2dbf58d26f3c552ddad73a3d",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-019.glb"
+    },
+    {
+      "name": "Log 01 Art",
+      "asset_id": "polygonalmind-momuspark-023",
+      "file": "models/polygonalmind-momuspark-023.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        3.272268533706665,
+        1.4789152216886987,
+        1.3389836519988991
+      ],
+      "geometry_count": 3,
+      "bytes": 929080,
+      "sha256": "1c050d696f56ee49bf6399fc2aa29c737b32afdfd1c4a2f2d2a98c56bfe0d023",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-023.glb"
+    },
+    {
+      "name": "MOMUS Logo Top",
+      "asset_id": "polygonalmind-momuspark-024",
+      "file": "models/polygonalmind-momuspark-024.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        6.0,
+        6.1499196507900775,
+        1.2500024908302148
+      ],
+      "geometry_count": 1,
+      "bytes": 48536,
+      "sha256": "e7cd9782cf4eb23bf625bcdeae14de6c06a6ee75aa57ecb0009a1b8706dfb52a",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-024.glb"
+    },
+    {
+      "name": "Mushroom 01 Art",
+      "asset_id": "polygonalmind-momuspark-027",
+      "file": "models/polygonalmind-momuspark-027.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.8176791071891785,
+        0.5612913039531896,
+        0.8481097962524982
+      ],
+      "geometry_count": 4,
+      "bytes": 1092992,
+      "sha256": "db3ef1ec8b1302f90bfed87a19753f8847697145f6e1bd04a4923695cf9e41b5",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-027.glb"
+    },
+    {
+      "name": "Mushroom 02 Art",
+      "asset_id": "polygonalmind-momuspark-028",
+      "file": "models/polygonalmind-momuspark-028.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.4279113709926605,
+        0.7604893979815517,
+        0.39082654613757467
+      ],
+      "geometry_count": 4,
+      "bytes": 1092924,
+      "sha256": "eb14f8055ca81d31d439020538a66b49696e768c247f0b7a58f3ce492b80cf29",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-028.glb"
+    },
+    {
+      "name": "Rock 01 Art",
+      "asset_id": "polygonalmind-momuspark-035",
+      "file": "models/polygonalmind-momuspark-035.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        4.242575526237488,
+        2.4714377723498586,
+        3.0336477756496905
+      ],
+      "geometry_count": 3,
+      "bytes": 860644,
+      "sha256": "9ae59be7491a9c050a7f39c79557bf9265b193f0e563e2bf0a83df18b448efed",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-035.glb"
+    },
+    {
+      "name": "Rock 02 Art",
+      "asset_id": "polygonalmind-momuspark-036",
+      "file": "models/polygonalmind-momuspark-036.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.672234892845154,
+        2.5458687536717544,
+        1.6506499750463868
+      ],
+      "geometry_count": 2,
+      "bytes": 315076,
+      "sha256": "6333edc24b3c18c448a1e00a066cf3e5036c008cafb146e57f4fd12155b2d579",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-036.glb"
+    },
+    {
+      "name": "Rock 03 Art",
+      "asset_id": "polygonalmind-momuspark-037",
+      "file": "models/polygonalmind-momuspark-037.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        6.821284770965576,
+        4.434256887888707,
+        4.9119547962865475
+      ],
+      "geometry_count": 3,
+      "bytes": 732348,
+      "sha256": "bc34537761267e8fcbe50cbac7d3640137b3a3e48af5ffc6605db48e5b38a420",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-037.glb"
+    },
+    {
+      "name": "Rock 04 Art",
+      "asset_id": "polygonalmind-momuspark-038",
+      "file": "models/polygonalmind-momuspark-038.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        3.240535259246826,
+        1.693841466073811,
+        2.7631676348963032
+      ],
+      "geometry_count": 2,
+      "bytes": 319944,
+      "sha256": "771f6fc951f8b6459833331d8da6415c7f1f11287c98b8c46e244b0511ae8fe6",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-038.glb"
+    },
+    {
+      "name": "Rock 05 Art",
+      "asset_id": "polygonalmind-momuspark-039",
+      "file": "models/polygonalmind-momuspark-039.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.7449430227279663,
+        2.605946882133323,
+        2.376461783614423
+      ],
+      "geometry_count": 2,
+      "bytes": 454176,
+      "sha256": "e61666e2a842d9bb2067ac110a1ac61aa33afea0cc6351bdb87a95c823a9173b",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-039.glb"
+    },
+    {
+      "name": "Root 01 Art",
+      "asset_id": "polygonalmind-momuspark-040",
+      "file": "models/polygonalmind-momuspark-040.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        4.550517320632935,
+        1.7181259470476022,
+        1.3460781333374507
+      ],
+      "geometry_count": 2,
+      "bytes": 463192,
+      "sha256": "a9635bf9f042fcaa100810797afdddf7f33d966509bb704f7b68f1d258441236",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-040.glb"
+    },
+    {
+      "name": "Root 02 Art",
+      "asset_id": "polygonalmind-momuspark-041",
+      "file": "models/polygonalmind-momuspark-041.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        5.03058592770408,
+        1.7059634241175319,
+        1.4296029927205796
+      ],
+      "geometry_count": 2,
+      "bytes": 460004,
+      "sha256": "8bdec99c2eb828861852b507c2d072513c8fcb3d9d04ea42cfd98bd7c0fc2a64",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-041.glb"
+    },
+    {
+      "name": "Terrain Amount 01 Art",
+      "asset_id": "polygonalmind-momuspark-055",
+      "file": "models/polygonalmind-momuspark-055.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        8.996413230895996,
+        1.5956499278142804,
+        5.020657420157819
+      ],
+      "geometry_count": 4,
+      "bytes": 1513940,
+      "sha256": "088df3427c3564d759dddf48698cd63057e7c363c3ca68c620d632dfe5466cdf",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-055.glb"
+    },
+    {
+      "name": "Terrain Amount 02 Art",
+      "asset_id": "polygonalmind-momuspark-056",
+      "file": "models/polygonalmind-momuspark-056.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        9.048834800720215,
+        2.4378013190442953,
+        5.020657300948489
+      ],
+      "geometry_count": 4,
+      "bytes": 1516604,
+      "sha256": "39085eeb19259b80dbc37f68cb54c2d408cea9ae33748692488e3ec0202aa638",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-056.glb"
+    },
+    {
+      "name": "Tree 01 Art",
+      "asset_id": "polygonalmind-momuspark-057",
+      "file": "models/polygonalmind-momuspark-057.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        15.933727264404297,
+        12.09825597976275,
+        9.754518119609639
+      ],
+      "geometry_count": 3,
+      "bytes": 1015676,
+      "sha256": "b1bd45d8985cbcb74aa525f1cf166dc04c8d7db16bf73e30748cac8aa13e2fa1",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-057.glb"
+    },
+    {
+      "name": "Tree 02 Art",
+      "asset_id": "polygonalmind-momuspark-058",
+      "file": "models/polygonalmind-momuspark-058.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        12.794250965118408,
+        11.769409595650302,
+        14.030981632943293
+      ],
+      "geometry_count": 3,
+      "bytes": 1016528,
+      "sha256": "2d4ec6645b47c86990d254a13a96c5e1dcd4bd0b70a3120772e608d9ffeff41a",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-058.glb"
+    },
+    {
+      "name": "Tree 03 Art",
+      "asset_id": "polygonalmind-momuspark-059",
+      "file": "models/polygonalmind-momuspark-059.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.523973464965821,
+        2.759540438652039,
+        2.3095782995224
+      ],
+      "geometry_count": 4,
+      "bytes": 1406868,
+      "sha256": "b1017ccc095314681323fe972b36a20063457a926a85d19339cf6ac70f280a3f",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-059.glb"
+    },
+    {
+      "name": "Tree 04 Art",
+      "asset_id": "polygonalmind-momuspark-060",
+      "file": "models/polygonalmind-momuspark-060.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        8.571818351745605,
+        14.522020816802982,
+        6.6393778324127215
+      ],
+      "geometry_count": 4,
+      "bytes": 1404208,
+      "sha256": "89a0d7c68269390cb26e2f2bbe42a02bc8514b969f983483cabc86e803068d8b",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-060.glb"
+    },
+    {
+      "name": "Tree Trunk 01 Art",
+      "asset_id": "polygonalmind-momuspark-061",
+      "file": "models/polygonalmind-momuspark-061.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        3.4175479412078857,
+        3.0210620060016358,
+        3.2556629134556014
+      ],
+      "geometry_count": 4,
+      "bytes": 1230184,
+      "sha256": "e676d0aab63f7f0d5da0361f53cea7a1d677035b885dce3f37326859deb8979e",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-061.glb"
+    },
+    {
+      "name": "Water Fall 01 Art.001",
+      "asset_id": "polygonalmind-momuspark-063",
+      "file": "models/polygonalmind-momuspark-063.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        5.117891334449181,
+        14.871271371845866,
+        2.7741088725427883
+      ],
+      "geometry_count": 1,
+      "bytes": 591016,
+      "sha256": "dee602c14735498fd446ff1aca9a8a2566e066c10ff2a7f982ee09dd7ff1587c",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-063.glb"
+    },
+    {
+      "name": "Water Fall 01 Art",
+      "asset_id": "polygonalmind-momuspark-064",
+      "file": "models/polygonalmind-momuspark-064.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        5.117891311645508,
+        14.871271006034739,
+        2.774113900936451
+      ],
+      "geometry_count": 1,
+      "bytes": 590992,
+      "sha256": "0c782e8b163fc98b105bcc75a6fda994a002e30f53e2642f8b39c3934feef6f5",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-064.glb"
+    },
+    {
+      "name": "Water Fall 02 Art",
+      "asset_id": "polygonalmind-momuspark-065",
+      "file": "models/polygonalmind-momuspark-065.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.5916810035705566,
+        14.871274617696828,
+        3.379803188123372
+      ],
+      "geometry_count": 1,
+      "bytes": 590984,
+      "sha256": "ccfd549f23bd03a3eb20414f3d1046b3bf7c5b12732028da38a652e56f513612",
+      "role": "nature",
+      "active_project_path": "assets/twin_city_selected/models/polygonalmind-momuspark-065.glb"
+    },
+    {
+      "name": "Baluster vase, from a five-piece garniture (F1980.190-.194)",
+      "asset_id": "smithsonian-Baluster_vase_from_a_five-piece_garniture_F1980.190-.194_",
+      "file": "models/smithsonian-Baluster_vase_from_a_five-piece_garniture_F1980.190-.194_.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.41053301095962524,
+        0.1708737462759018,
+        0.27804887294769287
+      ],
+      "geometry_count": 1,
+      "bytes": 557224,
+      "sha256": "9db27093998672468614d6d39f436a8a3208d2307745c861c8b3e63351cee524",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/smithsonian-Baluster_vase_from_a_five-piece_garniture_F1980.190-.194_.glb"
+    },
+    {
+      "name": "Baluster vase, one of three in a five-piece garniture (F1980.190--194)",
+      "asset_id": "smithsonian-Baluster_vase_one_of_three_in_a_five-piece_garniture_F1980.190--194_",
+      "file": "models/smithsonian-Baluster_vase_one_of_three_in_a_five-piece_garniture_F1980.190--194_.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.35690489411354065,
+        0.17215333878993988,
+        0.36401498317718506
+      ],
+      "geometry_count": 1,
+      "bytes": 551712,
+      "sha256": "92aff6e0811ae32dafff5ec95a492d3e7eefaff902c2a80f20b95c41032737c0",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/smithsonian-Baluster_vase_one_of_three_in_a_five-piece_garniture_F1980.190--194_.glb"
+    },
+    {
+      "name": "Beaker-shaped vase, from a five-piece garniture",
+      "asset_id": "smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture",
+      "file": "models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.2030993103981018,
+        0.20370832085609436,
+        0.4338168799877167
+      ],
+      "geometry_count": 1,
+      "bytes": 535208,
+      "sha256": "d7a736335096131cc814af11cb2cc6c38212551de3d0dbeb3cd46c3e438b53f6",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture.glb"
+    },
+    {
+      "name": "Beaker-shaped vase, from a five-piece garniture (F1980.190-.194)",
+      "asset_id": "smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture_F1980.190-.194_",
+      "file": "models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture_F1980.190-.194_.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        0.21061305701732635,
+        0.2108980417251587,
+        0.4244125187397003
+      ],
+      "geometry_count": 1,
+      "bytes": 544188,
+      "sha256": "70cae3568dfade5ca57aecf1e437f710f818f1c21d32d19a709deea75198dd90",
+      "role": "statues_and_props",
+      "active_project_path": "assets/twin_city_selected/models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture_F1980.190-.194_.glb"
     }
   ]
 }
