@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://ylyrj8sqmhy1"
-valid=false
+path="res://.godot/imported/willow_tree.glb-9a3d6fbee058df8460c793082c50b35b.scn"
 
 [deps]
 
 source_file="res://assets/twin_city_selected/external/nature/willow_tree.glb"
+dest_files=["res://.godot/imported/willow_tree.glb-9a3d6fbee058df8460c793082c50b35b.scn"]
 
 [params]
 

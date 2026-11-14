@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cnih4crafa0ce"
-valid=false
+path="res://.godot/imported/alpine_and_arctic_biomes.glb-f9c5085ba2079d9591cbd5bce12bb2f7.scn"
 
 [deps]
 
 source_file="res://assets/twin_city_selected/external/nature/alpine_and_arctic_biomes.glb"
+dest_files=["res://.godot/imported/alpine_and_arctic_biomes.glb-f9c5085ba2079d9591cbd5bce12bb2f7.scn"]
 
 [params]
 

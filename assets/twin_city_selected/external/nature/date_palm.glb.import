@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://gexa12gi06p2"
-valid=false
+path="res://.godot/imported/date_palm.glb-43b08451fb88f677bbf6408fe34e38ea.scn"
 
 [deps]
 
 source_file="res://assets/twin_city_selected/external/nature/date_palm.glb"
+dest_files=["res://.godot/imported/date_palm.glb-43b08451fb88f677bbf6408fe34e38ea.scn"]
 
 [params]
 

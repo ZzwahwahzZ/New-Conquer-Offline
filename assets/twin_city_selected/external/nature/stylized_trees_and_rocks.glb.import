@@ -4,11 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bjuxtsuf83k5n"
-valid=false
+path="res://.godot/imported/stylized_trees_and_rocks.glb-22c38df997b16ecf6e336a9052b4aa0a.scn"
 
 [deps]
 
 source_file="res://assets/twin_city_selected/external/nature/stylized_trees_and_rocks.glb"
+dest_files=["res://.godot/imported/stylized_trees_and_rocks.glb-22c38df997b16ecf6e336a9052b4aa0a.scn"]
 
 [params]
 

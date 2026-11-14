@@ -6985,8 +6985,8 @@
         131068.0
       ],
       "geometry_count": 115,
-      "bytes": 425336,
-      "sha256": "26b7468ea2ce3d73983b8d7bed77fa80b9bd772e35112cc7ea48be6a5138c730",
+      "bytes": 639228,
+      "sha256": "0a5d1724fb502685dc8fc806eb2b8d671308c2b79a39ba5181a90587b3c39df1",
       "role": "environmental_candidate",
       "active_project_path": "assets/twin_city_selected/external/nature/alpine_and_arctic_biomes.glb"
     },
@@ -7002,8 +7002,8 @@
         142097.3081510067
       ],
       "geometry_count": 3,
-      "bytes": 306500,
-      "sha256": "0e1a03139703a37ffb709a5064baf00aa0e4bb8cfc4070493b7022875f03b575",
+      "bytes": 504364,
+      "sha256": "77c75120a4994fab1342e9047599a43d0ce0541025258fc6acb2719728d7a64a",
       "role": "environmental_candidate",
       "active_project_path": "assets/twin_city_selected/external/nature/date_palm.glb"
     },
@@ -7019,8 +7019,8 @@
         442002.64980487945
       ],
       "geometry_count": 110,
-      "bytes": 685404,
-      "sha256": "9912d009c00574fe73d8f01140479e92d96fd377e7452a55c17eec41af40fe22",
+      "bytes": 1031880,
+      "sha256": "56a38ba6300a5696b94e3955bcdb6c00d23f61eb9f1606560e7fc4e3c458871c",
       "role": "environmental_candidate",
       "active_project_path": "assets/twin_city_selected/external/nature/stylized_trees_and_rocks.glb"
     },
@@ -7036,8 +7036,8 @@
         168099.37767004967
       ],
       "geometry_count": 2,
-      "bytes": 29152,
-      "sha256": "6985777fdf4d6e3a302644f500907365dda56988a380afc4e604e39671a51636",
+      "bytes": 44808,
+      "sha256": "807f92cce54039cf89d8be08a4d0a47858cd9e14a124bd166dc66ef6b9b648c2",
       "role": "environmental_candidate",
       "active_project_path": "assets/twin_city_selected/external/nature/willow_tree.glb"
     }
