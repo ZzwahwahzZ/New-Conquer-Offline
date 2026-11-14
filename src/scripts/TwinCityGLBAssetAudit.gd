@@ -15,7 +15,7 @@ func _audit() -> void:
 		return
 	var parsed: Variant = JSON.parse_string(manifest_file.get_as_text())
 	manifest_file.close()
-	if not parsed is Dictionary or not parsed.has("assets") or not parsed.assets is Array:
+	if not (parsed is Dictionary) or not parsed.has("assets") or not (parsed["assets"] is Array):
 		push_error("TWIN_CITY_GLB_AUDIT_FAIL: active selection manifest is invalid")
 		quit(1)
 		return
