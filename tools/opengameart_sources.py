@@ -22,6 +22,7 @@ SOURCES = [
     {"slug":"wooden-bridge-0","page":"https://opengameart.org/content/wooden-bridge-0","creator":"JamesWhite","category":"architecture","term":"wooden bridge"},
     {"slug":"basic-wooden-fence","page":"https://opengameart.org/content/basic-wooden-fence","creator":"WeaponGuy","category":"architecture","term":"wooden fence gate"},
     {"slug":"dragon","page":"https://opengameart.org/content/dragon","creator":"Bitiquinho","category":"ornaments","term":"dragon model"},
+    {"slug":"treasure-chest-mimic","page":"https://opengameart.org/content/treasure-chest-mimic","creator":"Arrangemonk","category":"ornaments","term":"treasure chest loot container"},
     {"slug":"free-bamboo-v1","page":"https://opengameart.org/content/free-bamboo-v1","creator":"Yughues","category":"nature","term":"bamboo"},
     {"slug":"stylized-nature-megakit","page":"https://opengameart.org/content/stylized-nature-megakit","creator":"Quaternius","category":"nature","term":"nature pack"},
     {"slug":"pbr-marble-and-tile-texture-set","page":"https://opengameart.org/content/pbr-marble-and-tile-texture-set","creator":"Vosuna","category":"pbr","term":"marble and tile PBR textures"},
