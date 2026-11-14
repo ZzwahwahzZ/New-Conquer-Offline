@@ -287,3 +287,48 @@ def discover_polygonal_mind(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPE
         if downloaded >= 100:
             break
     print("POLYGONAL_MIND_SOURCE_COUNTS", {"downloaded": downloaded})
+
+
+def discover_innerscene_curated(fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPED):
+    """Fetch two individually verified, relevant CC0 GLBs through Innerscene's official download links."""
+    assets = (
+        {
+            "id": "innerscene-buddhist-temple-pagoda-c5ebacdc",
+            "name": "Buddhist Temple Pagoda",
+            "page": "https://www.innerscene.com/tools/library/3d-parts/buddhist-temple-pagoda-c5ebacdc",
+            "download": "https://www.innerscene.com/api/library/buddhist-temple-pagoda-c5ebacdc/download",
+            "category": "palaces_and_temples",
+            "tags": "East Asian Buddhist temple five storey timber pagoda imperial architecture",
+            "creator": "Innerscene",
+        },
+        {
+            "id": "innerscene-japanese-maple-tree-565c1604",
+            "name": "Japanese Maple Tree",
+            "page": "https://www.innerscene.com/tools/library/3d-parts/japanese-maple-tree-565c1604",
+            "download": "https://www.innerscene.com/api/library/japanese-maple-tree-565c1604/download",
+            "category": "nature",
+            "tags": "Japanese maple tree East Asian landscape nature",
+            "creator": "Innerscene",
+        },
+    )
+    count = 0
+    for item in assets:
+        if _known(DISC, item["id"], item["page"]):
+            SKIPPED.append({"asset": item["id"], "stage": "dedup",
+                            "reason": "Exact source page already exists in the approved manifest"})
+            continue
+        rec = {
+            "id": item["id"], "name": item["name"], "source": "Innerscene",
+            "source_url": item["page"], "download_url": item["download"],
+            "license": "CC0 1.0", "authors": {"creator": item["creator"]},
+            "target_category": item["category"], "api_metadata": {"tags": item["tags"]},
+            "matches": [(item["category"], item["tags"])],
+        }
+        try:
+            raw = fetch(item["download"], RAW / "innerscene" / (safe(item["id"]) + ".glb"))
+            DISC.append(rec)
+            DOWN.append({**rec, "raw": str(raw), "download_sha256": sha(raw)})
+            count += 1
+        except Exception as exc:
+            ERR.append({"asset": item["id"], "stage": "download", "reason": str(exc)})
+    print("INNERSCENE_SOURCE_COUNTS", {"downloaded": count})
