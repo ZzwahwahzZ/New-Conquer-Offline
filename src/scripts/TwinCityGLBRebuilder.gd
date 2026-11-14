@@ -98,14 +98,16 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 			pos = Vector3(-along, 0.0, 215.0) if side == 2 else pos
 			pos = Vector3(215.0, 0.0, -along) if side == 3 else pos
 			_clone_source_model(fort, source, wall_template, "TwinCity_ImperialWall_%02d_%02d" % [side, segment], pos, yaw, 1.45, "")
-		_clone_source_model(fort, source, corner_template, "TwinCity_ImperialWallCorner_%02d" % side, Vector3(cos(yaw + PI * 0.25) * 215.0, 0.0, sin(yaw + PI * 0.25) * 215.0), yaw, 1.4, "")
+		var corner_positions := [Vector3(-215.0, 0.0, -215.0), Vector3(215.0, 0.0, -215.0), Vector3(215.0, 0.0, 215.0), Vector3(-215.0, 0.0, 215.0)]
+		_clone_source_model(fort, source, corner_template, "TwinCity_ImperialWallCorner_%02d" % side, corner_positions[side], yaw, 1.4, "")
 
-		var gate_center := Vector3(cos(yaw) * 215.0, 0.0, sin(yaw) * 215.0)
+		var gate_direction := Vector3(sin(yaw), 0.0, -cos(yaw))
+		var gate_center := gate_direction * 215.0
 		_clone_source_model(fort, source, moon_gate_template, "TwinCity_ImperialMoonGate_%02d" % side, gate_center, yaw, 1.55, "")
 		_clone_source_model(fort, source, end_pier_template, "TwinCity_ImperialGatePierA_%02d" % side, gate_center + Vector3(-sin(yaw) * 18.0, 0.0, cos(yaw) * 18.0), yaw, 1.5, "")
 		_clone_source_model(fort, source, end_pier_template, "TwinCity_ImperialGatePierB_%02d" % side, gate_center + Vector3(sin(yaw) * 18.0, 0.0, -cos(yaw) * 18.0), yaw, 1.5, "")
 		_clone_source_model(fort, source, "131-gate-tower", "TwinCity_GrandGateTower_%02d" % side, gate_center, yaw, 1.35, "")
-		_clone_source_model(fort, source, "135-arched-stone-bridge", "TwinCity_GrandStoneBridge_%02d" % side, gate_center + Vector3(cos(yaw) * 12.0, 0.0, sin(yaw) * 12.0), yaw, 1.7, "")
+		_clone_source_model(fort, source, "135-arched-stone-bridge", "TwinCity_GrandStoneBridge_%02d" % side, gate_center + gate_direction * 12.0, yaw, 1.7, "")
 
 static func _build_full_city_paving(parent: Node3D, source: Node3D) -> void:
 	var template := source.find_child("059-courtyard-paving-module", true, false) as Node3D
@@ -180,7 +182,7 @@ static func _build_districts(parent: Node3D, source: Node3D) -> Dictionary:
 		if _spawn_glb(districts, HANOK_OUTBUILDING, "TwinCity_service_%03d" % census.service, service_pos, rotation, 1.35, "service"):
 			census.service += 1
 		if block < 11:
-			var landmark_pos := center + Basis(Vector3.UP, rotation) * Vector3(0.0, 0.0, 0.0)
+			var landmark_pos := center + Basis(Vector3.UP, rotation) * Vector3(0.0, 0.0, 43.0)
 			if block % 2 == 0:
 				if _clone_source_model(districts, source, "134-water-pavilion", "TwinCity_landmark_%03d" % census.landmark, landmark_pos, rotation, 0.78, "landmark"):
 					census.landmark += 1
@@ -217,7 +219,7 @@ static func _build_districts(parent: Node3D, source: Node3D) -> Dictionary:
 
 	for i in range(8):
 		var angle := TAU * float(i) / 8.0
-		var pos := Vector3(cos(angle) * 42.0, 0.0, -108.0 + sin(angle) * 34.0)
+		var pos := Vector3(cos(angle) * 80.0, 0.0, -108.0 + sin(angle) * 80.0)
 		var template_name := "130-ceremonial-hall" if i % 2 == 0 else "134-water-pavilion"
 		if _clone_source_model(districts, source, template_name, "TwinCity_palace_annex_%03d" % census.palace_annex, pos, -angle, 0.86, "palace_annex"):
 			census.palace_annex += 1
