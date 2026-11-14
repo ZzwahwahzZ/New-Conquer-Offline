@@ -19,7 +19,8 @@ func _ready() -> void:
 	_build_environment()
 	_build_asset_slots()
 	_build_terrain_shell()
-	if settlement_id == "TwinCity":
+	var city_id := "twin_city" if settlement_id == "TwinCity" else settlement_id.to_lower()
+	if city_id == "twin_city":
 		CityArchitectureBuilder.build_twin_city(get_node("ArchitectureAssetSlot"))
 	else:
 		CityArchitectureBuilder.build(get_node("ArchitectureAssetSlot"), settlement_id, 450.0)
@@ -41,6 +42,11 @@ func _build_environment() -> void:
 	environment.sky = sky
 	environment.background_color = sky_color
 	environment.tonemap_mode = Environment.TONE_MAPPER_ACES
+	if settlement_id == "TwinCity":
+		environment.adjustment_enabled = true
+		environment.adjustment_brightness = 0.94
+		environment.adjustment_contrast = 1.04
+		environment.adjustment_saturation = 0.92
 	environment.ssao_enabled = true
 	environment.ssao_radius = 2.4
 	environment.ssao_intensity = 1.35
@@ -61,7 +67,7 @@ func _build_environment() -> void:
 	var sun := DirectionalLight3D.new()
 	sun.name = "SettlementSun"
 	sun.rotation_degrees = Vector3(-45,-32,0)
-	sun.light_energy = 0.78
+	sun.light_energy = 0.72
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 220.0
 	sun.shadow_bias = 0.04
