@@ -47,7 +47,7 @@ func _run_audit() -> void:
 						procedural_building_primitives += 1
 	var plaza := city.find_child("CircularImperialPlaza_Diameter56m", true, false)
 	var palace := city.find_child("ImperialPalace_85x75", true, false)
-	var moat := city.find_child("DeepContinuousWaterMoat_440m", true, false)
+	var moat := city.find_child("DeepContinuousWaterMoat_380m", true, false)
 	var pagoda := city.find_child("CentralPagoda_22m", true, false)
 	var paving_names := ["TwinCity_WarmBlockAndCourtyardPaving", "TwinCity_DarkBasaltRoadwayPaving", "TwinCity_CentralPlazaWarmStone", "TwinCity_CentralPlazaDarkStone", "TwinCity_RaisedPaleBlockCurbs"]
 	var paving_instances := 0
