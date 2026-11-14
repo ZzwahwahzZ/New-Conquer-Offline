@@ -509,7 +509,7 @@ def discover_github_open_assets(session, fetch, safe, sha, RAW, DISC, DOWN, ERR,
 
 
 def discover_poly_pizza(session, fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPED):
-    """Use Poly Pizza's published API only; never scrape its website."""
+    """Use Poly Pizza's published v1.1 API only; never scrape its website."""
     token = os.getenv("POLY_PIZZA_KEY", "").strip()
     enabled = os.getenv("POLY_PIZZA_ENABLE", "").strip().lower() == "true"
     if not token or not enabled:
@@ -517,7 +517,8 @@ def discover_poly_pizza(session, fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPED
         SKIPPED.append({"asset":"Poly Pizza","stage":"api_auth_or_cost_gate","reason":reason})
         print("POLY_PIZZA_SOURCE_COUNTS", {"downloaded":0,"api_key_present":bool(token),"enabled":enabled})
         return
-    headers = {"X-Auth-Token": token, "User-Agent":"NewConquerOffline-AssetFetcher/1.0"}
+
+    headers = {"x-auth-token": token, "User-Agent":"NewConquerOffline-AssetFetcher/1.0"}
     queries = (
         ("pagoda", "palaces_and_temples"),
         ("chinese temple", "palaces_and_temples"),
@@ -537,61 +538,113 @@ def discover_poly_pizza(session, fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPED
         ("willow tree", "nature"),
         ("chinese lantern", "statues_and_props"),
     )
-    seen = {str(x.get("api_metadata", {}).get("poly_pizza_id")) for x in DISC if isinstance(x.get("api_metadata"), dict)}
+    seen = {str(x.get("api_metadata", {}).get("poly_pizza_id")) for x in DISC
+            if isinstance(x.get("api_metadata"), dict)}
     downloaded = 0
+    details_checked = 0
     for term, category in queries:
+        if downloaded >= 30:
+            break
         try:
-            url = "https://api.poly.pizza/v1.1/search/" + quote(term, safe="")
-            response = session.get(url, headers=headers, params={"Limit":32}, timeout=(20, 60))
+            search_url = "https://api.poly.pizza/v1.1/search/" + quote(term, safe="")
+            response = session.get(search_url, headers=headers, params={"Limit":32}, timeout=(15, 45))
             response.raise_for_status()
-            models = response.json().get("results", [])
+            search_data = response.json()
+            models = search_data.get("results", []) if isinstance(search_data, dict) else []
         except Exception as exc:
             ERR.append({"asset":"Poly Pizza:"+term,"stage":"api_search","reason":str(exc)})
             continue
+
         for model in models:
+            if downloaded >= 30 or not isinstance(model, dict):
+                break
             uid = str(model.get("ID") or "").strip()
             if not uid or uid in seen:
                 continue
             seen.add(uid)
-            licence = str(model.get("Licence") or "").strip()
+            try:
+                detail_url = "https://api.poly.pizza/v1.1/model/" + quote(uid, safe="")
+                detail_response = session.get(detail_url, headers=headers, timeout=(15, 45))
+                detail_response.raise_for_status()
+                detail = detail_response.json()
+                details_checked += 1
+                if not isinstance(detail, dict):
+                    raise ValueError("Model detail endpoint returned a non-object response")
+            except Exception as exc:
+                ERR.append({"asset":"Poly Pizza:"+uid,"stage":"api_model_detail","reason":str(exc)})
+                continue
+
+            licence = str(detail.get("Licence") or model.get("Licence") or "").strip()
             lower_licence = licence.lower()
+            if any(x in lower_licence for x in ("by-nc","by-nd","noncommercial","non-commercial","no derivatives")):
+                SKIPPED.append({"asset":"Poly Pizza:"+uid,"stage":"license",
+                                "reason":"Non-commercial or no-derivatives license excluded: "+licence})
+                continue
             if "cc0" in lower_licence or "public domain" in lower_licence:
                 license_name, license_url = "CC0 1.0 Universal", "https://creativecommons.org/publicdomain/zero/1.0/"
+            elif "cc-by" in lower_licence or "cc by" in lower_licence or "creative commons attribution" in lower_licence:
+                version_match = re.search(r"(3\.0|4\.0)", lower_licence)
+                if version_match:
+                    version = version_match.group(1)
+                    license_name, license_url = "CC BY " + version, "https://creativecommons.org/licenses/by/" + version + "/"
+                else:
+                    license_name = "CC BY (Poly Pizza API declaration)"
+                    license_url = "https://poly.pizza/m/" + uid
             else:
-                match = re.search(r"cc[- ]?by\s*(3\.0|4\.0)", lower_licence)
-                if not match or any(x in lower_licence for x in ("nc","nd","noncommercial","no derivatives")):
-                    SKIPPED.append({"asset":"Poly Pizza:"+uid,"stage":"license",
-                                    "reason":"Per-model license is not an explicitly supported CC0 or CC-BY 3.0/4.0 license: "+licence})
-                    continue
-                version = match.group(1)
-                license_name, license_url = "CC BY " + version, "https://creativecommons.org/licenses/by/" + version + "/"
-            download_url = str(model.get("Download") or "")
-            if urlparse(download_url).scheme != "https":
-                ERR.append({"asset":"Poly Pizza:"+uid,"stage":"download_url","reason":"Official API returned no HTTPS direct download URL"})
+                SKIPPED.append({"asset":"Poly Pizza:"+uid,"stage":"license",
+                                "reason":"Per-model license is not explicitly CC0 or CC-BY: "+licence})
                 continue
-            creator_data = model.get("Creator") or {}
-            creator = str(creator_data.get("Username") or "Poly Pizza creator")
-            creator_url = str(creator_data.get("PURL") or ("https://poly.pizza/u/" + quote(creator, safe="")))
-            title = str(model.get("Title") or ("Poly Pizza model " + uid))
+
+            download_url = str(detail.get("Download") or "")
+            if urlparse(download_url).scheme != "https":
+                ERR.append({"asset":"Poly Pizza:"+uid,"stage":"download_url",
+                            "reason":"Official model-detail API returned no HTTPS GLB download URL"})
+                continue
+            creator_data = detail.get("Creator") or model.get("Creator") or {}
+            if isinstance(creator_data, dict):
+                creator = str(creator_data.get("Username") or "").strip()
+                creator_url = str(creator_data.get("PURL") or creator_data.get("ProfileURL") or "")
+            else:
+                creator = str(creator_data or "").strip()
+                creator_url = ""
+            attribution = str(detail.get("Attribution") or model.get("Attribution") or "").strip()
+            if not creator and attribution:
+                creator = attribution
+            if not creator:
+                SKIPPED.append({"asset":"Poly Pizza:"+uid,"stage":"attribution",
+                                "reason":"Creator attribution was not exposed by the API; download skipped"})
+                continue
+            title = str(detail.get("Title") or model.get("Title") or ("Poly Pizza model " + uid))
             page = "https://poly.pizza/m/" + uid
+            if not creator_url:
+                creator_url = "https://poly.pizza/u/" + quote(creator, safe="")
             record = {
                 "id":"poly-pizza-"+safe(uid), "name":title, "source":"Poly Pizza",
                 "source_url":page, "download_url":download_url,
                 "license":license_name, "license_url":license_url,
                 "authors":{"creator":creator,"creator_profile":creator_url},
-                "target_category":category,
-                "matches":[(category,term)], "candidate_only":True,
+                "target_category":category, "matches":[(category,term)],
+                "candidate_only":True,
                 "api_metadata":{"poly_pizza_id":uid,"license_as_published":licence,
-                                "tags":model.get("Tags") or [],
-                                "triangle_count":model.get("Tri Count") or model.get("TriangleCount"),
-                                "animated":model.get("Animated"),
+                                "attribution":attribution,"tags":detail.get("Tags") or model.get("Tags") or [],
+                                "triangle_count":detail.get("Tri Count") or model.get("Tri Count"),
+                                "animated":detail.get("Animated",model.get("Animated")),
                                 "format":"GLB"},
             }
             try:
                 raw = fetch(download_url, RAW/"poly_pizza"/(safe(uid)+".glb"))
+                with raw.open("rb") as handle:
+                    magic = handle.read(4)
+                if magic != b"glTF":
+                    raw.unlink(missing_ok=True)
+                    raise ValueError("Poly Pizza CDN returned a non-GLB file or Cloudflare challenge")
                 DISC.append(record)
                 DOWN.append({**record,"raw":str(raw),"download_sha256":sha(raw)})
                 downloaded += 1
             except Exception as exc:
-                ERR.append({"asset":"Poly Pizza:"+uid,"stage":"download","reason":str(exc)})
-    print("POLY_PIZZA_SOURCE_COUNTS", {"downloaded":downloaded,"unique_models_seen":len(seen)})
+                message = str(exc)
+                if "403" in message or "Cloudflare" in message:
+                    message += " (Poly Pizza CDN may block cloud/datacenter IPs; this is separate from API authentication)"
+                ERR.append({"asset":"Poly Pizza:"+uid,"stage":"cdn_download","reason":message})
+    print("POLY_PIZZA_SOURCE_COUNTS", {"downloaded":downloaded,"details_checked":details_checked,
+                                       "unique_models_seen":len(seen)})
