@@ -88,9 +88,27 @@ jobs:
                   payload = fetch(base + item["source_repo_path"])
               if len(payload) <= 1024 or payload[:4] != b"glTF":
                   raise SystemExit(f"Invalid GLB header/size: {relative}, bytes={len(payload)}")
+              # Godot 4.3 does not implement KHR_mesh_quantization. Decode quantized
+              # vertex attributes through trimesh and re-export as ordinary float GLB.
+              import struct, io
+              json_length = struct.unpack_from("<I", payload, 12)[0]
+              gltf_doc = json.loads(payload[20:20+json_length].decode("utf-8").rstrip(" \\0"))
+              used_ext = set(gltf_doc.get("extensionsUsed", [])) | set(gltf_doc.get("extensionsRequired", []))
+              if "KHR_mesh_quantization" in used_ext:
+                  print(f"DEQUANTIZE_START {relative} bytes={len(payload)}")
+                  decoded_scene = trimesh.load(io.BytesIO(payload), file_type="glb", force="scene", process=False)
+                  converted = trimesh.exchange.gltf.export_glb(decoded_scene)
+                  if not converted or converted[:4] != b"glTF":
+                      raise SystemExit(f"Dequantization produced invalid GLB: {relative}")
+                  converted_json_len = struct.unpack_from("<I", converted, 12)[0]
+                  converted_doc = json.loads(converted[20:20+converted_json_len].decode("utf-8").rstrip(" \\0"))
+                  converted_ext = set(converted_doc.get("extensionsUsed", [])) | set(converted_doc.get("extensionsRequired", []))
+                  if "KHR_mesh_quantization" in converted_ext:
+                      raise SystemExit(f"KHR_mesh_quantization remains after conversion: {relative}")
+                  payload = converted
+                  print(f"DEQUANTIZE_PASS {relative} bytes={len(payload)} extensions={sorted(converted_ext)}")
               digest = hashlib.sha256(payload).hexdigest()
-              if not target.is_file():
-                  target.write_bytes(payload)
+              target.write_bytes(payload)
               import trimesh
               try:
                   scene = trimesh.load(target, force="scene", process=False)
