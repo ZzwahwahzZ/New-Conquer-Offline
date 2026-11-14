@@ -511,10 +511,11 @@ def discover_github_open_assets(session, fetch, safe, sha, RAW, DISC, DOWN, ERR,
 def discover_poly_pizza(session, fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPED):
     """Use Poly Pizza's published API only; never scrape its website."""
     token = os.getenv("POLY_PIZZA_KEY", "").strip()
-    if not token:
-        SKIPPED.append({"asset":"Poly Pizza","stage":"api_auth",
-                        "reason":"Official API requires POLY_PIZZA_KEY from the user's Poly Pizza account; no website scraping or manual endpoint probing is performed"})
-        print("POLY_PIZZA_SOURCE_COUNTS", {"downloaded":0,"reason":"POLY_PIZZA_KEY missing"})
+    enabled = os.getenv("POLY_PIZZA_ENABLE", "").strip().lower() == "true"
+    if not token or not enabled:
+        reason = "Set POLY_PIZZA_KEY and POLY_PIZZA_ENABLE=true after reviewing the official API terms/pricing; no website scraping is performed"
+        SKIPPED.append({"asset":"Poly Pizza","stage":"api_auth_or_cost_gate","reason":reason})
+        print("POLY_PIZZA_SOURCE_COUNTS", {"downloaded":0,"api_key_present":bool(token),"enabled":enabled})
         return
     headers = {"X-Auth-Token": token, "User-Agent":"NewConquerOffline-AssetFetcher/1.0"}
     queries = (
