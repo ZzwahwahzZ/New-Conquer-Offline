@@ -627,11 +627,11 @@ static func _brick_normal() -> Texture2D:
 # builder so the other five settlements retain their existing generation path.
 # ---------------------------------------------------------------------------
 static func build_twin_city(parent: Node3D) -> void:
-	var rebuilder := load("res://src/scripts/TwinCityGLBRebuilder.gd")
-	if rebuilder == null:
-		push_error("TWIN_CITY_GLB_FAIL: GLB-only rebuilder script is missing")
-		return
-	rebuilder.build(parent)
+ var rebuilder := load("res://src/scripts/TwinCityGLBRebuilder.gd")
+ if rebuilder == null:
+  push_error("TWIN_CITY_GLB_FAIL: GLB-only rebuilder script is missing")
+  return
+ rebuilder.build(parent)
 
 static func _twin_ground(parent: Node3D,stone: Material) -> void:
  var ground := MeshInstance3D.new()
