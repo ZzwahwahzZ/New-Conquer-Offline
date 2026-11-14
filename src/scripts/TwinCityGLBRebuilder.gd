@@ -78,22 +78,27 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 	var fort := Node3D.new()
 	fort.name = "TwinCity_ImperialPerimeter_380m"
 	parent.add_child(fort)
-
 	var water_material := StandardMaterial3D.new()
 	water_material.albedo_color = Color("#1E464A")
 	water_material.roughness = 0.18
 	water_material.metallic = 0.08
+	var water_positions := [Vector3(0.0, -0.05, -198.0), Vector3(198.0, -0.05, 0.0), Vector3(0.0, -0.05, 198.0), Vector3(-198.0, -0.05, 0.0)]
 	for side in range(4):
 		var water := MeshInstance3D.new()
-		water.name = "DeepContinuousWaterMoat_440m" if side == 0 else "MoatWaterSegment_%d" % side
+		water.name = "DeepContinuousWaterMoat_380m" if side == 0 else "MoatWaterSegment_%d" % side
 		var water_mesh := PlaneMesh.new()
 		water_mesh.size = Vector2(380.0, 18.0)
 		water.mesh = water_mesh
-		water.position = [Vector3(0.0, -0.05, -198.0), Vector3(198.0, -0.05, 0.0), Vector3(0.0, -0.05, 198.0), Vector3(-198.0, -0.05, 0.0)][side]
+		water.position = water_positions[side]
 		water.rotation.y = PI * 0.5 if side % 2 == 1 else 0.0
 		fort.add_child(water)
 		water.material_override = water_material
-
+	for willow_index in range(24):
+		var willow_angle := TAU * float(willow_index) / 24.0
+		var willow_pos := Vector3(cos(willow_angle) * 202.0, 0.0, sin(willow_angle) * 202.0)
+		var willow := _spawn_glb_node(fort, "external/nature/willow_tree.glb", "TwinCity_MoatWillow_%02d" % willow_index, willow_pos, -willow_angle, 1.0, "")
+		if willow != null:
+			_normalize_node_to_dimensions(willow, Vector3(7.0, 10.0, 7.0))
 	var wall_template := "064-palace-wall-straight"
 	var corner_template := "060-palace-wall-corner"
 	var moon_gate_template := "087-palace-wall-moon-gate"
@@ -112,18 +117,26 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 			elif side == 3:
 				pos = Vector3(-190.0, 0.0, -along)
 			var wall_name := "TwinCity_ImperialWall_%02d_%02d" % [side, segment]
-		if _clone_source_model(fort, source, wall_template, wall_name, pos, yaw, 1.0, ""):
-			var wall_node := fort.get_node_or_null(NodePath(wall_name)) as Node3D
-			if wall_node != null:
-				_normalize_node_to_dimensions(wall_node, Vector3(13.5, 15.0, 4.5))
+			if _clone_source_model(fort, source, wall_template, wall_name, pos, yaw, 1.0, ""):
+				var wall_node := fort.get_node_or_null(NodePath(wall_name)) as Node3D
+				if wall_node != null:
+					_normalize_node_to_dimensions(wall_node, Vector3(13.5, 15.0, 4.5))
 		var corner_positions := [Vector3(-190.0, 0.0, -190.0), Vector3(190.0, 0.0, -190.0), Vector3(190.0, 0.0, 190.0), Vector3(-190.0, 0.0, 190.0)]
-		_clone_source_model(fort, source, corner_template, "TwinCity_ImperialWallCorner_%02d" % side, corner_positions[side], yaw, 1.4, "")
-
+		_clone_source_model(fort, source, corner_template, "TwinCity_ImperialWallCorner_%02d" % side, corner_positions[side], yaw, 1.0, "")
 		var gate_direction := Vector3(sin(yaw), 0.0, -cos(yaw))
 		var gate_center := gate_direction * 190.0
-		_clone_source_model(fort, source, moon_gate_template, "TwinCity_ImperialMoonGate_%02d" % side, gate_center, yaw, 1.55, "")
-		_clone_source_model(fort, source, end_pier_template, "TwinCity_ImperialGatePierA_%02d" % side, gate_center + Vector3(-sin(yaw) * 18.0, 0.0, cos(yaw) * 18.0), yaw, 1.5, "")
-		_clone_source_model(fort, source, end_pier_template, "TwinCity_ImperialGatePierB_%02d" % side, gate_center + Vector3(sin(yaw) * 18.0, 0.0, -cos(yaw) * 18.0), yaw, 1.5, "")
+		var gate_name := "TwinCity_ImperialMoonGate_%02d" % side
+		if _clone_source_model(fort, source, moon_gate_template, gate_name, gate_center, yaw, 1.0, ""):
+			var gate := fort.get_node_or_null(NodePath(gate_name)) as Node3D
+			if gate != null:
+				_normalize_node_to_dimensions(gate, Vector3(26.0, 20.0, 10.0))
+		for pier_side in range(2):
+			var pier_offset := Vector3(-sin(yaw) * 18.0, 0.0, cos(yaw) * 18.0) if pier_side == 0 else Vector3(sin(yaw) * 18.0, 0.0, -cos(yaw) * 18.0)
+			var pier_name := "TwinCity_ImperialGatePier_%02d_%d" % [side, pier_side]
+			if _clone_source_model(fort, source, end_pier_template, pier_name, gate_center + pier_offset, yaw, 1.0, ""):
+				var pier := fort.get_node_or_null(NodePath(pier_name)) as Node3D
+				if pier != null:
+					_normalize_node_to_dimensions(pier, Vector3(10.0, 15.0, 10.0))
 		var gate_tower_name := "TwinCity_GrandGateTower_%02d" % side
 		if _clone_source_model(fort, source, "131-gate-tower", gate_tower_name, gate_center, yaw, 1.0, ""):
 			var gate_tower := fort.get_node_or_null(NodePath(gate_tower_name)) as Node3D
@@ -131,6 +144,8 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 				_normalize_node_to_dimensions(gate_tower, Vector3(14.0, 19.0, 14.0))
 		_clone_source_model(fort, source, "135-arched-stone-bridge", "TwinCity_GrandStoneBridge_%02d" % side, gate_center + gate_direction * 12.0, yaw, 1.0, "")
 		for tower_index in range(7):
+			if tower_index == 3:
+				continue
 			var tower_along := -162.0 + float(tower_index) * 54.0
 			var tower_pos := Vector3(tower_along, 0.0, -190.0)
 			if side == 1:
