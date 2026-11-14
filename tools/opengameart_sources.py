@@ -211,7 +211,9 @@ def discover_quaternius(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
         {"slug":"buildings-pack","page":"https://quaternius.com/packs/buildings.html","category":"architecture","term":"building"},
         {"slug":"ultimate-buildings-pack","page":"https://quaternius.com/packs/ultimatetexturedbuildings.html","category":"architecture","term":"building"},
         {"slug":"simple-buildings-pack","page":"https://quaternius.com/packs/simplebuildings.html","category":"architecture","term":"building"},
+        {"slug":"ultimate-fantasy-rts","page":"https://quaternius.com/packs/ultimatefantasyrts.html","category":"architecture","term":"fantasy buildings towers architecture"},
         {"slug":"ultimate-nature-pack","page":"https://quaternius.com/packs/ultimatenature.html","category":"nature","term":"nature"},
+        {"slug":"ultimate-stylized-nature-pack","page":"https://quaternius.com/packs/ultimatestylizednature.html","category":"nature","term":"trees flowers vegetation"},
         {"slug":"stylized-nature-megakit","page":"https://quaternius.com/packs/stylizednaturemegakit.html","category":"nature","term":"trees flowers vegetation"},
     ]
     for pack in packs:
