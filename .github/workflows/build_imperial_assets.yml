@@ -8,6 +8,7 @@ on:
       - 'tools/fetch_and_normalize_assets.py'
       - 'tools/imperial_extra_sources.py'
       - 'tools/opengameart_sources.py'
+      - 'tools/new_asset_sources.py'
       - 'tools/normalize_asset_blender.py'
 permissions:
   contents: write
@@ -35,7 +36,7 @@ jobs:
       - name: Install dependencies
         run: python -m pip install --upgrade pip requests huggingface_hub py7zr
       - name: Compile-check pipeline scripts
-        run: python -m py_compile tools/fetch_and_normalize_assets.py tools/imperial_extra_sources.py tools/opengameart_sources.py tools/normalize_asset_blender.py
+        run: python -m py_compile tools/fetch_and_normalize_assets.py tools/imperial_extra_sources.py tools/opengameart_sources.py tools/new_asset_sources.py tools/normalize_asset_blender.py
       - name: Run strict asset filter tests
         run: PYTHONPATH=tools python -c "import runpy; runpy.run_path('tools/fetch_and_normalize_assets.py')['strict_filter_self_test']()"
       - name: Check HF token
@@ -51,6 +52,7 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           HF_REPO_ID: ZzwahwahzZ/clash-of-legends-terrain-assets
           BLENDER_BIN: blender
+          SKETCHFAB_TOKEN: ${{ secrets.SKETCHFAB_TOKEN }}
         run: python tools/fetch_and_normalize_assets.py
       - name: Commit audit docs to PR branch
         shell: bash
