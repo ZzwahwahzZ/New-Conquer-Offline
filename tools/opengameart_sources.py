@@ -1,6 +1,4 @@
-"""OpenGameArt CC0 source adapter. Each candidate is re-checked against its live page
-before any file is downloaded; direct file URLs are extracted from the page, never guessed.
-"""
+"""OpenGameArt CC0/CC BY source adapter. Each license is re-checked on the live page."""
 from html.parser import HTMLParser
 from urllib.parse import urljoin, urlparse
 from pathlib import Path
@@ -40,10 +38,13 @@ def discover_opengameart(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
             response=session.get(src["page"],timeout=(20,60),headers={"User-Agent":"NewConquerOffline-AssetFetcher/1.0"})
             response.raise_for_status()
             html=response.text
-            # Only accept explicit CC0 on these pre-vetted pages. CC-BY candidates can be added
-            # later with their complete attribution statement once independently reviewed.
-            if not re.search(r"CC0|publicdomain/zero/1\\.0",html,re.I):
-                raise ValueError("Live page did not expose a verifiable CC0 license marker")
+            # Accept only explicit CC0 or an exact Creative Commons Attribution (CC BY)
+            # license marker. ShareAlike, NonCommercial and NoDerivatives variants are excluded.
+            cc0 = bool(re.search(r"CC0|publicdomain/zero/1\\.0", html, re.I))
+            by_match = re.search(r"creativecommons\\.org/licenses/by/(4\\.0|3\\.0|2\\.5|2\\.0|1\\.0)|CC\\s*BY\\s*(4\\.0|3\\.0|2\\.5|2\\.0|1\\.0)", html, re.I)
+            if not (cc0 or by_match):
+                raise ValueError("Live page did not expose an explicit CC0 or CC BY license marker")
+            license_name = "CC0 1.0 Universal" if cc0 else "CC BY " + next(x for x in by_match.groups() if x)
             parser=_Links(); parser.feed(html)
             files=[]
             for href,label in parser.links:
@@ -57,7 +58,7 @@ def discover_opengameart(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
             # A page can expose more than one model archive; download all supported files.
             for index,(url,label,ext) in enumerate(files[:3]):
                 aid="opengameart-"+src["slug"]+("-"+str(index+1) if index else "")
-                rec={"id":aid,"name":label or src["slug"],"source":"OpenGameArt","source_url":src["page"],"license":"CC0 1.0 Universal","authors":{"creator":src["creator"]},"matches":[(src["category"],src["term"])],"download_url":url}
+                rec={"id":aid,"name":label or src["slug"],"source":"OpenGameArt","source_url":src["page"],"license":license_name,"authors":{"creator":src["creator"]},"matches":[(src["category"],src["term"])],"download_url":url}
                 DISC.append(rec)
                 path=fetch(url,RAW/"opengameart"/(safe(aid)+ext))
                 DOWN.append({**rec,"raw":str(path),"download_sha256":sha(path)})
