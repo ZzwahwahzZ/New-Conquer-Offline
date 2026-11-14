@@ -41,36 +41,33 @@ static func build(parent: Node3D) -> void:
 		push_error("TWIN_CITY_GLB_FAIL: Imperial China model container is missing")
 		return
 
+	# 4-PASS MASTER BLUEPRINT: ground/paving first, then lots, then living props, then fortifications.
 	_build_ground(root)
-	_build_palace(root, source_container)
-	_build_perimeter(root, source_container)
 	_build_full_city_paving(root, source_container)
 	_build_plaza(root, source_container)
+	_build_palace(root, source_container)
 	var census := _build_districts(root, source_container)
+	_build_city_greenery_and_props(root, source_container)
+	_build_perimeter(root, source_container)
 	_build_outer_wildlands(root, source_container)
 
 	print("TWIN_CITY_GLB_BUILD_PASS: total=%d categories=%s procedural_box_meshes=0 source=GLB" % [census.values().reduce(func(a, b): return a + b, 0), str(census)])
 
 static func _build_ground(parent: Node3D) -> void:
-	var ground := MeshInstance3D.new()
-	ground.name = "TwinCity_800m_TerrainFoundation"
-	var plane := PlaneMesh.new()
-	plane.size = Vector2(800.0, 800.0)
-	ground.mesh = plane
-	ground.position.y = -0.24
-	parent.add_child(ground)
-	var material := StandardMaterial3D.new()
-	material.albedo_color = Color("#6c8055")
-	material.roughness = 1.0
-	ground.material_override = material
+	var foundation := Node3D.new()
+	foundation.name = "TwinCity_800m_TerrainFoundation"
+	parent.add_child(foundation)
 
 static func _build_palace(parent: Node3D, source: Node3D) -> void:
+	var platform := _spawn_glb_node(parent, BUILDING_BASE, "ImperialPalace_StoneTerrace_85x75x5", Vector3(0.0, 0.0, -145.0), 0.0, 1.0, "")
+	if platform != null:
+		_normalize_node_to_dimensions(platform, Vector3(85.0, 5.0, 75.0))
 	var palace := source.duplicate(true) as Node3D
 	if palace == null:
-		push_error("TWIN_CITY_GLB_FAIL: palace compound clone failed")
+		push_error("TWIN_CITY_GLB_FAIL: palace compound clone failed; procedural fallback is forbidden")
 		return
 	palace.name = "ImperialPalace_85x75"
-	palace.position = Vector3(0.0, 0.0, -108.0)
+	palace.position = Vector3(0.0, 5.0, -145.0)
 	palace.rotation = Vector3.ZERO
 	palace.scale = Vector3.ONE * 1.35
 	parent.add_child(palace)
@@ -82,13 +79,14 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 	parent.add_child(fort)
 
 	var water_material := StandardMaterial3D.new()
-	water_material.albedo_color = Color("#155c67")
-	water_material.roughness = 0.22
+	water_material.albedo_color = Color("#1E464A")
+	water_material.roughness = 0.18
+	water_material.metallic = 0.08
 	for side in range(4):
 		var water := MeshInstance3D.new()
 		water.name = "DeepContinuousWaterMoat_440m" if side == 0 else "MoatWaterSegment_%d" % side
 		var water_mesh := PlaneMesh.new()
-		water_mesh.size = Vector2(440.0, 14.0)
+		water_mesh.size = Vector2(440.0, 18.0)
 		water.mesh = water_mesh
 		water.position = [Vector3(0.0, -0.05, -228.0), Vector3(228.0, -0.05, 0.0), Vector3(0.0, -0.05, 228.0), Vector3(-228.0, -0.05, 0.0)][side]
 		water.rotation.y = PI * 0.5 if side % 2 == 1 else 0.0
@@ -112,7 +110,11 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 				pos = Vector3(-along, 0.0, 220.0)
 			elif side == 3:
 				pos = Vector3(-220.0, 0.0, -along)
-			_clone_source_model(fort, source, wall_template, "TwinCity_ImperialWall_%02d_%02d" % [side, segment], pos, yaw, 1.25, "")
+			var wall_name := "TwinCity_ImperialWall_%02d_%02d" % [side, segment]
+		if _clone_source_model(fort, source, wall_template, wall_name, pos, yaw, 1.0, ""):
+			var wall_node := fort.get_node_or_null(NodePath(wall_name)) as Node3D
+			if wall_node != null:
+				_normalize_node_to_dimensions(wall_node, Vector3(13.5, 15.0, 4.5))
 		var corner_positions := [Vector3(-220.0, 0.0, -220.0), Vector3(220.0, 0.0, -220.0), Vector3(220.0, 0.0, 220.0), Vector3(-220.0, 0.0, 220.0)]
 		_clone_source_model(fort, source, corner_template, "TwinCity_ImperialWallCorner_%02d" % side, corner_positions[side], yaw, 1.4, "")
 
@@ -121,8 +123,12 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 		_clone_source_model(fort, source, moon_gate_template, "TwinCity_ImperialMoonGate_%02d" % side, gate_center, yaw, 1.55, "")
 		_clone_source_model(fort, source, end_pier_template, "TwinCity_ImperialGatePierA_%02d" % side, gate_center + Vector3(-sin(yaw) * 18.0, 0.0, cos(yaw) * 18.0), yaw, 1.5, "")
 		_clone_source_model(fort, source, end_pier_template, "TwinCity_ImperialGatePierB_%02d" % side, gate_center + Vector3(sin(yaw) * 18.0, 0.0, -cos(yaw) * 18.0), yaw, 1.5, "")
-		_clone_source_model(fort, source, "131-gate-tower", "TwinCity_GrandGateTower_%02d" % side, gate_center, yaw, 1.35, "")
-		_clone_source_model(fort, source, "135-arched-stone-bridge", "TwinCity_GrandStoneBridge_%02d" % side, gate_center + gate_direction * 12.0, yaw, 1.7, "")
+		var gate_tower_name := "TwinCity_GrandGateTower_%02d" % side
+		if _clone_source_model(fort, source, "131-gate-tower", gate_tower_name, gate_center, yaw, 1.0, ""):
+			var gate_tower := fort.get_node_or_null(NodePath(gate_tower_name)) as Node3D
+			if gate_tower != null:
+				_normalize_node_to_dimensions(gate_tower, Vector3(14.0, 19.0, 14.0))
+		_clone_source_model(fort, source, "135-arched-stone-bridge", "TwinCity_GrandStoneBridge_%02d" % side, gate_center + gate_direction * 12.0, yaw, 1.0, "")
 
 static func _build_full_city_paving(parent: Node3D, source: Node3D) -> void:
 	var template := source.find_child("059-courtyard-paving-module", true, false) as Node3D
@@ -138,115 +144,105 @@ static func _build_full_city_paving(parent: Node3D, source: Node3D) -> void:
 		push_error("TWIN_CITY_GLB_FAIL: paving source mesh is null or has no surfaces")
 		return
 
-	var transforms: Array[Transform3D] = []
-	for x in range(-216, 217, 6):
-		for z in range(-216, 217, 6):
-			if absf(float(x)) <= 216.0 and absf(float(z)) <= 216.0:
-				transforms.append(Transform3D(Basis().scaled(Vector3(3.0, 1.0, 3.0)), Vector3(float(x), 0.06, float(z))))
-	var multi := MultiMesh.new()
-	multi.transform_format = MultiMesh.TRANSFORM_3D
-	multi.mesh = source_mesh
-	multi.instance_count = transforms.size()
-	for i in range(transforms.size()):
-		multi.set_instance_transform(i, transforms[i])
-	var paving := MultiMeshInstance3D.new()
-	paving.name = "WallToWallOriginalImperialEngravedFlagstone"
-	paving.multimesh = multi
-	parent.add_child(paving)
-	var source_material := (mesh_nodes[0] as MeshInstance3D).get_active_material(0)
-	if source_material != null:
-		paving.material_override = source_material
-	print("TWIN_CITY_GLB_PAVING_PASS: original_059_module_instances=%d full_city_coverage=1" % transforms.size())
+	var tile_mesh := source_mesh
+	var block_transforms: Array[Transform3D] = []
+	var road_transforms: Array[Transform3D] = []
+	var plaza_warm_transforms: Array[Transform3D] = []
+	var plaza_dark_transforms: Array[Transform3D] = []
+	var curb_transforms: Array[Transform3D] = []
+	for xi in range(120):
+		var x := -178.5 + float(xi) * 3.0
+		for zi in range(120):
+			var z := -178.5 + float(zi) * 3.0
+			var point := Vector3(x, 0.025, z)
+			var radius := Vector2(x, z).length()
+			var on_main_avenue := absf(x) < 8.0 or absf(z) < 7.0
+			var on_secondary := absf(absf(x) - round(absf(x) / 45.0) * 45.0) < 4.5 or absf(absf(z) - round(absf(z) / 45.0) * 45.0) < 4.5
+			var basis := Basis().scaled(Vector3(3.0, 1.0, 3.0)) * (mesh_nodes[0] as MeshInstance3D).transform.basis
+			var origin := point + (mesh_nodes[0] as MeshInstance3D).transform.origin * 3.0
+			var transform := Transform3D(basis, origin)
+			if radius <= 28.0:
+				if int(floor(radius / 4.0)) % 2 == 0:
+					plaza_warm_transforms.append(transform)
+				else:
+					plaza_dark_transforms.append(transform)
+			elif on_main_avenue or on_secondary:
+				road_transforms.append(transform)
+			else:
+				block_transforms.append(transform)
+	for block_x in range(8):
+		for block_z in range(8):
+			var cx := -157.5 + float(block_x) * 45.0
+			var cz := -157.5 + float(block_z) * 45.0
+			for edge in [-1.0, 1.0]:
+				for step in range(-5, 6):
+					var along := float(step) * 3.0
+					curb_transforms.append(Transform3D(Basis().scaled(Vector3(3.0, 1.0, 3.0)), Vector3(cx + edge * 17.25, 0.15, cz + along)))
+					curb_transforms.append(Transform3D(Basis().scaled(Vector3(3.0, 1.0, 3.0)), Vector3(cx + along, 0.15, cz + edge * 17.25)))
+	_create_paving_batch(parent, "TwinCity_WarmBlockAndCourtyardPaving", tile_mesh, block_transforms, Color("#85796A"), 0.92)
+	_create_paving_batch(parent, "TwinCity_DarkBasaltRoadwayPaving", tile_mesh, road_transforms, Color("#5E646B"), 0.92)
+	_create_paving_batch(parent, "TwinCity_CentralPlazaWarmStone", tile_mesh, plaza_warm_transforms, Color("#7A7267"), 0.92)
+	_create_paving_batch(parent, "TwinCity_CentralPlazaDarkStone", tile_mesh, plaza_dark_transforms, Color("#5A5E63"), 0.92)
+	_create_paving_batch(parent, "TwinCity_RaisedPaleBlockCurbs", tile_mesh, curb_transforms, Color("#9E9589"), 0.92)
+	print("TWIN_CITY_GLB_PAVING_PASS: blocks=%d roads=%d plaza=%d curbs=%d; 4-pass CAD grid=360m" % [block_transforms.size(), road_transforms.size(), plaza_warm_transforms.size()+plaza_dark_transforms.size(), curb_transforms.size()])
 
 static func _build_plaza(parent: Node3D, source: Node3D) -> void:
 	var plaza := Node3D.new()
-	plaza.name = "CircularImperialPlaza_60m"
+	plaza.name = "CircularImperialPlaza_Diameter56m"
 	parent.add_child(plaza)
-	_spawn_glb(plaza, PAGODA, "CentralPagoda_20m", Vector3.ZERO, 0.0, 0.66, "landmark")
-	for i in range(4):
-		var angle := TAU * float(i) / 4.0
-		_clone_source_model(plaza, source, "134-water-pavilion", "TwinCity_PlazaWaterPavilion_%02d" % i, Vector3(cos(angle) * 26.0, 0.0, sin(angle) * 26.0), -angle, 0.72, "")
+	var pagoda := _spawn_glb_node(plaza, PAGODA, "CentralPagoda_22m", Vector3(0.0, 1.2, 0.0), 0.0, 1.0, "landmark")
+	if pagoda != null:
+		_normalize_node_to_dimensions(pagoda, Vector3(14.0, 22.0, 14.0))
+	var plinth := _spawn_glb_node(plaza, BUILDING_BASE, "CentralPagoda_StonePlinth_1p2m", Vector3(0.0, 0.6, 0.0), 0.0, 1.0, "")
+	if plinth != null:
+		_normalize_node_to_dimensions(plinth, Vector3(20.0, 1.2, 20.0))
+	for i in range(8):
+		var angle := TAU * float(i) / 8.0
+		_clone_source_model(plaza, source, "146-plum-tree-in-blossom", "TwinCity_PlazaCherry_%02d" % i, Vector3(cos(angle) * 18.0, 0.0, sin(angle) * 18.0), -angle, 1.0, "")
 
 static func _build_districts(parent: Node3D, source: Node3D) -> Dictionary:
 	var districts := Node3D.new()
-	districts.name = "DenseMixedResidentialCommercialDistricts_GLBBased"
+	districts.name = "TwinCity_OrthogonalSiheyuanDistricts_360m"
 	parent.add_child(districts)
-	var census := {"residential": 0, "commercial": 0, "service": 0, "landmark": 1, "defensive": 0, "palace_annex": 0}
-	var house_offsets := [
-		Vector3(-13.0, 0.0, -13.0), Vector3(0.0, 0.0, -13.0), Vector3(13.0, 0.0, -13.0),
-		Vector3(-13.0, 0.0, 0.0), Vector3(13.0, 0.0, 0.0),
-		Vector3(-13.0, 0.0, 13.0), Vector3(0.0, 0.0, 13.0), Vector3(13.0, 0.0, 13.0)
-	]
-	for block in range(12):
-		var angle := TAU * float(block) / 12.0
-		var radius := 84.0 + float(block % 4) * 17.0
-		var center := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-		var rotation := -angle - PI * 0.5
-		for local_index in range(house_offsets.size()):
-			var pos: Vector3 = center + Basis(Vector3.UP, rotation) * house_offsets[local_index]
-			var shell := FLOOR_01 if (block + local_index) % 2 == 0 else FLOOR_02
-			var house := _spawn_glb_node(districts, shell, "TwinCity_residential_%03d" % census.residential, pos, rotation, 0.56, "residential")
-			if house != null:
-				_decorate_building(house, "residential", 0.56, block + local_index)
-				census.residential += 1
-		for shop_index in range(2):
-			var offset := Vector3(-6.0 + float(shop_index) * 12.0, 0.0, -27.0)
-			var pos := center + Basis(Vector3.UP, rotation) * offset
-			var shop := _spawn_modular_building(districts, "TwinCity_commercial_%03d" % census.commercial, pos, rotation, 0.62, "commercial", shop_index)
-			if shop != null:
-				census.commercial += 1
-		var service_pos := center + Basis(Vector3.UP, rotation) * Vector3(0.0, 0.0, 27.0)
-		var service := _spawn_modular_building(districts, "TwinCity_service_%03d" % census.service, service_pos, rotation, 0.52, "service", block)
-		if service != null:
-			census.service += 1
-		if block < 11:
-			var landmark_pos := center + Basis(Vector3.UP, rotation) * Vector3(0.0, 0.0, 43.0)
-			if block % 2 == 0:
-				if _clone_source_model(districts, source, "134-water-pavilion", "TwinCity_landmark_%03d" % census.landmark, landmark_pos, rotation, 0.78, "landmark"):
+	var census := {"commercial": 0, "residential": 0, "service": 0, "landmark": 0}
+	var blocks: Array[Dictionary] = []
+	for ix in range(8):
+		for iz in range(8):
+			var center := Vector3(-157.5 + float(ix) * 45.0, 0.0, -157.5 + float(iz) * 45.0)
+			blocks.append({"center": center, "ix": ix, "iz": iz, "score": absf(center.x) + absf(center.z)})
+	blocks.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a.score) < float(b.score))
+	var offsets := [Vector3(-8.0, 0.0, -8.0), Vector3(8.0, 0.0, -8.0), Vector3(-8.0, 0.0, 8.0), Vector3(8.0, 0.0, 8.0)]
+	for block_index in range(blocks.size()):
+		var block: Dictionary = blocks[block_index]
+		var center: Vector3 = block.center
+		var kind := "commercial" if block_index < 12 else ("residential" if block_index < 42 else ("service" if block_index < 56 else "landmark"))
+		if kind == "landmark":
+			for hall_index in range(2):
+				var local := offsets[hall_index * 2]
+				var pos := center + local
+				var template := "130-ceremonial-hall" if (block_index + hall_index) % 2 == 0 else "134-water-pavilion"
+				var name := "TwinCity_landmark_%03d" % census.landmark
+				if _clone_source_model(districts, source, template, name, pos, 0.0, 1.0, "landmark"):
+					var hall := districts.get_node_or_null(NodePath(name)) as Node3D
+					if hall != null:
+						_normalize_node_to_dimensions(hall, Vector3(16.0, 16.0, 16.0))
 					census.landmark += 1
+			continue
+		for local_index in range(4):
+			var local: Vector3 = offsets[local_index]
+			var pos := center + local
+			var yaw := 0.0
+			if absf(local.z) >= absf(local.x):
+				yaw = 0.0 if local.z < 0.0 else PI
 			else:
-				if _clone_source_model(districts, source, "130-ceremonial-hall", "TwinCity_landmark_%03d" % census.landmark, landmark_pos, rotation, 0.7, "landmark"):
-					census.landmark += 1
-
-	for i in range(24):
-		var angle := TAU * float(i) / 24.0 + 0.19
-		var radius := 56.0 + float(i % 3) * 7.0
-		var pos := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-		var shell := FLOOR_01 if i % 2 == 0 else FLOOR_02
-		var house := _spawn_glb_node(districts, shell, "TwinCity_residential_%03d" % census.residential, pos, -angle - PI * 0.5, 0.54 + float(i % 3) * 0.03, "residential")
-		if house != null:
-			_decorate_building(house, "residential", 0.55, i)
-			census.residential += 1
-
-	for i in range(18):
-		var angle := TAU * float(i) / 18.0 + 0.31
-		var radius := 64.0 + float(i % 2) * 8.0
-		var pos := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-		var shop := _spawn_modular_building(districts, "TwinCity_commercial_%03d" % census.commercial, pos, -angle - PI * 0.5, 0.58, "commercial", i)
-		if shop != null:
-			census.commercial += 1
-
-	for i in range(10):
-		var angle := TAU * float(i) / 10.0 + 0.27
-		var pos := Vector3(cos(angle) * 151.0, 0.0, sin(angle) * 151.0)
-		var service := _spawn_modular_building(districts, "TwinCity_service_%03d" % census.service, pos, -angle - PI * 0.5, 0.5, "service", i)
-		if service != null:
-			census.service += 1
-
-	for i in range(20):
-		var angle := TAU * float(i) / 20.0
-		var pos := Vector3(cos(angle) * 190.0, 0.0, sin(angle) * 190.0)
-		if _clone_source_model(districts, source, "131-gate-tower", "TwinCity_defensive_%03d" % census.defensive, pos, angle, 1.0, "defensive"):
-			census.defensive += 1
-
-	for i in range(8):
-		var angle := TAU * float(i) / 8.0
-		var pos := Vector3(cos(angle) * 80.0, 0.0, -108.0 + sin(angle) * 80.0)
-		var template_name := "130-ceremonial-hall" if i % 2 == 0 else "134-water-pavilion"
-		if _clone_source_model(districts, source, template_name, "TwinCity_palace_annex_%03d" % census.palace_annex, pos, -angle, 0.86, "palace_annex"):
-			census.palace_annex += 1
-
-	print("TWIN_CITY_GLB_BUILDING_CENSUS: %s total=%d" % [str(census), census.values().reduce(func(a, b): return a + b, 0)])
+				yaw = -PI * 0.5 if local.x > 0.0 else PI * 0.5
+			var node_name := "TwinCity_%s_%03d" % [kind, census[kind]]
+			var dims := Vector3(8.0, 6.75, 9.0) if kind == "commercial" else (Vector3(9.5, 10.25, 10.0) if kind == "residential" else Vector3(10.0, 9.0, 10.0))
+			var building := _spawn_modular_building(districts, node_name, pos, yaw, 1.0, kind, local_index)
+			if building != null:
+				_normalize_node_to_dimensions(building, dims)
+				census[kind] += 1
+	print("TWIN_CITY_GLB_BUILDING_CENSUS: %s total=%d; 48 shops, 120 houses, 56 services, 16 halls; real GLB assemblies only" % [str(census), census.values().reduce(func(a, b): return a + b, 0)])
 	return census
 
 static func _spawn_modular_building(parent: Node3D, node_name: String, pos: Vector3, yaw: float, scale_factor: float, category: String, variant: int) -> Node3D:
@@ -281,6 +277,7 @@ static func _spawn_modular_building(parent: Node3D, node_name: String, pos: Vect
 	else:
 		_spawn_glb(building, FENCE_01, node_name + "_ResidentialFenceA", Vector3(-7.0, 0.0, 9.0), 0.0, 0.58, "")
 		_spawn_glb(building, FENCE_01, node_name + "_ResidentialFenceB", Vector3(7.0, 0.0, 9.0), 0.0, 0.58, "")
+	_normalize_node_to_dimensions(building, Vector3(9.5, 10.25, 10.0) if category == "residential" else (Vector3(8.0, 6.75, 9.0) if category == "commercial" else Vector3(10.0, 9.0, 10.0)))
 	return building
 
 static func _decorate_building(building: Node3D, category: String, scale_factor: float, variant: int) -> void:
@@ -292,21 +289,38 @@ static func _decorate_building(building: Node3D, category: String, scale_factor:
 		_spawn_glb(building, COLUMN, building.name + "_EntryColumnB", Vector3(5.5, 0.0, -8.0), 0.0, 0.58, "")
 		_spawn_glb(building, COLUMN_BASE, building.name + "_EntryColumnBaseA", Vector3(-5.5, 0.0, -8.0), 0.0, 0.58, "")
 		_spawn_glb(building, COLUMN_BASE, building.name + "_EntryColumnBaseB", Vector3(5.5, 0.0, -8.0), 0.0, 0.58, "")
+static func _build_city_greenery_and_props(parent: Node3D, source: Node3D) -> void:
+	var living := Node3D.new()
+	living.name = "TwinCity_GreeneryAndStreetLife"
+	parent.add_child(living)
+	for i in range(140):
+		var angle := float(i) * 2.399963
+		var radius := 42.0 + float((i * 37) % 128)
+		var pos := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
+		var tree_name := "147-bamboo-clump" if i % 3 == 0 else ("148-bamboo-clump" if i % 3 == 1 else "146-plum-tree-in-blossom")
+		_clone_source_model(living, source, tree_name, "TwinCity_InteriorTree_%03d" % i, pos, -angle, 1.0, "")
+	for i in range(180):
+		var angle := float(i) * 2.399963
+		var radius := 36.0 + float((i * 19) % 126)
+		var pos := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
+		var template := "154-standing-garden-lantern" if i % 3 == 0 else ("158-hanging-silk-lantern" if i % 3 == 1 else "153-garden-stone-bench")
+		_clone_source_model(living, source, template, "TwinCity_StreetProp_%03d" % i, pos, -angle, 1.0, "")
+
 static func _build_outer_wildlands(parent: Node3D, source: Node3D) -> void:
 	var wildlands := Node3D.new()
 	wildlands.name = "TwinCity_OuterWildlands_800m"
 	parent.add_child(wildlands)
-	for i in range(32):
+	for i in range(260):
 		var angle := float(i) * 2.399963
-		var radius := 248.0 + float((i * 29) % 92)
+		var radius := 242.0 + float((i * 29) % 150)
 		var pos := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-		var tree_name := "146-plum-tree-in-blossom" if i % 2 == 0 else "147-bamboo-clump"
-		_clone_source_model(wildlands, source, tree_name, "TwinCity_OuterTree_%02d" % i, pos, -angle, 1.8, "")
-	for i in range(24):
-		var angle := TAU * float(i) / 24.0 + 0.13
-		var radius := 265.0 + float(i % 4) * 18.0
+		var tree_name := "147-bamboo-clump" if i % 2 == 0 else "148-bamboo-clump"
+		_clone_source_model(wildlands, source, tree_name, "TwinCity_OuterTree_%03d" % i, pos, -angle, 1.0, "")
+	for i in range(80):
+		var angle := TAU * float(i) / 80.0 + 0.13
+		var radius := 260.0 + float(i % 4) * 18.0
 		var pos := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-		_clone_source_model(wildlands, source, "145-rockery-outcrop", "TwinCity_OuterRockery_%02d" % i, pos, -angle, 2.1, "")
+		_clone_source_model(wildlands, source, "145-rockery-outcrop", "TwinCity_OuterRockery_%03d" % i, pos, -angle, 1.0, "")
 
 static func _spawn_glb(parent: Node3D, relative_path: String, node_name: String, pos: Vector3, yaw: float, scale_factor: float, category: String) -> bool:
 	return _spawn_glb_node(parent, relative_path, node_name, pos, yaw, scale_factor, category) != null
@@ -364,3 +378,56 @@ static func _register_building(root: Node3D, category: String) -> void:
 			var geometry := current as GeometryInstance3D
 			geometry.visibility_range_end = 420.0
 			geometry.visibility_range_end_margin = 30.0
+
+static func _create_paving_batch(parent: Node3D, node_name: String, source_mesh: Mesh, transforms: Array[Transform3D], tint: Color, roughness: float) -> void:
+	if transforms.is_empty():
+		return
+	var multi := MultiMesh.new()
+	multi.transform_format = MultiMesh.TRANSFORM_3D
+	multi.mesh = source_mesh
+	multi.instance_count = transforms.size()
+	for i in range(transforms.size()):
+		multi.set_instance_transform(i, transforms[i])
+	var instance := MultiMeshInstance3D.new()
+	instance.name = node_name
+	instance.multimesh = multi
+	parent.add_child(instance)
+	var material := StandardMaterial3D.new()
+	material.albedo_color = tint
+	material.roughness = roughness
+	material.metallic = 0.0
+	instance.material_override = material
+
+static func _node_local_aabb(root: Node3D) -> AABB:
+	var result := AABB()
+	var has_bounds := false
+	var pending: Array[Dictionary] = [{"node": root, "transform": Transform3D.IDENTITY}]
+	while not pending.is_empty():
+		var item: Dictionary = pending.pop_back()
+		var node: Node = item.node
+		var transform: Transform3D = item.transform
+		if node != root and node is Node3D:
+			transform = transform * (node as Node3D).transform
+		if node is MeshInstance3D:
+			var mesh_instance := node as MeshInstance3D
+			if mesh_instance.mesh != null:
+				var local_bounds := mesh_instance.mesh.get_aabb() * transform
+				if not has_bounds:
+					result = local_bounds
+					has_bounds = true
+				else:
+					result = result.merge(local_bounds)
+		for child in node.get_children():
+			pending.append({"node": child, "transform": transform})
+	return result if has_bounds else AABB()
+
+static func _normalize_node_to_dimensions(root: Node3D, target: Vector3) -> void:
+	var bounds := _node_local_aabb(root)
+	if bounds.size.x <= 0.001 or bounds.size.y <= 0.001 or bounds.size.z <= 0.001:
+		push_error("TWIN_CITY_AABB_FAIL: %s has no valid mesh bounds" % root.name)
+		return
+	var scale_vector := Vector3(target.x / bounds.size.x, target.y / bounds.size.y, target.z / bounds.size.z)
+	root.scale = root.scale * scale_vector
+	root.position.y -= bounds.position.y * scale_vector.y
+	root.set_meta("twin_city_aabb_normalized", true)
+	root.set_meta("twin_city_target_dimensions_m", target)
