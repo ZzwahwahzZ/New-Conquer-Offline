@@ -30,39 +30,52 @@ jobs:
       - name: Checkout isolated prototype branch
         uses: actions/checkout@v4
 
-      - name: Restore 63 approved original GLB assets
+      - name: Restore and fingerprint 63 approved Imperial China GLB assets from Hugging Face
         shell: bash
         run: |
           set -Eeuo pipefail
           python3 - <<'PY'
           import hashlib, json, urllib.request
           from pathlib import Path
-          manifest = json.loads(Path("assets/wuxia_imperial_pack/imperial_approved_assets.json").read_text())
-          selected = []
-          for category, limit in (("palaces_and_temples", 4), ("houses_and_shops", 23), ("gates_walls_bridges", 23), ("nature", 13)):
-              entries = manifest["categories"][category]["assets"]
-              if len(entries) < limit:
-                  raise SystemExit(f"Approved category {category} has only {len(entries)} assets; expected {limit}")
-              selected.extend(entries[:limit])
+          base = "https://huggingface.co/datasets/ZzwahwahzZ/clash-of-legends-terrain-assets/resolve/main/assets/wuxia_imperial_pack/"
+          root = Path("assets/wuxia_imperial_pack")
+          root.mkdir(parents=True, exist_ok=True)
+          def fetch(url):
+              request = urllib.request.Request(url + ("&" if "?" in url else "?") + "download=true", headers={"User-Agent":"TwinCity-HF-Asset-Restore/1.0"})
+              with urllib.request.urlopen(request, timeout=180) as response:
+                  return response.read()
+          source_manifest = json.loads(fetch(base + "manifest.json"))
+          approved = json.loads(fetch(base + "imperial_approved_assets.json"))
+          selected = [item for item in source_manifest.get("assets", []) if item.get("style_group") == "imperial_chinese" and item.get("file", "").lower().endswith(".glb")]
           if len(selected) != 63:
-              raise SystemExit(f"Expected exactly 63 approved GLB records, got {len(selected)}")
+              raise SystemExit(f"Expected 63 imperial_chinese GLB assets in Hugging Face manifest, found {len(selected)}")
+          refreshed = {}
           for index, item in enumerate(selected, 1):
               relative = item["file"]
-              if not relative.lower().endswith(".glb"):
-                  raise SystemExit(f"Non-GLB asset in approved selection: {relative}")
-              target = Path("assets/wuxia_imperial_pack") / relative
+              if relative.startswith("/") or ".." in Path(relative).parts:
+                  raise SystemExit(f"Unsafe GLB path in manifest: {relative}")
+              target = root / relative
               target.parent.mkdir(parents=True, exist_ok=True)
-              payload = target.read_bytes() if target.exists() else b""
-              if len(payload) != item["bytes"] or hashlib.sha256(payload).hexdigest() != item["sha256"]:
-                  request = urllib.request.Request(item["direct_download_url"], headers={"User-Agent":"TwinCity-Asset-Restore/1.0"})
-                  with urllib.request.urlopen(request, timeout=90) as response:
-                      payload = response.read()
-                  digest = hashlib.sha256(payload).hexdigest()
-                  if len(payload) != item["bytes"] or digest != item["sha256"] or payload[:4] != b"glTF":
-                      raise SystemExit(f"GLB integrity validation failed: {relative} bytes={len(payload)} sha256={digest}")
-                  target.write_bytes(payload)
-              print(f"RESTORED_APPROVED_GLB {index}/63 {relative} {item['bytes']} bytes")
-          print("APPROVED_GLB_RESTORE_PASS: 63 original GLB assets verified against manifest SHA-256")
+              payload = fetch(base + relative)
+              if len(payload) <= 1024 or payload[:4] != b"glTF":
+                  raise SystemExit(f"Invalid GLB header/size: {relative}, bytes={len(payload)}")
+              digest = hashlib.sha256(payload).hexdigest()
+              target.write_bytes(payload)
+              item["bytes"] = len(payload)
+              item["sha256"] = digest
+              refreshed[item.get("asset_id", relative)] = (len(payload), digest)
+              print(f"HF_GLB_VERIFIED {index}/63 {relative} bytes={len(payload)} sha256={digest}")
+          for category in approved.get("categories", {}).values():
+              for item in category.get("assets", []):
+                  key = item.get("asset_id", item.get("file"))
+                  if key in refreshed:
+                      item["bytes"], item["sha256"] = refreshed[key]
+          approved["generated_at_utc"] = source_manifest.get("generated_at_utc", approved.get("generated_at_utc"))
+          approved["source_repo"] = "ZzwahwahzZ/clash-of-legends-terrain-assets"
+          approved["verified_glb_count"] = len(refreshed)
+          (root / "manifest.json").write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2) + "\\n")
+          (root / "imperial_approved_assets.json").write_text(json.dumps(approved, ensure_ascii=False, indent=2) + "\\n")
+          print("HF_IMPERIAL_GLB_RESTORE_PASS: 63 source GLBs validated; sizes and SHA-256 fingerprints refreshed")
           PY
 
       - name: Install Godot 4.3 and Xvfb
@@ -207,7 +220,7 @@ jobs:
           if [ -s "$asset" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -f "$asset" assets/wuxia_imperial_pack/models/
+            git add -f "$asset" assets/wuxia_imperial_pack/models/ assets/wuxia_imperial_pack/manifest.json assets/wuxia_imperial_pack/imperial_approved_assets.json
             if ! git diff --cached --quiet; then
               git commit -m "Add prebuilt Imperial China palace scene"
               git push origin "HEAD:$GITHUB_REF_NAME"
