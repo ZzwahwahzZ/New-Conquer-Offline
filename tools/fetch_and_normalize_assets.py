@@ -7,11 +7,12 @@ import requests
 from huggingface_hub import HfApi,hf_hub_download
 from imperial_extra_sources import discover_3dassets, discover_hanok_pack, discover_imperial_china_pack
 from opengameart_sources import discover_opengameart, discover_quaternius
+from new_asset_sources import discover_smithsonian, discover_kenney_nature, discover_sketchfab
 ROOT=Path.cwd(); OUT=ROOT/"assets/wuxia_imperial_pack"; RAW=ROOT/".asset_work/raw"
 HF_REPO=os.getenv("HF_REPO_ID","ZzwahwahzZ/clash-of-legends-terrain-assets"); PREFIX="assets/wuxia_imperial_pack"
 S=requests.Session(); S.headers.update({"User-Agent":"NewConquerOffline-AssetPipeline/1.0 (GitHub Actions; asset audit)"})
 TERMS={"architecture":["chinese temple","imperial palace","imperial chinese palace","ceremonial hall","gate tower","moon gate","palace wall","covered walkway","water pavilion","arched stone bridge","asian house","asian shop","chinese gate","watchtower","stone bridge","pagoda","asian architecture","stone wall","fort wall","city wall"],"ornaments":["dragon statue","dragon roof finial","guardian lion","guardian lion pair","bronze tripod cauldron","stone incense burner","garden lantern","silk lantern","bronze bell","ceremonial drum","stone fountain","chinese lantern","torch"],"nature":["willow tree","pine tree","bonsai pine","bamboo","bamboo clump","plum tree blossom","lotus cluster","rockery outcrop","peony planter","bush","shrub"],"pbr":["ornamental paving","paving stones","stone","marble","red roof tile","wood"]}
-MISSING={k:list(v) for k,v in TERMS.items()}; COVERED={k:[] for k in TERMS}; DISC=[]; DOWN=[]; OK=[]; ERR=[]; REJECTED=[]; SKIPPED=[]; VERIFIED=[]
+MISSING={k:list(v) for k,v in TERMS.items()}; COVERED={k:[] for k in TERMS}; DISC=[]; DOWN=[]; OK=[]; ERR=[]; REJECTED=[]; SKIPPED=[]; VERIFIED=[]; EXISTING_HASHES=set()
 def sha(p):
  h=hashlib.sha256()
  with open(p,"rb") as f:
@@ -171,6 +172,7 @@ def rejected_asset(record):
  if LION.search(text) and not re.search(r"\b(?:stone|guardian)\s+lions?\b", text): return True
  return False
 def asset_category(record, filename=""):
+ if record.get("target_category") in CATEGORY_RULES: return record["target_category"]
  if record.get("kind") == "pbr" or record.get("source") == "ambientCG" or any(c=="pbr" for c,t in record.get("matches",[])): return "pbr_materials"
  raw_name=_flatten_text(record.get("name") or record.get("title") or "")
  primary=re.sub(r"\s*\([^)]*\)", " ", raw_name)
@@ -248,11 +250,17 @@ def strict_filter_self_test():
                     "expected_rejected":should_reject,"expected_category":should_category})
  if failures: raise RuntimeError("Strict asset filter self-test failed: "+json.dumps(failures,ensure_ascii=False))
  print("STRICT_FILTER_SELF_TEST PASS",len(cases),"cases")
+def license_allowed(value):
+ text=str(value or "").strip().lower().replace("_","-")
+ if any(x in text for x in ("by-sa","by-nc","by-nd","noncommercial","sharealike","no derivatives")): return False
+ return ("cc0" in text or "cc-by" in text or "cc by" in text or "attribution" in text)
 def filter_candidates():
  global DISC, DOWN
  accepted=[]
  for record in DOWN:
-  if rejected_asset(record) or (not asset_category(record) and not (record.get("candidate_only") and is_architecture_candidate(record))):
+  if not license_allowed(record.get("license")):
+   REJECTED.append({"asset":record.get("id"),"stage":"license_filter","reason":"Only CC0 and CC BY are permitted"})
+  elif rejected_asset(record) or (not asset_category(record) and not (record.get("candidate_only") and is_architecture_candidate(record))):
    REJECTED.append({"asset":record.get("id"),"stage":"strict_identity_filter","reason":"Rejected by blacklist/identity filter"})
   else: accepted.append(record)
  DOWN[:] = accepted
@@ -302,11 +310,26 @@ def process():
    if r.get("source") == "Quaternius":
     models=[x for x in models if is_architecture_candidate({"id":x.name,"name":x.name},x.name)
             and not rejected_asset({"id":r.get("id",""),"name":x.name,"source":r.get("source"),"source_url":r.get("source_url"),"pack":r.get("pack","")})]
+   if r.get("source") == "Kenney":
+    nature_tokens=("tree","rock","bush","grass","fern","flower","plant","mushroom","stump","log","leaf","cactus","reed","foliage","shrub")
+    models=[x for x in models if any(token in x.stem.lower() for token in nature_tokens)]
    if models:
     for i,src in enumerate(models[:80]):
-     base_dir=OUT/"candidates"/"models" if r.get("candidate_only") else OUT/"models"
-     dst=base_dir/(safe(r["id"])+(("_"+str(i)) if i else "")+".glb"); dst.parent.mkdir(parents=True,exist_ok=True)
-     m=blender(src,dst); OK.append({**r,"kind":"model","file":str(dst),"dimensions_m":m["dimensions_m"],"validation":m})
+     model_rec=dict(r)
+     if r.get("source") == "Kenney":
+      model_rec.update({"id":r["id"]+"-"+safe(src.stem),"name":src.stem.replace("_"," ").replace("-"," ").title(),
+                        "target_category":"nature","matches":[("nature",src.stem)],"candidate_only":True})
+     base_dir=OUT/"candidates"/"models" if model_rec.get("candidate_only") else OUT/"models"
+     suffix=("_"+str(i)) if i and r.get("source")!="Kenney" else ""
+     dst=base_dir/(safe(model_rec["id"])+suffix+".glb"); dst.parent.mkdir(parents=True,exist_ok=True)
+     m=blender(src,dst)
+     normalized_hash=sha(dst)
+     if normalized_hash in EXISTING_HASHES:
+      dst.unlink(missing_ok=True); dst.with_suffix(".json").unlink(missing_ok=True)
+      SKIPPED.append({"asset":model_rec["id"],"stage":"duplicate_sha256","reason":"Normalized GLB exactly matches an existing or newly accepted asset"})
+      continue
+     EXISTING_HASHES.add(normalized_hash)
+     OK.append({**model_rec,"kind":"model","file":str(dst),"dimensions_m":m["dimensions_m"],"validation":m})
     for c,t in r["matches"]:
      if t not in COVERED.setdefault(c,[]): COVERED[c].append(t)
    elif r["source"]=="ambientCG":
@@ -360,7 +383,7 @@ def builddocs(blenderver):
    if not category or rejected_asset({"id":r.get("id"),"name":r.get("name"),"source":r.get("source"),"source_url":r.get("source_url"),"matches":r.get("matches"),"tags":p.name}):
     continue
    aid=str(r.get("id","")).lower()
-   style_group="imperial_chinese" if "imperial-china-palace-and-garden" in aid else "korean_hanok" if "korean-hanok-village-and-street" in aid else "pbr_materials" if category=="pbr_materials" else "environmental"
+   style_group="imperial_chinese" if ("imperial-china-palace-and-garden" in aid or r.get("source")=="Smithsonian Open Access") else "korean_hanok" if "korean-hanok-village-and-street" in aid else "pbr_materials" if category=="pbr_materials" else "environmental"
    item={"asset_id":r["id"],"name":r["name"],"category":category,"style_group":style_group,"file":p.relative_to(OUT).as_posix(),"source":r["source"],"source_url":r["source_url"],"direct_download_url":r.get("download_url"),"license":r["license"],"authors":r["authors"],"dimensions_m":r.get("dimensions_m"),"bytes":p.stat().st_size,"sha256":sha(p),"validation":r["validation"]}
    entries.append(item); grouped[category].append(item)
  approved_paths={x["file"] for x in entries} | candidate_paths
@@ -376,7 +399,9 @@ def builddocs(blenderver):
  (OUT/"manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
  approved={"schema_version":"1.0","generated_at_utc":manifest["generated_at_utc"],"units":"model dimensions are measured GLB bounding boxes in meters; PBR textures have no physical dimensions","categories":{k:{"count":len(v),"assets":v} for k,v in grouped.items()},"style_group_counts":style_counts,"total_approved_files":len(entries),"supplemental_candidates":supplemental}
  (OUT/"imperial_approved_assets.json").write_text(json.dumps(approved,ensure_ascii=False,indent=2))
- lines=["# Wuxia Imperial Asset Audit","","- Blender: "+blenderver,"- Discovered: "+str(len(DISC)),"- Downloaded: "+str(len(DOWN)),"- Validated source assets: "+str(len(OK)),"- Approved file entries: "+str(len(entries)),"- Category counts: "+json.dumps(counts,ensure_ascii=False),"- Style group/category breakdown: "+json.dumps(style_counts,ensure_ascii=False),"- Operational errors: "+str(len(ERR)),"- Strict identity-filter exclusions: "+str(len(REJECTED)),"- Skipped legacy failures: "+str(len(SKIPPED)),"","## Approved files"]
+ source_counts={}
+ for x in entries: source_counts[x.get("source","unknown")]=source_counts.get(x.get("source","unknown"),0)+1
+ lines=["# Wuxia Imperial Asset Audit","","- Blender: "+blenderver,"- Discovered: "+str(len(DISC)),"- Downloaded: "+str(len(DOWN)),"- Validated source assets: "+str(len(OK)),"- Approved file entries: "+str(len(entries)), "- Category counts: "+json.dumps(counts,ensure_ascii=False),"- Source counts: "+json.dumps(source_counts,ensure_ascii=False),"- Style group/category breakdown: "+json.dumps(style_counts,ensure_ascii=False),"- Operational errors: "+str(len(ERR)),"- Strict identity-filter exclusions: "+str(len(REJECTED)),"- Skipped legacy failures: "+str(len(SKIPPED)),"","## Approved files"]
  lines += ["- "+x["category"]+" | "+x["file"]+" | "+x["license"]+" | "+x["source"]+" | "+str(x["dimensions_m"] or "PBR texture set") for x in entries]
  lines += ["","## Operational errors"]+["- "+x["asset"]+" ("+x["stage"]+"): "+x["reason"] for x in ERR] if ERR else ["","## Operational errors","- None"]
  lines += ["","## Strict identity-filter exclusions"]+["- "+x["asset"] for x in REJECTED] if REJECTED else ["","## Strict identity-filter exclusions","- None"]
@@ -432,6 +457,7 @@ def main():
   try:
    prior=json.loads(existing_manifest.read_text(encoding="utf-8"))
    existing_assets=prior.get("assets",[])
+   EXISTING_HASHES.update(str(x.get("sha256")) for x in existing_assets if x.get("sha256"))
    DISC.extend({**x,"id":x.get("id") or x.get("asset_id")} for x in existing_assets if isinstance(x,dict) and (x.get("id") or x.get("asset_id")))
    print("EXISTING_ASSET_IDS_LOADED",len(existing_assets))
   except Exception as exc:
@@ -446,7 +472,7 @@ def main():
   {"asset":"Quaternius:ultimate-nature-pack","stage":"known_legacy_failure","reason":"Skipped; previously verified download endpoint returns HTTP 404"},
   {"asset":"Quaternius:stylized-nature-megakit-official","stage":"known_legacy_failure","reason":"Skipped; previously verified source page exposes no direct downloadable file"}
  ])
- strict_filter_self_test(); discover_imperial_china_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_hanok_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
+ strict_filter_self_test(); discover_smithsonian(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_kenney_nature(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_sketchfab(S,getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_imperial_china_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_hanok_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
  if not entries:
   print(json.dumps({"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
   raise RuntimeError("No assets passed license and validation checks; see printed per-source diagnostics. No empty upload performed.")
