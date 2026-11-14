@@ -68,7 +68,21 @@ def main():
     restored = []
     for item in selected:
         filename = PREFIX + str(item["file"])
-        local = Path(hf_hub_download(repo_id=DATASET, repo_type="dataset", filename=filename, token=token, local_dir=str(CACHE)))
+        destination = CACHE / filename
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            downloaded = Path(hf_hub_download(repo_id=DATASET, repo_type="dataset", filename=filename, token=token, local_dir=str(CACHE)))
+        except Exception as hf_error:
+            direct_url = str(item.get("direct_download_url", "")).strip()
+            if not direct_url.startswith("https://"):
+                raise SystemExit("Hugging Face asset missing and no verified publisher URL exists: " + filename + " | " + str(hf_error))
+            import requests
+            response = requests.get(direct_url, timeout=(20, 180))
+            response.raise_for_status()
+            destination.write_bytes(response.content)
+            downloaded = destination
+            print("TWIN_CITY_PUBLISHER_CDN_FALLBACK: " + filename)
+        local = downloaded
         digest = hashlib.sha256(local.read_bytes()).hexdigest()
         if digest != item["sha256"] or local.stat().st_size != int(item["bytes"]):
             raise SystemExit("Approved asset integrity mismatch: " + filename)
