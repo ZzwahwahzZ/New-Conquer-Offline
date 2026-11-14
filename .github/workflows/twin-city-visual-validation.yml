@@ -2,13 +2,6 @@ name: Twin City Godot 4.3 Visual Validation
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - twin-city/imperial-visual-prototype
-    paths:
-      - 'src/**'
-      - 'project.godot'
-      - '.github/workflows/twin-city-visual-validation.yml'
 
 permissions:
   contents: write
