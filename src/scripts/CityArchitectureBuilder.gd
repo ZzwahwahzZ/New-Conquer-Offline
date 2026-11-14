@@ -730,6 +730,13 @@ static func _twin_roads(parent: Node3D, stone: Material, curb: Material) -> void
    var next := Vector3(cos(angle)*(216.0-t*178.0)-sin(angle)*bend,0.16,sin(angle)*(216.0-t*178.0)+cos(angle)*bend)
    transforms.append(_twin_road_transform(previous,next,13.0))
    previous=next
+ for ring_radius in [52.0,132.0]:
+  for segment in range(48):
+   var a0 := TAU*float(segment)/48.0
+   var a1 := TAU*float(segment+1)/48.0
+   var p0 := Vector3(cos(a0)*ring_radius,0.14,sin(a0)*ring_radius)
+   var p1 := Vector3(cos(a1)*ring_radius,0.14,sin(a1)*ring_radius)
+   transforms.append(_twin_road_transform(p0,p1,8.0))
  for lane in range(12):
   var angle := TAU*float(lane)/12.0+0.12
   var radius := 78.0+float(lane%3)*25.0
@@ -756,7 +763,7 @@ static func _twin_roads(parent: Node3D, stone: Material, curb: Material) -> void
 
 static func _twin_road_transform(a: Vector3,b: Vector3,width: float) -> Transform3D:
  var delta := b-a
- var basis := Basis(Vector3.UP,atan2(delta.x,delta.z)).scaled(Vector3(width,0.22,delta.length()+1.0))
+ var basis := Basis(Vector3.UP,atan2(delta.x,delta.z)).scaled(Vector3(width,0.22,delta.length()+4.0))
  return Transform3D(basis,(a+b)*0.5)
 
 static func _twin_plaza(parent: Node3D,stone: Material,pale: Material,gold: Material,pink: Material,roof: Material,timber: Material) -> void:
@@ -793,18 +800,28 @@ static func _twin_pagoda(parent: Node3D,roof: Material,timber: Material,gold: Ma
  root.name = "CentralPagoda_20m"
  parent.add_child(root)
  var storey_transforms: Array[Transform3D] = []
- var roof_transforms: Array[Transform3D] = []
- var trim_transforms: Array[Transform3D] = []
+ var roof_panels: Array[Transform3D] = []
+ var eave_transforms: Array[Transform3D] = []
+ var ridge_transforms: Array[Transform3D] = []
  for level in range(4):
   var y := 2.0+float(level)*4.0
   var width := 12.0-float(level)*2.0
+  var roof_y := y+2.0
   storey_transforms.append(Transform3D(Basis().scaled(Vector3(width,3.3,width)),Vector3(0,y,0)))
-  roof_transforms.append(Transform3D(Basis().scaled(Vector3(width+5.0,0.8,width+5.0)),Vector3(0,y+2.0,0)))
-  trim_transforms.append(Transform3D(Basis().scaled(Vector3(width+5.6,0.18,width+5.6)),Vector3(0,y+2.48,0)))
+  for side in [-1.0,1.0]:
+   var panel_pos := Vector3(0,roof_y+0.55,side*width*0.25)
+   var panel_basis := (Basis(Vector3.RIGHT,side*0.42)).scaled(Vector3(width+5.2,0.48,width*0.5+2.0))
+   roof_panels.append(Transform3D(panel_basis,panel_pos))
+   eave_transforms.append(Transform3D(Basis().scaled(Vector3(width+5.6,0.18,0.24)),Vector3(0,roof_y+0.1,side*(width*0.5+1.0))))
+   var side_basis := (Basis(Vector3.UP,PI*0.5)*Basis(Vector3.RIGHT,side*0.42)).scaled(Vector3(width+5.2,0.48,width*0.5+2.0))
+   roof_panels.append(Transform3D(side_basis,Vector3(side*width*0.25,roof_y+0.55,0)))
+   eave_transforms.append(Transform3D(Basis(Vector3.UP,PI*0.5).scaled(Vector3(width+5.6,0.18,0.24)),Vector3(side*(width*0.5+1.0),roof_y+0.1,0)))
+  ridge_transforms.append(Transform3D(Basis().scaled(Vector3(width*0.84,0.34,0.48)),Vector3(0,roof_y+1.0,0)))
  _twin_multimesh(root,"PagodaTimberStoreys",BoxMesh.new(),storey_transforms,timber)
- _twin_multimesh(root,"PagodaDarkRoofTiers",BoxMesh.new(),roof_transforms,roof)
- _twin_multimesh(root,"PagodaGoldEaveTrim",BoxMesh.new(),trim_transforms,gold)
- _twin_cylinder(root,"PagodaFinial",Vector3(0,19.0,0),0.32,2.0,gold)
+ _twin_multimesh(root,"PagodaCurvedDarkRoofPanels",BoxMesh.new(),roof_panels,roof)
+ _twin_multimesh(root,"PagodaGoldenRaisedEaves",BoxMesh.new(),eave_transforms,gold)
+ _twin_multimesh(root,"PagodaRoofRidges",BoxMesh.new(),ridge_transforms,gold)
+ _twin_cylinder(root,"PagodaFinial",Vector3(0,19.5,0),0.32,2.0,gold)
 
 static func _twin_palace(parent: Node3D,pale: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
  var palace_root := Node3D.new()
@@ -976,7 +993,7 @@ static func _twin_clone_kit_prop(parent: Node3D,kit: Node3D,template_name: Strin
  parent.add_child(clone)
 
 static func _twin_add_palace_annex_fallback(parent: Node3D,pale: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
- var batches := {"foundation":[],"walls":[],"roof":[],"timber":[],"windows":[],"gold":[],"doors":[],"shop":[],"posts":[]}
+ var batches := {"foundation":[],"walls":[],"roof":[],"roof_slopes":[],"ridge":[],"timber":[],"windows":[],"gold":[],"doors":[],"shop":[],"posts":[]}
  for i in range(8):
   var x := -48.0+float(i%4)*32.0
   var z := -163.0+float(int(i/4))*20.0
@@ -988,7 +1005,7 @@ static func _twin_place_district_buildings(parent: Node3D, counts: Dictionary, w
  districts.name = "DenseMixedResidentialCommercialDistricts_157"
  parent.add_child(districts)
  var batches := {
-  "foundation": [], "walls": [], "roof": [], "timber": [],
+  "foundation": [], "walls": [], "roof": [], "roof_slopes": [], "ridge": [], "timber": [],
   "windows": [], "gold": [], "doors": [], "shop": [], "posts": []
  }
  var serial := 0
