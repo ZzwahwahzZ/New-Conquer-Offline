@@ -53,6 +53,7 @@ jobs:
           HF_REPO_ID: ZzwahwahzZ/clash-of-legends-terrain-assets
           BLENDER_BIN: blender
           SKETCHFAB_TOKEN: ${{ secrets.SKETCHFAB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: python tools/fetch_and_normalize_assets.py
       - name: Commit audit docs to PR branch
         shell: bash
