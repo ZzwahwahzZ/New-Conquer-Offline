@@ -861,7 +861,7 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
  ]
  var template_names := [
   "146-plum-tree-in-blossom","147-bamboo-clump","150-peony-planter",
-  "153-garden-stone-bench","154-standing-garden-lantern","168-guardian-lion-pair"
+  "153-garden-stone-bench","154-standing-garden-lantern","168-guardian-lion-pair","176-plum-tree-in-blossom"
  ]
  var selected_roots: Array[Node3D] = []
  var template_roots: Array[Node3D] = []
@@ -877,7 +877,7 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
    var template := child as Node3D
    template.name = "ImperialKitTemplate_"+template.name
    template_roots.append(template)
- if selected_roots.size() != 8 or template_roots.size() != 6:
+ if selected_roots.size() != 8 or template_roots.size() != 7:
   push_warning("Imperial China GLB expected 8 palace structures and 6 prop templates, found %d/%d" % [selected_roots.size(),template_roots.size()])
   kit.queue_free()
   return false
@@ -940,7 +940,7 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
 
 static func _twin_add_palace_props(parent: Node3D,kit: Node3D) -> void:
  var plum_a := "ImperialKitTemplate_146-plum-tree-in-blossom"
- var plum_b := "ImperialKitTemplate_146-plum-tree-in-blossom"
+ var plum_b := "ImperialKitTemplate_176-plum-tree-in-blossom"
  for i in range(8):
   var angle := TAU*float(i)/8.0
   var template_name := plum_a if i%2==0 else plum_b
