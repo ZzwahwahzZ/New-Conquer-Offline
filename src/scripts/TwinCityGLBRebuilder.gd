@@ -52,11 +52,6 @@ static func build(parent: Node3D) -> void:
 	_build_city_greenery_and_props(root, source_container)
 	_build_perimeter(root, source_container)
 	_build_outer_wildlands(root, source_container)
-	# The source pack is a template library only; release its hidden duplicate after all GLB clones
-	# and the paving MultiMesh have retained their own resource references.
-	root.remove_child(source_instance)
-	source_instance.free()
-	print("TWIN_CITY_SOURCE_TEMPLATE_RELEASE: released=true")
 	var final_null_meshes_removed := _remove_invalid_mesh_nodes(root)
 	print("TWIN_CITY_NULL_MESH_PRUNE_FINAL: removed=%d" % final_null_meshes_removed)
 
