@@ -839,6 +839,110 @@ static func _twin_pagoda(parent: Node3D,roof: Material,timber: Material,gold: Ma
  _twin_cylinder(root,"PagodaFinial",Vector3(0,19.0,0),0.32,2.0,gold)
 
 static func _twin_palace(parent: Node3D,pale: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
+ if _twin_import_imperial_palace_kit(parent):
+  return
+ _twin_palace_procedural_fallback(parent,pale,stone,timber,roof,gold)
+ _twin_add_palace_annex_fallback(parent,pale,stone,timber,roof,gold)
+
+static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
+ const KIT_PATH := "res://assets/environment/architecture/imperial_china_palace_and_garden.glb"
+ if not ResourceLoader.exists(KIT_PATH):
+  push_warning("Imperial China GLB unavailable; using procedural palace fallback")
+  return false
+ var packed := load(KIT_PATH) as PackedScene
+ if packed == null:
+  push_warning("Imperial China GLB failed to load as PackedScene")
+  return false
+ var kit := packed.instantiate() as Node3D
+ if kit == null:
+  push_warning("Imperial China GLB root is not Node3D")
+  return false
+ kit.name = "TwinCity_ImperialChina_GLBKit"
+ kit.position = Vector3(0,0,-103.0)
+ kit.scale = Vector3.ONE
+ parent.add_child(kit)
+ kit.add_to_group("twin_city_imperial_asset_kit")
+ var container := kit.find_child("walled-palace-courtyard-and-lotus-garden",true,false) as Node3D
+ if container == null:
+  push_warning("Imperial China GLB model container missing")
+  kit.queue_free()
+  return false
+ var selected_names := [
+  "130-ceremonial-hall","131-gate-tower","134-water-pavilion","135-arched-stone-bridge",
+  "101-covered-walkway-bay","102-covered-walkway-bay","103-covered-walkway-corner","104-covered-walkway-bay"
+ ]
+ var selected_roots: Array[Node3D] = []
+ var selected_index := 0
+ for child in container.get_children():
+  if child is Node3D and selected_names.has(child.name):
+   var model := child as Node3D
+   model.name = "TwinCity_palace_annex_%03d" % selected_index
+   model.add_to_group("twin_city_building")
+   selected_roots.append(model)
+   selected_index += 1
+ if selected_roots.size() != 8:
+  push_warning("Imperial China GLB expected 8 palace structures, found %d" % selected_roots.size())
+  kit.queue_free()
+  return false
+ var tools: Dictionary = {}
+ var materials: Dictionary = {}
+ var merged_source_count := 0
+ var mesh_nodes := kit.find_children("*","MeshInstance3D",true,false)
+ for raw_node in mesh_nodes:
+  var mesh_node := raw_node as MeshInstance3D
+  if mesh_node == null or mesh_node.mesh == null:
+   continue
+  var ancestor := mesh_node.get_parent()
+  var belongs_to_selected := false
+  while ancestor != null and ancestor != kit:
+   if selected_roots.has(ancestor):
+    belongs_to_selected = true
+    break
+   ancestor = ancestor.get_parent()
+  if belongs_to_selected:
+   continue
+  var local_transform := kit.global_transform.affine_inverse()*mesh_node.global_transform
+  for surface in range(mesh_node.mesh.get_surface_count()):
+   var material := mesh_node.get_active_material(surface)
+   if material == null:
+    material = mesh_node.mesh.surface_get_material(surface)
+   if material == null:
+    material = _material(Color("#b9ad96"),0.88)
+   var key := material.get_instance_id()
+   if not tools.has(key):
+    var surface_tool := SurfaceTool.new()
+    surface_tool.begin(mesh_node.mesh.surface_get_primitive_type(surface))
+    tools[key] = surface_tool
+    materials[key] = material
+   var active_tool := tools[key] as SurfaceTool
+   active_tool.append_from(mesh_node.mesh,surface,local_transform)
+   merged_source_count += 1
+  mesh_node.visible = false
+ var merged_surfaces := 0
+ for key in tools.keys():
+  var merged_mesh := (tools[key] as SurfaceTool).commit()
+  if merged_mesh == null:
+   continue
+  if merged_mesh.get_surface_count() > 0:
+   merged_mesh.surface_set_material(0,materials[key])
+  var merged_node := MeshInstance3D.new()
+  merged_node.name = "ImperialKitMergedSurface_%03d" % merged_surfaces
+  merged_node.mesh = merged_mesh
+  merged_node.visibility_range_end = 320.0
+  merged_node.visibility_range_end_margin = 24.0
+  kit.add_child(merged_node)
+  merged_surfaces += 1
+ print("TWIN_CITY_IMPERIAL_KIT_PASS: palace_models=%d merged_source_surfaces=%d merged_material_surfaces=%d" % [selected_roots.size(),merged_source_count,merged_surfaces])
+ return merged_surfaces > 0
+
+static func _twin_add_palace_annex_fallback(parent: Node3D,pale: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
+ for i in range(8):
+  var x := -48.0+float(i%4)*32.0
+  var z := -163.0+float(int(i/4))*20.0
+  var node := _twin_building(parent,"palace_annex",i,Vector3(x,0,z),13.0,11.0,8.0,2,pale,stone,timber,gold,gold)
+  node.add_to_group("twin_city_building")
+
+static func _twin_palace_procedural_fallback(parent: Node3D,pale: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
  var palace := Node3D.new()
  palace.name = "ImperialPalace_85x75"
  palace.position = Vector3(0,0,-103.0)
@@ -965,12 +1069,8 @@ static func _twin_place_district_buildings(parent: Node3D, counts: Dictionary, w
   var pos := Vector3(cos(angle)*190.0,0,sin(angle)*190.0)
   _twin_register_batched_building(districts,batches,"defensive",serial,pos,8.0,8.0,4,wall,stone,timber,roof,gold,angle)
   serial += 1
- # Eight palace annex structures sit behind and beside the imperial hall.
- for i in range(int(counts.palace)):
-  var x := -48.0+float(i%4)*32.0
-  var z := -163.0+float(int(i/4))*20.0
-  _twin_register_batched_building(districts,batches,"palace_annex",serial,Vector3(x,0,z),13.0,11.0,2,wall,stone,timber,gold,gold,0.0)
-  serial += 1
+ # Eight real palace annex structures are imported from the Imperial China GLB kit.
+ serial += int(counts.palace)
  _twin_flush_building_batches(districts,batches,wall,stone,timber,roof,gold)
  print("TWIN_CITY_BUILDING_CENSUS: residential=82 commercial=28 service=15 landmarks=10 defensive=14 palace=8 total=%d" % serial)
 
