@@ -256,7 +256,8 @@ def strict_filter_self_test():
 def license_allowed(value):
  text=str(value or "").strip().lower().replace("_","-").replace("–","-")
  if any(x in text for x in ("by-nc","by-nd","noncommercial","non-commercial","no derivatives","no-derivatives")): return False
- if re.search(r"\b(?:cc0|public domain|public-domain|unlicense|wtfpl|mit|zlib|bsd(?:-2|-3)?(?:-clause)?|oga[- ]by|cc[- ]?by(?:[- ]?sa)?)\b",text): return True
+ if re.search(r"\bcc[- ]?by[- ]?sa\s*(?:3\.0|4\.0)\b",text): return True
+ if re.search(r"\b(?:cc0|public domain|public-domain|unlicense|wtfpl|mit|zlib|bsd(?:-2|-3)?(?:-clause)?|oga[- ]by\s*(?:3\.0|4\.0)|cc[- ]?by(?![- ]?sa))\b",text): return True
  if re.search(r"\bgpl[- ]?(?:2|3)(?:\.0)?(?:[- ]?(?:only|or-later))?\b",text): return True
  return False
 def license_class(value):
@@ -271,8 +272,8 @@ def license_url_for(value):
  if "cc0" in text: return "https://creativecommons.org/publicdomain/zero/1.0/"
  if "oga-by" in text: return "https://opengameart.org/content/oga-by-30-faq"
  if "by-sa" in text or "by sa" in text:
-  version="3.0" if "3.0" in text else "4.0"
-  return "https://creativecommons.org/licenses/by-sa/"+version+"/"
+  version=next((v for v in ("4.0","3.0") if v in text),None)
+  return "https://creativecommons.org/licenses/by-sa/"+version+"/" if version else ""
  if "cc-by" in text or "cc by" in text:
   version=next((v for v in ("4.0","3.0","2.5","2.0","1.0") if v in text),"4.0")
   return "https://creativecommons.org/licenses/by/"+version+"/"
