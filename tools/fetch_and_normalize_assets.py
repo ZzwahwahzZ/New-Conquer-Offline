@@ -248,7 +248,10 @@ def strict_filter_self_test():
   if actual_reject!=should_reject or (not should_reject and actual_category!=should_category):
    failures.append({"record":rec,"rejected":actual_reject,"category":actual_category,
                     "expected_rejected":should_reject,"expected_category":should_category})
- license_cases=[("CC0 1.0",True),("CC BY 4.0",True),("OGA-BY 3.0",True),("CC BY-SA 4.0",True),("MIT",True),("BSD-3-Clause",True),("Zlib",True),("WTFPL",True),("Unlicense",True),("Public Domain",True),("GPL 3.0",True),("CC BY-NC 4.0",False),("CC BY-ND 4.0",False),("unknown free license",False)]\n for license_value,expected in license_cases:\n  if license_allowed(license_value)!=expected: failures.append({"license":license_value,"expected":expected,"actual":license_allowed(license_value)})\n if failures: raise RuntimeError("Strict asset/license filter self-test failed: "+json.dumps(failures,ensure_ascii=False))
+ license_cases=[("CC0 1.0",True),("CC BY 4.0",True),("OGA-BY 3.0",True),("CC BY-SA 4.0",True),("MIT",True),("BSD-3-Clause",True),("Zlib",True),("WTFPL",True),("Unlicense",True),("Public Domain",True),("GPL 3.0",True),("CC BY-NC 4.0",False),("CC BY-ND 4.0",False),("unknown free license",False)]
+ for license_value,expected in license_cases:
+  if license_allowed(license_value)!=expected: failures.append({"license":license_value,"expected":expected,"actual":license_allowed(license_value)})
+ if failures: raise RuntimeError("Strict asset/license filter self-test failed: "+json.dumps(failures,ensure_ascii=False))
  print("STRICT_FILTER_SELF_TEST PASS",len(cases),"cases")
 def license_allowed(value):
  text=str(value or "").strip().lower().replace("_","-").replace("–","-")
@@ -340,9 +343,12 @@ def process():
    models=[x for x in fs if x.is_file() and x.suffix.lower() in (".blend",".glb",".gltf",".fbx",".obj",".dae",".stl",".ply")]
    priority={".glb":0,".gltf":1,".blend":2,".fbx":3,".obj":4,".dae":5,".stl":6,".ply":7}
    models.sort(key=lambda x:(priority.get(x.suffix.lower(),99),str(x).lower()))
-   if r.get("source") == "Quaternius":
+   if r.get("source") == "Quaternius" and any(c=="architecture" for c,t in r.get("matches",[])):
     models=[x for x in models if is_architecture_candidate({"id":x.name,"name":x.name},x.name)
             and not rejected_asset({"id":r.get("id",""),"name":x.name,"source":r.get("source"),"source_url":r.get("source_url"),"pack":r.get("pack","")})]
+   elif r.get("source") == "Quaternius" and any(c=="nature" for c,t in r.get("matches",[])):
+    nature_tokens=("tree","rock","bush","grass","fern","flower","plant","mushroom","stump","log","leaf","cactus","reed","foliage","shrub","blossom","cherry","pine","willow","maple","birch")
+    models=[x for x in models if any(token in x.stem.lower() for token in nature_tokens)]
    if r.get("source") == "Kenney":
     nature_tokens=("tree","rock","bush","grass","fern","flower","plant","mushroom","stump","log","leaf","cactus","reed","foliage","shrub")
     models=[x for x in models if any(token in x.stem.lower() for token in nature_tokens)]
@@ -409,7 +415,7 @@ def builddocs(blenderver):
     supplemental.append({"asset_id":r.get("id"),"name":r.get("name"),"candidate_category":asset_category(r,p.name),
       "file":p.relative_to(OUT).as_posix(),"source":r.get("source"),"source_url":r.get("source_url"),
       "license":r.get("license"),"bytes":p.stat().st_size,"sha256":sha(p),
-      "dimensions_m":r.get("dimensions_m"),"validation":r.get("validation")})
+      "dimensions_m":r.get("dimensions_m"),"license_url":r.get("license_url") or license_url_for(r.get("license")),"license_class":r.get("license_class") or license_class(r.get("license")),"authors":r.get("authors") or {},"validation":r.get("validation")})
    continue
   for f in paths:
    p=Path(f); category=asset_category(r,p.name)
@@ -449,6 +455,10 @@ def builddocs(blenderver):
   author_values=[str(v).strip() for v in authors.values() if v and str(v).strip().lower() not in {str(x.get("source","")).strip().lower(),"3dassets.dev","ambientcg","poly haven"}]
   creator=", ".join(dict.fromkeys(author_values)) if author_values else "Not individually credited by source"
   credits += ["","## "+x["file"],"- Category: "+x["category"],"- Style group: "+x.get("style_group","environmental"),"- Creator attribution: "+creator,"- Publisher/source: "+x["source"],"- Asset page: "+x["source_url"],"- Direct download: "+str(x.get("direct_download_url") or "not supplied by source; use asset page"),"- License: "+x["license"],"- License URL: "+str(x.get("license_url") or license_url_for(x["license"])),"- License class: "+str(x.get("license_class") or license_class(x["license"])),"- Normalization changes: converted/normalized to GLB; ground origin corrected to Y=0; source dimensions retained in metres.","- Distribution note: "+("kept in reciprocal/ with the applicable share-alike/GPL license; do not merge into proprietary source code" if (x.get("license_class") or license_class(x["license"]))=="reciprocal" else "retain this attribution/license notice when redistributing"),"- Dimensions (m): "+str(x["dimensions_m"] or "not applicable (PBR textures)"),"- SHA256: "+x["sha256"]]
+ for x in supplemental:
+  authors=x.get("authors") or {}
+  creator=", ".join(str(v) for v in authors.values() if v) or "Repository/source publisher; verify individual creator on source page"
+  credits += ["","## "+x["file"],"- Status: Supplemental visual-review candidate (not yet placed in the city)","- Name: "+str(x.get("name")),"- Creator/publisher: "+creator,"- Source: "+str(x.get("source")),"- Asset page: "+str(x.get("source_url")),"- License: "+str(x.get("license")),"- License URL: "+str(x.get("license_url") or license_url_for(x.get("license"))),"- License class: "+str(x.get("license_class") or license_class(x.get("license"))),"- Normalization changes: converted/normalized to GLB; ground origin corrected to Y=0; source dimensions retained in metres.","- SHA256: "+str(x.get("sha256"))]
  (ROOT/"CREDITS.md").write_text("\n".join(credits)+"\n")
  return entries
 def upload(entries):
