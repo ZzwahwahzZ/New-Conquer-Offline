@@ -363,6 +363,17 @@ jobs:
         with:
           path: .godot/imported
           key: godot43-imported-cache-v1
+      - name: Install Godot 4.3 headless runtime
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          curl --connect-timeout 20 --max-time 240 --retry 3 --retry-delay 5 -fL "https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip" -o /tmp/godot.zip
+          mkdir -p /tmp/godot-bin
+          unzip -q /tmp/godot.zip -d /tmp/godot-bin
+          sudo install -m 0755 /tmp/godot-bin/Godot_v4.3-stable_linux.x86_64 /usr/local/bin/godot
+          test "$(godot --version)" = "4.3.stable.official.77dcf97d8"
       - name: Validate every restored GLB mesh in Godot 4.3
         shell: bash
         run: |
@@ -419,6 +430,17 @@ jobs:
         with:
           path: .godot/imported
           key: godot43-imported-cache-v1
+      - name: Install Godot 4.3, Xvfb and Vulkan software renderer
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          sudo apt-get update
+          sudo apt-get install -y xvfb xz-utils unzip libgl1-mesa-dri libglx-mesa0 mesa-utils libvulkan1 mesa-vulkan-drivers vulkan-tools
+          curl --connect-timeout 20 --max-time 240 --retry 3 --retry-delay 5 -fL "https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip" -o /tmp/godot.zip
+          mkdir -p /tmp/godot-bin
+          unzip -q /tmp/godot.zip -d /tmp/godot-bin
+          sudo install -m 0755 /tmp/godot-bin/Godot_v4.3-stable_linux.x86_64 /usr/local/bin/godot
+          test "$(godot --version)" = "4.3.stable.official.77dcf97d8"
       - name: Download verified palace kit from validation stage
         uses: actions/download-artifact@v4
         with:
@@ -509,8 +531,10 @@ jobs:
           from pathlib import Path
           report = json.loads(Path("prototypes/twin_city/reports/twin_city_build_report.json").read_text())
           count = report.get("buildings", 0)
-          if not 220 <= count <= 260:
-              raise SystemExit(f"Expected 220-260 buildings, got {count}")
+          categories = report.get("building_categories", {})
+          expected = {"residential":120,"commercial":48,"service":56,"landmark":16,"palace":3,"pagoda":1}
+          if count != 244 or categories != expected:
+              raise SystemExit(f"Expected exactly 244 structures with {expected}; got count={count}, categories={categories}")
           if report.get("screenshots_created") != 6:
               raise SystemExit("Six Godot screenshots were not captured")
           if not report.get("fps_target_30_pass", False):
@@ -534,7 +558,6 @@ jobs:
             git add -f "$asset"
             if [ -d assets/wuxia_imperial_pack/models ]; then git add -f assets/wuxia_imperial_pack/models/; fi
             if [ -d assets/wuxia_imperial_pack/candidates/models ]; then git add -f assets/wuxia_imperial_pack/candidates/models/; fi
-          if [ -d assets/wuxia_imperial_pack/candidates/models ]; then git add -f assets/wuxia_imperial_pack/candidates/models/; fi
             if [ -d assets/twin_city_selected ]; then git add -f assets/twin_city_selected/; fi
             if [ -f assets/wuxia_imperial_pack/manifest.json ]; then git add -f assets/wuxia_imperial_pack/manifest.json; fi
             if [ -f assets/wuxia_imperial_pack/imperial_approved_assets.json ]; then git add -f assets/wuxia_imperial_pack/imperial_approved_assets.json; fi

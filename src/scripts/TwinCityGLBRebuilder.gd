@@ -129,8 +129,15 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 				var wall_node := fort.get_node_or_null(NodePath(wall_name)) as Node3D
 				if wall_node != null:
 					_normalize_node_to_dimensions(wall_node, Vector3(13.5, 15.0, 4.5))
+					_snap_node_to_ground(wall_node, 0.0)
+					wall_node.add_to_group("twin_city_wall_segment", true)
 		var corner_positions := [Vector3(-190.0, 0.0, -190.0), Vector3(190.0, 0.0, -190.0), Vector3(190.0, 0.0, 190.0), Vector3(-190.0, 0.0, 190.0)]
-		_clone_source_model(fort, source, corner_template, "TwinCity_ImperialWallCorner_%02d" % side, corner_positions[side], yaw, 1.0, "")
+		var corner_name := "TwinCity_ImperialWallCorner_%02d" % side
+		if _clone_source_model(fort, source, corner_template, corner_name, corner_positions[side], yaw, 1.0, ""):
+			var corner := fort.get_node_or_null(NodePath(corner_name)) as Node3D
+			if corner != null:
+				_snap_node_to_ground(corner, 0.0)
+				corner.add_to_group("twin_city_wall_segment", true)
 		var gate_direction := Vector3(sin(yaw), 0.0, -cos(yaw))
 		var gate_center := gate_direction * 190.0
 		var gate_name := "TwinCity_ImperialMoonGate_%02d" % side
@@ -524,6 +531,20 @@ static func _node_local_aabb(root: Node3D) -> AABB:
 			pending.append({"node": child, "transform": transform})
 	return result if has_bounds else AABB()
 
+static func _snap_node_to_ground(root: Node3D, ground_y: float) -> float:
+	var bounds := _node_local_aabb(root)
+	if bounds.size.y <= 0.001:
+		push_error("TWIN_CITY_GROUND_SNAP_FAIL: %s has no measurable vertical bounds" % root.name)
+		return INF
+	# Twin City terrain is flat at Y=0. Account for actual mesh pivots and child transforms;
+	# alter vertical translation only, never geometry, scale, rotation or architectural layout.
+	var bottom_before := root.position.y + bounds.position.y * root.scale.y
+	root.position.y += ground_y - bottom_before
+	var error_m := root.position.y + bounds.position.y * root.scale.y - ground_y
+	root.set_meta("twin_city_ground_snap_y", ground_y)
+	root.set_meta("twin_city_ground_snap_error_m", error_m)
+	return error_m
+
 static func _normalize_node_to_dimensions(root: Node3D, target: Vector3) -> void:
 	var bounds := _node_local_aabb(root)
 	if bounds.size.x <= 0.001 or bounds.size.y <= 0.001 or bounds.size.z <= 0.001:
@@ -532,15 +553,10 @@ static func _normalize_node_to_dimensions(root: Node3D, target: Vector3) -> void
 	var scale_vector := Vector3(target.x / bounds.size.x, target.y / bounds.size.y, target.z / bounds.size.z)
 	root.scale = root.scale * scale_vector
 	root.position.y -= bounds.position.y * scale_vector.y
-	# Re-evaluate the scaled assembly and correct its world-floor offset. This is
-	# limited to registered district buildings; palace/platform pieces keep their authored elevations.
+	# Re-evaluate the scaled assembly and correct only its vertical translation.
+	# Palace/platform components are deliberately excluded from this district-building path.
 	if root.is_in_group("twin_city_building"):
-		var normalized_bounds := _node_local_aabb(root)
-		if normalized_bounds.size.y > 0.001:
-			var floor_error := root.position.y + normalized_bounds.position.y * root.scale.y
-			root.position.y -= floor_error
-			root.set_meta("twin_city_ground_snap_y", 0.0)
-			root.set_meta("twin_city_ground_snap_error_m", root.position.y + normalized_bounds.position.y * root.scale.y)
+		_snap_node_to_ground(root, 0.0)
 	root.set_meta("twin_city_aabb_normalized", true)
 	root.set_meta("twin_city_target_dimensions_m", target)
 	_apply_imperial_palette(root)
