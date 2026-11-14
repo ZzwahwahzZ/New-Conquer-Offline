@@ -634,7 +634,7 @@ static func build_twin_city(parent: Node3D) -> void:
  var stone := _material(Color("#858078"), 0.91)
  var pale_stone := _material(Color("#c9c1ae"), 0.88)
  var dark_stone := _material(Color("#555a60"), 0.94)
- var roof := _material(Color("#2B333E"), 0.78)
+ var roof := _material(Color("#3D4854"), 0.82)
  var timber := _material(Color("#71372b"), 0.68)
  var gold := _material(Color("#D49B35"), 0.46)
  var pink := _material(Color("#e5a0b2"), 0.88)
@@ -881,7 +881,8 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
  var template_names := [
   "146-plum-tree-in-blossom","147-bamboo-clump","150-peony-planter",
   "153-garden-stone-bench","154-standing-garden-lantern","168-guardian-lion-pair","176-plum-tree-in-blossom",
-  "059-courtyard-paving-module"
+  "059-courtyard-paving-module","145-rockery-outcrop","148-bamboo-clump",
+  "152-bonsai-in-glazed-pot","156-standing-garden-lantern","158-hanging-silk-lantern"
  ]
  var selected_roots: Array[Node3D] = []
  var template_roots: Array[Node3D] = []
@@ -897,7 +898,7 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
    var template := child as Node3D
    template.name = "ImperialKitTemplate_"+template.name
    template_roots.append(template)
- if selected_roots.size() != 8 or template_roots.size() != 8:
+ if selected_roots.size() != 8 or template_roots.size() != 13:
   push_warning("Imperial China GLB expected 8 palace structures and 6 prop templates, found %d/%d" % [selected_roots.size(),template_roots.size()])
   kit.queue_free()
   return false
@@ -974,6 +975,7 @@ static func _twin_add_palace_props(parent: Node3D,kit: Node3D) -> void:
  for i in range(4):
   var angle := TAU*float(i)/4.0+PI/4.0
   _twin_clone_kit_prop(parent,kit,"ImperialKitTemplate_153-garden-stone-bench","TwinCity_PlazaBench_%02d" % i,Vector3(cos(angle)*27.0,0,sin(angle)*27.0),-angle,2.0)
+ _twin_add_outer_kit_nature(parent,kit)
  for i in range(2):
   var side := -1.0 if i==0 else 1.0
   _twin_clone_kit_prop(parent,kit,"ImperialKitTemplate_168-guardian-lion-pair","TwinCity_PalaceGuardian_%02d" % i,Vector3(side*18.0,0,-73.0),0.0,2.0)
@@ -1018,10 +1020,35 @@ static func _twin_add_paved_roads(parent: Node3D,kit: Node3D) -> void:
  roads.multimesh = paving
  roads.position.y = 0.0
  parent.add_child(roads)
- roads.material_override = mesh_node.get_active_material(0)
- if roads.material_override == null:
-  roads.material_override = mesh_node.mesh.surface_get_material(0)
+ var source_material := mesh_node.get_active_material(0)
+ if source_material is StandardMaterial3D:
+  var tile_material := (source_material as StandardMaterial3D).duplicate() as StandardMaterial3D
+  tile_material.albedo_color = tile_material.albedo_color * Color("#c7c0b1")
+  tile_material.roughness = 0.94
+  roads.material_override = tile_material
+ else:
+  roads.material_override = _material(Color("#a69f91"),0.94)
  print("TWIN_CITY_ORIGINAL_PAVING_PASS: source=059-courtyard-paving-module tiles=%d" % transforms.size())
+
+static func _twin_add_outer_kit_nature(parent: Node3D,kit: Node3D) -> void:
+ # Replace a portion of the primitive outer tree silhouettes with original Imperial China assets.
+ for i in range(18):
+  var angle := TAU*float(i)/18.0
+  var radius := 252.0+float(i%4)*17.0
+  var pos := Vector3(cos(angle)*radius,0,sin(angle)*radius)
+  var tree_template := "ImperialKitTemplate_146-plum-tree-in-blossom" if i%2==0 else "ImperialKitTemplate_176-plum-tree-in-blossom"
+  _twin_clone_kit_prop(parent,kit,tree_template,"TwinCity_OuterImperialPlum_%02d" % i,pos,-angle,3.0)
+ for i in range(14):
+  var angle := TAU*float(i)/14.0+0.17
+  var radius := 278.0+float(i%3)*18.0
+  var pos := Vector3(cos(angle)*radius,0,sin(angle)*radius)
+  _twin_clone_kit_prop(parent,kit,"ImperialKitTemplate_148-bamboo-clump","TwinCity_OuterBambooAsset_%02d" % i,pos,-angle,3.0)
+ for i in range(12):
+  var angle := TAU*float(i)/12.0+0.25
+  var radius := 292.0+float(i%2)*16.0
+  var pos := Vector3(cos(angle)*radius,0,sin(angle)*radius)
+  _twin_clone_kit_prop(parent,kit,"ImperialKitTemplate_145-rockery-outcrop","TwinCity_OuterRockery_%02d" % i,pos,-angle,2.6)
+ print("TWIN_CITY_OUTER_IMPERIAL_ASSETS_PASS: plum_trees=18 bamboo=14 rockery=12")
 
 static func _twin_clone_kit_prop(parent: Node3D,kit: Node3D,template_name: String,instance_name: String,pos: Vector3,yaw: float,scale_factor: float) -> void:
  var template := kit.find_child(template_name,true,false) as Node3D
