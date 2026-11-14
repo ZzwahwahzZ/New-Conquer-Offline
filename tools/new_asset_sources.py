@@ -583,7 +583,7 @@ def discover_poly_pizza(session, fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPED
                 "matches":[(category,term)], "candidate_only":True,
                 "api_metadata":{"poly_pizza_id":uid,"license_as_published":licence,
                                 "tags":model.get("Tags") or [],
-                                "triangle_count":model.get("TriangleCount"),
+                                "triangle_count":model.get("Tri Count") or model.get("TriangleCount"),
                                 "animated":model.get("Animated"),
                                 "format":"GLB"},
             }
