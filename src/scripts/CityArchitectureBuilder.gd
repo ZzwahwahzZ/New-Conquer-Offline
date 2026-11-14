@@ -875,7 +875,7 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
  kit.position = Vector3.ZERO
  kit.scale = Vector3.ONE
  parent.add_child(kit)
- kit.add_to_group("twin_city_imperial_asset_kit")
+ kit.add_to_group("twin_city_imperial_asset_kit",true)
  var container := kit.find_child("walled-palace-courtyard-and-lotus-garden",true,false) as Node3D
  if container == null:
   push_warning("Imperial China GLB model container missing")
@@ -891,7 +891,7 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
   if child is Node3D and selected_names.has(child.name):
    var model := child as Node3D
    model.name = "TwinCity_palace_annex_%03d" % selected_index
-   model.add_to_group("twin_city_building")
+   model.add_to_group("twin_city_building",true)
    selected_roots.append(model)
    selected_index += 1
  if selected_roots.size() != 8:
