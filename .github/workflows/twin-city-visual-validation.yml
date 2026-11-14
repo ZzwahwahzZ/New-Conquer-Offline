@@ -266,7 +266,7 @@ jobs:
     name: "Stage 2 — Import project and cache Godot resources"
     needs: [assets-cleanup-cache]
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     env:
       GODOT_VERSION: 4.3
       GODOT_RELEASE: 4.3-stable
@@ -327,7 +327,14 @@ jobs:
         run: |
           set -Eeuo pipefail
           mkdir -p prototypes/twin_city/reports prototypes/twin_city/captures
-          timeout 600s godot --headless --path . --editor --import --quit 2>&1 | tee prototypes/twin_city/reports/godot_import.log
+          echo "GODOT_IMPORT_BEGIN_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "PROJECT_FILE_COUNT=$(find . -type f -not -path './.git/*' -not -path './.godot/*' | wc -l)"
+          df -h .
+          # The first clean import of the complete GLB library legitimately exceeds 10 minutes.
+          # Keep this step below the 60-minute job timeout and preserve the imported cache on success.
+          timeout --signal=INT --kill-after=30s 3000s godot --headless --verbose --path . --editor --import --quit 2>&1 | tee prototypes/twin_city/reports/godot_import.log
+          echo "GODOT_IMPORT_END_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          df -h .
           if grep -E 'SCRIPT ERROR:|Parse Error:|ERROR: Failed to load|ERROR: Failed loading resource' prototypes/twin_city/reports/godot_import.log; then
             echo "::error::Godot import reported a script or resource error."
             exit 1
