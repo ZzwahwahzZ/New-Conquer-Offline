@@ -248,11 +248,11 @@ def strict_filter_self_test():
   if actual_reject!=should_reject or (not should_reject and actual_category!=should_category):
    failures.append({"record":rec,"rejected":actual_reject,"category":actual_category,
                     "expected_rejected":should_reject,"expected_category":should_category})
- license_cases=[("CC0 1.0",True),("CC BY 4.0",True),("OGA-BY 3.0",True),("CC BY-SA 4.0",True),("MIT",True),("BSD-3-Clause",True),("Zlib",True),("WTFPL",True),("Unlicense",True),("Public Domain",True),("GPL 3.0",True),("CC BY-NC 4.0",False),("CC BY-ND 4.0",False),("unknown free license",False)]
+ license_cases=[("CC0 1.0",True),("CC BY 4.0",True),("OGA-BY 3.0",True),("OGA-BY 4.0",True),("CC BY-SA 3.0",True),("CC BY-SA 4.0",True),("CC BY-SA",False),("MIT",True),("BSD-2-Clause",True),("BSD-3-Clause",True),("Zlib",True),("WTFPL",True),("Unlicense",True),("Public Domain",True),("GPL 2.0",True),("GPL 3.0",True),("CC BY-NC 4.0",False),("CC BY-ND 4.0",False),("unknown free license",False)]
  for license_value,expected in license_cases:
   if license_allowed(license_value)!=expected: failures.append({"license":license_value,"expected":expected,"actual":license_allowed(license_value)})
  if failures: raise RuntimeError("Strict asset/license filter self-test failed: "+json.dumps(failures,ensure_ascii=False))
- print("STRICT_FILTER_SELF_TEST PASS",len(cases),"cases")
+ print("STRICT_FILTER_SELF_TEST PASS",len(cases)+len(license_cases),"identity/license cases")
 def license_allowed(value):
  text=str(value or "").strip().lower().replace("_","-").replace("–","-")
  if any(x in text for x in ("by-nc","by-nd","noncommercial","non-commercial","no derivatives","no-derivatives")): return False
