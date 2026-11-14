@@ -398,6 +398,35 @@ static func _create_paving_batch(parent: Node3D, node_name: String, source_mesh:
 	material.metallic = 0.0
 	instance.material_override = material
 
+static func _apply_imperial_palette(root: Node3D) -> void:
+	var pending: Array[Node] = [root]
+	while not pending.is_empty():
+		var node: Node = pending.pop_back()
+		for child in node.get_children():
+			pending.append(child)
+		if not node is MeshInstance3D:
+			continue
+		var mesh_node := node as MeshInstance3D
+		if mesh_node.mesh == null:
+			continue
+		var lower_name := mesh_node.name.to_lower()
+		var tint_color := Color("#B89F82")
+		if lower_name.contains("roof") or lower_name.contains("eave"):
+			tint_color = Color("#2E3238")
+		elif lower_name.contains("wood") or lower_name.contains("column") or lower_name.contains("beam"):
+			tint_color = Color("#5C3A21")
+		elif lower_name.contains("gold") or lower_name.contains("trim"):
+			tint_color = Color("#C8963E")
+		elif lower_name.contains("stone") or lower_name.contains("floor") or lower_name.contains("base"):
+			tint_color = Color("#857D72")
+		for surface in range(mesh_node.mesh.get_surface_count()):
+			var original := mesh_node.get_active_material(surface)
+			if original is StandardMaterial3D:
+				var material := (original as StandardMaterial3D).duplicate() as StandardMaterial3D
+				material.albedo_color = material.albedo_color * tint_color
+				material.roughness = maxf(material.roughness, 0.82)
+				mesh_node.set_surface_override_material(surface, material)
+
 static func _node_local_aabb(root: Node3D) -> AABB:
 	var result := AABB()
 	var has_bounds := false
@@ -431,3 +460,4 @@ static func _normalize_node_to_dimensions(root: Node3D, target: Vector3) -> void
 	root.position.y -= bounds.position.y * scale_vector.y
 	root.set_meta("twin_city_aabb_normalized", true)
 	root.set_meta("twin_city_target_dimensions_m", target)
+	_apply_imperial_palette(root)
