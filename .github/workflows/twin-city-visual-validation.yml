@@ -21,7 +21,7 @@ jobs:
   build-and-capture:
     name: Run actual Twin City scene and capture six Godot views
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     env:
       GODOT_VERSION: 4.3
       GODOT_RELEASE: 4.3-stable
@@ -82,27 +82,127 @@ jobs:
               item["validation"]["bounds_source"] = "trimesh GLB scene geometry"
               item["bytes"] = len(payload)
               item["sha256"] = digest
-              refreshed[item.get("asset_id", relative)] = (len(payload), digest)
+              refreshed[item.get("asset_id", relative)] = {"bytes":len(payload),"sha256":digest,"dimensions_m":dimensions,"geometry_count":geometry_count}
               name = str(item.get("name", Path(relative).stem))
               category = str(item.get("category", "uncategorized"))
               semantic = (name + " " + relative).lower()
               architectural = any(word in semantic for word in ("house","building","shop","market","pagoda","temple","palace","wuxia","inn","village","hall","pavilion","gatehouse")) and min(dimensions[0], dimensions[2]) >= 2.0 and dimensions[1] >= 2.5
               geometry_audit.append({"asset_id":item.get("asset_id"),"name":name,"file":relative,"category":category,"style_group":item.get("style_group"),"dimensions_m":dimensions,"geometry_count":geometry_count,"bytes":len(payload),"sha256":digest,"architectural_candidate":architectural})
               print(f"HF_GLB_VERIFIED {index}/99 {relative} dimensions_m={dimensions} geometry={geometry_count} sha256={digest}")
-          audit_path = Path("prototypes/twin_city/reports/glb_geometry_audit.json")
-          audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","models_folder_glb_count":len(geometry_audit),"assets":geometry_audit,"architectural_candidate_count":sum(x["architectural_candidate"] for x in geometry_audit)}, ensure_ascii=False, indent=2) + "\n")
+          selected_names = [
+              "Hanok Main House",
+              "Stone Plinth Base Module",
+              "Hanok Maru Floor Module",
+              "Hanok Post And Beam Frame",
+              "Hanok Room Module",
+              "Hipped Tile Roof Module",
+              "Gabled Tile Roof Module",
+              "Roof Ridge Tile Run",
+              "Eave Tile Run",
+              "Exposed Rafter Set",
+              "Sliding Lattice Door Set",
+              "Sliding Lattice Door Set, Diamond Lattice",
+              "Hanji Lattice Window",
+              "Lifting Lattice Window",
+              "Thatched Outbuilding",
+              "Market Stall With Awning",
+              "Village gate and market street"
+          ]
+          approved_items = [item for category in approved.get("categories", {}).values() for item in category.get("assets", [])]
+          supplemental = [item for item in approved_items if any(str(item.get("name", "")).startswith(name) for name in selected_names)]
+          if len(supplemental) != 17:
+              raise SystemExit(f"Expected exactly 17 approved Hanok house/shop assets, found {len(supplemental)}")
+          supplemental_records = []
+          for index, item in enumerate(supplemental, 1):
+              relative = item["file"]
+              if relative.startswith("/") or ".." in Path(relative).parts:
+                  raise SystemExit(f"Unsafe supplemental GLB path: {relative}")
+              target = root / relative
+              target.parent.mkdir(parents=True, exist_ok=True)
+              source_url = item.get("direct_download_url") or (base + relative)
+              payload = fetch(source_url)
+              if len(payload) <= 1024 or payload[:4] != b"glTF":
+                  raise SystemExit(f"Invalid supplemental GLB header/size: {relative}, bytes={len(payload)}")
+              digest = hashlib.sha256(payload).hexdigest()
+              expected = str(item.get("sha256", "")).lower()
+              if expected and digest != expected:
+                  raise SystemExit(f"Supplemental SHA-256 mismatch: {relative}; expected={expected}; actual={digest}")
+              target.write_bytes(payload)
+              try:
+                  scene = trimesh.load(target, force="scene", process=False)
+                  bounds = scene.bounds
+                  if bounds is None:
+                      raise ValueError("GLB contains no measurable geometry bounds")
+                  dimensions = (bounds[1] - bounds[0]).tolist()
+                  geometry_count = len(scene.geometry)
+              except Exception as exc:
+                  raise SystemExit(f"Supplemental GLB geometry inspection failed: {relative}: {exc}")
+              item["bytes"] = len(payload)
+              item["sha256"] = digest
+              item["dimensions_m"] = dimensions
+              item["twin_city_approved"] = True
+              item["twin_city_geometry_verified"] = True
+              item["validation"] = item.get("validation", {})
+              item["validation"]["dimensions_m"] = dimensions
+              item["validation"]["geometry_count"] = geometry_count
+              item["validation"]["bounds_source"] = "trimesh GLB scene geometry"
+              record = {"name":item.get("name"),"file":relative,"category":item.get("category"),"style_group":item.get("style_group"),"dimensions_m":dimensions,"geometry_count":geometry_count,"bytes":len(payload),"sha256":digest,"source_url":source_url}
+              supplemental_records.append(record)
+              geometry_audit.append({"asset_id":item.get("asset_id"),**record,"source_group":"approved_manifest_supplement","architectural_candidate":True})
+              print(f"HF_SUPPLEMENTAL_GLB_VERIFIED {index}/17 {relative} dimensions_m={dimensions} geometry={geometry_count} sha256={digest}")
+          imperial_count = sum(1 for item in selected if item.get("style_group") == "imperial_chinese")
+          if imperial_count != 46:
+              raise SystemExit(f"Expected 46 original imperial_chinese GLBs, found {imperial_count}")
           for category in approved.get("categories", {}).values():
               for item in category.get("assets", []):
                   key = item.get("asset_id", item.get("file"))
                   if key in refreshed:
-                      item["bytes"], item["sha256"] = refreshed[key]
-          approved["generated_at_utc"] = source_manifest.get("generated_at_utc", approved.get("generated_at_utc"))
+                      details = refreshed[key]
+                      item["bytes"] = details["bytes"]
+                      item["sha256"] = details["sha256"]
+                      item["dimensions_m"] = details["dimensions_m"]
+                      item["validation"] = item.get("validation", {})
+                      item["validation"]["dimensions_m"] = details["dimensions_m"]
+                      item["validation"]["geometry_count"] = details["geometry_count"]
+                      item["validation"]["bounds_source"] = "trimesh GLB scene geometry"
           approved["source_repo"] = "ZzwahwahzZ/clash-of-legends-terrain-assets"
-          approved["verified_glb_count"] = len(refreshed)
+          approved["source_manifest_verified_glb_count"] = len(refreshed)
+          approved["supplemental_verified_glb_count"] = len(supplemental_records)
+          approved["verified_glb_count"] = imperial_count + len(supplemental_records)
+          approved["twin_city_approved_asset_count"] = imperial_count + len(supplemental_records)
+          approved["twin_city_selected_assets"] = supplemental_records
+          (root / "twin_city_selected_17_assets.json").write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","selected_count":len(supplemental_records),"assets":supplemental_records}, ensure_ascii=False, indent=2) + "\n")
+          audit_path = Path("prototypes/twin_city/reports/glb_geometry_audit.json")
+          audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","original_models_folder_glb_count":len(selected),"supplemental_approved_glb_count":len(supplemental_records),"total_geometry_verified_glb_count":len(geometry_audit),"assets":geometry_audit,"architectural_candidate_count":sum(x["architectural_candidate"] for x in geometry_audit)}, ensure_ascii=False, indent=2) + "\n")
           (root / "manifest.json").write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2) + "\n")
           (root / "imperial_approved_assets.json").write_text(json.dumps(approved, ensure_ascii=False, indent=2) + "\n")
           architectural_count = sum(1 for item in geometry_audit if item["architectural_candidate"])
-          print(f"HF_ALL_99_GLB_RESTORE_PASS: {len(refreshed)} GLBs geometry-inspected; architectural_candidates={architectural_count}; sizes and SHA-256 fingerprints refreshed")
+          print(f"HF_ASSET_RESTORE_PASS: original_models={len(refreshed)} supplemental_houses_shops={len(supplemental_records)} approved_architecture={approved['verified_glb_count']} total_geometry_verified={len(geometry_audit)} candidates={architectural_count}")
+          PY
+
+      - name: Publish verified approval manifest to the same Hugging Face dataset
+        shell: bash
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          set -Eeuo pipefail
+          if [ -z "${HF_TOKEN:-}" ]; then
+            echo "HF_TOKEN secret unavailable; verified manifest will still be committed to the isolated GitHub branch."
+            exit 0
+          fi
+          python3 -m pip install --disable-pip-version-check huggingface_hub
+          python3 - <<'PY'
+          import os
+          from huggingface_hub import HfApi
+          HfApi().upload_file(
+              path_or_fileobj="assets/wuxia_imperial_pack/imperial_approved_assets.json",
+              path_in_repo="assets/wuxia_imperial_pack/imperial_approved_assets.json",
+              repo_id="ZzwahwahzZ/clash-of-legends-terrain-assets",
+              repo_type="dataset",
+              token=os.environ["HF_TOKEN"],
+              commit_message="Verify 63 Twin City architectural assets with current SHA-256 and GLB dimensions"
+          )
+          print("HF_APPROVED_MANIFEST_UPLOAD_PASS")
           PY
 
       - name: Install Godot 4.3 and Xvfb
@@ -247,7 +347,11 @@ jobs:
           if [ -s "$asset" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -f "$asset"\n            if [ -d assets/wuxia_imperial_pack/models ]; then git add -f assets/wuxia_imperial_pack/models/; fi\n            if [ -f assets/wuxia_imperial_pack/manifest.json ]; then git add -f assets/wuxia_imperial_pack/manifest.json; fi\n            if [ -f assets/wuxia_imperial_pack/imperial_approved_assets.json ]; then git add -f assets/wuxia_imperial_pack/imperial_approved_assets.json; fi
+            git add -f "$asset"
+            if [ -d assets/wuxia_imperial_pack/models ]; then git add -f assets/wuxia_imperial_pack/models/; fi
+            if [ -f assets/wuxia_imperial_pack/manifest.json ]; then git add -f assets/wuxia_imperial_pack/manifest.json; fi
+            if [ -f assets/wuxia_imperial_pack/imperial_approved_assets.json ]; then git add -f assets/wuxia_imperial_pack/imperial_approved_assets.json; fi
+            if [ -f assets/wuxia_imperial_pack/twin_city_selected_17_assets.json ]; then git add -f assets/wuxia_imperial_pack/twin_city_selected_17_assets.json; fi
             if ! git diff --cached --quiet; then
               git commit -m "Add prebuilt Imperial China palace scene"
               git push origin "HEAD:$GITHUB_REF_NAME"
