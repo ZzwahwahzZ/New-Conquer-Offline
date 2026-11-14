@@ -2,7 +2,7 @@ extends RefCounted
 ## Twin City is assembled from source GLB scenes and source GLB modules only.
 ## No procedural BoxMesh/CylinderMesh/SphereMesh building geometry is created here.
 
-const MODEL_ROOT := "res://assets/wuxia_imperial_pack/"
+const MODEL_ROOT := "res://assets/twin_city_selected/"
 const ARCH_BANNER := "models/polygonalmind-lunar-year-001.glb"
 const BUILDING_BASE := "models/polygonalmind-lunar-year-005.glb"
 const COLUMN := "models/polygonalmind-lunar-year-008.glb"
