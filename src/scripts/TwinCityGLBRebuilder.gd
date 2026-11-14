@@ -69,13 +69,14 @@ static func _build_palace(parent: Node3D, source: Node3D) -> void:
 	palace.name = "ImperialPalace_85x75"
 	palace.position = Vector3(0.0, 5.0, -145.0)
 	palace.rotation = Vector3.ZERO
-	palace.scale = Vector3.ONE * 1.35
+	palace.scale = Vector3.ONE
 	parent.add_child(palace)
+	_normalize_node_to_dimensions(palace, Vector3(85.0, 27.0, 75.0))
 	palace.add_to_group("twin_city_imperial_source_compound")
 
 static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 	var fort := Node3D.new()
-	fort.name = "TwinCity_ImperialPerimeter_440m"
+	fort.name = "TwinCity_ImperialPerimeter_380m"
 	parent.add_child(fort)
 
 	var water_material := StandardMaterial3D.new()
@@ -86,9 +87,9 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 		var water := MeshInstance3D.new()
 		water.name = "DeepContinuousWaterMoat_440m" if side == 0 else "MoatWaterSegment_%d" % side
 		var water_mesh := PlaneMesh.new()
-		water_mesh.size = Vector2(440.0, 18.0)
+		water_mesh.size = Vector2(380.0, 18.0)
 		water.mesh = water_mesh
-		water.position = [Vector3(0.0, -0.05, -228.0), Vector3(228.0, -0.05, 0.0), Vector3(0.0, -0.05, 228.0), Vector3(-228.0, -0.05, 0.0)][side]
+		water.position = [Vector3(0.0, -0.05, -198.0), Vector3(198.0, -0.05, 0.0), Vector3(0.0, -0.05, 198.0), Vector3(-198.0, -0.05, 0.0)][side]
 		water.rotation.y = PI * 0.5 if side % 2 == 1 else 0.0
 		fort.add_child(water)
 		water.material_override = water_material
@@ -99,27 +100,27 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 	var end_pier_template := "088-palace-wall-end-pier"
 	for side in range(4):
 		var yaw := float(side) * PI * 0.5
-		for segment in range(32):
-			if segment == 15 or segment == 16:
+		for segment in range(28):
+			if segment == 13 or segment == 14:
 				continue
-			var along := -216.0 + float(segment) * 13.5
-			var pos := Vector3(along, 0.0, -220.0)
+			var along := -182.25 + float(segment) * 13.5
+			var pos := Vector3(along, 0.0, -190.0)
 			if side == 1:
-				pos = Vector3(220.0, 0.0, along)
+				pos = Vector3(190.0, 0.0, along)
 			elif side == 2:
-				pos = Vector3(-along, 0.0, 220.0)
+				pos = Vector3(-along, 0.0, 190.0)
 			elif side == 3:
-				pos = Vector3(-220.0, 0.0, -along)
+				pos = Vector3(-190.0, 0.0, -along)
 			var wall_name := "TwinCity_ImperialWall_%02d_%02d" % [side, segment]
 		if _clone_source_model(fort, source, wall_template, wall_name, pos, yaw, 1.0, ""):
 			var wall_node := fort.get_node_or_null(NodePath(wall_name)) as Node3D
 			if wall_node != null:
 				_normalize_node_to_dimensions(wall_node, Vector3(13.5, 15.0, 4.5))
-		var corner_positions := [Vector3(-220.0, 0.0, -220.0), Vector3(220.0, 0.0, -220.0), Vector3(220.0, 0.0, 220.0), Vector3(-220.0, 0.0, 220.0)]
+		var corner_positions := [Vector3(-190.0, 0.0, -190.0), Vector3(190.0, 0.0, -190.0), Vector3(190.0, 0.0, 190.0), Vector3(-190.0, 0.0, 190.0)]
 		_clone_source_model(fort, source, corner_template, "TwinCity_ImperialWallCorner_%02d" % side, corner_positions[side], yaw, 1.4, "")
 
 		var gate_direction := Vector3(sin(yaw), 0.0, -cos(yaw))
-		var gate_center := gate_direction * 220.0
+		var gate_center := gate_direction * 190.0
 		_clone_source_model(fort, source, moon_gate_template, "TwinCity_ImperialMoonGate_%02d" % side, gate_center, yaw, 1.55, "")
 		_clone_source_model(fort, source, end_pier_template, "TwinCity_ImperialGatePierA_%02d" % side, gate_center + Vector3(-sin(yaw) * 18.0, 0.0, cos(yaw) * 18.0), yaw, 1.5, "")
 		_clone_source_model(fort, source, end_pier_template, "TwinCity_ImperialGatePierB_%02d" % side, gate_center + Vector3(sin(yaw) * 18.0, 0.0, -cos(yaw) * 18.0), yaw, 1.5, "")
@@ -129,6 +130,20 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 			if gate_tower != null:
 				_normalize_node_to_dimensions(gate_tower, Vector3(14.0, 19.0, 14.0))
 		_clone_source_model(fort, source, "135-arched-stone-bridge", "TwinCity_GrandStoneBridge_%02d" % side, gate_center + gate_direction * 12.0, yaw, 1.0, "")
+		for tower_index in range(7):
+			var tower_along := -162.0 + float(tower_index) * 54.0
+			var tower_pos := Vector3(tower_along, 0.0, -190.0)
+			if side == 1:
+				tower_pos = Vector3(190.0, 0.0, tower_along)
+			elif side == 2:
+				tower_pos = Vector3(-tower_along, 0.0, 190.0)
+			elif side == 3:
+				tower_pos = Vector3(-190.0, 0.0, -tower_along)
+			var watch_name := "TwinCity_WatchTower_%02d_%02d" % [side, tower_index]
+			if _clone_source_model(fort, source, "131-gate-tower", watch_name, tower_pos, yaw, 1.0, ""):
+				var watch := fort.get_node_or_null(NodePath(watch_name)) as Node3D
+				if watch != null:
+					_normalize_node_to_dimensions(watch, Vector3(12.0, 19.0, 12.0))
 
 static func _build_full_city_paving(parent: Node3D, source: Node3D) -> void:
 	var template := source.find_child("059-courtyard-paving-module", true, false) as Node3D
@@ -297,13 +312,15 @@ static func _build_city_greenery_and_props(parent: Node3D, source: Node3D) -> vo
 		var angle := float(i) * 2.399963
 		var radius := 42.0 + float((i * 37) % 128)
 		var pos := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-		var tree_name := "147-bamboo-clump" if i % 3 == 0 else ("148-bamboo-clump" if i % 3 == 1 else "146-plum-tree-in-blossom")
-		_clone_source_model(living, source, tree_name, "TwinCity_InteriorTree_%03d" % i, pos, -angle, 1.0, "")
+		var tree_paths := ["models/grab3d-birch-grove.glb", "models/grab3d-jungle-tree.glb", "models/grab3d-mangrove-tree.glb", "models/grab3d-baobab-tree.glb"]
+		var tree := _spawn_glb_node(living, tree_paths[i % tree_paths.size()], "TwinCity_InteriorTree_%03d" % i, pos, -angle, 1.0, "")
+		if tree != null:
+			_normalize_node_to_dimensions(tree, Vector3(7.0, 9.5, 7.0))
 	for i in range(180):
 		var angle := float(i) * 2.399963
 		var radius := 36.0 + float((i * 19) % 126)
 		var pos := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-		var template := "154-standing-garden-lantern" if i % 3 == 0 else ("158-hanging-silk-lantern" if i % 3 == 1 else "153-garden-stone-bench")
+		var template := "154-standing-garden-lantern" if i % 4 == 0 else ("158-hanging-silk-lantern" if i % 4 == 1 else ("153-garden-stone-bench" if i % 4 == 2 else "150-peony-planter"))
 		_clone_source_model(living, source, template, "TwinCity_StreetProp_%03d" % i, pos, -angle, 1.0, "")
 
 static func _build_outer_wildlands(parent: Node3D, source: Node3D) -> void:
@@ -314,8 +331,10 @@ static func _build_outer_wildlands(parent: Node3D, source: Node3D) -> void:
 		var angle := float(i) * 2.399963
 		var radius := 242.0 + float((i * 29) % 150)
 		var pos := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-		var tree_name := "147-bamboo-clump" if i % 2 == 0 else "148-bamboo-clump"
-		_clone_source_model(wildlands, source, tree_name, "TwinCity_OuterTree_%03d" % i, pos, -angle, 1.0, "")
+		var tree_paths := ["models/grab3d-birch-grove.glb", "models/grab3d-jungle-tree.glb", "models/grab3d-mangrove-tree.glb", "models/grab3d-baobab-tree.glb"]
+		var tree := _spawn_glb_node(wildlands, tree_paths[i % tree_paths.size()], "TwinCity_OuterTree_%03d" % i, pos, -angle, 1.0, "")
+		if tree != null:
+			_normalize_node_to_dimensions(tree, Vector3(8.0, 11.0, 8.0))
 	for i in range(80):
 		var angle := TAU * float(i) / 80.0 + 0.13
 		var radius := 260.0 + float(i % 4) * 18.0
