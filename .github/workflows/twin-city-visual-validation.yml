@@ -43,47 +43,25 @@ jobs:
           godot --version
           test "$(godot --version)" = "4.3.stable.official.77dcf97d8"
 
-      - name: Restore licensed Imperial China model library from Hugging Face
+      - name: Verify committed Godot 4.3-compatible Imperial China library
         shell: bash
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           set -Eeuo pipefail
-          python3 -m pip install --disable-pip-version-check huggingface_hub
-          npm install --global @gltf-transform/cli
-          mkdir -p assets/environment/architecture prototypes/twin_city/reports
-          python3 - <<'PY'
-          import os, shutil
-          from pathlib import Path
-          from huggingface_hub import hf_hub_download
-          source = hf_hub_download(
-              repo_id="ZzwahwahzZ/clash-of-legends-terrain-assets",
-              filename="settlement-terrain-source/curated-glb/architecture/imperial_china_palace_and_garden.glb",
-              repo_type="dataset",
-              token=os.environ.get("HF_TOKEN") or None,
-          )
-          target = Path("assets/environment/architecture/imperial_china_palace_and_garden.glb")
-          shutil.copy2(source, target)
-          data = target.read_bytes()
-          if len(data) != 2876988 or data[:4] != b"glTF":
-              raise SystemExit(f"Imperial China source integrity/format check failed: {len(data)} bytes")
-          print(f"IMPERIAL_CHINA_SOURCE_RESTORED: {target} bytes={len(data)}")
-          PY
-          gltf-transform dequantize assets/environment/architecture/imperial_china_palace_and_garden.glb /tmp/imperial_china_dequantized.glb
-          mv /tmp/imperial_china_dequantized.glb assets/environment/architecture/imperial_china_palace_and_garden.glb
+          asset="assets/environment/architecture/imperial_china_palace_and_garden.glb"
+          test -s "$asset"
           python3 - <<'PY'
           import json, struct
           from pathlib import Path
           path = Path("assets/environment/architecture/imperial_china_palace_and_garden.glb")
           data = path.read_bytes()
           if data[:4] != b"glTF":
-              raise SystemExit("Dequantized Imperial China GLB has invalid magic")
+              raise SystemExit("Imperial China GLB magic invalid")
           json_length = struct.unpack_from("<I", data, 12)[0]
           document = json.loads(data[20:20+json_length].decode("utf-8").rstrip(" \\0"))
           extensions = set(document.get("extensionsUsed", [])) | set(document.get("extensionsRequired", []))
           if "KHR_mesh_quantization" in extensions:
-              raise SystemExit("KHR_mesh_quantization still present after dequantization")
-          print(f"IMPERIAL_CHINA_GODOT43_COMPATIBLE: bytes={len(data)} extensions={sorted(extensions)}")
+              raise SystemExit("Imperial China GLB is not dequantized for Godot 4.3")
+          print(f"IMPERIAL_CHINA_KIT_VERIFIED: bytes={len(data)} extensions={sorted(extensions)}")
           PY
 
       - name: Import root New-Conquer-Offline project
@@ -163,24 +141,6 @@ jobs:
             prototypes/twin_city/reports/
           if-no-files-found: warn
           retention-days: 30
-
-      - name: Preserve restored Imperial China GLB on isolated branch
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          asset="assets/environment/architecture/imperial_china_palace_and_garden.glb"
-          if [ -s "$asset" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -f "$asset"
-            if ! git diff --cached --quiet; then
-              git commit -m "Add verified Imperial China architecture kit"
-              git push origin "HEAD:$GITHUB_REF_NAME"
-            fi
-          else
-            echo "No restored Imperial China kit to preserve."
-          fi
 
       - name: Commit only Twin City proof outputs to this isolated branch
         if: success()
