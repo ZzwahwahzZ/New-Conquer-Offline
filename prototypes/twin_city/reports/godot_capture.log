@@ -15,14 +15,15 @@ ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
 WARNING: All audio drivers failed, falling back to the dummy driver.
      at: initialize (servers/audio_server.cpp:247)
 
-TWIN_CITY_BUILDING_CENSUS: residential=82 commercial=28 service=15 landmarks=10 defensive=14 palace=8 total=157
-TWIN_CITY_IMPERIAL_BUILD_PASS: total_structures=157 residential=82 commercial=28 service=15 landmarks=10 defensive=14 palace=8 urban_diameter=360 perimeter_diameter=440 plaza_diameter=60 palace=85x75
+TWIN_CITY_ORIGINAL_PAVING_PASS: source=059-courtyard-paving-module tiles=300
+TWIN_CITY_BUILDING_CENSUS: residential=120 commercial=42 service=22 landmarks=12 defensive=20 palace=8 total=224
+TWIN_CITY_IMPERIAL_BUILD_PASS: target_structures=224 residential=120 commercial=42 service=22 landmarks=12 defensive=20 palace=8 urban_diameter=360 perimeter_diameter=440 plaza_diameter=60 palace=85x75
 TWIN_CITY_IMAGE_VERIFIED: 01_aerial_full.png 1280x720
 TWIN_CITY_IMAGE_VERIFIED: 02_aerial_oblique.png 1280x720
 TWIN_CITY_IMAGE_VERIFIED: 03_street_scale.png 1280x720
 TWIN_CITY_IMAGE_VERIFIED: 04_central_plaza.png 1280x720
 TWIN_CITY_IMAGE_VERIFIED: 05_imperial_palace.png 1280x720
 TWIN_CITY_IMAGE_VERIFIED: 06_district_density.png 1280x720
-TWIN_CITY_CAPTURE_SUMMARY: {"architecture_style":"imperial_chinese","building_categories":{"commercial":28,"defensive":14,"landmark":10,"palace_annex":8,"residential":82,"service":15},"buildings":157,"capture_elapsed_seconds":15.902,"city_core_m":360,"fps_measurement_note":"GitHub capture uses Lavapipe software Vulkan; this is not a physical Android GPU benchmark.","fps_target_30_pass":false,"godot_version":"4.3-stable (official)","measured_capture_fps_average":7.76666666666667,"palace_dimensions_m":"85x75","perimeter_diameter_m":440,"plaza_diameter_m":60,"renderer_backend":"Mobile Vulkan","renderer_icd":"/usr/share/vulkan/icd.d/lvp_icd.json","required_screenshots":["01_aerial_full.png","02_aerial_oblique.png","03_street_scale.png","04_central_plaza.png","05_imperial_palace.png","06_district_density.png"],"screenshot_height":720,"screenshot_width":1280,"screenshots_created":6,"target_device_fps_verified":false,"world_m":800}
-TWIN_CITY_PERFORMANCE_WARNING: Lavapipe software Vulkan averaged 7.76666666666667 FPS; physical Android GPU verification remains pending.
+TWIN_CITY_CAPTURE_SUMMARY: {"architecture_style":"imperial_chinese","building_categories":{"commercial":42,"defensive":20,"landmark":12,"palace_annex":8,"residential":120,"service":22},"buildings":224,"capture_elapsed_seconds":21.69,"city_core_m":360,"fps_measurement_note":"GitHub capture uses Lavapipe software Vulkan; this is not a physical Android GPU benchmark.","fps_target_30_pass":false,"godot_version":"4.3-stable (official)","measured_capture_fps_average":5.36666666666667,"palace_dimensions_m":"85x75","perimeter_diameter_m":440,"plaza_diameter_m":60,"renderer_backend":"Mobile Vulkan","renderer_icd":"/usr/share/vulkan/icd.d/lvp_icd.json","required_screenshots":["01_aerial_full.png","02_aerial_oblique.png","03_street_scale.png","04_central_plaza.png","05_imperial_palace.png","06_district_density.png"],"screenshot_height":720,"screenshot_width":1280,"screenshots_created":6,"target_device_fps_verified":false,"world_m":800}
+TWIN_CITY_PERFORMANCE_WARNING: Lavapipe software Vulkan averaged 5.36666666666667 FPS; physical Android GPU verification remains pending.
 TWIN_CITY_SIX_VIEW_CAPTURE_PASS

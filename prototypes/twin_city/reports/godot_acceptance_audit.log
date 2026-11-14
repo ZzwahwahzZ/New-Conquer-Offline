@@ -1,9 +1,10 @@
 Godot Engine v4.3.stable.official.77dcf97d8 - https://godotengine.org
 
-TWIN_CITY_BUILDING_CENSUS: residential=82 commercial=28 service=15 landmarks=10 defensive=14 palace=8 total=157
-TWIN_CITY_IMPERIAL_BUILD_PASS: total_structures=157 residential=82 commercial=28 service=15 landmarks=10 defensive=14 palace=8 urban_diameter=360 perimeter_diameter=440 plaza_diameter=60 palace=85x75
-TWIN_CITY_ACCEPTANCE_AUDIT total=157 categories={ "residential": 82, "commercial": 28, "service": 15, "landmark": 10, "defensive": 14, "palace_annex": 8 } plaza=true palace=true moat=true pagoda=true
-TWIN_CITY_AUDIT_PASS: 157 counted structures; all required landmark nodes exist
+TWIN_CITY_ORIGINAL_PAVING_PASS: source=059-courtyard-paving-module tiles=300
+TWIN_CITY_BUILDING_CENSUS: residential=120 commercial=42 service=22 landmarks=12 defensive=20 palace=8 total=224
+TWIN_CITY_IMPERIAL_BUILD_PASS: target_structures=224 residential=120 commercial=42 service=22 landmarks=12 defensive=20 palace=8 urban_diameter=360 perimeter_diameter=440 plaza_diameter=60 palace=85x75
+TWIN_CITY_ACCEPTANCE_AUDIT total=224 categories={ "residential": 120, "commercial": 42, "service": 22, "landmark": 12, "defensive": 20, "palace_annex": 8 } plaza=true palace=true moat=true pagoda=true
+TWIN_CITY_AUDIT_PASS: 224 counted structures; category census and all required landmark nodes exist
 ERROR: Parameter "m" is null.
    at: mesh_get_surface_count (servers/rendering/dummy/storage/mesh_storage.h:120)
 ERROR: Parameter "m" is null.
