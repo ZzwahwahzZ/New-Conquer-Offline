@@ -3,10 +3,22 @@ extends RefCounted
 ## No procedural BoxMesh/CylinderMesh/SphereMesh building geometry is created here.
 
 const MODEL_ROOT := "res://assets/wuxia_imperial_pack/"
-const HANOK_MAIN := "models/3dassets-korean-hanok-village-and-street-hanok-main-house-58d31dd2.glb"
-const HANOK_OUTBUILDING := "models/3dassets-korean-hanok-village-and-street-thatched-outbuilding-d60d046d.glb"
-const HANOK_MARKET := "models/3dassets-korean-hanok-village-and-street-market-stall-with-awni-064ed223.glb"
-const HANOK_MARKET_STREET := "models/3dassets-korean-hanok-village-and-street-village-gate-and-marke-813aa6fd.glb"
+const ARCH_BANNER := "models/polygonalmind-lunar-year-001.glb"
+const BUILDING_BASE := "models/polygonalmind-lunar-year-005.glb"
+const COLUMN := "models/polygonalmind-lunar-year-008.glb"
+const COLUMN_BASE := "models/polygonalmind-lunar-year-009.glb"
+const DOOR := "models/polygonalmind-lunar-year-011.glb"
+const ENTRANCE_STAIRS := "models/polygonalmind-lunar-year-014.glb"
+const FENCE_01 := "models/polygonalmind-lunar-year-015.glb"
+const FENCE_02 := "models/polygonalmind-lunar-year-016.glb"
+const FLOOR_01 := "models/polygonalmind-lunar-year-017.glb"
+const FLOOR_02 := "models/polygonalmind-lunar-year-018.glb"
+const BELL_STRUCTURE := "models/polygonalmind-lunar-year-004.glb"
+const ROOM_DOOR := "models/polygonalmind-lunar-year-042.glb"
+const ROOM_FLOOR := "models/polygonalmind-lunar-year-043.glb"
+const ROOM_ROOF := "models/polygonalmind-lunar-year-044.glb"
+const ROOM_ROOF_BEAM := "models/polygonalmind-lunar-year-045.glb"
+const ROOM_WALL := "models/polygonalmind-lunar-year-046.glb"
 const PAGODA := "models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb"
 
 static func build(parent: Node3D) -> void:
@@ -172,17 +184,20 @@ static func _build_districts(parent: Node3D, source: Node3D) -> Dictionary:
 		var rotation := -angle - PI * 0.5
 		for local_index in range(house_offsets.size()):
 			var pos: Vector3 = center + Basis(Vector3.UP, rotation) * house_offsets[local_index]
-			var house_path := HANOK_MAIN if (block + local_index) % 3 != 0 else HANOK_OUTBUILDING
-			var scale_factor := 0.92 + float((block + local_index) % 4) * 0.06
-			if _spawn_glb(districts, house_path, "TwinCity_residential_%03d" % census.residential, pos, rotation, scale_factor, "residential"):
+			var shell := FLOOR_01 if (block + local_index) % 2 == 0 else FLOOR_02
+			var house := _spawn_glb_node(districts, shell, "TwinCity_residential_%03d" % census.residential, pos, rotation, 0.56, "residential")
+			if house != null:
+				_decorate_building(house, "residential", 0.56, block + local_index)
 				census.residential += 1
 		for shop_index in range(2):
 			var offset := Vector3(-6.0 + float(shop_index) * 12.0, 0.0, -27.0)
 			var pos := center + Basis(Vector3.UP, rotation) * offset
-			if _spawn_glb(districts, HANOK_MARKET, "TwinCity_commercial_%03d" % census.commercial, pos, rotation, 2.1, "commercial"):
+			var shop := _spawn_modular_building(districts, "TwinCity_commercial_%03d" % census.commercial, pos, rotation, 0.62, "commercial", shop_index)
+			if shop != null:
 				census.commercial += 1
 		var service_pos := center + Basis(Vector3.UP, rotation) * Vector3(0.0, 0.0, 27.0)
-		if _spawn_glb(districts, HANOK_OUTBUILDING, "TwinCity_service_%03d" % census.service, service_pos, rotation, 1.35, "service"):
+		var service := _spawn_modular_building(districts, "TwinCity_service_%03d" % census.service, service_pos, rotation, 0.52, "service", block)
+		if service != null:
 			census.service += 1
 		if block < 11:
 			var landmark_pos := center + Basis(Vector3.UP, rotation) * Vector3(0.0, 0.0, 43.0)
@@ -190,28 +205,32 @@ static func _build_districts(parent: Node3D, source: Node3D) -> Dictionary:
 				if _clone_source_model(districts, source, "134-water-pavilion", "TwinCity_landmark_%03d" % census.landmark, landmark_pos, rotation, 0.78, "landmark"):
 					census.landmark += 1
 			else:
-				if _spawn_glb(districts, HANOK_MARKET_STREET, "TwinCity_landmark_%03d" % census.landmark, landmark_pos, rotation, 0.82, "landmark"):
+				if _clone_source_model(districts, source, "130-ceremonial-hall", "TwinCity_landmark_%03d" % census.landmark, landmark_pos, rotation, 0.7, "landmark"):
 					census.landmark += 1
 
 	for i in range(24):
 		var angle := TAU * float(i) / 24.0 + 0.19
 		var radius := 56.0 + float(i % 3) * 7.0
 		var pos := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-		var house_path := HANOK_MAIN if i % 3 != 0 else HANOK_OUTBUILDING
-		if _spawn_glb(districts, house_path, "TwinCity_residential_%03d" % census.residential, pos, -angle - PI * 0.5, 0.95 + float(i % 3) * 0.08, "residential"):
+		var shell := FLOOR_01 if i % 2 == 0 else FLOOR_02
+		var house := _spawn_glb_node(districts, shell, "TwinCity_residential_%03d" % census.residential, pos, -angle - PI * 0.5, 0.54 + float(i % 3) * 0.03, "residential")
+		if house != null:
+			_decorate_building(house, "residential", 0.55, i)
 			census.residential += 1
 
 	for i in range(18):
 		var angle := TAU * float(i) / 18.0 + 0.31
 		var radius := 64.0 + float(i % 2) * 8.0
 		var pos := Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
-		if _spawn_glb(districts, HANOK_MARKET, "TwinCity_commercial_%03d" % census.commercial, pos, -angle - PI * 0.5, 2.0, "commercial"):
+		var shop := _spawn_modular_building(districts, "TwinCity_commercial_%03d" % census.commercial, pos, -angle - PI * 0.5, 0.58, "commercial", i)
+		if shop != null:
 			census.commercial += 1
 
 	for i in range(10):
 		var angle := TAU * float(i) / 10.0 + 0.27
 		var pos := Vector3(cos(angle) * 151.0, 0.0, sin(angle) * 151.0)
-		if _spawn_glb(districts, HANOK_OUTBUILDING, "TwinCity_service_%03d" % census.service, pos, -angle - PI * 0.5, 1.4, "service"):
+		var service := _spawn_modular_building(districts, "TwinCity_service_%03d" % census.service, pos, -angle - PI * 0.5, 0.5, "service", i)
+		if service != null:
 			census.service += 1
 
 	for i in range(20):
@@ -230,6 +249,49 @@ static func _build_districts(parent: Node3D, source: Node3D) -> Dictionary:
 	print("TWIN_CITY_GLB_BUILDING_CENSUS: %s total=%d" % [str(census), census.values().reduce(func(a, b): return a + b, 0)])
 	return census
 
+static func _spawn_modular_building(parent: Node3D, node_name: String, pos: Vector3, yaw: float, scale_factor: float, category: String, variant: int) -> Node3D:
+	var building := Node3D.new()
+	building.name = node_name
+	building.position = pos
+	building.rotation = Vector3(0.0, yaw, 0.0)
+	building.scale = Vector3.ONE * scale_factor
+	parent.add_child(building)
+	_register_building(building, category)
+	_spawn_glb(building, BUILDING_BASE, node_name + "_Foundation", Vector3(0.0, -0.6, 0.0), 0.0, 0.72, "")
+	_spawn_glb(building, ROOM_FLOOR, node_name + "_Floor", Vector3(0.0, 0.9, 0.0), 0.0, 0.72, "")
+	_spawn_glb(building, ROOM_WALL, node_name + "_WallFront", Vector3(0.0, 4.1, -5.8), 0.0, 0.68, "")
+	_spawn_glb(building, ROOM_WALL, node_name + "_WallBack", Vector3(0.0, 4.1, 5.8), PI, 0.68, "")
+	_spawn_glb(building, ROOM_WALL, node_name + "_WallLeft", Vector3(-5.8, 4.1, 0.0), PI * 0.5, 0.68, "")
+	_spawn_glb(building, ROOM_WALL, node_name + "_WallRight", Vector3(5.8, 4.1, 0.0), -PI * 0.5, 0.68, "")
+	_spawn_glb(building, ROOM_ROOF_BEAM, node_name + "_RoofBeam", Vector3(0.0, 7.0, 0.0), 0.0, 0.68, "")
+	_spawn_glb(building, ROOM_ROOF, node_name + "_Roof", Vector3(0.0, 7.9, 0.0), 0.0, 0.78, "")
+	_spawn_glb(building, ROOM_DOOR, node_name + "_RoomDoor", Vector3(0.0, 4.1, -5.9), 0.0, 0.68, "")
+	_spawn_glb(building, DOOR, node_name + "_Door", Vector3(0.0, 0.1, -6.0), 0.0, 0.56, "")
+	_spawn_glb(building, ENTRANCE_STAIRS, node_name + "_EntranceStairs", Vector3(0.0, -0.2, -9.0), 0.0, 0.62, "")
+	for corner in [Vector2(-5.0, -5.0), Vector2(5.0, -5.0), Vector2(-5.0, 5.0), Vector2(5.0, 5.0)]:
+		_spawn_glb(building, COLUMN_BASE, node_name + "_ColumnBase", Vector3(corner.x, 0.0, corner.y), 0.0, 0.62, "")
+		_spawn_glb(building, COLUMN, node_name + "_Column", Vector3(corner.x, 0.0, corner.y), 0.0, 0.62, "")
+	if category == "commercial":
+		_spawn_glb(building, ARCH_BANNER, node_name + "_ShopArch", Vector3(0.0, 7.0, -7.0), 0.0, 0.68, "")
+		_spawn_glb(building, BELL_STRUCTURE, node_name + "_ShopBell", Vector3(7.0, 0.0, -3.0), 0.0, 0.62, "")
+		_spawn_glb(building, FENCE_01, node_name + "_ShopFence", Vector3(0.0, 0.0, 10.0), 0.0, 0.7, "")
+	elif category == "service":
+		_spawn_glb(building, FLOOR_02 if variant % 2 == 0 else FLOOR_01, node_name + "_ServiceWing", Vector3(0.0, 0.0, 0.0), 0.0, 0.42, "")
+		_spawn_glb(building, FENCE_02, node_name + "_ServiceCourtyard", Vector3(0.0, 0.0, 12.0), 0.42, 0.42, "")
+	else:
+		_spawn_glb(building, FENCE_01, node_name + "_ResidentialFenceA", Vector3(-7.0, 0.0, 9.0), 0.0, 0.58, "")
+		_spawn_glb(building, FENCE_01, node_name + "_ResidentialFenceB", Vector3(7.0, 0.0, 9.0), 0.0, 0.58, "")
+	return building
+
+static func _decorate_building(building: Node3D, category: String, scale_factor: float, variant: int) -> void:
+	_spawn_glb(building, BUILDING_BASE, building.name + "_Foundation", Vector3(0.0, -0.7, 0.0), 0.0, 0.68, "")
+	_spawn_glb(building, DOOR, building.name + "_EntranceDoor", Vector3(0.0, 0.0, -11.0), 0.0, 0.55, "")
+	_spawn_glb(building, ENTRANCE_STAIRS, building.name + "_EntranceStairs", Vector3(0.0, -0.2, -13.0), 0.0, 0.56, "")
+	if variant % 2 == 0:
+		_spawn_glb(building, COLUMN, building.name + "_EntryColumnA", Vector3(-5.5, 0.0, -8.0), 0.0, 0.58, "")
+		_spawn_glb(building, COLUMN, building.name + "_EntryColumnB", Vector3(5.5, 0.0, -8.0), 0.0, 0.58, "")
+		_spawn_glb(building, COLUMN_BASE, building.name + "_EntryColumnBaseA", Vector3(-5.5, 0.0, -8.0), 0.0, 0.58, "")
+		_spawn_glb(building, COLUMN_BASE, building.name + "_EntryColumnBaseB", Vector3(5.5, 0.0, -8.0), 0.0, 0.58, "")
 static func _build_outer_wildlands(parent: Node3D, source: Node3D) -> void:
 	var wildlands := Node3D.new()
 	wildlands.name = "TwinCity_OuterWildlands_800m"
@@ -247,25 +309,28 @@ static func _build_outer_wildlands(parent: Node3D, source: Node3D) -> void:
 		_clone_source_model(wildlands, source, "145-rockery-outcrop", "TwinCity_OuterRockery_%02d" % i, pos, -angle, 2.1, "")
 
 static func _spawn_glb(parent: Node3D, relative_path: String, node_name: String, pos: Vector3, yaw: float, scale_factor: float, category: String) -> bool:
+	return _spawn_glb_node(parent, relative_path, node_name, pos, yaw, scale_factor, category) != null
+
+static func _spawn_glb_node(parent: Node3D, relative_path: String, node_name: String, pos: Vector3, yaw: float, scale_factor: float, category: String) -> Node3D:
 	var path := MODEL_ROOT.path_join(relative_path)
 	if not ResourceLoader.exists(path):
 		push_error("TWIN_CITY_GLB_MISSING: " + path)
-		return false
+		return null
 	var packed := load(path) as PackedScene
 	if packed == null:
 		push_error("TWIN_CITY_GLB_LOAD_FAIL: " + path)
-		return false
+		return null
 	var instance := packed.instantiate() as Node3D
 	if instance == null:
 		push_error("TWIN_CITY_GLB_ROOT_FAIL: " + path)
-		return false
+		return null
 	instance.name = node_name
 	instance.position = pos
 	instance.rotation = Vector3(0.0, yaw, 0.0)
 	instance.scale = Vector3.ONE * scale_factor
 	parent.add_child(instance)
 	_register_building(instance, category)
-	return true
+	return instance
 
 static func _clone_source_model(parent: Node3D, source: Node3D, model_name: String, node_name: String, pos: Vector3, yaw: float, scale_factor: float, category: String) -> bool:
 	var template := source.find_child(model_name, true, false) as Node3D
