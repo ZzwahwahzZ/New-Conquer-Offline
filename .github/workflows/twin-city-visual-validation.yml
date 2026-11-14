@@ -33,11 +33,12 @@ jobs:
       - name: Restore and geometry-audit all 99 GLB assets from Hugging Face
         shell: bash
         run: |
-          python3 -m pip install --disable-pip-version-check trimesh pygltflib
+          python3 -m pip install --disable-pip-version-check trimesh pygltflib huggingface_hub
           set -Eeuo pipefail
           python3 - <<'PY'
           import hashlib, json, shutil, urllib.request
           from pathlib import Path
+          from huggingface_hub import HfApi
           base = "https://huggingface.co/datasets/ZzwahwahzZ/clash-of-legends-terrain-assets/resolve/main/assets/wuxia_imperial_pack/"
           root = Path("assets/wuxia_imperial_pack")
           root.mkdir(parents=True, exist_ok=True)
@@ -48,10 +49,21 @@ jobs:
                   return response.read()
           source_manifest = json.loads(fetch(base + "manifest.json"))
           approved = json.loads(fetch(base + "imperial_approved_assets.json"))
-          selected = [item for item in source_manifest.get("assets", []) if item.get("file", "").lower().endswith(".glb")]
-          if len(selected) != 99:
-              raise SystemExit(f"Expected all 99 GLB files in Hugging Face models folder, found {len(selected)}")
-          print(f"HF_MODELS_FOLDER_INVENTORY: {len(selected)} GLB files; no style_group filename filter")
+          manifest_by_file = {item.get("file"): item for item in source_manifest.get("assets", []) if item.get("file")}
+          repo_files = HfApi().list_repo_files(repo_id="ZzwahwahzZ/clash-of-legends-terrain-assets", repo_type="dataset")
+          model_paths = sorted(path for path in repo_files if path.startswith("assets/wuxia_imperial_pack/models/") and path.lower().endswith(".glb"))
+          if len(model_paths) != 99:
+              raise SystemExit(f"Expected all 99 actual GLB files in Hugging Face models folder, found {len(model_paths)}")
+          selected = []
+          for repo_path in model_paths:
+              relative = repo_path.split("assets/wuxia_imperial_pack/", 1)[1]
+              item = dict(manifest_by_file.get(relative, {}))
+              item.setdefault("file", relative)
+              item.setdefault("name", Path(relative).stem)
+              item.setdefault("category", "unclassified")
+              item.setdefault("style_group", "unclassified")
+              selected.append(item)
+          print(f"HF_MODELS_FOLDER_INVENTORY: {len(selected)} actual GLB files; imported without name, dimension, or style-group exclusions")
           geometry_audit = []
           refreshed = {}
           for index, item in enumerate(selected, 1):
@@ -89,39 +101,12 @@ jobs:
               architectural = any(word in semantic for word in ("house","building","shop","market","pagoda","temple","palace","wuxia","inn","village","hall","pavilion","gatehouse")) and min(dimensions[0], dimensions[2]) >= 2.0 and dimensions[1] >= 2.5
               geometry_audit.append({"asset_id":item.get("asset_id"),"name":name,"file":relative,"category":category,"style_group":item.get("style_group"),"dimensions_m":dimensions,"geometry_count":geometry_count,"bytes":len(payload),"sha256":digest,"architectural_candidate":architectural})
               print(f"HF_GLB_VERIFIED {index}/99 {relative} dimensions_m={dimensions} geometry={geometry_count} sha256={digest}")
-          selected_names = [
-              "ArchBanner", "BellStructure", "BuildingBase", "Column", "ColumnBase",
-              "Door", "EntranceStairs", "Fence01", "Fence02", "Floor01", "Floor02",
-              "RoomDoor", "RoomFloor", "RoomRoof", "RoomRoofBeam", "RoomWall01",
-              "Buddhist Temple Pagoda"
-          ]
-          selected_architecture = [item for item in selected if item.get("name") in selected_names]
-          if len(selected_architecture) != 17:
-              found = sorted(item.get("name", "") for item in selected_architecture)
-              raise SystemExit(f"Expected 17 selected Chinese GLB architecture components from the 99 source models, found {len(selected_architecture)}: {found}")
-          roles = {
-              "ArchBanner":"shopfront_arch_and_signage",
-              "BellStructure":"ceremonial_bell_structure",
-              "BuildingBase":"building_foundation",
-              "Column":"structural_column",
-              "ColumnBase":"column_foundation",
-              "Door":"main_entrance",
-              "EntranceStairs":"building_entrance_stairs",
-              "Fence01":"courtyard_fence_segment",
-              "Fence02":"courtyard_fence_enclosure",
-              "Floor01":"building_shell_variant_01",
-              "Floor02":"building_shell_variant_02",
-              "RoomDoor":"room_door_module",
-              "RoomFloor":"room_floor_module",
-              "RoomRoof":"room_roof_module",
-              "RoomRoofBeam":"roof_beam_structure",
-              "RoomWall01":"room_wall_module",
-              "Buddhist Temple Pagoda":"complete_pagoda_landmark"
-          }
+          active_assets = selected
           selected_records = []
-          for item in selected_architecture:
+          for item in active_assets:
+              role = str(item.get("category") or item.get("style_group") or "source_glb")
               item["twin_city_approved"] = True
-              item["twin_city_role"] = roles[item["name"]]
+              item["twin_city_role"] = role
               item["twin_city_geometry_verified"] = True
               selected_records.append({
                   "name":item.get("name"),
@@ -133,12 +118,12 @@ jobs:
                   "geometry_count":item.get("validation", {}).get("geometry_count"),
                   "bytes":item.get("bytes"),
                   "sha256":item.get("sha256"),
-                  "role":roles[item["name"]]
+                  "role":role
               })
           active_root = Path("assets/twin_city_selected")
           active_models = active_root / "models"
           active_models.mkdir(parents=True, exist_ok=True)
-          for item in selected_architecture:
+          for item in active_assets:
               source_path = root / item["file"]
               destination = active_models / Path(item["file"]).name
               shutil.copy2(source_path, destination)
@@ -149,7 +134,7 @@ jobs:
           for record in selected_records:
               record["active_project_path"] = str(active_models / Path(record["file"]).name)
           (active_root / "selection_manifest.json").write_text(json.dumps({"selected_count":len(selected_records),"assets":selected_records}, ensure_ascii=False, indent=2) + "\\n")
-          (root / "models" / ".gdignore").write_text("# Source audit archive: the 99 original GLBs remain in Git; only the 17 verified active kit models are imported from assets/twin_city_selected/models.\\n")
+          (root / "models" / ".gdignore").write_text("# Source archive: all 99 original GLBs are copied into assets/twin_city_selected/models for the Twin City build.\\n")
           imperial_count = sum(1 for item in selected if item.get("style_group") == "imperial_chinese")
           if imperial_count != 46:
               raise SystemExit(f"Expected 46 original imperial_chinese GLBs, found {imperial_count}")
