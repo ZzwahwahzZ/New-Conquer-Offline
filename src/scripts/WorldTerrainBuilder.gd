@@ -33,7 +33,8 @@ static func build(parent: Node3D, city: String, slot: Node3D) -> void:
   body.add_child(collision)
  parent.add_child(body)
  _bounds(parent,size,city)
- CityStreetDressing.build(slot, city, size)
+ if city != "TwinCity":
+  CityStreetDressing.build(slot, city, size)
 static func _height_mesh(city: String,size: float) -> ArrayMesh:
  var path: String = HEIGHTS.get(city,"")
  var image: Image = null
@@ -165,6 +166,7 @@ static func _build_flat_twin_city_plaza(parent: Node3D) -> void:
  plane.size = Vector2(80.0,80.0)
  floor.mesh = plane
  floor.position.y = 0.018
+ floor.visible = false
  plaza.add_child(floor)
  floor.material_override = _stone_material()
  var collision := CollisionShape3D.new()
