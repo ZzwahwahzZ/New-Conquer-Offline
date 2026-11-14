@@ -304,8 +304,8 @@ static func _build_districts(parent: Node3D, source: Node3D) -> Dictionary:
 			var building := _spawn_modular_building(districts, node_name, pos, yaw, 1.0, kind, local_index)
 			if building != null:
 				if kind == "service":
-				dims = Vector3(8.4, 9.0, 8.4)
-			_normalize_node_to_dimensions(building, dims)
+					dims = Vector3(8.4, 9.0, 8.4)
+				_normalize_node_to_dimensions(building, dims)
 				census[kind] += 1
 	print("TWIN_CITY_GLB_BUILDING_CENSUS: %s total=%d; 48 shops, 120 houses, 56 services, 16 halls; 12 open courtyard blocks; GLB assemblies only" % [str(census), census.values().reduce(func(a, b): return a + b, 0)])
 	return census
