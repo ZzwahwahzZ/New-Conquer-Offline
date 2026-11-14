@@ -35,7 +35,9 @@ static func build(parent: Node3D) -> void:
 		push_error("TWIN_CITY_GLB_FAIL: Imperial China source pack root is not Node3D")
 		return
 	root.add_child(source_instance)
+	var source_null_meshes_removed := _remove_invalid_mesh_nodes(source_instance)
 	source_instance.visible = false
+	print("TWIN_CITY_NULL_MESH_PRUNE_SOURCE: removed=%d" % source_null_meshes_removed)
 	var source_container := source_instance.find_child("walled-palace-courtyard-and-lotus-garden", true, false) as Node3D
 	if source_container == null:
 		push_error("TWIN_CITY_GLB_FAIL: Imperial China model container is missing")
@@ -50,6 +52,8 @@ static func build(parent: Node3D) -> void:
 	_build_city_greenery_and_props(root, source_container)
 	_build_perimeter(root, source_container)
 	_build_outer_wildlands(root, source_container)
+	var final_null_meshes_removed := _remove_invalid_mesh_nodes(root)
+	print("TWIN_CITY_NULL_MESH_PRUNE_FINAL: removed=%d" % final_null_meshes_removed)
 
 	print("TWIN_CITY_GLB_BUILD_PASS: total=%d categories=%s procedural_box_meshes=0 source=GLB" % [census.values().reduce(func(a, b): return a + b, 0), str(census)])
 
@@ -62,6 +66,7 @@ static func _build_palace(parent: Node3D, source: Node3D) -> void:
 	var platform := _spawn_glb_node(parent, BUILDING_BASE, "ImperialPalace_StoneTerrace_85x75x5", Vector3(0.0, 0.0, -145.0), 0.0, 1.0, "")
 	if platform != null:
 		_normalize_node_to_dimensions(platform, Vector3(85.0, 5.0, 75.0))
+		_snap_node_to_ground(platform, 0.0)
 	var main_hall_name := "ImperialPalace_MainHall_27m"
 	if _clone_source_model(parent, source, "130-ceremonial-hall", main_hall_name, Vector3(0.0, 5.0, -151.0), 0.0, 1.0, "palace"):
 		var main_hall := parent.get_node_or_null(NodePath(main_hall_name)) as Node3D
@@ -417,6 +422,7 @@ static func _spawn_glb_node(parent: Node3D, relative_path: String, node_name: St
 	instance.position = pos
 	instance.rotation = Vector3(0.0, yaw, 0.0)
 	instance.scale = Vector3.ONE * scale_factor
+	_remove_invalid_mesh_nodes(instance)
 	parent.add_child(instance)
 	_register_building(instance, category)
 	return instance
@@ -434,6 +440,7 @@ static func _clone_source_model(parent: Node3D, source: Node3D, model_name: Stri
 	clone.position = pos
 	clone.rotation = Vector3(0.0, yaw, 0.0)
 	clone.scale = template.scale * scale_factor
+	_remove_invalid_mesh_nodes(clone)
 	parent.add_child(clone)
 	_register_building(clone, category)
 	return true
@@ -487,24 +494,35 @@ static func _apply_imperial_palette(root: Node3D) -> void:
 		if not node is MeshInstance3D:
 			continue
 		var mesh_node := node as MeshInstance3D
-		if mesh_node.mesh == null:
+		var mesh := mesh_node.mesh
+		if mesh == null:
 			continue
-		for surface in range(mesh_node.mesh.get_surface_count()):
+		for surface in range(mesh.get_surface_count()):
 			var original := mesh_node.get_active_material(surface)
 			if not original is StandardMaterial3D:
 				continue
 			var material := (original as StandardMaterial3D).duplicate() as StandardMaterial3D
-			var semantic := mesh_node.name.to_lower() + " " + material.resource_name.to_lower()
-			var tint_color := Color("#E5A4B4") if is_cherry else Color("#B89F82")
-			if not is_cherry and (semantic.contains("roof") or semantic.contains("eave") or semantic.contains("tile")):
-				tint_color = Color("#D9A136") if is_palace else Color("#2E3238")
-			elif not is_cherry and (semantic.contains("wood") or semantic.contains("timber") or semantic.contains("column") or semantic.contains("beam")):
-				tint_color = Color("#5C3A21")
-			elif not is_cherry and (semantic.contains("gold") or semantic.contains("bronze") or semantic.contains("trim")):
-				tint_color = Color("#C8963E")
-			elif not is_cherry and (semantic.contains("stone") or semantic.contains("floor") or semantic.contains("base")):
-				tint_color = Color("#857D72")
-			material.albedo_color = material.albedo_color * tint_color
+			var semantic := (mesh_node.name + " " + material.resource_name).to_lower()
+			var is_roof := semantic.contains("roof") or semantic.contains("eave") or semantic.contains("tile")
+			var is_wood := semantic.contains("wood") or semantic.contains("timber") or semantic.contains("column") or semantic.contains("beam") or semantic.contains("trunk")
+			var is_foliage := semantic.contains("leaf") or semantic.contains("leaves") or semantic.contains("blossom") or semantic.contains("petal") or semantic.contains("flower") or semantic.contains("foliage")
+			if is_cherry:
+				if is_foliage:
+					material.albedo_color = Color("#E5A4B4")
+				elif is_wood:
+					material.albedo_color = Color("#5C3A21")
+				else:
+					continue
+			elif is_roof:
+				material.albedo_color = Color("#D9A136") if is_palace else Color("#2E3238")
+			elif is_wood:
+				material.albedo_color = Color("#5C3A21")
+			elif semantic.contains("gold") or semantic.contains("bronze") or semantic.contains("trim"):
+				material.albedo_color = Color("#C8963E")
+			elif semantic.contains("stone") or semantic.contains("floor") or semantic.contains("base"):
+				material.albedo_color = Color("#857D72")
+			else:
+				material.albedo_color = Color("#B89F82")
 			material.roughness = maxf(material.roughness, 0.82)
 			mesh_node.set_surface_override_material(surface, material)
 
@@ -531,32 +549,83 @@ static func _node_local_aabb(root: Node3D) -> AABB:
 			pending.append({"node": child, "transform": transform})
 	return result if has_bounds else AABB()
 
+static func _node_global_aabb(root: Node3D) -> AABB:
+	var result := AABB()
+	var has_bounds := false
+	var pending: Array[Node] = [root]
+	while not pending.is_empty():
+		var node: Node = pending.pop_back()
+		if node is MeshInstance3D:
+			var mesh_node := node as MeshInstance3D
+			if mesh_node.mesh != null:
+				var world_bounds := mesh_node.mesh.get_aabb() * mesh_node.global_transform
+				if not has_bounds:
+					result = world_bounds
+					has_bounds = true
+				else:
+					result = result.merge(world_bounds)
+		elif node is MultiMeshInstance3D:
+			var multi_node := node as MultiMeshInstance3D
+			if multi_node.multimesh != null and multi_node.multimesh.mesh != null:
+				var world_bounds := multi_node.multimesh.get_aabb() * multi_node.global_transform
+				if not has_bounds:
+					result = world_bounds
+					has_bounds = true
+				else:
+					result = result.merge(world_bounds)
+		for child in node.get_children():
+			pending.append(child)
+	return result if has_bounds else AABB()
+
+static func _remove_invalid_mesh_nodes(root: Node) -> int:
+	var removed := 0
+	for child in root.get_children():
+		var invalid_mesh := false
+		if child is MeshInstance3D:
+			invalid_mesh = (child as MeshInstance3D).mesh == null
+		elif child is MultiMeshInstance3D:
+			var multi_node := child as MultiMeshInstance3D
+			invalid_mesh = multi_node.multimesh == null or multi_node.multimesh.mesh == null
+		if invalid_mesh:
+			root.remove_child(child)
+			child.free()
+			removed += 1
+		else:
+			removed += _remove_invalid_mesh_nodes(child)
+	return removed
+
 static func _snap_node_to_ground(root: Node3D, ground_y: float) -> float:
-	var bounds := _node_local_aabb(root)
+	var bounds := _node_global_aabb(root)
 	if bounds.size.y <= 0.001:
-		push_error("TWIN_CITY_GROUND_SNAP_FAIL: %s has no measurable vertical bounds" % root.name)
+		push_error("TWIN_CITY_GROUND_SNAP_FAIL: %s has no measurable global bounds" % root.name)
 		return INF
-	# Twin City terrain is flat at Y=0. Account for actual mesh pivots and child transforms;
-	# alter vertical translation only, never geometry, scale, rotation or architectural layout.
-	var bottom_before := root.position.y + bounds.position.y * root.scale.y
-	root.position.y += ground_y - bottom_before
-	var error_m := root.position.y + bounds.position.y * root.scale.y - ground_y
+	var global_position := root.global_position
+	global_position.y += ground_y - bounds.position.y
+	root.global_position = global_position
+	var corrected_bounds := _node_global_aabb(root)
+	var error_m := corrected_bounds.position.y - ground_y
 	root.set_meta("twin_city_ground_snap_y", ground_y)
 	root.set_meta("twin_city_ground_snap_error_m", error_m)
 	return error_m
 
 static func _normalize_node_to_dimensions(root: Node3D, target: Vector3) -> void:
+	var category := str(root.get_meta("twin_city_category", ""))
+	if category in ["residential", "commercial", "service", "landmark"]:
+		target.x = minf(target.x, 9.0)
+		target.z = minf(target.z, 16.0)
 	var bounds := _node_local_aabb(root)
 	if bounds.size.x <= 0.001 or bounds.size.y <= 0.001 or bounds.size.z <= 0.001:
 		push_error("TWIN_CITY_AABB_FAIL: %s has no valid mesh bounds" % root.name)
 		return
 	var scale_vector := Vector3(target.x / bounds.size.x, target.y / bounds.size.y, target.z / bounds.size.z)
 	root.scale = root.scale * scale_vector
-	root.position.y -= bounds.position.y * scale_vector.y
-	# Re-evaluate the scaled assembly and correct only its vertical translation.
-	# Palace/platform components are deliberately excluded from this district-building path.
-	if root.is_in_group("twin_city_building"):
-		_snap_node_to_ground(root, 0.0)
 	root.set_meta("twin_city_aabb_normalized", true)
 	root.set_meta("twin_city_target_dimensions_m", target)
+	match category:
+		"residential", "commercial", "service", "landmark":
+			_snap_node_to_ground(root, 0.0)
+		"palace":
+			_snap_node_to_ground(root, 5.0)
+		"pagoda":
+			_snap_node_to_ground(root, 1.2)
 	_apply_imperial_palette(root)
