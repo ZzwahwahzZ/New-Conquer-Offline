@@ -644,10 +644,10 @@ static func build_twin_city(parent: Node3D) -> void:
  _twin_roads(root, stone, pale_stone)
  _twin_plaza(root, stone, pale_stone, gold, pink, roof, timber)
  _twin_palace(root, pale_stone, stone, timber, roof, gold)
- var counts := {"residential":82, "commercial":28, "service":15, "landmark":10, "defensive":14, "palace":8}
+ var counts := {"residential":120, "commercial":42, "service":22, "landmark":12, "defensive":20, "palace":8}
  _twin_place_district_buildings(root, counts, pale_stone, stone, timber, roof, gold)
  _twin_outer_biome(root, stone, water, pink)
- print("TWIN_CITY_IMPERIAL_BUILD_PASS: total_structures=157 residential=82 commercial=28 service=15 landmarks=10 defensive=14 palace=8 urban_diameter=360 perimeter_diameter=440 plaza_diameter=60 palace=85x75")
+ print("TWIN_CITY_IMPERIAL_BUILD_PASS: target_structures=224 residential=120 commercial=42 service=22 landmarks=12 defensive=20 palace=8 urban_diameter=360 perimeter_diameter=440 plaza_diameter=60 palace=85x75")
 
 static func _twin_ground(parent: Node3D,stone: Material) -> void:
  var ground := MeshInstance3D.new()
@@ -838,12 +838,14 @@ static func _twin_palace(parent: Node3D,pale: Material,stone: Material,timber: M
     merged_kit.scale = Vector3.ONE*2.0
     palace_root.add_child(merged_kit)
     _twin_add_palace_props(parent,merged_kit)
+    _twin_add_paved_roads(parent,merged_kit)
     return
  if _twin_import_imperial_palace_kit(palace_root):
   var imported_kit := palace_root.get_node_or_null("TwinCity_ImperialChina_GLBKit") as Node3D
   if imported_kit != null:
    imported_kit.scale = Vector3.ONE*2.0
    _twin_add_palace_props(parent,imported_kit)
+    _twin_add_paved_roads(parent,imported_kit)
   return
  _twin_box(palace_root,"FallbackImperialHall",Vector3(0,8,0),Vector3(36,16,32),pale)
  _twin_box(palace_root,"FallbackImperialGoldRoof",Vector3(0,17,0),Vector3(42,1,38),gold)
@@ -878,7 +880,8 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
  ]
  var template_names := [
   "146-plum-tree-in-blossom","147-bamboo-clump","150-peony-planter",
-  "153-garden-stone-bench","154-standing-garden-lantern","168-guardian-lion-pair","176-plum-tree-in-blossom"
+  "153-garden-stone-bench","154-standing-garden-lantern","168-guardian-lion-pair","176-plum-tree-in-blossom",
+  "059-courtyard-paving-module"
  ]
  var selected_roots: Array[Node3D] = []
  var template_roots: Array[Node3D] = []
@@ -894,7 +897,7 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
    var template := child as Node3D
    template.name = "ImperialKitTemplate_"+template.name
    template_roots.append(template)
- if selected_roots.size() != 8 or template_roots.size() != 7:
+ if selected_roots.size() != 8 or template_roots.size() != 8:
   push_warning("Imperial China GLB expected 8 palace structures and 6 prop templates, found %d/%d" % [selected_roots.size(),template_roots.size()])
   kit.queue_free()
   return false
@@ -978,6 +981,44 @@ static func _twin_add_palace_props(parent: Node3D,kit: Node3D) -> void:
   var angle := TAU*float(i)/4.0+0.3
   _twin_clone_kit_prop(parent,kit,"ImperialKitTemplate_147-bamboo-clump","TwinCity_OuterBamboo_%02d" % i,Vector3(cos(angle)*164.0,0,sin(angle)*164.0),-angle,2.0)
 
+static func _twin_add_paved_roads(parent: Node3D,kit: Node3D) -> void:
+ var template := kit.find_child("ImperialKitTemplate_059-courtyard-paving-module",true,false) as Node3D
+ if template == null:
+  push_warning("Original Imperial China paving module unavailable; road paving batch skipped")
+  return
+ var mesh_node := template.find_child("*","MeshInstance3D",true,false) as MeshInstance3D
+ if mesh_node == null or mesh_node.mesh == null:
+  push_warning("Original Imperial China paving module has no valid mesh")
+  return
+ var paving := MultiMesh.new()
+ paving.transform_format = MultiMesh.TRANSFORM_3D
+ paving.mesh = mesh_node.mesh
+ var transforms: Array[Transform3D] = []
+ # Tile the four radial avenues with the original 2m engraved courtyard-stone module.
+ for arm in range(4):
+  var angle := float(arm)*PI*0.5
+  var direction := Vector3(cos(angle),0,sin(angle))
+  var side := Vector3(-direction.z,0,direction.x)
+  for step in range(6,31):
+   var distance := 216.0-float(step)*6.0
+   for lane in range(-1,2):
+    var position := direction*distance+side*float(lane)*6.0+Vector3(0,0.34,0)
+    var basis := Basis(Vector3.UP,-angle).scaled(Vector3(3.0,1.0,3.0))*mesh_node.transform.basis
+    var origin := position+Basis(Vector3.UP,-angle)*(mesh_node.transform.origin*3.0)
+    transforms.append(Transform3D(basis,origin))
+ paving.instance_count = transforms.size()
+ for i in range(transforms.size()):
+  paving.set_instance_transform(i,transforms[i])
+ var roads := MultiMeshInstance3D.new()
+ roads.name = "OriginalImperialChinaEngravedStoneRoadPavers"
+ roads.multimesh = paving
+ roads.position.y = 0.0
+ parent.add_child(roads)
+ roads.material_override = mesh_node.get_active_material(0)
+ if roads.material_override == null:
+  roads.material_override = mesh_node.mesh.surface_get_material(0)
+ print("TWIN_CITY_ORIGINAL_PAVING_PASS: source=059-courtyard-paving-module tiles=%d" % transforms.size())
+
 static func _twin_clone_kit_prop(parent: Node3D,kit: Node3D,template_name: String,instance_name: String,pos: Vector3,yaw: float,scale_factor: float) -> void:
  var template := kit.find_child(template_name,true,false) as Node3D
  if template == null:
@@ -1002,72 +1043,71 @@ static func _twin_add_palace_annex_fallback(parent: Node3D,pale: Material,stone:
 
 static func _twin_place_district_buildings(parent: Node3D, counts: Dictionary, wall: Material, stone: Material, timber: Material, roof: Material, gold: Material) -> void:
  var districts := Node3D.new()
- districts.name = "DenseMixedResidentialCommercialDistricts_157"
+ districts.name = "DenseMixedResidentialCommercialDistricts_224"
  parent.add_child(districts)
  var batches := {
   "foundation": [], "walls": [], "roof": [], "roof_slopes": [], "ridge": [], "timber": [],
   "windows": [], "gold": [], "doors": [], "shop": [], "posts": []
  }
  var serial := 0
- # Ten compact mixed-use blocks. Each block has eight perimeter houses and
- # a central landmark; two extra houses fill the strongest residential blocks.
- for block in range(10):
-  var angle := TAU*float(block)/10.0
-  var radius := 68.0+float(block%5)*18.0
+ const BLOCK_COUNT := 12
+ # Twelve compact mixed-use blocks form a connected urban belt around the imperial core.
+ # Each block receives eight houses, two shopfronts, one service building and one civic landmark.
+ var house_offsets := [
+  Vector3(-13,0,-13),Vector3(0,0,-13),Vector3(13,0,-13),
+  Vector3(-13,0,0),Vector3(13,0,0),
+  Vector3(-13,0,13),Vector3(0,0,13),Vector3(13,0,13)
+ ]
+ for block in range(BLOCK_COUNT):
+  var angle := TAU*float(block)/float(BLOCK_COUNT)
+  var radius := 78.0+float(block%4)*18.0
   var center := Vector3(cos(angle)*radius,0,sin(angle)*radius)
-  if absf(center.x)<58.0 and center.z < -48.0:
-   center.x += 72.0 if center.x >= 0.0 else -72.0
   var rotation := -angle-PI*0.5
-  var house_offsets := [
-   Vector3(-12,0,-12),Vector3(0,0,-12),Vector3(12,0,-12),
-   Vector3(-12,0,0),Vector3(12,0,0),
-   Vector3(-12,0,12),Vector3(0,0,12),Vector3(12,0,12)
-  ]
-  for local_index in range(8):
-   var offset: Vector3 = house_offsets[local_index]
-   var pos := center + Basis(Vector3.UP,rotation)*offset
+  for local_index in range(house_offsets.size()):
+   var pos := center + Basis(Vector3.UP,rotation)*house_offsets[local_index]
    _twin_register_batched_building(districts,batches,"residential",serial,pos,7.5+float((serial*7)%4),7.0+float((serial*3)%3),2+(serial%2),wall,stone,timber,roof,gold,rotation)
    serial += 1
-  # Two real shopfronts per block, facing the inner pedestrian street.
   for shop_index in range(2):
    var offset := Vector3(-5.0+float(shop_index)*10.0,0,-25.0)
    var pos := center + Basis(Vector3.UP,rotation)*offset
    _twin_register_batched_building(districts,batches,"commercial",serial,pos,6.0+float(shop_index),6.5,2,wall,stone,timber,roof,gold,rotation)
    serial += 1
-  # One inn/workshop per block, on the outer lane.
   var service_pos := center + Basis(Vector3.UP,rotation)*Vector3(0,0,25.0)
   _twin_register_batched_building(districts,batches,"service",serial,service_pos,9.0,8.0,2+(block%2),wall,stone,timber,roof,gold,rotation)
   serial += 1
-  # A distinctive civic/temple landmark occupies the block's open centre.
   var landmark_pos := center + Basis(Vector3.UP,rotation)*Vector3(0,0,0)
   _twin_register_batched_building(districts,batches,"landmark",serial,landmark_pos,13.0,12.0,3,wall,stone,timber,roof,gold,rotation)
   serial += 1
- # Remaining 2 houses, 8 shops and 5 service buildings fill the market ring.
- for i in range(2):
-  var angle := TAU*float(i)/2.0+0.4
-  var pos := Vector3(cos(angle)*66.0,0,sin(angle)*66.0)
-  _twin_register_batched_building(districts,batches,"residential",serial,pos,9.0,8.0,3,wall,stone,timber,roof,gold,-angle-PI*0.5)
+ # Twenty-four additional homes close the residential lanes without extending into the moat.
+ for i in range(24):
+  var angle := TAU*float(i)/24.0+0.19
+  var radius := 57.0+float(i%3)*7.0
+  var pos := Vector3(cos(angle)*radius,0,sin(angle)*radius)
+  _twin_register_batched_building(districts,batches,"residential",serial,pos,8.0+float(i%3),7.5,2+(i%2),wall,stone,timber,roof,gold,-angle-PI*0.5)
   serial += 1
- for i in range(8):
-  var angle := TAU*float(i)/8.0+0.18
-  var pos := Vector3(cos(angle)*54.0,0,sin(angle)*54.0)
+ # Eighteen extra market buildings create continuous shopfront streets between blocks.
+ for i in range(18):
+  var angle := TAU*float(i)/18.0+0.31
+  var radius := 62.0+float(i%2)*8.0
+  var pos := Vector3(cos(angle)*radius,0,sin(angle)*radius)
   _twin_register_batched_building(districts,batches,"commercial",serial,pos,6.0+float(i%3)*0.5,6.0,2,wall,stone,timber,roof,gold,-angle-PI*0.5)
   serial += 1
- for i in range(5):
-  var angle := TAU*float(i)/5.0+0.3
-  var pos := Vector3(cos(angle)*150.0,0,sin(angle)*150.0)
+ # Ten additional service structures are distributed beside the outer market lanes.
+ for i in range(10):
+  var angle := TAU*float(i)/10.0+0.27
+  var pos := Vector3(cos(angle)*151.0,0,sin(angle)*151.0)
   _twin_register_batched_building(districts,batches,"service",serial,pos,8.5,8.0,2,wall,stone,timber,roof,gold,-angle-PI*0.5)
   serial += 1
- # Fourteen tall defensive structures form a secondary ring just inside the moat.
+ # Twenty defensive structures create a reinforced inner ring behind the moat.
  for i in range(int(counts.defensive)):
   var angle := TAU*float(i)/float(counts.defensive)
   var pos := Vector3(cos(angle)*190.0,0,sin(angle)*190.0)
   _twin_register_batched_building(districts,batches,"defensive",serial,pos,8.0,8.0,4,wall,stone,timber,roof,gold,angle)
   serial += 1
- # Eight real palace annex structures are imported from the Imperial China GLB kit.
+ # Eight source-built palace annexes are registered from the Imperial China GLB.
  serial += int(counts.palace)
  _twin_flush_building_batches(districts,batches,wall,stone,timber,roof,gold)
- print("TWIN_CITY_BUILDING_CENSUS: residential=82 commercial=28 service=15 landmarks=10 defensive=14 palace=8 total=%d" % serial)
+ print("TWIN_CITY_BUILDING_CENSUS: residential=120 commercial=42 service=22 landmarks=12 defensive=20 palace=8 total=%d" % serial)
 
 static func _twin_register_batched_building(parent: Node3D,batches: Dictionary,kind: String,index: int,pos: Vector3,width: float,depth: float,floors: int,wall: Material,stone: Material,timber: Material,roof: Material,gold: Material,rotation: float) -> void:
  var root := Node3D.new()
