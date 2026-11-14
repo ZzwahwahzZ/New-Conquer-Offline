@@ -34,4 +34,4 @@
     "status": "SKIPPED_AUTH_REQUIRED",
     "detail": "Set repository Actions secret SKETCHFAB_ACCESS_TOKEN to an authorized Sketchfab OAuth access token."
   }
-]\n
+]
