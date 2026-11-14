@@ -1,0 +1,37 @@
+[
+  {
+    "asset": "Chinese Ancient house reference #3589754",
+    "status": "SKIPPED_AUTH_REQUIRED",
+    "detail": "Set repository Actions secret CGTRADER_ACCESS_TOKEN to an authorized CGTrader OAuth access token."
+  },
+  {
+    "asset": "Ancient Traditional Chinese Building #3328346",
+    "status": "SKIPPED_AUTH_REQUIRED",
+    "detail": "Set repository Actions secret CGTRADER_ACCESS_TOKEN to an authorized CGTrader OAuth access token."
+  },
+  {
+    "asset": "Chinese ancient house",
+    "status": "SKIPPED_AUTH_REQUIRED",
+    "detail": "Set repository Actions secret SKETCHFAB_ACCESS_TOKEN to an authorized Sketchfab OAuth access token."
+  },
+  {
+    "asset": "Ancient Chinese House",
+    "status": "SKIPPED_AUTH_REQUIRED",
+    "detail": "Set repository Actions secret SKETCHFAB_ACCESS_TOKEN to an authorized Sketchfab OAuth access token."
+  },
+  {
+    "asset": "Chinese ancient building H26",
+    "status": "SKIPPED_AUTH_REQUIRED",
+    "detail": "Set repository Actions secret SKETCHFAB_ACCESS_TOKEN to an authorized Sketchfab OAuth access token."
+  },
+  {
+    "asset": "Chinese hut",
+    "status": "SKIPPED_AUTH_REQUIRED",
+    "detail": "Set repository Actions secret SKETCHFAB_ACCESS_TOKEN to an authorized Sketchfab OAuth access token."
+  },
+  {
+    "asset": "Ancient Chinese Noodle Shop",
+    "status": "SKIPPED_AUTH_REQUIRED",
+    "detail": "Set repository Actions secret SKETCHFAB_ACCESS_TOKEN to an authorized Sketchfab OAuth access token."
+  }
+]\n
