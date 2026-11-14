@@ -43,6 +43,32 @@ jobs:
           godot --version
           test "$(godot --version)" = "4.3.stable.official.77dcf97d8"
 
+      - name: Restore licensed Imperial China model library from Hugging Face
+        shell: bash
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          set -Eeuo pipefail
+          python3 -m pip install --disable-pip-version-check huggingface_hub
+          mkdir -p assets/environment/architecture prototypes/twin_city/reports
+          python3 - <<'PY'
+          import os, shutil
+          from pathlib import Path
+          from huggingface_hub import hf_hub_download
+          source = hf_hub_download(
+              repo_id="ZzwahwahzZ/clash-of-legends-terrain-assets",
+              filename="settlement-terrain-source/curated-glb/architecture/imperial_china_palace_and_garden.glb",
+              repo_type="dataset",
+              token=os.environ.get("HF_TOKEN") or None,
+          )
+          target = Path("assets/environment/architecture/imperial_china_palace_and_garden.glb")
+          shutil.copy2(source, target)
+          data = target.read_bytes()
+          if len(data) != 2876988 or data[:4] != b"glTF":
+              raise SystemExit(f"Imperial China kit integrity/format check failed: {len(data)} bytes")
+          print(f"IMPERIAL_CHINA_KIT_RESTORED: {target} bytes={len(data)}")
+          PY
+
       - name: Import root New-Conquer-Offline project
         shell: bash
         run: |
@@ -53,6 +79,12 @@ jobs:
             echo "::error::Godot import reported a script or resource error."
             exit 1
           fi
+
+      - name: Inspect imported Imperial China model library
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          godot --headless --path . --script res://src/scripts/TwinCityAssetInspection.gd 2>&1 | tee prototypes/twin_city/reports/imperial_china_asset_inventory.log
 
       - name: Run 150-180 structure acceptance audit
         shell: bash
@@ -121,6 +153,6 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f prototypes/twin_city/captures/*.png prototypes/twin_city/reports/*.json prototypes/twin_city/reports/*.log
+          git add -f assets/environment/architecture/imperial_china_palace_and_garden.glb prototypes/twin_city/captures/*.png prototypes/twin_city/reports/*.json prototypes/twin_city/reports/*.log
           git diff --cached --quiet || git commit -m "Add actual Twin City Godot 4.3 visual proof"
           git push origin "HEAD:$GITHUB_REF_NAME"
