@@ -58,6 +58,7 @@ def discover_opengameart(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
             # A page can expose more than one model archive; download all supported files.
             for index,(url,label,ext) in enumerate(files[:3]):
                 aid="opengameart-"+src["slug"]+("-"+str(index+1) if index else "")
+                if aid in {x.get("id") for x in DISC}: continue
                 rec={"id":aid,"name":label or src["slug"],"source":"OpenGameArt","source_url":src["page"],"license":license_name,"authors":{"creator":src["creator"]},"matches":[(src["category"],src["term"])],"download_url":url}
                 DISC.append(rec)
                 path=fetch(url,RAW/"opengameart"/(safe(aid)+ext))
