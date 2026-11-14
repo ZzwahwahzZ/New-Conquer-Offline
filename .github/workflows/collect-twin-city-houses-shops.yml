@@ -178,8 +178,16 @@ jobs:
                   "sha256": hashlib.sha256(data).hexdigest(),
                   "glb_version": version
               })
-          if len(entries) != 2:
-              raise SystemExit(f"Expected exactly 2 original GLB assets, found {len(entries)}")
+          if len(entries) < 2:
+              raise SystemExit(f"Expected at least the 2 baseline original GLB assets, found {len(entries)}")
+          # Inventory downloaded archives, original meshes, glTF buffers, and textures.
+          for p in sorted(root.rglob("*")):
+              if p.is_file() and p.suffix.lower() in {".zip", ".obj", ".fbx", ".gltf", ".bin", ".png", ".jpg", ".jpeg", ".tga"}:
+                  rel = str(p.relative_to(root))
+                  if any(item["file"] == rel for item in entries):
+                      continue
+                  data = p.read_bytes()
+                  entries.append({"file": rel, "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest(), "file_type": p.suffix.lower().lstrip(".")})
           (root / "manifest.json").write_text(json.dumps(entries, indent=2) + "\n")
           print(json.dumps(entries, indent=2))
           PY
