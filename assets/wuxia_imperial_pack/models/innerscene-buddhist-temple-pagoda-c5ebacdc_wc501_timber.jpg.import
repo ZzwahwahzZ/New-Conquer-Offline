@@ -1,0 +1,37 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://cqo728nkcgtra"
+path="res://.godot/imported/innerscene-buddhist-temple-pagoda-c5ebacdc_wc501_timber.jpg-87cc263b27da79a20bbd0b69c0c90ff7.ctex"
+metadata={
+"vram_texture": false
+}
+generator_parameters={
+"md5": "aa9be11c10038f0b0f67d7628b1a32d4"
+}
+
+[deps]
+
+source_file="res://assets/wuxia_imperial_pack/models/innerscene-buddhist-temple-pagoda-c5ebacdc_wc501_timber.jpg"
+dest_files=["res://.godot/imported/innerscene-buddhist-temple-pagoda-c5ebacdc_wc501_timber.jpg-87cc263b27da79a20bbd0b69c0c90ff7.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=1

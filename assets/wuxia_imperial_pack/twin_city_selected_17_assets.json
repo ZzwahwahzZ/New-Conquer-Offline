@@ -1,0 +1,279 @@
+{
+  "source_repo": "ZzwahwahzZ/clash-of-legends-terrain-assets",
+  "selected_count": 17,
+  "verified_source_glb_count": 99,
+  "assets": [
+    {
+      "name": "ArchBanner",
+      "asset_id": "polygonalmind-lunar-year-001",
+      "file": "models/polygonalmind-lunar-year-001.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        5.198355197906494,
+        5.131055905999837,
+        0.5899398326875049
+      ],
+      "geometry_count": 3,
+      "bytes": 780132,
+      "sha256": "56b99fcb9a10d23dcf47e06b4b3f9f1709d31f170fd07309f5d4898abe868608",
+      "role": "shopfront_arch_and_signage"
+    },
+    {
+      "name": "BellStructure",
+      "asset_id": "polygonalmind-lunar-year-004",
+      "file": "models/polygonalmind-lunar-year-004.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        3.6870850324630737,
+        3.4057307055821213,
+        0.7807366554461503
+      ],
+      "geometry_count": 3,
+      "bytes": 1238108,
+      "sha256": "2c48d62d47d9bcb886cea4792e216366c7e0528232b4b3d9b5fcbd23ec984f8d",
+      "role": "ceremonial_bell_structure"
+    },
+    {
+      "name": "BuildingBase",
+      "asset_id": "polygonalmind-lunar-year-005",
+      "file": "models/polygonalmind-lunar-year-005.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        15.550149917602539,
+        1.8240149566656334,
+        23.42020819022172
+      ],
+      "geometry_count": 2,
+      "bytes": 736976,
+      "sha256": "857f588be1dec6194d2859bee6ea03bf0c3533da1dabaffd7368f6ebf21cd739",
+      "role": "building_foundation"
+    },
+    {
+      "name": "Column",
+      "asset_id": "polygonalmind-lunar-year-008",
+      "file": "models/polygonalmind-lunar-year-008.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.4863661527633667,
+        6.5842869525040255,
+        1.4863693324694907
+      ],
+      "geometry_count": 3,
+      "bytes": 1149684,
+      "sha256": "005cf8ef86ac974b97cb8069536eef7eabb6965ffa5f7fb9e37497d2ad5af7b7",
+      "role": "structural_column"
+    },
+    {
+      "name": "ColumnBase",
+      "asset_id": "polygonalmind-lunar-year-009",
+      "file": "models/polygonalmind-lunar-year-009.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        1.9518566131591797,
+        0.20689253010561276,
+        1.9518682709441606
+      ],
+      "geometry_count": 1,
+      "bytes": 349528,
+      "sha256": "bc4010cbb679df0228408a0798e66e8aef9c40a5506219f3b39cb7853cc7b4eb",
+      "role": "column_foundation"
+    },
+    {
+      "name": "Door",
+      "asset_id": "polygonalmind-lunar-year-011",
+      "file": "models/polygonalmind-lunar-year-011.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        6.724173545837402,
+        5.678545858909151,
+        0.9585895272091813
+      ],
+      "geometry_count": 3,
+      "bytes": 1156376,
+      "sha256": "43b5eecf3c92d6599828b20a0d7a25afc6619b9c5c19a78f2b015794fbc41d3b",
+      "role": "main_entrance"
+    },
+    {
+      "name": "EntranceStairs",
+      "asset_id": "polygonalmind-lunar-year-014",
+      "file": "models/polygonalmind-lunar-year-014.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        4.03152871131897,
+        1.824011168591764,
+        4.5690149728738145
+      ],
+      "geometry_count": 2,
+      "bytes": 729036,
+      "sha256": "2b87098c1f33d1370017cb303cab2e84a588e1892a4df4da66143de6db9dcfdb",
+      "role": "building_entrance_stairs"
+    },
+    {
+      "name": "Fence01",
+      "asset_id": "polygonalmind-lunar-year-015",
+      "file": "models/polygonalmind-lunar-year-015.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        6.105548858642578,
+        1.8580780425114343,
+        0.583290122390786
+      ],
+      "geometry_count": 3,
+      "bytes": 1149124,
+      "sha256": "97981bc60dee871640b0e922693a7c486db1a30001f03373f99bb98ddc61fb70",
+      "role": "courtyard_fence_segment"
+    },
+    {
+      "name": "Fence02",
+      "asset_id": "polygonalmind-lunar-year-016",
+      "file": "models/polygonalmind-lunar-year-016.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        15.465136051177979,
+        1.858084286869447,
+        22.755861304640902
+      ],
+      "geometry_count": 3,
+      "bytes": 1167808,
+      "sha256": "dc198c0484b0f5f444768b1f429a769143e5adb7de839da3a0a50b5aa1059cb2",
+      "role": "courtyard_fence_enclosure"
+    },
+    {
+      "name": "Floor01",
+      "asset_id": "polygonalmind-lunar-year-017",
+      "file": "models/polygonalmind-lunar-year-017.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        15.685977935791016,
+        10.71187293012553,
+        22.71438599670341
+      ],
+      "geometry_count": 3,
+      "bytes": 1220216,
+      "sha256": "ee637d69980d4d4f9fd4c09d83a836e70df7a6a05c9dda11e74a8f9090dbe037",
+      "role": "building_shell_variant_01"
+    },
+    {
+      "name": "Floor02",
+      "asset_id": "polygonalmind-lunar-year-018",
+      "file": "models/polygonalmind-lunar-year-018.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        15.73171615600586,
+        13.403158132357106,
+        23.539795243838903
+      ],
+      "geometry_count": 4,
+      "bytes": 1552084,
+      "sha256": "aef04c2299a4fcb6baf66ef543b74aea2d180f77a6326f8c94f212ee13b59687",
+      "role": "building_shell_variant_02"
+    },
+    {
+      "name": "RoomDoor",
+      "asset_id": "polygonalmind-lunar-year-042",
+      "file": "models/polygonalmind-lunar-year-042.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        10.790807723999023,
+        7.878613809631785,
+        0.14999989596800914
+      ],
+      "geometry_count": 2,
+      "bytes": 726336,
+      "sha256": "0a964863229c31d5304b97cc9236aef68eedc55c49293ea834c3f43198fe5c48",
+      "role": "room_door_module"
+    },
+    {
+      "name": "RoomFloor",
+      "asset_id": "polygonalmind-lunar-year-043",
+      "file": "models/polygonalmind-lunar-year-043.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        10.79081106185913,
+        0.15000277559557357,
+        16.01723485282228
+      ],
+      "geometry_count": 1,
+      "bytes": 351792,
+      "sha256": "623625d569da9136800426bc3dbf662c221d448c34c4a7ac9bfd310e3c9e9815",
+      "role": "room_floor_module"
+    },
+    {
+      "name": "RoomRoof",
+      "asset_id": "polygonalmind-lunar-year-044",
+      "file": "models/polygonalmind-lunar-year-044.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        10.790810585021973,
+        0.15001274261400038,
+        16.029272028888165
+      ],
+      "geometry_count": 2,
+      "bytes": 799664,
+      "sha256": "2da77e87ba590697de0e860b9a304f13a5afd1ffeaac4dda9b8d1755001ac63a",
+      "role": "room_roof_module"
+    },
+    {
+      "name": "RoomRoofBeam",
+      "asset_id": "polygonalmind-lunar-year-045",
+      "file": "models/polygonalmind-lunar-year-045.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        10.753498077392578,
+        16.168963064446807,
+        1.7374163472929252
+      ],
+      "geometry_count": 3,
+      "bytes": 1161396,
+      "sha256": "9d418f9c66580909129de1fec150d0ad2b3e65d3b6dc05712ebbb43973ddb57e",
+      "role": "roof_beam_structure"
+    },
+    {
+      "name": "RoomWall01",
+      "asset_id": "polygonalmind-lunar-year-046",
+      "file": "models/polygonalmind-lunar-year-046.glb",
+      "category": "gates_walls_bridges",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        16.017233848571777,
+        7.849577954323333,
+        0.15000265264026755
+      ],
+      "geometry_count": 2,
+      "bytes": 723140,
+      "sha256": "c10cad25c956e339f1ddf9d80126e57144c82bf71e413d398a70a7e4d5632b11",
+      "role": "room_wall_module"
+    },
+    {
+      "name": "Buddhist Temple Pagoda",
+      "asset_id": "innerscene-buddhist-temple-pagoda-c5ebacdc",
+      "file": "models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb",
+      "category": "palaces_and_temples",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        14.800000190734863,
+        33.995201110839844,
+        14.800000190734863
+      ],
+      "geometry_count": 19,
+      "bytes": 18840512,
+      "sha256": "2653c57850f3d0401a1c21177a3a7f50dfa48711c49078979f25bbf0fed2363e",
+      "role": "complete_pagoda_landmark"
+    }
+  ]
+}
