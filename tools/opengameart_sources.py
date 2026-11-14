@@ -10,7 +10,11 @@ import re
 
 SOURCES = [
     {"slug":"big-stone-bridge","page":"https://opengameart.org/content/big-stone-bridge","creator":"KHORNE","category":"architecture","term":"stone bridge"},
+    {"slug":"stone-bridge-2","page":"https://opengameart.org/content/stone-bridge-2","creator":"Paul Wortmann","category":"architecture","term":"stone bridge"},
+    {"slug":"stone-bridge-0","page":"https://opengameart.org/content/stone-bridge-0","creator":"JamesWhite","category":"architecture","term":"stone bridge"},
+    {"slug":"watchtower-wood","page":"https://opengameart.org/content/watchtower-wood","creator":"atze","category":"architecture","term":"wooden watchtower"},
     {"slug":"modular-temple-3d-models","page":"https://opengameart.org/content/modular-temple-3d-models","creator":"Keith at Fertile Soil Productions","category":"architecture","term":"temple"},
+    {"slug":"shrine-shinto-japan","page":"https://opengameart.org/content/shrine-shinto-japan","creator":"Gladius.s","category":"architecture","term":"East Asian shrine temple"},
     {"slug":"dragon","page":"https://opengameart.org/content/dragon","creator":"Bitiquinho","category":"ornaments","term":"dragon model"},
     {"slug":"free-bamboo-v1","page":"https://opengameart.org/content/free-bamboo-v1","creator":"Yughues","category":"nature","term":"bamboo"},
     {"slug":"stylized-nature-megakit","page":"https://opengameart.org/content/stylized-nature-megakit","creator":"Quaternius","category":"nature","term":"nature pack"},
@@ -152,7 +156,7 @@ def _download_page_asset(session, fetch, sha, RAW, DISC, DOWN, ERR, page, slug, 
             "id": aid, "name": label or slug, "source": "OpenGameArt",
             "source_url": page, "download_url": url, "license": license_name,
             "license_url": license_url, "authors": {"creator": author},
-            "matches": [(category, term)], "target_category": _target_category(category, term), "api_metadata": {"license_verified_from_live_page": True},
+            "matches": [(category, term)], "target_category": _target_category(category, term), "candidate_only": category != "pbr", "api_metadata": {"license_verified_from_live_page": True},
         }
         raw = fetch(url, RAW / "opengameart" / (aid + ext))
         DISC.append(rec)
