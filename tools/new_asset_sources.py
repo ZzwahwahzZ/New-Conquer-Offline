@@ -203,6 +203,7 @@ def discover_sketchfab(session, getj, fetch, safe, sha, RAW, DISC, DOWN, ERR, SK
                         "license": license_name, "license_url": license_url, "authors": {"creator": creator},
                         "target_category": category, "matches": [(category, term)],
                         "api_metadata": {"license_slug": slug, "creator": creator},
+                        "candidate_only": True,
                     }
                     raw = fetch(archive_url, RAW / "sketchfab" / (safe(item_id) + ".zip"))
                     DISC.append(rec)
@@ -481,8 +482,7 @@ def discover_github_open_assets(session, fetch, safe, sha, RAW, DISC, DOWN, ERR,
                     "api_metadata": {"spdx_id": spdx, "repository": full_name,
                                      "repository_owner": owner, "file_path": path,
                                      "repository_license_url": license_info.get("url")},
-                    "candidate_only": category == "architecture" and not re.search(
-                        r"(chinese|asian|east.?asian|pagoda|temple|imperial|palace|gate|bridge)", path, re.I),
+                    "candidate_only": True,
                 }
                 try:
                     raw = fetch(raw_url, RAW / "github" / safe(full_name.replace("/", "-")) / (safe(Path(path).name)))
