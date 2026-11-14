@@ -373,7 +373,7 @@ def discover_github_open_assets(session, fetch, safe, sha, RAW, DISC, DOWN, ERR,
     allowed_spdx = {
         "CC0-1.0", "CC-BY-4.0", "CC-BY-3.0", "CC-BY-SA-4.0", "CC-BY-SA-3.0",
         "MIT", "BSD-2-Clause", "BSD-3-Clause", "Zlib", "WTFPL", "Unlicense",
-        "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only", "GPL-3.0-or-later", "Public Domain",
+        "GPL-2.0", "GPL-3.0", "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only", "GPL-3.0-or-later", "Public Domain",
     }
     queries = (
         "pagoda 3d assets",
