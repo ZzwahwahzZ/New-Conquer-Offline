@@ -6,7 +6,7 @@ const VIEWS := [
  {"file":"03_street_scale.png","position":Vector3(0,1.8,178),"target":Vector3(0,3.0,92),"ortho":false,"fov":72.0},
  {"file":"04_central_plaza.png","position":Vector3(0,34,56),"target":Vector3(0,8,0),"ortho":false,"fov":55.0},
  {"file":"05_imperial_palace.png","position":Vector3(0,72,-245),"target":Vector3(0,12,-145),"ortho":false,"fov":52.0},
- {"file":"06_district_density.png","position":Vector3(190,18,12),"target":Vector3(145,7,0),"ortho":false,"fov":64.0}
+ {"file":"06_district_density.png","position":Vector3(218,18,12),"target":Vector3(145,7,0),"ortho":false,"fov":64.0}
 ]
 
 func _initialize() -> void:
