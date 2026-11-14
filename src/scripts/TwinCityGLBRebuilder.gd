@@ -26,7 +26,7 @@ static func build(parent: Node3D) -> void:
 	root.name = "TwinCity_ImperialReconstruction"
 	parent.add_child(root)
 
-	var source_pack := load("res://assets/environment/architecture/imperial_china_palace_and_garden.glb") as PackedScene
+	var source_pack := load("res://assets/environment/architecture/imperial_china_palace_and_garden_merged.scn") as PackedScene
 	if source_pack == null:
 		push_error("TWIN_CITY_GLB_FAIL: original Imperial China source pack is missing")
 		return
