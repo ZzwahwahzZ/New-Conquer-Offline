@@ -1,9 +1,10 @@
-"""Additional official CC0 / CC BY asset sources for the imperial city pipeline.
+"""Additional verified open-license asset sources for the imperial city pipeline.
 
 Sources:
 - Smithsonian 3D API: official Open Access GLB search endpoint (CC0 only).
 - Kenney Nature Kit: official CC0 archive, pinned by SHA-256.
-- Sketchfab Data/Download APIs: CC0 and CC BY only; downloads require OAuth.
+- Sketchfab Data/Download APIs: CC0, CC BY and CC BY-SA; downloads require OAuth.
+- GitHub public repositories: model files are accepted only when the repository declares an allow-listed SPDX license.
 """
 import os
 import re
@@ -134,12 +135,17 @@ def discover_sketchfab(session, getj, fetch, safe, sha, RAW, DISC, DOWN, ERR, SK
         ("bamboo tree", "nature"),
         ("Asian pine tree", "nature"),
         ("Chinese stone bridge", "gates_walls_bridges"),
+        ("Japanese cherry tree low poly", "nature"),
+        ("Cherry blossom trees", "nature"),
+        ("Chinese plum blossom tree", "nature"),
+        ("Chinese market stall", "houses_and_shops"),
+        ("Imperial Chinese palace", "palaces_and_temples"),
     )
     seen = set()
     found = 0
     downloaded = 0
     for term, category in queries:
-        for license_filter in ("by", "cc0"):
+        for license_filter in ("by-sa", "by", "cc0"):
             try:
                 payload = getj(endpoint, {
                     "type": "models", "q": term, "downloadable": "true",
@@ -153,7 +159,8 @@ def discover_sketchfab(session, getj, fetch, safe, sha, RAW, DISC, DOWN, ERR, SK
                     lic = model.get("license") or {}
                     slug = str(lic.get("slug") if isinstance(lic, dict) else lic).lower()
                     if slug not in {"cc0", "cc0-1.0", "by", "cc-by", "cc-by-4.0",
-                                    "cc-by-3.0", "cc-by-2.5", "cc-by-2.0", "cc-by-1.0"}:
+                                    "cc-by-3.0", "cc-by-2.5", "cc-by-2.0", "cc-by-1.0",
+                                    "by-sa", "cc-by-sa", "cc-by-sa-4.0", "cc-by-sa-3.0"}:
                         continue
                     seen.add(uid)
                     found += 1
@@ -166,9 +173,11 @@ def discover_sketchfab(session, getj, fetch, safe, sha, RAW, DISC, DOWN, ERR, SK
                         continue
                     if not token:
                         continue
-                    license_name = "CC0 1.0" if slug.startswith("cc0") else (
-                        "CC BY (Sketchfab license slug: " + slug + ")"
-                    )
+                    license_name = ("CC0 1.0 Universal" if slug.startswith("cc0") else
+                        "CC BY-SA 4.0" if "sa" in slug else "CC BY 4.0")
+                    license_url = ("https://creativecommons.org/publicdomain/zero/1.0/" if slug.startswith("cc0") else
+                        "https://creativecommons.org/licenses/by-sa/4.0/" if "sa" in slug else
+                        "https://creativecommons.org/licenses/by/4.0/")
                     headers = {"Authorization": "Bearer " + token}
                     response = session.get(
                         "https://api.sketchfab.com/v3/models/" + uid + "/download",
@@ -183,7 +192,7 @@ def discover_sketchfab(session, getj, fetch, safe, sha, RAW, DISC, DOWN, ERR, SK
                     rec = {
                         "id": item_id, "name": name, "source": "Sketchfab",
                         "source_url": viewer, "download_url": None,
-                        "license": license_name, "authors": {"creator": creator},
+                        "license": license_name, "license_url": license_url, "authors": {"creator": creator},
                         "target_category": category, "matches": [(category, term)],
                         "api_metadata": {"license_slug": slug, "creator": creator},
                     }
@@ -203,7 +212,7 @@ def discover_sketchfab(session, getj, fetch, safe, sha, RAW, DISC, DOWN, ERR, SK
     if found and not token:
         SKIPPED.append({
             "asset": "Sketchfab", "stage": "authorization_required",
-            "reason": str(found) + " downloadable CC0/CC BY candidates found; official Download API requires SKETCHFAB_TOKEN OAuth authorization",
+            "reason": str(found) + " downloadable CC0/CC BY/CC BY-SA candidates found; official Download API requires SKETCHFAB_TOKEN OAuth authorization",
         })
     print("SKETCHFAB_SOURCE_COUNTS", {"candidates": found, "downloaded": downloaded,
                                       "oauth_token_present": bool(token)})
@@ -290,7 +299,7 @@ def discover_polygonal_mind(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPE
 
 
 def discover_innerscene_curated(fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPED):
-    """Fetch two individually verified, relevant CC0 GLBs through Innerscene's official download links."""
+    """Fetch individually verified, relevant CC0 GLBs through Innerscene's official download links."""
     assets = (
         {
             "id": "innerscene-buddhist-temple-pagoda-c5ebacdc",
@@ -308,6 +317,15 @@ def discover_innerscene_curated(fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPED)
             "download": "https://www.innerscene.com/api/library/japanese-maple-tree-565c1604/download",
             "category": "nature",
             "tags": "Japanese maple tree East Asian landscape nature",
+            "creator": "Innerscene",
+        },
+        {
+            "id": "innerscene-flowering-cherry-tree-6d80049e",
+            "name": "Flowering Cherry Tree",
+            "page": "https://www.innerscene.com/tools/library/3d-parts/flowering-cherry-tree-6d80049e",
+            "download": "https://www.innerscene.com/api/library/flowering-cherry-tree-6d80049e/download",
+            "category": "nature",
+            "tags": "flowering cherry tree sakura cherry blossom East Asian garden",
             "creator": "Innerscene",
         },
     )
