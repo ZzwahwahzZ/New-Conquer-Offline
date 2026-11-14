@@ -70,12 +70,12 @@ func _run_audit() -> void:
 			global_stack.append(child)
 		if current is MeshInstance3D:
 			var mesh := (current as MeshInstance3D).mesh
-			if mesh == null or not mesh.get_rid().is_valid():
+			if mesh == null or not mesh.get_rid().is_valid() or not (current as MeshInstance3D).get_base().is_valid():
 				null_mesh_nodes += 1
 				null_mesh_paths.append(str(current.get_path()))
 		elif current is MultiMeshInstance3D:
 			var multi_node := current as MultiMeshInstance3D
-			if multi_node.multimesh == null or multi_node.multimesh.mesh == null or not multi_node.multimesh.mesh.get_rid().is_valid():
+			if multi_node.multimesh == null or multi_node.multimesh.mesh == null or not multi_node.multimesh.mesh.get_rid().is_valid() or not multi_node.get_base().is_valid():
 				null_mesh_nodes += 1
 				null_mesh_paths.append(str(current.get_path()))
 	var wall_segments := get_nodes_in_group("twin_city_wall_segment")
@@ -120,12 +120,16 @@ func _remove_invalid_mesh_nodes(root_node: Node) -> int:
 		if child is MeshInstance3D:
 			var mesh := (child as MeshInstance3D).mesh
 			invalid_mesh = mesh == null or not mesh.get_rid().is_valid()
+			if not invalid_mesh and (child as MeshInstance3D).is_inside_tree():
+				invalid_mesh = not (child as MeshInstance3D).get_base().is_valid()
 		elif child is MultiMeshInstance3D:
 			var multi_node := child as MultiMeshInstance3D
 			invalid_mesh = multi_node.multimesh == null
 			if not invalid_mesh:
 				var multi_mesh := multi_node.multimesh.mesh
 				invalid_mesh = multi_mesh == null or not multi_mesh.get_rid().is_valid()
+			if not invalid_mesh and multi_node.is_inside_tree():
+				invalid_mesh = not multi_node.get_base().is_valid()
 		if invalid_mesh:
 			root_node.remove_child(child)
 			child.free()
