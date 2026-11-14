@@ -21,7 +21,7 @@ jobs:
   build-and-capture:
     name: Run actual Twin City scene and capture six Godot views
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     env:
       GODOT_VERSION: 4.3
       GODOT_RELEASE: 4.3-stable
@@ -143,6 +143,7 @@ jobs:
           (active_root / "selection_manifest.json").write_text(json.dumps({"selected_count":len(selected_records),"assets":selected_records}, ensure_ascii=False, indent=2) + "\n")
           (root / "models" / ".gdignore").write_text("# Source archive: active assets are imported from assets/twin_city_selected.\\n")
           (root / "candidates" / "models" / ".gdignore").write_text("# Source candidate archive: active assets are imported from assets/twin_city_selected.\\n")
+          (root / "candidates" / "models" / ".gdignore").write_text("# Source candidate archive: active assets are imported from assets/twin_city_selected.\\n")
           imperial_count = sum(1 for item in selected if item.get("style_group") == "imperial_chinese")
           if imperial_count != 46:
               raise SystemExit(f"Expected 46 original imperial_chinese GLBs, found {imperial_count}")
@@ -170,7 +171,7 @@ jobs:
           approved["twin_city_selected_assets"] = selected_records
           (root / "twin_city_restored_glb_assets.json").write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","selected_count":len(selected_records),"verified_source_glb_count":len(refreshed),"assets":selected_records}, ensure_ascii=False, indent=2) + "\n")
           audit_path = Path("prototypes/twin_city/reports/glb_geometry_audit.json")
-          audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","original_models_folder_glb_count":len(selected),"restored_glb_asset_count":len(selected_records),"total_geometry_verified_glb_count":len(geometry_audit),"assets":geometry_audit,"architectural_candidate_count":sum(x["architectural_candidate"] for x in geometry_audit)}, ensure_ascii=False, indent=2) + "\n")
+          audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","original_models_folder_glb_count":len(model_paths),"restored_glb_asset_count":len(selected_records),"total_geometry_verified_glb_count":len(geometry_audit),"assets":geometry_audit,"architectural_candidate_count":sum(x["architectural_candidate"] for x in geometry_audit)}, ensure_ascii=False, indent=2) + "\n")
           (root / "manifest.json").write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2) + "\n")
           (root / "imperial_approved_assets.json").write_text(json.dumps(approved, ensure_ascii=False, indent=2) + "\n")
           restore_report = {
@@ -211,9 +212,9 @@ jobs:
               repo_id="ZzwahwahzZ/clash-of-legends-terrain-assets",
               repo_type="dataset",
               token=os.environ["HF_TOKEN"],
-              commit_message="Verify 46 Imperial Chinese GLBs and 17 selected building-kit components with current SHA-256 and dimensions"
+              commit_message="Verify all restored Imperial China and environment GLBs with current SHA-256 and dimensions"
           )
-          for filename in ("manifest.json", "twin_city_selected_17_assets.json"):
+          for filename in ("manifest.json", "twin_city_restored_glb_assets.json"):
               HfApi().upload_file(
                   path_or_fileobj="assets/wuxia_imperial_pack/" + filename,
                   path_in_repo="assets/wuxia_imperial_pack/" + filename,
@@ -375,6 +376,7 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add -f "$asset"
             if [ -d assets/wuxia_imperial_pack/models ]; then git add -f assets/wuxia_imperial_pack/models/; fi
+            if [ -d assets/wuxia_imperial_pack/candidates/models ]; then git add -f assets/wuxia_imperial_pack/candidates/models/; fi
           if [ -d assets/wuxia_imperial_pack/candidates/models ]; then git add -f assets/wuxia_imperial_pack/candidates/models/; fi
             if [ -d assets/twin_city_selected ]; then git add -f assets/twin_city_selected/; fi
             if [ -f assets/wuxia_imperial_pack/manifest.json ]; then git add -f assets/wuxia_imperial_pack/manifest.json; fi
