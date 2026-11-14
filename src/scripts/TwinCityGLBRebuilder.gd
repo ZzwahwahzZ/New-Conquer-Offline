@@ -196,8 +196,8 @@ static func _build_full_city_paving(parent: Node3D, source: Node3D) -> void:
 			var radius := Vector2(x, z).length()
 			var on_main_avenue := absf(x) < 8.0 or absf(z) < 7.0
 			var on_secondary := absf(absf(x) - round(absf(x) / 45.0) * 45.0) < 4.5 or absf(absf(z) - round(absf(z) / 45.0) * 45.0) < 4.5
-			var basis := Basis().scaled(Vector3(3.0, 1.0, 3.0)) * (mesh_nodes[0] as MeshInstance3D).transform.basis
-			var origin := point + (mesh_nodes[0] as MeshInstance3D).transform.origin * 3.0
+			var basis := Basis().scaled(Vector3(1.5, 1.0, 1.5)) * (mesh_nodes[0] as MeshInstance3D).transform.basis
+			var origin := point + (mesh_nodes[0] as MeshInstance3D).transform.origin * 1.5
 			var transform := Transform3D(basis, origin)
 			if radius <= 28.0:
 				if int(floor(radius / 4.0)) % 2 == 0:
@@ -215,8 +215,8 @@ static func _build_full_city_paving(parent: Node3D, source: Node3D) -> void:
 			for edge in [-1.0, 1.0]:
 				for step in range(-5, 6):
 					var along := float(step) * 3.0
-					curb_transforms.append(Transform3D(Basis().scaled(Vector3(3.0, 1.0, 3.0)), Vector3(cx + edge * 17.25, 0.15, cz + along)))
-					curb_transforms.append(Transform3D(Basis().scaled(Vector3(3.0, 1.0, 3.0)), Vector3(cx + along, 0.15, cz + edge * 17.25)))
+					curb_transforms.append(Transform3D(Basis().scaled(Vector3(1.5, 1.0, 1.5)), Vector3(cx + edge * 17.25, 0.15, cz + along)))
+					curb_transforms.append(Transform3D(Basis().scaled(Vector3(1.5, 1.0, 1.5)), Vector3(cx + along, 0.15, cz + edge * 17.25)))
 	_create_paving_batch(parent, "TwinCity_WarmBlockAndCourtyardPaving", tile_mesh, block_transforms, Color("#85796A"), 0.92)
 	_create_paving_batch(parent, "TwinCity_DarkBasaltRoadwayPaving", tile_mesh, road_transforms, Color("#5E646B"), 0.92)
 	_create_paving_batch(parent, "TwinCity_CentralPlazaWarmStone", tile_mesh, plaza_warm_transforms, Color("#7A7267"), 0.92)
