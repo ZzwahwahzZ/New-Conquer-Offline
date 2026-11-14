@@ -19,8 +19,10 @@ func _ready() -> void:
 	_build_environment()
 	_build_asset_slots()
 	_build_terrain_shell()
-	# TwinCity now uses an intentionally open 80x80 central plaza; the former imported enclosed palace block is not instanced.
-	CityArchitectureBuilder.build(get_node("ArchitectureAssetSlot"), settlement_id, 600.0 if settlement_id == "TwinCity" else 450.0)
+	if settlement_id == "TwinCity":
+		CityArchitectureBuilder.build_twin_city(get_node("ArchitectureAssetSlot"))
+	else:
+		CityArchitectureBuilder.build(get_node("ArchitectureAssetSlot"), settlement_id, 450.0)
 	_build_landmarks()
 	_build_sanctuary_landmarks()
 
