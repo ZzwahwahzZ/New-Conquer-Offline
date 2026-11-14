@@ -800,28 +800,36 @@ static func _twin_pagoda(parent: Node3D, roof: Material, timber: Material, gold:
    var eave := _twin_box(root, "PagodaEaveTrim_%d_%d" % [level,int(edge)], Vector3(edge*(width+2.0)*0.5,y+2.35,0), Vector3(0.35,0.28,width+5.0), gold)
  _twin_cylinder(root, "PagodaFinial", Vector3(0,19.0,0), 0.32,2.0,gold)
 
-static func _twin_palace(parent: Node3D, pale: Material, stone: Material, timber: Material, roof: Material, gold: Material) -> void:
+static func _twin_palace(parent: Node3D,pale: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
  var palace := Node3D.new()
  palace.name = "ImperialPalace_85x75"
  palace.position = Vector3(0,0,-103.0)
  parent.add_child(palace)
- var terrace := _twin_box(palace, "PalaceRaisedStoneTerrace", Vector3(0,2.25,0), Vector3(85.0,4.5,75.0), stone)
- var upper := _twin_box(palace, "PalaceUpperTerrace", Vector3(0,4.7,8.0), Vector3(69.0,1.0,55.0), pale)
- # Wide ceremonial stair faces the plaza (south, +Z).
+ var imperial_gold := _material(Color("#E0A83B"),0.44)
+ _twin_box(palace,"PalaceRaisedStoneTerrace",Vector3(0,2.25,0),Vector3(85.0,4.5,75.0),stone)
+ _twin_box(palace,"PalaceUpperTerrace",Vector3(0,4.7,8.0),Vector3(69.0,1.0,55.0),pale)
+ # Broad ceremonial staircase rises 4.5m from the plaza-facing southern edge.
  for step in range(10):
-  var depth := 2.2
-  _twin_box(palace, "ImperialStair_%02d" % step, Vector3(0,0.25+float(step)*0.45,31.0+float(step)*2.1), Vector3(20.0,0.5+float(step)*0.08,depth), pale)
+  var rise := float(step)*0.45
+  _twin_box(palace,"ImperialStair_%02d" % step,Vector3(0,0.25+rise,31.0+float(step)*2.1),Vector3(22.0,0.5+rise*0.08,2.2),pale)
  for wing in range(3):
-  var x := float(wing-1)*25.0
-  var building := _twin_box(palace, "PalaceHall_%d" % wing, Vector3(x,10.0,8.0-float(wing%2)*9.0), Vector3(22.0,10.0,24.0), pale)
+  var x := float(wing-1)*27.0
+  var hall_width := 28.0 if wing == 1 else 21.0
+  var hall_depth := 25.0 if wing == 1 else 21.0
+  var hall_z := 7.0-float(wing%2)*5.0
+  _twin_box(palace,"PalaceHall_%d" % wing,Vector3(x,10.0,hall_z),Vector3(hall_width,10.0,hall_depth),pale)
   for col in range(5):
-   _twin_cylinder(palace, "PalaceColumn_%d_%d" % [wing,col], Vector3(x-9.0+float(col)*4.5,8.5,20.5-float(wing%2)*9.0), 0.72,8.0,timber)
-  var gold_roof := _twin_box(palace, "ImperialGoldenRoof_%d" % wing, Vector3(x,15.7,8.0-float(wing%2)*9.0), Vector3(27.0,1.3,29.0), gold)
-  var ridge := _twin_box(palace, "ImperialRoofRidge_%d" % wing, Vector3(x,16.6,8.0-float(wing%2)*9.0), Vector3(24.0,0.45,0.7), gold)
- # Guard sculptures are stylized stone guardians at the stair landing.
+   var cx := x-hall_width*0.42+float(col)*hall_width*0.21
+   _twin_cylinder(palace,"PalaceColumn_%d_%d" % [wing,col],Vector3(cx,8.5,hall_z+hall_depth*0.5+0.3),0.72,8.0,timber)
+  # Two stepped imperial roof tiers, restrained gold ridge work and projecting eaves.
+  _twin_box(palace,"ImperialGoldenLowerEave_%d" % wing,Vector3(x,15.4,hall_z),Vector3(hall_width+6.0,0.72,hall_depth+7.0),imperial_gold)
+  _twin_box(palace,"ImperialGoldenUpperRoof_%d" % wing,Vector3(x,16.2,hall_z),Vector3(hall_width+2.0,0.65,hall_depth+3.0),imperial_gold)
+  _twin_box(palace,"ImperialRoofRidge_%d" % wing,Vector3(x,16.75,hall_z),Vector3(hall_width*0.82,0.32,0.72),gold)
+  for side in [-1.0,1.0]:
+   _twin_box(palace,"ImperialRaisedEaveTip_%d_%d" % [wing,int(side)],Vector3(x+side*(hall_width*0.5+2.4),16.0,hall_z),Vector3(0.65,0.42,hall_depth+6.0),gold)
+ # Stone guardian sculptures stand on pedestals at the stair landing.
  for side in [-1.0,1.0]:
-  _twin_guardian(palace, Vector3(side*13.0,5.0,30.0), stone, gold)
-
+  _twin_guardian(palace,Vector3(side*14.0,5.0,30.0),stone,gold)
 static func _twin_guardian(parent: Node3D, pos: Vector3, stone: Material, gold: Material) -> void:
  _twin_box(parent, "ImperialGuardianPedestal", pos+Vector3(0,0.6,0), Vector3(2.0,1.2,2.0), stone)
  _twin_cylinder(parent, "ImperialGuardianBody", pos+Vector3(0,2.0,0), 0.72,2.2,stone)
