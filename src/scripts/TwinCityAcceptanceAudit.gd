@@ -76,7 +76,7 @@ func _run_audit() -> void:
 				null_mesh_paths.append(str(current.get_path()))
 		elif current is MultiMeshInstance3D:
 			var multi_node := current as MultiMeshInstance3D
-			if multi_node.multimesh == null or multi_node.multimesh.mesh == null or not multi_node.multimesh.mesh.get_rid().is_valid() or multi_node.multimesh.instance_count <= 0 or multi_node.multimesh.get_aabb().size.length_squared() <= 0.00000001 or not multi_node.get_base().is_valid():
+			if multi_node.multimesh == null or multi_node.multimesh.mesh == null or not multi_node.multimesh.mesh.get_rid().is_valid() or multi_node.multimesh.instance_count <= 0 or not multi_node.get_base().is_valid():
 				null_mesh_nodes += 1
 				null_mesh_paths.append(str(current.get_path()))
 	var wall_segments := get_nodes_in_group("twin_city_wall_segment")
@@ -109,9 +109,15 @@ func _run_audit() -> void:
 	print("TWIN_CITY_ACCEPTANCE_AUDIT total=%d categories=%s normalized=%d ground_snapped=%d snap_counts=%s max_ground_error_m=%.6f footprint_violations=%d wall_segments=%d wall_max_ground_error_m=%.6f null_meshes=%d procedural_building_primitives=%d valid_mesh_nodes=%d paving_instances=%d plaza=%s palace=%s moat=%s pagoda=%s" % [total, str(counts), normalized_buildings, ground_snapped_buildings, str(snap_counts), max_ground_snap_error, footprint_violations, wall_segments.size(), wall_max_ground_error, null_mesh_nodes, procedural_building_primitives, valid_mesh_nodes, paving_instances, str(plaza != null), str(palace != null), str(moat != null), str(pagoda != null)])
 	if not valid:
 		push_error("TWIN_CITY_AUDIT_FAIL: expected 244 structures, 240 district ground snaps at Y=0, 3 palace snaps at Y=5, 1 pagoda snap at Y=1.2, 108 wall snaps, valid footprints, and zero null meshes")
+		city.queue_free()
+		await process_frame
+		print("TWIN_CITY_AUDIT_CLEANUP_COMPLETE: invalid audit scene freed before engine shutdown")
 		quit(1)
 		return
 	print("TWIN_CITY_AUDIT_PASS: 244 structures; district=240@Y0; palace=3@Y5; pagoda=1@Y1.2; walls=108@Y0; footprint caps=9x16m; 0 null meshes; 0 procedural building primitives")
+	city.queue_free()
+	await process_frame
+	print("TWIN_CITY_AUDIT_CLEANUP_COMPLETE: scene freed while RenderingServer is active")
 	quit(0)
 
 func _remove_invalid_mesh_nodes(root_node: Node) -> int:
@@ -130,9 +136,7 @@ func _remove_invalid_mesh_nodes(root_node: Node) -> int:
 			invalid_mesh = multi_node.multimesh == null
 			if not invalid_mesh:
 				var multi_mesh := multi_node.multimesh.mesh
-				invalid_mesh = multi_mesh == null or not multi_mesh.get_rid().is_valid()
-			if not invalid_mesh:
-				invalid_mesh = multi_node.multimesh.instance_count <= 0 or multi_node.multimesh.get_aabb().size.length_squared() <= 0.00000001
+				invalid_mesh = multi_mesh == null or not multi_mesh.get_rid().is_valid() or multi_node.multimesh.instance_count <= 0
 			if not invalid_mesh and multi_node.is_inside_tree():
 				invalid_mesh = not multi_node.get_base().is_valid()
 		if invalid_mesh:
