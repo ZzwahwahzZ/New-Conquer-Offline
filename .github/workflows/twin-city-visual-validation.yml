@@ -176,7 +176,7 @@ jobs:
               "files":[{"name":x.get("name"),"style_group":x.get("style_group"),"file":x.get("file"),"sha256":x.get("sha256"),"bytes":x.get("bytes"),"dimensions_m":x.get("dimensions_m")} for x in geometry_audit]
           }
           Path("prototypes/twin_city/reports/twin_city_asset_restore.json").write_text(json.dumps(restore_report, ensure_ascii=False, indent=2) + "\n")
-          print(f"HF_ASSET_RESTORE_PASS: original_models={len(refreshed)} restored_glb_assets={len(selected_records)} approved_imperial_chinese={imperial_count} total_geometry_verified={len(geometry_audit)} candidates={architectural_count}")
+          print(f"HF_ASSET_RESTORE_PASS: original_models={len(refreshed)} restored_glb_assets={len(selected_records)} approved_imperial_chinese={imperial_count} total_geometry_verified={len(geometry_audit)} nature_and_street_candidates={len(candidate_paths)}")
           PY
 
       - name: Publish verified approval manifest to the same Hugging Face dataset
