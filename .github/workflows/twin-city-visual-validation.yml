@@ -35,7 +35,7 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update
-          sudo apt-get install -y xvfb xz-utils libgl1-mesa-dri libglx-mesa0 mesa-utils
+          sudo apt-get install -y xvfb xz-utils libgl1-mesa-dri libglx-mesa0 mesa-utils libvulkan1 mesa-vulkan-drivers vulkan-tools
           curl --connect-timeout 20 --max-time 240 --retry 3 --retry-delay 5 -fL "https://github.com/godotengine/godot/releases/download/$GODOT_RELEASE/Godot_v$GODOT_VERSION-stable_linux.x86_64.zip" -o /tmp/godot.zip
           mkdir -p /tmp/godot-bin
           unzip -q /tmp/godot.zip -d /tmp/godot-bin
@@ -114,8 +114,9 @@ jobs:
         timeout-minutes: 15
         run: |
           set -Eeuo pipefail
-          export LIBGL_ALWAYS_SOFTWARE=1
-          timeout 900s xvfb-run -a -s "-screen 0 1920x1080x24" godot --path . --rendering-method gl_compatibility --rendering-driver opengl3 --script res://src/scripts/TwinCityGodotCapture.gd 2>&1 | tee prototypes/twin_city/reports/godot_capture.log
+          test -f /usr/share/vulkan/icd.d/lvp_icd.x86_64.json
+          export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.x86_64.json
+          timeout 900s xvfb-run -a -s "-screen 0 1920x1080x24" godot --path . --rendering-method mobile --rendering-driver vulkan --script res://src/scripts/TwinCityGodotCapture.gd 2>&1 | tee prototypes/twin_city/reports/godot_capture.log
           for image in 01_aerial_full.png 02_aerial_oblique.png 03_street_scale.png 04_central_plaza.png 05_imperial_palace.png 06_district_density.png; do
             test -s "prototypes/twin_city/captures/$image"
           done
