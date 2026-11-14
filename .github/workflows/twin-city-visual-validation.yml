@@ -79,11 +79,18 @@ jobs:
                   raise SystemExit(f"Unsafe GLB path in manifest: {relative}")
               target = root / relative
               target.parent.mkdir(parents=True, exist_ok=True)
-              payload = fetch(base + item["source_repo_path"])
+              active_existing = Path("assets/twin_city_selected") / relative
+              if active_existing.is_file():
+                  payload = active_existing.read_bytes()
+              elif target.is_file():
+                  payload = target.read_bytes()
+              else:
+                  payload = fetch(base + item["source_repo_path"])
               if len(payload) <= 1024 or payload[:4] != b"glTF":
                   raise SystemExit(f"Invalid GLB header/size: {relative}, bytes={len(payload)}")
               digest = hashlib.sha256(payload).hexdigest()
-              target.write_bytes(payload)
+              if not target.is_file():
+                  target.write_bytes(payload)
               import trimesh
               try:
                   scene = trimesh.load(target, force="scene", process=False)
@@ -109,29 +116,13 @@ jobs:
           active_assets = selected
           selected_records = []
           for item in active_assets:
-              role = str(item.get("category") or item.get("style_group") or "source_glb")
-              item["twin_city_approved"] = True
-              item["twin_city_role"] = role
-              item["twin_city_geometry_verified"] = True
-              selected_records.append({
-                  "name":item.get("name"),
-                  "asset_id":item.get("asset_id"),
-                  "file":item.get("file"),
-                  "category":item.get("category"),
-                  "style_group":item.get("style_group"),
-                  "dimensions_m":item.get("dimensions_m"),
-                  "geometry_count":item.get("validation", {}).get("geometry_count"),
-                  "bytes":item.get("bytes"),
-                  "sha256":item.get("sha256"),
-                  "role":role
-              })
-          active_root = Path("assets/twin_city_selected")
-          active_root.mkdir(parents=True, exist_ok=True)
-          for item in active_assets:
               source_path = root / item["file"]
               destination = active_root / item["file"]
               destination.parent.mkdir(parents=True, exist_ok=True)
-              shutil.copy2(source_path, destination)
+              if not destination.is_file() or hashlib.sha256(destination.read_bytes()).hexdigest() != item["sha256"]:
+                  if not source_path.is_file():
+                      raise SystemExit(f"Verified source GLB missing before active copy: {source_path}")
+                  shutil.copy2(source_path, destination)
               copied_sha = hashlib.sha256(destination.read_bytes()).hexdigest()
               if copied_sha != item["sha256"]:
                   raise SystemExit(f"Active GLB copy SHA-256 mismatch: {destination}")
