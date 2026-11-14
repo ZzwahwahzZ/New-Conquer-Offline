@@ -30,7 +30,7 @@ jobs:
       - name: Checkout isolated prototype branch
         uses: actions/checkout@v4
 
-      - name: Restore and geometry-audit all 99 GLB assets from Hugging Face
+      - name: Restore and geometry-audit all source, nature and street GLB assets from Hugging Face
         shell: bash
         run: |
           python3 -m pip install --disable-pip-version-check trimesh pygltflib huggingface_hub
@@ -105,8 +105,7 @@ jobs:
               name = str(item.get("name", Path(relative).stem))
               category = str(item.get("category", "uncategorized"))
               semantic = (name + " " + relative).lower()
-              architectural = any(word in semantic for word in ("house","building","shop","market","pagoda","temple","palace","wuxia","inn","village","hall","pavilion","gatehouse")) and min(dimensions[0], dimensions[2]) >= 2.0 and dimensions[1] >= 2.5
-              geometry_audit.append({"asset_id":item.get("asset_id"),"name":name,"file":relative,"category":category,"style_group":item.get("style_group"),"dimensions_m":dimensions,"geometry_count":geometry_count,"bytes":len(payload),"sha256":digest,"architectural_candidate":architectural})
+              geometry_audit.append({"asset_id":item.get("asset_id"),"name":name,"file":relative,"category":category,"style_group":item.get("style_group"),"dimensions_m":dimensions,"geometry_count":geometry_count,"bytes":len(payload),"sha256":digest})
               print(f"HF_GLB_VERIFIED {index}/99 {relative} dimensions_m={dimensions} geometry={geometry_count} sha256={digest}")
           active_assets = selected
           selected_records = []
@@ -171,7 +170,7 @@ jobs:
           approved["twin_city_selected_assets"] = selected_records
           (root / "twin_city_restored_glb_assets.json").write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","selected_count":len(selected_records),"verified_source_glb_count":len(refreshed),"assets":selected_records}, ensure_ascii=False, indent=2) + "\n")
           audit_path = Path("prototypes/twin_city/reports/glb_geometry_audit.json")
-          audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","original_models_folder_glb_count":len(model_paths),"restored_glb_asset_count":len(selected_records),"total_geometry_verified_glb_count":len(geometry_audit),"assets":geometry_audit,"architectural_candidate_count":sum(x["architectural_candidate"] for x in geometry_audit)}, ensure_ascii=False, indent=2) + "\n")
+          audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","original_models_folder_glb_count":len(model_paths),"restored_glb_asset_count":len(selected_records),"total_geometry_verified_glb_count":len(geometry_audit),"assets":geometry_audit}, ensure_ascii=False, indent=2) + "\n")
           (root / "manifest.json").write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2) + "\n")
           (root / "imperial_approved_assets.json").write_text(json.dumps(approved, ensure_ascii=False, indent=2) + "\n")
           restore_report = {
@@ -184,7 +183,7 @@ jobs:
               "restored_glb_models":len(geometry_audit),
               "restored_files":len(geometry_audit),
               "restored_pbr_textures":0,
-              "verified_twin_city_architectural_assets":imperial_count,
+              "verified_imperial_chinese_style_assets":imperial_count,
               "files":[{"name":x.get("name"),"style_group":x.get("style_group"),"file":x.get("file"),"sha256":x.get("sha256"),"bytes":x.get("bytes"),"dimensions_m":x.get("dimensions_m")} for x in geometry_audit]
           }
           Path("prototypes/twin_city/reports/twin_city_asset_restore.json").write_text(json.dumps(restore_report, ensure_ascii=False, indent=2) + "\n")
@@ -381,7 +380,7 @@ jobs:
             if [ -d assets/twin_city_selected ]; then git add -f assets/twin_city_selected/; fi
             if [ -f assets/wuxia_imperial_pack/manifest.json ]; then git add -f assets/wuxia_imperial_pack/manifest.json; fi
             if [ -f assets/wuxia_imperial_pack/imperial_approved_assets.json ]; then git add -f assets/wuxia_imperial_pack/imperial_approved_assets.json; fi
-            if [ -f assets/wuxia_imperial_pack/twin_city_selected_17_assets.json ]; then git add -f assets/wuxia_imperial_pack/twin_city_selected_17_assets.json; fi
+            if [ -f assets/wuxia_imperial_pack/twin_city_restored_glb_assets.json ]; then git add -f assets/wuxia_imperial_pack/twin_city_restored_glb_assets.json; fi
             if ! git diff --cached --quiet; then
               git commit -m "Add prebuilt Imperial China palace scene"
               git push origin "HEAD:$GITHUB_REF_NAME"
