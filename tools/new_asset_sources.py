@@ -162,6 +162,14 @@ def discover_sketchfab(session, getj, fetch, safe, sha, RAW, DISC, DOWN, ERR, SK
                                     "cc-by-3.0", "cc-by-2.5", "cc-by-2.0", "cc-by-1.0",
                                     "by-sa", "cc-by-sa", "cc-by-sa-4.0", "cc-by-sa-3.0"}:
                         continue
+                    sa_version = None
+                    if "sa" in slug:
+                        license_details = " ".join(str(lic.get(k) or "") for k in ("url", "uri", "fullName", "label")) if isinstance(lic, dict) else ""
+                        sa_version = next((v for v in ("4.0", "3.0") if v in license_details), None)
+                        if not sa_version:
+                            SKIPPED.append({"asset":"Sketchfab:"+uid,"stage":"license_version",
+                                            "reason":"CC-BY-SA license slug found but exact 3.0/4.0 version is not exposed; fail-closed"})
+                            continue
                     seen.add(uid)
                     found += 1
                     name = str(model.get("name") or uid)
@@ -174,9 +182,9 @@ def discover_sketchfab(session, getj, fetch, safe, sha, RAW, DISC, DOWN, ERR, SK
                     if not token:
                         continue
                     license_name = ("CC0 1.0 Universal" if slug.startswith("cc0") else
-                        "CC BY-SA 4.0" if "sa" in slug else "CC BY 4.0")
+                        "CC BY-SA " + sa_version if "sa" in slug else "CC BY 4.0")
                     license_url = ("https://creativecommons.org/publicdomain/zero/1.0/" if slug.startswith("cc0") else
-                        "https://creativecommons.org/licenses/by-sa/4.0/" if "sa" in slug else
+                        "https://creativecommons.org/licenses/by-sa/" + sa_version + "/" if "sa" in slug else
                         "https://creativecommons.org/licenses/by/4.0/")
                     headers = {"Authorization": "Bearer " + token}
                     response = session.get(
