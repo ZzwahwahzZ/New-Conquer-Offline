@@ -113,9 +113,15 @@ jobs:
               category = str(item.get("category", "uncategorized"))
               geometry_audit.append({"asset_id":item.get("asset_id"),"name":name,"file":relative,"category":category,"style_group":item.get("style_group"),"dimensions_m":dimensions,"geometry_count":geometry_count,"bytes":len(payload),"sha256":digest})
               print(f"HF_GLB_VERIFIED {index}/{len(selected)} {relative} dimensions_m={dimensions} geometry={geometry_count} sha256={digest}")
+          active_root = Path("assets/twin_city_selected")
+          active_root.mkdir(parents=True, exist_ok=True)
           active_assets = selected
           selected_records = []
           for item in active_assets:
+              role = str(item.get("category") or item.get("style_group") or "source_glb")
+              item["twin_city_approved"] = True
+              item["twin_city_role"] = role
+              item["twin_city_geometry_verified"] = True
               source_path = root / item["file"]
               destination = active_root / item["file"]
               destination.parent.mkdir(parents=True, exist_ok=True)
@@ -126,9 +132,19 @@ jobs:
               copied_sha = hashlib.sha256(destination.read_bytes()).hexdigest()
               if copied_sha != item["sha256"]:
                   raise SystemExit(f"Active GLB copy SHA-256 mismatch: {destination}")
-              item["active_project_path"] = str(destination)
-          for record in selected_records:
-              record["active_project_path"] = str(active_root / record["file"])
+              selected_records.append({
+                  "name":item.get("name"),
+                  "asset_id":item.get("asset_id"),
+                  "file":item.get("file"),
+                  "category":item.get("category"),
+                  "style_group":item.get("style_group"),
+                  "dimensions_m":item.get("dimensions_m"),
+                  "geometry_count":item.get("validation", {}).get("geometry_count"),
+                  "bytes":item.get("bytes"),
+                  "sha256":item.get("sha256"),
+                  "role":role,
+                  "active_project_path":str(destination)
+              })
           (active_root / "selection_manifest.json").write_text(json.dumps({"selected_count":len(selected_records),"assets":selected_records}, ensure_ascii=False, indent=2) + "\n")
           (root / "models" / ".gdignore").write_text("# Source archive: active assets are imported from assets/twin_city_selected.\\n")
           (root / "candidates" / "models" / ".gdignore").write_text("# Source candidate archive: active assets are imported from assets/twin_city_selected.\\n")
