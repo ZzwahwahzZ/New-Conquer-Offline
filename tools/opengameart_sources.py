@@ -57,7 +57,7 @@ class _Links(HTMLParser):
 def _license_from_page(html):
     """Return a normalized, exact allow-listed license and its canonical URL."""
     text = re.sub(r"<[^>]+>", " ", html or "")
-    text = re.sub(r"\s+", " ", text).lower()
+    text = re.sub(r"\s+", " ", text).lower() + " " + (html or "").lower()
     checks = [
         (r"\bcc0\b|publicdomain/zero/1\.0|public domain", "CC0 1.0 Universal", "https://creativecommons.org/publicdomain/zero/1.0/"),
         (r"oga[- ]by\s*[- ]?(4\.0|3\.0)", None, "https://opengameart.org/content/oga-by-30-faq"),
