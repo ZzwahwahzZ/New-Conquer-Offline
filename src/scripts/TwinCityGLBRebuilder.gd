@@ -54,6 +54,9 @@ static func build(parent: Node3D) -> void:
 	_build_outer_wildlands(root, source_container)
 	var final_null_meshes_removed := _remove_invalid_mesh_nodes(root)
 	print("TWIN_CITY_NULL_MESH_PRUNE_FINAL: removed=%d" % final_null_meshes_removed)
+	# Keep the source template container last so all city instances release shared mesh resources first.
+	root.move_child(source_instance, root.get_child_count() - 1)
+	print("TWIN_CITY_SOURCE_TEMPLATE_ORDER: last_child=true")
 
 	print("TWIN_CITY_GLB_BUILD_PASS: total=%d categories=%s procedural_box_meshes=0 source=GLB" % [census.values().reduce(func(a, b): return a + b, 0), str(census)])
 
