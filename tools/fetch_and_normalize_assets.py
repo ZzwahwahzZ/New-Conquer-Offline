@@ -7,7 +7,7 @@ import requests
 from huggingface_hub import HfApi,hf_hub_download
 from imperial_extra_sources import discover_3dassets, discover_hanok_pack, discover_imperial_china_pack
 from opengameart_sources import discover_opengameart, discover_quaternius
-from new_asset_sources import discover_smithsonian, discover_kenney_nature, discover_sketchfab, discover_polygonal_mind
+from new_asset_sources import discover_smithsonian, discover_kenney_nature, discover_sketchfab, discover_polygonal_mind, discover_innerscene_curated
 ROOT=Path.cwd(); OUT=ROOT/"assets/wuxia_imperial_pack"; RAW=ROOT/".asset_work/raw"
 HF_REPO=os.getenv("HF_REPO_ID","ZzwahwahzZ/clash-of-legends-terrain-assets"); PREFIX="assets/wuxia_imperial_pack"
 S=requests.Session(); S.headers.update({"User-Agent":"NewConquerOffline-AssetPipeline/1.0 (GitHub Actions; asset audit)"})
@@ -383,7 +383,7 @@ def builddocs(blenderver):
    if not category or rejected_asset({"id":r.get("id"),"name":r.get("name"),"source":r.get("source"),"source_url":r.get("source_url"),"matches":r.get("matches"),"tags":p.name}):
     continue
    aid=str(r.get("id","")).lower()
-   style_group="imperial_chinese" if ("imperial-china-palace-and-garden" in aid or r.get("source") in {"Smithsonian Open Access","Polygonal Mind Lunar Year"}) else "korean_hanok" if "korean-hanok-village-and-street" in aid else "pbr_materials" if category=="pbr_materials" else "environmental"
+   style_group="imperial_chinese" if ("imperial-china-palace-and-garden" in aid or r.get("source") in {"Smithsonian Open Access","Polygonal Mind Lunar Year"} or r.get("id","").startswith("innerscene-buddhist-temple-pagoda")) else "korean_hanok" if "korean-hanok-village-and-street" in aid else "pbr_materials" if category=="pbr_materials" else "environmental"
    item={"asset_id":r["id"],"name":r["name"],"category":category,"style_group":style_group,"file":p.relative_to(OUT).as_posix(),"source":r["source"],"source_url":r["source_url"],"direct_download_url":r.get("download_url"),"license":r["license"],"authors":r["authors"],"dimensions_m":r.get("dimensions_m"),"bytes":p.stat().st_size,"sha256":sha(p),"validation":r["validation"]}
    entries.append(item); grouped[category].append(item)
  approved_paths={x["file"] for x in entries} | candidate_paths
@@ -472,7 +472,7 @@ def main():
   {"asset":"Quaternius:ultimate-nature-pack","stage":"known_legacy_failure","reason":"Skipped; previously verified download endpoint returns HTTP 404"},
   {"asset":"Quaternius:stylized-nature-megakit-official","stage":"known_legacy_failure","reason":"Skipped; previously verified source page exposes no direct downloadable file"}
  ])
- strict_filter_self_test(); discover_polygonal_mind(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_smithsonian(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_kenney_nature(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_sketchfab(S,getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_imperial_china_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_hanok_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
+ strict_filter_self_test(); discover_polygonal_mind(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_innerscene_curated(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_smithsonian(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_kenney_nature(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_sketchfab(S,getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_imperial_china_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_hanok_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
  if not entries:
   print(json.dumps({"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
   raise RuntimeError("No assets passed license and validation checks; see printed per-source diagnostics. No empty upload performed.")
