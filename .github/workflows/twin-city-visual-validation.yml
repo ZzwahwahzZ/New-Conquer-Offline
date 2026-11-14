@@ -14,14 +14,14 @@ permissions:
   contents: write
 
 concurrency:
-  group: twin-city-visual-${{ github.ref }}
+  group: twin-city-visual-v2-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build-and-capture:
     name: Run actual Twin City scene and capture six Godot views
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 20
     env:
       GODOT_VERSION: 4.3
       GODOT_RELEASE: 4.3-stable
