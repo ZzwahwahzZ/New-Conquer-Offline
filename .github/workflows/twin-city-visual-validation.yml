@@ -165,6 +165,7 @@ jobs:
                       item["validation"]["dimensions_m"] = details["dimensions_m"]
                       item["validation"]["geometry_count"] = details["geometry_count"]
                       item["validation"]["bounds_source"] = "trimesh GLB scene geometry"
+          approved["generated_at_utc"] = source_manifest.get("generated_at_utc", approved.get("generated_at_utc"))
           approved["source_repo"] = "ZzwahwahzZ/clash-of-legends-terrain-assets"
           approved["source_manifest_verified_glb_count"] = len(refreshed)
           approved["supplemental_verified_glb_count"] = len(supplemental_records)
@@ -176,8 +177,20 @@ jobs:
           audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","original_models_folder_glb_count":len(selected),"supplemental_approved_glb_count":len(supplemental_records),"total_geometry_verified_glb_count":len(geometry_audit),"assets":geometry_audit,"architectural_candidate_count":sum(x["architectural_candidate"] for x in geometry_audit)}, ensure_ascii=False, indent=2) + "\n")
           (root / "manifest.json").write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2) + "\n")
           (root / "imperial_approved_assets.json").write_text(json.dumps(approved, ensure_ascii=False, indent=2) + "\n")
+          restore_report = {
+              "dataset":"ZzwahwahzZ/clash-of-legends-terrain-assets",
+              "original_models_folder_glb_count":len(refreshed),
+              "supplemental_houses_shops_glb_count":len(supplemental_records),
+              "restored_glb_models":len(geometry_audit),
+              "restored_files":len(geometry_audit),
+              "restored_pbr_textures":0,
+              "verified_twin_city_architectural_assets":approved["verified_glb_count"],
+              "files":[{"name":x.get("name"),"style_group":x.get("style_group"),"file":x.get("file"),"sha256":x.get("sha256"),"bytes":x.get("bytes"),"dimensions_m":x.get("dimensions_m")} for x in geometry_audit]
+          }
+          Path("prototypes/twin_city/reports/twin_city_asset_restore.json").write_text(json.dumps(restore_report, ensure_ascii=False, indent=2) + "\n")
           architectural_count = sum(1 for item in geometry_audit if item["architectural_candidate"])
-          print(f"HF_ASSET_RESTORE_PASS: original_models={len(refreshed)} supplemental_houses_shops={len(supplemental_records)} approved_architecture={approved['verified_glb_count']} total_geometry_verified={len(geometry_audit)} candidates={architectural_count}")
+          verified_count = approved["verified_glb_count"]
+          print(f"HF_ASSET_RESTORE_PASS: original_models={len(refreshed)} supplemental_houses_shops={len(supplemental_records)} approved_architecture={verified_count} total_geometry_verified={len(geometry_audit)} candidates={architectural_count}")
           PY
 
       - name: Publish verified approval manifest to the same Hugging Face dataset
