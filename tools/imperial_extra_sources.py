@@ -82,7 +82,10 @@ def discover_3dassets(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                                                  "oga-by-4.0", "oga-by-3.0",
                                                  "mit", "bsd-2-clause", "bsd-3-clause",
                                                  "zlib", "wtfpl", "unlicense",
-                                                 "gpl-2.0", "gpl-3.0"):
+                                                 "public-domain", "public_domain", "publicdomain",
+                                                 "gpl-2.0", "gpl-3.0", "gpl-2.0-only",
+                                                 "gpl-2.0-or-later", "gpl-3.0-only",
+                                                 "gpl-3.0-or-later"):
                             raise ValueError("Asset license is not in the expanded explicit allow-list: " + license_slug)
                         if detail.get("status") != "published":
                             raise ValueError("Asset is not published: " + str(detail.get("status")))
