@@ -15,6 +15,8 @@ SOURCES = [
     {"slug":"watchtower-wood","page":"https://opengameart.org/content/watchtower-wood","creator":"atze","category":"architecture","term":"wooden watchtower"},
     {"slug":"modular-temple-3d-models","page":"https://opengameart.org/content/modular-temple-3d-models","creator":"Keith at Fertile Soil Productions","category":"architecture","term":"temple"},
     {"slug":"shrine-shinto-japan","page":"https://opengameart.org/content/shrine-shinto-japan","creator":"Gladius.s","category":"architecture","term":"East Asian shrine temple"},
+    {"slug":"kenney-building-kit","page":"https://opengameart.org/content/building-kit","creator":"Kenney","category":"architecture","term":"building kit walls doors roofs"},
+    {"slug":"kenney-modular-buildings","page":"https://opengameart.org/content/modular-buildings","creator":"Kenney","category":"architecture","term":"modular buildings city houses"},
     {"slug":"dragon","page":"https://opengameart.org/content/dragon","creator":"Bitiquinho","category":"ornaments","term":"dragon model"},
     {"slug":"free-bamboo-v1","page":"https://opengameart.org/content/free-bamboo-v1","creator":"Yughues","category":"nature","term":"bamboo"},
     {"slug":"stylized-nature-megakit","page":"https://opengameart.org/content/stylized-nature-megakit","creator":"Quaternius","category":"nature","term":"nature pack"},
