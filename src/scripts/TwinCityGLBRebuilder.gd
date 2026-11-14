@@ -539,7 +539,7 @@ static func _node_local_aabb(root: Node3D) -> AABB:
 		if node is MeshInstance3D:
 			var mesh_instance := node as MeshInstance3D
 			if mesh_instance.mesh != null and mesh_instance.mesh.get_rid().is_valid():
-				var local_bounds := mesh_instance.mesh.get_aabb() * transform
+				var local_bounds := transform * mesh_instance.mesh.get_aabb()
 				if not has_bounds:
 					result = local_bounds
 					has_bounds = true
@@ -554,7 +554,7 @@ static func _node_global_aabb(root: Node3D) -> AABB:
 	if local_bounds.size.y <= 0.001:
 		return AABB()
 	root.force_update_transform()
-	return local_bounds * root.global_transform
+	return root.global_transform * local_bounds
 
 static func _remove_invalid_mesh_nodes(root: Node) -> int:
 	var removed := 0
