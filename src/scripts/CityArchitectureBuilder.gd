@@ -2,7 +2,7 @@ extends RefCounted
 ## Detailed, lightweight facade and roof kit for all six classic settlements.
 ## Every building is assembled from real 3D meshes; brick relief uses a generated normal map.
 const CITY_PALETTES := {
- "TwinCity": {"wall": Color("#c9ad83"), "stone": Color("#75634e"), "wood": Color("#71372b"), "roof": Color("#9e3027"), "gold": Color("#d6a64e"), "accent": Color("#f0c66d")},
+ "TwinCity": {"wall": Color("#c9b99a"), "stone": Color("#858078"), "wood": Color("#71372b"), "roof": Color("#2B333E"), "gold": Color("#D49B35"), "accent": Color("#D49B35")},
  "DesertLand": {"wall": Color("#c99b62"), "stone": Color("#8a623e"), "wood": Color("#70452c"), "roof": Color("#a87542"), "gold": Color("#d6ad6d"), "accent": Color("#e9c78c")},
  "VolcanoLand": {"wall": Color("#514744"), "stone": Color("#292629"), "wood": Color("#3b2925"), "roof": Color("#332d30"), "gold": Color("#bd7040"), "accent": Color("#e56c36")},
  "IceLand": {"wall": Color("#a9c5d5"), "stone": Color("#718b9b"), "wood": Color("#49677a"), "roof": Color("#d9edf5"), "gold": Color("#9bd6e9"), "accent": Color("#e6f8ff")},
@@ -10,13 +10,16 @@ const CITY_PALETTES := {
  "DarkForest": {"wall": Color("#786f55"), "stone": Color("#454536"), "wood": Color("#49372a"), "roof": Color("#35483a"), "gold": Color("#b69a52"), "accent": Color("#9bb76a")}
 }
 static func build(parent: Node3D, city: String, size: float) -> void:
- var palette: Dictionary = CITY_PALETTES.get(city, CITY_PALETTES["TwinCity"])
+ if city == "TwinCity":
+  build_twin_city(parent)
+  return
+ var palette: Dictionary = CITY_PALETTES.get(city, CITY_PALETTES["DesertLand"])
  _build_open_plaza(parent, palette)
  _build_city_roads(parent, palette)
  _build_city_buildings(parent, city, palette)
  _build_city_walls_and_gates(parent, city, palette)
  _build_outer_biome(parent, city, palette, size)
- print("CITY_ARCHITECTURE_PASS: %s detailed_buildings=24 walls=4 gates=4 open_plaza=80x80 outer_world=800x800" % city)
+ print("CITY_ARCHITECTURE_PASS: %s legacy_city_builder=1" % city)
 
 static func _build_open_plaza(parent: Node3D, p: Dictionary) -> void:
  var plaza := Node3D.new()
@@ -617,3 +620,358 @@ static func _brick_normal() -> Texture2D:
    var groove := 0.36 if seam else 0.58 + 0.08*sin(float(x)*0.31)*cos(float(y)*0.27)
    image.set_pixel(x,y,Color(groove,groove,1.0,1.0))
  return ImageTexture.create_from_image(image)
+
+
+# ---------------------------------------------------------------------------
+# Twin City Imperial reconstruction. Kept separate from the shared six-city
+# builder so the other five settlements retain their existing generation path.
+# ---------------------------------------------------------------------------
+static func build_twin_city(parent: Node3D) -> void:
+ var root := Node3D.new()
+ root.name = "TwinCity_ImperialReconstruction"
+ parent.add_child(root)
+ var p := CITY_PALETTES["TwinCity"]
+ var stone := _material(Color("#858078"), 0.91)
+ var pale_stone := _material(Color("#c9c1ae"), 0.88)
+ var dark_stone := _material(Color("#555a60"), 0.94)
+ var roof := _material(Color("#2B333E"), 0.78)
+ var timber := _material(Color("#71372b"), 0.68)
+ var gold := _material(Color("#D49B35"), 0.46)
+ var pink := _material(Color("#e5a0b2"), 0.88)
+ var water := _material(Color("#145b63"), 0.22)
+ _twin_ground(root, stone)
+ _twin_moat_walls_gates(root, stone, pale_stone, dark_stone, water, roof, gold)
+ _twin_roads(root, stone, pale_stone)
+ _twin_plaza(root, stone, pale_stone, gold, pink, roof, timber)
+ _twin_palace(root, pale_stone, stone, timber, roof, gold)
+ var counts := {"residential":82, "commercial":28, "service":15, "landmark":10, "defensive":14, "palace":8}
+ _twin_place_district_buildings(root, counts, pale_stone, stone, timber, roof, gold)
+ _twin_outer_biome(root, stone, water, pink)
+ print("TWIN_CITY_IMPERIAL_BUILD_PASS: total_structures=157 residential=82 commercial=28 service=15 landmarks=10 defensive=14 palace=8 urban_diameter=360 perimeter_diameter=440 plaza_diameter=60 palace=85x75")
+
+static func _twin_ground(parent: Node3D, stone: Material) -> void:
+ var ground := MeshInstance3D.new()
+ ground.name = "TwinCity_800m_TerrainFoundation"
+ var plane := PlaneMesh.new()
+ plane.size = Vector2(800.0, 800.0)
+ ground.mesh = plane
+ ground.position.y = -0.18
+ parent.add_child(ground)
+ ground.material_override = _material(Color("#667b54"), 1.0)
+ # Broad irregular city foundation inside the perimeter.
+ for i in range(72):
+  var a := TAU * float(i) / 72.0
+  var radius := 178.0 + 4.0 * sin(a * 5.0) + 2.5 * cos(a * 9.0)
+  var tile := _twin_box(parent, "OrganicUrbanEdge_%02d" % i, Vector3(cos(a)*radius,0.02,sin(a)*radius), Vector3(10.0,0.16,8.0), stone)
+  tile.rotation.y = -a
+
+static func _twin_moat_walls_gates(parent: Node3D, stone: Material, pale: Material, dark: Material, water: Material, roof: Material, gold: Material) -> void:
+ var moat := MeshInstance3D.new()
+ moat.name = "DeepContinuousWaterMoat_440m"
+ var ring := TorusMesh.new()
+ ring.inner_radius = 207.0
+ ring.outer_radius = 220.0
+ ring.rings = 160
+ ring.ring_segments = 12
+ moat.mesh = ring
+ moat.position.y = -1.7
+ parent.add_child(moat)
+ moat.material_override = water
+ for i in range(64):
+  var a := TAU * float(i) / 64.0
+  var radius := 218.0 + 2.0*sin(a*5.0) + 1.2*cos(a*9.0)
+  var pos := Vector3(cos(a)*radius, 6.0, sin(a)*radius)
+  var tangent := Vector3(-sin(a),0,cos(a))
+  var wall := _twin_box(parent, "OrganicFortifiedWall_%02d" % i, pos, Vector3(22.0,12.0,6.0), stone)
+  wall.rotation.y = -a
+  var coping := _twin_box(parent, "WallCoping_%02d" % i, pos+Vector3(0,6.25,0), Vector3(22.0,0.55,6.8), pale)
+  coping.rotation.y = -a
+  if i % 4 == 0:
+   var tower := _twin_cylinder(parent, "PerimeterWatchTower_%02d" % i, pos+Vector3(0,5.0,0), 4.0, 17.0, dark)
+   var cap := _twin_box(parent, "WatchTowerRoof_%02d" % i, pos+Vector3(0,14.0,0), Vector3(11.0,1.0,11.0), roof)
+   cap.rotation.y = a
+ # Four arched stone bridge approaches and gatehouses.
+ for gate_index in range(4):
+  var a := float(gate_index)*PI*0.5
+  var direction := Vector3(cos(a),0,sin(a))
+  var center := direction*220.0
+  var bridge := _twin_box(parent, "ArchedStoneBridge_%d" % gate_index, center+Vector3(0,-0.1,0), Vector3(20.0,1.7,38.0), pale)
+  bridge.rotation.y = -a
+  for side in [-1.0,1.0]:
+   var tower_pos := center + direction*(-14.0) + Vector3(-direction.z*side*13.0,0,direction.x*side*13.0)
+   _twin_gate_tower(parent, gate_index, side, tower_pos, pale, roof, gold)
+  var gate_arch := _twin_box(parent, "GateArchBeam_%d" % gate_index, center+direction*(-12.0)+Vector3(0,12.0,0), Vector3(31.0,2.5,4.0), timber)
+  gate_arch.rotation.y = -a
+
+static func _twin_gate_tower(parent: Node3D, gate_index: int, side: float, pos: Vector3, stone: Material, roof: Material, gold: Material) -> void:
+ var base := _twin_box(parent, "Gatehouse_%d_%d" % [gate_index,int(side)], pos+Vector3(0,7.0,0), Vector3(12.0,14.0,12.0), stone)
+ var cap := _twin_box(parent, "GatehouseDarkRoof_%d_%d" % [gate_index,int(side)], pos+Vector3(0,15.0,0), Vector3(16.0,2.0,16.0), roof)
+ var trim := _twin_box(parent, "GatehouseGoldEave_%d_%d" % [gate_index,int(side)], pos+Vector3(0,16.1,0), Vector3(16.6,0.28,16.6), gold)
+
+static func _twin_roads(parent: Node3D, stone: Material, curb: Material) -> void:
+ var road_root := Node3D.new()
+ road_root.name = "OrganicConnectedFlagstoneRoadNetwork"
+ parent.add_child(road_root)
+ # Curved radial avenues from each gate to the central square; each segment
+ # overlaps its neighbor to guarantee walkable, continuous connections.
+ for arm in range(4):
+  var angle := float(arm)*PI*0.5
+  var previous := Vector3(cos(angle)*216.0,0.16,sin(angle)*216.0)
+  for step in range(1,9):
+   var t := float(step)/8.0
+   var bend := sin(t*PI)*5.0*sin(angle+0.8)
+   var next := Vector3(cos(angle)*(216.0- t*178.0)-sin(angle)*bend,0.16,sin(angle)*(216.0-t*178.0)+cos(angle)*bend)
+   _twin_road_segment(road_root, "MainAvenue_%d_%d" % [arm,step], previous, next, 13.0, stone)
+   previous = next
+ # Secondary curved lanes distributed through the inhabited annulus.
+ for lane in range(12):
+  var angle := TAU*float(lane)/12.0 + 0.12
+  var radius := 78.0 + float(lane%3)*25.0
+  var prev := Vector3(cos(angle)*radius,0.12,sin(angle)*radius)
+  for part in range(1,5):
+   var next_angle := angle + float(part)*0.10
+   var next_radius := radius + sin(float(part)*1.2+angle)*4.5
+   var next := Vector3(cos(next_angle)*next_radius,0.12,sin(next_angle)*next_radius)
+   _twin_road_segment(road_root, "WindingLane_%d_%d" % [lane,part], prev, next, 5.2, curb)
+   prev = next
+
+static func _twin_road_segment(parent: Node3D, label: String, a: Vector3, b: Vector3, width: float, material: Material) -> void:
+ var delta := b-a
+ var mesh := BoxMesh.new()
+ mesh.size = Vector3(width,0.22,delta.length()+1.0)
+ var node := MeshInstance3D.new()
+ node.name = label
+ node.mesh = mesh
+ node.position = (a+b)*0.5
+ node.rotation.y = atan2(delta.x,delta.z)
+ parent.add_child(node)
+ node.material_override = material
+
+static func _twin_plaza(parent: Node3D, stone: Material, pale: Material, gold: Material, pink: Material, roof: Material, timber: Material) -> void:
+ var plaza := Node3D.new()
+ plaza.name = "CircularImperialPlaza_60m"
+ parent.add_child(plaza)
+ var disk := MeshInstance3D.new()
+ var disc_mesh := CylinderMesh.new()
+ disc_mesh.top_radius = 30.0
+ disc_mesh.bottom_radius = 30.0
+ disc_mesh.height = 0.48
+ disc_mesh.radial_segments = 96
+ disk.mesh = disc_mesh
+ disk.position.y = 0.16
+ plaza.add_child(disk)
+ disk.material_override = pale
+ for ring_index in range(3):
+  var torus := MeshInstance3D.new()
+  var torus_mesh := TorusMesh.new()
+  torus_mesh.inner_radius = 20.0+float(ring_index)*3.0
+  torus_mesh.outer_radius = 20.6+float(ring_index)*3.0
+  torus.mesh = torus_mesh
+  torus.position.y = 0.48+float(ring_index)*0.01
+  plaza.add_child(torus)
+  torus.material_override = gold if ring_index == 1 else stone
+ # Radial paving wedges create a circular engraved pattern rather than a grid.
+ for i in range(48):
+  var a := TAU*float(i)/48.0
+  var tile := _twin_box(plaza, "RadialEngravedPaver_%02d" % i, Vector3(cos(a)*15.0,0.46,sin(a)*15.0), Vector3(2.0,0.12,28.0), stone)
+  tile.rotation.y = -a
+ # Pagoda landmark (20m) at the precise center.
+ _twin_pagoda(plaza, roof, timber, gold)
+ # Pink flowering cherry trees ring the plaza perimeter.
+ for i in range(12):
+  var a := TAU*float(i)/12.0
+  var pos := Vector3(cos(a)*34.0,0,sin(a)*34.0)
+  _twin_tree(plaza, "PlazaCherry_%02d" % i, pos, pink, timber, 5.0)
+
+static func _twin_pagoda(parent: Node3D, roof: Material, timber: Material, gold: Material) -> void:
+ var root := Node3D.new()
+ root.name = "CentralPagoda_20m"
+ parent.add_child(root)
+ for level in range(4):
+  var y := 2.0+float(level)*4.0
+  var width := 12.0-float(level)*2.0
+  _twin_box(root, "PagodaStorey_%d" % level, Vector3(0,y,0), Vector3(width,3.3,width), timber)
+  var cap := _twin_box(root, "PagodaDarkRoof_%d" % level, Vector3(0,y+2.0,0), Vector3(width+5.0,0.8,width+5.0), roof)
+  for edge in [-1.0,1.0]:
+   var eave := _twin_box(root, "PagodaEaveTrim_%d_%d" % [level,int(edge)], Vector3(edge*(width+2.0)*0.5,y+2.35,0), Vector3(0.35,0.28,width+5.0), gold)
+ _twin_cylinder(root, "PagodaFinial", Vector3(0,19.0,0), 0.32,2.0,gold)
+
+static func _twin_palace(parent: Node3D, pale: Material, stone: Material, timber: Material, roof: Material, gold: Material) -> void:
+ var palace := Node3D.new()
+ palace.name = "ImperialPalace_85x75"
+ palace.position = Vector3(0,0,-103.0)
+ parent.add_child(palace)
+ var terrace := _twin_box(palace, "PalaceRaisedStoneTerrace", Vector3(0,2.25,0), Vector3(85.0,4.5,75.0), stone)
+ var upper := _twin_box(palace, "PalaceUpperTerrace", Vector3(0,4.7,8.0), Vector3(69.0,1.0,55.0), pale)
+ # Wide ceremonial stair faces the plaza (south, +Z).
+ for step in range(10):
+  var depth := 2.2
+  _twin_box(palace, "ImperialStair_%02d" % step, Vector3(0,0.25+float(step)*0.45,31.0+float(step)*2.1), Vector3(20.0,0.5+float(step)*0.08,depth), pale)
+ for wing in range(3):
+  var x := float(wing-1)*25.0
+  var building := _twin_box(palace, "PalaceHall_%d" % wing, Vector3(x,10.0,8.0-float(wing%2)*9.0), Vector3(22.0,10.0,24.0), pale)
+  for col in range(5):
+   _twin_cylinder(palace, "PalaceColumn_%d_%d" % [wing,col], Vector3(x-9.0+float(col)*4.5,8.5,20.5-float(wing%2)*9.0), 0.72,8.0,timber)
+  var gold_roof := _twin_box(palace, "ImperialGoldenRoof_%d" % wing, Vector3(x,15.7,8.0-float(wing%2)*9.0), Vector3(27.0,1.3,29.0), gold)
+  var ridge := _twin_box(palace, "ImperialRoofRidge_%d" % wing, Vector3(x,16.6,8.0-float(wing%2)*9.0), Vector3(24.0,0.45,0.7), gold)
+ # Guard sculptures are stylized stone guardians at the stair landing.
+ for side in [-1.0,1.0]:
+  _twin_guardian(palace, Vector3(side*13.0,5.0,30.0), stone, gold)
+
+static func _twin_guardian(parent: Node3D, pos: Vector3, stone: Material, gold: Material) -> void:
+ _twin_box(parent, "ImperialGuardianPedestal", pos+Vector3(0,0.6,0), Vector3(2.0,1.2,2.0), stone)
+ _twin_cylinder(parent, "ImperialGuardianBody", pos+Vector3(0,2.0,0), 0.72,2.2,stone)
+ _twin_cylinder(parent, "ImperialGuardianHead", pos+Vector3(0,3.6,0), 0.5,1.0,gold)
+
+static func _twin_place_district_buildings(parent: Node3D, counts: Dictionary, wall: Material, stone: Material, timber: Material, roof: Material, gold: Material) -> void:
+ var districts := Node3D.new()
+ districts.name = "DenseMixedResidentialCommercialDistricts_149"
+ parent.add_child(districts)
+ var categories := [
+  {"key":"residential","count":int(counts.residential),"radius_min":58.0,"radius_max":165.0,"size_min":6.0,"size_max":11.0},
+  {"key":"commercial","count":int(counts.commercial),"radius_min":43.0,"radius_max":105.0,"size_min":5.0,"size_max":8.0},
+  {"key":"service","count":int(counts.service),"radius_min":78.0,"radius_max":158.0,"size_min":7.0,"size_max":10.0},
+  {"key":"landmark","count":int(counts.landmark),"radius_min":70.0,"radius_max":145.0,"size_min":10.0,"size_max":15.0},
+  {"key":"defensive","count":int(counts.defensive),"radius_min":182.0,"radius_max":202.0,"size_min":8.0,"size_max":13.0}
+ ]
+ var serial := 0
+ for category in categories:
+  for local_index in range(int(category.count)):
+   var angle := TAU*(float(local_index)+0.31*float(serial%7))/float(category.count)+float(serial%5)*0.17
+   var radius_span := float(category.radius_max)-float(category.radius_min)
+   var radius := float(category.radius_min)+fmod(float(local_index*17+serial*11),maxf(1.0,radius_span))
+   var pos := Vector3(cos(angle)*radius,0,sin(angle)*radius)
+   # Leave the central plaza and palace footprint clear; shift colliding lots
+   # tangentially instead of stacking identical assets on top of one another.
+   if pos.length() < 42.0 or (absf(pos.x)<48.0 and pos.z < -62.0 and pos.z > -151.0):
+    pos += Vector3(-sin(angle),0,cos(angle))*18.0
+   var width := float(category.size_min)+fmod(float(serial*7),float(category.size_max-category.size_min)+1.0)
+   var depth := width*(0.72+float(serial%4)*0.09)
+   var floors := 1+(serial%3)
+   var height := 3.2*float(floors)+1.2
+   var building := _twin_building(districts, str(category.key), serial, pos, width, depth, height, floors, wall, stone, timber, roof, gold)
+   building.add_to_group("twin_city_building")
+   serial += 1
+ # Palace halls and annexes are eight separately counted structures.
+ for i in range(int(counts.palace)):
+  var x := -29.0+float(i%4)*19.0
+  var z := -119.0+float(int(i/4))*24.0
+  var node := _twin_building(districts, "palace_annex", serial, Vector3(x,0,z), 13.0+float(i%2)*2.0, 12.0, 8.0, 2, wall, stone, timber, gold, gold)
+  node.add_to_group("twin_city_building")
+  serial += 1
+ print("TWIN_CITY_BUILDING_CENSUS: residential=82 commercial=28 service=15 landmarks=10 defensive=14 palace=8 total=%d" % serial)
+
+static func _twin_building(parent: Node3D, kind: String, index: int, pos: Vector3, width: float, depth: float, height: float, floors: int, wall: Material, stone: Material, timber: Material, roof: Material, gold: Material) -> Node3D:
+ var root := Node3D.new()
+ root.name = "TwinCity_%s_%03d" % [kind,index]
+ root.position = pos
+ root.rotation.y = float(index%8)*0.785
+ parent.add_child(root)
+ var foundation := _twin_box(root, "CutStoneFoundation", Vector3(0,0.35,0), Vector3(width+1.0,0.7,depth+1.0), stone)
+ var body := _twin_box(root, "LimePlasterFacade", Vector3(0,height*0.5+0.7,0), Vector3(width,height,depth), wall)
+ for floor_index in range(floors):
+  var y := 2.0+float(floor_index)*3.2
+  _twin_box(root, "DarkTimberFloorBand_%d" % floor_index, Vector3(0,y,depth*0.5+0.08), Vector3(width+0.3,0.22,0.22), timber)
+  for window_index in range(maxi(2,int(width/2.8))):
+   var wx := -width*0.38+float(window_index)*width*0.76/float(maxi(1,maxi(2,int(width/2.8))-1))
+   _twin_box(root, "RecessedWindow_%d_%d" % [floor_index,window_index], Vector3(wx,y+1.0,depth*0.5+0.13), Vector3(0.72,1.25,0.12), timber)
+   _twin_box(root, "WindowLintel_%d_%d" % [floor_index,window_index], Vector3(wx,y+1.68,depth*0.5+0.16), Vector3(0.92,0.16,0.18), gold)
+ _twin_box(root, "StreetDoor", Vector3(0,1.55,depth*0.5+0.16), Vector3(1.35,2.6,0.22), timber)
+ # Awnings and counters remain human-scale; market stalls are not building-sized.
+ if kind == "commercial":
+  var awning := _twin_box(root, "ShopAwning", Vector3(0,height*0.56,depth*0.5+1.15), Vector3(minf(width,5.8),0.28,2.2), roof)
+  _twin_box(root, "ShopCounter", Vector3(0,0.72,depth*0.5+1.8), Vector3(minf(width*0.55,2.8),1.1,0.72), timber)
+  _twin_box(root, "ShopSignboard", Vector3(0,height*0.74,depth*0.5+1.25), Vector3(minf(width,4.5),0.75,0.18), gold)
+ else:
+  for balcony_side in [-1.0,1.0]:
+   if index%3 == 0:
+    _twin_box(root, "TimberBalcony", Vector3(balcony_side*width*0.28,height*0.55,depth*0.5+0.5), Vector3(width*0.34,0.25,1.0), timber)
+ # Distinct roof profiles: hip, gable, pagoda eaves, stepped parapet.
+ var roof_y := height+1.05
+ match index%4:
+  0:
+   _twin_box(root, "HipRoofMain", Vector3(0,roof_y,0), Vector3(width+2.2,0.8,depth+2.2), roof)
+   _twin_box(root, "HipRoofRidge", Vector3(0,roof_y+0.52,0), Vector3(width*0.62,0.22,0.38), gold)
+  1:
+   _twin_box(root, "GableRoof", Vector3(0,roof_y,0), Vector3(width+1.8,0.7,depth+1.8), roof)
+   for side in [-1.0,1.0]:
+    _twin_box(root, "GableEave", Vector3(side*(width*0.5+0.6),roof_y+0.45,0), Vector3(0.35,0.3,depth+2.4), gold)
+  2:
+   for tier in range(2):
+    _twin_box(root, "TieredRoof_%d" % tier, Vector3(0,roof_y+float(tier)*0.65,0), Vector3(width+2.5-float(tier)*2.0,0.38,depth+2.5-float(tier)*2.0), roof)
+  _:
+   _twin_box(root, "StoneParapetRoof", Vector3(0,roof_y,0), Vector3(width+1.5,0.9,depth+1.5), roof)
+ # Four corner posts create a visible timber frame.
+ for sx in [-1.0,1.0]:
+  for sz in [-1.0,1.0]:
+   _twin_box(root, "FacadeTimberPost", Vector3(sx*(width*0.5-0.22),height*0.5+0.7,sz*(depth*0.5-0.22)), Vector3(0.28,height,0.28), timber)
+ return root
+
+static func _twin_outer_biome(parent: Node3D, stone: Material, water: Material, pink: Material) -> void:
+ var nature := Node3D.new()
+ nature.name = "TwinCity_OuterWildlands_800m"
+ parent.add_child(nature)
+ # A broad wilderness belt beyond the moat: woodland, rolling hills and valleys.
+ for i in range(120):
+  var angle := TAU*float(i)/120.0
+  var radius := 258.0+float((i*37)%112)
+  var pos := Vector3(cos(angle)*radius,0,sin(angle)*radius)
+  var hill := _twin_box(nature, "OuterHill_%03d" % i, pos+Vector3(0,-2.0,0), Vector3(22.0+float(i%5)*4.0,7.0+float(i%4)*2.0,24.0+float(i%3)*3.0), _material(Color("#74845d"),1.0))
+  hill.rotation.y = angle
+ for i in range(160):
+  var angle := float(i)*2.399963
+  var radius := 245.0+float((i*29)%145)
+  var pos := Vector3(cos(angle)*radius,0,sin(angle)*radius)
+  _twin_tree(nature, "OuterForestTree_%03d" % i, pos, _material(Color("#58744c"),0.95), _material(Color("#60422f"),0.95), 1.0+float(i%4)*0.12)
+ # Outer watercourses and a small hunting meadow.
+ var stream := MeshInstance3D.new()
+ stream.name = "OuterTurquoiseStream"
+ var stream_mesh := PlaneMesh.new()
+ stream_mesh.size = Vector2(24.0,180.0)
+ stream.mesh = stream_mesh
+ stream.position = Vector3(280.0,-0.02,-250.0)
+ stream.rotation_degrees.y = 28.0
+ nature.add_child(stream)
+ stream.material_override = water
+ var meadow := _twin_box(nature, "OuterMonsterHuntingMeadow", Vector3(-280.0,-0.02,255.0), Vector3(110.0,0.12,95.0), _material(Color("#84945e"),1.0))
+
+static func _twin_tree(parent: Node3D, label: String, pos: Vector3, foliage: Material, bark: Material, scale: float) -> void:
+ var tree := Node3D.new()
+ tree.name = label
+ tree.position = pos
+ tree.scale = Vector3.ONE*scale
+ parent.add_child(tree)
+ _twin_cylinder(tree, "CherryTreeTrunk", Vector3(0,2.6,0), 0.38,5.2,bark)
+ var crown := MeshInstance3D.new()
+ var crown_mesh := SphereMesh.new()
+ crown_mesh.radius = 3.0
+ crown_mesh.height = 4.4
+ crown.mesh = crown_mesh
+ crown.position.y = 6.0
+ tree.add_child(crown)
+ crown.material_override = foliage
+
+static func _twin_box(parent: Node3D, label: String, pos: Vector3, size: Vector3, material: Material) -> MeshInstance3D:
+ var node := MeshInstance3D.new()
+ node.name = label
+ var mesh := BoxMesh.new()
+ mesh.size = size
+ node.mesh = mesh
+ node.position = pos
+ parent.add_child(node)
+ node.material_override = material
+ return node
+
+static func _twin_cylinder(parent: Node3D, label: String, pos: Vector3, radius: float, height: float, material: Material) -> MeshInstance3D:
+ var node := MeshInstance3D.new()
+ node.name = label
+ var mesh := CylinderMesh.new()
+ mesh.top_radius = radius
+ mesh.bottom_radius = radius
+ mesh.height = height
+ mesh.radial_segments = 16
+ node.mesh = mesh
+ node.position = pos
+ parent.add_child(node)
+ node.material_override = material
+ return node
