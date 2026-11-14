@@ -154,7 +154,7 @@ jobs:
                   except Exception as e:
                       record(name, "DOWNLOAD_FAILED", str(e))
 
-          (root / "acquisition-report.json").write_text(json.dumps(report, indent=2) + "\\n")
+          (root / "acquisition-report.json").write_text(json.dumps(report, indent=2) + "\n")
           PY
 
       - name: Verify collected originals and create manifest
