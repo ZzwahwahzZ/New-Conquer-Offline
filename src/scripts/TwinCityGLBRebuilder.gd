@@ -79,7 +79,7 @@ static func _build_palace(parent: Node3D, source: Node3D) -> void:
 		_normalize_node_to_dimensions(stairs, Vector3(18.0, 5.0, 12.0))
 	for rail_index in range(4):
 		var rail_pos := Vector3(-38.0 + float(rail_index) * 25.0, 5.0, -181.0)
-		_clone_source_model(parent, source, "067-palace-wall-end-pier", "ImperialPalace_TerraceRailPier_%02d" % rail_index, rail_pos, 0.0, 1.0, "")
+		_clone_source_model(parent, source, "088-palace-wall-end-pier", "ImperialPalace_TerraceRailPier_%02d" % rail_index, rail_pos, 0.0, 1.0, "")
 	print("TWIN_CITY_IMPERIAL_PALACE_PASS: 85x75m terrace + 27m GLB ceremonial hall + 2 normalized wings + 18m stair; gold roof palette")
 
 static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
