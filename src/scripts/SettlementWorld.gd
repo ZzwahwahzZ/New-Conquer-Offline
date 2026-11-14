@@ -47,7 +47,7 @@ func _build_environment() -> void:
 		environment.adjustment_brightness = 0.94
 		environment.adjustment_contrast = 1.04
 		environment.adjustment_saturation = 0.92
-	environment.ssao_enabled = true
+	environment.ssao_enabled = false if settlement_id == "TwinCity" else true
 	environment.ssao_radius = 2.4
 	environment.ssao_intensity = 1.35
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
@@ -68,7 +68,7 @@ func _build_environment() -> void:
 	sun.name = "SettlementSun"
 	sun.rotation_degrees = Vector3(-45,-32,0)
 	sun.light_energy = 0.62 if settlement_id == "TwinCity" else 0.72
-	sun.shadow_enabled = true
+	sun.shadow_enabled = settlement_id != "TwinCity"
 	sun.directional_shadow_max_distance = 220.0
 	sun.shadow_bias = 0.04
 	sun.shadow_normal_bias = 0.8
