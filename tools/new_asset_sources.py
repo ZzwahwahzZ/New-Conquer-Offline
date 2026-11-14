@@ -540,8 +540,8 @@ def discover_poly_pizza(session, fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPED
     downloaded = 0
     for term, category in queries:
         try:
-            url = "https://api.poly.pizza/v1/search/" + quote(term, safe="")
-            response = session.get(url, headers=headers, params={"limit":50,"format":"glb"}, timeout=(20, 60))
+            url = "https://api.poly.pizza/v1.1/search/" + quote(term, safe="")
+            response = session.get(url, headers=headers, params={"Limit":32}, timeout=(20, 60))
             response.raise_for_status()
             models = response.json().get("results", [])
         except Exception as exc:
