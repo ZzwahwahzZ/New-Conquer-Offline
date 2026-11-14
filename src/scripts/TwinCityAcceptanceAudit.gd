@@ -48,8 +48,6 @@ func _run_audit() -> void:
 					continue
 				mesh_surface_total += surfaces
 				building_mesh_count += 1
-				if mesh_node.mesh is BoxMesh:
-					procedural_box_meshes += 1
 				if str(mesh_node.mesh.resource_path).to_lower().contains(".glb"):
 					building_has_glb_source = true
 			elif current is MultiMeshInstance3D:
@@ -63,12 +61,28 @@ func _run_audit() -> void:
 					continue
 				mesh_surface_total += multi_surfaces
 				building_mesh_count += 1
-				if multi_node.multimesh.mesh is BoxMesh:
-					procedural_box_meshes += 1
 				if str(multi_node.multimesh.mesh.resource_path).to_lower().contains(".glb"):
 					building_has_glb_source = true
 		if building_mesh_count > 0 and building_has_glb_source:
 			valid_glb_buildings += 1
+
+	var scene_stack: Array[Node] = [city]
+	while not scene_stack.is_empty():
+		var current: Node = scene_stack.pop_back()
+		for child in current.get_children():
+			scene_stack.append(child)
+		if current is MeshInstance3D:
+			var mesh_node := current as MeshInstance3D
+			if mesh_node.mesh == null or mesh_node.mesh.get_surface_count() <= 0:
+				null_mesh_nodes += 1
+			elif mesh_node.mesh is BoxMesh:
+				procedural_box_meshes += 1
+		elif current is MultiMeshInstance3D:
+			var multi_node := current as MultiMeshInstance3D
+			if multi_node.multimesh == null or multi_node.multimesh.mesh == null or multi_node.multimesh.mesh.get_surface_count() <= 0:
+				null_mesh_nodes += 1
+			elif multi_node.multimesh.mesh is BoxMesh:
+				procedural_box_meshes += 1
 
 	var total := buildings.size()
 	var plaza := city.find_child("CircularImperialPlaza_60m", true, false)
