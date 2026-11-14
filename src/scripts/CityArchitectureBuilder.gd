@@ -627,27 +627,11 @@ static func _brick_normal() -> Texture2D:
 # builder so the other five settlements retain their existing generation path.
 # ---------------------------------------------------------------------------
 static func build_twin_city(parent: Node3D) -> void:
- var root := Node3D.new()
- root.name = "TwinCity_ImperialReconstruction"
- parent.add_child(root)
- var p := CITY_PALETTES["TwinCity"]
- var stone := _material(Color("#858078"), 0.91)
- var pale_stone := _material(Color("#c9c1ae"), 0.88)
- var dark_stone := _material(Color("#555a60"), 0.94)
- var roof := _material(Color("#3D4854"), 0.82)
- var timber := _material(Color("#71372b"), 0.68)
- var gold := _material(Color("#D49B35"), 0.46)
- var pink := _material(Color("#e5a0b2"), 0.88)
- var water := _material(Color("#145b63"), 0.22)
- _twin_ground(root, stone)
- _twin_moat_walls_gates(root, stone, pale_stone, dark_stone, water, roof, gold, timber)
- _twin_roads(root, stone, pale_stone)
- _twin_plaza(root, stone, pale_stone, gold, pink, roof, timber)
- _twin_palace(root, pale_stone, stone, timber, roof, gold)
- var counts := {"residential":120, "commercial":42, "service":22, "landmark":12, "defensive":20, "palace":8}
- _twin_place_district_buildings(root, counts, pale_stone, stone, timber, roof, gold)
- _twin_outer_biome(root, stone, water, pink)
- print("TWIN_CITY_IMPERIAL_BUILD_PASS: target_structures=224 residential=120 commercial=42 service=22 landmarks=12 defensive=20 palace=8 urban_diameter=360 perimeter_diameter=440 plaza_diameter=60 palace=85x75")
+	var rebuilder := load("res://src/scripts/TwinCityGLBRebuilder.gd")
+	if rebuilder == null:
+		push_error("TWIN_CITY_GLB_FAIL: GLB-only rebuilder script is missing")
+		return
+	rebuilder.build(parent)
 
 static func _twin_ground(parent: Node3D,stone: Material) -> void:
  var ground := MeshInstance3D.new()
