@@ -81,7 +81,7 @@ func _capture() -> void:
   "buildings":nodes.size(),
   "building_categories":counts,
   "city_core_m":360,
-  "perimeter_diameter_m":440,
+  "perimeter_diameter_m":380,
   "plaza_diameter_m":56,
   "palace_dimensions_m":"85x75",
   "blueprint":"GODOT_MASTER_ARCHITECTURAL_BLUEPRINT; four-pass CAD grid; AABB ground snap; warm imperial palette",
