@@ -98,7 +98,6 @@ func _capture() -> void:
   "renderer_backend":"Mobile Vulkan",
   "renderer_icd":OS.get_environment("VK_ICD_FILENAMES"),
   "street_camera_height_m":1.8,
-  "street_camera_clearance_required_m":6.0,
   "fps_measurement_note":"GitHub capture uses Lavapipe software Vulkan; this is not a physical Android GPU benchmark.",
   "capture_elapsed_seconds":float(Time.get_ticks_msec()-start_ms)/1000.0
  }
