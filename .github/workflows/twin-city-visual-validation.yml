@@ -146,6 +146,24 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
+      - name: Preserve restored Imperial China GLB on isolated branch
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          asset="assets/environment/architecture/imperial_china_palace_and_garden.glb"
+          if [ -s "$asset" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -f "$asset"
+            if ! git diff --cached --quiet; then
+              git commit -m "Add verified Imperial China architecture kit"
+              git push origin "HEAD:$GITHUB_REF_NAME"
+            fi
+          else
+            echo "No restored Imperial China kit to preserve."
+          fi
+
       - name: Commit only Twin City proof outputs to this isolated branch
         if: success()
         shell: bash
@@ -153,6 +171,6 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f assets/environment/architecture/imperial_china_palace_and_garden.glb prototypes/twin_city/captures/*.png prototypes/twin_city/reports/*.json prototypes/twin_city/reports/*.log
+          git add -f prototypes/twin_city/captures/*.png prototypes/twin_city/reports/*.json prototypes/twin_city/reports/*.log
           git diff --cached --quiet || git commit -m "Add actual Twin City Godot 4.3 visual proof"
           git push origin "HEAD:$GITHUB_REF_NAME"
