@@ -190,7 +190,7 @@ static func _build_full_city_paving(parent: Node3D, source: Node3D) -> void:
 		push_error("TWIN_CITY_GLB_FAIL: paving module contains no MeshInstance3D")
 		return
 	var source_mesh := (mesh_nodes[0] as MeshInstance3D).mesh
-	if source_mesh == null or not source_mesh.get_rid().is_valid() or source_mesh.get_surface_count() == 0:
+	if source_mesh == null or not source_mesh.get_rid().is_valid():
 		push_error("TWIN_CITY_GLB_FAIL: paving source mesh is null or has no surfaces")
 		return
 
@@ -497,34 +497,29 @@ static func _apply_imperial_palette(root: Node3D) -> void:
 		var mesh := mesh_node.mesh
 		if mesh == null or not mesh.get_rid().is_valid():
 			continue
-		for surface in range(mesh.get_surface_count()):
-			var original := mesh_node.get_active_material(surface)
-			if not original is StandardMaterial3D:
-				continue
-			var material := (original as StandardMaterial3D).duplicate() as StandardMaterial3D
-			var semantic := (mesh_node.name + " " + material.resource_name).to_lower()
-			var is_roof := semantic.contains("roof") or semantic.contains("eave") or semantic.contains("tile")
-			var is_wood := semantic.contains("wood") or semantic.contains("timber") or semantic.contains("column") or semantic.contains("beam") or semantic.contains("trunk")
-			var is_foliage := semantic.contains("leaf") or semantic.contains("leaves") or semantic.contains("blossom") or semantic.contains("petal") or semantic.contains("flower") or semantic.contains("foliage")
-			if is_cherry:
-				if is_foliage:
-					material.albedo_color = Color("#E5A4B4")
-				elif is_wood:
-					material.albedo_color = Color("#5C3A21")
-				else:
-					continue
-			elif is_roof:
-				material.albedo_color = Color("#D9A136") if is_palace else Color("#2E3238")
-			elif is_wood:
-				material.albedo_color = Color("#5C3A21")
-			elif semantic.contains("gold") or semantic.contains("bronze") or semantic.contains("trim"):
-				material.albedo_color = Color("#C8963E")
-			elif semantic.contains("stone") or semantic.contains("floor") or semantic.contains("base"):
-				material.albedo_color = Color("#857D72")
-			else:
-				material.albedo_color = Color("#B89F82")
-			material.roughness = maxf(material.roughness, 0.82)
-			mesh_node.set_surface_override_material(surface, material)
+		var semantic := mesh_node.name.to_lower()
+		var is_roof := semantic.contains("roof") or semantic.contains("eave") or semantic.contains("tile")
+		var is_wood := semantic.contains("wood") or semantic.contains("timber") or semantic.contains("column") or semantic.contains("beam") or semantic.contains("trunk")
+		var is_foliage := semantic.contains("leaf") or semantic.contains("leaves") or semantic.contains("blossom") or semantic.contains("petal") or semantic.contains("flower") or semantic.contains("foliage")
+		var tint_color := Color.TRANSPARENT
+		if is_cherry:
+			if is_wood:
+				tint_color = Color("#5C3A21")
+			elif is_foliage or semantic.contains("plum-tree-in-blossom"):
+				tint_color = Color("#E5A4B4")
+		elif is_roof:
+			tint_color = Color("#D9A136") if is_palace else Color("#2E3238")
+		elif is_wood:
+			tint_color = Color("#5C3A21")
+		elif semantic.contains("gold") or semantic.contains("bronze") or semantic.contains("trim"):
+			tint_color = Color("#C8963E")
+		elif semantic.contains("stone") or semantic.contains("floor") or semantic.contains("base"):
+			tint_color = Color("#857D72")
+		if tint_color != Color.TRANSPARENT:
+			var material := StandardMaterial3D.new()
+			material.albedo_color = tint_color
+			material.roughness = 0.82
+			mesh_node.material_override = material
 
 static func _node_local_aabb(root: Node3D) -> AABB:
 	var result := AABB()
