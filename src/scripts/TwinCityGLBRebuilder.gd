@@ -89,15 +89,18 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 	var end_pier_template := "088-palace-wall-end-pier"
 	for side in range(4):
 		var yaw := float(side) * PI * 0.5
-		for segment in range(12):
-			if segment == 5 or segment == 6:
+		for segment in range(32):
+			if segment == 15 or segment == 16:
 				continue
-			var along := -190.0 + float(segment) * 34.5
+			var along := -205.0 + float(segment) * 13.2
 			var pos := Vector3(along, 0.0, -215.0)
-			pos = Vector3(-215.0, 0.0, along) if side == 1 else pos
-			pos = Vector3(-along, 0.0, 215.0) if side == 2 else pos
-			pos = Vector3(215.0, 0.0, -along) if side == 3 else pos
-			_clone_source_model(fort, source, wall_template, "TwinCity_ImperialWall_%02d_%02d" % [side, segment], pos, yaw, 1.45, "")
+			if side == 1:
+				pos = Vector3(215.0, 0.0, along)
+			elif side == 2:
+				pos = Vector3(-along, 0.0, 215.0)
+			elif side == 3:
+				pos = Vector3(-215.0, 0.0, -along)
+			_clone_source_model(fort, source, wall_template, "TwinCity_ImperialWall_%02d_%02d" % [side, segment], pos, yaw, 1.25, "")
 		var corner_positions := [Vector3(-215.0, 0.0, -215.0), Vector3(215.0, 0.0, -215.0), Vector3(215.0, 0.0, 215.0), Vector3(-215.0, 0.0, 215.0)]
 		_clone_source_model(fort, source, corner_template, "TwinCity_ImperialWallCorner_%02d" % side, corner_positions[side], yaw, 1.4, "")
 
@@ -126,7 +129,7 @@ static func _build_full_city_paving(parent: Node3D, source: Node3D) -> void:
 	var transforms: Array[Transform3D] = []
 	for x in range(-210, 211, 6):
 		for z in range(-210, 211, 6):
-			if Vector2(float(x), float(z)).length() <= 212.0:
+			if absf(float(x)) <= 210.0 and absf(float(z)) <= 210.0:
 				transforms.append(Transform3D(Basis().scaled(Vector3(3.0, 1.0, 3.0)), Vector3(float(x), 0.06, float(z))))
 	var multi := MultiMesh.new()
 	multi.transform_format = MultiMesh.TRANSFORM_3D
