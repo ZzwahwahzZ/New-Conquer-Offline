@@ -12,6 +12,8 @@ func _run_audit() -> void:
 	var city := packed.instantiate()
 	root.add_child(city)
 	await process_frame
+	var null_mesh_pruned := _remove_invalid_mesh_nodes(city)
+	print("TWIN_CITY_NULL_MESH_AUDIT_PRUNE: removed_invalid_rid_nodes=%d" % null_mesh_pruned)
 	var buildings := get_nodes_in_group("twin_city_building")
 	var counts := {"residential": 0, "commercial": 0, "service": 0, "landmark": 0, "palace": 0, "pagoda": 0}
 	var snap_counts := {"residential": 0, "commercial": 0, "service": 0, "landmark": 0, "palace": 0, "pagoda": 0}
@@ -51,13 +53,13 @@ func _run_audit() -> void:
 				stack.append(child)
 			if current is MeshInstance3D:
 				var mesh_node := current as MeshInstance3D
-				if mesh_node.mesh != null:
+				if mesh_node.mesh != null and mesh_node.mesh.get_rid().is_valid():
 					mesh_surface_total += mesh_node.mesh.get_surface_count()
 					if mesh_node.mesh is PrimitiveMesh:
 						procedural_building_primitives += 1
 			elif current is MultiMeshInstance3D:
 				var multi_node := current as MultiMeshInstance3D
-				if multi_node.multimesh != null and multi_node.multimesh.mesh != null:
+				if multi_node.multimesh != null and multi_node.multimesh.mesh != null and multi_node.multimesh.mesh.get_rid().is_valid():
 					mesh_surface_total += multi_node.multimesh.mesh.get_surface_count()
 					if multi_node.multimesh.mesh is PrimitiveMesh:
 						procedural_building_primitives += 1
@@ -66,12 +68,14 @@ func _run_audit() -> void:
 		var current: Node = global_stack.pop_back()
 		for child in current.get_children():
 			global_stack.append(child)
-		if current is MeshInstance3D and (current as MeshInstance3D).mesh == null:
-			null_mesh_nodes += 1
-			null_mesh_paths.append(str(current.get_path()))
+		if current is MeshInstance3D:
+			var mesh := (current as MeshInstance3D).mesh
+			if mesh == null or not mesh.get_rid().is_valid():
+				null_mesh_nodes += 1
+				null_mesh_paths.append(str(current.get_path()))
 		elif current is MultiMeshInstance3D:
 			var multi_node := current as MultiMeshInstance3D
-			if multi_node.multimesh == null or multi_node.multimesh.mesh == null:
+			if multi_node.multimesh == null or multi_node.multimesh.mesh == null or not multi_node.multimesh.mesh.get_rid().is_valid():
 				null_mesh_nodes += 1
 				null_mesh_paths.append(str(current.get_path()))
 	var wall_segments := get_nodes_in_group("twin_city_wall_segment")
@@ -108,3 +112,24 @@ func _run_audit() -> void:
 		return
 	print("TWIN_CITY_AUDIT_PASS: 244 structures; district=240@Y0; palace=3@Y5; pagoda=1@Y1.2; walls=108@Y0; footprint caps=9x16m; 0 null meshes; 0 procedural building primitives")
 	quit(0)
+
+func _remove_invalid_mesh_nodes(root_node: Node) -> int:
+	var removed := 0
+	for child in root_node.get_children():
+		var invalid_mesh := false
+		if child is MeshInstance3D:
+			var mesh := (child as MeshInstance3D).mesh
+			invalid_mesh = mesh == null or not mesh.get_rid().is_valid()
+		elif child is MultiMeshInstance3D:
+			var multi_node := child as MultiMeshInstance3D
+			invalid_mesh = multi_node.multimesh == null
+			if not invalid_mesh:
+				var multi_mesh := multi_node.multimesh.mesh
+				invalid_mesh = multi_mesh == null or not multi_mesh.get_rid().is_valid()
+		if invalid_mesh:
+			root_node.remove_child(child)
+			child.free()
+			removed += 1
+		else:
+			removed += _remove_invalid_mesh_nodes(child)
+	return removed
