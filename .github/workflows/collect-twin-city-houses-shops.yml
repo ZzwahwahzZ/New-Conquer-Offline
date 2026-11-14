@@ -85,7 +85,9 @@ jobs:
           cg_token = os.getenv("CGTRADER_ACCESS_TOKEN", "").strip()
           cg_models = [
               ("Chinese Ancient house reference #3589754", 3589754, "chinese-historical-houses/cgtrader-3589754"),
-              ("Ancient Traditional Chinese Building #3328346", 3328346, "chinese-historical-houses/cgtrader-3328346"),\n              ("Chinese ancient architecture #3889124", 3889124, "chinese-historical-houses/cgtrader-3889124"),\n              ("Chinese Temple High Poly #794558", 794558, "chinese-historical-houses/cgtrader-794558"),
+              ("Ancient Traditional Chinese Building #3328346", 3328346, "chinese-historical-houses/cgtrader-3328346"),
+              ("Chinese ancient architecture #3889124", 3889124, "chinese-historical-houses/cgtrader-3889124"),
+              ("Chinese Temple High Poly #794558", 794558, "chinese-historical-houses/cgtrader-794558"),
           ]
           if not cg_token:
               for name, _, _ in cg_models:
@@ -128,7 +130,10 @@ jobs:
               ("Ancient Chinese House", "bcb41894d1b5451b9c4f6489d50766d4", "chinese-historical-houses/sketchfab-ancient-chinese-house"),
               ("Chinese ancient building H26", "99d2ab2816914c46949b3f6a1bc7ae4d", "chinese-historical-houses/sketchfab-building-h26"),
               ("Chinese hut", "1b9c99b0fa9d49b88c4aa5b8c9c097da", "chinese-historical-houses/sketchfab-chinese-hut"),
-              ("Ancient Chinese Noodle Shop", "5576aebcee724fc491e9d8901da99f2f", "chinese-historical-shops/sketchfab-noodle-shop"),\n              ("Ancient Chinese Courtyard House", "ed4ea9eb5f024d989eec182d48fa72d8", "chinese-historical-houses/sketchfab-courtyard-house"),\n              ("Low Big House", "52440b480fdb4fedb7d48e8586b373fc", "chinese-historical-houses/sketchfab-low-big-house"),\n              ("Low Big House low roof", "b5039dcf41f54800a6a8bb89f7183a8b", "chinese-historical-houses/sketchfab-low-big-house-low-roof"),
+              ("Ancient Chinese Noodle Shop", "5576aebcee724fc491e9d8901da99f2f", "chinese-historical-shops/sketchfab-noodle-shop"),
+              ("Ancient Chinese Courtyard House", "ed4ea9eb5f024d989eec182d48fa72d8", "chinese-historical-houses/sketchfab-courtyard-house"),
+              ("Low Big House", "52440b480fdb4fedb7d48e8586b373fc", "chinese-historical-houses/sketchfab-low-big-house"),
+              ("Low Big House low roof", "b5039dcf41f54800a6a8bb89f7183a8b", "chinese-historical-houses/sketchfab-low-big-house-low-roof"),
           ]
           if not sf_token:
               for name, _, _ in sf_models:
