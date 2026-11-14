@@ -1,9 +1,377 @@
 {
   "source_repo": "ZzwahwahzZ/clash-of-legends-terrain-assets",
   "original_models_folder_glb_count": 99,
-  "selected_architecture_kit_component_count": 17,
+  "selected_architecture_kit_component_count": 99,
   "total_geometry_verified_glb_count": 99,
   "assets": [
+    {
+      "asset_id": "3dassets-alpine-snow-village-windswept-mountain-pine-e7302601",
+      "name": "Windswept Mountain Pine (Alpine Snow Village)",
+      "file": "models/3dassets-alpine-snow-village-windswept-mountain-pine-e7302601.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        2.2999890681556963,
+        3.9000000953674316,
+        1.3781806791782714
+      ],
+      "geometry_count": 3,
+      "bytes": 73696,
+      "sha256": "2ae5b2b2be36c624f5ad9cb9a22ae79dd86a461ace9a151c47d84a661d9444fa",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-baobab-tree",
+      "name": "Baobab Tree Affenbrotbaum Baobab",
+      "file": "models/grab3d-baobab-tree.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        6.191775321960449,
+        6.14035177230835,
+        5.689441204071045
+      ],
+      "geometry_count": 1,
+      "bytes": 1100076,
+      "sha256": "3a6b2dadd0bc90e1fc2d9545b48fd16859a590b9e90415c7ed9204e9aafc06ef",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-birch-grove",
+      "name": "Birch Grove Birkenhain Bosquecillo de abedules",
+      "file": "models/grab3d-birch-grove.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        4.320404529571533,
+        6.727263927459717,
+        4.124755024909973
+      ],
+      "geometry_count": 2,
+      "bytes": 1465220,
+      "sha256": "62bd8988fbdce73967ed46cece1a924e8e6857c51b72379ba73a56ccc282511b",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-bracket-fungus",
+      "name": "Bracket Fungus Baumpilz Hongo de repisa",
+      "file": "models/grab3d-bracket-fungus.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.4269839823246002,
+        0.3440000116825104,
+        0.3838035613298416
+      ],
+      "geometry_count": 1,
+      "bytes": 948264,
+      "sha256": "5871f04e75e452d1ab06cf0c0f7373d646e6c300b9dbdc9b5b914507064f7e31",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-cherry-bowl",
+      "name": "Bowl of Cherries Kirschschale Cuenco de cerezas",
+      "file": "models/grab3d-cherry-bowl.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.13801822066307068,
+        0.124426931142807,
+        0.17457052320241928
+      ],
+      "geometry_count": 1,
+      "bytes": 1078588,
+      "sha256": "6bbd026a5a1c8a6a2e740f9e047620c06758498f38830560379a5b1369e747d7",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-crab",
+      "name": "Red Rock Crab Rote Klippenkrabbe Cangrejo rojo de roca",
+      "file": "models/grab3d-crab.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.1999826654791832,
+        0.0694193391391309,
+        0.13015136867761612
+      ],
+      "geometry_count": 1,
+      "bytes": 12512508,
+      "sha256": "4ac5a94f350e131f4f5951d5110e2a82d02b31493bad2de1ba4f6703f0b1ffa9",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-cricket-bat",
+      "name": "Cricket Bat Cricketschläger Bate de críquet",
+      "file": "models/grab3d-cricket-bat.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.845106303691864,
+        0.7583504319190979,
+        0.5067492127418518
+      ],
+      "geometry_count": 1,
+      "bytes": 951380,
+      "sha256": "e48f9e60f3a083ea94507483cc3141cc62e19dfe50fbd3a67e40cc83cfde86ab",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-desert-rock-arch",
+      "name": "Desert Rock Arch Wüsten-Felsbogen Arco de roca del desierto",
+      "file": "models/grab3d-desert-rock-arch.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        8.528597831726074,
+        5.214505195617676,
+        4.09026563167572
+      ],
+      "geometry_count": 1,
+      "bytes": 1898416,
+      "sha256": "7fcf4abeed6ffb567d26ee57df05d96b1b8720eec7d5463c27a98440a4b1837c",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-dirt-road",
+      "name": "Dirt Road Feldweg Camino de tierra",
+      "file": "models/grab3d-dirt-road.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        11.800000190734863,
+        0.4151201844215393,
+        11.800000190734863
+      ],
+      "geometry_count": 5,
+      "bytes": 11069844,
+      "sha256": "07bb0985702c31d8a2abba54bdf79c81c20d8a252bf2e92940272eae2be89d7f",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-fantasy-mushroom-house",
+      "name": "Fantasy Mushroom House Fantasy-Pilzhaus Casa de seta de fantasía",
+      "file": "models/grab3d-fantasy-mushroom-house.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        6.011139392852783,
+        5.302623271942139,
+        6.491486549377441
+      ],
+      "geometry_count": 9,
+      "bytes": 1724952,
+      "sha256": "744bb8fbed22ecde546dedf878e7276b591878f04ef104ea30589d43c9347a1a",
+      "architectural_candidate": true
+    },
+    {
+      "asset_id": "grab3d-garden-gnome",
+      "name": "Garden Gnome Gartenzwerg Gnomo de jardín",
+      "file": "models/grab3d-garden-gnome.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.2267499938607216,
+        0.4268595576286316,
+        0.21849998831748962
+      ],
+      "geometry_count": 1,
+      "bytes": 939600,
+      "sha256": "294f971f372c1ca99f4a9fd75c72dbbd7bf10df87b5675b72110ed1397d9fed5",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-glowing-mushroom-log",
+      "name": "Glowing Mushroom Log Leuchtpilz-Baumstamm Tronco con setas luminosas",
+      "file": "models/grab3d-glowing-mushroom-log.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.4016903042793274,
+        0.25144898891448975,
+        0.25084374099969864
+      ],
+      "geometry_count": 3,
+      "bytes": 1168484,
+      "sha256": "d472f71f92d5f4220a90cae537272a6ac63c24e8f4f8a04293b81702cc930c9d",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-highway-segment",
+      "name": "Highway Segment Autobahnabschnitt Tramo de autopista",
+      "file": "models/grab3d-highway-segment.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        23.600000381469727,
+        1.1575000286102295,
+        23.600000381469727
+      ],
+      "geometry_count": 5,
+      "bytes": 14337876,
+      "sha256": "59743d4c22ca3b511001958c5a2f1e752d156adefeb2aabac1391beb3ac5ee79",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-jungle-tree",
+      "name": "Jungle Tree Dschungelbaum Árbol de la jungla",
+      "file": "models/grab3d-jungle-tree.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        7.854711532592773,
+        10.141125679016113,
+        7.150622844696045
+      ],
+      "geometry_count": 1,
+      "bytes": 1283796,
+      "sha256": "98a57fda4a60a14c95f42d10ecca6cda7f02b0889d4d956ec33ab1498b605688",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-mangrove-tree",
+      "name": "Mangrove Tree Mangrovenbaum Mangle",
+      "file": "models/grab3d-mangrove-tree.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        4.397235155105591,
+        5.736734867095947,
+        4.282843828201294
+      ],
+      "geometry_count": 2,
+      "bytes": 1257172,
+      "sha256": "be2c0b79d1dd296bba3bd8b2942dce841c848e318b5756e19e3fbea1cf21c172",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-mushroom-food",
+      "name": "Edible Mushrooms Speisepilze Setas comestibles",
+      "file": "models/grab3d-mushroom-food.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.23100000619888306,
+        0.09389930963516235,
+        0.3279999941587448
+      ],
+      "geometry_count": 1,
+      "bytes": 1365724,
+      "sha256": "7848782e67ad9fc96c4fe78d5b81fbcf7b0eb376792aec2fdb235be849aed968",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-pinball-machine",
+      "name": "Pinball Machine Flipperautomat Máquina de pinball",
+      "file": "models/grab3d-pinball-machine.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.7440000176429749,
+        1.8600000145807862,
+        1.4600000381469727
+      ],
+      "geometry_count": 15,
+      "bytes": 1729644,
+      "sha256": "40641fd235bae410c5cc5cb1649f4d03b319c7acc4a0688bf577dba07fe13515",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-pine-cone",
+      "name": "Pine Cones Kiefernzapfen Piñas de pino",
+      "file": "models/grab3d-pine-cone.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        0.17784882336854935,
+        0.0729399025440216,
+        0.13483934849500656
+      ],
+      "geometry_count": 1,
+      "bytes": 866352,
+      "sha256": "158ee4149c9683e6f8489eb2129ee9c4ce21111a09bb40f2705ba1f8e31c41a7",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-pirate-hideout",
+      "name": "Pirate Hideout Piratenversteck Escondite pirata",
+      "file": "models/grab3d-pirate-hideout.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        9.483755111694336,
+        5.407090187072754,
+        6.679154872894287
+      ],
+      "geometry_count": 5,
+      "bytes": 2362620,
+      "sha256": "15548b3c753ce9882ad4aed459c8454d70b26415d41fbd4da1a5f18b28e8fb74",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-stone-wall",
+      "name": "Dry Stone Wall Trockenmauer Muro de piedra seca",
+      "file": "models/grab3d-stone-wall.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        3.0,
+        1.0589795112609863,
+        0.8571957945823669
+      ],
+      "geometry_count": 1,
+      "bytes": 1316288,
+      "sha256": "40578e5c10c78d053e127f5f88d0635cfdbbf21fdbe46cfc28897d9341c9a77e",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "grab3d-tunnel-portal",
+      "name": "Railway Tunnel Portal Tunnelportal Boca de túnel ferroviario",
+      "file": "models/grab3d-tunnel-portal.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        10.5,
+        8.507499694824219,
+        8.0
+      ],
+      "geometry_count": 2,
+      "bytes": 2969580,
+      "sha256": "4afc9f07ad2fb82bd5252f7df849f0da09960f9230b205ca0fbbced08837cfa3",
+      "architectural_candidate": false
+    },
+    {
+      "asset_id": "innerscene-buddhist-temple-pagoda-c5ebacdc",
+      "name": "Buddhist Temple Pagoda",
+      "file": "models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb",
+      "category": "palaces_and_temples",
+      "style_group": "imperial_chinese",
+      "dimensions_m": [
+        14.800000190734863,
+        33.995201110839844,
+        14.800000190734863
+      ],
+      "geometry_count": 19,
+      "bytes": 18840512,
+      "sha256": "2653c57850f3d0401a1c21177a3a7f50dfa48711c49078979f25bbf0fed2363e",
+      "architectural_candidate": true
+    },
+    {
+      "asset_id": "innerscene-japanese-maple-tree-565c1604",
+      "name": "Japanese Maple Tree",
+      "file": "models/innerscene-japanese-maple-tree-565c1604.glb",
+      "category": "nature",
+      "style_group": "environmental",
+      "dimensions_m": [
+        8.064774863392529,
+        5.000000229252679,
+        8.02752140557405
+      ],
+      "geometry_count": 87,
+      "bytes": 4439812,
+      "sha256": "898450277a86ade0ab67d5cede566ad97012f2aa5d4b958a5b607865bfb07283",
+      "architectural_candidate": true
+    },
     {
       "asset_id": "polygonalmind-lunar-year-001",
       "name": "ArchBanner",
@@ -1157,54 +1525,6 @@
       "architectural_candidate": false
     },
     {
-      "asset_id": "innerscene-buddhist-temple-pagoda-c5ebacdc",
-      "name": "Buddhist Temple Pagoda",
-      "file": "models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb",
-      "category": "palaces_and_temples",
-      "style_group": "imperial_chinese",
-      "dimensions_m": [
-        14.800000190734863,
-        33.995201110839844,
-        14.800000190734863
-      ],
-      "geometry_count": 19,
-      "bytes": 18840512,
-      "sha256": "2653c57850f3d0401a1c21177a3a7f50dfa48711c49078979f25bbf0fed2363e",
-      "architectural_candidate": true
-    },
-    {
-      "asset_id": "innerscene-japanese-maple-tree-565c1604",
-      "name": "Japanese Maple Tree",
-      "file": "models/innerscene-japanese-maple-tree-565c1604.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        8.064774863392529,
-        5.000000229252679,
-        8.02752140557405
-      ],
-      "geometry_count": 87,
-      "bytes": 4439812,
-      "sha256": "898450277a86ade0ab67d5cede566ad97012f2aa5d4b958a5b607865bfb07283",
-      "architectural_candidate": true
-    },
-    {
-      "asset_id": "smithsonian-Baluster_vase_one_of_three_in_a_five-piece_garniture_F1980.190--194_",
-      "name": "Baluster vase, one of three in a five-piece garniture (F1980.190--194)",
-      "file": "models/smithsonian-Baluster_vase_one_of_three_in_a_five-piece_garniture_F1980.190--194_.glb",
-      "category": "statues_and_props",
-      "style_group": "imperial_chinese",
-      "dimensions_m": [
-        0.35690489411354065,
-        0.17215333878993988,
-        0.36401498317718506
-      ],
-      "geometry_count": 1,
-      "bytes": 551712,
-      "sha256": "92aff6e0811ae32dafff5ec95a492d3e7eefaff902c2a80f20b95c41032737c0",
-      "architectural_candidate": false
-    },
-    {
       "asset_id": "smithsonian-Baluster_vase_from_a_five-piece_garniture_F1980.190-.194_",
       "name": "Baluster vase, from a five-piece garniture (F1980.190-.194)",
       "file": "models/smithsonian-Baluster_vase_from_a_five-piece_garniture_F1980.190-.194_.glb",
@@ -1221,19 +1541,19 @@
       "architectural_candidate": false
     },
     {
-      "asset_id": "smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture_F1980.190-.194_",
-      "name": "Beaker-shaped vase, from a five-piece garniture (F1980.190-.194)",
-      "file": "models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture_F1980.190-.194_.glb",
+      "asset_id": "smithsonian-Baluster_vase_one_of_three_in_a_five-piece_garniture_F1980.190--194_",
+      "name": "Baluster vase, one of three in a five-piece garniture (F1980.190--194)",
+      "file": "models/smithsonian-Baluster_vase_one_of_three_in_a_five-piece_garniture_F1980.190--194_.glb",
       "category": "statues_and_props",
       "style_group": "imperial_chinese",
       "dimensions_m": [
-        0.21061305701732635,
-        0.2108980417251587,
-        0.4244125187397003
+        0.35690489411354065,
+        0.17215333878993988,
+        0.36401498317718506
       ],
       "geometry_count": 1,
-      "bytes": 544188,
-      "sha256": "70cae3568dfade5ca57aecf1e437f710f818f1c21d32d19a709deea75198dd90",
+      "bytes": 551712,
+      "sha256": "92aff6e0811ae32dafff5ec95a492d3e7eefaff902c2a80f20b95c41032737c0",
       "architectural_candidate": false
     },
     {
@@ -1253,339 +1573,19 @@
       "architectural_candidate": false
     },
     {
-      "asset_id": "grab3d-crab",
-      "name": "Red Rock Crab Rote Klippenkrabbe Cangrejo rojo de roca",
-      "file": "models/grab3d-crab.glb",
-      "category": "nature",
-      "style_group": "environmental",
+      "asset_id": "smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture_F1980.190-.194_",
+      "name": "Beaker-shaped vase, from a five-piece garniture (F1980.190-.194)",
+      "file": "models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture_F1980.190-.194_.glb",
+      "category": "statues_and_props",
+      "style_group": "imperial_chinese",
       "dimensions_m": [
-        0.1999826654791832,
-        0.0694193391391309,
-        0.13015136867761612
+        0.21061305701732635,
+        0.2108980417251587,
+        0.4244125187397003
       ],
       "geometry_count": 1,
-      "bytes": 12512508,
-      "sha256": "4ac5a94f350e131f4f5951d5110e2a82d02b31493bad2de1ba4f6703f0b1ffa9",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-pinball-machine",
-      "name": "Pinball Machine Flipperautomat Máquina de pinball",
-      "file": "models/grab3d-pinball-machine.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        0.7440000176429749,
-        1.8600000145807862,
-        1.4600000381469727
-      ],
-      "geometry_count": 15,
-      "bytes": 1729644,
-      "sha256": "40641fd235bae410c5cc5cb1649f4d03b319c7acc4a0688bf577dba07fe13515",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-pine-cone",
-      "name": "Pine Cones Kiefernzapfen Piñas de pino",
-      "file": "models/grab3d-pine-cone.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        0.17784882336854935,
-        0.0729399025440216,
-        0.13483934849500656
-      ],
-      "geometry_count": 1,
-      "bytes": 866352,
-      "sha256": "158ee4149c9683e6f8489eb2129ee9c4ce21111a09bb40f2705ba1f8e31c41a7",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-baobab-tree",
-      "name": "Baobab Tree Affenbrotbaum Baobab",
-      "file": "models/grab3d-baobab-tree.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        6.191775321960449,
-        6.14035177230835,
-        5.689441204071045
-      ],
-      "geometry_count": 1,
-      "bytes": 1100076,
-      "sha256": "3a6b2dadd0bc90e1fc2d9545b48fd16859a590b9e90415c7ed9204e9aafc06ef",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-birch-grove",
-      "name": "Birch Grove Birkenhain Bosquecillo de abedules",
-      "file": "models/grab3d-birch-grove.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        4.320404529571533,
-        6.727263927459717,
-        4.124755024909973
-      ],
-      "geometry_count": 2,
-      "bytes": 1465220,
-      "sha256": "62bd8988fbdce73967ed46cece1a924e8e6857c51b72379ba73a56ccc282511b",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-cherry-bowl",
-      "name": "Bowl of Cherries Kirschschale Cuenco de cerezas",
-      "file": "models/grab3d-cherry-bowl.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        0.13801822066307068,
-        0.124426931142807,
-        0.17457052320241928
-      ],
-      "geometry_count": 1,
-      "bytes": 1078588,
-      "sha256": "6bbd026a5a1c8a6a2e740f9e047620c06758498f38830560379a5b1369e747d7",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-bracket-fungus",
-      "name": "Bracket Fungus Baumpilz Hongo de repisa",
-      "file": "models/grab3d-bracket-fungus.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        0.4269839823246002,
-        0.3440000116825104,
-        0.3838035613298416
-      ],
-      "geometry_count": 1,
-      "bytes": 948264,
-      "sha256": "5871f04e75e452d1ab06cf0c0f7373d646e6c300b9dbdc9b5b914507064f7e31",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-cricket-bat",
-      "name": "Cricket Bat Cricketschläger Bate de críquet",
-      "file": "models/grab3d-cricket-bat.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        0.845106303691864,
-        0.7583504319190979,
-        0.5067492127418518
-      ],
-      "geometry_count": 1,
-      "bytes": 951380,
-      "sha256": "e48f9e60f3a083ea94507483cc3141cc62e19dfe50fbd3a67e40cc83cfde86ab",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-desert-rock-arch",
-      "name": "Desert Rock Arch Wüsten-Felsbogen Arco de roca del desierto",
-      "file": "models/grab3d-desert-rock-arch.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        8.528597831726074,
-        5.214505195617676,
-        4.09026563167572
-      ],
-      "geometry_count": 1,
-      "bytes": 1898416,
-      "sha256": "7fcf4abeed6ffb567d26ee57df05d96b1b8720eec7d5463c27a98440a4b1837c",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-dirt-road",
-      "name": "Dirt Road Feldweg Camino de tierra",
-      "file": "models/grab3d-dirt-road.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        11.800000190734863,
-        0.4151201844215393,
-        11.800000190734863
-      ],
-      "geometry_count": 5,
-      "bytes": 11069844,
-      "sha256": "07bb0985702c31d8a2abba54bdf79c81c20d8a252bf2e92940272eae2be89d7f",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-stone-wall",
-      "name": "Dry Stone Wall Trockenmauer Muro de piedra seca",
-      "file": "models/grab3d-stone-wall.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        3.0,
-        1.0589795112609863,
-        0.8571957945823669
-      ],
-      "geometry_count": 1,
-      "bytes": 1316288,
-      "sha256": "40578e5c10c78d053e127f5f88d0635cfdbbf21fdbe46cfc28897d9341c9a77e",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-mushroom-food",
-      "name": "Edible Mushrooms Speisepilze Setas comestibles",
-      "file": "models/grab3d-mushroom-food.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        0.23100000619888306,
-        0.09389930963516235,
-        0.3279999941587448
-      ],
-      "geometry_count": 1,
-      "bytes": 1365724,
-      "sha256": "7848782e67ad9fc96c4fe78d5b81fbcf7b0eb376792aec2fdb235be849aed968",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-fantasy-mushroom-house",
-      "name": "Fantasy Mushroom House Fantasy-Pilzhaus Casa de seta de fantasía",
-      "file": "models/grab3d-fantasy-mushroom-house.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        6.011139392852783,
-        5.302623271942139,
-        6.491486549377441
-      ],
-      "geometry_count": 9,
-      "bytes": 1724952,
-      "sha256": "744bb8fbed22ecde546dedf878e7276b591878f04ef104ea30589d43c9347a1a",
-      "architectural_candidate": true
-    },
-    {
-      "asset_id": "grab3d-garden-gnome",
-      "name": "Garden Gnome Gartenzwerg Gnomo de jardín",
-      "file": "models/grab3d-garden-gnome.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        0.2267499938607216,
-        0.4268595576286316,
-        0.21849998831748962
-      ],
-      "geometry_count": 1,
-      "bytes": 939600,
-      "sha256": "294f971f372c1ca99f4a9fd75c72dbbd7bf10df87b5675b72110ed1397d9fed5",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-glowing-mushroom-log",
-      "name": "Glowing Mushroom Log Leuchtpilz-Baumstamm Tronco con setas luminosas",
-      "file": "models/grab3d-glowing-mushroom-log.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        0.4016903042793274,
-        0.25144898891448975,
-        0.25084374099969864
-      ],
-      "geometry_count": 3,
-      "bytes": 1168484,
-      "sha256": "d472f71f92d5f4220a90cae537272a6ac63c24e8f4f8a04293b81702cc930c9d",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-highway-segment",
-      "name": "Highway Segment Autobahnabschnitt Tramo de autopista",
-      "file": "models/grab3d-highway-segment.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        23.600000381469727,
-        1.1575000286102295,
-        23.600000381469727
-      ],
-      "geometry_count": 5,
-      "bytes": 14337876,
-      "sha256": "59743d4c22ca3b511001958c5a2f1e752d156adefeb2aabac1391beb3ac5ee79",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-jungle-tree",
-      "name": "Jungle Tree Dschungelbaum Árbol de la jungla",
-      "file": "models/grab3d-jungle-tree.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        7.854711532592773,
-        10.141125679016113,
-        7.150622844696045
-      ],
-      "geometry_count": 1,
-      "bytes": 1283796,
-      "sha256": "98a57fda4a60a14c95f42d10ecca6cda7f02b0889d4d956ec33ab1498b605688",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-mangrove-tree",
-      "name": "Mangrove Tree Mangrovenbaum Mangle",
-      "file": "models/grab3d-mangrove-tree.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        4.397235155105591,
-        5.736734867095947,
-        4.282843828201294
-      ],
-      "geometry_count": 2,
-      "bytes": 1257172,
-      "sha256": "be2c0b79d1dd296bba3bd8b2942dce841c848e318b5756e19e3fbea1cf21c172",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-pirate-hideout",
-      "name": "Pirate Hideout Piratenversteck Escondite pirata",
-      "file": "models/grab3d-pirate-hideout.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        9.483755111694336,
-        5.407090187072754,
-        6.679154872894287
-      ],
-      "geometry_count": 5,
-      "bytes": 2362620,
-      "sha256": "15548b3c753ce9882ad4aed459c8454d70b26415d41fbd4da1a5f18b28e8fb74",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "grab3d-tunnel-portal",
-      "name": "Railway Tunnel Portal Tunnelportal Boca de túnel ferroviario",
-      "file": "models/grab3d-tunnel-portal.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        10.5,
-        8.507499694824219,
-        8.0
-      ],
-      "geometry_count": 2,
-      "bytes": 2969580,
-      "sha256": "4afc9f07ad2fb82bd5252f7df849f0da09960f9230b205ca0fbbced08837cfa3",
-      "architectural_candidate": false
-    },
-    {
-      "asset_id": "3dassets-alpine-snow-village-windswept-mountain-pine-e7302601",
-      "name": "Windswept Mountain Pine (Alpine Snow Village)",
-      "file": "models/3dassets-alpine-snow-village-windswept-mountain-pine-e7302601.glb",
-      "category": "nature",
-      "style_group": "environmental",
-      "dimensions_m": [
-        2.2999890681556963,
-        3.9000000953674316,
-        1.3781806791782714
-      ],
-      "geometry_count": 3,
-      "bytes": 73696,
-      "sha256": "2ae5b2b2be36c624f5ad9cb9a22ae79dd86a461ace9a151c47d84a661d9444fa",
+      "bytes": 544188,
+      "sha256": "70cae3568dfade5ca57aecf1e437f710f818f1c21d32d19a709deea75198dd90",
       "architectural_candidate": false
     }
   ],
