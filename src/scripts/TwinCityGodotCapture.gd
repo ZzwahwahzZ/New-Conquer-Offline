@@ -85,7 +85,7 @@ func _capture() -> void:
   "plaza_diameter_m":56,
   "palace_dimensions_m":"85x75",
   "blueprint":"GODOT_MASTER_ARCHITECTURAL_BLUEPRINT; four-pass CAD grid; AABB ground snap; warm imperial palette",
-  "street_camera_clearance_required_m":6.0,
+  "street_camera_clearance_m":6.0,
   "world_m":800,
   "screenshot_width":1280,
   "screenshot_height":720,
