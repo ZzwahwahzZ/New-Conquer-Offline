@@ -14,7 +14,6 @@ func _run_audit() -> void:
 	await process_frame
 	var null_mesh_pruned := _remove_invalid_mesh_nodes(city)
 	print("TWIN_CITY_NULL_MESH_AUDIT_PRUNE: removed_invalid_rid_nodes=%d" % null_mesh_pruned)
-	_probe_mesh_surface_counts(city)
 	var buildings := get_nodes_in_group("twin_city_building")
 	var counts := {"residential": 0, "commercial": 0, "service": 0, "landmark": 0, "palace": 0, "pagoda": 0}
 	var snap_counts := {"residential": 0, "commercial": 0, "service": 0, "landmark": 0, "palace": 0, "pagoda": 0}
@@ -146,31 +145,3 @@ func _remove_invalid_mesh_nodes(root_node: Node) -> int:
 		else:
 			removed += _remove_invalid_mesh_nodes(child)
 	return removed
-
-func _probe_mesh_surface_counts(root_node: Node) -> void:
-	var stack: Array[Node] = [root_node]
-	var probes := 0
-	var zero_surface_nodes: Array[String] = []
-	while not stack.is_empty():
-		var current: Node = stack.pop_back()
-		for child in current.get_children():
-			stack.append(child)
-		if current is MeshInstance3D:
-			var mesh := (current as MeshInstance3D).mesh
-			if mesh != null and mesh.get_rid().is_valid():
-				print("TWIN_CITY_MESH_SURFACE_PROBE_BEGIN: %s" % str(current.get_path()))
-				var surfaces := mesh.get_surface_count()
-				print("TWIN_CITY_MESH_SURFACE_PROBE_END: %s surfaces=%d" % [str(current.get_path()), surfaces])
-				probes += 1
-				if surfaces <= 0:
-					zero_surface_nodes.append(str(current.get_path()))
-		elif current is MultiMeshInstance3D:
-			var multi_node := current as MultiMeshInstance3D
-			if multi_node.multimesh != null and multi_node.multimesh.mesh != null and multi_node.multimesh.mesh.get_rid().is_valid():
-				print("TWIN_CITY_MULTIMESH_SURFACE_PROBE_BEGIN: %s" % str(current.get_path()))
-				var surfaces := multi_node.multimesh.mesh.get_surface_count()
-				print("TWIN_CITY_MULTIMESH_SURFACE_PROBE_END: %s surfaces=%d" % [str(current.get_path()), surfaces])
-				probes += 1
-				if surfaces <= 0:
-					zero_surface_nodes.append(str(current.get_path()))
-	print("TWIN_CITY_SURFACE_PROBE_SUMMARY: probes=%d zero_surface_nodes=%d paths=%s" % [probes, zero_surface_nodes.size(), str(zero_surface_nodes)])
