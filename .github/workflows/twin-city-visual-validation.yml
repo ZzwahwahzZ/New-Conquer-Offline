@@ -152,7 +152,8 @@ jobs:
                       item["validation"]["bounds_source"] = "trimesh GLB scene geometry"
           approved["source_repo"] = "ZzwahwahzZ/clash-of-legends-terrain-assets"
           approved["source_manifest_verified_glb_count"] = len(refreshed)
-          approved["verified_glb_count"] = imperial_count
+          approved["verified_glb_count"] = len(refreshed)
+          approved["verified_imperial_chinese_glb_count"] = imperial_count
           approved["twin_city_approved_asset_count"] = imperial_count
           approved["twin_city_selected_asset_count"] = len(selected_records)
           approved["twin_city_architecture_kit"] = selected_records
@@ -169,13 +170,12 @@ jobs:
               "restored_glb_models":len(geometry_audit),
               "restored_files":len(geometry_audit),
               "restored_pbr_textures":0,
-              "verified_twin_city_architectural_assets":approved["verified_glb_count"],
+              "verified_twin_city_architectural_assets":imperial_count,
               "files":[{"name":x.get("name"),"style_group":x.get("style_group"),"file":x.get("file"),"sha256":x.get("sha256"),"bytes":x.get("bytes"),"dimensions_m":x.get("dimensions_m")} for x in geometry_audit]
           }
           Path("prototypes/twin_city/reports/twin_city_asset_restore.json").write_text(json.dumps(restore_report, ensure_ascii=False, indent=2) + "\n")
           architectural_count = sum(1 for item in geometry_audit if item["architectural_candidate"])
-          verified_count = approved["verified_glb_count"]
-          print(f"HF_ASSET_RESTORE_PASS: original_models={len(refreshed)} selected_architecture_components={len(selected_records)} approved_imperial_chinese={verified_count} total_geometry_verified={len(geometry_audit)} candidates={architectural_count}")
+          print(f"HF_ASSET_RESTORE_PASS: original_models={len(refreshed)} selected_architecture_components={len(selected_records)} approved_imperial_chinese={imperial_count} total_geometry_verified={len(geometry_audit)} candidates={architectural_count}")
           PY
 
       - name: Publish verified approval manifest to the same Hugging Face dataset
