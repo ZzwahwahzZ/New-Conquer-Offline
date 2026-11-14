@@ -564,6 +564,8 @@ static func _remove_invalid_mesh_nodes(root: Node) -> int:
 			var mesh_node := child as MeshInstance3D
 			var mesh := mesh_node.mesh
 			invalid_mesh = mesh == null or not mesh.get_rid().is_valid()
+			if not invalid_mesh:
+				invalid_mesh = mesh.get_aabb().size.length_squared() <= 0.00000001
 			if not invalid_mesh and mesh_node.is_inside_tree():
 				invalid_mesh = not mesh_node.get_base().is_valid()
 		elif child is MultiMeshInstance3D:
@@ -572,6 +574,8 @@ static func _remove_invalid_mesh_nodes(root: Node) -> int:
 			if not invalid_mesh:
 				var multi_mesh := multi_node.multimesh.mesh
 				invalid_mesh = multi_mesh == null or not multi_mesh.get_rid().is_valid()
+				if not invalid_mesh:
+					invalid_mesh = multi_node.multimesh.instance_count <= 0 or multi_node.multimesh.get_aabb().size.length_squared() <= 0.00000001
 			if not invalid_mesh and multi_node.is_inside_tree():
 				invalid_mesh = not multi_node.get_base().is_valid()
 		if invalid_mesh:
