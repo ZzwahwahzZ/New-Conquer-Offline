@@ -432,7 +432,7 @@ def main():
   try:
    prior=json.loads(existing_manifest.read_text(encoding="utf-8"))
    existing_assets=prior.get("assets",[])
-   DISC.extend(x for x in existing_assets if isinstance(x,dict) and x.get("id"))
+   DISC.extend({**x,"id":x.get("id") or x.get("asset_id")} for x in existing_assets if isinstance(x,dict) and (x.get("id") or x.get("asset_id")))
    print("EXISTING_ASSET_IDS_LOADED",len(existing_assets))
   except Exception as exc:
    raise RuntimeError("Cannot safely deduplicate against existing manifest: "+str(exc))
