@@ -372,7 +372,7 @@ def discover_github_open_assets(session, fetch, safe, sha, RAW, DISC, DOWN, ERR,
     allowed_spdx = {
         "CC0-1.0", "CC-BY-4.0", "CC-BY-3.0", "CC-BY-SA-4.0", "CC-BY-SA-3.0",
         "MIT", "BSD-2-Clause", "BSD-3-Clause", "Zlib", "WTFPL", "Unlicense",
-        "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only", "GPL-3.0-or-later",
+        "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only", "GPL-3.0-or-later", "Public Domain",
     }
     queries = (
         "pagoda 3d assets",
@@ -417,6 +417,8 @@ def discover_github_open_assets(session, fetch, safe, sha, RAW, DISC, DOWN, ERR,
             seen_repos.add(full_name)
             license_info = repository.get("license") or {}
             spdx = str(license_info.get("spdx_id") or "").strip()
+            if spdx in ("", "NOASSERTION") and "public domain" in str(license_info.get("name") or "").lower():
+                spdx = "Public Domain"
             if spdx not in allowed_spdx:
                 SKIPPED.append({"asset":"GitHub:"+full_name,"stage":"license",
                                 "reason":"Repository license is missing or outside the explicit allow-list: "+(spdx or "NOASSERTION")})
