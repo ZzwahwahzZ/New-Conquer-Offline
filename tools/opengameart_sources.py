@@ -238,7 +238,7 @@ def discover_quaternius(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                     "authors":{"creator":"Quaternius"},
                     "matches":[(pack["category"], pack["term"])],
                     "pack":pack["slug"],
-                    "candidate_only": pack["category"] == "architecture",
+                    "candidate_only": True,
                 }
                 ext = Path(urlparse(url).path).suffix.lower() or (".zip" if "drive.google.com" in url else ".zip")
                 raw = fetch(url, RAW / "quaternius" / (safe(aid) + ext))
