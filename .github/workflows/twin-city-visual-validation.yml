@@ -75,6 +75,14 @@ jobs:
             exit 1
           fi
 
+      - name: Prebuild material-batched Imperial China palace scene
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          godot --headless --path . --script res://src/scripts/TwinCityAssetBuild.gd 2>&1 | tee prototypes/twin_city/reports/imperial_kit_build.log
+          test -s assets/environment/architecture/imperial_china_palace_and_garden_merged.scn
+          godot --headless --path . --editor --import --quit 2>&1 | tee -a prototypes/twin_city/reports/godot_import.log
+
       - name: Inspect imported Imperial China model library
         shell: bash
         run: |
@@ -149,6 +157,6 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f prototypes/twin_city/captures/*.png prototypes/twin_city/reports/*.json prototypes/twin_city/reports/*.log
+          git add -f assets/environment/architecture/imperial_china_palace_and_garden_merged.scn prototypes/twin_city/captures/*.png prototypes/twin_city/reports/*.json prototypes/twin_city/reports/*.log
           git diff --cached --quiet || git commit -m "Add actual Twin City Godot 4.3 visual proof"
           git push origin "HEAD:$GITHUB_REF_NAME"
