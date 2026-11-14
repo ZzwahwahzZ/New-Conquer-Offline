@@ -89,7 +89,7 @@ jobs:
           set -Eeuo pipefail
           godot --headless --path . --script res://src/scripts/TwinCityAssetInspection.gd 2>&1 | tee prototypes/twin_city/reports/imperial_china_asset_inventory.log
 
-      - name: Run 150-180 structure acceptance audit
+      - name: Run 220-260 structure acceptance audit
         shell: bash
         run: |
           set -Eeuo pipefail
@@ -129,7 +129,7 @@ jobs:
                   print(f"VERIFIED {name}: {image.size}, {path.stat().st_size} bytes")
           PY
 
-      - name: Verify 150-180 count, six images and performance telemetry
+      - name: Verify 220-260 count, six images and performance telemetry
         shell: bash
         run: |
           python3 - <<'PY'
@@ -137,8 +137,8 @@ jobs:
           from pathlib import Path
           report = json.loads(Path("prototypes/twin_city/reports/twin_city_build_report.json").read_text())
           count = report.get("buildings", 0)
-          if not 150 <= count <= 180:
-              raise SystemExit(f"Expected 150-180 buildings, got {count}")
+          if not 220 <= count <= 260:
+              raise SystemExit(f"Expected 220-260 buildings, got {count}")
           if report.get("screenshots_created") != 6:
               raise SystemExit("Six Godot screenshots were not captured")
           if not report.get("fps_target_30_pass", False):
