@@ -145,10 +145,29 @@ jobs:
         with:
           name: TwinCity-Godot43-Visual-Proof
           path: |
+            assets/environment/architecture/imperial_china_palace_and_garden_merged.scn
             prototypes/twin_city/captures/
             prototypes/twin_city/reports/
           if-no-files-found: warn
           retention-days: 30
+
+      - name: Preserve prebuilt merged palace kit on isolated branch
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          asset="assets/environment/architecture/imperial_china_palace_and_garden_merged.scn"
+          if [ -s "$asset" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -f "$asset"
+            if ! git diff --cached --quiet; then
+              git commit -m "Add prebuilt Imperial China palace scene"
+              git push origin "HEAD:$GITHUB_REF_NAME"
+            fi
+          else
+            echo "No prebuilt merged palace scene to preserve."
+          fi
 
       - name: Commit only Twin City proof outputs to this isolated branch
         if: success()
