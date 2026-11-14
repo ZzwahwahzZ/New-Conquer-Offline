@@ -62,17 +62,25 @@ static func _build_palace(parent: Node3D, source: Node3D) -> void:
 	var platform := _spawn_glb_node(parent, BUILDING_BASE, "ImperialPalace_StoneTerrace_85x75x5", Vector3(0.0, 0.0, -145.0), 0.0, 1.0, "")
 	if platform != null:
 		_normalize_node_to_dimensions(platform, Vector3(85.0, 5.0, 75.0))
-	var palace := source.duplicate(true) as Node3D
-	if palace == null:
-		push_error("TWIN_CITY_GLB_FAIL: palace compound clone failed; procedural fallback is forbidden")
-		return
-	palace.name = "ImperialPalace_85x75"
-	palace.position = Vector3(0.0, 5.0, -145.0)
-	palace.rotation = Vector3.ZERO
-	palace.scale = Vector3.ONE
-	parent.add_child(palace)
-	_normalize_node_to_dimensions(palace, Vector3(85.0, 27.0, 75.0))
-	palace.add_to_group("twin_city_imperial_source_compound")
+	var main_hall_name := "ImperialPalace_MainHall_27m"
+	if _clone_source_model(parent, source, "130-ceremonial-hall", main_hall_name, Vector3(0.0, 5.0, -151.0), 0.0, 1.0, "palace"):
+		var main_hall := parent.get_node_or_null(NodePath(main_hall_name)) as Node3D
+		if main_hall != null:
+			_normalize_node_to_dimensions(main_hall, Vector3(48.0, 27.0, 36.0))
+	for wing_index in range(2):
+		var wing_x := -27.0 if wing_index == 0 else 27.0
+		var wing_name := "ImperialPalace_SideWing_%02d" % wing_index
+		if _clone_source_model(parent, source, "134-water-pavilion", wing_name, Vector3(wing_x, 5.0, -143.0), 0.0, 1.0, "palace"):
+			var wing := parent.get_node_or_null(NodePath(wing_name)) as Node3D
+			if wing != null:
+				_normalize_node_to_dimensions(wing, Vector3(18.0, 16.0, 18.0))
+	var stairs := _spawn_glb_node(parent, ENTRANCE_STAIRS, "ImperialPalace_CentralStoneStair_18m", Vector3(0.0, 2.5, -103.0), 0.0, 1.0, "")
+	if stairs != null:
+		_normalize_node_to_dimensions(stairs, Vector3(18.0, 5.0, 12.0))
+	for rail_index in range(4):
+		var rail_pos := Vector3(-38.0 + float(rail_index) * 25.0, 5.0, -181.0)
+		_clone_source_model(parent, source, "067-palace-wall-end-pier", "ImperialPalace_TerraceRailPier_%02d" % rail_index, rail_pos, 0.0, 1.0, "")
+	print("TWIN_CITY_IMPERIAL_PALACE_PASS: 85x75m terrace + 27m GLB ceremonial hall + 2 normalized wings + 18m stair; gold roof palette")
 
 static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 	var fort := Node3D.new()
@@ -220,7 +228,7 @@ static func _build_plaza(parent: Node3D, source: Node3D) -> void:
 	var plaza := Node3D.new()
 	plaza.name = "CircularImperialPlaza_Diameter56m"
 	parent.add_child(plaza)
-	var pagoda := _spawn_glb_node(plaza, PAGODA, "CentralPagoda_22m", Vector3(0.0, 1.2, 0.0), 0.0, 1.0, "landmark")
+	var pagoda := _spawn_glb_node(plaza, PAGODA, "CentralPagoda_22m", Vector3(0.0, 1.2, 0.0), 0.0, 1.0, "pagoda")
 	if pagoda != null:
 		_normalize_node_to_dimensions(pagoda, Vector3(14.0, 22.0, 14.0))
 	var plinth := _spawn_glb_node(plaza, BUILDING_BASE, "CentralPagoda_StonePlinth_1p2m", Vector3(0.0, 0.6, 0.0), 0.0, 1.0, "")
@@ -469,7 +477,7 @@ static func _apply_imperial_palette(root: Node3D) -> void:
 		var lower_name := mesh_node.name.to_lower()
 		var tint_color := Color("#B89F82")
 		if lower_name.contains("roof") or lower_name.contains("eave"):
-			tint_color = Color("#2E3238")
+			tint_color = Color("#D9A136") if root.name.contains("ImperialPalace") else Color("#2E3238")
 		elif lower_name.contains("wood") or lower_name.contains("column") or lower_name.contains("beam"):
 			tint_color = Color("#5C3A21")
 		elif lower_name.contains("gold") or lower_name.contains("trim"):
