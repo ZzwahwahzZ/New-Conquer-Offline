@@ -39,7 +39,7 @@ jobs:
           import hashlib, json, shutil, urllib.request
           from pathlib import Path
           from huggingface_hub import HfApi
-          base = "https://huggingface.co/datasets/ZzwahwahzZ/clash-of-legends-terrain-assets/resolve/main/assets/wuxia_imperial_pack/"
+          base = "https://huggingface.co/datasets/ZzwahwahzZ/clash-of-legends-terrain-assets/resolve/main/"
           root = Path("assets/wuxia_imperial_pack")
           root.mkdir(parents=True, exist_ok=True)
           Path("prototypes/twin_city/reports").mkdir(parents=True, exist_ok=True)
@@ -47,23 +47,30 @@ jobs:
               request = urllib.request.Request(url + ("&" if "?" in url else "?") + "download=true", headers={"User-Agent":"TwinCity-HF-Asset-Restore/1.0"})
               with urllib.request.urlopen(request, timeout=180) as response:
                   return response.read()
-          source_manifest = json.loads(fetch(base + "manifest.json"))
-          approved = json.loads(fetch(base + "imperial_approved_assets.json"))
+          source_manifest = json.loads(fetch(base + "assets/wuxia_imperial_pack/manifest.json"))
+          approved = json.loads(fetch(base + "assets/wuxia_imperial_pack/imperial_approved_assets.json"))
           manifest_by_file = {item.get("file"): item for item in source_manifest.get("assets", []) if item.get("file")}
           repo_files = HfApi().list_repo_files(repo_id="ZzwahwahzZ/clash-of-legends-terrain-assets", repo_type="dataset")
           model_paths = sorted(path for path in repo_files if path.startswith("assets/wuxia_imperial_pack/models/") and path.lower().endswith(".glb"))
+          candidate_paths = sorted(path for path in repo_files if path.startswith("assets/wuxia_imperial_pack/candidates/models/") and path.lower().endswith(".glb"))
+          curated_nature_paths = sorted(path for path in repo_files if path.startswith("settlement-terrain-source/curated-glb/nature/") and path.lower().endswith(".glb"))
           if len(model_paths) != 99:
-              raise SystemExit(f"Expected all 99 actual GLB files in Hugging Face models folder, found {len(model_paths)}")
+              raise SystemExit(f"Expected all 99 original Imperial China GLBs, found {len(model_paths)}")
           selected = []
-          for repo_path in model_paths:
-              relative = repo_path.split("assets/wuxia_imperial_pack/", 1)[1]
+          for repo_path in model_paths + candidate_paths + curated_nature_paths:
+              if repo_path.startswith("assets/wuxia_imperial_pack/"):
+                  relative = repo_path.split("assets/wuxia_imperial_pack/", 1)[1]
+              else:
+                  relative = "external/nature/" + Path(repo_path).name
               item = dict(manifest_by_file.get(relative, {}))
               item.setdefault("file", relative)
               item.setdefault("name", Path(relative).stem)
-              item.setdefault("category", "unclassified")
-              item.setdefault("style_group", "unclassified")
+              item.setdefault("asset_id", Path(relative).stem)
+              item.setdefault("category", "environmental_candidate")
+              item.setdefault("style_group", "source_candidate")
+              item["source_repo_path"] = repo_path
               selected.append(item)
-          print(f"HF_MODELS_FOLDER_INVENTORY: {len(selected)} actual GLB files; imported without name, dimension, or style-group exclusions")
+          print(f"HF_COMPLETE_INVENTORY: imperial={len(model_paths)} nature_and_street_candidates={len(candidate_paths)} curated_nature={len(curated_nature_paths)} total={len(selected)}; no name/dimension/style exclusions")
           geometry_audit = []
           refreshed = {}
           for index, item in enumerate(selected, 1):
@@ -72,7 +79,7 @@ jobs:
                   raise SystemExit(f"Unsafe GLB path in manifest: {relative}")
               target = root / relative
               target.parent.mkdir(parents=True, exist_ok=True)
-              payload = fetch(base + relative)
+              payload = fetch(base + item["source_repo_path"])
               if len(payload) <= 1024 or payload[:4] != b"glTF":
                   raise SystemExit(f"Invalid GLB header/size: {relative}, bytes={len(payload)}")
               digest = hashlib.sha256(payload).hexdigest()
@@ -121,20 +128,21 @@ jobs:
                   "role":role
               })
           active_root = Path("assets/twin_city_selected")
-          active_models = active_root / "models"
-          active_models.mkdir(parents=True, exist_ok=True)
+          active_root.mkdir(parents=True, exist_ok=True)
           for item in active_assets:
               source_path = root / item["file"]
-              destination = active_models / Path(item["file"]).name
+              destination = active_root / item["file"]
+              destination.parent.mkdir(parents=True, exist_ok=True)
               shutil.copy2(source_path, destination)
               copied_sha = hashlib.sha256(destination.read_bytes()).hexdigest()
               if copied_sha != item["sha256"]:
                   raise SystemExit(f"Active GLB copy SHA-256 mismatch: {destination}")
               item["active_project_path"] = str(destination)
           for record in selected_records:
-              record["active_project_path"] = str(active_models / Path(record["file"]).name)
+              record["active_project_path"] = str(active_root / record["file"])
           (active_root / "selection_manifest.json").write_text(json.dumps({"selected_count":len(selected_records),"assets":selected_records}, ensure_ascii=False, indent=2) + "\n")
-          (root / "models" / ".gdignore").write_text("# Source archive: all 99 original GLBs are copied into assets/twin_city_selected/models for the Twin City build.\\n")
+          (root / "models" / ".gdignore").write_text("# Source archive: active assets are imported from assets/twin_city_selected.\\n")
+          (root / "candidates" / "models" / ".gdignore").write_text("# Source candidate archive: active assets are imported from assets/twin_city_selected.\\n")
           imperial_count = sum(1 for item in selected if item.get("style_group") == "imperial_chinese")
           if imperial_count != 46:
               raise SystemExit(f"Expected 46 original imperial_chinese GLBs, found {imperial_count}")
@@ -157,16 +165,19 @@ jobs:
           approved["twin_city_approved_asset_count"] = len(selected_records)
           approved["twin_city_architectural_style_asset_count"] = imperial_count
           approved["twin_city_selected_asset_count"] = len(selected_records)
+          approved["twin_city_candidate_asset_count"] = len(candidate_paths) + len(curated_nature_paths)
           approved["twin_city_architecture_kit"] = selected_records
           approved["twin_city_selected_assets"] = selected_records
-          (root / "twin_city_all_99_assets.json").write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","selected_count":len(selected_records),"verified_source_glb_count":len(refreshed),"assets":selected_records}, ensure_ascii=False, indent=2) + "\n")
+          (root / "twin_city_restored_glb_assets.json").write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","selected_count":len(selected_records),"verified_source_glb_count":len(refreshed),"assets":selected_records}, ensure_ascii=False, indent=2) + "\n")
           audit_path = Path("prototypes/twin_city/reports/glb_geometry_audit.json")
           audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","original_models_folder_glb_count":len(selected),"restored_glb_asset_count":len(selected_records),"total_geometry_verified_glb_count":len(geometry_audit),"assets":geometry_audit,"architectural_candidate_count":sum(x["architectural_candidate"] for x in geometry_audit)}, ensure_ascii=False, indent=2) + "\n")
           (root / "manifest.json").write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2) + "\n")
           (root / "imperial_approved_assets.json").write_text(json.dumps(approved, ensure_ascii=False, indent=2) + "\n")
           restore_report = {
               "dataset":"ZzwahwahzZ/clash-of-legends-terrain-assets",
-              "original_models_folder_glb_count":len(refreshed),
+              "original_models_folder_glb_count":len(model_paths),
+              "nature_and_street_candidate_glb_count":len(candidate_paths),
+              "curated_nature_glb_count":len(curated_nature_paths),
               "restored_glb_asset_count":len(selected_records),
               "active_godot_glb_count":len(selected_records),
               "restored_glb_models":len(geometry_audit),
@@ -364,6 +375,7 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add -f "$asset"
             if [ -d assets/wuxia_imperial_pack/models ]; then git add -f assets/wuxia_imperial_pack/models/; fi
+          if [ -d assets/wuxia_imperial_pack/candidates/models ]; then git add -f assets/wuxia_imperial_pack/candidates/models/; fi
             if [ -d assets/twin_city_selected ]; then git add -f assets/twin_city_selected/; fi
             if [ -f assets/wuxia_imperial_pack/manifest.json ]; then git add -f assets/wuxia_imperial_pack/manifest.json; fi
             if [ -f assets/wuxia_imperial_pack/imperial_approved_assets.json ]; then git add -f assets/wuxia_imperial_pack/imperial_approved_assets.json; fi
