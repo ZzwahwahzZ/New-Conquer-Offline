@@ -30,6 +30,41 @@ jobs:
       - name: Checkout isolated prototype branch
         uses: actions/checkout@v4
 
+      - name: Restore 63 approved original GLB assets
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 - <<'PY'
+          import hashlib, json, urllib.request
+          from pathlib import Path
+          manifest = json.loads(Path("assets/wuxia_imperial_pack/imperial_approved_assets.json").read_text())
+          selected = []
+          for category, limit in (("palaces_and_temples", 4), ("houses_and_shops", 23), ("gates_walls_bridges", 23), ("nature", 13)):
+              entries = manifest["categories"][category]["assets"]
+              if len(entries) < limit:
+                  raise SystemExit(f"Approved category {category} has only {len(entries)} assets; expected {limit}")
+              selected.extend(entries[:limit])
+          if len(selected) != 63:
+              raise SystemExit(f"Expected exactly 63 approved GLB records, got {len(selected)}")
+          for index, item in enumerate(selected, 1):
+              relative = item["file"]
+              if not relative.lower().endswith(".glb"):
+                  raise SystemExit(f"Non-GLB asset in approved selection: {relative}")
+              target = Path("assets/wuxia_imperial_pack") / relative
+              target.parent.mkdir(parents=True, exist_ok=True)
+              payload = target.read_bytes() if target.exists() else b""
+              if len(payload) != item["bytes"] or hashlib.sha256(payload).hexdigest() != item["sha256"]:
+                  request = urllib.request.Request(item["direct_download_url"], headers={"User-Agent":"TwinCity-Asset-Restore/1.0"})
+                  with urllib.request.urlopen(request, timeout=90) as response:
+                      payload = response.read()
+                  digest = hashlib.sha256(payload).hexdigest()
+                  if len(payload) != item["bytes"] or digest != item["sha256"] or payload[:4] != b"glTF":
+                      raise SystemExit(f"GLB integrity validation failed: {relative} bytes={len(payload)} sha256={digest}")
+                  target.write_bytes(payload)
+              print(f"RESTORED_APPROVED_GLB {index}/63 {relative} {item['bytes']} bytes")
+          print("APPROVED_GLB_RESTORE_PASS: 63 original GLB assets verified against manifest SHA-256")
+          PY
+
       - name: Install Godot 4.3 and Xvfb
         shell: bash
         run: |
@@ -172,7 +207,7 @@ jobs:
           if [ -s "$asset" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -f "$asset"
+            git add -f "$asset" assets/wuxia_imperial_pack/models/
             if ! git diff --cached --quiet; then
               git commit -m "Add prebuilt Imperial China palace scene"
               git push origin "HEAD:$GITHUB_REF_NAME"
