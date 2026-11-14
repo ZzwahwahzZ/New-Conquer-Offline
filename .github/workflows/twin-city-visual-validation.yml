@@ -220,7 +220,7 @@ jobs:
           if [ -s "$asset" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -f "$asset" assets/wuxia_imperial_pack/models/ assets/wuxia_imperial_pack/manifest.json assets/wuxia_imperial_pack/imperial_approved_assets.json
+            git add -f "$asset"\n            if [ -d assets/wuxia_imperial_pack/models ]; then git add -f assets/wuxia_imperial_pack/models/; fi\n            if [ -f assets/wuxia_imperial_pack/manifest.json ]; then git add -f assets/wuxia_imperial_pack/manifest.json; fi\n            if [ -f assets/wuxia_imperial_pack/imperial_approved_assets.json ]; then git add -f assets/wuxia_imperial_pack/imperial_approved_assets.json; fi
             if ! git diff --cached --quiet; then
               git commit -m "Add prebuilt Imperial China palace scene"
               git push origin "HEAD:$GITHUB_REF_NAME"
