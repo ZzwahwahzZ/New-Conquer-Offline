@@ -14,11 +14,14 @@ func _run_audit() -> void:
 	await process_frame
 	var buildings := get_nodes_in_group("twin_city_building")
 	var counts := {"residential": 0, "commercial": 0, "service": 0, "landmark": 0, "palace": 0, "pagoda": 0}
+	var snap_counts := {"residential": 0, "commercial": 0, "service": 0, "landmark": 0, "palace": 0, "pagoda": 0}
 	var null_mesh_nodes := 0
+	var null_mesh_paths: Array[String] = []
 	var procedural_building_primitives := 0
 	var normalized_buildings := 0
 	var ground_snapped_buildings := 0
 	var max_ground_snap_error := 0.0
+	var footprint_violations := 0
 	var mesh_surface_total := 0
 	for building in buildings:
 		var category := str(building.get_meta("twin_city_category", ""))
@@ -28,7 +31,19 @@ func _run_audit() -> void:
 			normalized_buildings += 1
 		if building.has_meta("twin_city_ground_snap_y"):
 			ground_snapped_buildings += 1
+			var target_y := float(building.get_meta("twin_city_ground_snap_y", 999.0))
+			var expected_y := 0.0
+			if category == "palace":
+				expected_y = 5.0
+			elif category == "pagoda":
+				expected_y = 1.2
+			if snap_counts.has(category) and absf(target_y - expected_y) <= 0.001:
+				snap_counts[category] += 1
 			max_ground_snap_error = maxf(max_ground_snap_error, absf(float(building.get_meta("twin_city_ground_snap_error_m", 999.0))))
+		if category in ["residential", "commercial", "service", "landmark"]:
+			var footprint: Vector3 = building.get_meta("twin_city_target_dimensions_m", Vector3.ZERO)
+			if footprint.x > 9.001 or footprint.z > 16.001:
+				footprint_violations += 1
 		var stack: Array[Node] = [building]
 		while not stack.is_empty():
 			var current: Node = stack.pop_back()
@@ -36,20 +51,29 @@ func _run_audit() -> void:
 				stack.append(child)
 			if current is MeshInstance3D:
 				var mesh_node := current as MeshInstance3D
-				if mesh_node.mesh == null or mesh_node.mesh.get_surface_count() <= 0:
-					null_mesh_nodes += 1
-				else:
+				if mesh_node.mesh != null:
 					mesh_surface_total += mesh_node.mesh.get_surface_count()
 					if mesh_node.mesh is PrimitiveMesh:
 						procedural_building_primitives += 1
 			elif current is MultiMeshInstance3D:
 				var multi_node := current as MultiMeshInstance3D
-				if multi_node.multimesh == null or multi_node.multimesh.mesh == null or multi_node.multimesh.mesh.get_surface_count() <= 0:
-					null_mesh_nodes += 1
-				else:
+				if multi_node.multimesh != null and multi_node.multimesh.mesh != null:
 					mesh_surface_total += multi_node.multimesh.mesh.get_surface_count()
 					if multi_node.multimesh.mesh is PrimitiveMesh:
 						procedural_building_primitives += 1
+	var global_stack: Array[Node] = [city]
+	while not global_stack.is_empty():
+		var current: Node = global_stack.pop_back()
+		for child in current.get_children():
+			global_stack.append(child)
+		if current is MeshInstance3D and (current as MeshInstance3D).mesh == null:
+			null_mesh_nodes += 1
+			null_mesh_paths.append(str(current.get_path()))
+		elif current is MultiMeshInstance3D:
+			var multi_node := current as MultiMeshInstance3D
+			if multi_node.multimesh == null or multi_node.multimesh.mesh == null:
+				null_mesh_nodes += 1
+				null_mesh_paths.append(str(current.get_path()))
 	var wall_segments := get_nodes_in_group("twin_city_wall_segment")
 	var wall_max_ground_error := 0.0
 	for wall_segment in wall_segments:
@@ -67,16 +91,20 @@ func _run_audit() -> void:
 	var total := buildings.size()
 	var valid := total == 244
 	valid = valid and counts.residential == 120 and counts.commercial == 48 and counts.service == 56 and counts.landmark == 16 and counts.palace == 3 and counts.pagoda == 1
-	valid = valid and normalized_buildings >= 244
-	valid = valid and ground_snapped_buildings == 240 and max_ground_snap_error <= 0.001
+	valid = valid and normalized_buildings == 244
+	valid = valid and ground_snapped_buildings == 244 and max_ground_snap_error <= 0.001
+	valid = valid and snap_counts.residential + snap_counts.commercial + snap_counts.service + snap_counts.landmark == 240
+	valid = valid and snap_counts.palace == 3 and snap_counts.pagoda == 1
+	valid = valid and footprint_violations == 0
 	valid = valid and wall_segments.size() == 108 and wall_max_ground_error <= 0.001
 	valid = valid and null_mesh_nodes == 0 and procedural_building_primitives == 0 and mesh_surface_total > 0
 	valid = valid and plaza != null and palace != null and moat != null and pagoda != null
 	valid = valid and paving_instances >= 14000
-	print("TWIN_CITY_ACCEPTANCE_AUDIT total=%d categories=%s normalized=%d ground_snapped=%d max_ground_error_m=%.6f wall_segments=%d wall_max_ground_error_m=%.6f null_meshes=%d procedural_building_primitives=%d surfaces=%d paving_instances=%d plaza=%s palace=%s moat=%s pagoda=%s" % [total, str(counts), normalized_buildings, ground_snapped_buildings, max_ground_snap_error, wall_segments.size(), wall_max_ground_error, null_mesh_nodes, procedural_building_primitives, mesh_surface_total, paving_instances, str(plaza != null), str(palace != null), str(moat != null), str(pagoda != null)])
+	print("TWIN_CITY_NULL_MESH_AUDIT null_meshes=%d paths=%s" % [null_mesh_nodes, str(null_mesh_paths)])
+	print("TWIN_CITY_ACCEPTANCE_AUDIT total=%d categories=%s normalized=%d ground_snapped=%d snap_counts=%s max_ground_error_m=%.6f footprint_violations=%d wall_segments=%d wall_max_ground_error_m=%.6f null_meshes=%d procedural_building_primitives=%d surfaces=%d paving_instances=%d plaza=%s palace=%s moat=%s pagoda=%s" % [total, str(counts), normalized_buildings, ground_snapped_buildings, str(snap_counts), max_ground_snap_error, footprint_violations, wall_segments.size(), wall_max_ground_error, null_mesh_nodes, procedural_building_primitives, mesh_surface_total, paving_instances, str(plaza != null), str(palace != null), str(moat != null), str(pagoda != null)])
 	if not valid:
-		push_error("TWIN_CITY_AUDIT_FAIL: 240 district structures, 108 grounded wall sections, AABB normalization, GLB-only structures, paving or landmark acceptance gate failed")
+		push_error("TWIN_CITY_AUDIT_FAIL: expected 244 structures, 240 district ground snaps at Y=0, 3 palace snaps at Y=5, 1 pagoda snap at Y=1.2, 108 wall snaps, valid footprints, and zero null meshes")
 		quit(1)
 		return
-	print("TWIN_CITY_AUDIT_PASS: 240 district GLB-assembled structures grounded at Y=0 + 108 grounded wall sections + 3 palace components and 1 pagoda retain authored elevations; 0 procedural primitives in buildings; 0 null meshes")
+	print("TWIN_CITY_AUDIT_PASS: 244 structures; district=240@Y0; palace=3@Y5; pagoda=1@Y1.2; walls=108@Y0; footprint caps=9x16m; 0 null meshes; 0 procedural building primitives")
 	quit(0)
