@@ -123,7 +123,7 @@ static func _make_procedural_texture(stone: bool) -> Texture2D:
  var image := Image.create(256,256,false,Image.FORMAT_RGBA8)
  var noise := FastNoiseLite.new()
  noise.seed = 1742 if stone else 8241
- noise.frequency = 0.035 if stone else 0.022
+ noise.frequency = 0.035 if stone else 0.010
  noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
  for y in range(256):
   for x in range(256):
@@ -154,7 +154,7 @@ static func _fallback_ground_material(city: String) -> StandardMaterial3D:
  material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR
  if city == "TwinCity":
   material.albedo_texture = _make_procedural_texture(false)
-  material.uv1_scale = Vector3(38.0,38.0,1.0)
+  material.uv1_scale = Vector3(6.0,6.0,1.0)
  return material
 
 static func _build_flat_twin_city_plaza(parent: Node3D) -> void:
