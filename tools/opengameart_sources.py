@@ -212,9 +212,11 @@ def discover_quaternius(session, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                 parsed = urlparse(absolute)
                 if Path(parsed.path).suffix.lower() in (".zip", ".7z", ".glb", ".gltf", ".blend", ".fbx", ".obj"):
                     candidates.append((absolute, label))
-                match = re.search(r"drive\.google\.com/(?:file/d/|uc\?id=)([A-Za-z0-9_-]+)", absolute)
-                if match:
-                    candidates.append(("https://drive.google.com/uc?export=download&id=" + match.group(1), label or "official pack archive"))
+                if "drive.google.com" in absolute:
+                    match = re.search(r"/file/d/([A-Za-z0-9_-]+)|[?&]id=([A-Za-z0-9_-]+)", absolute)
+                    if match:
+                        file_id = match.group(1) or match.group(2)
+                        candidates.append(("https://drive.google.com/uc?export=download&id=" + file_id, label or "official pack archive"))
             if not candidates:
                 folder = re.search(r"drive/folders/([A-Za-z0-9_-]+)", html)
                 if folder:
