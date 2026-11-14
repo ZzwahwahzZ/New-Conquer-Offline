@@ -568,9 +568,7 @@ static func _remove_invalid_mesh_nodes(root: Node) -> int:
 			invalid_mesh = multi_node.multimesh == null
 			if not invalid_mesh:
 				var multi_mesh := multi_node.multimesh.mesh
-				invalid_mesh = multi_mesh == null or not multi_mesh.get_rid().is_valid()
-				if not invalid_mesh:
-					invalid_mesh = multi_node.multimesh.instance_count <= 0 or multi_node.multimesh.get_aabb().size.length_squared() <= 0.00000001
+				invalid_mesh = multi_mesh == null or not multi_mesh.get_rid().is_valid() or multi_node.multimesh.instance_count <= 0
 			if not invalid_mesh and multi_node.is_inside_tree():
 				invalid_mesh = not multi_node.get_base().is_valid()
 		if invalid_mesh:
