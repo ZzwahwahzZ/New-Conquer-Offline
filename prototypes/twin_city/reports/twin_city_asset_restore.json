@@ -1,975 +1,1200 @@
 {
   "dataset": "ZzwahwahzZ/clash-of-legends-terrain-assets",
-  "approved_manifest_sha256": "0cb7e48d1ee572ead8376c57ca83170b15a25c1a22b0778cba0d19a115ef27e9",
-  "restored_files": 138,
-  "restored_glb_models": 126,
-  "restored_pbr_textures": 12,
+  "original_models_folder_glb_count": 99,
+  "selected_architecture_kit_component_count": 17,
+  "active_godot_glb_count": 17,
+  "restored_glb_models": 99,
+  "restored_files": 99,
+  "restored_pbr_textures": 0,
+  "verified_twin_city_architectural_assets": 46,
   "files": [
     {
-      "name": "Ceremonial Hall (Imperial China Palace and Garden)",
+      "name": "ArchBanner",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-ceremonial-hall-3f95c2b7.glb",
-      "sha256": "b40c7cace84cf016e2334cf47bf211a42be84fa51e1403db1f2300c8d11ca782",
-      "bytes": 699244
+      "file": "models/polygonalmind-lunar-year-001.glb",
+      "sha256": "56b99fcb9a10d23dcf47e06b4b3f9f1709d31f170fd07309f5d4898abe868608",
+      "bytes": 780132,
+      "dimensions_m": [
+        5.198355197906494,
+        5.131055905999837,
+        0.5899398326875049
+      ]
     },
     {
-      "name": "Water Pavilion (Imperial China Palace and Garden)",
+      "name": "Banner",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-water-pavilion-477e41ba.glb",
-      "sha256": "bab023dbb43ed24d45cc1f445519afe55c9b7e549ebabfa5936b1d60b5163ddd",
-      "bytes": 182840
+      "file": "models/polygonalmind-lunar-year-002.glb",
+      "sha256": "e9e1f4cc67edcf419e57cbd73ca028b62c86886ae59946048c957e163e35dade",
+      "bytes": 1009320,
+      "dimensions_m": [
+        2.086370825767517,
+        3.2720689635258764,
+        0.08423848549022542
+      ]
     },
     {
-      "name": "Walled palace courtyard and lotus garden (Imperial China Palace and Garden)",
+      "name": "Bell",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-walled--b51639b8-starter-scene.glb",
-      "sha256": "a8dd1f1be87a140e7c1416d05ba35cf29a4407d4bc52904a5e8478a01a600f7e",
-      "bytes": 4266212
+      "file": "models/polygonalmind-lunar-year-003.glb",
+      "sha256": "10fab84627cdab4300af2504522db36d421c3c3d131ce23a4e07281d62160bb4",
+      "bytes": 859056,
+      "dimensions_m": [
+        1.0486913919448853,
+        2.337199010332266,
+        1.0486913919448255
+      ]
     },
     {
-      "name": "Lotus pond pavilion (Imperial China Palace and Garden)",
+      "name": "BellStructure",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-lotus-pond-pavilion-f0b2d3d6.glb",
-      "sha256": "70616742cf9fe139d4b3eed706d10cbd688ab8f5a2e65e502d409b2923cede75",
-      "bytes": 912956
+      "file": "models/polygonalmind-lunar-year-004.glb",
+      "sha256": "2c48d62d47d9bcb886cea4792e216366c7e0528232b4b3d9b5fcbd23ec984f8d",
+      "bytes": 1238108,
+      "dimensions_m": [
+        3.6870850324630737,
+        3.4057307055821213,
+        0.7807366554461503
+      ]
     },
     {
-      "name": "Hanok Main House (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-hanok-main-house-58d31dd2.glb",
-      "sha256": "af29925eb414df85d6302ca4cbee905330194828b9857ac71579c96ec3af098a",
-      "bytes": 614676
-    },
-    {
-      "name": "Stone Plinth Base Module (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-stone-plinth-base-modu-fd550e95.glb",
-      "sha256": "78b1d18b30317fd9d31bc794395a523b9b7004dd0cc22e412224ba90bf6bc9a8",
-      "bytes": 10332
-    },
-    {
-      "name": "Hanok Maru Floor Module (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-hanok-maru-floor-modul-1be3f4e4.glb",
-      "sha256": "4cb483131266b8c81b58037c01495e3dbff38dda58040746aa98f4e9f280edc4",
-      "bytes": 13288
-    },
-    {
-      "name": "Hanok Post And Beam Frame (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-hanok-post-and-beam-fr-919433bc.glb",
-      "sha256": "9609170ab7a2098f3190081b31c86845a57ac2d6480d81b3a7b3669b3428f81d",
-      "bytes": 29568
-    },
-    {
-      "name": "Hanok Room Module (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-hanok-room-module-bc2bd008.glb",
-      "sha256": "35f7ac5729e8d388d99ca7dd0585d71d5645af38d8ee00c8c9c6635e9b446131",
-      "bytes": 125728
-    },
-    {
-      "name": "Hipped Tile Roof Module (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-hipped-tile-roof-modul-fb2a5427.glb",
-      "sha256": "e4229242d2952192051128b9551a5d4a5ae8af599debf59006b8ac030a4a5090",
-      "bytes": 56976
-    },
-    {
-      "name": "Gabled Tile Roof Module (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-gabled-tile-roof-modul-b0f6ca5f.glb",
-      "sha256": "bd842997b0a193ab7d27811e5e2f36c7c20e74d47178be9c64db887605427b41",
-      "bytes": 54312
-    },
-    {
-      "name": "Roof Ridge Tile Run (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-roof-ridge-tile-run-84fe6e09.glb",
-      "sha256": "508c4048829ba3a2ab69ac95c41f440331d332b5cb588dfaa54dfd05bae6e913",
-      "bytes": 22476
-    },
-    {
-      "name": "Eave Tile Run (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-eave-tile-run-3ddac357.glb",
-      "sha256": "afb7d9d146ea54aa276151b85cc174c5def525a2b5a934c7064f124d2a6e51af",
-      "bytes": 44956
-    },
-    {
-      "name": "Exposed Rafter Set (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-exposed-rafter-set-2923ce1a.glb",
-      "sha256": "c04ae4504cde3822cfeb4d2ba56b437c492f50979e0450bafd15c798fecd7eea",
-      "bytes": 21364
-    },
-    {
-      "name": "Sliding Lattice Door Set (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-sliding-lattice-door-s-c6fbf39d.glb",
-      "sha256": "b67d3cfe35c8fc9339cfd8a4151a4b4b4026f20292eecbeafde47ec67130bfe5",
-      "bytes": 110560
-    },
-    {
-      "name": "Sliding Lattice Door Set, Diamond Lattice (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-sliding-lattice-door-s-6d7207d6.glb",
-      "sha256": "63ff788e7ec248e0adc7bfa94b1433db417e1b37907a7df963f51a9f9b39b192",
-      "bytes": 120580
-    },
-    {
-      "name": "Hanji Lattice Window (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-hanji-lattice-window-ff57a158.glb",
-      "sha256": "ffc1d8244008169ca8ba284b8b7656c8b3309e0a2d11c60c6556e5abb7437f11",
-      "bytes": 30852
-    },
-    {
-      "name": "Lifting Lattice Window (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-lifting-lattice-window-1962214e.glb",
-      "sha256": "5ab8d4ac059ada3b102bc00c4c2b90d3267a4bde73278f7abbfac1c6487b03e2",
-      "bytes": 35572
-    },
-    {
-      "name": "Courtyard Ground Module (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-courtyard-ground-modul-6ce611a9.glb",
-      "sha256": "dd45705d31917eaf683b457dea17c928db06dd39e5ab44224e5c3b794bb1ff87",
-      "bytes": 22484
-    },
-    {
-      "name": "Ondol Flue Run (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-ondol-flue-run-bcb58056.glb",
-      "sha256": "f4a8dbc40f5926abb64cb8725f76a95bbda47acb232e9d3ecc327107bb4af696",
-      "bytes": 16836
-    },
-    {
-      "name": "Chimney Stack (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-chimney-stack-b7f9cd50.glb",
-      "sha256": "e91e94d56da403f19398ddb4415ee323434bafcb2c2df807835df54424b88a0d",
-      "bytes": 22856
-    },
-    {
-      "name": "Kitchen Hearth Block (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-kitchen-hearth-block-9012cad3.glb",
-      "sha256": "10351f5c90ca43123b316ccb86cff749ab94a8550f7c661c3bb52b6aabce3b40",
-      "bytes": 39948
-    },
-    {
-      "name": "Thatched Outbuilding (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-thatched-outbuilding-d60d046d.glb",
-      "sha256": "c59916f4bd30e869a615f145fa595201ae58fcc2a711d7f4096a9c9979f603c3",
-      "bytes": 54320
-    },
-    {
-      "name": "Clay Roof Tile Stack (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-clay-roof-tile-stack-f7d92f3d.glb",
-      "sha256": "b628b0503e24b0415019c1e5afc03f5c80cf275ce63cede03741164a27a32bc4",
-      "bytes": 27816
-    },
-    {
-      "name": "Market Stall With Awning (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-market-stall-with-awni-064ed223.glb",
-      "sha256": "77543abca2bfec385258e7a278f59139708503a0aa03b669ef889d76b6d0c9e8",
-      "bytes": 48928
-    },
-    {
-      "name": "Walled hanok plot and village street (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-walled-h-d28cafda-starter-scene.glb",
-      "sha256": "405a7407bc459deb6279a9d3a02c5fca45e01cf087c8db2f52bb6bb37b1f37bc",
-      "bytes": 3645880
-    },
-    {
-      "name": "Village gate and market street (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-village-gate-and-marke-813aa6fd.glb",
-      "sha256": "d45d6250727731172114917addd8191065b7869d2308618ff5481c3789d1528f",
-      "bytes": 1347368
-    },
-    {
-      "name": "Gate Tower (Imperial China Palace and Garden)",
+      "name": "BuildingBase",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-gate-tower-9d0d0bb6.glb",
-      "sha256": "e397492657cb0a90ba2c7f75107f9eba00bd41272785caeed7ec8ad504a4aa4e",
-      "bytes": 335736
+      "file": "models/polygonalmind-lunar-year-005.glb",
+      "sha256": "857f588be1dec6194d2859bee6ea03bf0c3533da1dabaffd7368f6ebf21cd739",
+      "bytes": 736976,
+      "dimensions_m": [
+        15.550149917602539,
+        1.8240149566656334,
+        23.42020819022172
+      ]
     },
     {
-      "name": "Palace Wall Straight (Imperial China Palace and Garden)",
+      "name": "Carpet01",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-palace-wall-straight-02b9fb76.glb",
-      "sha256": "901fb692b9fe351398d14ed7856ba8ceba66a4eb81249bbde3fbeb418339dfd4",
-      "bytes": 17412
+      "file": "models/polygonalmind-lunar-year-006.glb",
+      "sha256": "f06bce856d1754771c1480979a5c498c80fdfb42d717cccd6cf0606507f4bb35",
+      "bytes": 651476,
+      "dimensions_m": [
+        4.659999847412109,
+        0.10122886470261261,
+        12.660001277922166
+      ]
     },
     {
-      "name": "Palace Wall Corner (Imperial China Palace and Garden)",
+      "name": "Column",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-palace-wall-corner-92015453.glb",
-      "sha256": "b35a5a8b734bbb59bf41194613a577e533203e2281f63f36fdc9bc436d8a3481",
-      "bytes": 40884
+      "file": "models/polygonalmind-lunar-year-008.glb",
+      "sha256": "005cf8ef86ac974b97cb8069536eef7eabb6965ffa5f7fb9e37497d2ad5af7b7",
+      "bytes": 1149684,
+      "dimensions_m": [
+        1.4863661527633667,
+        6.5842869525040255,
+        1.4863693324694907
+      ]
     },
     {
-      "name": "Palace Wall Moon Gate (Imperial China Palace and Garden)",
+      "name": "ColumnBase",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-palace-wall-moon-gate-a6732c7f.glb",
-      "sha256": "afa16579d3ad6ee41a22b17b2e19143f7bdffc274542f2bfa3d1a5e23f4dacf9",
-      "bytes": 84524
+      "file": "models/polygonalmind-lunar-year-009.glb",
+      "sha256": "bc4010cbb679df0228408a0798e66e8aef9c40a5506219f3b39cb7853cc7b4eb",
+      "bytes": 349528,
+      "dimensions_m": [
+        1.9518566131591797,
+        0.20689253010561276,
+        1.9518682709441606
+      ]
     },
     {
-      "name": "Palace Wall End Pier (Imperial China Palace and Garden)",
+      "name": "Cushion",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-palace-wall-end-pier-21da0954.glb",
-      "sha256": "69d1a316ac9ed6bad1d5c954f1a7173918fa914b413656b7d4521cf372e781b9",
-      "bytes": 31188
+      "file": "models/polygonalmind-lunar-year-010.glb",
+      "sha256": "4439d4b579d81a4bd8b0af51190216498a0edcc010c9186c580d6c5340ac41b8",
+      "bytes": 773112,
+      "dimensions_m": [
+        0.37562747299671173,
+        0.14810412859568256,
+        0.3756271927920056
+      ]
     },
     {
-      "name": "Covered Walkway Bay (Imperial China Palace and Garden)",
+      "name": "Door",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-covered-walkway-bay-a5e8e636.glb",
-      "sha256": "315cddcda4beb86e0aa96a2abb2c04244726e2470f43f6ccfad9d876c9c2b626",
-      "bytes": 105260
+      "file": "models/polygonalmind-lunar-year-011.glb",
+      "sha256": "43b5eecf3c92d6599828b20a0d7a25afc6619b9c5c19a78f2b015794fbc41d3b",
+      "bytes": 1156376,
+      "dimensions_m": [
+        6.724173545837402,
+        5.678545858909151,
+        0.9585895272091813
+      ]
     },
     {
-      "name": "Covered Walkway Corner (Imperial China Palace and Garden)",
+      "name": "Dragon",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-covered-walkway-corne-b66b3357.glb",
-      "sha256": "afa32561dcf64a4e2255f7045ecb9f032ffe92ce98cf32a8551c15dc50f78265",
-      "bytes": 103868
+      "file": "models/polygonalmind-lunar-year-012.glb",
+      "sha256": "ca803cd420f65838e83ae86838817594ba75f90ff98f59a3ce502148252f0868",
+      "bytes": 1294492,
+      "dimensions_m": [
+        15.149353504180908,
+        12.52469474912204,
+        29.682745729266866
+      ]
     },
     {
-      "name": "Arched Stone Bridge (Imperial China Palace and Garden)",
+      "name": "Drum",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-arched-stone-bridge-f54cac4b.glb",
-      "sha256": "3e5c0285931879a032cd51641d9d8e8de9c4bbc1c704452a9e329ee3cd35aafd",
-      "bytes": 65076
+      "file": "models/polygonalmind-lunar-year-013.glb",
+      "sha256": "03916422ad304861ec2a9197a2f31d2ee09c4c1fb0d2f286b9ec3d7727c7c3c4",
+      "bytes": 779740,
+      "dimensions_m": [
+        1.9359233379364014,
+        1.581752354030058,
+        2.011380970478025
+      ]
     },
     {
-      "name": "Courtyard Paving Module (Imperial China Palace and Garden)",
+      "name": "EntranceStairs",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-courtyard-paving-modu-1ccb86aa.glb",
-      "sha256": "ea1301886cbc776325dfb083d5de316e14eeaf6331ab781d9ec3c1919d2f8faa",
-      "bytes": 53592
+      "file": "models/polygonalmind-lunar-year-014.glb",
+      "sha256": "2b87098c1f33d1370017cb303cab2e84a588e1892a4df4da66143de6db9dcfdb",
+      "bytes": 729036,
+      "dimensions_m": [
+        4.03152871131897,
+        1.824011168591764,
+        4.5690149728738145
+      ]
     },
     {
-      "name": "Terrace Platform Module (Imperial China Palace and Garden)",
+      "name": "Fence01",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-terrace-platform-modu-9ce05313.glb",
-      "sha256": "e79ca3843346689361d5860f7e8a1c618a07a8285385dc41e7ab5d9c73c980eb",
-      "bytes": 13928
+      "file": "models/polygonalmind-lunar-year-015.glb",
+      "sha256": "97981bc60dee871640b0e922693a7c486db1a30001f03373f99bb98ddc61fb70",
+      "bytes": 1149124,
+      "dimensions_m": [
+        6.105548858642578,
+        1.8580780425114343,
+        0.583290122390786
+      ]
     },
     {
-      "name": "Terrace Step Flight (Imperial China Palace and Garden)",
+      "name": "Fence02",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-terrace-step-flight-50686acc.glb",
-      "sha256": "42cde14883182da93bb71dcf0281d8ba6c1af35f4f5b76172ceed40745d85c0a",
-      "bytes": 38332
+      "file": "models/polygonalmind-lunar-year-016.glb",
+      "sha256": "dc198c0484b0f5f444768b1f429a769143e5adb7de839da3a0a50b5aa1059cb2",
+      "bytes": 1167808,
+      "dimensions_m": [
+        15.465136051177979,
+        1.858084286869447,
+        22.755861304640902
+      ]
     },
     {
-      "name": "Stone Balustrade Run (Imperial China Palace and Garden)",
+      "name": "Floor01",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-stone-balustrade-run-3cdcc00b.glb",
-      "sha256": "99073eba0495a36bd8e2cb32b12db0126194e198eb7f745dbe35f4d43023daf3",
-      "bytes": 27208
+      "file": "models/polygonalmind-lunar-year-017.glb",
+      "sha256": "ee637d69980d4d4f9fd4c09d83a836e70df7a6a05c9dda11e74a8f9090dbe037",
+      "bytes": 1220216,
+      "dimensions_m": [
+        15.685977935791016,
+        10.71187293012553,
+        22.71438599670341
+      ]
     },
     {
-      "name": "Lacquered Column And Bracket (Imperial China Palace and Garden)",
+      "name": "Floor02",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-lacquered-column-and--c9255e03.glb",
-      "sha256": "860ee4efc22965ae99e52df5bf4ec16f4a61d6079f9cc8694f2101cb46264fff",
-      "bytes": 43800
+      "file": "models/polygonalmind-lunar-year-018.glb",
+      "sha256": "aef04c2299a4fcb6baf66ef543b74aea2d180f77a6326f8c94f212ee13b59687",
+      "bytes": 1552084,
+      "dimensions_m": [
+        15.73171615600586,
+        13.403158132357106,
+        23.539795243838903
+      ]
     },
     {
-      "name": "Bracket Set Cluster (Imperial China Palace and Garden)",
+      "name": "InteriorLight05",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-bracket-set-cluster-16f17a49.glb",
-      "sha256": "1976b6999fbbbd3bdb90b5f871209f4880c4f7db400438c1801837358a23875c",
-      "bytes": 35692
+      "file": "models/polygonalmind-lunar-year-023.glb",
+      "sha256": "6258b74bd807323425e849e6e8daf4cdefb85552a0c3f783e26e42abc06f971d",
+      "bytes": 227056,
+      "dimensions_m": [
+        0.48742008209228516,
+        2.542682042708195,
+        0.6606732106186706
+      ]
     },
     {
-      "name": "Roof Cassette Hip (Imperial China Palace and Garden)",
+      "name": "InteriorLight06",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-roof-cassette-hip-2c2e4e52.glb",
-      "sha256": "f15a135d6d9c74ce24652b38c7bd02fe5cc77b0d4a1f93065bf2a7499aa752c5",
-      "bytes": 21156
+      "file": "models/polygonalmind-lunar-year-024.glb",
+      "sha256": "100bd1ba6e71813e9c529a3c6fc2be65310cb15991af467cfae9eec9a166d2ea",
+      "bytes": 227056,
+      "dimensions_m": [
+        3.964702606201172,
+        0.38814877878223514,
+        0.2876053131032971
+      ]
     },
     {
-      "name": "Roof Ridge Run (Imperial China Palace and Garden)",
+      "name": "Lamp01",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-roof-ridge-run-84174949.glb",
-      "sha256": "b0f4b56b8c61013a53a15ae492a6adb6f84d94cb07cf27d789892afc3cea5ffb",
-      "bytes": 11540
+      "file": "models/polygonalmind-lunar-year-025.glb",
+      "sha256": "4ecfac12fbafa546b699a08bd14757b3ca517fa4ea50888e6ea5f61451a969f9",
+      "bytes": 475740,
+      "dimensions_m": [
+        1.2799999117851257,
+        1.8500001734252844,
+        1.0999999642371505
+      ]
     },
     {
-      "name": "Latticed Screen Door Set (Imperial China Palace and Garden)",
+      "name": "Lamp02",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-latticed-screen-door--252408e2.glb",
-      "sha256": "186e8a4170eae410375f7d25ea7853929d38d273a25edf932cc4f773bdfdd382",
-      "bytes": 110220
+      "file": "models/polygonalmind-lunar-year-026.glb",
+      "sha256": "cad903f979bee4107519624e7ffe33db1250b0ef3d7fbf1aebc5776d53fab21e",
+      "bytes": 475824,
+      "dimensions_m": [
+        1.2839352488517761,
+        1.8464117695524453,
+        1.0954707860945228
+      ]
     },
     {
-      "name": "Village Gate House (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-village-gate-house-94dd896b.glb",
-      "sha256": "4b79d510bb9cec5e7c0361aaa56a1c6b9a524161afe0eba86c3be3a64bfa2ca2",
-      "bytes": 217740
-    },
-    {
-      "name": "Village Wall Straight (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-village-wall-straight-10dd1da2.glb",
-      "sha256": "980445aa18194b6fd6ba5ac1ecccfe46cda9309804574b24b5c5286cb48eff82",
-      "bytes": 45668
-    },
-    {
-      "name": "Village Wall Corner (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-village-wall-corner-36c0db5b.glb",
-      "sha256": "5c0700c524da1d0700638a1cd2c2cdaebf405e334108b4e968c140dbc371e36c",
-      "bytes": 27344
-    },
-    {
-      "name": "Village Wall End Pier (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-village-wall-end-pier-1430de44.glb",
-      "sha256": "7b97f8d101a6a1f3e317ce3445c65f670188792748da05aac2e2c9e8906d2ed2",
-      "bytes": 10296
-    },
-    {
-      "name": "Stone Street Module (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-stone-street-module-92994f78.glb",
-      "sha256": "16fd76419f1b479d85767c6bf37d90a06ab3b21bf5de66aae5adae33e38abecc",
-      "bytes": 29600
-    },
-    {
-      "name": "Stepped Lane Module (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-stepped-lane-module-647f30fc.glb",
-      "sha256": "ca48124d80b4d6174f9a8bf737998f125653d499cbe9bc42822816fbafeb186b",
-      "bytes": 39740
-    },
-    {
-      "name": "Dragon Roof Finial (Imperial China Palace and Garden)",
+      "name": "Lamp03",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-dragon-roof-finial-7dd7653a.glb",
-      "sha256": "d669b0fceb234687163e5cac4361a28d408884e8c26193f339e542cd3382b068",
-      "bytes": 44704
+      "file": "models/polygonalmind-lunar-year-027.glb",
+      "sha256": "8f643787e46e47b488454825b96f2313b6be9629ae600500e0f2790d352a5c80",
+      "bytes": 473340,
+      "dimensions_m": [
+        1.399999976158142,
+        1.7800000532623037,
+        1.2699999213217161
+      ]
     },
     {
-      "name": "Scholars Stone (Imperial China Palace and Garden)",
+      "name": "Lamp04",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-scholars-stone-05403e94.glb",
-      "sha256": "7843a86dd8ccf0b3a0eeb39a9f74f995d29aa03b3d78591e5a0aa2fa2d802451",
-      "bytes": 58164
+      "file": "models/polygonalmind-lunar-year-028.glb",
+      "sha256": "d5883e9a1d10d1e0d94565057725275ecf395d93cd3e77bd383e3c4fdb3c7672",
+      "bytes": 472732,
+      "dimensions_m": [
+        1.3992140293121338,
+        1.7788562554710248,
+        1.2708083391188048
+      ]
     },
     {
-      "name": "Standing Garden Lantern (Imperial China Palace and Garden)",
+      "name": "LampWreath",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-standing-garden-lante-038d9d21.glb",
-      "sha256": "0537e7a49ae4e0126109906f6264c08a2584a3d06868d4a8f9aab8c7cd531265",
-      "bytes": 38936
+      "file": "models/polygonalmind-lunar-year-029.glb",
+      "sha256": "e645e7b12027237afce15e55ad17a01bd0ae0558916782a61cfc37251dfefac7",
+      "bytes": 916328,
+      "dimensions_m": [
+        6.659115791320801,
+        2.1487885130096895,
+        0.8205642104148398
+      ]
     },
     {
-      "name": "Hanging Silk Lantern (Imperial China Palace and Garden)",
+      "name": "LunarYearTile",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-hanging-silk-lantern-24c01831.glb",
-      "sha256": "66c3862b945bc3e0c4ecf987e2a93b38e0516c1d91114c0a184a5ee832250fde",
-      "bytes": 37904
+      "file": "models/polygonalmind-lunar-year-030.glb",
+      "sha256": "4b4490c110f8f397cae913ddd21c7025e325e35ff92e88684f5b161aa9dbd803",
+      "bytes": 345456,
+      "dimensions_m": [
+        2.2446391582489014,
+        2.6285212329763623,
+        0.06923109258183834
+      ]
     },
     {
-      "name": "Floating Water Lantern (Imperial China Palace and Garden)",
+      "name": "MainAltar",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-floating-water-lanter-5d8204d4.glb",
-      "sha256": "a1493471ab72a7271c14663cba018849d9a0a26f8d31abb15606ac9a5dfc72a6",
-      "bytes": 41284
+      "file": "models/polygonalmind-lunar-year-031.glb",
+      "sha256": "9f5ecaf0134c280dda31e6a9d1df8efc0fb3b2ff6ceaad50460bd0a594ff7d35",
+      "bytes": 1574440,
+      "dimensions_m": [
+        2.9242759943008423,
+        1.2423679063439834,
+        2.076997160362291
+      ]
     },
     {
-      "name": "Stone Incense Burner (Imperial China Palace and Garden)",
+      "name": "OutterLamp",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-stone-incense-burner-68da1dc2.glb",
-      "sha256": "402af6cce6d17e6393438b04a947cedd849dd411a9fe78424e75e91a69e832d5",
-      "bytes": 29640
+      "file": "models/polygonalmind-lunar-year-032.glb",
+      "sha256": "47bb3a7556d4ae85beef6e2230d0e1a222ee4c9f5e4afd02cdc08ac0868116eb",
+      "bytes": 791124,
+      "dimensions_m": [
+        1.7470312118530273,
+        2.3446640031787562,
+        1.6615260839462245
+      ]
     },
     {
-      "name": "Bronze Tripod Cauldron (Imperial China Palace and Garden)",
+      "name": "Poster01",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-bronze-tripod-cauldro-97a938c4.glb",
-      "sha256": "0045769cf32eb969dacb8411f7c321ad9db41ce705708d62a4389b03ebc3d87d",
-      "bytes": 132008
+      "file": "models/polygonalmind-lunar-year-037.glb",
+      "sha256": "3341773b49c091cb3ac984c518d34df78bd15ee0093b6ca22de7ee0e676bf5ba",
+      "bytes": 779892,
+      "dimensions_m": [
+        2.6641262769699097,
+        5.251427991369614,
+        0.28078711032849757
+      ]
     },
     {
-      "name": "Courtyard Well (Imperial China Palace and Garden)",
+      "name": "Poster02",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-courtyard-well-9fb10316.glb",
-      "sha256": "5e6e29313ec58fe301a0e82356a8e78d4f8fede5c727c1226d3659333feaa4a5",
-      "bytes": 43576
+      "file": "models/polygonalmind-lunar-year-038.glb",
+      "sha256": "6df2def20f595380224a54a97f7ddac86a379a0fe5dc969dfc6903c90c5b3c49",
+      "bytes": 779616,
+      "dimensions_m": [
+        1.6062275171279907,
+        5.721674685110952,
+        0.28078657388685535
+      ]
     },
     {
-      "name": "Imperial Throne Chair (Imperial China Palace and Garden)",
+      "name": "RobeWreath",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-imperial-throne-chair-ddfa68c5.glb",
-      "sha256": "72f967ed7134128dae93df55a622b85756f7297f63bc0c520488899c68c968b8",
-      "bytes": 108444
+      "file": "models/polygonalmind-lunar-year-039.glb",
+      "sha256": "628ac08babc0af55e0bbc8bca1d7c8d3dd2b4801796218e5f0e597a2d8106d36",
+      "bytes": 427648,
+      "dimensions_m": [
+        6.659115791320801,
+        0.8245688886257296,
+        0.062116062991152625
+      ]
     },
     {
-      "name": "Throne Footstool (Imperial China Palace and Garden)",
+      "name": "Rock01",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-throne-footstool-b00e5767.glb",
-      "sha256": "cf3f042d40afdaceabc250033d693d02403c7869a976ba2d3f0c4de932e04b34",
-      "bytes": 36572
+      "file": "models/polygonalmind-lunar-year-040.glb",
+      "sha256": "3eb8635d757b502de719f33df380a9301ce457a690e88226958490e840a98d0b",
+      "bytes": 373476,
+      "dimensions_m": [
+        1.1598767042160034,
+        0.48106726553783563,
+        1.0825951695440987
+      ]
     },
     {
-      "name": "Low Tea Table (Imperial China Palace and Garden)",
+      "name": "Rock02",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-low-tea-table-44124ae8.glb",
-      "sha256": "f33639e1f7f42e4d816b51a7a321870327d2608a8796995f7c23f08335b644e7",
-      "bytes": 35112
+      "file": "models/polygonalmind-lunar-year-041.glb",
+      "sha256": "18d467a7a703a164a8e302e51f666d696b2775b95cbf94c7a3fe2aca7bcec298",
+      "bytes": 375116,
+      "dimensions_m": [
+        1.8099523186683655,
+        0.9207998232476339,
+        1.6757691434056337
+      ]
     },
     {
-      "name": "Tea Set On Tray (Imperial China Palace and Garden)",
+      "name": "RoomDoor",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-tea-set-on-tray-b6d3f48a.glb",
-      "sha256": "6508ec5d2ef5651bd9911aa2887b52c6d9717e54f4a3f0605011b9811849ff21",
-      "bytes": 45316
+      "file": "models/polygonalmind-lunar-year-042.glb",
+      "sha256": "0a964863229c31d5304b97cc9236aef68eedc55c49293ea834c3f43198fe5c48",
+      "bytes": 726336,
+      "dimensions_m": [
+        10.790807723999023,
+        7.878613809631785,
+        0.14999989596800914
+      ]
     },
     {
-      "name": "Guqin On Stand (Imperial China Palace and Garden)",
+      "name": "RoomFloor",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-guqin-on-stand-ba936ac2.glb",
-      "sha256": "393912f2e2139c162592c5353d7ac847dc733163617cd80b85b26b0e2969418a",
-      "bytes": 55852
+      "file": "models/polygonalmind-lunar-year-043.glb",
+      "sha256": "623625d569da9136800426bc3dbf662c221d448c34c4a7ac9bfd310e3c9e9815",
+      "bytes": 351792,
+      "dimensions_m": [
+        10.79081106185913,
+        0.15000277559557357,
+        16.01723485282228
+      ]
     },
     {
-      "name": "Calligraphy Brush Stand (Imperial China Palace and Garden)",
+      "name": "RoomRoof",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-calligraphy-brush-sta-2ce8f5d6.glb",
-      "sha256": "eb2cb1cdb71613d56e5b6673c9c5ceb0a739bebfa959dc52393d7c291a82e2a5",
-      "bytes": 44952
+      "file": "models/polygonalmind-lunar-year-044.glb",
+      "sha256": "2da77e87ba590697de0e860b9a304f13a5afd1ffeaac4dda9b8d1755001ac63a",
+      "bytes": 799664,
+      "dimensions_m": [
+        10.790810585021973,
+        0.15001274261400038,
+        16.029272028888165
+      ]
     },
     {
-      "name": "Inkstone And Water Dropper (Imperial China Palace and Garden)",
+      "name": "RoomRoofBeam",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-inkstone-and-water-dr-df828331.glb",
-      "sha256": "43202632efa2008d3880c13a31957f67be28614ed379722f99c488d87b0dfe6c",
-      "bytes": 19192
+      "file": "models/polygonalmind-lunar-year-045.glb",
+      "sha256": "9d418f9c66580909129de1fec150d0ad2b3e65d3b6dc05712ebbb43973ddb57e",
+      "bytes": 1161396,
+      "dimensions_m": [
+        10.753498077392578,
+        16.168963064446807,
+        1.7374163472929252
+      ]
     },
     {
-      "name": "Scroll Rack (Imperial China Palace and Garden)",
+      "name": "RoomWall01",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-scroll-rack-f7fd0af5.glb",
-      "sha256": "20620cb5b4757a28aa229fb92af8ad5fa0b5fd6e7c614f53bc0c183fae9c99bf",
-      "bytes": 102648
+      "file": "models/polygonalmind-lunar-year-046.glb",
+      "sha256": "c10cad25c956e339f1ddf9d80126e57144c82bf71e413d398a70a7e4d5632b11",
+      "bytes": 723140,
+      "dimensions_m": [
+        16.017233848571777,
+        7.849577954323333,
+        0.15000265264026755
+      ]
     },
     {
-      "name": "Folding Screen (Imperial China Palace and Garden)",
+      "name": "Table01",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-folding-screen-5a8651b3.glb",
-      "sha256": "c2e1fb0460c5775c7ed346c8c00722e40b8bd451b882d66a44f7d04b91508ebe",
-      "bytes": 104772
+      "file": "models/polygonalmind-lunar-year-048.glb",
+      "sha256": "563105d724482548a1c1bba8e417ef53ab24d8a547aea27bafcd9ee933a514bc",
+      "bytes": 1546404,
+      "dimensions_m": [
+        1.9098873734474182,
+        0.7883182191721737,
+        1.060589929736791
+      ]
     },
     {
-      "name": "Hanging Scroll Pair (Imperial China Palace and Garden)",
+      "name": "Table02",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-hanging-scroll-pair-81f2dffc.glb",
-      "sha256": "ce8364d472550d39aba3128eb01bf2a3c6d81fa1f280be936c4cf68e6084b108",
-      "bytes": 29964
+      "file": "models/polygonalmind-lunar-year-049.glb",
+      "sha256": "b02d435ebae66c84758763b3217cbec2f6f86202dc6987deb1063ecc87e4b221",
+      "bytes": 1768704,
+      "dimensions_m": [
+        1.913130760192871,
+        0.7883182191720399,
+        1.0612477180522766
+      ]
     },
     {
-      "name": "Ceremonial Banner Pole (Imperial China Palace and Garden)",
+      "name": "TigerLogo",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-ceremonial-banner-pol-5795ed1a.glb",
-      "sha256": "0ac32b8cbdca1cba7555f745b5dafdd1bcb1d57d985c56e7ed9f2a210905c6e1",
-      "bytes": 21236
+      "file": "models/polygonalmind-lunar-year-051.glb",
+      "sha256": "401d39e2f1fdeb9f9346477e9bcde917f7867bcd3fbbe68613b577f02bb4c978",
+      "bytes": 835520,
+      "dimensions_m": [
+        2.2021703720092773,
+        2.202177047729491,
+        0.3238537324359456
+      ]
     },
     {
-      "name": "Pennant Pair On Poles (Imperial China Palace and Garden)",
+      "name": "UpperLights02",
       "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-pennant-pair-on-poles-2d4a0f4c.glb",
-      "sha256": "7269ef6464df08e5f3235793e6c60833054a52f2e33d22f67fbf4a41a8071d48",
-      "bytes": 25268
+      "file": "models/polygonalmind-lunar-year-052.glb",
+      "sha256": "31f4cafbc69e76cc919cf47e4e2b7bb900421dc20253b619f8af32f05934046b",
+      "bytes": 1816,
+      "dimensions_m": [
+        0.19141234457492828,
+        0.3932330635369654,
+        0.19141235202548745
+      ]
     },
     {
-      "name": "Guardian Lion Pair (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-guardian-lion-pair-58194b81.glb",
-      "sha256": "b0e8a705f792c4f81370ce0bc4e5e9db3da0836de1b84f0352f029b12780b3ac",
-      "bytes": 136548
-    },
-    {
-      "name": "Polearm Weapon Rack (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-polearm-weapon-rack-b76c138a.glb",
-      "sha256": "1b19831d553eca292c58054f996929028d70b299c91b8a44ef15c413b249a964",
-      "bytes": 85576
-    },
-    {
-      "name": "Training Dummy (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-training-dummy-6fdfc7e8.glb",
-      "sha256": "138dc2db191c7d9c26c0d38d2f42e8e1ba3ea8f83f013632553d75802c307031",
-      "bytes": 35140
-    },
-    {
-      "name": "Ceremonial Drum On Stand (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-ceremonial-drum-on-st-66581778.glb",
-      "sha256": "b7137b74bfa0ad03a8a2f5b9c558647df22c74a34f3689e5053cb9a25e5cf7d0",
-      "bytes": 47792
-    },
-    {
-      "name": "Bronze Bell On Frame (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-bronze-bell-on-frame-7d2d169b.glb",
-      "sha256": "4e031a9cd0a80f1d95c45de6147c19b3fb8ca2503df455fe29d2f777a146b73a",
-      "bytes": 61848
-    },
-    {
-      "name": "Lacquer Storage Chest (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-lacquer-storage-chest-d4266bd5.glb",
-      "sha256": "c9045cce470cc31de58b5081d763b665b2d7842cb8044d2acc58453431721045",
-      "bytes": 51568
-    },
-    {
-      "name": "Scholars Writing Desk (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-scholars-writing-desk-6b32813c.glb",
-      "sha256": "a47e86757569e9da7c6a200b03be503fb8d89bba57ce8e325e997c9b3a53d998",
-      "bytes": 35012
-    },
-    {
-      "name": "Floor Cushion Set (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-floor-cushion-set-5e179f9f.glb",
-      "sha256": "d97683b9f126a1053100df177b2856747d2c4fb92ef393a4b6bc6e98aca9ee36",
-      "bytes": 36264
-    },
-    {
-      "name": "Ancestral Altar Table (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-ancestral-altar-table-d4f28bab.glb",
-      "sha256": "a652004a33debe828c4f1ba258faba0eeb3e3958c1c3acdd9b8f731245be2e39",
-      "bytes": 58672
-    },
-    {
-      "name": "Bronze Brazier Stand (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-bronze-brazier-stand-b637e423.glb",
-      "sha256": "fb832b149e859bf2e7955b0583a554c87bc062273699f1eec86688f7279fd55d",
-      "bytes": 88048
-    },
-    {
-      "name": "Ceremonial Parasol (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-ceremonial-parasol-cea9c970.glb",
-      "sha256": "3aac603b04de7575b0ca07f1f5b916fe889956f205e7b1d209f1283cf8b27a0a",
-      "bytes": 38588
-    },
-    {
-      "name": "Hanok Side Wing (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-hanok-side-wing-13e49593.glb",
-      "sha256": "f4bd6e46c0d9e083e7976977bde61e3c06798e24648602cddc444ed2d36c2a23",
-      "bytes": 344604
-    },
-    {
-      "name": "Ondol Firebox (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-ondol-firebox-3a9ac24d.glb",
-      "sha256": "deb7ca2b3d71a124f7b886aef2c7e730e3a857047ad0c0369a64b75b840128de",
-      "bytes": 28236
-    },
-    {
-      "name": "Jangdokdae Terrace (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-jangdokdae-terrace-fd10afaf.glb",
-      "sha256": "48efb8a7df6a7ae4242c7bfac763cc1bc1d8135058c3d1b0d415c34705c332a1",
-      "bytes": 33284
-    },
-    {
-      "name": "Onggi Jar, Large (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-onggi-jar-large-57747607.glb",
-      "sha256": "cfde33f78ff68b8924ed643de441b9815ae0c1b2e9df3ce8d6da1803dbceaf73",
-      "bytes": 14012
-    },
-    {
-      "name": "Onggi Jar, Medium (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-onggi-jar-medium-106bc5df.glb",
-      "sha256": "76140bb47e066b3b77e54a3fd4980b062f56b5de2835d762448c300064dca83a",
-      "bytes": 14340
-    },
-    {
-      "name": "Onggi Jar, Small (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-onggi-jar-small-ed06606f.glb",
-      "sha256": "3e6cf897c184c8f6c36aef5c029584826ca7dff0e2bf38c431d8fe1166e08ee3",
-      "bytes": 14384
-    },
-    {
-      "name": "Chest Of Drawers (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-chest-of-drawers-af1b6672.glb",
-      "sha256": "ab253b0306a35111282d834662a3f2f91c0409cfc89d58253f156420eeed6efd",
-      "bytes": 37772
-    },
-    {
-      "name": "Wooden Rice Chest (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-wooden-rice-chest-a32e48a3.glb",
-      "sha256": "b215a011b8ac43d7641a1b6c7de21ea3a8e5de43cef8779c8456c753fb645712",
-      "bytes": 28004
-    },
-    {
-      "name": "Low Table (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-low-table-d9a2a718.glb",
-      "sha256": "cc2b4e8cba8f7191572c8ec3cc1e57e0c3f4cad3f6338b8592bd3a900e59d384",
-      "bytes": 17464
-    },
-    {
-      "name": "Floor Cushion Set (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-floor-cushion-set-dc9c83b9.glb",
-      "sha256": "a7ea908e3a892345b16e31e9b77438399f86c89f5672916e9a97c89f3a8e5e11",
-      "bytes": 13084
-    },
-    {
-      "name": "Folding Screen (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-folding-screen-9e9bc656.glb",
-      "sha256": "9a955ac33f405c93f2e4071172cb21925757008433003501985e2c96f24d939c",
-      "bytes": 33496
-    },
-    {
-      "name": "Charcoal Brazier (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-charcoal-brazier-2aca29dc.glb",
-      "sha256": "f114c93c4088450d2485b75ca5d0ccca27b6643c2df90470a213b5b97d759cd5",
-      "bytes": 31292
-    },
-    {
-      "name": "Hanging Paper Lantern (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-hanging-paper-lantern-539f8e2b.glb",
-      "sha256": "21333c08e54767a176898784cabbf13089e15d7f0607f5cd13c3363afbf6a1f9",
-      "bytes": 32792
-    },
-    {
-      "name": "Standing Paper Lamp (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-standing-paper-lamp-e8a82fcc.glb",
-      "sha256": "b5efe50394f4d125053b21ba20d5d3185a1d3c8a7cd7ecbe2bf29a1ab21f925b",
-      "bytes": 21204
-    },
-    {
-      "name": "Wooden Bench (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-wooden-bench-94b3dfde.glb",
-      "sha256": "13582acb42e1d690411abefb720d1501759a6585c5807cee3f2fbc4e3a521fcf",
-      "bytes": 15888
-    },
-    {
-      "name": "Hand Loom (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-hand-loom-278890aa.glb",
-      "sha256": "6221153dd83bfc240a15125693f039d98ea72c1c0b474d37c07370a9dd556d4a",
-      "bytes": 36156
-    },
-    {
-      "name": "Mortar And Pestle Stand (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-mortar-and-pestle-stan-26fabc1b.glb",
-      "sha256": "b1a71bb3efcc16452ac69007f60cf1f45188baee0082654ff976f5417871f345",
-      "bytes": 17532
-    },
-    {
-      "name": "Stone Water Basin (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-stone-water-basin-3fc6ace3.glb",
-      "sha256": "00a8d17488e68876cf046f78d3544018ae9e1fcb24dc6cd169b7cf2cbb8e83d6",
-      "bytes": 14764
-    },
-    {
-      "name": "Water Trough (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-water-trough-878d599c.glb",
-      "sha256": "0dd001fdf003f3edd8420aa29a76a964e92a30a9a5b0560538390c6f8ee5a1e7",
-      "bytes": 8112
-    },
-    {
-      "name": "Well Head (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-well-head-2795f6c1.glb",
-      "sha256": "bc82e79ca8a0ebdd450b7a432d40cda1e7db82f6127956e885adb372d966c5a1",
-      "bytes": 176488
-    },
-    {
-      "name": "Wooden Bucket Pair (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-wooden-bucket-pair-2b3f71d9.glb",
-      "sha256": "70d98ddae8c5cb28cb46916cd81227462e1178b3e1381bb09773edd716cee52b",
-      "bytes": 32500
-    },
-    {
-      "name": "Firewood Stack (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-firewood-stack-ef44023d.glb",
-      "sha256": "0ed93bd6b38e63fd1ae690e8c19428ab4f8cb7ef43601844e6ed4e7a5102c804",
-      "bytes": 60848
-    },
-    {
-      "name": "Straw Rice Sack Stack (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-straw-rice-sack-stack-56a248a9.glb",
-      "sha256": "6dc5ab6b47246fc8ba9fc0bc1df3c3234b01ba5b9d7c85585ab22d89967c38ca",
-      "bytes": 32656
-    },
-    {
-      "name": "Produce Basket Set (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-produce-basket-set-0d57d77d.glb",
-      "sha256": "f0a2ef4f1edc89ec5d7d6f8039f64660e5cae61bdb79eb4d97b274e90deafa39",
-      "bytes": 64888
-    },
-    {
-      "name": "Hanging Sign Board (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-hanging-sign-board-15b20163.glb",
-      "sha256": "adee48863af1814025e1d2d85bce557cdaadc08d1ea820caccf08dda311fac15",
-      "bytes": 32784
-    },
-    {
-      "name": "Stone Pagoda Ornament (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-stone-pagoda-ornament-5acf5291.glb",
-      "sha256": "972178d4ab73638dc2cd6bc315ff7019ccdbd11692db1d6a8213cd325be6a2a3",
-      "bytes": 34372
-    },
-    {
-      "name": "Stepping Stone Path (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-stepping-stone-path-d15fb986.glb",
-      "sha256": "eacb02f8cad05a297e636148b7d911c4500994ae581c3cee29b209ba334bf6e1",
-      "bytes": 31928
-    },
-    {
-      "name": "Rockery Outcrop (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-rockery-outcrop-a70f96c4.glb",
-      "sha256": "272abddce24cf04194c8af4d46df21a9a286a5a421ad389c72e9ca9a7ccc53f0",
-      "bytes": 37212
-    },
-    {
-      "name": "Lotus Pond Edge Straight (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-lotus-pond-edge-strai-4d658d99.glb",
-      "sha256": "19ffac8d8baebaaa52050066bd2156a3dc859eeefd27e3012c17e9e4e0a89e4c",
-      "bytes": 18588
-    },
-    {
-      "name": "Lotus Pond Edge Corner (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-lotus-pond-edge-corne-f573f9fb.glb",
-      "sha256": "5c9aa07815b009d8b98c9d6277f741e2204c39f1409ae0d8ec5cc1d65166e4a8",
-      "bytes": 22332
-    },
-    {
-      "name": "Pond Water Module (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-pond-water-module-65897aa1.glb",
-      "sha256": "da01c9feee3c3e5b3413d824c5618465aba6cffb8a83389107ae2016d41e56c2",
-      "bytes": 5720
-    },
-    {
-      "name": "Lotus Cluster (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-lotus-cluster-9b11a9b2.glb",
-      "sha256": "d4861753d497af44db09234813116fdc6765f6ea918e378ed047b61d442b73cb",
-      "bytes": 58124
-    },
-    {
-      "name": "Bonsai In Glazed Pot (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-bonsai-in-glazed-pot-e0f303fa.glb",
-      "sha256": "a9137f4df9a51fbd6b815f8c49f885265a4b47a951f09aadd216449518568d8c",
-      "bytes": 57056
-    },
-    {
-      "name": "Bamboo Clump (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-bamboo-clump-66640906.glb",
-      "sha256": "13822c4b7a95dde6eb9d27d966c843144e447dcbba7cc49417e05145390efbbf",
-      "bytes": 125716
-    },
-    {
-      "name": "Plum Tree In Blossom (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-plum-tree-in-blossom-b09709bd.glb",
-      "sha256": "c8fa457292863c3ff5874ca81d44b0c20271b779392d796b324a6238cac97272",
-      "bytes": 100220
-    },
-    {
-      "name": "Garden Stone Bench (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-garden-stone-bench-aa1e1d1c.glb",
-      "sha256": "cdea623b881a9fd92d40ffd6219bd224c9e4eb3b5658a3eeb41ced2036d3de0f",
-      "bytes": 14996
-    },
-    {
-      "name": "Stepping Stone Path (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-stepping-stone-path-d1017407.glb",
-      "sha256": "562fdd8d9316f8b6e456022d90a44fc8ff3e32a4f21e179777a4226f8c51d79c",
-      "bytes": 27276
-    },
-    {
-      "name": "Peony Planter (Imperial China Palace and Garden)",
-      "style_group": "imperial_chinese",
-      "file": "models/3dassets-imperial-china-palace-and-garden-peony-planter-f6018406.glb",
-      "sha256": "daf10d7d049e3a374826c76ef3ba943f255c10e1f4d61cab44aefe72f91ded93",
-      "bytes": 77376
-    },
-    {
-      "name": "Persimmon Tree (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-persimmon-tree-ec7be2f6.glb",
-      "sha256": "97dec2ad53616ebfc26c3f31d6703fe79f02fac05f313dddea7db81e0130d1a5",
-      "bytes": 140704
-    },
-    {
-      "name": "Pine Tree (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-pine-tree-3a5a94a4.glb",
-      "sha256": "d43ab34766e9be535fc87a06346db5633e9c1c4dc6f84dc44344aee9665ebe66",
-      "bytes": 74052
-    },
-    {
-      "name": "Bamboo Clump (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-bamboo-clump-01131093.glb",
-      "sha256": "13ee5a65ba949aa601eed8ecc92e1a643f30a2cc7442d228c92a778e537ef915",
-      "bytes": 146872
-    },
-    {
-      "name": "Persimmon Drying Rack (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-persimmon-drying-rack-e6c7ede2.glb",
-      "sha256": "3ad3300e3d7130241b7209cbd836c4a90e721f43347c74d6a56ea6b997c27aee",
-      "bytes": 88820
-    },
-    {
-      "name": "Lotus Pond Edge Straight (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-lotus-pond-edge-straig-ba4093ac.glb",
-      "sha256": "e792a902227ddb05d0ed2bc476cb16f14c3da134a111a9974e69423ce09610bd",
-      "bytes": 46688
-    },
-    {
-      "name": "Pond Water Module (Korean Hanok Village and Street)",
-      "style_group": "korean_hanok",
-      "file": "models/3dassets-korean-hanok-village-and-street-pond-water-module-4e3f2baa.glb",
-      "sha256": "e3affb2a11aa6f91651e8b0bcd1dc68288ecbc1c33fb9f5b43d208012757d6cc",
-      "bytes": 28068
-    },
-    {
-      "name": "Pine Tree (Wipe Day Survival Island)",
+      "name": "Brick Step 01 Art",
       "style_group": "environmental",
-      "file": "models/3dassets-wipe-day-survival-island-pine-tree-dfc88d2b.glb",
-      "sha256": "65fb9c0d832a64099d388e190c46084fc404b58cdefd7e95457fc9bf887a7db6",
-      "bytes": 12408
+      "file": "models/polygonalmind-momuspark-002.glb",
+      "sha256": "5624fd3f85f1abe859bd25b7cd27b9eeec1f322ae3fc43df7bc6c55ebb8ce04c",
+      "bytes": 776288,
+      "dimensions_m": [
+        5.818917989730835,
+        1.109170482948015,
+        1.500000456383928
+      ]
     },
     {
-      "name": "Roofing Tiles 013 A",
-      "style_group": "pbr_materials",
-      "file": "textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_NormalGL.jpg",
-      "sha256": "08d9718bd62c5de5c4cc886a68cf3dbad5996136f52f16249b07a896e0c29005",
-      "bytes": 718594
+      "name": "Bush 01 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-003.glb",
+      "sha256": "a2d33b4050c5bfa6a6ac191981a1422e15372ce37d852dac9b0723bebe51345d",
+      "bytes": 950792,
+      "dimensions_m": [
+        2.3984304666519165,
+        1.3598478546920918,
+        1.5911212596656874
+      ]
     },
     {
-      "name": "Roofing Tiles 013 A",
-      "style_group": "pbr_materials",
-      "file": "textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_Roughness.jpg",
-      "sha256": "4cb93f5e8d84b97f3247aad4051c3805ea51f88a05a6c703abe32ab0bcec65c6",
-      "bytes": 564671
+      "name": "Bush 02 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-004.glb",
+      "sha256": "a3c48d0f6f784a014bee8c1e56c830b5af443387511b92b3294ad86d42f5fd9e",
+      "bytes": 956044,
+      "dimensions_m": [
+        2.852718472480774,
+        1.3562491571195714,
+        1.5737579182121832
+      ]
     },
     {
-      "name": "Roofing Tiles 013 A",
-      "style_group": "pbr_materials",
-      "file": "textures/RoofingTiles013A/RoofingTiles013A_1K-JPG_Color.jpg",
-      "sha256": "13779a23d342e1f80001d380889744eb6795460e8b8b993f7b9bb89da78089d4",
-      "bytes": 403258
+      "name": "Bush 03 art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-005.glb",
+      "sha256": "a20259062346b82cf2fa6c307b3d784dcc5c0828625fccb42cf0c96b89d08f0c",
+      "bytes": 1323548,
+      "dimensions_m": [
+        2.797047734260559,
+        1.6784930835712935,
+        1.4033808151927705
+      ]
     },
     {
-      "name": "Paving Stones 036",
-      "style_group": "pbr_materials",
-      "file": "textures/PavingStones036/PavingStones036_1K-JPG_Color.jpg",
-      "sha256": "065dad4ad95ee74992a6d3cbeb0efb107d3b18a0a3425487bf41452dce12c533",
-      "bytes": 1796007
+      "name": "Flower 01 a",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-014.glb",
+      "sha256": "70570798a4383228989328e53b56d38c56ed5be15c6da0b9f30f85d4e486222a",
+      "bytes": 401260,
+      "dimensions_m": [
+        0.1457679271697998,
+        0.8120337030668329,
+        0.3499642392684837
+      ]
     },
     {
-      "name": "Paving Stones 036",
-      "style_group": "pbr_materials",
-      "file": "textures/PavingStones036/PavingStones036_1K-JPG_Roughness.jpg",
-      "sha256": "d97ddc1b344edf9e799d5a63b497c5bafabf3afe189bca565bbd155c79f269a1",
-      "bytes": 688711
+      "name": "Flower 01 b",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-015.glb",
+      "sha256": "42628b3f385156266043875834668f1ff00bf8ecf58973c4244f77995a9b6965",
+      "bytes": 404244,
+      "dimensions_m": [
+        0.2444702610373497,
+        1.0832902152206354,
+        0.4959200224257463
+      ]
     },
     {
-      "name": "Paving Stones 036",
-      "style_group": "pbr_materials",
-      "file": "textures/PavingStones036/PavingStones036_1K-JPG_NormalGL.jpg",
-      "sha256": "7e86034b299d5628bb072c74ed30364dbab5da21f55e17c675ccbef15b209543",
-      "bytes": 2139484
+      "name": "Flower 02 a Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-016.glb",
+      "sha256": "68509b105470d87029717702f950e81580a0e8366ae1082fc8bf26433c5448a5",
+      "bytes": 513432,
+      "dimensions_m": [
+        0.7930687665939331,
+        0.8551559602864233,
+        0.5494196539591526
+      ]
     },
     {
-      "name": "Marble 012",
-      "style_group": "pbr_materials",
-      "file": "textures/Marble012/Marble012_1K-JPG_Color.jpg",
-      "sha256": "a34b55c889c6b3819d2c351b6409bfd0baf0a0a55b073441850627dfebcdcd1e",
-      "bytes": 1220876
+      "name": "Flower 02 b Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-017.glb",
+      "sha256": "f4b1b1f6a9a71620b442b090ba156dceaea2e0dfead169bcedf017ba02da1276",
+      "bytes": 508376,
+      "dimensions_m": [
+        0.5960758924484253,
+        0.784943495001505,
+        0.5960758924483511
+      ]
     },
     {
-      "name": "Marble 012",
-      "style_group": "pbr_materials",
-      "file": "textures/Marble012/Marble012_1K-JPG_Roughness.jpg",
-      "sha256": "f7afd636d6cca0b470549959c514976186df58ac1013016b6c3919910a6d3a04",
-      "bytes": 535814
+      "name": "Flower 03 a",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-018.glb",
+      "sha256": "b2898203dd3a2f9408be6d67261e76bbd73195b7246b5199e3a017f38861f4ae",
+      "bytes": 408824,
+      "dimensions_m": [
+        0.7366082072257996,
+        0.8591410024038432,
+        0.7791742559464048
+      ]
     },
     {
-      "name": "Marble 012",
-      "style_group": "pbr_materials",
-      "file": "textures/Marble012/Marble012_1K-JPG_NormalGL.jpg",
-      "sha256": "2e9a56525ffbb7e80854b19985a5c921f91192698ea337f4834192479ba0063b",
-      "bytes": 342955
+      "name": "Flower 03 b",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-019.glb",
+      "sha256": "0991685f49d3f5a68e6cad3c2d69f6b27450906d2dbf58d26f3c552ddad73a3d",
+      "bytes": 416896,
+      "dimensions_m": [
+        0.9723778069019318,
+        1.0541414750670142,
+        0.9650261341226368
+      ]
     },
     {
-      "name": "Wood 096",
-      "style_group": "pbr_materials",
-      "file": "textures/Wood096/Wood096_1K-JPG_Roughness.jpg",
-      "sha256": "faed70389894632f5a9a62c0942cd3f8e677d6e2a1bf36d91e7ae5952631fa6e",
-      "bytes": 629325
+      "name": "Log 01 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-023.glb",
+      "sha256": "1c050d696f56ee49bf6399fc2aa29c737b32afdfd1c4a2f2d2a98c56bfe0d023",
+      "bytes": 929080,
+      "dimensions_m": [
+        3.272268533706665,
+        1.4789152216886987,
+        1.3389836519988991
+      ]
     },
     {
-      "name": "Wood 096",
-      "style_group": "pbr_materials",
-      "file": "textures/Wood096/Wood096_1K-JPG_NormalGL.jpg",
-      "sha256": "30e56cd5c8e7ec19545a0fe8b339f7311534071a3a9076d034d210ca8dad46f3",
-      "bytes": 864486
+      "name": "MOMUS Logo Top",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-024.glb",
+      "sha256": "e7cd9782cf4eb23bf625bcdeae14de6c06a6ee75aa57ecb0009a1b8706dfb52a",
+      "bytes": 48536,
+      "dimensions_m": [
+        6.0,
+        6.1499196507900775,
+        1.2500024908302148
+      ]
     },
     {
-      "name": "Wood 096",
-      "style_group": "pbr_materials",
-      "file": "textures/Wood096/Wood096_1K-JPG_Color.jpg",
-      "sha256": "fa6b603dda286865a82a93a483c341a975a7d3062dd0f291b57800f7ac4d1b66",
-      "bytes": 914353
+      "name": "Mushroom 01 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-027.glb",
+      "sha256": "db3ef1ec8b1302f90bfed87a19753f8847697145f6e1bd04a4923695cf9e41b5",
+      "bytes": 1092992,
+      "dimensions_m": [
+        0.8176791071891785,
+        0.5612913039531896,
+        0.8481097962524982
+      ]
+    },
+    {
+      "name": "Mushroom 02 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-028.glb",
+      "sha256": "eb14f8055ca81d31d439020538a66b49696e768c247f0b7a58f3ce492b80cf29",
+      "bytes": 1092924,
+      "dimensions_m": [
+        0.4279113709926605,
+        0.7604893979815517,
+        0.39082654613757467
+      ]
+    },
+    {
+      "name": "Rock 01 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-035.glb",
+      "sha256": "9ae59be7491a9c050a7f39c79557bf9265b193f0e563e2bf0a83df18b448efed",
+      "bytes": 860644,
+      "dimensions_m": [
+        4.242575526237488,
+        2.4714377723498586,
+        3.0336477756496905
+      ]
+    },
+    {
+      "name": "Rock 02 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-036.glb",
+      "sha256": "6333edc24b3c18c448a1e00a066cf3e5036c008cafb146e57f4fd12155b2d579",
+      "bytes": 315076,
+      "dimensions_m": [
+        2.672234892845154,
+        2.5458687536717544,
+        1.6506499750463868
+      ]
+    },
+    {
+      "name": "Rock 03 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-037.glb",
+      "sha256": "bc34537761267e8fcbe50cbac7d3640137b3a3e48af5ffc6605db48e5b38a420",
+      "bytes": 732348,
+      "dimensions_m": [
+        6.821284770965576,
+        4.434256887888707,
+        4.9119547962865475
+      ]
+    },
+    {
+      "name": "Rock 04 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-038.glb",
+      "sha256": "771f6fc951f8b6459833331d8da6415c7f1f11287c98b8c46e244b0511ae8fe6",
+      "bytes": 319944,
+      "dimensions_m": [
+        3.240535259246826,
+        1.693841466073811,
+        2.7631676348963032
+      ]
+    },
+    {
+      "name": "Rock 05 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-039.glb",
+      "sha256": "e61666e2a842d9bb2067ac110a1ac61aa33afea0cc6351bdb87a95c823a9173b",
+      "bytes": 454176,
+      "dimensions_m": [
+        2.7449430227279663,
+        2.605946882133323,
+        2.376461783614423
+      ]
+    },
+    {
+      "name": "Root 01 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-040.glb",
+      "sha256": "a9635bf9f042fcaa100810797afdddf7f33d966509bb704f7b68f1d258441236",
+      "bytes": 463192,
+      "dimensions_m": [
+        4.550517320632935,
+        1.7181259470476022,
+        1.3460781333374507
+      ]
+    },
+    {
+      "name": "Root 02 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-041.glb",
+      "sha256": "8bdec99c2eb828861852b507c2d072513c8fcb3d9d04ea42cfd98bd7c0fc2a64",
+      "bytes": 460004,
+      "dimensions_m": [
+        5.03058592770408,
+        1.7059634241175319,
+        1.4296029927205796
+      ]
+    },
+    {
+      "name": "Terrain Amount 01 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-055.glb",
+      "sha256": "088df3427c3564d759dddf48698cd63057e7c363c3ca68c620d632dfe5466cdf",
+      "bytes": 1513940,
+      "dimensions_m": [
+        8.996413230895996,
+        1.5956499278142804,
+        5.020657420157819
+      ]
+    },
+    {
+      "name": "Terrain Amount 02 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-056.glb",
+      "sha256": "39085eeb19259b80dbc37f68cb54c2d408cea9ae33748692488e3ec0202aa638",
+      "bytes": 1516604,
+      "dimensions_m": [
+        9.048834800720215,
+        2.4378013190442953,
+        5.020657300948489
+      ]
+    },
+    {
+      "name": "Tree 01 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-057.glb",
+      "sha256": "b1bd45d8985cbcb74aa525f1cf166dc04c8d7db16bf73e30748cac8aa13e2fa1",
+      "bytes": 1015676,
+      "dimensions_m": [
+        15.933727264404297,
+        12.09825597976275,
+        9.754518119609639
+      ]
+    },
+    {
+      "name": "Tree 02 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-058.glb",
+      "sha256": "2d4ec6645b47c86990d254a13a96c5e1dcd4bd0b70a3120772e608d9ffeff41a",
+      "bytes": 1016528,
+      "dimensions_m": [
+        12.794250965118408,
+        11.769409595650302,
+        14.030981632943293
+      ]
+    },
+    {
+      "name": "Tree 03 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-059.glb",
+      "sha256": "b1017ccc095314681323fe972b36a20063457a926a85d19339cf6ac70f280a3f",
+      "bytes": 1406868,
+      "dimensions_m": [
+        2.523973464965821,
+        2.759540438652039,
+        2.3095782995224
+      ]
+    },
+    {
+      "name": "Tree 04 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-060.glb",
+      "sha256": "89a0d7c68269390cb26e2f2bbe42a02bc8514b969f983483cabc86e803068d8b",
+      "bytes": 1404208,
+      "dimensions_m": [
+        8.571818351745605,
+        14.522020816802982,
+        6.6393778324127215
+      ]
+    },
+    {
+      "name": "Tree Trunk 01 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-061.glb",
+      "sha256": "e676d0aab63f7f0d5da0361f53cea7a1d677035b885dce3f37326859deb8979e",
+      "bytes": 1230184,
+      "dimensions_m": [
+        3.4175479412078857,
+        3.0210620060016358,
+        3.2556629134556014
+      ]
+    },
+    {
+      "name": "Water Fall 01 Art.001",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-063.glb",
+      "sha256": "dee602c14735498fd446ff1aca9a8a2566e066c10ff2a7f982ee09dd7ff1587c",
+      "bytes": 591016,
+      "dimensions_m": [
+        5.117891334449181,
+        14.871271371845866,
+        2.7741088725427883
+      ]
+    },
+    {
+      "name": "Water Fall 01 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-064.glb",
+      "sha256": "0c782e8b163fc98b105bcc75a6fda994a002e30f53e2642f8b39c3934feef6f5",
+      "bytes": 590992,
+      "dimensions_m": [
+        5.117891311645508,
+        14.871271006034739,
+        2.774113900936451
+      ]
+    },
+    {
+      "name": "Water Fall 02 Art",
+      "style_group": "environmental",
+      "file": "models/polygonalmind-momuspark-065.glb",
+      "sha256": "ccfd549f23bd03a3eb20414f3d1046b3bf7c5b12732028da38a652e56f513612",
+      "bytes": 590984,
+      "dimensions_m": [
+        2.5916810035705566,
+        14.871274617696828,
+        3.379803188123372
+      ]
+    },
+    {
+      "name": "Buddhist Temple Pagoda",
+      "style_group": "imperial_chinese",
+      "file": "models/innerscene-buddhist-temple-pagoda-c5ebacdc.glb",
+      "sha256": "2653c57850f3d0401a1c21177a3a7f50dfa48711c49078979f25bbf0fed2363e",
+      "bytes": 18840512,
+      "dimensions_m": [
+        14.800000190734863,
+        33.995201110839844,
+        14.800000190734863
+      ]
+    },
+    {
+      "name": "Japanese Maple Tree",
+      "style_group": "environmental",
+      "file": "models/innerscene-japanese-maple-tree-565c1604.glb",
+      "sha256": "898450277a86ade0ab67d5cede566ad97012f2aa5d4b958a5b607865bfb07283",
+      "bytes": 4439812,
+      "dimensions_m": [
+        8.064774863392529,
+        5.000000229252679,
+        8.02752140557405
+      ]
+    },
+    {
+      "name": "Baluster vase, one of three in a five-piece garniture (F1980.190--194)",
+      "style_group": "imperial_chinese",
+      "file": "models/smithsonian-Baluster_vase_one_of_three_in_a_five-piece_garniture_F1980.190--194_.glb",
+      "sha256": "92aff6e0811ae32dafff5ec95a492d3e7eefaff902c2a80f20b95c41032737c0",
+      "bytes": 551712,
+      "dimensions_m": [
+        0.35690489411354065,
+        0.17215333878993988,
+        0.36401498317718506
+      ]
+    },
+    {
+      "name": "Baluster vase, from a five-piece garniture (F1980.190-.194)",
+      "style_group": "imperial_chinese",
+      "file": "models/smithsonian-Baluster_vase_from_a_five-piece_garniture_F1980.190-.194_.glb",
+      "sha256": "9db27093998672468614d6d39f436a8a3208d2307745c861c8b3e63351cee524",
+      "bytes": 557224,
+      "dimensions_m": [
+        0.41053301095962524,
+        0.1708737462759018,
+        0.27804887294769287
+      ]
+    },
+    {
+      "name": "Beaker-shaped vase, from a five-piece garniture (F1980.190-.194)",
+      "style_group": "imperial_chinese",
+      "file": "models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture_F1980.190-.194_.glb",
+      "sha256": "70cae3568dfade5ca57aecf1e437f710f818f1c21d32d19a709deea75198dd90",
+      "bytes": 544188,
+      "dimensions_m": [
+        0.21061305701732635,
+        0.2108980417251587,
+        0.4244125187397003
+      ]
+    },
+    {
+      "name": "Beaker-shaped vase, from a five-piece garniture",
+      "style_group": "imperial_chinese",
+      "file": "models/smithsonian-Beaker-shaped_vase_from_a_five-piece_garniture.glb",
+      "sha256": "d7a736335096131cc814af11cb2cc6c38212551de3d0dbeb3cd46c3e438b53f6",
+      "bytes": 535208,
+      "dimensions_m": [
+        0.2030993103981018,
+        0.20370832085609436,
+        0.4338168799877167
+      ]
+    },
+    {
+      "name": "Red Rock Crab Rote Klippenkrabbe Cangrejo rojo de roca",
+      "style_group": "environmental",
+      "file": "models/grab3d-crab.glb",
+      "sha256": "4ac5a94f350e131f4f5951d5110e2a82d02b31493bad2de1ba4f6703f0b1ffa9",
+      "bytes": 12512508,
+      "dimensions_m": [
+        0.1999826654791832,
+        0.0694193391391309,
+        0.13015136867761612
+      ]
+    },
+    {
+      "name": "Pinball Machine Flipperautomat Máquina de pinball",
+      "style_group": "environmental",
+      "file": "models/grab3d-pinball-machine.glb",
+      "sha256": "40641fd235bae410c5cc5cb1649f4d03b319c7acc4a0688bf577dba07fe13515",
+      "bytes": 1729644,
+      "dimensions_m": [
+        0.7440000176429749,
+        1.8600000145807862,
+        1.4600000381469727
+      ]
+    },
+    {
+      "name": "Pine Cones Kiefernzapfen Piñas de pino",
+      "style_group": "environmental",
+      "file": "models/grab3d-pine-cone.glb",
+      "sha256": "158ee4149c9683e6f8489eb2129ee9c4ce21111a09bb40f2705ba1f8e31c41a7",
+      "bytes": 866352,
+      "dimensions_m": [
+        0.17784882336854935,
+        0.0729399025440216,
+        0.13483934849500656
+      ]
+    },
+    {
+      "name": "Baobab Tree Affenbrotbaum Baobab",
+      "style_group": "environmental",
+      "file": "models/grab3d-baobab-tree.glb",
+      "sha256": "3a6b2dadd0bc90e1fc2d9545b48fd16859a590b9e90415c7ed9204e9aafc06ef",
+      "bytes": 1100076,
+      "dimensions_m": [
+        6.191775321960449,
+        6.14035177230835,
+        5.689441204071045
+      ]
+    },
+    {
+      "name": "Birch Grove Birkenhain Bosquecillo de abedules",
+      "style_group": "environmental",
+      "file": "models/grab3d-birch-grove.glb",
+      "sha256": "62bd8988fbdce73967ed46cece1a924e8e6857c51b72379ba73a56ccc282511b",
+      "bytes": 1465220,
+      "dimensions_m": [
+        4.320404529571533,
+        6.727263927459717,
+        4.124755024909973
+      ]
+    },
+    {
+      "name": "Bowl of Cherries Kirschschale Cuenco de cerezas",
+      "style_group": "environmental",
+      "file": "models/grab3d-cherry-bowl.glb",
+      "sha256": "6bbd026a5a1c8a6a2e740f9e047620c06758498f38830560379a5b1369e747d7",
+      "bytes": 1078588,
+      "dimensions_m": [
+        0.13801822066307068,
+        0.124426931142807,
+        0.17457052320241928
+      ]
+    },
+    {
+      "name": "Bracket Fungus Baumpilz Hongo de repisa",
+      "style_group": "environmental",
+      "file": "models/grab3d-bracket-fungus.glb",
+      "sha256": "5871f04e75e452d1ab06cf0c0f7373d646e6c300b9dbdc9b5b914507064f7e31",
+      "bytes": 948264,
+      "dimensions_m": [
+        0.4269839823246002,
+        0.3440000116825104,
+        0.3838035613298416
+      ]
+    },
+    {
+      "name": "Cricket Bat Cricketschläger Bate de críquet",
+      "style_group": "environmental",
+      "file": "models/grab3d-cricket-bat.glb",
+      "sha256": "e48f9e60f3a083ea94507483cc3141cc62e19dfe50fbd3a67e40cc83cfde86ab",
+      "bytes": 951380,
+      "dimensions_m": [
+        0.845106303691864,
+        0.7583504319190979,
+        0.5067492127418518
+      ]
+    },
+    {
+      "name": "Desert Rock Arch Wüsten-Felsbogen Arco de roca del desierto",
+      "style_group": "environmental",
+      "file": "models/grab3d-desert-rock-arch.glb",
+      "sha256": "7fcf4abeed6ffb567d26ee57df05d96b1b8720eec7d5463c27a98440a4b1837c",
+      "bytes": 1898416,
+      "dimensions_m": [
+        8.528597831726074,
+        5.214505195617676,
+        4.09026563167572
+      ]
+    },
+    {
+      "name": "Dirt Road Feldweg Camino de tierra",
+      "style_group": "environmental",
+      "file": "models/grab3d-dirt-road.glb",
+      "sha256": "07bb0985702c31d8a2abba54bdf79c81c20d8a252bf2e92940272eae2be89d7f",
+      "bytes": 11069844,
+      "dimensions_m": [
+        11.800000190734863,
+        0.4151201844215393,
+        11.800000190734863
+      ]
+    },
+    {
+      "name": "Dry Stone Wall Trockenmauer Muro de piedra seca",
+      "style_group": "environmental",
+      "file": "models/grab3d-stone-wall.glb",
+      "sha256": "40578e5c10c78d053e127f5f88d0635cfdbbf21fdbe46cfc28897d9341c9a77e",
+      "bytes": 1316288,
+      "dimensions_m": [
+        3.0,
+        1.0589795112609863,
+        0.8571957945823669
+      ]
+    },
+    {
+      "name": "Edible Mushrooms Speisepilze Setas comestibles",
+      "style_group": "environmental",
+      "file": "models/grab3d-mushroom-food.glb",
+      "sha256": "7848782e67ad9fc96c4fe78d5b81fbcf7b0eb376792aec2fdb235be849aed968",
+      "bytes": 1365724,
+      "dimensions_m": [
+        0.23100000619888306,
+        0.09389930963516235,
+        0.3279999941587448
+      ]
+    },
+    {
+      "name": "Fantasy Mushroom House Fantasy-Pilzhaus Casa de seta de fantasía",
+      "style_group": "environmental",
+      "file": "models/grab3d-fantasy-mushroom-house.glb",
+      "sha256": "744bb8fbed22ecde546dedf878e7276b591878f04ef104ea30589d43c9347a1a",
+      "bytes": 1724952,
+      "dimensions_m": [
+        6.011139392852783,
+        5.302623271942139,
+        6.491486549377441
+      ]
+    },
+    {
+      "name": "Garden Gnome Gartenzwerg Gnomo de jardín",
+      "style_group": "environmental",
+      "file": "models/grab3d-garden-gnome.glb",
+      "sha256": "294f971f372c1ca99f4a9fd75c72dbbd7bf10df87b5675b72110ed1397d9fed5",
+      "bytes": 939600,
+      "dimensions_m": [
+        0.2267499938607216,
+        0.4268595576286316,
+        0.21849998831748962
+      ]
+    },
+    {
+      "name": "Glowing Mushroom Log Leuchtpilz-Baumstamm Tronco con setas luminosas",
+      "style_group": "environmental",
+      "file": "models/grab3d-glowing-mushroom-log.glb",
+      "sha256": "d472f71f92d5f4220a90cae537272a6ac63c24e8f4f8a04293b81702cc930c9d",
+      "bytes": 1168484,
+      "dimensions_m": [
+        0.4016903042793274,
+        0.25144898891448975,
+        0.25084374099969864
+      ]
+    },
+    {
+      "name": "Highway Segment Autobahnabschnitt Tramo de autopista",
+      "style_group": "environmental",
+      "file": "models/grab3d-highway-segment.glb",
+      "sha256": "59743d4c22ca3b511001958c5a2f1e752d156adefeb2aabac1391beb3ac5ee79",
+      "bytes": 14337876,
+      "dimensions_m": [
+        23.600000381469727,
+        1.1575000286102295,
+        23.600000381469727
+      ]
+    },
+    {
+      "name": "Jungle Tree Dschungelbaum Árbol de la jungla",
+      "style_group": "environmental",
+      "file": "models/grab3d-jungle-tree.glb",
+      "sha256": "98a57fda4a60a14c95f42d10ecca6cda7f02b0889d4d956ec33ab1498b605688",
+      "bytes": 1283796,
+      "dimensions_m": [
+        7.854711532592773,
+        10.141125679016113,
+        7.150622844696045
+      ]
+    },
+    {
+      "name": "Mangrove Tree Mangrovenbaum Mangle",
+      "style_group": "environmental",
+      "file": "models/grab3d-mangrove-tree.glb",
+      "sha256": "be2c0b79d1dd296bba3bd8b2942dce841c848e318b5756e19e3fbea1cf21c172",
+      "bytes": 1257172,
+      "dimensions_m": [
+        4.397235155105591,
+        5.736734867095947,
+        4.282843828201294
+      ]
+    },
+    {
+      "name": "Pirate Hideout Piratenversteck Escondite pirata",
+      "style_group": "environmental",
+      "file": "models/grab3d-pirate-hideout.glb",
+      "sha256": "15548b3c753ce9882ad4aed459c8454d70b26415d41fbd4da1a5f18b28e8fb74",
+      "bytes": 2362620,
+      "dimensions_m": [
+        9.483755111694336,
+        5.407090187072754,
+        6.679154872894287
+      ]
+    },
+    {
+      "name": "Railway Tunnel Portal Tunnelportal Boca de túnel ferroviario",
+      "style_group": "environmental",
+      "file": "models/grab3d-tunnel-portal.glb",
+      "sha256": "4afc9f07ad2fb82bd5252f7df849f0da09960f9230b205ca0fbbced08837cfa3",
+      "bytes": 2969580,
+      "dimensions_m": [
+        10.5,
+        8.507499694824219,
+        8.0
+      ]
+    },
+    {
+      "name": "Windswept Mountain Pine (Alpine Snow Village)",
+      "style_group": "environmental",
+      "file": "models/3dassets-alpine-snow-village-windswept-mountain-pine-e7302601.glb",
+      "sha256": "2ae5b2b2be36c624f5ad9cb9a22ae79dd86a461ace9a151c47d84a661d9444fa",
+      "bytes": 73696,
+      "dimensions_m": [
+        2.2999890681556963,
+        3.9000000953674316,
+        1.3781806791782714
+      ]
     }
   ]
 }

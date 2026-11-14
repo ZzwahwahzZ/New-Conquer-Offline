@@ -1,7 +1,7 @@
 Godot Engine v4.3.stable.official.77dcf97d8 - https://godotengine.org
 
 TWIN_CITY_IMPERIAL_KIT_PASS: palace_models=8 prop_templates=13 merged_source_surfaces=397 merged_material_surfaces=12
-TWIN_CITY_ASSET_BUILD_PASS: res://assets/environment/architecture/imperial_china_palace_and_garden_merged.scn bytes=2680068
+TWIN_CITY_ASSET_BUILD_PASS: res://assets/environment/architecture/imperial_china_palace_and_garden_merged.scn bytes=2680452
 ERROR: Pages in use exist at exit in PagedAllocator: N20RasterizerSceneDummy21GeometryInstanceDummyE
    at: ~PagedAllocator (./core/templates/paged_allocator.h:170)
 ERROR: 164 RID allocations of type 'N13RendererDummy11MeshStorage9DummyMeshE' were leaked at exit.

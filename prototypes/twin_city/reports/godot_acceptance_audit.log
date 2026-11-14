@@ -1,19 +1,10 @@
 Godot Engine v4.3.stable.official.77dcf97d8 - https://godotengine.org
 
-TWIN_CITY_OUTER_IMPERIAL_ASSETS_PASS: plum_trees=18 bamboo=14 rockery=12
-TWIN_CITY_ORIGINAL_PAVING_PASS: source=059-courtyard-paving-module tiles=300
-TWIN_CITY_BUILDING_CENSUS: residential=120 commercial=42 service=22 landmarks=12 defensive=20 palace=8 total=224
-TWIN_CITY_IMPERIAL_BUILD_PASS: target_structures=224 residential=120 commercial=42 service=22 landmarks=12 defensive=20 palace=8 urban_diameter=360 perimeter_diameter=440 plaza_diameter=60 palace=85x75
-TWIN_CITY_ACCEPTANCE_AUDIT total=224 categories={ "residential": 120, "commercial": 42, "service": 22, "landmark": 12, "defensive": 20, "palace_annex": 8 } plaza=true palace=true moat=true pagoda=true
-TWIN_CITY_AUDIT_PASS: 224 counted structures; category census and all required landmark nodes exist
-ERROR: Parameter "m" is null.
-   at: mesh_get_surface_count (servers/rendering/dummy/storage/mesh_storage.h:120)
-ERROR: Parameter "m" is null.
-   at: mesh_get_surface_count (servers/rendering/dummy/storage/mesh_storage.h:120)
-ERROR: Parameter "m" is null.
-   at: mesh_get_surface_count (servers/rendering/dummy/storage/mesh_storage.h:120)
-ERROR: Parameter "m" is null.
-   at: mesh_get_surface_count (servers/rendering/dummy/storage/mesh_storage.h:120)
+TWIN_CITY_GLB_PAVING_PASS: original_059_module_instances=5329 full_city_coverage=1
+TWIN_CITY_GLB_BUILDING_CENSUS: { "residential": 120, "commercial": 42, "service": 22, "landmark": 12, "defensive": 20, "palace_annex": 8 } total=224
+TWIN_CITY_GLB_BUILD_PASS: total=224 categories={ "residential": 120, "commercial": 42, "service": 22, "landmark": 12, "defensive": 20, "palace_annex": 8 } procedural_box_meshes=0 source=GLB
+TWIN_CITY_ACCEPTANCE_AUDIT total=224 categories={ "residential": 120, "commercial": 42, "service": 22, "landmark": 12, "defensive": 20, "palace_annex": 8 } glb_backed=224 null_meshes=0 procedural_box_meshes=0 mesh_surfaces=5153 paving_instances=5329 plaza=true palace=true moat=true pagoda=true
+TWIN_CITY_AUDIT_PASS: 224 genuine GLB-backed structures; 0 procedural BoxMesh; 0 null meshes; full-city imported paving
 ERROR: Parameter "m" is null.
    at: mesh_get_surface_count (servers/rendering/dummy/storage/mesh_storage.h:120)
 ERROR: Parameter "m" is null.
