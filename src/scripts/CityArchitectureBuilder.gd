@@ -649,23 +649,17 @@ static func build_twin_city(parent: Node3D) -> void:
  _twin_outer_biome(root, stone, water, pink)
  print("TWIN_CITY_IMPERIAL_BUILD_PASS: total_structures=157 residential=82 commercial=28 service=15 landmarks=10 defensive=14 palace=8 urban_diameter=360 perimeter_diameter=440 plaza_diameter=60 palace=85x75")
 
-static func _twin_ground(parent: Node3D, stone: Material) -> void:
+static func _twin_ground(parent: Node3D,stone: Material) -> void:
  var ground := MeshInstance3D.new()
  ground.name = "TwinCity_800m_TerrainFoundation"
  var plane := PlaneMesh.new()
- plane.size = Vector2(800.0, 800.0)
+ plane.size = Vector2(800.0,800.0)
  ground.mesh = plane
  ground.position.y = -0.18
  parent.add_child(ground)
- ground.material_override = _material(Color("#667b54"), 1.0)
- # Broad irregular city foundation inside the perimeter.
- for i in range(72):
-  var a := TAU * float(i) / 72.0
-  var radius := 178.0 + 4.0 * sin(a * 5.0) + 2.5 * cos(a * 9.0)
-  var tile := _twin_box(parent, "OrganicUrbanEdge_%02d" % i, Vector3(cos(a)*radius,0.02,sin(a)*radius), Vector3(10.0,0.16,8.0), stone)
-  tile.rotation.y = -a
+ ground.material_override = _material(Color("#667b54"),1.0)
 
-static func _twin_moat_walls_gates(parent: Node3D, stone: Material, pale: Material, dark: Material, water: Material, roof: Material, gold: Material, timber: Material) -> void:
+static func _twin_moat_walls_gates(parent: Node3D,stone: Material,pale: Material,dark: Material,water: Material,roof: Material,gold: Material,timber: Material) -> void:
  var moat := MeshInstance3D.new()
  moat.name = "DeepContinuousWaterMoat_440m"
  var ring := TorusMesh.new()
@@ -677,36 +671,45 @@ static func _twin_moat_walls_gates(parent: Node3D, stone: Material, pale: Materi
  moat.position.y = -1.7
  parent.add_child(moat)
  moat.material_override = water
+ var wall_transforms: Array[Transform3D] = []
+ var coping_transforms: Array[Transform3D] = []
+ var tower_transforms: Array[Transform3D] = []
+ var tower_roof_transforms: Array[Transform3D] = []
  for i in range(64):
-  var a := TAU * float(i) / 64.0
-  var radius := 218.0 + 2.0*sin(a*5.0) + 1.2*cos(a*9.0)
-  var pos := Vector3(cos(a)*radius, 6.0, sin(a)*radius)
-  var tangent := Vector3(-sin(a),0,cos(a))
-  var wall := _twin_box(parent, "OrganicFortifiedWall_%02d" % i, pos, Vector3(22.0,12.0,6.0), stone)
-  wall.rotation.y = -a
-  var coping := _twin_box(parent, "WallCoping_%02d" % i, pos+Vector3(0,6.25,0), Vector3(22.0,0.55,6.8), pale)
-  coping.rotation.y = -a
-  if i % 4 == 0:
-   var tower := _twin_cylinder(parent, "PerimeterWatchTower_%02d" % i, pos+Vector3(0,5.0,0), 4.0, 17.0, dark)
-   var cap := _twin_box(parent, "WatchTowerRoof_%02d" % i, pos+Vector3(0,14.0,0), Vector3(11.0,1.0,11.0), roof)
-   cap.rotation.y = a
- # Four arched stone bridge approaches and gatehouses.
+  var a := TAU*float(i)/64.0
+  var radius := 218.0+2.0*sin(a*5.0)+1.2*cos(a*9.0)
+  var pos := Vector3(cos(a)*radius,6.0,sin(a)*radius)
+  var yaw := -a-PI*0.5
+  wall_transforms.append(Transform3D(Basis(Vector3.UP,yaw).scaled(Vector3(22.0,12.0,6.0)),pos))
+  coping_transforms.append(Transform3D(Basis(Vector3.UP,yaw).scaled(Vector3(22.0,0.55,6.8)),pos+Vector3(0,6.25,0)))
+  if i%4==0:
+   tower_transforms.append(Transform3D(Basis().scaled(Vector3(8.0,17.0,8.0)),pos+Vector3(0,5.0,0)))
+   tower_roof_transforms.append(Transform3D(Basis().scaled(Vector3(11.0,1.0,11.0)),pos+Vector3(0,14.0,0)))
+ _twin_multimesh(parent,"ContinuousStoneCurtainWall",BoxMesh.new(),wall_transforms,stone)
+ _twin_multimesh(parent,"ContinuousWallCoping",BoxMesh.new(),coping_transforms,pale)
+ _twin_multimesh(parent,"PerimeterWatchTowerShafts",CylinderMesh.new(),tower_transforms,dark)
+ _twin_multimesh(parent,"PerimeterWatchTowerRoofs",BoxMesh.new(),tower_roof_transforms,roof)
+ var bridge_transforms: Array[Transform3D] = []
+ var gate_base_transforms: Array[Transform3D] = []
+ var gate_roof_transforms: Array[Transform3D] = []
+ var gate_trim_transforms: Array[Transform3D] = []
+ var arch_transforms: Array[Transform3D] = []
  for gate_index in range(4):
   var a := float(gate_index)*PI*0.5
   var direction := Vector3(cos(a),0,sin(a))
   var center := direction*220.0
-  var bridge := _twin_box(parent, "ArchedStoneBridge_%d" % gate_index, center+Vector3(0,-0.1,0), Vector3(20.0,1.7,38.0), pale)
-  bridge.rotation.y = -a
+  bridge_transforms.append(Transform3D(Basis(Vector3.UP,PI*0.5-a).scaled(Vector3(20.0,1.7,38.0)),center+Vector3(0,-0.1,0)))
   for side in [-1.0,1.0]:
-   var tower_pos := center + direction*(-14.0) + Vector3(-direction.z*side*13.0,0,direction.x*side*13.0)
-   _twin_gate_tower(parent, gate_index, side, tower_pos, pale, roof, gold)
-  var gate_arch := _twin_box(parent, "GateArchBeam_%d" % gate_index, center+direction*(-12.0)+Vector3(0,12.0,0), Vector3(31.0,2.5,4.0), timber)
-  gate_arch.rotation.y = -a
-
-static func _twin_gate_tower(parent: Node3D, gate_index: int, side: float, pos: Vector3, stone: Material, roof: Material, gold: Material) -> void:
- var base := _twin_box(parent, "Gatehouse_%d_%d" % [gate_index,int(side)], pos+Vector3(0,7.0,0), Vector3(12.0,14.0,12.0), stone)
- var cap := _twin_box(parent, "GatehouseDarkRoof_%d_%d" % [gate_index,int(side)], pos+Vector3(0,15.0,0), Vector3(16.0,2.0,16.0), roof)
- var trim := _twin_box(parent, "GatehouseGoldEave_%d_%d" % [gate_index,int(side)], pos+Vector3(0,16.1,0), Vector3(16.6,0.28,16.6), gold)
+   var tower_pos := center+direction*(-14.0)+Vector3(-direction.z*side*13.0,0,direction.x*side*13.0)
+   gate_base_transforms.append(Transform3D(Basis().scaled(Vector3(12.0,14.0,12.0)),tower_pos+Vector3(0,7.0,0)))
+   gate_roof_transforms.append(Transform3D(Basis().scaled(Vector3(16.0,2.0,16.0)),tower_pos+Vector3(0,15.0,0)))
+   gate_trim_transforms.append(Transform3D(Basis().scaled(Vector3(16.6,0.28,16.6)),tower_pos+Vector3(0,16.1,0)))
+  arch_transforms.append(Transform3D(Basis(Vector3.UP,-a-PI*0.5).scaled(Vector3(31.0,2.5,4.0)),center+direction*(-12.0)+Vector3(0,12.0,0)))
+ _twin_multimesh(parent,"FourArchedStoneBridges",BoxMesh.new(),bridge_transforms,pale)
+ _twin_multimesh(parent,"FourGatehouseBases",BoxMesh.new(),gate_base_transforms,pale)
+ _twin_multimesh(parent,"FourGatehouseDarkRoofs",BoxMesh.new(),gate_roof_transforms,roof)
+ _twin_multimesh(parent,"FourGatehouseGoldEaves",BoxMesh.new(),gate_trim_transforms,gold)
+ _twin_multimesh(parent,"FourGateArchBeams",BoxMesh.new(),arch_transforms,timber)
 
 static func _twin_roads(parent: Node3D, stone: Material, curb: Material) -> void:
  var road_root := Node3D.new()
@@ -751,7 +754,7 @@ static func _twin_road_transform(a: Vector3,b: Vector3,width: float) -> Transfor
  var basis := Basis(Vector3.UP,atan2(delta.x,delta.z)).scaled(Vector3(width,0.22,delta.length()+1.0))
  return Transform3D(basis,(a+b)*0.5)
 
-static func _twin_plaza(parent: Node3D, stone: Material, pale: Material, gold: Material, pink: Material, roof: Material, timber: Material) -> void:
+static func _twin_plaza(parent: Node3D,stone: Material,pale: Material,gold: Material,pink: Material,roof: Material,timber: Material) -> void:
  var plaza := Node3D.new()
  plaza.name = "CircularImperialPlaza_60m"
  parent.add_child(plaza)
@@ -774,31 +777,61 @@ static func _twin_plaza(parent: Node3D, stone: Material, pale: Material, gold: M
   torus.position.y = 0.48+float(ring_index)*0.01
   plaza.add_child(torus)
   torus.material_override = gold if ring_index == 1 else stone
- # Radial paving wedges create a circular engraved pattern rather than a grid.
+ var paver_transforms: Array[Transform3D] = []
  for i in range(48):
   var a := TAU*float(i)/48.0
-  var tile := _twin_box(plaza, "RadialEngravedPaver_%02d" % i, Vector3(cos(a)*15.0,0.46,sin(a)*15.0), Vector3(2.0,0.12,28.0), stone)
-  tile.rotation.y = -a
- # Pagoda landmark (20m) at the precise center.
- _twin_pagoda(plaza, roof, timber, gold)
- # Pink flowering cherry trees ring the plaza perimeter.
+  paver_transforms.append(Transform3D(Basis(Vector3.UP,PI*0.5-a).scaled(Vector3(2.0,0.12,28.0)),Vector3(cos(a)*15.0,0.46,sin(a)*15.0)))
+ _twin_multimesh(plaza,"RadialEngravedStonePaving",BoxMesh.new(),paver_transforms,stone)
+ _twin_pagoda(plaza,roof,timber,gold)
+ var trunk_mesh := CylinderMesh.new()
+ trunk_mesh.top_radius = 0.38
+ trunk_mesh.bottom_radius = 0.42
+ trunk_mesh.height = 5.2
+ trunk_mesh.radial_segments = 8
+ var crown_mesh := SphereMesh.new()
+ crown_mesh.radius = 3.0
+ crown_mesh.height = 4.4
+ var trunks := MultiMesh.new()
+ trunks.transform_format = MultiMesh.TRANSFORM_3D
+ trunks.mesh = trunk_mesh
+ trunks.instance_count = 12
+ var crowns := MultiMesh.new()
+ crowns.transform_format = MultiMesh.TRANSFORM_3D
+ crowns.mesh = crown_mesh
+ crowns.instance_count = 12
  for i in range(12):
   var a := TAU*float(i)/12.0
-  var pos := Vector3(cos(a)*34.0,0,sin(a)*34.0)
-  _twin_tree(plaza, "PlazaCherry_%02d" % i, pos, pink, timber, 1.0)
+  var pos := Vector3(cos(a)*34.0,2.6,sin(a)*34.0)
+  trunks.set_instance_transform(i,Transform3D(Basis(),pos))
+  crowns.set_instance_transform(i,Transform3D(Basis(),pos+Vector3(0,4.0,0)))
+ var trunk_node := MultiMeshInstance3D.new()
+ trunk_node.name = "PlazaCherryTreeTrunks"
+ trunk_node.multimesh = trunks
+ plaza.add_child(trunk_node)
+ trunk_node.material_override = timber
+ var crown_node := MultiMeshInstance3D.new()
+ crown_node.name = "PlazaCherryBlossomCanopies"
+ crown_node.multimesh = crowns
+ plaza.add_child(crown_node)
+ crown_node.material_override = pink
 
-static func _twin_pagoda(parent: Node3D, roof: Material, timber: Material, gold: Material) -> void:
+static func _twin_pagoda(parent: Node3D,roof: Material,timber: Material,gold: Material) -> void:
  var root := Node3D.new()
  root.name = "CentralPagoda_20m"
  parent.add_child(root)
+ var storey_transforms: Array[Transform3D] = []
+ var roof_transforms: Array[Transform3D] = []
+ var trim_transforms: Array[Transform3D] = []
  for level in range(4):
   var y := 2.0+float(level)*4.0
   var width := 12.0-float(level)*2.0
-  _twin_box(root, "PagodaStorey_%d" % level, Vector3(0,y,0), Vector3(width,3.3,width), timber)
-  var cap := _twin_box(root, "PagodaDarkRoof_%d" % level, Vector3(0,y+2.0,0), Vector3(width+5.0,0.8,width+5.0), roof)
-  for edge in [-1.0,1.0]:
-   var eave := _twin_box(root, "PagodaEaveTrim_%d_%d" % [level,int(edge)], Vector3(edge*(width+2.0)*0.5,y+2.35,0), Vector3(0.35,0.28,width+5.0), gold)
- _twin_cylinder(root, "PagodaFinial", Vector3(0,19.0,0), 0.32,2.0,gold)
+  storey_transforms.append(Transform3D(Basis().scaled(Vector3(width,3.3,width)),Vector3(0,y,0)))
+  roof_transforms.append(Transform3D(Basis().scaled(Vector3(width+5.0,0.8,width+5.0)),Vector3(0,y+2.0,0)))
+  trim_transforms.append(Transform3D(Basis().scaled(Vector3(width+5.6,0.18,width+5.6)),Vector3(0,y+2.48,0)))
+ _twin_multimesh(root,"PagodaTimberStoreys",BoxMesh.new(),storey_transforms,timber)
+ _twin_multimesh(root,"PagodaDarkRoofTiers",BoxMesh.new(),roof_transforms,roof)
+ _twin_multimesh(root,"PagodaGoldEaveTrim",BoxMesh.new(),trim_transforms,gold)
+ _twin_cylinder(root,"PagodaFinial",Vector3(0,19.0,0),0.32,2.0,gold)
 
 static func _twin_palace(parent: Node3D,pale: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
  var palace := Node3D.new()
@@ -1089,3 +1122,20 @@ static func _twin_cylinder(parent: Node3D,label: String,pos: Vector3,radius: flo
  parent.add_child(node)
  node.material_override = material
  return node
+
+static func _twin_multimesh(parent: Node3D,label: String,mesh: Mesh,transforms: Array,material: Material) -> MultiMeshInstance3D:
+ if transforms.is_empty():
+  return null
+ var multi := MultiMesh.new()
+ multi.transform_format = MultiMesh.TRANSFORM_3D
+ multi.mesh = mesh
+ multi.instance_count = transforms.size()
+ for i in range(transforms.size()):
+  multi.set_instance_transform(i,transforms[i])
+ var instance := MultiMeshInstance3D.new()
+ instance.name = label
+ instance.multimesh = multi
+ parent.add_child(instance)
+ instance.material_override = material
+ return instance
+
