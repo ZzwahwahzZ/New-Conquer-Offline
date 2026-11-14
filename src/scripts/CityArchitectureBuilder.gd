@@ -1068,7 +1068,7 @@ static func _twin_place_district_buildings(parent: Node3D, counts: Dictionary, w
   var center := Vector3(cos(angle)*radius,0,sin(angle)*radius)
   var rotation := -angle-PI*0.5
   for local_index in range(house_offsets.size()):
-   var pos := center + Basis(Vector3.UP,rotation)*house_offsets[local_index]
+   var pos: Vector3 = center + Basis(Vector3.UP,rotation)*house_offsets[local_index]
    _twin_register_batched_building(districts,batches,"residential",serial,pos,7.5+float((serial*7)%4),7.0+float((serial*3)%3),2+(serial%2),wall,stone,timber,roof,gold,rotation)
    serial += 1
   for shop_index in range(2):
