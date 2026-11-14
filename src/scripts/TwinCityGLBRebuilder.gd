@@ -139,8 +139,8 @@ static func _build_full_city_paving(parent: Node3D, source: Node3D) -> void:
 		return
 
 	var transforms: Array[Transform3D] = []
-	for x in range(-210, 211, 6):
-		for z in range(-210, 211, 6):
+	for x in range(-216, 217, 6):
+		for z in range(-216, 217, 6):
 			if absf(float(x)) <= 216.0 and absf(float(z)) <= 216.0:
 				transforms.append(Transform3D(Basis().scaled(Vector3(3.0, 1.0, 3.0)), Vector3(float(x), 0.06, float(z))))
 	var multi := MultiMesh.new()
