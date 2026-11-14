@@ -845,7 +845,7 @@ static func _twin_palace(parent: Node3D,pale: Material,stone: Material,timber: M
   if imported_kit != null:
    imported_kit.scale = Vector3.ONE*2.0
    _twin_add_palace_props(parent,imported_kit)
-    _twin_add_paved_roads(parent,imported_kit)
+   _twin_add_paved_roads(parent,imported_kit)
   return
  _twin_box(palace_root,"FallbackImperialHall",Vector3(0,8,0),Vector3(36,16,32),pale)
  _twin_box(palace_root,"FallbackImperialGoldRoof",Vector3(0,17,0),Vector3(42,1,38),gold)
