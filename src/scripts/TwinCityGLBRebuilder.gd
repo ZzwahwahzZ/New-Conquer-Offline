@@ -90,7 +90,7 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 		var water_mesh := PlaneMesh.new()
 		water_mesh.size = Vector2(440.0, 14.0)
 		water.mesh = water_mesh
-		water.position = [Vector3(0.0, -0.05, -226.0), Vector3(226.0, -0.05, 0.0), Vector3(0.0, -0.05, 226.0), Vector3(-226.0, -0.05, 0.0)][side]
+		water.position = [Vector3(0.0, -0.05, -228.0), Vector3(228.0, -0.05, 0.0), Vector3(0.0, -0.05, 228.0), Vector3(-228.0, -0.05, 0.0)][side]
 		water.rotation.y = PI * 0.5 if side % 2 == 1 else 0.0
 		fort.add_child(water)
 		water.material_override = water_material
@@ -104,20 +104,20 @@ static func _build_perimeter(parent: Node3D, source: Node3D) -> void:
 		for segment in range(32):
 			if segment == 15 or segment == 16:
 				continue
-			var along := -205.0 + float(segment) * 13.2
-			var pos := Vector3(along, 0.0, -215.0)
+			var along := -216.0 + float(segment) * 13.5
+			var pos := Vector3(along, 0.0, -220.0)
 			if side == 1:
-				pos = Vector3(215.0, 0.0, along)
+				pos = Vector3(220.0, 0.0, along)
 			elif side == 2:
-				pos = Vector3(-along, 0.0, 215.0)
+				pos = Vector3(-along, 0.0, 220.0)
 			elif side == 3:
-				pos = Vector3(-215.0, 0.0, -along)
+				pos = Vector3(-220.0, 0.0, -along)
 			_clone_source_model(fort, source, wall_template, "TwinCity_ImperialWall_%02d_%02d" % [side, segment], pos, yaw, 1.25, "")
-		var corner_positions := [Vector3(-215.0, 0.0, -215.0), Vector3(215.0, 0.0, -215.0), Vector3(215.0, 0.0, 215.0), Vector3(-215.0, 0.0, 215.0)]
+		var corner_positions := [Vector3(-220.0, 0.0, -220.0), Vector3(220.0, 0.0, -220.0), Vector3(220.0, 0.0, 220.0), Vector3(-220.0, 0.0, 220.0)]
 		_clone_source_model(fort, source, corner_template, "TwinCity_ImperialWallCorner_%02d" % side, corner_positions[side], yaw, 1.4, "")
 
 		var gate_direction := Vector3(sin(yaw), 0.0, -cos(yaw))
-		var gate_center := gate_direction * 215.0
+		var gate_center := gate_direction * 220.0
 		_clone_source_model(fort, source, moon_gate_template, "TwinCity_ImperialMoonGate_%02d" % side, gate_center, yaw, 1.55, "")
 		_clone_source_model(fort, source, end_pier_template, "TwinCity_ImperialGatePierA_%02d" % side, gate_center + Vector3(-sin(yaw) * 18.0, 0.0, cos(yaw) * 18.0), yaw, 1.5, "")
 		_clone_source_model(fort, source, end_pier_template, "TwinCity_ImperialGatePierB_%02d" % side, gate_center + Vector3(sin(yaw) * 18.0, 0.0, -cos(yaw) * 18.0), yaw, 1.5, "")
@@ -141,7 +141,7 @@ static func _build_full_city_paving(parent: Node3D, source: Node3D) -> void:
 	var transforms: Array[Transform3D] = []
 	for x in range(-210, 211, 6):
 		for z in range(-210, 211, 6):
-			if absf(float(x)) <= 210.0 and absf(float(z)) <= 210.0:
+			if absf(float(x)) <= 216.0 and absf(float(z)) <= 216.0:
 				transforms.append(Transform3D(Basis().scaled(Vector3(3.0, 1.0, 3.0)), Vector3(float(x), 0.06, float(z))))
 	var multi := MultiMesh.new()
 	multi.transform_format = MultiMesh.TRANSFORM_3D
