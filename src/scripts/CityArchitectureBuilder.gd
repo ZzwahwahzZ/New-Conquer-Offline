@@ -687,7 +687,12 @@ static func _twin_moat_walls_gates(parent: Node3D,stone: Material,pale: Material
    tower_roof_transforms.append(Transform3D(Basis().scaled(Vector3(11.0,1.0,11.0)),pos+Vector3(0,14.0,0)))
  _twin_multimesh(parent,"ContinuousStoneCurtainWall",BoxMesh.new(),wall_transforms,stone)
  _twin_multimesh(parent,"ContinuousWallCoping",BoxMesh.new(),coping_transforms,pale)
- _twin_multimesh(parent,"PerimeterWatchTowerShafts",CylinderMesh.new(),tower_transforms,dark)
+ var tower_mesh := CylinderMesh.new()
+ tower_mesh.height = 1.0
+ tower_mesh.top_radius = 0.5
+ tower_mesh.bottom_radius = 0.5
+ tower_mesh.radial_segments = 12
+ _twin_multimesh(parent,"PerimeterWatchTowerShafts",tower_mesh,tower_transforms,dark)
  _twin_multimesh(parent,"PerimeterWatchTowerRoofs",BoxMesh.new(),tower_roof_transforms,roof)
  var bridge_transforms: Array[Transform3D] = []
  var gate_base_transforms: Array[Transform3D] = []
@@ -841,10 +846,16 @@ static func _twin_palace(parent: Node3D,pale: Material,stone: Material,timber: M
  var imperial_gold := _material(Color("#E0A83B"),0.44)
  _twin_box(palace,"PalaceRaisedStoneTerrace",Vector3(0,2.25,0),Vector3(85.0,4.5,75.0),stone)
  _twin_box(palace,"PalaceUpperTerrace",Vector3(0,4.7,8.0),Vector3(69.0,1.0,55.0),pale)
- # Broad ceremonial staircase rises 4.5m from the plaza-facing southern edge.
+ var stair_transforms: Array[Transform3D] = []
  for step in range(10):
   var rise := float(step)*0.45
-  _twin_box(palace,"ImperialStair_%02d" % step,Vector3(0,0.25+rise,31.0+float(step)*2.1),Vector3(22.0,0.5+rise*0.08,2.2),pale)
+  stair_transforms.append(Transform3D(Basis().scaled(Vector3(22.0,0.5+rise*0.08,2.2)),Vector3(0,0.25+rise,31.0+float(step)*2.1)))
+ _twin_multimesh(palace,"BroadCeremonialStoneStaircase",BoxMesh.new(),stair_transforms,pale)
+ var hall_roofs: Array[Transform3D] = []
+ var upper_roofs: Array[Transform3D] = []
+ var ridges: Array[Transform3D] = []
+ var eaves: Array[Transform3D] = []
+ var column_transforms: Array[Transform3D] = []
  for wing in range(3):
   var x := float(wing-1)*27.0
   var hall_width := 28.0 if wing == 1 else 21.0
@@ -853,16 +864,38 @@ static func _twin_palace(parent: Node3D,pale: Material,stone: Material,timber: M
   _twin_box(palace,"PalaceHall_%d" % wing,Vector3(x,10.0,hall_z),Vector3(hall_width,10.0,hall_depth),pale)
   for col in range(5):
    var cx := x-hall_width*0.42+float(col)*hall_width*0.21
-   _twin_cylinder(palace,"PalaceColumn_%d_%d" % [wing,col],Vector3(cx,8.5,hall_z+hall_depth*0.5+0.3),0.72,8.0,timber)
-  # Two stepped imperial roof tiers, restrained gold ridge work and projecting eaves.
-  _twin_box(palace,"ImperialGoldenLowerEave_%d" % wing,Vector3(x,15.4,hall_z),Vector3(hall_width+6.0,0.72,hall_depth+7.0),imperial_gold)
-  _twin_box(palace,"ImperialGoldenUpperRoof_%d" % wing,Vector3(x,16.2,hall_z),Vector3(hall_width+2.0,0.65,hall_depth+3.0),imperial_gold)
-  _twin_box(palace,"ImperialRoofRidge_%d" % wing,Vector3(x,16.75,hall_z),Vector3(hall_width*0.82,0.32,0.72),gold)
+   column_transforms.append(Transform3D(Basis().scaled(Vector3(1.44,8.0,1.44)),Vector3(cx,8.5,hall_z+hall_depth*0.5+0.3)))
+  hall_roofs.append(Transform3D(Basis().scaled(Vector3(hall_width+6.0,0.72,hall_depth+7.0)),Vector3(x,15.4,hall_z)))
+  upper_roofs.append(Transform3D(Basis().scaled(Vector3(hall_width+2.0,0.65,hall_depth+3.0)),Vector3(x,16.2,hall_z)))
+  ridges.append(Transform3D(Basis().scaled(Vector3(hall_width*0.82,0.32,0.72)),Vector3(x,16.75,hall_z)))
   for side in [-1.0,1.0]:
-   _twin_box(palace,"ImperialRaisedEaveTip_%d_%d" % [wing,int(side)],Vector3(x+side*(hall_width*0.5+2.4),16.0,hall_z),Vector3(0.65,0.42,hall_depth+6.0),gold)
- # Stone guardian sculptures stand on pedestals at the stair landing.
+   eaves.append(Transform3D(Basis().scaled(Vector3(0.65,0.42,hall_depth+6.0)),Vector3(x+side*(hall_width*0.5+2.4),16.0,hall_z)))
+ var column_mesh := CylinderMesh.new()
+ column_mesh.height = 1.0
+ column_mesh.top_radius = 0.5
+ column_mesh.bottom_radius = 0.5
+ column_mesh.radial_segments = 12
+ _twin_multimesh(palace,"ImperialRedTimberColumnArray",column_mesh,column_transforms,timber)
+ _twin_multimesh(palace,"ImperialGoldenLowerEaves",BoxMesh.new(),hall_roofs,imperial_gold)
+ _twin_multimesh(palace,"ImperialGoldenUpperRoofs",BoxMesh.new(),upper_roofs,imperial_gold)
+ _twin_multimesh(palace,"ImperialRoofRidges",BoxMesh.new(),ridges,gold)
+ _twin_multimesh(palace,"ImperialRaisedEaveTips",BoxMesh.new(),eaves,gold)
+ var pedestal_transforms: Array[Transform3D] = []
+ var body_transforms: Array[Transform3D] = []
+ var head_transforms: Array[Transform3D] = []
  for side in [-1.0,1.0]:
-  _twin_guardian(palace,Vector3(side*14.0,5.0,30.0),stone,gold)
+  var pos := Vector3(side*14.0,5.0,30.0)
+  pedestal_transforms.append(Transform3D(Basis().scaled(Vector3(2.0,1.2,2.0)),pos+Vector3(0,0.6,0)))
+  body_transforms.append(Transform3D(Basis().scaled(Vector3(1.44,2.2,1.44)),pos+Vector3(0,2.0,0)))
+  head_transforms.append(Transform3D(Basis().scaled(Vector3(1.0,1.0,1.0)),pos+Vector3(0,3.6,0)))
+ _twin_multimesh(palace,"ImperialGuardianPedestals",BoxMesh.new(),pedestal_transforms,stone)
+ var guardian_cylinder := CylinderMesh.new()
+ guardian_cylinder.height = 1.0
+ guardian_cylinder.top_radius = 0.5
+ guardian_cylinder.bottom_radius = 0.5
+ guardian_cylinder.radial_segments = 12
+ _twin_multimesh(palace,"ImperialGuardianBodies",guardian_cylinder,body_transforms,stone)
+ _twin_multimesh(palace,"ImperialGuardianHeads",guardian_cylinder,head_transforms,gold)
 static func _twin_guardian(parent: Node3D, pos: Vector3, stone: Material, gold: Material) -> void:
  _twin_box(parent, "ImperialGuardianPedestal", pos+Vector3(0,0.6,0), Vector3(2.0,1.2,2.0), stone)
  _twin_cylinder(parent, "ImperialGuardianBody", pos+Vector3(0,2.0,0), 0.72,2.2,stone)
