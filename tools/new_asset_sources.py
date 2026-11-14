@@ -207,3 +207,83 @@ def discover_sketchfab(session, getj, fetch, safe, sha, RAW, DISC, DOWN, ERR, SK
         })
     print("SKETCHFAB_SOURCE_COUNTS", {"candidates": found, "downloaded": downloaded,
                                       "oauth_token_present": bool(token)})
+
+
+def discover_polygonal_mind(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPED):
+    """Pull selected CC0 GLBs from Polygonal Mind's public asset registry."""
+    root = "https://raw.githubusercontent.com/ToxSam/open-source-3d-assets/main/data"
+    projects = getj(root + "/projects.json")
+    project_map = {x.get("id"): x for x in projects if isinstance(x, dict)}
+    selections = (
+        ("pm-lunar-year", "lunar-year",
+         "https://github.com/ToxSam/cc0-models-Polygonal-Mind/tree/main/projects/lunar-year"),
+        ("pm-momuspark", "MomusPark",
+         "https://github.com/ToxSam/cc0-models-Polygonal-Mind/tree/main/projects/MomusPark"),
+    )
+    downloaded = 0
+    for project_id, folder, project_page in selections:
+        project = project_map.get(project_id) or {}
+        if not project.get("is_public") or str(project.get("license", "")).upper() != "CC0":
+            SKIPPED.append({"asset": project_id, "stage": "license",
+                            "reason": "Registry does not explicitly mark this public collection CC0"})
+            continue
+        try:
+            assets = getj(root + "/assets/" + project_id + ".json")
+            for item in assets:
+                if not item.get("is_public") or item.get("is_draft") or str(item.get("format", "")).upper() != "GLB":
+                    continue
+                name = str(item.get("name") or item.get("id") or "")
+                meta = item.get("metadata") or {}
+                attrs = {str(a.get("trait_type", "")).lower(): str(a.get("value", ""))
+                         for a in meta.get("attributes", []) if isinstance(a, dict)}
+                if project_id == "pm-lunar-year":
+                    source_category = attrs.get("category", "").lower()
+                    if source_category not in {"architecture", "decoration", "cultural",
+                                               "cultural symbol", "lighting", "furniture", "nature"}:
+                        continue
+                    target = ("gates_walls_bridges" if source_category == "architecture"
+                              else "nature" if source_category == "nature"
+                              else "statues_and_props")
+                    style = attrs.get("style", "Asian Traditional")
+                else:
+                    source_category = attrs.get("category", "").lower()
+                    source_type = attrs.get("type", "").lower()
+                    if source_category not in {"nature", "terrain", "water feature"}:
+                        continue
+                    if "floating island" in source_type:
+                        continue
+                    target = "nature"
+                    style = attrs.get("style", "Naturalistic")
+                model_url = str(item.get("model_file_url") or "")
+                if not model_url.startswith("https://raw.githubusercontent.com/ToxSam/cc0-models-Polygonal-Mind/") or not model_url.lower().endswith(".glb"):
+                    SKIPPED.append({"asset": str(item.get("id")), "stage": "source_url",
+                                    "reason": "Model URL is not an approved direct GLB URL in the public source repository"})
+                    continue
+                item_id = "polygonalmind-" + safe(str(item.get("id") or name))
+                source_url = "https://github.com/ToxSam/cc0-models-Polygonal-Mind/blob/main/" + str(meta.get("github_path") or ("projects/" + folder + "/" + Path(model_url).name))
+                if _known(DISC, item_id, source_url):
+                    continue
+                rec = {
+                    "id": item_id, "name": name.replace("_", " "),
+                    "source": "Polygonal Mind Lunar Year" if project_id == "pm-lunar-year" else "Polygonal Mind Nature",
+                    "source_url": source_url, "download_url": model_url,
+                    "license": "CC0 1.0 Universal",
+                    "authors": {"creator": str(project.get("creator_id") or "Polygonal Mind")},
+                    "target_category": target,
+                    "api_metadata": {"tags": "Asian Traditional " + folder + " " + source_category + " " + style},
+                    "matches": [(target, folder + " " + name)],
+                }
+                try:
+                    raw = fetch(model_url, RAW / "polygonalmind" / project_id / (safe(item_id) + ".glb"))
+                    DISC.append(rec)
+                    DOWN.append({**rec, "raw": str(raw), "download_sha256": sha(raw)})
+                    downloaded += 1
+                except Exception as exc:
+                    ERR.append({"asset": item_id, "stage": "download", "reason": str(exc)})
+                if downloaded >= 100:
+                    break
+        except Exception as exc:
+            ERR.append({"asset": project_id, "stage": "registry", "reason": str(exc)})
+        if downloaded >= 100:
+            break
+    print("POLYGONAL_MIND_SOURCE_COUNTS", {"downloaded": downloaded})
