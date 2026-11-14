@@ -7,6 +7,7 @@ on:
       - "twin-city/imperial-visual-prototype"
     paths:
       - ".github/workflows/collect-twin-city-houses-shops.yml"
+      - "collection/research/candidate-catalog.md"
 
 permissions:
   contents: write
