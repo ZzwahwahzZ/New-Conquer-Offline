@@ -456,10 +456,22 @@ def discover_github_open_assets(session, fetch, safe, sha, RAW, DISC, DOWN, ERR,
                 lower = (path + " " + str(repository.get("description") or "")).lower()
                 if re.search(r"(cherry|sakura|blossom|plum|bamboo|willow|pine|lotus|tree)", lower):
                     category = "nature"
+                    target_category = "nature"
                 elif re.search(r"(lantern|dragon|lion|statue|bell|ornament)", lower):
                     category = "ornaments"
+                    target_category = "statues_and_props"
+                elif re.search(r"(bridge|gate|wall|watchtower|tower)", lower):
+                    category = "architecture"
+                    target_category = "gates_walls_bridges"
+                elif re.search(r"(temple|pagoda|palace|shrine)", lower):
+                    category = "architecture"
+                    target_category = "palaces_and_temples"
+                elif re.search(r"(market.?stall|shop|teahouse|tea.?house|house)", lower):
+                    category = "architecture"
+                    target_category = "houses_and_shops"
                 else:
                     category = "architecture"
+                    target_category = None
                 if spdx.startswith("CC0"):
                     license_name, license_url = "CC0 1.0 Universal", "https://creativecommons.org/publicdomain/zero/1.0/"
                 elif spdx.startswith("CC-BY-SA"):
@@ -476,7 +488,7 @@ def discover_github_open_assets(session, fetch, safe, sha, RAW, DISC, DOWN, ERR,
                     "source_url": source_url, "download_url": raw_url,
                     "license": license_name, "license_url": license_url,
                     "authors": {"repository_publisher": owner},
-                    "target_category": "nature" if category == "nature" else None,
+                    "target_category": target_category,
                     "matches": [(category, query)],
                     "pack": full_name,
                     "api_metadata": {"spdx_id": spdx, "repository": full_name,
