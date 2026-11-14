@@ -116,7 +116,10 @@ jobs:
         run: |
           set -Eeuo pipefail
           mkdir -p prototypes/twin_city/reports prototypes/twin_city/captures
-          godot --headless --audio-driver Dummy --path . --script res://src/scripts/TwinCityAcceptanceAudit.gd 2>&1 | tee prototypes/twin_city/reports/godot_acceptance_audit.log
+          lvp_icd="$(find /usr/share/vulkan/icd.d -maxdepth 1 -type f -iname '*lvp*.json' | head -n 1)"
+          test -n "$lvp_icd"
+          export VK_ICD_FILENAMES="$lvp_icd"
+          timeout 900s xvfb-run -a -s "-screen 0 1280x720x24" godot --path . --rendering-method mobile --rendering-driver vulkan --audio-driver Dummy --script res://src/scripts/TwinCityAcceptanceAudit.gd 2>&1 | tee prototypes/twin_city/reports/godot_acceptance_audit.log
           grep -q 'TWIN_CITY_AUDIT_PASS:' prototypes/twin_city/reports/godot_acceptance_audit.log
           if grep -E 'ERROR: Parameter "m" is null|SCRIPT ERROR:|Parse Error:|TWIN_CITY_AUDIT_FAIL:' prototypes/twin_city/reports/godot_acceptance_audit.log; then
             echo "::error::Acceptance audit reported a mesh or script error."
