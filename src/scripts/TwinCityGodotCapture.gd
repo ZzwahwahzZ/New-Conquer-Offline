@@ -3,10 +3,10 @@ extends SceneTree
 const VIEWS := [
  {"file":"01_aerial_full.png","position":Vector3(0,520,560),"target":Vector3(0,0,0),"ortho":true,"size":660.0},
  {"file":"02_aerial_oblique.png","position":Vector3(280,300,330),"target":Vector3(0,6,0),"ortho":true,"size":440.0},
- {"file":"03_street_scale.png","position":Vector3(20,10,85),"target":Vector3(40,6,123),"ortho":false,"fov":58.0},
+ {"file":"03_street_scale.png","position":Vector3(0,4,154),"target":Vector3(0,5,112),"ortho":false,"fov":64.0},
  {"file":"04_central_plaza.png","position":Vector3(74,42,80),"target":Vector3(0,8,0),"ortho":false,"fov":55.0},
  {"file":"05_imperial_palace.png","position":Vector3(0,70,-190),"target":Vector3(0,12,-103),"ortho":false,"fov":52.0},
- {"file":"06_district_density.png","position":Vector3(68,18,44),"target":Vector3(90,6,65),"ortho":false,"fov":60.0}
+ {"file":"06_district_density.png","position":Vector3(151,18,112),"target":Vector3(112,7,94),"ortho":false,"fov":62.0}
 ]
 
 func _initialize() -> void:
@@ -105,8 +105,8 @@ func _capture() -> void:
  file.store_string(JSON.stringify(report,"\t"))
  file.close()
  print("TWIN_CITY_CAPTURE_SUMMARY: "+JSON.stringify(report))
- if nodes.size()<150 or nodes.size()>180:
-  _fail("Expected 150-180 structures; got "+str(nodes.size()))
+ if nodes.size()<220 or nodes.size()>260:
+  _fail("Expected 220-260 structures; got "+str(nodes.size()))
   return
  if avg_fps<30.0 and not OS.get_environment("VK_ICD_FILENAMES").to_lower().contains("lvp"):
   _fail("Measured hardware renderer FPS below 30: "+str(avg_fps))
