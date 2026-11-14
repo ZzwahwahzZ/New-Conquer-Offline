@@ -7,7 +7,7 @@ import requests
 from huggingface_hub import HfApi,hf_hub_download
 from imperial_extra_sources import discover_3dassets, discover_hanok_pack, discover_imperial_china_pack
 from opengameart_sources import discover_opengameart, discover_quaternius, _license_from_page
-from new_asset_sources import discover_smithsonian, discover_kenney_nature, discover_sketchfab, discover_polygonal_mind, discover_innerscene_curated, discover_github_open_assets
+from new_asset_sources import discover_smithsonian, discover_kenney_nature, discover_sketchfab, discover_polygonal_mind, discover_innerscene_curated, discover_github_open_assets, discover_poly_pizza
 ROOT=Path.cwd(); OUT=ROOT/"assets/wuxia_imperial_pack"; RAW=ROOT/".asset_work/raw"
 HF_REPO=os.getenv("HF_REPO_ID","ZzwahwahzZ/clash-of-legends-terrain-assets"); PREFIX="assets/wuxia_imperial_pack"
 S=requests.Session(); S.headers.update({"User-Agent":"NewConquerOffline-AssetPipeline/1.0 (GitHub Actions; asset audit)"})
@@ -519,9 +519,8 @@ def main():
  SKIPPED.extend([
   {"asset":"pine_tree_01","stage":"known_legacy_failure","reason":"Skipped before discovery; prior download exceeded the configured size limit"},
   {"asset":"weed_plant_02","stage":"known_legacy_failure","reason":"Skipped before discovery; prior normalization failed"},
-  {"asset":"Poly Pizza","stage":"terms_of_service","reason":"Automated catalogue scraping is prohibited by the site's Terms of Service; no public production API was verified, so no automated download is attempted"}
  ])
- strict_filter_self_test(); discover_polygonal_mind(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_innerscene_curated(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_smithsonian(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_kenney_nature(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_sketchfab(S,getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_github_open_assets(S,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_imperial_china_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_hanok_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
+ strict_filter_self_test(); discover_polygonal_mind(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_innerscene_curated(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_smithsonian(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_kenney_nature(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_sketchfab(S,getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_poly_pizza(S,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_github_open_assets(S,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_imperial_china_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_hanok_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
  if not entries:
   print(json.dumps({"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
   raise RuntimeError("No assets passed license and validation checks; see printed per-source diagnostics. No empty upload performed.")
