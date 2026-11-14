@@ -104,9 +104,8 @@ jobs:
               refreshed[item.get("asset_id", relative)] = {"bytes":len(payload),"sha256":digest,"dimensions_m":dimensions,"geometry_count":geometry_count}
               name = str(item.get("name", Path(relative).stem))
               category = str(item.get("category", "uncategorized"))
-              semantic = (name + " " + relative).lower()
               geometry_audit.append({"asset_id":item.get("asset_id"),"name":name,"file":relative,"category":category,"style_group":item.get("style_group"),"dimensions_m":dimensions,"geometry_count":geometry_count,"bytes":len(payload),"sha256":digest})
-              print(f"HF_GLB_VERIFIED {index}/99 {relative} dimensions_m={dimensions} geometry={geometry_count} sha256={digest}")
+              print(f"HF_GLB_VERIFIED {index}/{len(selected)} {relative} dimensions_m={dimensions} geometry={geometry_count} sha256={digest}")
           active_assets = selected
           selected_records = []
           for item in active_assets:
@@ -141,7 +140,6 @@ jobs:
               record["active_project_path"] = str(active_root / record["file"])
           (active_root / "selection_manifest.json").write_text(json.dumps({"selected_count":len(selected_records),"assets":selected_records}, ensure_ascii=False, indent=2) + "\n")
           (root / "models" / ".gdignore").write_text("# Source archive: active assets are imported from assets/twin_city_selected.\\n")
-          (root / "candidates" / "models" / ".gdignore").write_text("# Source candidate archive: active assets are imported from assets/twin_city_selected.\\n")
           (root / "candidates" / "models" / ".gdignore").write_text("# Source candidate archive: active assets are imported from assets/twin_city_selected.\\n")
           imperial_count = sum(1 for item in selected if item.get("style_group") == "imperial_chinese")
           if imperial_count != 46:
@@ -274,7 +272,7 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
-          godot --headless --path . --script res://src/scripts/TwinCityGLBAssetAudit.gd 2>&1 | tee prototypes/twin_city/reports/all_99_glb_mesh_audit.log
+          godot --headless --path . --script res://src/scripts/TwinCityGLBAssetAudit.gd 2>&1 | tee prototypes/twin_city/reports/all_restored_glb_mesh_audit.log
 
       - name: Prebuild material-batched Imperial China palace scene
         shell: bash
