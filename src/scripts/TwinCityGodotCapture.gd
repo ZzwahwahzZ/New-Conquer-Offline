@@ -70,11 +70,11 @@ func _capture() -> void:
   camera.queue_free()
   await process_frame
  var nodes := get_nodes_in_group("twin_city_building")
- var counts := {"residential":0,"commercial":0,"service":0,"landmark":0}
+ var counts := {"residential":0,"commercial":0,"service":0,"landmark":0,"palace":0,"pagoda":0}
  for node in nodes:
-  for key in counts.keys():
-   if node.name.begins_with("TwinCity_%s_" % key):
-    counts[key] += 1
+  var category := str(node.get_meta("twin_city_category", ""))
+  if counts.has(category):
+   counts[category] += 1
  var avg_fps := fps_sum/maxf(1.0,float(fps_samples))
  var report := {
   "architecture_style":"imperial_chinese",
