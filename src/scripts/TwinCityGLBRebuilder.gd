@@ -190,7 +190,7 @@ static func _build_full_city_paving(parent: Node3D, source: Node3D) -> void:
 		push_error("TWIN_CITY_GLB_FAIL: paving module contains no MeshInstance3D")
 		return
 	var source_mesh := (mesh_nodes[0] as MeshInstance3D).mesh
-	if source_mesh == null or source_mesh.get_surface_count() == 0:
+	if source_mesh == null or not source_mesh.get_rid().is_valid() or source_mesh.get_surface_count() == 0:
 		push_error("TWIN_CITY_GLB_FAIL: paving source mesh is null or has no surfaces")
 		return
 
@@ -495,7 +495,7 @@ static func _apply_imperial_palette(root: Node3D) -> void:
 			continue
 		var mesh_node := node as MeshInstance3D
 		var mesh := mesh_node.mesh
-		if mesh == null:
+		if mesh == null or not mesh.get_rid().is_valid():
 			continue
 		for surface in range(mesh.get_surface_count()):
 			var original := mesh_node.get_active_material(surface)
@@ -538,7 +538,7 @@ static func _node_local_aabb(root: Node3D) -> AABB:
 			transform = transform * (node as Node3D).transform
 		if node is MeshInstance3D:
 			var mesh_instance := node as MeshInstance3D
-			if mesh_instance.mesh != null:
+			if mesh_instance.mesh != null and mesh_instance.mesh.get_rid().is_valid():
 				var local_bounds := mesh_instance.mesh.get_aabb() * transform
 				if not has_bounds:
 					result = local_bounds
@@ -550,42 +550,25 @@ static func _node_local_aabb(root: Node3D) -> AABB:
 	return result if has_bounds else AABB()
 
 static func _node_global_aabb(root: Node3D) -> AABB:
-	var result := AABB()
-	var has_bounds := false
-	var pending: Array[Node] = [root]
-	while not pending.is_empty():
-		var node: Node = pending.pop_back()
-		if node is MeshInstance3D:
-			var mesh_node := node as MeshInstance3D
-			if mesh_node.mesh != null:
-				var world_bounds := mesh_node.mesh.get_aabb() * mesh_node.global_transform
-				if not has_bounds:
-					result = world_bounds
-					has_bounds = true
-				else:
-					result = result.merge(world_bounds)
-		elif node is MultiMeshInstance3D:
-			var multi_node := node as MultiMeshInstance3D
-			if multi_node.multimesh != null and multi_node.multimesh.mesh != null:
-				var world_bounds := multi_node.multimesh.get_aabb() * multi_node.global_transform
-				if not has_bounds:
-					result = world_bounds
-					has_bounds = true
-				else:
-					result = result.merge(world_bounds)
-		for child in node.get_children():
-			pending.append(child)
-	return result if has_bounds else AABB()
+	var local_bounds := _node_local_aabb(root)
+	if local_bounds.size.y <= 0.001:
+		return AABB()
+	root.force_update_transform()
+	return local_bounds * root.global_transform
 
 static func _remove_invalid_mesh_nodes(root: Node) -> int:
 	var removed := 0
 	for child in root.get_children():
 		var invalid_mesh := false
 		if child is MeshInstance3D:
-			invalid_mesh = (child as MeshInstance3D).mesh == null
+			var mesh := (child as MeshInstance3D).mesh
+			invalid_mesh = mesh == null or not mesh.get_rid().is_valid()
 		elif child is MultiMeshInstance3D:
 			var multi_node := child as MultiMeshInstance3D
-			invalid_mesh = multi_node.multimesh == null or multi_node.multimesh.mesh == null
+			invalid_mesh = multi_node.multimesh == null
+			if not invalid_mesh:
+				var multi_mesh := multi_node.multimesh.mesh
+				invalid_mesh = multi_mesh == null or not multi_mesh.get_rid().is_valid()
 		if invalid_mesh:
 			root.remove_child(child)
 			child.free()
@@ -602,6 +585,7 @@ static func _snap_node_to_ground(root: Node3D, ground_y: float) -> float:
 	var global_position := root.global_position
 	global_position.y += ground_y - bounds.position.y
 	root.global_position = global_position
+	root.force_update_transform()
 	var corrected_bounds := _node_global_aabb(root)
 	var error_m := corrected_bounds.position.y - ground_y
 	root.set_meta("twin_city_ground_snap_y", ground_y)
