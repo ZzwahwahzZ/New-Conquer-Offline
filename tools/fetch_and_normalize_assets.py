@@ -6,7 +6,7 @@ from urllib.parse import urlparse,urljoin,unquote
 import requests
 from huggingface_hub import HfApi,hf_hub_download
 from imperial_extra_sources import discover_3dassets, discover_hanok_pack, discover_imperial_china_pack
-from opengameart_sources import discover_opengameart, discover_quaternius
+from opengameart_sources import discover_opengameart, discover_quaternius, _license_from_page
 from new_asset_sources import discover_smithsonian, discover_kenney_nature, discover_sketchfab, discover_polygonal_mind, discover_innerscene_curated, discover_github_open_assets
 ROOT=Path.cwd(); OUT=ROOT/"assets/wuxia_imperial_pack"; RAW=ROOT/".asset_work/raw"
 HF_REPO=os.getenv("HF_REPO_ID","ZzwahwahzZ/clash-of-legends-terrain-assets"); PREFIX="assets/wuxia_imperial_pack"
@@ -251,8 +251,17 @@ def strict_filter_self_test():
  license_cases=[("CC0 1.0",True),("CC BY 4.0",True),("OGA-BY 3.0",True),("OGA-BY 4.0",True),("CC BY-SA 3.0",True),("CC BY-SA 4.0",True),("CC BY-SA",False),("MIT",True),("BSD-2-Clause",True),("BSD-3-Clause",True),("Zlib",True),("WTFPL",True),("Unlicense",True),("Public Domain",True),("GPL 2.0",True),("GPL 3.0",True),("CC BY-NC 4.0",False),("CC BY-ND 4.0",False),("unknown free license",False)]
  for license_value,expected in license_cases:
   if license_allowed(license_value)!=expected: failures.append({"license":license_value,"expected":expected,"actual":license_allowed(license_value)})
+ oga_cases=[
+  ('<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA 3.0</a>',"CC BY-SA 3.0"),
+  ('<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>',"CC BY-SA 4.0"),
+  ('<a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>',"CC BY 4.0"),
+  ('<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>',"CC0 1.0 Universal"),
+ ]
+ for html,expected in oga_cases:
+  actual=_license_from_page(html)[0]
+  if actual!=expected: failures.append({"oga_license_html":html,"expected":expected,"actual":actual})
  if failures: raise RuntimeError("Strict asset/license filter self-test failed: "+json.dumps(failures,ensure_ascii=False))
- print("STRICT_FILTER_SELF_TEST PASS",len(cases)+len(license_cases),"identity/license cases")
+ print("STRICT_FILTER_SELF_TEST PASS",len(cases)+len(license_cases)+len(oga_cases),"identity/license cases")
 def license_allowed(value):
  text=str(value or "").strip().lower().replace("_","-").replace("–","-")
  if any(x in text for x in ("by-nc","by-nd","noncommercial","non-commercial","no derivatives","no-derivatives")): return False
