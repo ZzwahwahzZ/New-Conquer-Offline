@@ -781,7 +781,7 @@ static func _twin_plaza(parent: Node3D, stone: Material, pale: Material, gold: M
  for i in range(12):
   var a := TAU*float(i)/12.0
   var pos := Vector3(cos(a)*34.0,0,sin(a)*34.0)
-  _twin_tree(plaza, "PlazaCherry_%02d" % i, pos, pink, timber, 5.0)
+  _twin_tree(plaza, "PlazaCherry_%02d" % i, pos, pink, timber, 1.0)
 
 static func _twin_pagoda(parent: Node3D, roof: Material, timber: Material, gold: Material) -> void:
  var root := Node3D.new()
