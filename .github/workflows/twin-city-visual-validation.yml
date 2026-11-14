@@ -116,7 +116,7 @@ jobs:
           set -Eeuo pipefail
           test -f /usr/share/vulkan/icd.d/lvp_icd.x86_64.json
           export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/lvp_icd.x86_64.json
-          timeout 900s xvfb-run -a -s "-screen 0 1920x1080x24" godot --path . --rendering-method mobile --rendering-driver vulkan --script res://src/scripts/TwinCityGodotCapture.gd 2>&1 | tee prototypes/twin_city/reports/godot_capture.log
+          timeout 900s xvfb-run -a -s "-screen 0 1280x720x24" godot --path . --rendering-method mobile --rendering-driver vulkan --script res://src/scripts/TwinCityGodotCapture.gd 2>&1 | tee prototypes/twin_city/reports/godot_capture.log
           for image in 01_aerial_full.png 02_aerial_oblique.png 03_street_scale.png 04_central_plaza.png 05_imperial_palace.png 06_district_density.png; do
             test -s "prototypes/twin_city/captures/$image"
           done
@@ -129,7 +129,7 @@ jobs:
           for name in names:
               path = root / name
               with Image.open(path) as image:
-                  if image.size != (1920,1080) or image.getbbox() is None:
+                  if image.size != (1280,720) or image.getbbox() is None:
                       raise SystemExit(f"Invalid Godot capture: {name} {image.size}")
                   print(f"VERIFIED {name}: {image.size}, {path.stat().st_size} bytes")
           PY
