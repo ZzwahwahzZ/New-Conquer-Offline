@@ -24,14 +24,11 @@ jobs:
           ref: ${{ github.ref }}
           fetch-depth: 0
       - name: Install pinned Blender 4.3.2
-        shell: bash
-        run: |
-          set -euo pipefail
-          curl -fL --retry 5 --retry-all-errors https://download.blender.org/release/Blender4.3/blender-4.3.2-linux-x64.tar.xz -o /tmp/blender.tar.xz
-          mkdir -p "$RUNNER_TEMP/blender"
-          tar -xJf /tmp/blender.tar.xz -C "$RUNNER_TEMP/blender" --strip-components=1
-          echo "$RUNNER_TEMP/blender" >> "$GITHUB_PATH"
-          "$RUNNER_TEMP/blender/blender" --background --version | tee blender-version.txt
+        uses: bradyajohnston/setup-blender@v5
+        with:
+          version: '4.3.2'
+      - name: Verify Blender installation
+        run: blender --background --version | tee blender-version.txt
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
