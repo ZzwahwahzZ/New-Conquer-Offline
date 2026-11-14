@@ -839,20 +839,24 @@ static func _twin_pagoda(parent: Node3D,roof: Material,timber: Material,gold: Ma
  _twin_cylinder(root,"PagodaFinial",Vector3(0,19.0,0),0.32,2.0,gold)
 
 static func _twin_palace(parent: Node3D,pale: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
+ var palace_root := Node3D.new()
+ palace_root.name = "ImperialPalace_85x75"
+ palace_root.position = Vector3(0,0,-103.0)
+ parent.add_child(palace_root)
  const MERGED_KIT_PATH := "res://assets/environment/architecture/imperial_china_palace_and_garden_merged.scn"
  if ResourceLoader.exists(MERGED_KIT_PATH):
   var merged_pack := load(MERGED_KIT_PATH) as PackedScene
   if merged_pack != null:
    var merged_kit := merged_pack.instantiate() as Node3D
    if merged_kit != null:
-    merged_kit.position = Vector3(0,0,-103.0)
-    parent.add_child(merged_kit)
+    merged_kit.position = Vector3.ZERO
+    palace_root.add_child(merged_kit)
     return
- if _twin_import_imperial_palace_kit(parent):
+ if _twin_import_imperial_palace_kit(palace_root):
   return
- _twin_box(parent,"FallbackImperialHall",Vector3(0,8,-103),Vector3(36,16,32),pale)
- _twin_box(parent,"FallbackImperialGoldRoof",Vector3(0,17,-103),Vector3(42,1,38),gold)
- _twin_add_palace_annex_fallback(parent,pale,stone,timber,roof,gold)
+ _twin_box(palace_root,"FallbackImperialHall",Vector3(0,8,0),Vector3(36,16,32),pale)
+ _twin_box(palace_root,"FallbackImperialGoldRoof",Vector3(0,17,0),Vector3(42,1,38),gold)
+ _twin_add_palace_annex_fallback(palace_root,pale,stone,timber,roof,gold)
 
 static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
  const KIT_PATH := "res://assets/environment/architecture/imperial_china_palace_and_garden.glb"
@@ -868,7 +872,7 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
   push_warning("Imperial China GLB root is not Node3D")
   return false
  kit.name = "TwinCity_ImperialChina_GLBKit"
- kit.position = Vector3(0,0,-103.0)
+ kit.position = Vector3.ZERO
  kit.scale = Vector3.ONE
  parent.add_child(kit)
  kit.add_to_group("twin_city_imperial_asset_kit")
