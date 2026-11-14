@@ -951,74 +951,12 @@ static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
  return merged_surfaces > 0
 
 static func _twin_add_palace_annex_fallback(parent: Node3D,pale: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
+ var batches := {"foundation":[],"walls":[],"roof":[],"timber":[],"windows":[],"gold":[],"doors":[],"shop":[],"posts":[]}
  for i in range(8):
   var x := -48.0+float(i%4)*32.0
   var z := -163.0+float(int(i/4))*20.0
-  var node := _twin_building(parent,"palace_annex",i,Vector3(x,0,z),13.0,11.0,8.0,2,pale,stone,timber,gold,gold)
-  node.add_to_group("twin_city_building")
-
-static func _twin_palace_procedural_fallback(parent: Node3D,pale: Material,stone: Material,timber: Material,roof: Material,gold: Material) -> void:
- var palace := Node3D.new()
- palace.name = "ImperialPalace_85x75"
- palace.position = Vector3(0,0,-103.0)
- parent.add_child(palace)
- var imperial_gold := _material(Color("#E0A83B"),0.44)
- _twin_box(palace,"PalaceRaisedStoneTerrace",Vector3(0,2.25,0),Vector3(85.0,4.5,75.0),stone)
- _twin_box(palace,"PalaceUpperTerrace",Vector3(0,4.7,8.0),Vector3(69.0,1.0,55.0),pale)
- var stair_transforms: Array[Transform3D] = []
- for step in range(10):
-  var rise := float(step)*0.45
-  stair_transforms.append(Transform3D(Basis().scaled(Vector3(22.0,0.5+rise*0.08,2.2)),Vector3(0,0.25+rise,31.0+float(step)*2.1)))
- _twin_multimesh(palace,"BroadCeremonialStoneStaircase",BoxMesh.new(),stair_transforms,pale)
- var hall_roofs: Array[Transform3D] = []
- var upper_roofs: Array[Transform3D] = []
- var ridges: Array[Transform3D] = []
- var eaves: Array[Transform3D] = []
- var column_transforms: Array[Transform3D] = []
- for wing in range(3):
-  var x := float(wing-1)*27.0
-  var hall_width := 28.0 if wing == 1 else 21.0
-  var hall_depth := 25.0 if wing == 1 else 21.0
-  var hall_z := 7.0-float(wing%2)*5.0
-  _twin_box(palace,"PalaceHall_%d" % wing,Vector3(x,10.0,hall_z),Vector3(hall_width,10.0,hall_depth),pale)
-  for col in range(5):
-   var cx := x-hall_width*0.42+float(col)*hall_width*0.21
-   column_transforms.append(Transform3D(Basis().scaled(Vector3(1.44,8.0,1.44)),Vector3(cx,8.5,hall_z+hall_depth*0.5+0.3)))
-  hall_roofs.append(Transform3D(Basis().scaled(Vector3(hall_width+6.0,0.72,hall_depth+7.0)),Vector3(x,15.4,hall_z)))
-  upper_roofs.append(Transform3D(Basis().scaled(Vector3(hall_width+2.0,0.65,hall_depth+3.0)),Vector3(x,16.2,hall_z)))
-  ridges.append(Transform3D(Basis().scaled(Vector3(hall_width*0.82,0.32,0.72)),Vector3(x,16.75,hall_z)))
-  for side in [-1.0,1.0]:
-   eaves.append(Transform3D(Basis().scaled(Vector3(0.65,0.42,hall_depth+6.0)),Vector3(x+side*(hall_width*0.5+2.4),16.0,hall_z)))
- var column_mesh := CylinderMesh.new()
- column_mesh.height = 1.0
- column_mesh.top_radius = 0.5
- column_mesh.bottom_radius = 0.5
- column_mesh.radial_segments = 12
- _twin_multimesh(palace,"ImperialRedTimberColumnArray",column_mesh,column_transforms,timber)
- _twin_multimesh(palace,"ImperialGoldenLowerEaves",BoxMesh.new(),hall_roofs,imperial_gold)
- _twin_multimesh(palace,"ImperialGoldenUpperRoofs",BoxMesh.new(),upper_roofs,imperial_gold)
- _twin_multimesh(palace,"ImperialRoofRidges",BoxMesh.new(),ridges,gold)
- _twin_multimesh(palace,"ImperialRaisedEaveTips",BoxMesh.new(),eaves,gold)
- var pedestal_transforms: Array[Transform3D] = []
- var body_transforms: Array[Transform3D] = []
- var head_transforms: Array[Transform3D] = []
- for side in [-1.0,1.0]:
-  var pos := Vector3(side*14.0,5.0,30.0)
-  pedestal_transforms.append(Transform3D(Basis().scaled(Vector3(2.0,1.2,2.0)),pos+Vector3(0,0.6,0)))
-  body_transforms.append(Transform3D(Basis().scaled(Vector3(1.44,2.2,1.44)),pos+Vector3(0,2.0,0)))
-  head_transforms.append(Transform3D(Basis().scaled(Vector3(1.0,1.0,1.0)),pos+Vector3(0,3.6,0)))
- _twin_multimesh(palace,"ImperialGuardianPedestals",BoxMesh.new(),pedestal_transforms,stone)
- var guardian_cylinder := CylinderMesh.new()
- guardian_cylinder.height = 1.0
- guardian_cylinder.top_radius = 0.5
- guardian_cylinder.bottom_radius = 0.5
- guardian_cylinder.radial_segments = 12
- _twin_multimesh(palace,"ImperialGuardianBodies",guardian_cylinder,body_transforms,stone)
- _twin_multimesh(palace,"ImperialGuardianHeads",guardian_cylinder,head_transforms,gold)
-static func _twin_guardian(parent: Node3D, pos: Vector3, stone: Material, gold: Material) -> void:
- _twin_box(parent, "ImperialGuardianPedestal", pos+Vector3(0,0.6,0), Vector3(2.0,1.2,2.0), stone)
- _twin_cylinder(parent, "ImperialGuardianBody", pos+Vector3(0,2.0,0), 0.72,2.2,stone)
- _twin_cylinder(parent, "ImperialGuardianHead", pos+Vector3(0,3.6,0), 0.5,1.0,gold)
+  _twin_register_batched_building(parent,batches,"palace_annex",i,Vector3(x,0,z),13.0,11.0,2,pale,stone,timber,gold,gold,0.0)
+ _twin_flush_building_batches(parent,batches,pale,stone,timber,gold,gold)
 
 static func _twin_place_district_buildings(parent: Node3D, counts: Dictionary, wall: Material, stone: Material, timber: Material, roof: Material, gold: Material) -> void:
  var districts := Node3D.new()
