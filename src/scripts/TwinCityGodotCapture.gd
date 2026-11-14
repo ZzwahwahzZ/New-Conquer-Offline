@@ -21,7 +21,7 @@ func _capture() -> void:
  if packed == null:
   _fail("TwinCity scene could not be loaded")
   return
- root.size = Vector2i(1920,1080)
+ root.size = Vector2i(1280,720)
  var city := packed.instantiate() as Node3D
  if city == null:
   _fail("TwinCity root is not Node3D")
@@ -59,14 +59,14 @@ func _capture() -> void:
     fps_samples += 1
   await create_timer(0.35).timeout
   var image := root.get_texture().get_image()
-  if image.get_size() != Vector2i(1920,1080):
+  if image.get_size() != Vector2i(1280,720):
    _fail(str(view.file) + " wrong viewport size: " + str(image.get_size()))
    return
   var output := captures.path_join(str(view.file))
   if image.save_png(output) != OK:
    _fail("Could not save " + output)
    return
-  print("TWIN_CITY_IMAGE_VERIFIED: " + str(view.file) + " 1920x1080")
+  print("TWIN_CITY_IMAGE_VERIFIED: " + str(view.file) + " 1280x720")
   camera.queue_free()
   await process_frame
  var nodes := get_nodes_in_group("twin_city_building")
