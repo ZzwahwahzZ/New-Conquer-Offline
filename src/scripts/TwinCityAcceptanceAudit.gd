@@ -30,12 +30,12 @@ func _run_audit() -> void:
 	var palace := city.find_child("ImperialPalace_85x75", true, false)
 	var moat := city.find_child("DeepContinuousWaterMoat_440m", true, false)
 	var pagoda := city.find_child("CentralPagoda_20m", true, false)
-	var valid := total >= 150 and total <= 180
-	valid = valid and counts.residential == 82
-	valid = valid and counts.commercial == 28
-	valid = valid and counts.service == 15
-	valid = valid and counts.landmark == 10
-	valid = valid and counts.defensive == 14
+	var valid := total >= 220 and total <= 260
+	valid = valid and counts.residential == 120
+	valid = valid and counts.commercial == 42
+	valid = valid and counts.service == 22
+	valid = valid and counts.landmark == 12
+	valid = valid and counts.defensive == 20
 	valid = valid and counts.palace_annex == 8
 	valid = valid and plaza != null and palace != null and moat != null and pagoda != null
 	print("TWIN_CITY_ACCEPTANCE_AUDIT total=%d categories=%s plaza=%s palace=%s moat=%s pagoda=%s" % [total, str(counts), str(plaza != null), str(palace != null), str(moat != null), str(pagoda != null)])
@@ -43,5 +43,5 @@ func _run_audit() -> void:
 		push_error("TWIN_CITY_AUDIT_FAIL: count, category, or landmark validation failed")
 		quit(1)
 		return
-	print("TWIN_CITY_AUDIT_PASS: 157 counted structures; all required landmark nodes exist")
+	print("TWIN_CITY_AUDIT_PASS: 224 counted structures; category census and all required landmark nodes exist")
 	quit(0)
