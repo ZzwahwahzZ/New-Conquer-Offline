@@ -1,4 +1,4 @@
-# Supplementary CC0 source discovery for the Wuxia imperial asset pipeline.
+# Supplementary CC0 and CC BY source discovery for the Wuxia imperial asset pipeline.
 # Uses the documented 3DAssets.dev REST API: search data[] and asset detail data object.
 from urllib.parse import urlparse
 
@@ -75,8 +75,10 @@ def discover_3dassets(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                             raise ValueError("Asset detail response has no data object")
                         license_info = detail.get("license") or {}
                         license_slug = str(license_info.get("slug", "") if isinstance(license_info, dict) else license_info).lower()
-                        if license_slug not in ("cc0-1.0", "cc0", "cc0-1.0-universal"):
-                            raise ValueError("Asset is not explicitly CC0: " + license_slug)
+                        if license_slug not in ("cc0-1.0", "cc0", "cc0-1.0-universal",
+                                                 "cc-by-4.0", "cc-by-3.0", "cc-by-2.0",
+                                                 "cc-by-2.5", "cc-by-1.0"):
+                            raise ValueError("Asset license is not CC0 or CC BY: " + license_slug)
                         if detail.get("status") != "published":
                             raise ValueError("Asset is not published: " + str(detail.get("status")))
                         cdn = detail.get("cdnUrl")
@@ -105,7 +107,7 @@ def discover_3dassets(getj, fetch, safe, sha, RAW, DISC, DOWN, ERR):
                         rec = {
                             "id":"3dassets-"+safe(slug), "name":title, "source":"3DAssets.dev",
                             "source_url":detail.get("url") or "https://3dassets.dev/assets/"+str(slug),
-                            "license":license_info.get("name","CC0 1.0 Universal") if isinstance(license_info,dict) else "CC0 1.0 Universal",
+                            "license":license_info.get("name", license_slug.upper()) if isinstance(license_info,dict) else license_slug.upper(),
                             "authors":{"creator":str(creator)}, "matches":[(category,term)],
                             "download_url":cdn, "api_metadata":metadata, "candidate_only":candidate_only,
                             "pack":"3DAssets.dev "+str(metadata["category_title"]),
