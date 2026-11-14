@@ -850,7 +850,8 @@ static func _twin_palace(parent: Node3D,pale: Material,stone: Material,timber: M
     return
  if _twin_import_imperial_palace_kit(parent):
   return
- _twin_palace_procedural_fallback(parent,pale,stone,timber,roof,gold)
+ _twin_box(parent,"FallbackImperialHall",Vector3(0,8,-103),Vector3(36,16,32),pale)
+ _twin_box(parent,"FallbackImperialGoldRoof",Vector3(0,17,-103),Vector3(42,1,38),gold)
  _twin_add_palace_annex_fallback(parent,pale,stone,timber,roof,gold)
 
 static func _twin_import_imperial_palace_kit(parent: Node3D) -> bool:
