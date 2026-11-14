@@ -49,7 +49,7 @@ func _build_environment() -> void:
 		environment.adjustment_saturation = 0.96
 		environment.fog_enabled = true
 		environment.fog_light_color = Color("#C7A982")
-		environment.fog_density = 0.0018
+		environment.fog_density = 0.0009
 	environment.ssao_enabled = false if settlement_id == "TwinCity" else true
 	environment.ssao_radius = 2.4
 	environment.ssao_intensity = 1.35
@@ -198,7 +198,7 @@ func _configure_city_atmosphere() -> void:
 		"TwinCity":
 			sky_color = Color("#f5c982")
 			fog_color = Color("#e9c58c")
-			fog_density = 0.0018
+			fog_density = 0.0009
 		"DesertLand":
 			sky_color = Color("#d8ae70")
 			fog_color = Color("#d6a65f")
