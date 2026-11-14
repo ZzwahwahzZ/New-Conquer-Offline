@@ -288,7 +288,7 @@ static func _build_districts(parent: Node3D, source: Node3D) -> Dictionary:
 				var house_name := "TwinCity_residential_%03d" % census.residential
 				var house := _spawn_modular_building(districts, house_name, center + house_local, face_yaw, 1.0, "residential", house_index)
 				if house != null:
-					_normalize_node_to_dimensions(house, Vector3(9.5, 10.25, 10.5))
+					_normalize_node_to_dimensions(house, Vector3(8.4, 10.25, 9.0))
 					census.residential += 1
 			continue
 		for local_index in range(4):
@@ -303,7 +303,9 @@ static func _build_districts(parent: Node3D, source: Node3D) -> Dictionary:
 			var dims := Vector3(9.5, 10.25, 10.5) if kind == "residential" else Vector3(10.0, 9.0, 10.0)
 			var building := _spawn_modular_building(districts, node_name, pos, yaw, 1.0, kind, local_index)
 			if building != null:
-				_normalize_node_to_dimensions(building, dims)
+				if kind == "service":
+				dims = Vector3(8.4, 9.0, 8.4)
+			_normalize_node_to_dimensions(building, dims)
 				census[kind] += 1
 	print("TWIN_CITY_GLB_BUILDING_CENSUS: %s total=%d; 48 shops, 120 houses, 56 services, 16 halls; 12 open courtyard blocks; GLB assemblies only" % [str(census), census.values().reduce(func(a, b): return a + b, 0)])
 	return census
@@ -529,6 +531,15 @@ static func _normalize_node_to_dimensions(root: Node3D, target: Vector3) -> void
 	var scale_vector := Vector3(target.x / bounds.size.x, target.y / bounds.size.y, target.z / bounds.size.z)
 	root.scale = root.scale * scale_vector
 	root.position.y -= bounds.position.y * scale_vector.y
+	# Re-evaluate the scaled assembly and correct its world-floor offset. This is
+	# limited to registered district buildings; palace/platform pieces keep their authored elevations.
+	if root.is_in_group("twin_city_building"):
+		var normalized_bounds := _node_local_aabb(root)
+		if normalized_bounds.size.y > 0.001:
+			var floor_error := root.position.y + normalized_bounds.position.y * root.scale.y
+			root.position.y -= floor_error
+			root.set_meta("twin_city_ground_snap_y", 0.0)
+			root.set_meta("twin_city_ground_snap_error_m", root.position.y + normalized_bounds.position.y * root.scale.y)
 	root.set_meta("twin_city_aabb_normalized", true)
 	root.set_meta("twin_city_target_dimensions_m", target)
 	_apply_imperial_palette(root)
