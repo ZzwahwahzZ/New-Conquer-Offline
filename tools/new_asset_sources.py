@@ -9,7 +9,7 @@ Sources:
 import os
 import re
 from pathlib import Path
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 
 
 def _known(DISC, asset_id, source_url):
@@ -506,3 +506,91 @@ def discover_github_open_assets(session, fetch, safe, sha, RAW, DISC, DOWN, ERR,
     print("GITHUB_OPEN_ASSET_COUNTS", {"repositories_seen":len(seen_repos),
                                        "repositories_with_trees":inspected,
                                        "downloaded":downloaded, "oauth_token_present":bool(token)})
+
+
+def discover_poly_pizza(session, fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPED):
+    """Use Poly Pizza's published API only; never scrape its website."""
+    token = os.getenv("POLY_PIZZA_KEY", "").strip()
+    if not token:
+        SKIPPED.append({"asset":"Poly Pizza","stage":"api_auth",
+                        "reason":"Official API requires POLY_PIZZA_KEY from the user's Poly Pizza account; no website scraping or manual endpoint probing is performed"})
+        print("POLY_PIZZA_SOURCE_COUNTS", {"downloaded":0,"reason":"POLY_PIZZA_KEY missing"})
+        return
+    headers = {"X-Auth-Token": token, "User-Agent":"NewConquerOffline-AssetFetcher/1.0"}
+    queries = (
+        ("pagoda", "palaces_and_temples"),
+        ("chinese temple", "palaces_and_temples"),
+        ("temple", "palaces_and_temples"),
+        ("imperial palace", "palaces_and_temples"),
+        ("pavilion", "palaces_and_temples"),
+        ("gate tower", "gates_walls_bridges"),
+        ("watchtower", "gates_walls_bridges"),
+        ("stone bridge", "gates_walls_bridges"),
+        ("arched bridge", "gates_walls_bridges"),
+        ("market stall", "houses_and_shops"),
+        ("chinese house", "houses_and_shops"),
+        ("asian shop", "houses_and_shops"),
+        ("cherry blossom", "nature"),
+        ("sakura tree", "nature"),
+        ("bamboo", "nature"),
+        ("willow tree", "nature"),
+        ("chinese lantern", "statues_and_props"),
+    )
+    seen = {str(x.get("api_metadata", {}).get("poly_pizza_id")) for x in DISC if isinstance(x.get("api_metadata"), dict)}
+    downloaded = 0
+    for term, category in queries:
+        try:
+            url = "https://api.poly.pizza/v1/search/" + quote(term, safe="")
+            response = session.get(url, headers=headers, params={"limit":50,"format":"glb"}, timeout=(20, 60))
+            response.raise_for_status()
+            models = response.json().get("results", [])
+        except Exception as exc:
+            ERR.append({"asset":"Poly Pizza:"+term,"stage":"api_search","reason":str(exc)})
+            continue
+        for model in models:
+            uid = str(model.get("ID") or "").strip()
+            if not uid or uid in seen:
+                continue
+            seen.add(uid)
+            licence = str(model.get("Licence") or "").strip()
+            lower_licence = licence.lower()
+            if "cc0" in lower_licence or "public domain" in lower_licence:
+                license_name, license_url = "CC0 1.0 Universal", "https://creativecommons.org/publicdomain/zero/1.0/"
+            else:
+                match = re.search(r"cc[- ]?by\s*(3\.0|4\.0)", lower_licence)
+                if not match or any(x in lower_licence for x in ("nc","nd","noncommercial","no derivatives")):
+                    SKIPPED.append({"asset":"Poly Pizza:"+uid,"stage":"license",
+                                    "reason":"Per-model license is not an explicitly supported CC0 or CC-BY 3.0/4.0 license: "+licence})
+                    continue
+                version = match.group(1)
+                license_name, license_url = "CC BY " + version, "https://creativecommons.org/licenses/by/" + version + "/"
+            download_url = str(model.get("Download") or "")
+            if urlparse(download_url).scheme != "https":
+                ERR.append({"asset":"Poly Pizza:"+uid,"stage":"download_url","reason":"Official API returned no HTTPS direct download URL"})
+                continue
+            creator_data = model.get("Creator") or {}
+            creator = str(creator_data.get("Username") or "Poly Pizza creator")
+            creator_url = str(creator_data.get("PURL") or ("https://poly.pizza/u/" + quote(creator, safe="")))
+            title = str(model.get("Title") or ("Poly Pizza model " + uid))
+            page = "https://poly.pizza/m/" + uid
+            record = {
+                "id":"poly-pizza-"+safe(uid), "name":title, "source":"Poly Pizza",
+                "source_url":page, "download_url":download_url,
+                "license":license_name, "license_url":license_url,
+                "authors":{"creator":creator,"creator_profile":creator_url},
+                "target_category":category,
+                "matches":[(category,term)], "candidate_only":True,
+                "api_metadata":{"poly_pizza_id":uid,"license_as_published":licence,
+                                "tags":model.get("Tags") or [],
+                                "triangle_count":model.get("TriangleCount"),
+                                "animated":model.get("Animated"),
+                                "format":"GLB"},
+            }
+            try:
+                raw = fetch(download_url, RAW/"poly_pizza"/(safe(uid)+".glb"))
+                DISC.append(record)
+                DOWN.append({**record,"raw":str(raw),"download_sha256":sha(raw)})
+                downloaded += 1
+            except Exception as exc:
+                ERR.append({"asset":"Poly Pizza:"+uid,"stage":"download","reason":str(exc)})
+    print("POLY_PIZZA_SOURCE_COUNTS", {"downloaded":downloaded,"unique_models_seen":len(seen)})
