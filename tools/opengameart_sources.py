@@ -69,7 +69,8 @@ def _license_from_page(html):
     text = re.sub(r"<[^>]+>", " ", html or "")
     text = re.sub(r"\s+", " ", text).lower() + " " + (html or "").lower()
     checks = [
-        (r"\bcc0\b|publicdomain/zero/1\.0|public domain", "CC0 1.0 Universal", "https://creativecommons.org/publicdomain/zero/1.0/"),
+        (r"\bcc0\b|publicdomain/zero/1\.0", "CC0 1.0 Universal", "https://creativecommons.org/publicdomain/zero/1.0/"),
+        (r"license(?:s)?\s*:\s*public domain|publicdomain/mark/1\.0", "Public Domain", "https://creativecommons.org/publicdomain/mark/1.0/"),
         (r"oga[- ]by\s*[- ]?(4\.0|3\.0)", None, None),
         (r"creativecommons\.org/licenses/by-sa/(4\.0|3\.0)|\bcc[- ]?by[- ]?sa[- ]?(4\.0|3\.0)", None, None),
         (r"creativecommons\.org/licenses/by/(4\.0|3\.0|2\.5|2\.0|1\.0)|\bcc[- ]?by(?![- ]?(?:sa|nc|nd))[- ]?(4\.0|3\.0|2\.5|2\.0|1\.0)", None, None),
