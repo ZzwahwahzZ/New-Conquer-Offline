@@ -1,8 +1,8 @@
 {
   "dataset": "ZzwahwahzZ/clash-of-legends-terrain-assets",
   "approved_manifest_sha256": "f3da3fbbdcd41bc6610dcb0e45434da7adf9900cdddb5d26160d351165d8f0b5",
-  "restored_files": 76,
-  "restored_glb_models": 64,
+  "restored_files": 138,
+  "restored_glb_models": 126,
   "restored_pbr_textures": 12,
   "files": [
     {
@@ -32,6 +32,167 @@
       "file": "models/3dassets-imperial-china-palace-and-garden-lotus-pond-pavilion-f0b2d3d6.glb",
       "sha256": "70616742cf9fe139d4b3eed706d10cbd688ab8f5a2e65e502d409b2923cede75",
       "bytes": 912956
+    },
+    {
+      "name": "Hanok Main House (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-hanok-main-house-58d31dd2.glb",
+      "sha256": "af29925eb414df85d6302ca4cbee905330194828b9857ac71579c96ec3af098a",
+      "bytes": 614676
+    },
+    {
+      "name": "Stone Plinth Base Module (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-stone-plinth-base-modu-fd550e95.glb",
+      "sha256": "78b1d18b30317fd9d31bc794395a523b9b7004dd0cc22e412224ba90bf6bc9a8",
+      "bytes": 10332
+    },
+    {
+      "name": "Hanok Maru Floor Module (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-hanok-maru-floor-modul-1be3f4e4.glb",
+      "sha256": "4cb483131266b8c81b58037c01495e3dbff38dda58040746aa98f4e9f280edc4",
+      "bytes": 13288
+    },
+    {
+      "name": "Hanok Post And Beam Frame (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-hanok-post-and-beam-fr-919433bc.glb",
+      "sha256": "9609170ab7a2098f3190081b31c86845a57ac2d6480d81b3a7b3669b3428f81d",
+      "bytes": 29568
+    },
+    {
+      "name": "Hanok Room Module (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-hanok-room-module-bc2bd008.glb",
+      "sha256": "35f7ac5729e8d388d99ca7dd0585d71d5645af38d8ee00c8c9c6635e9b446131",
+      "bytes": 125728
+    },
+    {
+      "name": "Hipped Tile Roof Module (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-hipped-tile-roof-modul-fb2a5427.glb",
+      "sha256": "e4229242d2952192051128b9551a5d4a5ae8af599debf59006b8ac030a4a5090",
+      "bytes": 56976
+    },
+    {
+      "name": "Gabled Tile Roof Module (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-gabled-tile-roof-modul-b0f6ca5f.glb",
+      "sha256": "bd842997b0a193ab7d27811e5e2f36c7c20e74d47178be9c64db887605427b41",
+      "bytes": 54312
+    },
+    {
+      "name": "Roof Ridge Tile Run (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-roof-ridge-tile-run-84fe6e09.glb",
+      "sha256": "508c4048829ba3a2ab69ac95c41f440331d332b5cb588dfaa54dfd05bae6e913",
+      "bytes": 22476
+    },
+    {
+      "name": "Eave Tile Run (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-eave-tile-run-3ddac357.glb",
+      "sha256": "afb7d9d146ea54aa276151b85cc174c5def525a2b5a934c7064f124d2a6e51af",
+      "bytes": 44956
+    },
+    {
+      "name": "Exposed Rafter Set (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-exposed-rafter-set-2923ce1a.glb",
+      "sha256": "c04ae4504cde3822cfeb4d2ba56b437c492f50979e0450bafd15c798fecd7eea",
+      "bytes": 21364
+    },
+    {
+      "name": "Sliding Lattice Door Set (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-sliding-lattice-door-s-c6fbf39d.glb",
+      "sha256": "b67d3cfe35c8fc9339cfd8a4151a4b4b4026f20292eecbeafde47ec67130bfe5",
+      "bytes": 110560
+    },
+    {
+      "name": "Sliding Lattice Door Set, Diamond Lattice (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-sliding-lattice-door-s-6d7207d6.glb",
+      "sha256": "63ff788e7ec248e0adc7bfa94b1433db417e1b37907a7df963f51a9f9b39b192",
+      "bytes": 120580
+    },
+    {
+      "name": "Hanji Lattice Window (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-hanji-lattice-window-ff57a158.glb",
+      "sha256": "ffc1d8244008169ca8ba284b8b7656c8b3309e0a2d11c60c6556e5abb7437f11",
+      "bytes": 30852
+    },
+    {
+      "name": "Lifting Lattice Window (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-lifting-lattice-window-1962214e.glb",
+      "sha256": "5ab8d4ac059ada3b102bc00c4c2b90d3267a4bde73278f7abbfac1c6487b03e2",
+      "bytes": 35572
+    },
+    {
+      "name": "Courtyard Ground Module (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-courtyard-ground-modul-6ce611a9.glb",
+      "sha256": "dd45705d31917eaf683b457dea17c928db06dd39e5ab44224e5c3b794bb1ff87",
+      "bytes": 22484
+    },
+    {
+      "name": "Ondol Flue Run (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-ondol-flue-run-bcb58056.glb",
+      "sha256": "f4a8dbc40f5926abb64cb8725f76a95bbda47acb232e9d3ecc327107bb4af696",
+      "bytes": 16836
+    },
+    {
+      "name": "Chimney Stack (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-chimney-stack-b7f9cd50.glb",
+      "sha256": "e91e94d56da403f19398ddb4415ee323434bafcb2c2df807835df54424b88a0d",
+      "bytes": 22856
+    },
+    {
+      "name": "Kitchen Hearth Block (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-kitchen-hearth-block-9012cad3.glb",
+      "sha256": "10351f5c90ca43123b316ccb86cff749ab94a8550f7c661c3bb52b6aabce3b40",
+      "bytes": 39948
+    },
+    {
+      "name": "Thatched Outbuilding (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-thatched-outbuilding-d60d046d.glb",
+      "sha256": "c59916f4bd30e869a615f145fa595201ae58fcc2a711d7f4096a9c9979f603c3",
+      "bytes": 54320
+    },
+    {
+      "name": "Clay Roof Tile Stack (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-clay-roof-tile-stack-f7d92f3d.glb",
+      "sha256": "b628b0503e24b0415019c1e5afc03f5c80cf275ce63cede03741164a27a32bc4",
+      "bytes": 27816
+    },
+    {
+      "name": "Market Stall With Awning (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-market-stall-with-awni-064ed223.glb",
+      "sha256": "77543abca2bfec385258e7a278f59139708503a0aa03b669ef889d76b6d0c9e8",
+      "bytes": 48928
+    },
+    {
+      "name": "Walled hanok plot and village street (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-walled-h-d28cafda-starter-scene.glb",
+      "sha256": "405a7407bc459deb6279a9d3a02c5fca45e01cf087c8db2f52bb6bb37b1f37bc",
+      "bytes": 3645880
+    },
+    {
+      "name": "Village gate and market street (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-village-gate-and-marke-813aa6fd.glb",
+      "sha256": "d45d6250727731172114917addd8191065b7869d2308618ff5481c3789d1528f",
+      "bytes": 1347368
     },
     {
       "name": "Gate Tower (Imperial China Palace and Garden)",
@@ -151,6 +312,48 @@
       "file": "models/3dassets-imperial-china-palace-and-garden-latticed-screen-door--252408e2.glb",
       "sha256": "186e8a4170eae410375f7d25ea7853929d38d273a25edf932cc4f773bdfdd382",
       "bytes": 110220
+    },
+    {
+      "name": "Village Gate House (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-village-gate-house-94dd896b.glb",
+      "sha256": "4b79d510bb9cec5e7c0361aaa56a1c6b9a524161afe0eba86c3be3a64bfa2ca2",
+      "bytes": 217740
+    },
+    {
+      "name": "Village Wall Straight (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-village-wall-straight-10dd1da2.glb",
+      "sha256": "980445aa18194b6fd6ba5ac1ecccfe46cda9309804574b24b5c5286cb48eff82",
+      "bytes": 45668
+    },
+    {
+      "name": "Village Wall Corner (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-village-wall-corner-36c0db5b.glb",
+      "sha256": "5c0700c524da1d0700638a1cd2c2cdaebf405e334108b4e968c140dbc371e36c",
+      "bytes": 27344
+    },
+    {
+      "name": "Village Wall End Pier (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-village-wall-end-pier-1430de44.glb",
+      "sha256": "7b97f8d101a6a1f3e317ce3445c65f670188792748da05aac2e2c9e8906d2ed2",
+      "bytes": 10296
+    },
+    {
+      "name": "Stone Street Module (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-stone-street-module-92994f78.glb",
+      "sha256": "16fd76419f1b479d85767c6bf37d90a06ab3b21bf5de66aae5adae33e38abecc",
+      "bytes": 29600
+    },
+    {
+      "name": "Stepped Lane Module (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-stepped-lane-module-647f30fc.glb",
+      "sha256": "ca48124d80b4d6174f9a8bf737998f125653d499cbe9bc42822816fbafeb186b",
+      "bytes": 39740
     },
     {
       "name": "Dragon Roof Finial (Imperial China Palace and Garden)",
@@ -370,6 +573,195 @@
       "bytes": 38588
     },
     {
+      "name": "Hanok Side Wing (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-hanok-side-wing-13e49593.glb",
+      "sha256": "f4bd6e46c0d9e083e7976977bde61e3c06798e24648602cddc444ed2d36c2a23",
+      "bytes": 344604
+    },
+    {
+      "name": "Ondol Firebox (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-ondol-firebox-3a9ac24d.glb",
+      "sha256": "deb7ca2b3d71a124f7b886aef2c7e730e3a857047ad0c0369a64b75b840128de",
+      "bytes": 28236
+    },
+    {
+      "name": "Jangdokdae Terrace (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-jangdokdae-terrace-fd10afaf.glb",
+      "sha256": "48efb8a7df6a7ae4242c7bfac763cc1bc1d8135058c3d1b0d415c34705c332a1",
+      "bytes": 33284
+    },
+    {
+      "name": "Onggi Jar, Large (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-onggi-jar-large-57747607.glb",
+      "sha256": "cfde33f78ff68b8924ed643de441b9815ae0c1b2e9df3ce8d6da1803dbceaf73",
+      "bytes": 14012
+    },
+    {
+      "name": "Onggi Jar, Medium (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-onggi-jar-medium-106bc5df.glb",
+      "sha256": "76140bb47e066b3b77e54a3fd4980b062f56b5de2835d762448c300064dca83a",
+      "bytes": 14340
+    },
+    {
+      "name": "Onggi Jar, Small (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-onggi-jar-small-ed06606f.glb",
+      "sha256": "3e6cf897c184c8f6c36aef5c029584826ca7dff0e2bf38c431d8fe1166e08ee3",
+      "bytes": 14384
+    },
+    {
+      "name": "Chest Of Drawers (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-chest-of-drawers-af1b6672.glb",
+      "sha256": "ab253b0306a35111282d834662a3f2f91c0409cfc89d58253f156420eeed6efd",
+      "bytes": 37772
+    },
+    {
+      "name": "Wooden Rice Chest (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-wooden-rice-chest-a32e48a3.glb",
+      "sha256": "b215a011b8ac43d7641a1b6c7de21ea3a8e5de43cef8779c8456c753fb645712",
+      "bytes": 28004
+    },
+    {
+      "name": "Low Table (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-low-table-d9a2a718.glb",
+      "sha256": "cc2b4e8cba8f7191572c8ec3cc1e57e0c3f4cad3f6338b8592bd3a900e59d384",
+      "bytes": 17464
+    },
+    {
+      "name": "Floor Cushion Set (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-floor-cushion-set-dc9c83b9.glb",
+      "sha256": "a7ea908e3a892345b16e31e9b77438399f86c89f5672916e9a97c89f3a8e5e11",
+      "bytes": 13084
+    },
+    {
+      "name": "Folding Screen (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-folding-screen-9e9bc656.glb",
+      "sha256": "9a955ac33f405c93f2e4071172cb21925757008433003501985e2c96f24d939c",
+      "bytes": 33496
+    },
+    {
+      "name": "Charcoal Brazier (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-charcoal-brazier-2aca29dc.glb",
+      "sha256": "f114c93c4088450d2485b75ca5d0ccca27b6643c2df90470a213b5b97d759cd5",
+      "bytes": 31292
+    },
+    {
+      "name": "Hanging Paper Lantern (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-hanging-paper-lantern-539f8e2b.glb",
+      "sha256": "21333c08e54767a176898784cabbf13089e15d7f0607f5cd13c3363afbf6a1f9",
+      "bytes": 32792
+    },
+    {
+      "name": "Standing Paper Lamp (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-standing-paper-lamp-e8a82fcc.glb",
+      "sha256": "b5efe50394f4d125053b21ba20d5d3185a1d3c8a7cd7ecbe2bf29a1ab21f925b",
+      "bytes": 21204
+    },
+    {
+      "name": "Wooden Bench (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-wooden-bench-94b3dfde.glb",
+      "sha256": "13582acb42e1d690411abefb720d1501759a6585c5807cee3f2fbc4e3a521fcf",
+      "bytes": 15888
+    },
+    {
+      "name": "Hand Loom (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-hand-loom-278890aa.glb",
+      "sha256": "6221153dd83bfc240a15125693f039d98ea72c1c0b474d37c07370a9dd556d4a",
+      "bytes": 36156
+    },
+    {
+      "name": "Mortar And Pestle Stand (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-mortar-and-pestle-stan-26fabc1b.glb",
+      "sha256": "b1a71bb3efcc16452ac69007f60cf1f45188baee0082654ff976f5417871f345",
+      "bytes": 17532
+    },
+    {
+      "name": "Stone Water Basin (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-stone-water-basin-3fc6ace3.glb",
+      "sha256": "00a8d17488e68876cf046f78d3544018ae9e1fcb24dc6cd169b7cf2cbb8e83d6",
+      "bytes": 14764
+    },
+    {
+      "name": "Water Trough (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-water-trough-878d599c.glb",
+      "sha256": "0dd001fdf003f3edd8420aa29a76a964e92a30a9a5b0560538390c6f8ee5a1e7",
+      "bytes": 8112
+    },
+    {
+      "name": "Well Head (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-well-head-2795f6c1.glb",
+      "sha256": "bc82e79ca8a0ebdd450b7a432d40cda1e7db82f6127956e885adb372d966c5a1",
+      "bytes": 176488
+    },
+    {
+      "name": "Wooden Bucket Pair (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-wooden-bucket-pair-2b3f71d9.glb",
+      "sha256": "70d98ddae8c5cb28cb46916cd81227462e1178b3e1381bb09773edd716cee52b",
+      "bytes": 32500
+    },
+    {
+      "name": "Firewood Stack (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-firewood-stack-ef44023d.glb",
+      "sha256": "0ed93bd6b38e63fd1ae690e8c19428ab4f8cb7ef43601844e6ed4e7a5102c804",
+      "bytes": 60848
+    },
+    {
+      "name": "Straw Rice Sack Stack (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-straw-rice-sack-stack-56a248a9.glb",
+      "sha256": "6dc5ab6b47246fc8ba9fc0bc1df3c3234b01ba5b9d7c85585ab22d89967c38ca",
+      "bytes": 32656
+    },
+    {
+      "name": "Produce Basket Set (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-produce-basket-set-0d57d77d.glb",
+      "sha256": "f0a2ef4f1edc89ec5d7d6f8039f64660e5cae61bdb79eb4d97b274e90deafa39",
+      "bytes": 64888
+    },
+    {
+      "name": "Hanging Sign Board (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-hanging-sign-board-15b20163.glb",
+      "sha256": "adee48863af1814025e1d2d85bce557cdaadc08d1ea820caccf08dda311fac15",
+      "bytes": 32784
+    },
+    {
+      "name": "Stone Pagoda Ornament (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-stone-pagoda-ornament-5acf5291.glb",
+      "sha256": "972178d4ab73638dc2cd6bc315ff7019ccdbd11692db1d6a8213cd325be6a2a3",
+      "bytes": 34372
+    },
+    {
+      "name": "Stepping Stone Path (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-stepping-stone-path-d15fb986.glb",
+      "sha256": "eacb02f8cad05a297e636148b7d911c4500994ae581c3cee29b209ba334bf6e1",
+      "bytes": 31928
+    },
+    {
       "name": "Rockery Outcrop (Imperial China Palace and Garden)",
       "style_group": "imperial_chinese",
       "file": "models/3dassets-imperial-china-palace-and-garden-rockery-outcrop-a70f96c4.glb",
@@ -445,6 +837,48 @@
       "file": "models/3dassets-imperial-china-palace-and-garden-peony-planter-f6018406.glb",
       "sha256": "daf10d7d049e3a374826c76ef3ba943f255c10e1f4d61cab44aefe72f91ded93",
       "bytes": 77376
+    },
+    {
+      "name": "Persimmon Tree (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-persimmon-tree-ec7be2f6.glb",
+      "sha256": "97dec2ad53616ebfc26c3f31d6703fe79f02fac05f313dddea7db81e0130d1a5",
+      "bytes": 140704
+    },
+    {
+      "name": "Pine Tree (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-pine-tree-3a5a94a4.glb",
+      "sha256": "d43ab34766e9be535fc87a06346db5633e9c1c4dc6f84dc44344aee9665ebe66",
+      "bytes": 74052
+    },
+    {
+      "name": "Bamboo Clump (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-bamboo-clump-01131093.glb",
+      "sha256": "13ee5a65ba949aa601eed8ecc92e1a643f30a2cc7442d228c92a778e537ef915",
+      "bytes": 146872
+    },
+    {
+      "name": "Persimmon Drying Rack (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-persimmon-drying-rack-e6c7ede2.glb",
+      "sha256": "3ad3300e3d7130241b7209cbd836c4a90e721f43347c74d6a56ea6b997c27aee",
+      "bytes": 88820
+    },
+    {
+      "name": "Lotus Pond Edge Straight (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-lotus-pond-edge-straig-ba4093ac.glb",
+      "sha256": "e792a902227ddb05d0ed2bc476cb16f14c3da134a111a9974e69423ce09610bd",
+      "bytes": 46688
+    },
+    {
+      "name": "Pond Water Module (Korean Hanok Village and Street)",
+      "style_group": "korean_hanok",
+      "file": "models/3dassets-korean-hanok-village-and-street-pond-water-module-4e3f2baa.glb",
+      "sha256": "e3affb2a11aa6f91651e8b0bcd1dc68288ecbc1c33fb9f5b43d208012757d6cc",
+      "bytes": 28068
     },
     {
       "name": "Pine Tree (Wipe Day Survival Island)",
