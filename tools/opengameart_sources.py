@@ -65,8 +65,8 @@ def _license_from_page(html):
     checks = [
         (r"\bcc0\b|publicdomain/zero/1\.0|public domain", "CC0 1.0 Universal", "https://creativecommons.org/publicdomain/zero/1.0/"),
         (r"oga[- ]by\s*[- ]?(4\.0|3\.0)", None, "https://opengameart.org/content/oga-by-30-faq"),
-        (r"creativecommons\.org/licenses/by-sa/(4\.0|3\.0)|\bcc\s*by[- ]sa\s*(4\.0|3\.0)", None, None),
-        (r"creativecommons\.org/licenses/by/(4\.0|3\.0|2\.5|2\.0|1\.0)|\bcc\s*by(?![- ](?:sa|nc|nd))\s*(4\.0|3\.0|2\.5|2\.0|1\.0)", None, None),
+        (r"creativecommons\.org/licenses/by-sa/(4\.0|3\.0)|\bcc[- ]?by[- ]?sa[- ]?(4\.0|3\.0)", None, None),
+        (r"creativecommons\.org/licenses/by/(4\.0|3\.0|2\.5|2\.0|1\.0)|\bcc[- ]?by(?![- ]?(?:sa|nc|nd))[- ]?(4\.0|3\.0|2\.5|2\.0|1\.0)", None, None),
         (r"\bmit license\b|spdx-license-identifier:\s*mit", "MIT", "https://opensource.org/license/mit/"),
         (r"\bbsd[- ]?2[- ]clause\b", "BSD-2-Clause", "https://opensource.org/license/bsd-2-clause/"),
         (r"\bbsd[- ]?3[- ]clause\b|\bbsd license\b", "BSD-3-Clause", "https://opensource.org/license/bsd-3-clause/"),
@@ -85,9 +85,9 @@ def _license_from_page(html):
             version = m.group(1)
             return "OGA-BY " + version, url
         if "by-sa" in pattern:
-            version = m.group(1)
+            version = next((g for g in m.groups() if g), None)
             return "CC BY-SA " + version, "https://creativecommons.org/licenses/by-sa/" + version + "/"
-        if "creativecommons.org/licenses/by/" in pattern or pattern.startswith(r"\bcc\s*by"):
+        if "creativecommons.org/licenses/by/" in pattern or ("cc" in pattern and "by" in pattern):
             version = next((g for g in m.groups() if g), "4.0")
             return "CC BY " + version, "https://creativecommons.org/licenses/by/" + version + "/"
         if "gpl" in pattern:
