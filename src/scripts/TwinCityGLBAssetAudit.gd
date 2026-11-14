@@ -1,30 +1,37 @@
 extends SceneTree
 
-const MODEL_DIRECTORY := "res://assets/twin_city_selected/models"
-const REPORT_PATH := "res://prototypes/twin_city/reports/all_99_glb_mesh_audit.json"
+const ACTIVE_ROOT := "res://assets/twin_city_selected"
+const MANIFEST_PATH := ACTIVE_ROOT + "/selection_manifest.json"
+const REPORT_PATH := "res://prototypes/twin_city/reports/all_restored_glb_mesh_audit.json"
 
 func _initialize() -> void:
 	call_deferred("_audit")
 
 func _audit() -> void:
-	var directory := DirAccess.open(MODEL_DIRECTORY)
-	if directory == null:
-		push_error("TWIN_CITY_GLB_AUDIT_FAIL: active 99-GLB directory unavailable")
+	var manifest_file := FileAccess.open(MANIFEST_PATH, FileAccess.READ)
+	if manifest_file == null:
+		push_error("TWIN_CITY_GLB_AUDIT_FAIL: active selection manifest unavailable")
 		quit(1)
 		return
-	var files := directory.get_files()
-	files.sort()
-	var glb_files: Array[String] = []
-	for file_name in files:
-		if file_name.to_lower().ends_with(".glb"):
-			glb_files.append(file_name)
-	var report := {"expected_glb_count": 99, "discovered_glb_count": glb_files.size(), "valid_glb_count": 0, "null_mesh_nodes": 0, "zero_surface_meshes": 0, "assets": []}
-	if glb_files.size() != 99:
-		push_error("TWIN_CITY_GLB_AUDIT_FAIL: expected 99 active GLBs, found %d" % glb_files.size())
+	var parsed: Variant = JSON.parse_string(manifest_file.get_as_text())
+	manifest_file.close()
+	if not parsed is Dictionary or not parsed.has("assets") or not parsed.assets is Array:
+		push_error("TWIN_CITY_GLB_AUDIT_FAIL: active selection manifest is invalid")
 		quit(1)
 		return
-	for file_name in glb_files:
-		var path := MODEL_DIRECTORY.path_join(file_name)
+	var records: Array = parsed.assets
+	var report := {"expected_glb_count": records.size(), "discovered_glb_count": records.size(), "valid_glb_count": 0, "null_mesh_nodes": 0, "zero_surface_meshes": 0, "assets": []}
+	if records.size() < 99:
+		push_error("TWIN_CITY_GLB_AUDIT_FAIL: expected at least 99 restored GLBs, found %d" % records.size())
+		quit(1)
+		return
+	for record in records:
+		var relative := str(record.get("file", ""))
+		if relative.is_empty() or relative.begins_with("/") or relative.contains(".."):
+			push_error("TWIN_CITY_GLB_AUDIT_FAIL: unsafe GLB path in manifest: " + relative)
+			quit(1)
+			return
+		var path := ACTIVE_ROOT.path_join(relative)
 		var packed := load(path) as PackedScene
 		if packed == null:
 			push_error("TWIN_CITY_GLB_AUDIT_FAIL: load failed: " + path)
@@ -62,8 +69,9 @@ func _audit() -> void:
 			quit(1)
 			return
 		report.valid_glb_count += 1
-		report.assets.append({"file": file_name, "mesh_nodes": mesh_count, "surfaces": surface_count})
-		print("TWIN_CITY_GLB_MESH_OK %d/99 %s mesh_nodes=%d surfaces=%d" % [report.valid_glb_count, file_name, mesh_count, surface_count])
+		report.assets.append({"file": relative, "mesh_nodes": mesh_count, "surfaces": surface_count})
+		if report.valid_glb_count % 20 == 0 or report.valid_glb_count == records.size():
+			print("TWIN_CITY_GLB_MESH_PROGRESS %d/%d" % [report.valid_glb_count, records.size()])
 	var output := FileAccess.open(REPORT_PATH, FileAccess.WRITE)
 	if output == null:
 		push_error("TWIN_CITY_GLB_AUDIT_FAIL: report output unavailable")
@@ -71,5 +79,5 @@ func _audit() -> void:
 		return
 	output.store_string(JSON.stringify(report, "\t"))
 	output.close()
-	print("TWIN_CITY_GLB_AUDIT_PASS: all 99 source GLBs loaded and instantiated; null_mesh_nodes=0; zero_surface_meshes=0")
+	print("TWIN_CITY_GLB_AUDIT_PASS: all %d restored GLBs loaded and instantiated; null_mesh_nodes=0; zero_surface_meshes=0" % report.valid_glb_count)
 	quit(0)
