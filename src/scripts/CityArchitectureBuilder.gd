@@ -986,9 +986,13 @@ static func _twin_add_paved_roads(parent: Node3D,kit: Node3D) -> void:
  if template == null:
   push_warning("Original Imperial China paving module unavailable; road paving batch skipped")
   return
- var mesh_node := template.find_child("*","MeshInstance3D",true,false) as MeshInstance3D
- if mesh_node == null or mesh_node.mesh == null:
+ var mesh_nodes := template.find_children("*","MeshInstance3D",true,false)
+ if mesh_nodes.is_empty():
   push_warning("Original Imperial China paving module has no valid mesh")
+  return
+ var mesh_node := mesh_nodes[0] as MeshInstance3D
+ if mesh_node.mesh == null:
+  push_warning("Original Imperial China paving module mesh is null")
   return
  var paving := MultiMesh.new()
  paving.transform_format = MultiMesh.TRANSFORM_3D
