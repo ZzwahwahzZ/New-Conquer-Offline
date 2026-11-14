@@ -485,7 +485,7 @@ def discover_github_open_assets(session, fetch, safe, sha, RAW, DISC, DOWN, ERR,
                     "candidate_only": True,
                 }
                 try:
-                    raw = fetch(raw_url, RAW / "github" / safe(full_name.replace("/", "-")) / (safe(Path(path).name)))
+                    raw = fetch(raw_url, RAW / "github" / safe(full_name.replace("/", "-")) / (safe(path.replace("/", "__"))))
                     DISC.append(record)
                     DOWN.append({**record, "raw": str(raw), "download_sha256": sha(raw)})
                     downloaded += 1
