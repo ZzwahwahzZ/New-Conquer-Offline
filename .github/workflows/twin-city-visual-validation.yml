@@ -90,66 +90,51 @@ jobs:
               geometry_audit.append({"asset_id":item.get("asset_id"),"name":name,"file":relative,"category":category,"style_group":item.get("style_group"),"dimensions_m":dimensions,"geometry_count":geometry_count,"bytes":len(payload),"sha256":digest,"architectural_candidate":architectural})
               print(f"HF_GLB_VERIFIED {index}/99 {relative} dimensions_m={dimensions} geometry={geometry_count} sha256={digest}")
           selected_names = [
-              "Hanok Main House",
-              "Stone Plinth Base Module",
-              "Hanok Maru Floor Module",
-              "Hanok Post And Beam Frame",
-              "Hanok Room Module",
-              "Hipped Tile Roof Module",
-              "Gabled Tile Roof Module",
-              "Roof Ridge Tile Run",
-              "Eave Tile Run",
-              "Exposed Rafter Set",
-              "Sliding Lattice Door Set",
-              "Sliding Lattice Door Set, Diamond Lattice",
-              "Hanji Lattice Window",
-              "Lifting Lattice Window",
-              "Thatched Outbuilding",
-              "Market Stall With Awning",
-              "Village gate and market street"
+              "ArchBanner", "BellStructure", "BuildingBase", "Column", "ColumnBase",
+              "Door", "EntranceStairs", "Fence01", "Fence02", "Floor01", "Floor02",
+              "RoomDoor", "RoomFloor", "RoomRoof", "RoomRoofBeam", "RoomWall01",
+              "Buddhist Temple Pagoda"
           ]
-          approved_items = [item for category in approved.get("categories", {}).values() for item in category.get("assets", [])]
-          supplemental = [item for item in approved_items if any(str(item.get("name", "")).startswith(name) for name in selected_names)]
-          if len(supplemental) != 17:
-              raise SystemExit(f"Expected exactly 17 approved Hanok house/shop assets, found {len(supplemental)}")
-          supplemental_records = []
-          for index, item in enumerate(supplemental, 1):
-              relative = item["file"]
-              if relative.startswith("/") or ".." in Path(relative).parts:
-                  raise SystemExit(f"Unsafe supplemental GLB path: {relative}")
-              target = root / relative
-              target.parent.mkdir(parents=True, exist_ok=True)
-              source_url = item.get("direct_download_url") or (base + relative)
-              payload = fetch(source_url)
-              if len(payload) <= 1024 or payload[:4] != b"glTF":
-                  raise SystemExit(f"Invalid supplemental GLB header/size: {relative}, bytes={len(payload)}")
-              digest = hashlib.sha256(payload).hexdigest()
-              expected = str(item.get("sha256", "")).lower()
-              if expected and digest != expected:
-                  raise SystemExit(f"Supplemental SHA-256 mismatch: {relative}; expected={expected}; actual={digest}")
-              target.write_bytes(payload)
-              try:
-                  scene = trimesh.load(target, force="scene", process=False)
-                  bounds = scene.bounds
-                  if bounds is None:
-                      raise ValueError("GLB contains no measurable geometry bounds")
-                  dimensions = (bounds[1] - bounds[0]).tolist()
-                  geometry_count = len(scene.geometry)
-              except Exception as exc:
-                  raise SystemExit(f"Supplemental GLB geometry inspection failed: {relative}: {exc}")
-              item["bytes"] = len(payload)
-              item["sha256"] = digest
-              item["dimensions_m"] = dimensions
+          selected_architecture = [item for item in selected if item.get("name") in selected_names]
+          if len(selected_architecture) != 17:
+              found = sorted(item.get("name", "") for item in selected_architecture)
+              raise SystemExit(f"Expected 17 selected Chinese GLB architecture components from the 99 source models, found {len(selected_architecture)}: {found}")
+          roles = {
+              "ArchBanner":"shopfront_arch_and_signage",
+              "BellStructure":"ceremonial_bell_structure",
+              "BuildingBase":"building_foundation",
+              "Column":"structural_column",
+              "ColumnBase":"column_foundation",
+              "Door":"main_entrance",
+              "EntranceStairs":"building_entrance_stairs",
+              "Fence01":"courtyard_fence_segment",
+              "Fence02":"courtyard_fence_enclosure",
+              "Floor01":"building_shell_variant_01",
+              "Floor02":"building_shell_variant_02",
+              "RoomDoor":"room_door_module",
+              "RoomFloor":"room_floor_module",
+              "RoomRoof":"room_roof_module",
+              "RoomRoofBeam":"roof_beam_structure",
+              "RoomWall01":"room_wall_module",
+              "Buddhist Temple Pagoda":"complete_pagoda_landmark"
+          }
+          selected_records = []
+          for item in selected_architecture:
               item["twin_city_approved"] = True
+              item["twin_city_role"] = roles[item["name"]]
               item["twin_city_geometry_verified"] = True
-              item["validation"] = item.get("validation", {})
-              item["validation"]["dimensions_m"] = dimensions
-              item["validation"]["geometry_count"] = geometry_count
-              item["validation"]["bounds_source"] = "trimesh GLB scene geometry"
-              record = {"name":item.get("name"),"file":relative,"category":item.get("category"),"style_group":item.get("style_group"),"dimensions_m":dimensions,"geometry_count":geometry_count,"bytes":len(payload),"sha256":digest,"source_url":source_url}
-              supplemental_records.append(record)
-              geometry_audit.append({"asset_id":item.get("asset_id"),**record,"source_group":"approved_manifest_supplement","architectural_candidate":True})
-              print(f"HF_SUPPLEMENTAL_GLB_VERIFIED {index}/17 {relative} dimensions_m={dimensions} geometry={geometry_count} sha256={digest}")
+              selected_records.append({
+                  "name":item.get("name"),
+                  "asset_id":item.get("asset_id"),
+                  "file":item.get("file"),
+                  "category":item.get("category"),
+                  "style_group":item.get("style_group"),
+                  "dimensions_m":item.get("dimensions_m"),
+                  "geometry_count":item.get("validation", {}).get("geometry_count"),
+                  "bytes":item.get("bytes"),
+                  "sha256":item.get("sha256"),
+                  "role":roles[item["name"]]
+              })
           imperial_count = sum(1 for item in selected if item.get("style_group") == "imperial_chinese")
           if imperial_count != 46:
               raise SystemExit(f"Expected 46 original imperial_chinese GLBs, found {imperial_count}")
@@ -165,14 +150,14 @@ jobs:
                       item["validation"]["dimensions_m"] = details["dimensions_m"]
                       item["validation"]["geometry_count"] = details["geometry_count"]
                       item["validation"]["bounds_source"] = "trimesh GLB scene geometry"
-          approved["generated_at_utc"] = source_manifest.get("generated_at_utc", approved.get("generated_at_utc"))
           approved["source_repo"] = "ZzwahwahzZ/clash-of-legends-terrain-assets"
           approved["source_manifest_verified_glb_count"] = len(refreshed)
-          approved["supplemental_verified_glb_count"] = len(supplemental_records)
-          approved["verified_glb_count"] = imperial_count + len(supplemental_records)
-          approved["twin_city_approved_asset_count"] = imperial_count + len(supplemental_records)
-          approved["twin_city_selected_assets"] = supplemental_records
-          (root / "twin_city_selected_17_assets.json").write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","selected_count":len(supplemental_records),"assets":supplemental_records}, ensure_ascii=False, indent=2) + "\n")
+          approved["verified_glb_count"] = imperial_count
+          approved["twin_city_approved_asset_count"] = imperial_count
+          approved["twin_city_selected_asset_count"] = len(selected_records)
+          approved["twin_city_architecture_kit"] = selected_records
+          approved["twin_city_selected_assets"] = selected_records
+          (root / "twin_city_selected_17_assets.json").write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","selected_count":len(selected_records),"verified_source_glb_count":len(refreshed),"assets":selected_records}, ensure_ascii=False, indent=2) + "\\n")
           audit_path = Path("prototypes/twin_city/reports/glb_geometry_audit.json")
           audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","original_models_folder_glb_count":len(selected),"supplemental_approved_glb_count":len(supplemental_records),"total_geometry_verified_glb_count":len(geometry_audit),"assets":geometry_audit,"architectural_candidate_count":sum(x["architectural_candidate"] for x in geometry_audit)}, ensure_ascii=False, indent=2) + "\n")
           (root / "manifest.json").write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2) + "\n")
@@ -180,7 +165,7 @@ jobs:
           restore_report = {
               "dataset":"ZzwahwahzZ/clash-of-legends-terrain-assets",
               "original_models_folder_glb_count":len(refreshed),
-              "supplemental_houses_shops_glb_count":len(supplemental_records),
+              "selected_architecture_kit_component_count":len(selected_records),
               "restored_glb_models":len(geometry_audit),
               "restored_files":len(geometry_audit),
               "restored_pbr_textures":0,
@@ -190,7 +175,7 @@ jobs:
           Path("prototypes/twin_city/reports/twin_city_asset_restore.json").write_text(json.dumps(restore_report, ensure_ascii=False, indent=2) + "\n")
           architectural_count = sum(1 for item in geometry_audit if item["architectural_candidate"])
           verified_count = approved["verified_glb_count"]
-          print(f"HF_ASSET_RESTORE_PASS: original_models={len(refreshed)} supplemental_houses_shops={len(supplemental_records)} approved_architecture={verified_count} total_geometry_verified={len(geometry_audit)} candidates={architectural_count}")
+          print(f"HF_ASSET_RESTORE_PASS: original_models={len(refreshed)} selected_architecture_components={len(selected_records)} approved_imperial_chinese={verified_count} total_geometry_verified={len(geometry_audit)} candidates={architectural_count}")
           PY
 
       - name: Publish verified approval manifest to the same Hugging Face dataset
