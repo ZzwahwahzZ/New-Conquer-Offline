@@ -90,7 +90,7 @@ jobs:
               geometry_audit.append({"asset_id":item.get("asset_id"),"name":name,"file":relative,"category":category,"style_group":item.get("style_group"),"dimensions_m":dimensions,"geometry_count":geometry_count,"bytes":len(payload),"sha256":digest,"architectural_candidate":architectural})
               print(f"HF_GLB_VERIFIED {index}/99 {relative} dimensions_m={dimensions} geometry={geometry_count} sha256={digest}")
           audit_path = Path("prototypes/twin_city/reports/glb_geometry_audit.json")
-          audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","models_folder_glb_count":len(geometry_audit),"assets":geometry_audit,"architectural_candidate_count":sum(x["architectural_candidate"] for x in geometry_audit)}, ensure_ascii=False, indent=2) + "\\n")
+          audit_path.write_text(json.dumps({"source_repo":"ZzwahwahzZ/clash-of-legends-terrain-assets","models_folder_glb_count":len(geometry_audit),"assets":geometry_audit,"architectural_candidate_count":sum(x["architectural_candidate"] for x in geometry_audit)}, ensure_ascii=False, indent=2) + "\n")
           for category in approved.get("categories", {}).values():
               for item in category.get("assets", []):
                   key = item.get("asset_id", item.get("file"))
@@ -99,9 +99,10 @@ jobs:
           approved["generated_at_utc"] = source_manifest.get("generated_at_utc", approved.get("generated_at_utc"))
           approved["source_repo"] = "ZzwahwahzZ/clash-of-legends-terrain-assets"
           approved["verified_glb_count"] = len(refreshed)
-          (root / "manifest.json").write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2) + "\\n")
-          (root / "imperial_approved_assets.json").write_text(json.dumps(approved, ensure_ascii=False, indent=2) + "\\n")
-          print(f"HF_ALL_99_GLB_RESTORE_PASS: {len(refreshed)} GLBs geometry-inspected; architectural_candidates={sum(x["architectural_candidate"] for x in geometry_audit)}; sizes and SHA-256 fingerprints refreshed")
+          (root / "manifest.json").write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2) + "\n")
+          (root / "imperial_approved_assets.json").write_text(json.dumps(approved, ensure_ascii=False, indent=2) + "\n")
+          architectural_count = sum(1 for item in geometry_audit if item["architectural_candidate"])
+          print(f"HF_ALL_99_GLB_RESTORE_PASS: {len(refreshed)} GLBs geometry-inspected; architectural_candidates={architectural_count}; sizes and SHA-256 fingerprints refreshed")
           PY
 
       - name: Install Godot 4.3 and Xvfb
