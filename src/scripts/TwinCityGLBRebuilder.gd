@@ -283,7 +283,8 @@ static func _build_districts(parent: Node3D, source: Node3D) -> Dictionary:
 					_normalize_node_to_dimensions(shop, Vector3(7.0, 6.75, 8.5))
 					census.commercial += 1
 			for house_index in range(4):
-				var house_local: Vector3 = [Vector3(-8.0,0.0,0.0), Vector3(8.0,0.0,0.0), Vector3(-8.0,0.0,11.0), Vector3(8.0,0.0,11.0)][house_index]
+				var house_positions: Array[Vector3] = [Vector3(-8.0,0.0,0.0), Vector3(8.0,0.0,0.0), Vector3(-8.0,0.0,11.0), Vector3(8.0,0.0,11.0)]
+				var house_local: Vector3 = house_positions[house_index]
 				var house_name := "TwinCity_residential_%03d" % census.residential
 				var house := _spawn_modular_building(districts, house_name, center + house_local, face_yaw, 1.0, "residential", house_index)
 				if house != null:
