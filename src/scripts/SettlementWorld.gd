@@ -44,9 +44,12 @@ func _build_environment() -> void:
 	environment.tonemap_mode = Environment.TONE_MAPPER_ACES
 	if settlement_id == "TwinCity":
 		environment.adjustment_enabled = true
-		environment.adjustment_brightness = 0.94
-		environment.adjustment_contrast = 1.04
-		environment.adjustment_saturation = 0.92
+		environment.adjustment_brightness = 0.98
+		environment.adjustment_contrast = 1.08
+		environment.adjustment_saturation = 0.96
+		environment.fog_enabled = true
+		environment.fog_light_color = Color("#C7A982")
+		environment.fog_density = 0.0018
 	environment.ssao_enabled = false if settlement_id == "TwinCity" else true
 	environment.ssao_radius = 2.4
 	environment.ssao_intensity = 1.35
@@ -67,8 +70,8 @@ func _build_environment() -> void:
 	var sun := DirectionalLight3D.new()
 	sun.name = "SettlementSun"
 	sun.rotation_degrees = Vector3(-45,-32,0)
-	sun.light_energy = 0.62 if settlement_id == "TwinCity" else 0.72
-	sun.shadow_enabled = settlement_id != "TwinCity"
+	sun.light_energy = 1.15 if settlement_id == "TwinCity" else 0.72
+	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = 220.0
 	sun.shadow_bias = 0.04
 	sun.shadow_normal_bias = 0.8
