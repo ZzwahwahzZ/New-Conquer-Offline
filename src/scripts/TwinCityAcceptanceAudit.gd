@@ -17,6 +17,8 @@ func _run_audit() -> void:
 	var null_mesh_nodes := 0
 	var procedural_building_primitives := 0
 	var normalized_buildings := 0
+	var ground_snapped_buildings := 0
+	var max_ground_snap_error := 0.0
 	var mesh_surface_total := 0
 	for building in buildings:
 		var category := str(building.get_meta("twin_city_category", ""))
@@ -24,6 +26,9 @@ func _run_audit() -> void:
 			counts[category] += 1
 		if bool(building.get_meta("twin_city_aabb_normalized", false)):
 			normalized_buildings += 1
+		if building.has_meta("twin_city_ground_snap_y"):
+			ground_snapped_buildings += 1
+			max_ground_snap_error = maxf(max_ground_snap_error, absf(float(building.get_meta("twin_city_ground_snap_error_m", 999.0))))
 		var stack: Array[Node] = [building]
 		while not stack.is_empty():
 			var current: Node = stack.pop_back()
@@ -59,10 +64,11 @@ func _run_audit() -> void:
 	var valid := total == 244
 	valid = valid and counts.residential == 120 and counts.commercial == 48 and counts.service == 56 and counts.landmark == 16 and counts.palace == 3 and counts.pagoda == 1
 	valid = valid and normalized_buildings >= 244
+	valid = valid and ground_snapped_buildings == 240 and max_ground_snap_error <= 0.001
 	valid = valid and null_mesh_nodes == 0 and procedural_building_primitives == 0 and mesh_surface_total > 0
 	valid = valid and plaza != null and palace != null and moat != null and pagoda != null
 	valid = valid and paving_instances >= 14000
-	print("TWIN_CITY_ACCEPTANCE_AUDIT total=%d categories=%s normalized=%d null_meshes=%d procedural_building_primitives=%d surfaces=%d paving_instances=%d plaza=%s palace=%s moat=%s pagoda=%s" % [total, str(counts), normalized_buildings, null_mesh_nodes, procedural_building_primitives, mesh_surface_total, paving_instances, str(plaza != null), str(palace != null), str(moat != null), str(pagoda != null)])
+	print("TWIN_CITY_ACCEPTANCE_AUDIT total=%d categories=%s normalized=%d ground_snapped=%d max_ground_error_m=%.6f null_meshes=%d procedural_building_primitives=%d surfaces=%d paving_instances=%d plaza=%s palace=%s moat=%s pagoda=%s" % [total, str(counts), normalized_buildings, ground_snapped_buildings, max_ground_snap_error, null_mesh_nodes, procedural_building_primitives, mesh_surface_total, paving_instances, str(plaza != null), str(palace != null), str(moat != null), str(pagoda != null)])
 	if not valid:
 		push_error("TWIN_CITY_AUDIT_FAIL: four-pass CAD grid, AABB normalization, GLB-only structures, paving or landmark acceptance gate failed")
 		quit(1)
