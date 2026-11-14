@@ -226,14 +226,17 @@ static func _build_districts(parent: Node3D, source: Node3D) -> Dictionary:
 			var center := Vector3(-157.5 + float(ix) * 45.0, 0.0, -157.5 + float(iz) * 45.0)
 			blocks.append({"center": center, "ix": ix, "iz": iz, "score": absf(center.x) + absf(center.z)})
 	blocks.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a.score) < float(b.score))
-	var offsets := [Vector3(-8.0, 0.0, -8.0), Vector3(8.0, 0.0, -8.0), Vector3(-8.0, 0.0, 8.0), Vector3(8.0, 0.0, 8.0)]
-	for block_index in range(blocks.size()):
+	var residential_offsets := [Vector3(-8.0, 0.0, -8.0), Vector3(8.0, 0.0, -8.0), Vector3(-8.0, 0.0, 8.0), Vector3(8.0, 0.0, 8.0)]
+	var shop_x := [-12.9, -4.3, 4.3, 12.9]
+	for block_index in range(64):
 		var block: Dictionary = blocks[block_index]
 		var center: Vector3 = block.center
-		var kind := "commercial" if block_index < 12 else ("residential" if block_index < 42 else ("service" if block_index < 56 else "landmark"))
+		var kind := "commercial" if block_index < 12 else ("residential" if block_index < 30 else ("service" if block_index < 44 else ("landmark" if block_index < 52 else "open")))
+		if kind == "open":
+			continue
 		if kind == "landmark":
 			for hall_index in range(2):
-				var local := offsets[hall_index * 2]
+				var local: Vector3 = Vector3(-8.0 if hall_index == 0 else 8.0, 0.0, 0.0)
 				var pos := center + local
 				var template := "130-ceremonial-hall" if (block_index + hall_index) % 2 == 0 else "134-water-pavilion"
 				var name := "TwinCity_landmark_%03d" % census.landmark
@@ -243,8 +246,29 @@ static func _build_districts(parent: Node3D, source: Node3D) -> Dictionary:
 						_normalize_node_to_dimensions(hall, Vector3(16.0, 16.0, 16.0))
 					census.landmark += 1
 			continue
+		if kind == "commercial":
+			var face_yaw := 0.0
+			if absf(center.x) < absf(center.z):
+				face_yaw = PI if center.z < 0.0 else 0.0
+			else:
+				face_yaw = -PI * 0.5 if center.x < 0.0 else PI * 0.5
+			for shop_index in range(4):
+				var shop_pos := center + Vector3(shop_x[shop_index], 0.0, -11.5)
+				var shop_name := "TwinCity_commercial_%03d" % census.commercial
+				var shop := _spawn_modular_building(districts, shop_name, shop_pos, face_yaw, 1.0, "commercial", shop_index)
+				if shop != null:
+					_normalize_node_to_dimensions(shop, Vector3(7.0, 6.75, 8.5))
+					census.commercial += 1
+			for house_index in range(4):
+				var house_local := [Vector3(-8.0,0.0,0.0), Vector3(8.0,0.0,0.0), Vector3(-8.0,0.0,11.0), Vector3(8.0,0.0,11.0)][house_index]
+				var house_name := "TwinCity_residential_%03d" % census.residential
+				var house := _spawn_modular_building(districts, house_name, center + house_local, face_yaw, 1.0, "residential", house_index)
+				if house != null:
+					_normalize_node_to_dimensions(house, Vector3(9.5, 10.25, 10.5))
+					census.residential += 1
+			continue
 		for local_index in range(4):
-			var local: Vector3 = offsets[local_index]
+			var local: Vector3 = residential_offsets[local_index]
 			var pos := center + local
 			var yaw := 0.0
 			if absf(local.z) >= absf(local.x):
@@ -252,12 +276,12 @@ static func _build_districts(parent: Node3D, source: Node3D) -> Dictionary:
 			else:
 				yaw = -PI * 0.5 if local.x > 0.0 else PI * 0.5
 			var node_name := "TwinCity_%s_%03d" % [kind, census[kind]]
-			var dims := Vector3(8.0, 6.75, 9.0) if kind == "commercial" else (Vector3(9.5, 10.25, 10.0) if kind == "residential" else Vector3(10.0, 9.0, 10.0))
+			var dims := Vector3(9.5, 10.25, 10.5) if kind == "residential" else Vector3(10.0, 9.0, 10.0)
 			var building := _spawn_modular_building(districts, node_name, pos, yaw, 1.0, kind, local_index)
 			if building != null:
 				_normalize_node_to_dimensions(building, dims)
 				census[kind] += 1
-	print("TWIN_CITY_GLB_BUILDING_CENSUS: %s total=%d; 48 shops, 120 houses, 56 services, 16 halls; real GLB assemblies only" % [str(census), census.values().reduce(func(a, b): return a + b, 0)])
+	print("TWIN_CITY_GLB_BUILDING_CENSUS: %s total=%d; 48 shops, 120 houses, 56 services, 16 halls; 12 open courtyard blocks; GLB assemblies only" % [str(census), census.values().reduce(func(a, b): return a + b, 0)])
 	return census
 
 static func _spawn_modular_building(parent: Node3D, node_name: String, pos: Vector3, yaw: float, scale_factor: float, category: String, variant: int) -> Node3D:
@@ -292,7 +316,6 @@ static func _spawn_modular_building(parent: Node3D, node_name: String, pos: Vect
 	else:
 		_spawn_glb(building, FENCE_01, node_name + "_ResidentialFenceA", Vector3(-7.0, 0.0, 9.0), 0.0, 0.58, "")
 		_spawn_glb(building, FENCE_01, node_name + "_ResidentialFenceB", Vector3(7.0, 0.0, 9.0), 0.0, 0.58, "")
-	_normalize_node_to_dimensions(building, Vector3(9.5, 10.25, 10.0) if category == "residential" else (Vector3(8.0, 6.75, 9.0) if category == "commercial" else Vector3(10.0, 9.0, 10.0)))
 	return building
 
 static func _decorate_building(building: Node3D, category: String, scale_factor: float, variant: int) -> void:
