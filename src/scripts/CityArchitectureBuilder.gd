@@ -640,7 +640,7 @@ static func build_twin_city(parent: Node3D) -> void:
  var pink := _material(Color("#e5a0b2"), 0.88)
  var water := _material(Color("#145b63"), 0.22)
  _twin_ground(root, stone)
- _twin_moat_walls_gates(root, stone, pale_stone, dark_stone, water, roof, gold)
+ _twin_moat_walls_gates(root, stone, pale_stone, dark_stone, water, roof, gold, timber)
  _twin_roads(root, stone, pale_stone)
  _twin_plaza(root, stone, pale_stone, gold, pink, roof, timber)
  _twin_palace(root, pale_stone, stone, timber, roof, gold)
@@ -665,7 +665,7 @@ static func _twin_ground(parent: Node3D, stone: Material) -> void:
   var tile := _twin_box(parent, "OrganicUrbanEdge_%02d" % i, Vector3(cos(a)*radius,0.02,sin(a)*radius), Vector3(10.0,0.16,8.0), stone)
   tile.rotation.y = -a
 
-static func _twin_moat_walls_gates(parent: Node3D, stone: Material, pale: Material, dark: Material, water: Material, roof: Material, gold: Material) -> void:
+static func _twin_moat_walls_gates(parent: Node3D, stone: Material, pale: Material, dark: Material, water: Material, roof: Material, gold: Material, timber: Material) -> void:
  var moat := MeshInstance3D.new()
  moat.name = "DeepContinuousWaterMoat_440m"
  var ring := TorusMesh.new()
