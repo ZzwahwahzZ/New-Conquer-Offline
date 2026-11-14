@@ -279,7 +279,7 @@ def license_class(value):
 def license_url_for(value):
  text=str(value or "").strip().lower().replace("_","-")
  if "cc0" in text: return "https://creativecommons.org/publicdomain/zero/1.0/"
- if "oga-by" in text: return "https://opengameart.org/content/oga-by-30-faq"
+ if "oga-by" in text: return "https://opengameart.org/content/oga-by-40-faq" if "4.0" in text else "https://opengameart.org/content/oga-by-30-faq"
  if "by-sa" in text or "by sa" in text:
   version=next((v for v in ("4.0","3.0") if v in text),None)
   return "https://creativecommons.org/licenses/by-sa/"+version+"/" if version else ""
