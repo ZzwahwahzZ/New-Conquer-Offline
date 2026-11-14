@@ -52,6 +52,11 @@ static func build(parent: Node3D) -> void:
 	_build_city_greenery_and_props(root, source_container)
 	_build_perimeter(root, source_container)
 	_build_outer_wildlands(root, source_container)
+	# The source pack is a template library only; release its hidden duplicate after all GLB clones
+	# and the paving MultiMesh have retained their own resource references.
+	root.remove_child(source_instance)
+	source_instance.free()
+	print("TWIN_CITY_SOURCE_TEMPLATE_RELEASE: released=true")
 	var final_null_meshes_removed := _remove_invalid_mesh_nodes(root)
 	print("TWIN_CITY_NULL_MESH_PRUNE_FINAL: removed=%d" % final_null_meshes_removed)
 
@@ -556,14 +561,19 @@ static func _remove_invalid_mesh_nodes(root: Node) -> int:
 	for child in root.get_children():
 		var invalid_mesh := false
 		if child is MeshInstance3D:
-			var mesh := (child as MeshInstance3D).mesh
+			var mesh_node := child as MeshInstance3D
+			var mesh := mesh_node.mesh
 			invalid_mesh = mesh == null or not mesh.get_rid().is_valid()
+			if not invalid_mesh and mesh_node.is_inside_tree():
+				invalid_mesh = not mesh_node.get_base().is_valid()
 		elif child is MultiMeshInstance3D:
 			var multi_node := child as MultiMeshInstance3D
 			invalid_mesh = multi_node.multimesh == null
 			if not invalid_mesh:
 				var multi_mesh := multi_node.multimesh.mesh
 				invalid_mesh = multi_mesh == null or not multi_mesh.get_rid().is_valid()
+			if not invalid_mesh and multi_node.is_inside_tree():
+				invalid_mesh = not multi_node.get_base().is_valid()
 		if invalid_mesh:
 			root.remove_child(child)
 			child.free()
