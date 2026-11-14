@@ -256,7 +256,7 @@ def strict_filter_self_test():
 def license_allowed(value):
  text=str(value or "").strip().lower().replace("_","-").replace("–","-")
  if any(x in text for x in ("by-nc","by-nd","noncommercial","non-commercial","no derivatives","no-derivatives")): return False
- if re.search(r"\bcc[- ]?by[- ]?sa\s*(?:3\.0|4\.0)\b",text): return True
+ if re.search(r"\bcc[- ]?by[- ]?sa[- ]?(?:3\.0|4\.0)\b",text): return True
  if re.search(r"\b(?:cc0|public domain|public-domain|unlicense|wtfpl|mit|zlib|bsd(?:-2|-3)?(?:-clause)?|oga[- ]by\s*(?:3\.0|4\.0)|cc[- ]?by(?![- ]?sa))\b",text): return True
  if re.search(r"\bgpl[- ]?(?:2|3)(?:\.0)?(?:[- ]?(?:only|or-later))?\b",text): return True
  return False
