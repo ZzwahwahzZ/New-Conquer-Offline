@@ -10,6 +10,16 @@
     "detail": "Set repository Actions secret CGTRADER_ACCESS_TOKEN to an authorized CGTrader OAuth access token."
   },
   {
+    "asset": "Chinese ancient architecture #3889124",
+    "status": "SKIPPED_AUTH_REQUIRED",
+    "detail": "Set repository Actions secret CGTRADER_ACCESS_TOKEN to an authorized CGTrader OAuth access token."
+  },
+  {
+    "asset": "Chinese Temple High Poly #794558",
+    "status": "SKIPPED_AUTH_REQUIRED",
+    "detail": "Set repository Actions secret CGTRADER_ACCESS_TOKEN to an authorized CGTrader OAuth access token."
+  },
+  {
     "asset": "Chinese ancient house",
     "status": "SKIPPED_AUTH_REQUIRED",
     "detail": "Set repository Actions secret SKETCHFAB_ACCESS_TOKEN to an authorized Sketchfab OAuth access token."
@@ -31,6 +41,21 @@
   },
   {
     "asset": "Ancient Chinese Noodle Shop",
+    "status": "SKIPPED_AUTH_REQUIRED",
+    "detail": "Set repository Actions secret SKETCHFAB_ACCESS_TOKEN to an authorized Sketchfab OAuth access token."
+  },
+  {
+    "asset": "Ancient Chinese Courtyard House",
+    "status": "SKIPPED_AUTH_REQUIRED",
+    "detail": "Set repository Actions secret SKETCHFAB_ACCESS_TOKEN to an authorized Sketchfab OAuth access token."
+  },
+  {
+    "asset": "Low Big House",
+    "status": "SKIPPED_AUTH_REQUIRED",
+    "detail": "Set repository Actions secret SKETCHFAB_ACCESS_TOKEN to an authorized Sketchfab OAuth access token."
+  },
+  {
+    "asset": "Low Big House low roof",
     "status": "SKIPPED_AUTH_REQUIRED",
     "detail": "Set repository Actions secret SKETCHFAB_ACCESS_TOKEN to an authorized Sketchfab OAuth access token."
   }
