@@ -5,6 +5,7 @@ Sources:
 - Kenney Nature Kit: official CC0 archive, pinned by SHA-256.
 - Sketchfab Data/Download APIs: CC0, CC BY and CC BY-SA; downloads require OAuth.
 - GitHub public repositories: model files are accepted only when the repository declares an allow-listed SPDX license.
+- Poly Pizza: published v1.1 API only; requires an API key and an explicit enable flag; CDN GLBs are magic-byte checked.
 """
 import os
 import re
