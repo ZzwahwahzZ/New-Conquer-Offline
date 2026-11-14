@@ -68,7 +68,7 @@ static func _build_palace(parent: Node3D, source: Node3D) -> void:
 		if main_hall != null:
 			_normalize_node_to_dimensions(main_hall, Vector3(48.0, 27.0, 36.0))
 	for wing_index in range(2):
-		var wing_x := -27.0 if wing_index == 0 else 27.0
+		var wing_x := -33.0 if wing_index == 0 else 33.0
 		var wing_name := "ImperialPalace_SideWing_%02d" % wing_index
 		if _clone_source_model(parent, source, "134-water-pavilion", wing_name, Vector3(wing_x, 5.0, -143.0), 0.0, 1.0, "palace"):
 			var wing := parent.get_node_or_null(NodePath(wing_name)) as Node3D
@@ -78,7 +78,7 @@ static func _build_palace(parent: Node3D, source: Node3D) -> void:
 	if stairs != null:
 		_normalize_node_to_dimensions(stairs, Vector3(18.0, 5.0, 12.0))
 	for rail_index in range(4):
-		var rail_pos := Vector3(-38.0 + float(rail_index) * 25.0, 5.0, -181.0)
+		var rail_pos := Vector3(-38.0 + float(rail_index) * 25.0, 5.0, -107.5)
 		_clone_source_model(parent, source, "088-palace-wall-end-pier", "ImperialPalace_TerraceRailPier_%02d" % rail_index, rail_pos, 0.0, 1.0, "")
 	print("TWIN_CITY_IMPERIAL_PALACE_PASS: 85x75m terrace + 27m GLB ceremonial hall + 2 normalized wings + 18m stair; gold roof palette")
 
