@@ -97,7 +97,7 @@ jobs:
           import json
           from pathlib import Path
           report = json.loads(Path("prototypes/twin_city/reports/twin_city_build_report.json").read_text())
-          expected = {"buildings": (70, 100), "building_types": (6, 6), "tree_instances": (300, 400), "directional_gates": (4, 4), "bridges": (4, 4), "gate_guardian_statues": (8, 8), "box_mesh_count": (0, 0), "city_core_m": (260, 260), "world_m": (800, 800)}
+          expected = {"buildings": (70, 100), "building_types": (6, 6), "district_blocks": (10, 10), "district_buildings": (80, 80), "shopkeeper_spawns": (40, 40), "tree_instances": (300, 400), "directional_gates": (4, 4), "bridges": (4, 4), "gate_guardian_statues": (8, 8), "box_mesh_count": (0, 0), "city_core_m": (260, 260), "world_m": (800, 800)}
           for key, (minimum, maximum) in expected.items():
               value = report.get(key)
               if not isinstance(value, (int, float)) or not minimum <= value <= maximum:
