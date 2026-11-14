@@ -350,3 +350,139 @@ def discover_innerscene_curated(fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPED)
         except Exception as exc:
             ERR.append({"asset": item["id"], "stage": "download", "reason": str(exc)})
     print("INNERSCENE_SOURCE_COUNTS", {"downloaded": count})
+
+
+def discover_github_open_assets(session, fetch, safe, sha, RAW, DISC, DOWN, ERR, SKIPPED):
+    """Discover relevant model files in public GitHub repos with an explicit SPDX license."""
+    token = os.getenv("GITHUB_TOKEN", "").strip()
+    headers = {"Accept": "application/vnd.github+json",
+               "X-GitHub-Api-Version": "2022-11-28",
+               "User-Agent": "NewConquerOffline-OpenAssetAudit/1.0"}
+    if token:
+        headers["Authorization"] = "Bearer " + token
+    allowed_spdx = {
+        "CC0-1.0", "CC-BY-4.0", "CC-BY-3.0", "CC-BY-SA-4.0", "CC-BY-SA-3.0",
+        "MIT", "BSD-2-Clause", "BSD-3-Clause", "Zlib", "WTFPL", "Unlicense",
+        "GPL-2.0-only", "GPL-2.0-or-later", "GPL-3.0-only", "GPL-3.0-or-later",
+    }
+    queries = (
+        "pagoda 3d assets",
+        "chinese temple 3d model",
+        "asian architecture 3d models",
+        "cherry blossom tree glb",
+        "sakura tree 3d model",
+        "chinese bridge 3d model",
+        "market stall 3d game assets",
+    )
+    model_exts = {".glb", ".fbx", ".obj", ".blend", ".dae", ".stl", ".ply", ".zip", ".7z"}
+    relevant = re.compile(
+        r"(pagoda|temple|palace|imperial|chinese|asian|east.?asian|gate|wall|bridge|"
+        r"watchtower|pavilion|market.?stall|shopfront|teahouse|cherry|sakura|blossom|"
+        r"plum.?tree|bamboo|willow|pine.?tree|lotus|lantern|dragon|guardian.?lion)",
+        re.I,
+    )
+    seen_repos = set()
+    downloaded = 0
+    inspected = 0
+    for query in queries:
+        if downloaded >= 30:
+            break
+        try:
+            response = session.get(
+                "https://api.github.com/search/repositories",
+                params={"q": query + " in:name,description,readme", "sort": "updated",
+                        "per_page": 15},
+                headers=headers, timeout=(20, 60),
+            )
+            response.raise_for_status()
+            repositories = response.json().get("items", [])
+        except Exception as exc:
+            ERR.append({"asset":"GitHub:"+query,"stage":"repository_search","reason":str(exc)})
+            continue
+        for repository in repositories:
+            if downloaded >= 30:
+                break
+            full_name = str(repository.get("full_name") or "")
+            if not full_name or full_name in seen_repos:
+                continue
+            seen_repos.add(full_name)
+            license_info = repository.get("license") or {}
+            spdx = str(license_info.get("spdx_id") or "").strip()
+            if spdx not in allowed_spdx:
+                SKIPPED.append({"asset":"GitHub:"+full_name,"stage":"license",
+                                "reason":"Repository license is missing or outside the explicit allow-list: "+(spdx or "NOASSERTION")})
+                continue
+            branch = str(repository.get("default_branch") or "main")
+            try:
+                tree_response = session.get(
+                    "https://api.github.com/repos/" + full_name + "/git/trees/" + quote(branch, safe="") + "?recursive=1",
+                    headers=headers, timeout=(20, 90),
+                )
+                tree_response.raise_for_status()
+                tree = tree_response.json().get("tree", [])
+                inspected += 1
+            except Exception as exc:
+                ERR.append({"asset":"GitHub:"+full_name,"stage":"tree","reason":str(exc)})
+                continue
+            owner = (repository.get("owner") or {}).get("login") or full_name.split("/")[0]
+            for node in tree:
+                if downloaded >= 30:
+                    break
+                if node.get("type") != "blob":
+                    continue
+                path = str(node.get("path") or "")
+                ext = Path(path).suffix.lower()
+                if ext not in model_exts or not relevant.search(path):
+                    continue
+                if any(x in path.lower() for x in ("/test/", "/tests/", "preview", "thumbnail", "sample_scene")):
+                    continue
+                size = int(node.get("size") or 0)
+                if size and size > 200 * 1024 * 1024:
+                    continue
+                asset_id = "github-" + safe(full_name.replace("/", "-") + "-" + path)
+                source_url = "https://github.com/" + full_name + "/blob/" + quote(branch, safe="") + "/" + quote(path, safe="/")
+                if _known(DISC, asset_id, source_url):
+                    continue
+                stem = Path(path).stem.replace("_", " ").replace("-", " ")
+                lower = (path + " " + str(repository.get("description") or "")).lower()
+                if re.search(r"(cherry|sakura|blossom|plum|bamboo|willow|pine|lotus|tree)", lower):
+                    category = "nature"
+                elif re.search(r"(lantern|dragon|lion|statue|bell|ornament)", lower):
+                    category = "ornaments"
+                else:
+                    category = "architecture"
+                if spdx.startswith("CC0"):
+                    license_name, license_url = "CC0 1.0 Universal", "https://creativecommons.org/publicdomain/zero/1.0/"
+                elif spdx.startswith("CC-BY-SA"):
+                    version = spdx.rsplit("-", 1)[-1]
+                    license_name, license_url = "CC BY-SA " + version, "https://creativecommons.org/licenses/by-sa/" + version + "/"
+                elif spdx.startswith("CC-BY"):
+                    version = spdx.rsplit("-", 1)[-1]
+                    license_name, license_url = "CC BY " + version, "https://creativecommons.org/licenses/by/" + version + "/"
+                else:
+                    license_name, license_url = spdx, str(license_info.get("url") or "")
+                raw_url = "https://raw.githubusercontent.com/" + full_name + "/" + quote(branch, safe="") + "/" + quote(path, safe="/")
+                record = {
+                    "id": asset_id, "name": stem, "source": "GitHub Open Assets",
+                    "source_url": source_url, "download_url": raw_url,
+                    "license": license_name, "license_url": license_url,
+                    "authors": {"repository_publisher": owner},
+                    "target_category": "nature" if category == "nature" else None,
+                    "matches": [(category, query)],
+                    "pack": full_name,
+                    "api_metadata": {"spdx_id": spdx, "repository": full_name,
+                                     "repository_owner": owner, "file_path": path,
+                                     "repository_license_url": license_info.get("url")},
+                    "candidate_only": category == "architecture" and not re.search(
+                        r"(chinese|asian|east.?asian|pagoda|temple|imperial|palace|gate|bridge)", path, re.I),
+                }
+                try:
+                    raw = fetch(raw_url, RAW / "github" / safe(full_name.replace("/", "-")) / (safe(Path(path).name)))
+                    DISC.append(record)
+                    DOWN.append({**record, "raw": str(raw), "download_sha256": sha(raw)})
+                    downloaded += 1
+                except Exception as exc:
+                    ERR.append({"asset":"GitHub:"+full_name+":"+path,"stage":"download","reason":str(exc)})
+    print("GITHUB_OPEN_ASSET_COUNTS", {"repositories_seen":len(seen_repos),
+                                       "repositories_with_trees":inspected,
+                                       "downloaded":downloaded, "oauth_token_present":bool(token)})
