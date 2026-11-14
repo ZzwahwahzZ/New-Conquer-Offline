@@ -62,7 +62,102 @@ jobs:
             "https://polyfork.dev/cdn/market-stall-9d0b29.glb" \
             -o collection/chinese-historical-shops/market-stall-9d0b29.glb
 
-      - name: Verify GLB files and create manifest
+
+      - name: Download additional originals from CGTrader and Sketchfab when authorized tokens exist
+        env:
+          CGTRADER_ACCESS_TOKEN: ${{ secrets.CGTRADER_ACCESS_TOKEN }}
+          SKETCHFAB_ACCESS_TOKEN: ${{ secrets.SKETCHFAB_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, json, zipfile, io, hashlib, requests
+          from pathlib import Path
+
+          root = Path("collection")
+          report = []
+          headers = {"User-Agent": "TwinCityAssetCollector/1.0"}
+
+          def record(name, status, detail):
+              report.append({"asset": name, "status": status, "detail": detail})
+              print(f"[{status}] {name}: {detail}")
+
+          # CGTrader: authorized OAuth access token; never use account email as authentication.
+          cg_token = os.getenv("CGTRADER_ACCESS_TOKEN", "").strip()
+          cg_models = [
+              ("Chinese Ancient house reference #3589754", 3589754, "chinese-historical-houses/cgtrader-3589754"),
+              ("Ancient Traditional Chinese Building #3328346", 3328346, "chinese-historical-houses/cgtrader-3328346"),
+          ]
+          if not cg_token:
+              for name, _, _ in cg_models:
+                  record(name, "SKIPPED_AUTH_REQUIRED", "Set repository Actions secret CGTRADER_ACCESS_TOKEN to an authorized CGTrader OAuth access token.")
+          else:
+              h = {**headers, "Authorization": f"Bearer {cg_token}"}
+              for name, model_id, dest in cg_models:
+                  try:
+                      res = requests.get(f"https://api.cgtrader.com/v1/models/{model_id}/files", headers=h, timeout=60)
+                      res.raise_for_status()
+                      payload = res.json()
+                      files = payload if isinstance(payload, list) else payload.get("files", payload.get("data", []))
+                      if isinstance(files, dict):
+                          files = files.get("files", [])
+                      if not files:
+                          record(name, "NO_FILES", f"CGTrader API returned no downloadable files for model {model_id}.")
+                          continue
+                      out = root / dest
+                      out.mkdir(parents=True, exist_ok=True)
+                      saved = []
+                      for item in files:
+                          fid = item.get("id") or item.get("file_id")
+                          fname = item.get("name") or item.get("filename") or f"file-{fid}"
+                          if not fid:
+                              continue
+                          dl = requests.get(f"https://api.cgtrader.com/v1/models/{model_id}/files/{fid}", headers=h, allow_redirects=True, timeout=180)
+                          dl.raise_for_status()
+                          safe = Path(fname).name
+                          target = out / safe
+                          target.write_bytes(dl.content)
+                          saved.append({"file": str(target), "bytes": len(dl.content), "sha256": hashlib.sha256(dl.content).hexdigest()})
+                      record(name, "DOWNLOADED" if saved else "NO_FILES", json.dumps(saved))
+                  except Exception as e:
+                      record(name, "DOWNLOAD_FAILED", str(e))
+
+          # Sketchfab Download API: user-authorized OAuth token; each response contains a short-lived archive URL.
+          sf_token = os.getenv("SKETCHFAB_ACCESS_TOKEN", "").strip()
+          sf_models = [
+              ("Chinese ancient house", "48555048c4c540a78d23f055ca55a569", "chinese-historical-houses/sketchfab-ancient-house"),
+              ("Ancient Chinese House", "bcb41894d1b5451b9c4f6489d50766d4", "chinese-historical-houses/sketchfab-ancient-chinese-house"),
+              ("Chinese ancient building H26", "99d2ab2816914c46949b3f6a1bc7ae4d", "chinese-historical-houses/sketchfab-building-h26"),
+              ("Chinese hut", "1b9c99b0fa9d49b88c4aa5b8c9c097da", "chinese-historical-houses/sketchfab-chinese-hut"),
+              ("Ancient Chinese Noodle Shop", "5576aebcee724fc491e9d8901da99f2f", "chinese-historical-shops/sketchfab-noodle-shop"),
+          ]
+          if not sf_token:
+              for name, _, _ in sf_models:
+                  record(name, "SKIPPED_AUTH_REQUIRED", "Set repository Actions secret SKETCHFAB_ACCESS_TOKEN to an authorized Sketchfab OAuth access token.")
+          else:
+              h = {**headers, "Authorization": f"Bearer {sf_token}"}
+              for name, uid, dest in sf_models:
+                  try:
+                      info = requests.get(f"https://api.sketchfab.com/v3/models/{uid}/download", headers=h, timeout=60)
+                      info.raise_for_status()
+                      archive_url = info.json()["gltf"]["url"]
+                      archive = requests.get(archive_url, timeout=240)
+                      archive.raise_for_status()
+                      out = root / dest
+                      out.mkdir(parents=True, exist_ok=True)
+                      (out / "original-download.zip").write_bytes(archive.content)
+                      with zipfile.ZipFile(io.BytesIO(archive.content)) as z:
+                          bad = z.testzip()
+                          if bad:
+                              raise RuntimeError(f"Corrupt ZIP member: {bad}")
+                          z.extractall(out / "source-files")
+                      record(name, "DOWNLOADED", f"ZIP {len(archive.content)} bytes; extracted original glTF files and textures.")
+                  except Exception as e:
+                      record(name, "DOWNLOAD_FAILED", str(e))
+
+          (root / "acquisition-report.json").write_text(json.dumps(report, indent=2) + "\\n")
+          PY
+
+      - name: Verify collected originals and create manifest
         run: |
           set -euo pipefail
           python - <<'PY'
