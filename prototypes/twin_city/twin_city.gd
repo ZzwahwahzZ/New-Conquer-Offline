@@ -375,11 +375,11 @@ func _build_districts() -> void:
 			stats.shopkeeper_spawns += 1
 			index += 1
 		for inner in range(4):
-			var local := [
+			var local_position: Vector2 = [
 				Vector2(-5.0, -5.0), Vector2(5.0, -5.0),
 				Vector2(-5.0, 5.0), Vector2(5.0, 5.0)
 			][inner]
-			var pos := center + radial * local.x + tangent * local.y
+			var pos: Vector3 = center + radial * local_position.x + tangent * local_position.y
 			var asset: String = residences[(sector + inner) % residences.size()]
 			_place_fit(asset, pos, angle + float(inner) * PI / 2.0, Vector3(11.5, 14.0, 11.5), block, "InnerResidence_%02d_%02d" % [sector, inner])
 			index += 1
