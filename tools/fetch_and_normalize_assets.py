@@ -7,7 +7,7 @@ import requests
 from huggingface_hub import HfApi,hf_hub_download
 from imperial_extra_sources import discover_3dassets, discover_hanok_pack, discover_imperial_china_pack
 from opengameart_sources import discover_opengameart, discover_quaternius
-from new_asset_sources import discover_smithsonian, discover_kenney_nature, discover_sketchfab, discover_polygonal_mind, discover_innerscene_curated
+from new_asset_sources import discover_smithsonian, discover_kenney_nature, discover_sketchfab, discover_polygonal_mind, discover_innerscene_curated, discover_github_open_assets
 ROOT=Path.cwd(); OUT=ROOT/"assets/wuxia_imperial_pack"; RAW=ROOT/".asset_work/raw"
 HF_REPO=os.getenv("HF_REPO_ID","ZzwahwahzZ/clash-of-legends-terrain-assets"); PREFIX="assets/wuxia_imperial_pack"
 S=requests.Session(); S.headers.update({"User-Agent":"NewConquerOffline-AssetPipeline/1.0 (GitHub Actions; asset audit)"})
@@ -248,28 +248,61 @@ def strict_filter_self_test():
   if actual_reject!=should_reject or (not should_reject and actual_category!=should_category):
    failures.append({"record":rec,"rejected":actual_reject,"category":actual_category,
                     "expected_rejected":should_reject,"expected_category":should_category})
- if failures: raise RuntimeError("Strict asset filter self-test failed: "+json.dumps(failures,ensure_ascii=False))
+ license_cases=[("CC0 1.0",True),("CC BY 4.0",True),("OGA-BY 3.0",True),("CC BY-SA 4.0",True),("MIT",True),("BSD-3-Clause",True),("Zlib",True),("WTFPL",True),("Unlicense",True),("Public Domain",True),("GPL 3.0",True),("CC BY-NC 4.0",False),("CC BY-ND 4.0",False),("unknown free license",False)]\n for license_value,expected in license_cases:\n  if license_allowed(license_value)!=expected: failures.append({"license":license_value,"expected":expected,"actual":license_allowed(license_value)})\n if failures: raise RuntimeError("Strict asset/license filter self-test failed: "+json.dumps(failures,ensure_ascii=False))
  print("STRICT_FILTER_SELF_TEST PASS",len(cases),"cases")
 def license_allowed(value):
+ text=str(value or "").strip().lower().replace("_","-").replace("–","-")
+ if any(x in text for x in ("by-nc","by-nd","noncommercial","non-commercial","no derivatives","no-derivatives")): return False
+ if re.search(r"\b(?:cc0|public domain|public-domain|unlicense|wtfpl|mit|zlib|bsd(?:-2|-3)?(?:-clause)?|oga[- ]by|cc[- ]?by(?:[- ]?sa)?)\b",text): return True
+ if re.search(r"\bgpl[- ]?(?:2|3)(?:\.0)?(?:[- ]?(?:only|or-later))?\b",text): return True
+ return False
+def license_class(value):
+ text=str(value or "").strip().lower().replace("_","-").replace("–","-")
+ if "by-sa" in text or "by sa" in text or "gpl" in text: return "reciprocal"
+ if "cc0" in text or "public domain" in text or "unlicense" in text or "wtfpl" in text: return "public-domain"
+ if "mit" in text or "bsd" in text or "zlib" in text: return "permissive"
+ if "oga-by" in text or "cc-by" in text or "cc by" in text: return "attribution"
+ return "unclassified"
+def license_url_for(value):
  text=str(value or "").strip().lower().replace("_","-")
- if any(x in text for x in ("by-sa","by-nc","by-nd","noncommercial","sharealike","no derivatives")): return False
- return ("cc0" in text or "cc-by" in text or "cc by" in text or "attribution" in text)
+ if "cc0" in text: return "https://creativecommons.org/publicdomain/zero/1.0/"
+ if "oga-by" in text: return "https://opengameart.org/content/oga-by-30-faq"
+ if "by-sa" in text or "by sa" in text:
+  version="3.0" if "3.0" in text else "4.0"
+  return "https://creativecommons.org/licenses/by-sa/"+version+"/"
+ if "cc-by" in text or "cc by" in text:
+  version=next((v for v in ("4.0","3.0","2.5","2.0","1.0") if v in text),"4.0")
+  return "https://creativecommons.org/licenses/by/"+version+"/"
+ if "mit" in text: return "https://opensource.org/license/mit/"
+ if "bsd-2" in text: return "https://opensource.org/license/bsd-2-clause/"
+ if "bsd" in text: return "https://opensource.org/license/bsd-3-clause/"
+ if "zlib" in text: return "https://opensource.org/license/zlib/"
+ if "wtfpl" in text: return "http://www.wtfpl.net/txt/copying/"
+ if "unlicense" in text: return "https://unlicense.org/"
+ if "gpl" in text:
+  version="2" if re.search(r"gpl[- ]?2",text) else "3"
+  return "https://www.gnu.org/licenses/old-licenses/gpl-"+version+".0.html"
+ if "public domain" in text: return "https://creativecommons.org/publicdomain/mark/1.0/"
+ return ""
 def filter_candidates():
  global DISC, DOWN
  accepted=[]
  for record in DOWN:
   if not license_allowed(record.get("license")):
-   REJECTED.append({"asset":record.get("id"),"stage":"license_filter","reason":"Only CC0 and CC BY are permitted"})
+   REJECTED.append({"asset":record.get("id"),"stage":"license_filter","reason":"License is missing or outside the explicitly permitted open-license allow-list"})
   elif rejected_asset(record) or (not asset_category(record) and not (record.get("candidate_only") and is_architecture_candidate(record))):
    REJECTED.append({"asset":record.get("id"),"stage":"strict_identity_filter","reason":"Rejected by blacklist/identity filter"})
-  else: accepted.append(record)
+  else:
+   record["license_class"]=license_class(record.get("license"))
+   record["license_url"]=record.get("license_url") or license_url_for(record.get("license"))
+   accepted.append(record)
  DOWN[:] = accepted
  accepted_ids={x.get("id") for x in accepted}
  DISC[:] = [x for x in DISC if x.get("id") in accepted_ids]
  print("STRICT_FILTER",json.dumps({"discovered":len(DISC),"retained":len(DOWN)},ensure_ascii=False))
 def process():
  for r in DOWN:
-  if r.get("id") in {"opengameart-free-bamboo-v1","weed_plant_02"}: continue
+  if r.get("id") == "weed_plant_02": continue
   try:
    p=Path(r["raw"]); fs=[]
    if p.suffix.lower()==".zip" or zipfile.is_zipfile(p):
@@ -287,7 +320,7 @@ def process():
    else: fs=[p]
    is_pbr = r["source"]=="ambientCG" or any(c=="pbr" for c,t in r.get("matches",[]))
    if is_pbr:
-    dest=OUT/"textures"/safe(r["id"]); dest.mkdir(parents=True,exist_ok=True); copied=[]
+    dest=(OUT/"reciprocal"/"textures" if r.get("license_class")=="reciprocal" else OUT/"textures")/safe(r["id"]); dest.mkdir(parents=True,exist_ok=True); copied=[]
     for src in fs:
      if src.is_file() and src.suffix.lower() in (".jpg",".jpeg",".png",".tif",".tiff",".exr"):
       target=dest/src.name
@@ -319,7 +352,7 @@ def process():
      if r.get("source") == "Kenney":
       model_rec.update({"id":r["id"]+"-"+safe(src.stem),"name":src.stem.replace("_"," ").replace("-"," ").title(),
                         "target_category":"nature","matches":[("nature",src.stem)],"candidate_only":True})
-     base_dir=OUT/"candidates"/"models" if model_rec.get("candidate_only") else OUT/"models"
+     base_dir=(OUT/"reciprocal"/"candidates" if model_rec.get("candidate_only") else OUT/"reciprocal"/"models") if model_rec.get("license_class")=="reciprocal" else (OUT/"candidates"/"models" if model_rec.get("candidate_only") else OUT/"models")
      suffix=("_"+str(i)) if i and r.get("source")!="Kenney" else ""
      dst=base_dir/(safe(model_rec["id"])+suffix+".glb"); dst.parent.mkdir(parents=True,exist_ok=True)
      m=blender(src,dst)
@@ -333,7 +366,7 @@ def process():
     for c,t in r["matches"]:
      if t not in COVERED.setdefault(c,[]): COVERED[c].append(t)
    elif r["source"]=="ambientCG":
-    dest=OUT/"textures"/safe(r["id"]); dest.mkdir(parents=True,exist_ok=True); copied=[]
+    dest=(OUT/"reciprocal"/"textures" if r.get("license_class")=="reciprocal" else OUT/"textures")/safe(r["id"]); dest.mkdir(parents=True,exist_ok=True); copied=[]
     for src in fs:
      if src.is_file() and src.suffix.lower() in (".jpg",".jpeg",".png",".tif",".tiff",".exr"):
       shutil.copy2(src,dest/src.name); copied.append(str(dest/src.name))
@@ -384,7 +417,7 @@ def builddocs(blenderver):
     continue
    aid=str(r.get("id","")).lower()
    style_group="imperial_chinese" if ("imperial-china-palace-and-garden" in aid or r.get("source") in {"Smithsonian Open Access","Polygonal Mind Lunar Year"} or r.get("id","").startswith("innerscene-buddhist-temple-pagoda")) else "korean_hanok" if "korean-hanok-village-and-street" in aid else "pbr_materials" if category=="pbr_materials" else "environmental"
-   item={"asset_id":r["id"],"name":r["name"],"category":category,"style_group":style_group,"file":p.relative_to(OUT).as_posix(),"source":r["source"],"source_url":r["source_url"],"direct_download_url":r.get("download_url"),"license":r["license"],"authors":r["authors"],"dimensions_m":r.get("dimensions_m"),"bytes":p.stat().st_size,"sha256":sha(p),"validation":r["validation"]}
+   item={"asset_id":r["id"],"name":r["name"],"category":category,"style_group":style_group,"file":p.relative_to(OUT).as_posix(),"source":r["source"],"source_url":r["source_url"],"direct_download_url":r.get("download_url"),"license":r["license"],"license_url":r.get("license_url") or license_url_for(r["license"]),"license_class":r.get("license_class") or license_class(r["license"]),"authors":r["authors"],"dimensions_m":r.get("dimensions_m"),"bytes":p.stat().st_size,"sha256":sha(p),"validation":r["validation"]}
    entries.append(item); grouped[category].append(item)
  approved_paths={x["file"] for x in entries} | candidate_paths
  for stale in list(OUT.rglob("*")):
@@ -401,7 +434,7 @@ def builddocs(blenderver):
  (OUT/"imperial_approved_assets.json").write_text(json.dumps(approved,ensure_ascii=False,indent=2))
  source_counts={}
  for x in entries: source_counts[x.get("source","unknown")]=source_counts.get(x.get("source","unknown"),0)+1
- lines=["# Wuxia Imperial Asset Audit","","- Blender: "+blenderver,"- Discovered: "+str(len(DISC)),"- Downloaded: "+str(len(DOWN)),"- Validated source assets: "+str(len(OK)),"- Approved file entries: "+str(len(entries)), "- Category counts: "+json.dumps(counts,ensure_ascii=False),"- Source counts: "+json.dumps(source_counts,ensure_ascii=False),"- Style group/category breakdown: "+json.dumps(style_counts,ensure_ascii=False),"- Operational errors: "+str(len(ERR)),"- Strict identity-filter exclusions: "+str(len(REJECTED)),"- Skipped legacy failures: "+str(len(SKIPPED)),"","## Approved files"]
+ lines=["# Wuxia Imperial Asset Audit","","- Blender: "+blenderver,"- License allow-list: CC0, CC-BY, OGA-BY 3.0/4.0, CC-BY-SA 3.0/4.0, MIT, BSD-2/3-Clause, Zlib, WTFPL, Unlicense, Public Domain, GPL-2.0/3.0 for standalone art assets.","- Reciprocal assets (CC-BY-SA/GPL) are isolated under reciprocal/ and must retain their source license and notices.","- Normalization: source units converted/retained as metres, model ground rebased to Y=0, and geometry is not arbitrarily resized to a common bounding box.","- Discovered: "+str(len(DISC)),"- Downloaded: "+str(len(DOWN)),"- Validated source assets: "+str(len(OK)),"- Approved file entries: "+str(len(entries)), "- Category counts: "+json.dumps(counts,ensure_ascii=False),"- Source counts: "+json.dumps(source_counts,ensure_ascii=False),"- Style group/category breakdown: "+json.dumps(style_counts,ensure_ascii=False),"- Operational errors: "+str(len(ERR)),"- Strict identity-filter exclusions: "+str(len(REJECTED)),"- Skipped legacy failures: "+str(len(SKIPPED)),"","## Approved files"]
  lines += ["- "+x["category"]+" | "+x["file"]+" | "+x["license"]+" | "+x["source"]+" | "+str(x["dimensions_m"] or "PBR texture set") for x in entries]
  lines += ["","## Operational errors"]+["- "+x["asset"]+" ("+x["stage"]+"): "+x["reason"] for x in ERR] if ERR else ["","## Operational errors","- None"]
  lines += ["","## Strict identity-filter exclusions"]+["- "+x["asset"] for x in REJECTED] if REJECTED else ["","## Strict identity-filter exclusions","- None"]
@@ -415,7 +448,7 @@ def builddocs(blenderver):
   authors=x.get("authors") or {}
   author_values=[str(v).strip() for v in authors.values() if v and str(v).strip().lower() not in {str(x.get("source","")).strip().lower(),"3dassets.dev","ambientcg","poly haven"}]
   creator=", ".join(dict.fromkeys(author_values)) if author_values else "Not individually credited by source"
-  credits += ["","## "+x["file"],"- Category: "+x["category"],"- Style group: "+x.get("style_group","environmental"),"- Creator attribution: "+creator,"- Publisher/source: "+x["source"],"- Asset page: "+x["source_url"],"- Direct download: "+str(x.get("direct_download_url") or "not supplied by source; use asset page"),"- License: "+x["license"],"- Dimensions (m): "+str(x["dimensions_m"] or "not applicable (PBR textures)"),"- SHA256: "+x["sha256"]]
+  credits += ["","## "+x["file"],"- Category: "+x["category"],"- Style group: "+x.get("style_group","environmental"),"- Creator attribution: "+creator,"- Publisher/source: "+x["source"],"- Asset page: "+x["source_url"],"- Direct download: "+str(x.get("direct_download_url") or "not supplied by source; use asset page"),"- License: "+x["license"],"- License URL: "+str(x.get("license_url") or license_url_for(x["license"])),"- License class: "+str(x.get("license_class") or license_class(x["license"])),"- Normalization changes: converted/normalized to GLB; ground origin corrected to Y=0; source dimensions retained in metres.","- Distribution note: "+("kept in reciprocal/ with the applicable share-alike/GPL license; do not merge into proprietary source code" if (x.get("license_class") or license_class(x["license"]))=="reciprocal" else "retain this attribution/license notice when redistributing"),"- Dimensions (m): "+str(x["dimensions_m"] or "not applicable (PBR textures)"),"- SHA256: "+x["sha256"]]
  (ROOT/"CREDITS.md").write_text("\n".join(credits)+"\n")
  return entries
 def upload(entries):
@@ -465,14 +498,9 @@ def main():
  ver=subprocess.check_output([os.getenv("BLENDER_BIN","blender"),"--version"],text=True).splitlines()[0]
  SKIPPED.extend([
   {"asset":"pine_tree_01","stage":"known_legacy_failure","reason":"Skipped before discovery; prior download exceeded the configured size limit"},
-  {"asset":"weed_plant_02","stage":"known_legacy_failure","reason":"Skipped before discovery; prior normalization failed"},
-  {"asset":"opengameart-free-bamboo-v1","stage":"known_legacy_failure","reason":"Skipped before discovery; prior normalization failed"},
-  {"asset":"Quaternius:simple-buildings-pack","stage":"known_legacy_failure","reason":"Skipped; previously verified download endpoint returns HTTP 404"},
-  {"asset":"Quaternius:buildings-pack","stage":"known_legacy_failure","reason":"Skipped; previously verified download endpoint returns HTTP 404"},
-  {"asset":"Quaternius:ultimate-nature-pack","stage":"known_legacy_failure","reason":"Skipped; previously verified download endpoint returns HTTP 404"},
-  {"asset":"Quaternius:stylized-nature-megakit-official","stage":"known_legacy_failure","reason":"Skipped; previously verified source page exposes no direct downloadable file"}
+  {"asset":"weed_plant_02","stage":"known_legacy_failure","reason":"Skipped before discovery; prior normalization failed"}
  ])
- strict_filter_self_test(); discover_polygonal_mind(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_innerscene_curated(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_smithsonian(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_kenney_nature(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_sketchfab(S,getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_imperial_china_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_hanok_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
+ strict_filter_self_test(); discover_polygonal_mind(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_innerscene_curated(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_smithsonian(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_kenney_nature(fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_sketchfab(S,getj,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_github_open_assets(S,fetch,safe,sha,RAW,DISC,DOWN,ERR,SKIPPED); discover_imperial_china_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_hanok_pack(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_3dassets(getj,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_opengameart(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); discover_quaternius(S,fetch,safe,sha,RAW,DISC,DOWN,ERR); polyhaven(); ambientcg(); filter_candidates(); process(); entries=builddocs(ver)
  if not entries:
   print(json.dumps({"discovered":len(DISC),"downloaded":len(DOWN),"validated":len(OK),"missing":MISSING,"errors":ERR},ensure_ascii=False,indent=2))
   raise RuntimeError("No assets passed license and validation checks; see printed per-source diagnostics. No empty upload performed.")
