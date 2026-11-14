@@ -13,7 +13,7 @@ func _run_audit() -> void:
 	root.add_child(city)
 	await process_frame
 	var buildings := get_nodes_in_group("twin_city_building")
-	var counts := {"residential": 0, "commercial": 0, "service": 0, "landmark": 0}
+	var counts := {"residential": 0, "commercial": 0, "service": 0, "landmark": 0, "palace": 0, "pagoda": 0}
 	var null_mesh_nodes := 0
 	var procedural_building_primitives := 0
 	var normalized_buildings := 0
@@ -56,9 +56,9 @@ func _run_audit() -> void:
 		if paving != null and paving.multimesh != null:
 			paving_instances += paving.multimesh.instance_count
 	var total := buildings.size()
-	var valid := total == 241
-	valid = valid and counts.residential == 120 and counts.commercial == 48 and counts.service == 56 and counts.landmark == 17
-	valid = valid and normalized_buildings >= 241
+	var valid := total == 244
+	valid = valid and counts.residential == 120 and counts.commercial == 48 and counts.service == 56 and counts.landmark == 16 and counts.palace == 3 and counts.pagoda == 1
+	valid = valid and normalized_buildings >= 244
 	valid = valid and null_mesh_nodes == 0 and procedural_building_primitives == 0 and mesh_surface_total > 0
 	valid = valid and plaza != null and palace != null and moat != null and pagoda != null
 	valid = valid and paving_instances >= 14000
@@ -67,5 +67,5 @@ func _run_audit() -> void:
 		push_error("TWIN_CITY_AUDIT_FAIL: four-pass CAD grid, AABB normalization, GLB-only structures, paving or landmark acceptance gate failed")
 		quit(1)
 		return
-	print("TWIN_CITY_AUDIT_PASS: 240 GLB-assembled city buildings plus central GLB pagoda; 0 procedural primitives in buildings; 0 null meshes; AABB normalized")
+	print("TWIN_CITY_AUDIT_PASS: 240 district GLB-assembled structures + 3 palace GLB buildings + 1 central GLB pagoda; 0 procedural primitives in buildings; 0 null meshes; AABB normalized")
 	quit(0)
