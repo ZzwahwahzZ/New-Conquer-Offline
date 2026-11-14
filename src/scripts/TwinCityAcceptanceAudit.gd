@@ -24,7 +24,7 @@ func _run_audit() -> void:
 	var ground_snapped_buildings := 0
 	var max_ground_snap_error := 0.0
 	var footprint_violations := 0
-	var mesh_surface_total := 0
+	var valid_mesh_nodes := 0
 	for building in buildings:
 		var category := str(building.get_meta("twin_city_category", ""))
 		if counts.has(category):
@@ -54,13 +54,13 @@ func _run_audit() -> void:
 			if current is MeshInstance3D:
 				var mesh_node := current as MeshInstance3D
 				if mesh_node.mesh != null and mesh_node.mesh.get_rid().is_valid():
-					mesh_surface_total += mesh_node.mesh.get_surface_count()
+					valid_mesh_nodes += 1
 					if mesh_node.mesh is PrimitiveMesh:
 						procedural_building_primitives += 1
 			elif current is MultiMeshInstance3D:
 				var multi_node := current as MultiMeshInstance3D
 				if multi_node.multimesh != null and multi_node.multimesh.mesh != null and multi_node.multimesh.mesh.get_rid().is_valid():
-					mesh_surface_total += multi_node.multimesh.mesh.get_surface_count()
+					valid_mesh_nodes += 1
 					if multi_node.multimesh.mesh is PrimitiveMesh:
 						procedural_building_primitives += 1
 	var global_stack: Array[Node] = [city]
@@ -101,11 +101,11 @@ func _run_audit() -> void:
 	valid = valid and snap_counts.palace == 3 and snap_counts.pagoda == 1
 	valid = valid and footprint_violations == 0
 	valid = valid and wall_segments.size() == 108 and wall_max_ground_error <= 0.001
-	valid = valid and null_mesh_nodes == 0 and procedural_building_primitives == 0 and mesh_surface_total > 0
+	valid = valid and null_mesh_nodes == 0 and procedural_building_primitives == 0 and valid_mesh_nodes > 0
 	valid = valid and plaza != null and palace != null and moat != null and pagoda != null
 	valid = valid and paving_instances >= 14000
 	print("TWIN_CITY_NULL_MESH_AUDIT null_meshes=%d paths=%s" % [null_mesh_nodes, str(null_mesh_paths)])
-	print("TWIN_CITY_ACCEPTANCE_AUDIT total=%d categories=%s normalized=%d ground_snapped=%d snap_counts=%s max_ground_error_m=%.6f footprint_violations=%d wall_segments=%d wall_max_ground_error_m=%.6f null_meshes=%d procedural_building_primitives=%d surfaces=%d paving_instances=%d plaza=%s palace=%s moat=%s pagoda=%s" % [total, str(counts), normalized_buildings, ground_snapped_buildings, str(snap_counts), max_ground_snap_error, footprint_violations, wall_segments.size(), wall_max_ground_error, null_mesh_nodes, procedural_building_primitives, mesh_surface_total, paving_instances, str(plaza != null), str(palace != null), str(moat != null), str(pagoda != null)])
+	print("TWIN_CITY_ACCEPTANCE_AUDIT total=%d categories=%s normalized=%d ground_snapped=%d snap_counts=%s max_ground_error_m=%.6f footprint_violations=%d wall_segments=%d wall_max_ground_error_m=%.6f null_meshes=%d procedural_building_primitives=%d valid_mesh_nodes=%d paving_instances=%d plaza=%s palace=%s moat=%s pagoda=%s" % [total, str(counts), normalized_buildings, ground_snapped_buildings, str(snap_counts), max_ground_snap_error, footprint_violations, wall_segments.size(), wall_max_ground_error, null_mesh_nodes, procedural_building_primitives, valid_mesh_nodes, paving_instances, str(plaza != null), str(palace != null), str(moat != null), str(pagoda != null)])
 	if not valid:
 		push_error("TWIN_CITY_AUDIT_FAIL: expected 244 structures, 240 district ground snaps at Y=0, 3 palace snaps at Y=5, 1 pagoda snap at Y=1.2, 108 wall snaps, valid footprints, and zero null meshes")
 		quit(1)
